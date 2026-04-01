@@ -8,6 +8,14 @@
     ],
     "rewrites": [
       {
+        "source": "/ipad",
+        "destination": "/ipad/index.html"
+      },
+      {
+        "source": "/ipad/**",
+        "destination": "/ipad/index.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
