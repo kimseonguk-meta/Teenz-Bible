@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Teens Bible">
@@ -409,7 +410,7 @@ body {
   background: rgba(249,202,36,0.95); color: #000;
   padding: 12px 28px; border-radius: 14px;
   font-family: 'Bangers', cursive; font-size: 22px;
-  z-index: 10003; opacity: 0; pointer-events: none; transition: all 0.4s;
+  z-index: 200; opacity: 0; pointer-events: none; transition: all 0.4s;
 }
 .xp-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
@@ -466,26 +467,6 @@ body {
 
 /* === DAILY CHALLENGE === */
 .daily-challenge-card { background: rgba(50,40,100,0.2); border: 1px solid rgba(139,92,246,0.25); border-radius: 16px; padding: 16px; margin: 16px 0; }
-
-/* === BADGE DETAIL POPUP === */
-.badge-detail-popup {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 10005; animation: fadeIn 0.2s ease;
-}
-.badge-detail-card {
-  background: linear-gradient(180deg, #1a2848, #0e1830);
-  border: 1px solid rgba(249,202,36,0.3);
-  border-radius: 24px; padding: 32px 24px; max-width: 300px; width: 85%;
-  text-align: center; position: relative;
-}
-.badge-detail-card .bd-icon { font-size: 64px; margin-bottom: 12px; }
-.badge-detail-card .bd-name { font-family: 'Bangers', cursive; font-size: 22px; color: #FFD700; margin-bottom: 8px; }
-.badge-detail-card .bd-desc { color: #8898b8; font-size: 14px; line-height: 1.5; margin-bottom: 8px; }
-.badge-detail-card .bd-status { font-size: 14px; font-weight: bold; margin-top: 12px; padding: 8px 16px; border-radius: 12px; display: inline-block; }
-.badge-detail-card .bd-status.earned { background: rgba(249,202,36,0.15); color: #FFD700; }
-.badge-detail-card .bd-status.locked { background: rgba(85,96,128,0.2); color: #556080; }
 
 /* === CONTEXT TIP === */
 .context-tip { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 9999; background: linear-gradient(135deg, rgba(75,60,167,0.95), rgba(106,90,205,0.95)); border: 1px solid rgba(167,139,250,0.3); color: #fff; padding: 16px 20px; border-radius: 18px; max-width: 320px; width: calc(100% - 40px); text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.4); animation: fadeIn 0.3s ease; }
@@ -781,6 +762,296 @@ body {
   to { opacity: 1; transform: translateX(0); }
 }
 
+/* === iPad / Tablet Responsive (768px+) === */
+@media (min-width: 768px) {
+  .app {
+    max-width: 720px;
+    padding-bottom: 90px;
+  }
+  .nav {
+    max-width: 720px;
+    border-radius: 20px 20px 0 0;
+    padding: 10px 16px env(safe-area-inset-bottom);
+  }
+  .nav-btn {
+    padding: 12px 8px;
+    font-size: 14px;
+    gap: 6px;
+  }
+  .nav-btn .icon {
+    font-size: 32px;
+  }
+  .screen {
+    padding: 28px 24px;
+  }
+  .hero {
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    border-radius: 24px;
+  }
+  .hero h1 {
+    font-size: 34px;
+    letter-spacing: 2px;
+  }
+  .hero-icon-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+  .stats {
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .stat {
+    padding: 24px 14px;
+  }
+  .stat .val {
+    font-size: 38px;
+    width: 72px;
+    height: 72px;
+  }
+  .stat .lbl {
+    font-size: 15px;
+  }
+  .level-bar {
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .level-name {
+    font-size: 28px;
+  }
+  .xp-track {
+    height: 18px;
+  }
+  .section-title {
+    font-size: 28px;
+    margin: 28px 0 16px;
+  }
+  .badges {
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .badge {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    font-size: 34px;
+  }
+  .continue-card {
+    padding: 22px;
+    margin: 20px 0;
+  }
+  .continue-card h3 {
+    font-size: 26px;
+  }
+  .continue-card p {
+    font-size: 15px;
+  }
+  .book-card {
+    padding: 24px;
+    margin-bottom: 16px;
+    gap: 18px;
+  }
+  .book-icon {
+    font-size: 52px;
+    width: 84px;
+    height: 84px;
+    border-radius: 20px;
+  }
+  .book-info h3 {
+    font-size: 28px;
+  }
+  .book-info p {
+    font-size: 16px;
+  }
+  .book-progress {
+    height: 10px;
+  }
+  .chapter-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+  .ch-btn {
+    padding: 18px 20px;
+    font-size: 16px;
+  }
+  .ch-btn .ch-num {
+    font-size: 24px;
+  }
+  .reader-title {
+    font-size: 30px;
+  }
+  .reader-body {
+    padding: 28px;
+    font-size: 17px;
+    line-height: 1.9;
+    max-height: 65vh;
+  }
+  .reader-body p {
+    margin-bottom: 18px;
+  }
+  .action-btn {
+    padding: 16px;
+    font-size: 18px;
+  }
+  .chat-messages {
+    padding: 20px;
+    min-height: 400px;
+    max-height: 60vh;
+  }
+  .chat-msg {
+    padding: 14px 18px;
+    font-size: 16px;
+    max-width: 75%;
+  }
+  .chat-input {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+  .chat-send {
+    padding: 14px 24px;
+    font-size: 18px;
+  }
+  .quick-qs {
+    gap: 8px;
+    margin: 14px 0;
+  }
+  .quick-q {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  .setting-row {
+    padding: 22px;
+    margin-bottom: 14px;
+  }
+  .setting-label {
+    font-size: 19px;
+  }
+  .setting-sub {
+    font-size: 13px;
+  }
+  .video-container {
+    margin: 20px 0;
+    border-radius: 18px;
+  }
+  .audio-controls {
+    padding: 18px 20px;
+    gap: 16px;
+  }
+  .audio-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+  .onboard-card,
+  .eg-card,
+  .gami-help-card {
+    max-width: 480px;
+    padding: 40px 32px;
+  }
+  .onboard-card h2,
+  .eg-title {
+    font-size: 30px;
+  }
+  .onboard-card p,
+  .eg-desc {
+    font-size: 17px;
+  }
+  .eg-icon-wrap {
+    width: 120px;
+    height: 120px;
+    border-radius: 32px;
+  }
+  .eg-icon {
+    font-size: 60px;
+  }
+  .badge-detail-card {
+    max-width: 400px;
+    padding: 40px 32px;
+  }
+  .badge-detail-card .bd-icon {
+    font-size: 80px;
+  }
+  .badge-detail-card .bd-name {
+    font-size: 26px;
+  }
+  .badge-detail-card .bd-desc {
+    font-size: 16px;
+  }
+  .xp-toast {
+    font-size: 26px;
+    padding: 14px 36px;
+    border-radius: 18px;
+  }
+  .daily-challenge-card {
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .context-tip {
+    max-width: 480px;
+  }
+}
+
+/* === Large iPad / iPad Pro (1024px+) === */
+@media (min-width: 1024px) {
+  .app {
+    max-width: 860px;
+  }
+  .nav {
+    max-width: 860px;
+  }
+  .screen {
+    padding: 32px 32px;
+  }
+  .stats {
+    gap: 18px;
+  }
+  .stat {
+    padding: 28px 16px;
+  }
+  .stat .val {
+    font-size: 42px;
+    width: 80px;
+    height: 80px;
+  }
+  .chapter-list {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .reader-body {
+    padding: 36px;
+    font-size: 18px;
+    line-height: 2;
+    max-height: 70vh;
+  }
+  .chat-messages {
+    min-height: 450px;
+    max-height: 65vh;
+  }
+  .chat-msg {
+    max-width: 65%;
+  }
+  .badges {
+    gap: 18px;
+  }
+  .badge {
+    width: 76px;
+    height: 76px;
+    font-size: 38px;
+  }
+  .book-card {
+    padding: 28px;
+  }
+  .book-icon {
+    width: 96px;
+    height: 96px;
+    font-size: 56px;
+  }
+  .book-info h3 {
+    font-size: 32px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -868,7 +1139,7 @@ body {
     </div>
     <div class="setting-row">
       <div><div class="setting-label">Voice</div><div class="setting-sub">Choose narrator voice</div></div>
-      <select id="voice-select" onchange="changeVoice(this.value)" 
+      <select id="voice-select" onchange="selectedVoice=availableVoices[this.value]?.voice" 
         style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px;border-radius:8px;font-family:'Comic Neue',cursive;max-width:180px;">
         <option>Loading voices...</option>
       </select>
@@ -991,7 +1262,7 @@ function renderHome() {
   const row = document.getElementById('badges-row');
   row.innerHTML = BADGES.map(b => {
     const earned = state.badges.includes(b.id);
-    return '<div class="badge '+(earned?'earned':'locked')+'" onclick="showBadgeDetail(\''+b.id+'\')" title="'+b.name+': '+b.desc+'">'+b.icon+'</div>';
+    return '<div class="badge '+(earned?'earned':'locked')+'" title="'+b.name+': '+b.desc+'">'+b.icon+'</div>';
   }).join('');
 }
 
@@ -1153,13 +1424,9 @@ function rankVoice(v) {
         // Natural/Neural voices (any platform)
         if(n.includes('natural') || n.includes('neural') || n.includes('enhanced')) s += 80;
         if(n.includes('premium')) s += 75;
-        // iOS male voices (Siri voices) - prefer higher quality ones
-        const iosMalePremium = ['daniel','aaron','oliver','liam'];
-        const iosMaleBasic = ['arthur','gordon','lee','ralph','rishi','tom','albert','bruce','junior','nicky'];
-        const iosMaleLow = ['fred']; // Fred is robotic, deprioritize
-        for(const name of iosMalePremium) { if(n.includes(name)) { s += 55; break; } }
-        for(const name of iosMaleBasic) { if(n.includes(name)) { s += 40; break; } }
-        for(const name of iosMaleLow) { if(n.includes(name)) { s += 15; break; } }
+        // iOS male voices (Siri voices)
+        const iosMale = ['daniel','aaron','arthur','fred','gordon','lee','oliver','ralph','rishi','tom','albert','bruce','junior','liam','nicky'];
+        for(const name of iosMale) { if(n.includes(name)) { s += 55; break; } }
         // Android/Samsung male voices
         if(n.includes('male') && !n.includes('female')) s += 50;
         // General male names
@@ -1174,17 +1441,6 @@ function rankVoice(v) {
         return s;
       }
 
-function changeVoice(idx) {
-  idx = parseInt(idx);
-  if(availableVoices[idx]) {
-    selectedVoice = availableVoices[idx].voice;
-    localStorage.setItem('teensBibleVoice', selectedVoice.name);
-    console.log('Voice changed to:', selectedVoice.name);
-    // Show confirmation
-    showXpToast('🔊 Voice: ' + selectedVoice.name);
-  }
-}
-
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
   if(!voices.length) return;
@@ -1196,17 +1452,9 @@ function loadVoices() {
     .filter(v => v.score > 0)
     .sort((a,b) => b.score - a.score);
   
-  // Restore saved voice preference
-  const savedVoiceName = localStorage.getItem('teensBibleVoice');
-  let savedIdx = 0;
-  if(savedVoiceName) {
-    const found = availableVoices.findIndex(v => v.voice.name === savedVoiceName);
-    if(found >= 0) savedIdx = found;
-  }
-  
   if(availableVoices.length > 0) {
-    selectedVoice = availableVoices[savedIdx].voice;
-    console.log('Selected voice:', selectedVoice.name, '(score:', availableVoices[savedIdx].score, ')');
+    selectedVoice = availableVoices[0].voice;
+    console.log('Selected voice:', selectedVoice.name, '(score:', availableVoices[0].score, ')');
     console.log('Top 5 voices:', availableVoices.slice(0,5).map(v => v.voice.name + ' (' + v.score + ')'));
   }
   
@@ -1214,7 +1462,7 @@ function loadVoices() {
   const sel = document.getElementById('voice-select');
   if(sel) {
     sel.innerHTML = availableVoices.slice(0, 10).map((v, i) => 
-      '<option value="'+i+'"'+(i===savedIdx?' selected':'')+'>'+v.voice.name+'</option>'
+      '<option value="'+i+'"'+(i===0?' selected':'')+'>'+v.voice.name+'</option>'
     ).join('');
   }
 }
@@ -1358,31 +1606,12 @@ function showXpToast(text) {
   setTimeout(()=>toast.classList.remove('show'), 2000);
 }
 
-// === BADGE DETAIL POPUP ===
-function showBadgeDetail(badgeId) {
-  const badge = BADGES.find(b => b.id === badgeId);
-  if(!badge) return;
-  const earned = state.badges.includes(badge.id);
-  const popup = document.createElement('div');
-  popup.className = 'badge-detail-popup';
-  popup.onclick = function(e) { if(e.target === popup) popup.remove(); };
-  popup.innerHTML = '<div class="badge-detail-card">' +
-    '<div class="bd-icon">' + badge.icon + '</div>' +
-    '<div class="bd-name">' + badge.name + '</div>' +
-    '<div class="bd-desc">' + badge.desc + '</div>' +
-    '<div class="bd-status ' + (earned ? 'earned' : 'locked') + '">' + 
-    (earned ? '✅ Unlocked!' : '🔒 Keep going!') + '</div>' +
-    '</div>';
-  document.body.appendChild(popup);
-}
-
 // === AI CHAT (Gemini) ===
 const BIBLE_SYSTEM_PROMPT = `You are Bible AI, a friendly and knowledgeable Bible teacher for teenage boys in middle school. 
 Your style: casual, engaging, like a cool youth pastor. Use simple English. 
-Always reference specific Bible verses when answering. Keep answers concise but COMPLETE (2-3 paragraphs max). Never stop mid-sentence.
+Always reference specific Bible verses when answering. Keep answers concise (2-3 paragraphs max).
 If asked something not related to the Bible or Christianity, gently redirect to Bible topics.
-You know the entire New Testament (27 books) especially well, including the Gospels, Acts, Paul's letters, General letters, and Revelation.
-Note: The Bible text in this app is a modern retelling for teens (not a summary or paraphrase), written in casual MZ-generation language to make it engaging and relatable.`;
+You know the entire New Testament (27 books) especially well, including the Gospels, Acts, Paul's letters, General letters, and Revelation.`;
 
 let chatHistory = [];
 
@@ -1426,7 +1655,7 @@ async function sendChat() {
   const reqBody = JSON.stringify({
     system_instruction: {parts: [{text: BIBLE_SYSTEM_PROMPT}]},
     contents: chatHistory,
-    generationConfig: {temperature: 0.7, maxOutputTokens: 2048},
+    generationConfig: {temperature: 0.7, maxOutputTokens: 500},
     safetySettings: [
       {category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},
       {category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},
@@ -2102,7 +2331,7 @@ renderBible();
     {
       icon: '📖',
       title: 'WELCOME TO TEENS BIBLE!',
-      desc: 'The New Testament retold in modern language for teens. Swipe through to learn how to get the most out of this app!',
+      desc: 'Your journey through the Gospels starts here. Swipe through to learn how to get the most out of this app!',
       color: '#FFD700'
     },
     {
