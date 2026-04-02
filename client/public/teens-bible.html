@@ -764,6 +764,88 @@ body {
 }
 
 
+/* === B1: FONT SIZE CONTROLS === */
+.reader-controls { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:8px; }
+.font-controls { display:flex; align-items:center; gap:6px; }
+.font-btn { width:34px; height:34px; border-radius:8px; border:1px solid rgba(65,110,160,0.4); background:rgba(20,35,60,0.8); color:#7888a8; font-size:16px; font-weight:bold; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+.font-btn:hover { background:rgba(78,205,196,0.15); color:#4ECDC4; border-color:rgba(78,205,196,0.4); }
+.font-size-label { color:#6880a8; font-size:11px; font-family:'Comic Neue',cursive; }
+
+/* === B2: PARAGRAPH STYLING === */
+.reader-body p:first-of-type::first-letter { font-size:2.2em; font-family:'Luckiest Guy',cursive; color:#FF6B6B; float:left; line-height:1; margin-right:6px; margin-top:4px; }
+.reader-body p { position:relative; padding-left:0; margin-bottom:18px; }
+.reader-body p + p { border-top:1px solid rgba(65,110,160,0.12); padding-top:16px; }
+
+/* === B3: LIGHT READER MODE === */
+.reader-mode-btn { width:34px; height:34px; border-radius:8px; border:1px solid rgba(65,110,160,0.4); background:rgba(20,35,60,0.8); color:#7888a8; font-size:16px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+.reader-mode-btn:hover { background:rgba(255,214,0,0.15); color:#FFD700; border-color:rgba(255,214,0,0.4); }
+.reader-body.light-mode { background:linear-gradient(160deg, #f5f0e8 0%, #ebe5d8 100%); border-color:rgba(180,160,130,0.3); color:#2c2416; }
+.reader-body.light-mode p { color:#3a3020; }
+.reader-body.light-mode p + p { border-top-color:rgba(160,140,110,0.2); }
+.reader-body.light-mode p:first-of-type::first-letter { color:#c0392b; }
+.reader-body.light-mode .key-verse { background:rgba(255,200,50,0.2); border-left-color:#d4a017; color:#5a4a10; }
+.reader-body.sepia-mode { background:linear-gradient(160deg, #f4e8d0 0%, #e8dcc0 100%); border-color:rgba(180,150,100,0.3); color:#3a2e1a; }
+.reader-body.sepia-mode p { color:#4a3e2a; }
+.reader-body.sepia-mode p + p { border-top-color:rgba(160,130,80,0.2); }
+.reader-body.sepia-mode p:first-of-type::first-letter { color:#8b4513; }
+.reader-body.sepia-mode .key-verse { background:rgba(200,160,60,0.15); border-left-color:#8b6914; color:#5a4a10; }
+
+/* === B4: PROGRESS BAR === */
+.reading-progress-bar { position:sticky; top:0; left:0; width:100%; height:4px; background:rgba(65,110,160,0.15); z-index:10; border-radius:2px; margin-bottom:8px; }
+.reading-progress-fill { height:100%; background:linear-gradient(90deg, #4ECDC4, #45B7D1); border-radius:2px; transition:width 0.15s ease-out; width:0%; }
+
+/* === B5: KEY VERSE HIGHLIGHT === */
+.key-verse { background:rgba(255,214,0,0.08); border-left:3px solid #FFD700; padding:10px 14px; margin:6px 0; border-radius:0 8px 8px 0; font-style:italic; position:relative; }
+.key-verse::before { content:'⭐'; position:absolute; top:-8px; right:8px; font-size:12px; }
+
+/* === A1: CLIFFHANGER === */
+.cliffhanger-box { margin-top:16px; padding:16px; background:linear-gradient(135deg, rgba(255,107,107,0.08), rgba(255,214,0,0.06)); border:1px solid rgba(255,107,107,0.2); border-radius:12px; cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden; }
+.cliffhanger-box:hover { transform:translateY(-2px); border-color:rgba(255,107,107,0.4); box-shadow:0 4px 20px rgba(255,107,107,0.15); }
+.cliffhanger-label { font-family:'Bangers',cursive; font-size:14px; color:#FF6B6B; margin-bottom:6px; letter-spacing:1px; }
+.cliffhanger-preview { color:#7888a8; font-size:13px; line-height:1.5; mask-image:linear-gradient(to bottom, black 40%, transparent 100%); -webkit-mask-image:linear-gradient(to bottom, black 40%, transparent 100%); max-height:60px; overflow:hidden; }
+.cliffhanger-cta { font-family:'Bangers',cursive; color:#FFD700; font-size:15px; margin-top:8px; }
+
+/* === A2: QUIZ === */
+.quiz-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,20,0.92); z-index:10002; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.3s; }
+.quiz-card { background:linear-gradient(160deg, #1a2a4a, #152040); border:1px solid rgba(65,110,160,0.3); border-radius:20px; padding:28px 24px; max-width:380px; width:90%; text-align:center; }
+.quiz-title { font-family:'Luckiest Guy',cursive; font-size:22px; color:#FFD700; margin-bottom:4px; }
+.quiz-subtitle { color:#6880a8; font-size:13px; margin-bottom:16px; }
+.quiz-question { color:#d8dce8; font-size:15px; line-height:1.6; margin-bottom:18px; font-family:'Comic Neue',cursive; }
+.quiz-option { display:block; width:100%; padding:14px 16px; margin-bottom:10px; border-radius:12px; border:1px solid rgba(65,110,160,0.3); background:rgba(20,35,60,0.6); color:#d8dce8; font-size:14px; font-family:'Comic Neue',cursive; cursor:pointer; transition:all 0.2s; text-align:left; }
+.quiz-option:hover { border-color:rgba(78,205,196,0.5); background:rgba(78,205,196,0.08); }
+.quiz-option.correct { border-color:#4ECDC4; background:rgba(78,205,196,0.2); color:#4ECDC4; }
+.quiz-option.wrong { border-color:#FF6B6B; background:rgba(255,107,107,0.15); color:#FF6B6B; }
+.quiz-result { font-family:'Bangers',cursive; font-size:20px; margin:12px 0; }
+.quiz-skip { color:#6880a8; font-size:13px; cursor:pointer; margin-top:10px; text-decoration:underline; }
+.quiz-skip:hover { color:#d8dce8; }
+
+/* === A3: READING GOAL === */
+.goal-banner { background:linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.08)); border:1px solid rgba(78,205,196,0.2); border-radius:14px; padding:14px 16px; margin-bottom:16px; }
+.goal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.goal-title { font-family:'Bangers',cursive; font-size:16px; color:#4ECDC4; }
+.goal-edit { color:#6880a8; font-size:12px; cursor:pointer; text-decoration:underline; }
+.goal-edit:hover { color:#4ECDC4; }
+.goal-progress-bar { height:8px; background:rgba(65,110,160,0.15); border-radius:4px; overflow:hidden; margin-bottom:6px; }
+.goal-progress-fill { height:100%; background:linear-gradient(90deg, #4ECDC4, #45B7D1); border-radius:4px; transition:width 0.5s ease; }
+.goal-text { color:#7888a8; font-size:12px; font-family:'Comic Neue',cursive; }
+.goal-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,20,0.9); z-index:10002; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.3s; }
+.goal-modal-card { background:linear-gradient(160deg, #1a2a4a, #152040); border:1px solid rgba(65,110,160,0.3); border-radius:20px; padding:28px 24px; max-width:340px; width:90%; text-align:center; }
+.goal-option { display:inline-block; padding:12px 20px; margin:6px; border-radius:12px; border:1px solid rgba(65,110,160,0.3); background:rgba(20,35,60,0.6); color:#d8dce8; font-family:'Bangers',cursive; font-size:18px; cursor:pointer; transition:all 0.2s; }
+.goal-option:hover, .goal-option.selected { border-color:#4ECDC4; background:rgba(78,205,196,0.15); color:#4ECDC4; }
+
+/* === A4: RANDOM CHAPTER === */
+.random-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; margin-bottom:16px; border-radius:14px; border:1px dashed rgba(255,214,0,0.3); background:rgba(255,214,0,0.05); color:#FFD700; font-family:'Bangers',cursive; font-size:17px; cursor:pointer; transition:all 0.3s; letter-spacing:1px; }
+.random-btn:hover { background:rgba(255,214,0,0.12); border-color:rgba(255,214,0,0.5); transform:scale(1.02); box-shadow:0 0 20px rgba(255,214,0,0.1); }
+.random-btn .dice { display:inline-block; font-size:22px; animation:diceWiggle 2s ease-in-out infinite; }
+@keyframes diceWiggle { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(15deg)} 75%{transform:rotate(-15deg)} }
+
+/* === A5: REACTIONS === */
+.reactions-bar { display:flex; gap:6px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
+.reaction-btn { padding:8px 14px; border-radius:20px; border:1px solid rgba(65,110,160,0.25); background:rgba(20,35,60,0.5); font-size:18px; cursor:pointer; transition:all 0.25s; position:relative; }
+.reaction-btn:hover { transform:scale(1.15); border-color:rgba(255,214,0,0.4); background:rgba(255,214,0,0.08); }
+.reaction-btn.selected { border-color:#FFD700; background:rgba(255,214,0,0.12); transform:scale(1.1); box-shadow:0 0 12px rgba(255,214,0,0.2); }
+.reaction-btn .reaction-count { position:absolute; top:-6px; right:-4px; background:#FF6B6B; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px; font-family:'Comic Neue',cursive; }
+
 </style>
 </head>
 <body>
@@ -793,6 +875,8 @@ body {
   <!-- Bible -->
   <div class="screen" id="screen-bible">
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:26px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">📖 NEW TESTAMENT</h2>
+    <div id="reading-goal-banner"></div>
+    <button class="random-btn" onclick="openRandomChapter()"><span class="dice">🎲</span> SURPRISE ME — RANDOM CHAPTER</button>
     <input type="text" id="book-search" placeholder="🔍 Search books..." 
       style="width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(65,105,155,0.3);background:rgba(10,18,35,0.8);color:#d8dce8;font-size:14px;font-family:'Comic Neue',cursive;margin-bottom:16px;box-sizing:border-box;"
       oninput="filterBooks(this.value)">
@@ -980,6 +1064,8 @@ function renderHome() {
 
 // === BIBLE ===
 function renderBible() {
+  // A3: Render reading goal banner
+  if(typeof renderGoalBanner === 'function') renderGoalBanner();
   const list = document.getElementById('book-list');
   let html = '';
   const catIcons = {"Gospels":"✨","History":"🔥","Paul's Letters":"💌","General Letters":"📜","Prophecy":"🌟"};
@@ -1058,6 +1144,11 @@ function showBook(name) {
 let currentBook = '', currentChIdx = 0;
 let speechUtterance = null, isSpeaking = false, speechSpeed = 1;
 
+// Reader preferences
+let readerFontSize = parseInt(localStorage.getItem('readerFontSize') || '15');
+let readerLineHeight = parseFloat(localStorage.getItem('readerLineHeight') || '1.8');
+let readerMode = localStorage.getItem('readerMode') || 'dark'; // dark, light, sepia
+
 function showChapter(book, idx) {
   currentBook = book;
   currentChIdx = idx;
@@ -1082,9 +1173,43 @@ function showChapter(book, idx) {
     '<button class="audio-btn" onclick="stopSpeech()" style="width:36px;height:36px;font-size:14px;border-color:rgba(255,107,107,0.5);color:#FF6B6B">⏹</button>'+
     '</div>';
   
-  // Content
-  html += '<div class="reader-body">';
-  ch.paragraphs.forEach(p => { html += '<p>'+p+'</p>'; });
+  // B1 + B3: Reader controls (font size + mode toggle)
+  const modeIcons = {dark:'🌙', light:'☀️', sepia:'📜'};
+  html += '<div class="reader-controls">';
+  html += '<div class="font-controls">';
+  html += '<button class="font-btn" onclick="adjustFont(-1)">A-</button>';
+  html += '<span class="font-size-label" id="font-label">'+readerFontSize+'px</span>';
+  html += '<button class="font-btn" onclick="adjustFont(1)">A+</button>';
+  html += '</div>';
+  html += '<div class="font-controls">';
+  html += '<button class="reader-mode-btn" onclick="cycleReaderMode()" id="mode-btn" title="Reading mode">'+modeIcons[readerMode]+'</button>';
+  html += '</div>';
+  html += '</div>';
+  
+  // B4: Progress bar + B5: Key verse highlights + B2: paragraph styling (via CSS)
+  const modeClass = readerMode === 'light' ? ' light-mode' : readerMode === 'sepia' ? ' sepia-mode' : '';
+  html += '<div class="reader-body'+modeClass+'" id="reader-body" style="font-size:'+readerFontSize+'px;line-height:'+readerLineHeight+'">';
+  html += '<div class="reading-progress-bar"><div class="reading-progress-fill" id="reading-progress"></div></div>';
+  
+  // B5: Identify key verse (longest paragraph or one with key phrases)
+  const keyIdx = findKeyVerse(ch.paragraphs);
+  ch.paragraphs.forEach((p, pi) => {
+    if(pi === keyIdx) {
+      html += '<p class="key-verse">'+p+'</p>';
+    } else {
+      html += '<p>'+p+'</p>';
+    }
+  });
+  html += '</div>';
+  
+  // A5: Reactions
+  const reactionEmojis = ['🔥','🤯','😂','💪','🙏'];
+  const savedReaction = getReaction(book, ch.num);
+  html += '<div class="reactions-bar" id="reactions-bar">';
+  reactionEmojis.forEach(emoji => {
+    const sel = savedReaction === emoji ? ' selected' : '';
+    html += '<button class="reaction-btn'+sel+'" onclick="setReaction(\''+book+'\','+ch.num+',\''+emoji+'\')">'+emoji+'</button>';
+  });
   html += '</div>';
   
   // Actions
@@ -1100,15 +1225,288 @@ function showChapter(book, idx) {
   }
   html += '</div>';
   
+  // A1: Cliffhanger - next chapter preview
+  if(idx < gospelData[book].length - 1) {
+    const nextCh = gospelData[book][idx + 1];
+    const preview = nextCh.paragraphs[0].substring(0, 120) + '...';
+    html += '<div class="cliffhanger-box" onclick="showChapter(\''+book+'\','+(idx+1)+')">';
+    html += '<div class="cliffhanger-label">📖 WHAT HAPPENS NEXT?</div>';
+    html += '<div style="color:#d8dce8;font-family:\'Bangers\',cursive;font-size:14px;margin-bottom:4px">Ch.'+nextCh.num+': '+nextCh.title+'</div>';
+    html += '<div class="cliffhanger-preview">'+preview+'</div>';
+    html += '<div class="cliffhanger-cta">TAP TO CONTINUE READING ▶</div>';
+    html += '</div>';
+  }
+  
   detail.innerHTML = html;
   document.getElementById('ch-back-btn').onclick = () => showBook(book);
   
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-chapter').classList.add('active');
   
+  // B4: Setup scroll progress tracking
+  const rb = document.getElementById('reader-body');
+  if(rb) {
+    rb.addEventListener('scroll', function() {
+      const pct = Math.min(100, (this.scrollTop / (this.scrollHeight - this.clientHeight)) * 100);
+      const fill = document.getElementById('reading-progress');
+      if(fill) fill.style.width = pct + '%';
+    });
+  }
+  
   // Update last read
   state.lastRead = {book:book, chapter:ch.num};
   save();
+}
+
+// B1: Font size adjustment
+function adjustFont(delta) {
+  readerFontSize = Math.max(12, Math.min(24, readerFontSize + delta));
+  readerLineHeight = readerFontSize <= 14 ? 1.6 : readerFontSize <= 18 ? 1.8 : 2.0;
+  localStorage.setItem('readerFontSize', readerFontSize);
+  localStorage.setItem('readerLineHeight', readerLineHeight);
+  const rb = document.getElementById('reader-body');
+  if(rb) { rb.style.fontSize = readerFontSize + 'px'; rb.style.lineHeight = readerLineHeight; }
+  const label = document.getElementById('font-label');
+  if(label) label.textContent = readerFontSize + 'px';
+}
+
+// B3: Reader mode cycling
+function cycleReaderMode() {
+  const modes = ['dark','light','sepia'];
+  const modeIcons = {dark:'🌙', light:'☀️', sepia:'📜'};
+  const idx = modes.indexOf(readerMode);
+  readerMode = modes[(idx + 1) % 3];
+  localStorage.setItem('readerMode', readerMode);
+  const rb = document.getElementById('reader-body');
+  if(rb) { rb.classList.remove('light-mode','sepia-mode'); if(readerMode==='light') rb.classList.add('light-mode'); if(readerMode==='sepia') rb.classList.add('sepia-mode'); }
+  const btn = document.getElementById('mode-btn');
+  if(btn) btn.textContent = modeIcons[readerMode];
+}
+
+// B5: Find key verse (most impactful paragraph)
+function findKeyVerse(paragraphs) {
+  const keyPhrases = ['jesus','god','lord','faith','love','grace','spirit','truth','eternal','salvation','forgive','hope','promise','kingdom','cross','resurrection','believe'];
+  let bestIdx = 0, bestScore = 0;
+  paragraphs.forEach((p, i) => {
+    const low = p.toLowerCase();
+    let score = 0;
+    keyPhrases.forEach(kw => { if(low.includes(kw)) score += 2; });
+    // Prefer middle paragraphs slightly
+    if(i > 0 && i < paragraphs.length - 1) score += 1;
+    // Prefer medium-length paragraphs (not too short, not too long)
+    if(p.length > 80 && p.length < 400) score += 1;
+    if(score > bestScore) { bestScore = score; bestIdx = i; }
+  });
+  return bestIdx;
+}
+
+// A5: Reactions
+function getReaction(book, chNum) {
+  const reactions = JSON.parse(localStorage.getItem('chapterReactions') || '{}');
+  return reactions[book + '_' + chNum] || null;
+}
+function setReaction(book, chNum, emoji) {
+  const reactions = JSON.parse(localStorage.getItem('chapterReactions') || '{}');
+  const key = book + '_' + chNum;
+  if(reactions[key] === emoji) { delete reactions[key]; } else { reactions[key] = emoji; }
+  localStorage.setItem('chapterReactions', JSON.stringify(reactions));
+  // Update UI
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.textContent.trim() === reactions[key]);
+  });
+}
+
+// === A2: CHAPTER QUIZ ===
+function showChapterQuiz(book, chNum) {
+  const ch = gospelData[book].find(c => c.num === chNum);
+  if(!ch) return;
+  
+  // Generate a simple quiz from chapter content
+  const quiz = generateQuiz(book, ch);
+  if(!quiz) return;
+  
+  const ov = document.createElement('div');
+  ov.className = 'quiz-overlay';
+  ov.innerHTML = 
+    '<div class="quiz-card">' +
+    '<div class="quiz-title">🧠 DID YOU CATCH THIS?</div>' +
+    '<div class="quiz-subtitle">'+book+' Chapter '+chNum+'</div>' +
+    '<div class="quiz-question">'+quiz.question+'</div>' +
+    '<div id="quiz-options">' +
+    quiz.options.map((opt, i) => 
+      '<button class="quiz-option" data-idx="'+i+'" onclick="answerQuiz(this,'+quiz.correct+',\''+book+'\','+chNum+')">'+opt+'</button>'
+    ).join('') +
+    '</div>' +
+    '<div id="quiz-feedback"></div>' +
+    '<div class="quiz-skip" onclick="this.closest(\'.quiz-overlay\').remove()">Skip →</div>' +
+    '</div>';
+  document.body.appendChild(ov);
+}
+
+function generateQuiz(book, ch) {
+  // Simple quiz templates based on chapter content
+  const text = ch.paragraphs.join(' ').toLowerCase();
+  const quizTemplates = [
+    {
+      check: () => text.includes('jesus') || text.includes('christ'),
+      question: 'What is a key theme in this chapter about Jesus?',
+      options: ['His teaching and authority', 'A cooking recipe', 'A sports competition', 'A weather report'],
+      correct: 0
+    },
+    {
+      check: () => text.includes('faith') || text.includes('believe'),
+      question: 'This chapter talks about faith. What does faith mean in this context?',
+      options: ['Trusting in God even when you can\'t see the outcome', 'Being really good at math', 'Having a lot of money', 'Being popular at school'],
+      correct: 0
+    },
+    {
+      check: () => text.includes('love') || text.includes('forgive'),
+      question: 'What kind of love does this chapter describe?',
+      options: ['Unconditional love that forgives', 'Love for pizza', 'Love for video games', 'Love for homework'],
+      correct: 0
+    },
+    {
+      check: () => text.includes('disciple') || text.includes('apostle') || text.includes('follow'),
+      question: 'What did it mean to be a follower/disciple in this chapter?',
+      options: ['To leave everything and follow Jesus', 'To follow someone on Instagram', 'To copy homework', 'To join a sports team'],
+      correct: 0
+    },
+    {
+      check: () => true, // fallback
+      question: 'What\'s the main takeaway from '+book+' Chapter '+ch.num+'?',
+      options: ['God\'s plan for people\'s lives', 'How to build a house', 'A travel guide to Rome', 'Tips for better WiFi'],
+      correct: 0
+    }
+  ];
+  
+  // Find first matching quiz
+  for(const t of quizTemplates) {
+    if(t.check()) {
+      // Shuffle options but track correct answer
+      const shuffled = [...t.options];
+      const correctText = shuffled[t.correct];
+      for(let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return {
+        question: t.question,
+        options: shuffled,
+        correct: shuffled.indexOf(correctText)
+      };
+    }
+  }
+  return null;
+}
+
+function answerQuiz(btn, correctIdx, book, chNum) {
+  const idx = parseInt(btn.dataset.idx);
+  const options = document.querySelectorAll('.quiz-option');
+  options.forEach(o => { o.style.pointerEvents = 'none'; });
+  
+  if(idx === correctIdx) {
+    btn.classList.add('correct');
+    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">✅ NICE! +10 XP BONUS</div>';
+    // Award bonus XP
+    state.xp = (state.xp || 0) + 10;
+    save();
+    if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
+  } else {
+    btn.classList.add('wrong');
+    options[correctIdx].classList.add('correct');
+    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#FF6B6B">Not quite! The answer was highlighted.</div>';
+  }
+  
+  // Auto-close after 2s
+  setTimeout(() => {
+    const ov = document.querySelector('.quiz-overlay');
+    if(ov) { ov.style.opacity = '0'; ov.style.transition = 'opacity 0.3s'; setTimeout(() => ov.remove(), 300); }
+  }, 2500);
+}
+
+// === A3: READING GOAL ===
+function getWeeklyGoal() {
+  return parseInt(localStorage.getItem('weeklyGoal') || '0');
+}
+function getWeeklyProgress() {
+  const weekStart = getWeekStart();
+  const log = JSON.parse(localStorage.getItem('weeklyReadLog') || '{}');
+  return log[weekStart] || 0;
+}
+function getWeekStart() {
+  const d = new Date();
+  d.setDate(d.getDate() - d.getDay());
+  return d.toISOString().split('T')[0];
+}
+function incrementWeeklyProgress() {
+  const weekStart = getWeekStart();
+  const log = JSON.parse(localStorage.getItem('weeklyReadLog') || '{}');
+  log[weekStart] = (log[weekStart] || 0) + 1;
+  localStorage.setItem('weeklyReadLog', JSON.stringify(log));
+}
+
+function renderGoalBanner() {
+  const banner = document.getElementById('reading-goal-banner');
+  if(!banner) return;
+  const goal = getWeeklyGoal();
+  if(!goal) {
+    banner.innerHTML = '<div class="goal-banner" style="text-align:center;cursor:pointer" onclick="showGoalModal()">' +
+      '<div class="goal-title">🎯 SET YOUR WEEKLY READING GOAL</div>' +
+      '<div class="goal-text" style="margin-top:4px">Tap to choose how many chapters you want to read this week!</div>' +
+      '</div>';
+    return;
+  }
+  const progress = getWeeklyProgress();
+  const pct = Math.min(100, (progress / goal) * 100);
+  const isComplete = progress >= goal;
+  banner.innerHTML = '<div class="goal-banner">' +
+    '<div class="goal-header">' +
+    '<div class="goal-title">'+(isComplete ? '🏆' : '🎯')+' WEEKLY GOAL</div>' +
+    '<span class="goal-edit" onclick="showGoalModal()">Change</span>' +
+    '</div>' +
+    '<div class="goal-progress-bar"><div class="goal-progress-fill" style="width:'+pct+'%"></div></div>' +
+    '<div class="goal-text">'+(isComplete ? '🎉 Goal smashed! '+progress+'/'+goal+' chapters' : progress+' / '+goal+' chapters this week')+'</div>' +
+    '</div>';
+}
+
+function showGoalModal() {
+  const current = getWeeklyGoal();
+  const ov = document.createElement('div');
+  ov.className = 'goal-modal';
+  ov.innerHTML = '<div class="goal-modal-card">' +
+    '<div style="font-family:\'Luckiest Guy\',cursive;font-size:22px;color:#FFD700;margin-bottom:6px">🎯 WEEKLY GOAL</div>' +
+    '<div style="color:#7888a8;font-size:13px;margin-bottom:18px">How many chapters do you want to read this week?</div>' +
+    '<div id="goal-options">' +
+    [3,5,7,10,15].map(n => '<button class="goal-option'+(n===current?' selected':'')+'" onclick="setWeeklyGoal('+n+')">'+n+'</button>').join('') +
+    '</div>' +
+    '<div class="quiz-skip" style="margin-top:14px" onclick="this.closest(\'.goal-modal\').remove()">Cancel</div>' +
+    '</div>';
+  document.body.appendChild(ov);
+}
+
+function setWeeklyGoal(n) {
+  localStorage.setItem('weeklyGoal', n);
+  const modal = document.querySelector('.goal-modal');
+  if(modal) modal.remove();
+  renderGoalBanner();
+}
+
+// === A4: RANDOM CHAPTER ===
+function openRandomChapter() {
+  const books = Object.keys(gospelData);
+  const book = books[Math.floor(Math.random() * books.length)];
+  const chapters = gospelData[book];
+  const idx = Math.floor(Math.random() * chapters.length);
+  
+  // Fun dice animation
+  const btn = document.querySelector('.random-btn .dice');
+  if(btn) {
+    btn.style.animation = 'none';
+    btn.offsetHeight; // trigger reflow
+    btn.style.animation = 'diceWiggle 0.15s ease-in-out 6';
+  }
+  
+  setTimeout(() => showChapter(book, idx), 900);
 }
 
 // === SPEECH SYNTHESIS (Enhanced Natural Voice) ===
@@ -1307,7 +1705,16 @@ function markRead(book, chNum) {
     });
     
     save();
+    
+    // A3: Increment weekly reading progress
+    if(typeof incrementWeeklyProgress === 'function') incrementWeeklyProgress();
+    
     showChapter(book, gospelData[book].findIndex(c=>c.num===chNum));
+    
+    // A2: Show quiz after a short delay
+    setTimeout(() => {
+      if(typeof showChapterQuiz === 'function') showChapterQuiz(book, chNum);
+    }, 2000);
   }
 }
 
