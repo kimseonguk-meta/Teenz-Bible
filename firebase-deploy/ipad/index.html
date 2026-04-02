@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v6';
+      const CACHE = 'teens-bible-v7';
       const URLS = ['./', './index.html'];
       self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(URLS))));
       self.addEventListener('fetch', e => {
@@ -915,6 +915,60 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .saved-tab-btn { padding:6px 14px; border-radius:20px; border:1px solid rgba(65,110,160,0.3); background:rgba(20,35,60,0.5); color:#6880a8; font-size:12px; font-family:'Comic Neue',cursive; cursor:pointer; transition:all 0.2s; }
 .saved-tab-btn.active { border-color:#FFD700; color:#FFD700; background:rgba(255,214,0,0.1); }
 
+/* === READING STATS DASHBOARD === */
+.stats-dashboard { margin-top:16px; padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); }
+.stats-dash-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#FFD700; margin-bottom:12px; }
+.stats-week-chart { display:flex; align-items:flex-end; gap:6px; height:100px; margin-bottom:14px; padding:8px 4px; background:rgba(10,20,40,0.4); border-radius:12px; }
+.stats-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.stats-bar { width:100%; border-radius:6px 6px 0 0; background:linear-gradient(to top, #FF6B6B, #FFD700); min-height:4px; transition:height 0.5s ease; }
+.stats-bar.today { background:linear-gradient(to top, #4ECDC4, #45B7AA); box-shadow:0 0 8px rgba(78,205,196,0.5); }
+.stats-bar-label { font-size:10px; color:#6880a8; font-family:'Comic Neue',cursive; }
+.stats-bar-val { font-size:10px; color:#d8dce8; font-family:'Comic Neue',cursive; font-weight:700; }
+.stats-summary { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.stats-summary-item { text-align:center; padding:10px 6px; background:rgba(10,20,40,0.5); border-radius:10px; border:1px solid rgba(65,110,160,0.2); }
+.stats-summary-val { font-family:'Bangers',cursive; font-size:20px; color:#FFD700; }
+.stats-summary-lbl { font-size:11px; color:#6880a8; font-family:'Comic Neue',cursive; margin-top:2px; }
+
+/* === BIBLE JOURNEY MAP === */
+.journey-map { margin-top:16px; padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); }
+.journey-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#FFD700; margin-bottom:4px; }
+.journey-progress-bar { height:8px; background:rgba(10,20,40,0.6); border-radius:4px; margin-bottom:16px; overflow:hidden; }
+.journey-progress-fill { height:100%; background:linear-gradient(90deg, #FF6B6B, #FFD700, #4ECDC4); border-radius:4px; transition:width 0.8s ease; }
+.journey-progress-text { font-size:12px; color:#6880a8; font-family:'Comic Neue',cursive; margin-bottom:8px; text-align:right; }
+.journey-category { margin-bottom:14px; }
+.journey-cat-title { font-family:'Bangers',cursive; font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.journey-books { display:flex; flex-wrap:wrap; gap:6px; }
+.journey-book { padding:6px 10px; border-radius:10px; font-size:11px; font-family:'Comic Neue',cursive; font-weight:700; cursor:pointer; transition:all 0.3s; border:1.5px solid; position:relative; }
+.journey-book.complete { background:rgba(78,205,196,0.2); border-color:#4ECDC4; color:#4ECDC4; box-shadow:0 0 8px rgba(78,205,196,0.3); }
+.journey-book.in-progress { background:rgba(255,214,0,0.15); border-color:#FFD700; color:#FFD700; }
+.journey-book.locked { background:rgba(30,45,70,0.5); border-color:rgba(65,110,160,0.2); color:#4a5a7a; }
+.journey-book .jb-check { position:absolute; top:-4px; right:-4px; font-size:10px; background:#0a1628; border-radius:50%; padding:1px; }
+.journey-book .jb-progress { font-size:9px; opacity:0.7; margin-left:2px; }
+
+/* === CHAPTER NOTES/JOURNAL === */
+.notes-btn { background:rgba(255,214,0,0.15); border:1px solid rgba(255,214,0,0.3); color:#FFD700; padding:8px 16px; border-radius:10px; font-family:'Comic Neue',cursive; font-weight:700; font-size:13px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; width:100%; justify-content:center; margin-top:8px; }
+.notes-btn:hover { background:rgba(255,214,0,0.25); }
+.notes-btn.has-note { border-color:#4ECDC4; color:#4ECDC4; background:rgba(78,205,196,0.1); }
+.note-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:10005; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s; }
+.note-card { background:#0f1d35; border-radius:20px; padding:24px; width:90%; max-width:500px; border:1px solid rgba(65,110,160,0.3); }
+.note-card-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#FFD700; margin-bottom:4px; }
+.note-card-sub { font-size:12px; color:#6880a8; margin-bottom:14px; font-family:'Comic Neue',cursive; }
+.note-textarea { width:100%; height:150px; background:rgba(10,20,40,0.6); border:1px solid rgba(65,110,160,0.3); border-radius:12px; color:#d8dce8; font-family:'Comic Neue',cursive; font-size:14px; padding:12px; resize:none; outline:none; }
+.note-textarea:focus { border-color:#FFD700; }
+.note-textarea::placeholder { color:#4a5a7a; }
+.note-actions { display:flex; gap:8px; margin-top:12px; }
+.note-save-btn { flex:1; padding:10px; border-radius:10px; border:none; background:#FFD700; color:#0a1628; font-family:'Bangers',cursive; font-size:16px; cursor:pointer; }
+.note-cancel-btn { flex:1; padding:10px; border-radius:10px; border:1px solid rgba(65,110,160,0.3); background:transparent; color:#6880a8; font-family:'Comic Neue',cursive; font-size:14px; cursor:pointer; }
+.note-delete-btn { padding:10px; border-radius:10px; border:1px solid rgba(255,107,107,0.3); background:rgba(255,107,107,0.1); color:#FF6B6B; font-family:'Comic Neue',cursive; font-size:14px; cursor:pointer; }
+.recent-notes { margin-top:16px; padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); }
+.recent-notes-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#FFD700; margin-bottom:12px; }
+.note-entry { padding:12px; background:rgba(10,20,40,0.5); border-radius:12px; border:1px solid rgba(65,110,160,0.15); margin-bottom:8px; cursor:pointer; transition:all 0.2s; }
+.note-entry:hover { border-color:rgba(255,214,0,0.3); }
+.note-entry-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.note-entry-book { font-family:'Bangers',cursive; font-size:14px; color:#FF6B6B; }
+.note-entry-date { font-size:10px; color:#4a5a7a; }
+.note-entry-text { font-size:13px; color:#a0aec0; font-family:'Comic Neue',cursive; line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
 </style>
 </head>
 <body>
@@ -938,7 +992,10 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     </div>
     <div id="continue-section"></div>
     <div id="quiz-stats-card" style="display:none"></div>
+    <div id="stats-dashboard"></div>
+    <div id="journey-map-section"></div>
     <div id="saved-items-section"></div>
+    <div id="recent-notes-section"></div>
     <div class="section-title">🏆 Badges</div>
     <div class="badges" id="badges-row"></div>
   </div>
@@ -1072,8 +1129,13 @@ const BADGES = [
 let state = JSON.parse(localStorage.getItem('teensBible')||'null') || {
   xp:0, streak:0, chaptersRead:0, questions:0, lastRead:null, lastDate:null,
   books:{"Matthew":{name:"Matthew",read:[]},"Mark":{name:"Mark",read:[]},"Luke":{name:"Luke",read:[]},"John":{name:"John",read:[]},"Acts":{name:"Acts",read:[]},"Romans":{name:"Romans",read:[]},"1 Corinthians":{name:"1 Corinthians",read:[]},"2 Corinthians":{name:"2 Corinthians",read:[]},"Galatians":{name:"Galatians",read:[]},"Ephesians":{name:"Ephesians",read:[]},"Philippians":{name:"Philippians",read:[]},"Colossians":{name:"Colossians",read:[]},"1 Thessalonians":{name:"1 Thessalonians",read:[]},"2 Thessalonians":{name:"2 Thessalonians",read:[]},"1 Timothy":{name:"1 Timothy",read:[]},"2 Timothy":{name:"2 Timothy",read:[]},"Titus":{name:"Titus",read:[]},"Philemon":{name:"Philemon",read:[]},"Hebrews":{name:"Hebrews",read:[]},"James":{name:"James",read:[]},"1 Peter":{name:"1 Peter",read:[]},"2 Peter":{name:"2 Peter",read:[]},"1 John":{name:"1 John",read:[]},"2 John":{name:"2 John",read:[]},"3 John":{name:"3 John",read:[]},"Jude":{name:"Jude",read:[]},"Revelation":{name:"Revelation",read:[]}},
-  badges:[]
+  badges:[],
+  readingHistory:{},
+  notes:{}
 };
+// Migrate old state
+if(!state.readingHistory) state.readingHistory = {};
+if(!state.notes) state.notes = {};
 function save() { localStorage.setItem('teensBible', JSON.stringify(state)); }
 
 // === NAVIGATION ===
@@ -1156,6 +1218,11 @@ function renderHome() {
   
   // Render bookmarks & highlights
   renderSavedItems();
+  
+  // Render new features
+  renderStatsDashboard();
+  renderJourneyMap();
+  renderRecentNotes();
 }
 
 // === BADGE DETAIL POPUP ===
@@ -1448,6 +1515,226 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// === READING STATS DASHBOARD ===
+function renderStatsDashboard() {
+  const container = document.getElementById('stats-dashboard');
+  if(!container) return;
+  
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today = new Date();
+  const weekData = [];
+  let maxVal = 1;
+  
+  for(let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0,10);
+    const val = state.readingHistory[key] || 0;
+    if(val > maxVal) maxVal = val;
+    weekData.push({ day: days[d.getDay()], val: val, isToday: i === 0, date: key });
+  }
+  
+  const allDates = Object.keys(state.readingHistory);
+  const totalDaysActive = allDates.length;
+  const totalChFromHistory = Object.values(state.readingHistory).reduce((a,b) => a+b, 0);
+  const avgPerDay = totalDaysActive > 0 ? (totalChFromHistory / totalDaysActive).toFixed(1) : '0';
+  
+  const dayTotals = [0,0,0,0,0,0,0];
+  allDates.forEach(dateStr => {
+    const dow = new Date(dateStr+'T12:00:00').getDay();
+    dayTotals[dow] += state.readingHistory[dateStr];
+  });
+  const bestDayIdx = dayTotals.indexOf(Math.max(...dayTotals));
+  const bestDay = dayTotals[bestDayIdx] > 0 ? days[bestDayIdx] : '-';
+  
+  let html = '<div class="stats-dashboard">';
+  html += '<div class="stats-dash-title">📊 Reading Stats</div>';
+  
+  html += '<div class="stats-week-chart">';
+  weekData.forEach(d => {
+    const h = d.val > 0 ? Math.max(10, (d.val / maxVal) * 80) : 4;
+    html += '<div class="stats-bar-col">';
+    html += '<div class="stats-bar-val">'+(d.val > 0 ? d.val : '')+'</div>';
+    html += '<div class="stats-bar'+(d.isToday?' today':'')+'" style="height:'+h+'px"></div>';
+    html += '<div class="stats-bar-label">'+d.day+'</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  
+  html += '<div class="stats-summary">';
+  html += '<div class="stats-summary-item"><div class="stats-summary-val">'+totalDaysActive+'</div><div class="stats-summary-lbl">Days Active</div></div>';
+  html += '<div class="stats-summary-item"><div class="stats-summary-val">'+avgPerDay+'</div><div class="stats-summary-lbl">Avg/Day</div></div>';
+  html += '<div class="stats-summary-item"><div class="stats-summary-val">'+bestDay+'</div><div class="stats-summary-lbl">Best Day</div></div>';
+  html += '</div>';
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// === BIBLE JOURNEY MAP ===
+const JOURNEY_CATEGORIES = [
+  { name: 'Gospels', icon: '✨', color: '#FF6B6B', books: ['Matthew','Mark','Luke','John'] },
+  { name: 'History', icon: '🔥', color: '#FF9F43', books: ['Acts'] },
+  { name: "Paul's Letters", icon: '💌', color: '#A29BFE', books: ['Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon'] },
+  { name: 'General Letters', icon: '📜', color: '#4ECDC4', books: ['Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude'] },
+  { name: 'Prophecy', icon: '🌟', color: '#FFD700', books: ['Revelation'] }
+];
+
+function renderJourneyMap() {
+  const container = document.getElementById('journey-map-section');
+  if(!container) return;
+  
+  let totalChapters = 0;
+  let totalRead = 0;
+  Object.keys(gospelData).forEach(book => {
+    totalChapters += gospelData[book].length;
+    totalRead += (state.books[book]?.read?.length || 0);
+  });
+  const overallPct = totalChapters > 0 ? Math.round(totalRead / totalChapters * 100) : 0;
+  
+  let html = '<div class="journey-map">';
+  html += '<div class="journey-title">🗺️ Bible Journey</div>';
+  html += '<div class="journey-progress-text">'+totalRead+' / '+totalChapters+' chapters ('+overallPct+'%)</div>';
+  html += '<div class="journey-progress-bar"><div class="journey-progress-fill" style="width:'+overallPct+'%"></div></div>';
+  
+  JOURNEY_CATEGORIES.forEach(cat => {
+    html += '<div class="journey-category">';
+    html += '<div class="journey-cat-title" style="color:'+cat.color+'">'+cat.icon+' '+cat.name+'</div>';
+    html += '<div class="journey-books">';
+    cat.books.forEach(book => {
+      const total = gospelData[book] ? gospelData[book].length : 0;
+      const read = state.books[book]?.read?.length || 0;
+      let status = 'locked';
+      let extra = '';
+      if(read >= total && total > 0) {
+        status = 'complete';
+        extra = '<span class="jb-check">✅</span>';
+      } else if(read > 0) {
+        status = 'in-progress';
+        extra = '<span class="jb-progress">'+read+'/'+total+'</span>';
+      }
+      html += '<div class="journey-book '+status+'" onclick="showBook(\''+book.replace(/'/g,"\\\\\'")+'\')">'+book+extra+'</div>';
+    });
+    html += '</div></div>';
+  });
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// === CHAPTER NOTES/JOURNAL ===
+function getNotes() {
+  return state.notes || {};
+}
+
+function openNoteEditor(book, chNum) {
+  const key = book + '_' + chNum;
+  const existing = getNotes()[key];
+  
+  const ov = document.createElement('div');
+  ov.className = 'note-overlay';
+  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  
+  let cardHtml = '<div class="note-card">';
+  cardHtml += '<div class="note-card-title">📝 My Notes</div>';
+  cardHtml += '<div class="note-card-sub">'+book+' Chapter '+chNum+'</div>';
+  cardHtml += '<textarea class="note-textarea" id="note-input" placeholder="What stood out to you in this chapter? Write your thoughts here...">'+(existing ? existing.text : '')+'</textarea>';
+  cardHtml += '<div class="note-actions">';
+  cardHtml += '<button class="note-cancel-btn" onclick="this.closest(\'.note-overlay\').remove()">Cancel</button>';
+  if(existing) {
+    cardHtml += '<button class="note-delete-btn" onclick="deleteNote(\''+book.replace(/'/g,"\\\'")+'\',' +chNum+')">\ud83d\uddd1\ufe0f</button>';
+  }
+  cardHtml += '<button class="note-save-btn" onclick="saveNote(\''+book.replace(/'/g,"\\\'")+'\',' +chNum+')">SAVE</button>';
+  cardHtml += '</div></div>';
+  
+  ov.innerHTML = cardHtml;
+  document.body.appendChild(ov);
+  
+  setTimeout(() => {
+    const ta = document.getElementById('note-input');
+    if(ta) ta.focus();
+  }, 100);
+}
+
+function saveNote(book, chNum) {
+  const ta = document.getElementById('note-input');
+  if(!ta) return;
+  const text = ta.value.trim();
+  if(!text) { deleteNote(book, chNum); return; }
+  
+  const key = book + '_' + chNum;
+  if(!state.notes) state.notes = {};
+  state.notes[key] = {
+    book: book,
+    chapter: chNum,
+    text: text,
+    date: new Date().toISOString()
+  };
+  save();
+  
+  const ov = document.querySelector('.note-overlay');
+  if(ov) ov.remove();
+  
+  const btn = document.getElementById('notes-toggle-btn');
+  if(btn) {
+    btn.className = 'notes-btn has-note';
+    btn.innerHTML = '📝 VIEW / EDIT NOTES';
+  }
+  
+  showXpToast('📝 Note saved!');
+}
+
+function deleteNote(book, chNum) {
+  const key = book + '_' + chNum;
+  if(state.notes && state.notes[key]) {
+    delete state.notes[key];
+    save();
+  }
+  
+  const ov = document.querySelector('.note-overlay');
+  if(ov) ov.remove();
+  
+  const btn = document.getElementById('notes-toggle-btn');
+  if(btn) {
+    btn.className = 'notes-btn';
+    btn.innerHTML = '📝 ADD NOTES';
+  }
+  
+  showXpToast('🗑️ Note deleted');
+}
+
+function renderRecentNotes() {
+  const container = document.getElementById('recent-notes-section');
+  if(!container) return;
+  
+  const notes = getNotes();
+  const noteList = Object.values(notes).sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+  
+  if(noteList.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  let html = '<div class="recent-notes">';
+  html += '<div class="recent-notes-title">📝 Recent Notes</div>';
+  
+  noteList.forEach(note => {
+    const dateStr = new Date(note.date).toLocaleDateString('en-US', {month:'short', day:'numeric'});
+    const bookData = gospelData[note.book];
+    const chIdx = bookData ? bookData.findIndex(c => c.num === note.chapter) : -1;
+    html += '<div class="note-entry" onclick="'+(chIdx >= 0 ? 'showChapter(\''+note.book.replace(/'/g,"\\\'")+'\',' +chIdx+')' : '')+'">';
+    html += '<div class="note-entry-header">';
+    html += '<div class="note-entry-book">'+(bookMeta[note.book]?.icon||'📖')+' '+note.book+' '+note.chapter+'</div>';
+    html += '<div class="note-entry-date">'+dateStr+'</div>';
+    html += '</div>';
+    html += '<div class="note-entry-text">'+note.text+'</div>';
+    html += '</div>';
+  });
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 // === BIBLE ===
 function renderBible() {
   // A3: Render reading goal banner
@@ -1596,13 +1883,16 @@ function showChapter(book, idx) {
   reactionEmojis.forEach(emoji => {
     const sel = savedReaction === emoji ? ' selected' : '';
     html += '<button class="reaction-btn'+sel+'" onclick="setReaction(\''+book+'\','+ch.num+',\''+emoji+'\')">'+emoji+'</button>';
-  });
-  html += '</div>';
+  });  html += '</div>';
+  
+  // Notes button
+  const hasNote = state.notes && state.notes[book+'_'+ch.num];
+  html += '<button class="notes-btn'+(hasNote?' has-note':'')+'" id="notes-toggle-btn" onclick="openNoteEditor(\''+book.replace(/'/g,"\\\'")+'\',' +ch.num+')">'+(hasNote?'📝 VIEW / EDIT NOTES':'📝 ADD NOTES')+'</button>';
   
   // Actions
   html += '<div class="reader-actions">';
   if(!isRead) {
-    html += '<button class="action-btn mark-read-btn" onclick="markRead(\''+book+'\','+ch.num+')">✅ MARK AS READ (+25 XP)</button>';
+    html += '<button class="action-btn mark-read-btn" onclick="markRead(\''+book+'\',' +ch.num+')">✅ MARK AS READ (+25 XP)</button>';
   } else {
     html += '<button class="action-btn" style="background:rgba(78,205,196,0.15);color:#4ECDC4;border:1px solid rgba(78,205,196,0.3)" disabled>✅ ALREADY READ</button>';
   }
@@ -2055,6 +2345,12 @@ function markRead(book, chNum) {
       state.streak++;
       state.lastDate = today;
     }
+    
+    // Reading history tracking
+    const dateKey = new Date().toISOString().slice(0,10);
+    if(!state.readingHistory) state.readingHistory = {};
+    if(!state.readingHistory[dateKey]) state.readingHistory[dateKey] = 0;
+    state.readingHistory[dateKey]++;
     
     // Book completion bonus
     const totalCh = gospelData[book].length;
