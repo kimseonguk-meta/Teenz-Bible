@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v5';
+      const CACHE = 'teens-bible-v6';
       const URLS = ['./', './index.html'];
       self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(URLS))));
       self.addEventListener('fetch', e => {
@@ -229,8 +229,18 @@ body {
   background: linear-gradient(160deg, #283d5c 0%, #223852 100%);
   border: 1px solid rgba(65, 110, 160, 0.32);
 }
-.badge.earned { border-color: rgba(249,202,36,0.4); box-shadow: 0 0 10px rgba(249,202,36,0.2); }
-.badge.locked { opacity: 0.4; filter: grayscale(0.5); }
+.badge.earned { border-color: rgba(249,202,36,0.4); box-shadow: 0 0 10px rgba(249,202,36,0.2); cursor:pointer; }
+.badge.locked { opacity: 0.4; filter: grayscale(0.5); cursor:pointer; }
+
+/* Badge Detail Popup */
+.badge-detail-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:10005; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s ease; }
+.badge-detail-card { background:linear-gradient(160deg,#1a2a4a,#0f1f3a); border:1px solid rgba(65,110,160,0.4); border-radius:20px; padding:28px; text-align:center; max-width:280px; width:90%; }
+.badge-detail-icon { font-size:56px; margin-bottom:12px; }
+.badge-detail-name { font-family:'Luckiest Guy',cursive; font-size:20px; color:#ffd700; margin-bottom:8px; }
+.badge-detail-desc { font-size:14px; color:#a8b4c8; line-height:1.5; margin-bottom:6px; }
+.badge-detail-status { font-size:13px; font-weight:bold; margin-top:8px; }
+.badge-detail-status.earned { color:#4ade80; }
+.badge-detail-status.locked { color:#f87171; }
 
 /* === BIBLE TAB: BOOK CARDS === */
 .book-card {
@@ -411,7 +421,7 @@ body {
   background: rgba(249,202,36,0.95); color: #000;
   padding: 12px 28px; border-radius: 14px;
   font-family: 'Bangers', cursive; font-size: 22px;
-  z-index: 200; opacity: 0; pointer-events: none; transition: all 0.4s;
+  z-index: 10003; opacity: 0; pointer-events: none; transition: all 0.4s;
 }
 .xp-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
 
@@ -935,7 +945,7 @@ body {
     </div>
     <div class="setting-row">
       <div><div class="setting-label">Voice</div><div class="setting-sub">Choose narrator voice</div></div>
-      <select id="voice-select" onchange="selectedVoice=availableVoices[this.value]?.voice" 
+      <select id="voice-select" onchange="changeVoice(this.value)" 
         style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px;border-radius:8px;font-family:'Comic Neue',cursive;max-width:180px;">
         <option>Loading voices...</option>
       </select>
@@ -1058,8 +1068,25 @@ function renderHome() {
   const row = document.getElementById('badges-row');
   row.innerHTML = BADGES.map(b => {
     const earned = state.badges.includes(b.id);
-    return '<div class="badge '+(earned?'earned':'locked')+'" title="'+b.name+': '+b.desc+'">'+b.icon+'</div>';
+    return '<div class="badge '+(earned?'earned':'locked')+'" onclick="showBadgeDetail(\''+b.id+'\')" title="'+b.name+': '+b.desc+'">'+b.icon+'</div>';
   }).join('');
+}
+
+// === BADGE DETAIL POPUP ===
+function showBadgeDetail(badgeId) {
+  const b = BADGES.find(x => x.id === badgeId);
+  if(!b) return;
+  const earned = state.badges.includes(b.id);
+  const ov = document.createElement('div');
+  ov.className = 'badge-detail-overlay';
+  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  ov.innerHTML = '<div class="badge-detail-card">' +
+    '<div class="badge-detail-icon">' + b.icon + '</div>' +
+    '<div class="badge-detail-name">' + b.name + '</div>' +
+    '<div class="badge-detail-desc">' + b.desc + '</div>' +
+    '<div class="badge-detail-status ' + (earned?'earned':'locked') + '">' + (earned ? 'Unlocked!' : 'Locked') + '</div>' +
+    '</div>';
+  document.body.appendChild(ov);
 }
 
 // === BIBLE ===
@@ -1485,8 +1512,10 @@ function rankVoice(v) {
         if(n.includes('natural') || n.includes('neural') || n.includes('enhanced')) s += 80;
         if(n.includes('premium')) s += 75;
         // iOS male voices (Siri voices)
-        const iosMale = ['daniel','aaron','arthur','fred','gordon','lee','oliver','ralph','rishi','tom','albert','bruce','junior','liam','nicky'];
+        const iosMale = ['daniel','aaron','arthur','gordon','lee','oliver','ralph','rishi','tom','albert','bruce','junior','liam','nicky'];
         for(const name of iosMale) { if(n.includes(name)) { s += 55; break; } }
+        // Deprioritize Fred - basic robotic voice
+        if(n === 'fred' || n.startsWith('fred ')) s -= 40;
         // Android/Samsung male voices
         if(n.includes('male') && !n.includes('female')) s += 50;
         // General male names
@@ -1513,17 +1542,34 @@ function loadVoices() {
     .sort((a,b) => b.score - a.score);
   
   if(availableVoices.length > 0) {
-    selectedVoice = availableVoices[0].voice;
-    console.log('Selected voice:', selectedVoice.name, '(score:', availableVoices[0].score, ')');
-    console.log('Top 5 voices:', availableVoices.slice(0,5).map(v => v.voice.name + ' (' + v.score + ')'));
+    // Restore saved voice preference
+    const savedVoiceName = localStorage.getItem('teensBibleVoice');
+    if(savedVoiceName) {
+      const found = availableVoices.findIndex(v => v.voice.name === savedVoiceName);
+      if(found >= 0) selectedVoice = availableVoices[found].voice;
+      else selectedVoice = availableVoices[0].voice;
+    } else {
+      selectedVoice = availableVoices[0].voice;
+    }
+    console.log('Selected voice:', selectedVoice.name);
   }
   
   // Populate voice selector in settings
   const sel = document.getElementById('voice-select');
   if(sel) {
+    const currentName = selectedVoice ? selectedVoice.name : '';
     sel.innerHTML = availableVoices.slice(0, 10).map((v, i) => 
-      '<option value="'+i+'"'+(i===0?' selected':'')+'>'+v.voice.name+'</option>'
+      '<option value="'+i+'"'+(v.voice.name===currentName?' selected':'')+'>'+v.voice.name+'</option>'
     ).join('');
+  }
+}
+
+function changeVoice(idx) {
+  const v = availableVoices[parseInt(idx)];
+  if(v) {
+    selectedVoice = v.voice;
+    localStorage.setItem('teensBibleVoice', v.voice.name);
+    showXpToast('Voice: ' + v.voice.name);
   }
 }
 
@@ -1678,9 +1724,10 @@ function showXpToast(text) {
 // === AI CHAT (Gemini) ===
 const BIBLE_SYSTEM_PROMPT = `You are Bible AI, a friendly and knowledgeable Bible teacher for teenage boys in middle school. 
 Your style: casual, engaging, like a cool youth pastor. Use simple English. 
-Always reference specific Bible verses when answering. Keep answers concise (2-3 paragraphs max).
+Always reference specific Bible verses when answering. Keep answers concise (2-3 paragraphs max) but ALWAYS complete your response fully - never stop mid-sentence.
 If asked something not related to the Bible or Christianity, gently redirect to Bible topics.
-You know the entire New Testament (27 books) especially well, including the Gospels, Acts, Paul's letters, General letters, and Revelation.`;
+You know the entire New Testament (27 books) especially well, including the Gospels, Acts, Paul's letters, General letters, and Revelation.
+Note: The Bible text in this app is a modern retelling for teens (MZ translation style), not a traditional summary.`;
 
 let chatHistory = [];
 
@@ -1724,7 +1771,7 @@ async function sendChat() {
   const reqBody = JSON.stringify({
     system_instruction: {parts: [{text: BIBLE_SYSTEM_PROMPT}]},
     contents: chatHistory,
-    generationConfig: {temperature: 0.7, maxOutputTokens: 500},
+    generationConfig: {temperature: 0.7, maxOutputTokens: 2048},
     safetySettings: [
       {category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},
       {category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},
@@ -2400,7 +2447,7 @@ renderBible();
     {
       icon: '📖',
       title: 'WELCOME TO TEENS BIBLE!',
-      desc: 'Your journey through the Gospels starts here. Swipe through to learn how to get the most out of this app!',
+      desc: 'Your journey through the New Testament starts here! Each chapter is a <b>modern retelling</b> written for teens. Swipe through to learn how to get the most out of this app!',
       color: '#FFD700'
     },
     {
