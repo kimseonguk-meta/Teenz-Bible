@@ -856,6 +856,65 @@ body {
 .reaction-btn.selected { border-color:#FFD700; background:rgba(255,214,0,0.12); transform:scale(1.1); box-shadow:0 0 12px rgba(255,214,0,0.2); }
 .reaction-btn .reaction-count { position:absolute; top:-6px; right:-4px; background:#FF6B6B; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px; font-family:'Comic Neue',cursive; }
 
+/* === BOOKMARK === */
+.bookmark-btn { width:40px; height:40px; border-radius:10px; border:1px solid rgba(255,214,0,0.3); background:rgba(255,214,0,0.05); color:#6880a8; font-size:20px; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; }
+.bookmark-btn:hover { border-color:rgba(255,214,0,0.5); background:rgba(255,214,0,0.1); }
+.bookmark-btn.bookmarked { color:#FFD700; background:rgba(255,214,0,0.15); border-color:#FFD700; animation:bookmarkPop 0.4s ease; }
+@keyframes bookmarkPop { 0%{transform:scale(1)} 50%{transform:scale(1.3)} 100%{transform:scale(1)} }
+.bookmarks-section { margin-top:8px; }
+.bookmark-item { display:flex; align-items:center; gap:10px; padding:12px 14px; margin-bottom:8px; background:linear-gradient(135deg, rgba(255,214,0,0.06), rgba(255,107,107,0.04)); border:1px solid rgba(255,214,0,0.15); border-radius:12px; cursor:pointer; transition:all 0.2s; }
+.bookmark-item:hover { border-color:rgba(255,214,0,0.35); transform:translateX(4px); }
+.bookmark-item .bm-icon { font-size:20px; }
+.bookmark-item .bm-info { flex:1; }
+.bookmark-item .bm-title { font-family:'Bangers',cursive; font-size:14px; color:#FFD700; }
+.bookmark-item .bm-sub { font-size:11px; color:#6880a8; margin-top:2px; }
+.bookmark-item .bm-remove { color:#FF6B6B; font-size:16px; cursor:pointer; padding:4px 8px; border-radius:8px; transition:all 0.2s; }
+.bookmark-item .bm-remove:hover { background:rgba(255,107,107,0.15); }
+
+/* === HIGHLIGHT === */
+.highlight-toolbar { position:fixed; z-index:10005; background:linear-gradient(160deg, #1a2a4a, #152040); border:1px solid rgba(65,110,160,0.4); border-radius:14px; padding:8px 10px; display:flex; gap:6px; align-items:center; box-shadow:0 8px 32px rgba(0,0,0,0.5); animation:fadeIn 0.2s; }
+.highlight-toolbar::after { content:''; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); width:12px; height:12px; background:#1a2a4a; border-right:1px solid rgba(65,110,160,0.4); border-bottom:1px solid rgba(65,110,160,0.4); transform:translateX(-50%) rotate(45deg); }
+.hl-color-btn { width:28px; height:28px; border-radius:50%; border:2px solid transparent; cursor:pointer; transition:all 0.2s; }
+.hl-color-btn:hover { transform:scale(1.2); }
+.hl-color-btn.active { border-color:white; box-shadow:0 0 8px rgba(255,255,255,0.3); }
+.hl-color-btn.yellow { background:#fbbf24; }
+.hl-color-btn.green { background:#4ade80; }
+.hl-color-btn.blue { background:#60a5fa; }
+.hl-color-btn.pink { background:#f472b6; }
+.hl-color-btn.red { background:#f87171; }
+.hl-erase-btn { width:28px; height:28px; border-radius:50%; border:1px solid rgba(255,107,107,0.4); background:rgba(255,107,107,0.1); color:#FF6B6B; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.hl-erase-btn:hover { background:rgba(255,107,107,0.25); }
+mark.user-highlight { border-radius:3px; padding:1px 2px; cursor:pointer; transition:background 0.2s; }
+mark.user-highlight.hl-yellow { background:rgba(251,191,36,0.35); color:inherit; }
+mark.user-highlight.hl-green { background:rgba(74,222,128,0.3); color:inherit; }
+mark.user-highlight.hl-blue { background:rgba(96,165,250,0.3); color:inherit; }
+mark.user-highlight.hl-pink { background:rgba(244,114,182,0.3); color:inherit; }
+mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
+.reader-body.light-mode mark.user-highlight.hl-yellow { background:rgba(251,191,36,0.45); }
+.reader-body.light-mode mark.user-highlight.hl-green { background:rgba(74,222,128,0.4); }
+.reader-body.light-mode mark.user-highlight.hl-blue { background:rgba(96,165,250,0.4); }
+.reader-body.light-mode mark.user-highlight.hl-pink { background:rgba(244,114,182,0.4); }
+.reader-body.light-mode mark.user-highlight.hl-red { background:rgba(248,113,113,0.4); }
+.reader-body.sepia-mode mark.user-highlight.hl-yellow { background:rgba(251,191,36,0.4); }
+.reader-body.sepia-mode mark.user-highlight.hl-green { background:rgba(74,222,128,0.35); }
+.reader-body.sepia-mode mark.user-highlight.hl-blue { background:rgba(96,165,250,0.35); }
+.reader-body.sepia-mode mark.user-highlight.hl-pink { background:rgba(244,114,182,0.35); }
+.reader-body.sepia-mode mark.user-highlight.hl-red { background:rgba(248,113,113,0.35); }
+.highlight-item { padding:12px 14px; margin-bottom:8px; border-radius:12px; cursor:pointer; transition:all 0.2s; position:relative; }
+.highlight-item:hover { transform:translateX(4px); }
+.highlight-item.hl-yellow { background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); }
+.highlight-item.hl-green { background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.2); }
+.highlight-item.hl-blue { background:rgba(96,165,250,0.08); border:1px solid rgba(96,165,250,0.2); }
+.highlight-item.hl-pink { background:rgba(244,114,182,0.08); border:1px solid rgba(244,114,182,0.2); }
+.highlight-item.hl-red { background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); }
+.highlight-item .hl-text { font-size:13px; color:#d8dce8; line-height:1.5; font-style:italic; margin-bottom:4px; }
+.highlight-item .hl-source { font-size:11px; color:#6880a8; }
+.saved-section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; margin-top:16px; }
+.saved-section-title { font-family:'Luckiest Guy',cursive; font-size:16px; }
+.saved-tab-btns { display:flex; gap:6px; }
+.saved-tab-btn { padding:6px 14px; border-radius:20px; border:1px solid rgba(65,110,160,0.3); background:rgba(20,35,60,0.5); color:#6880a8; font-size:12px; font-family:'Comic Neue',cursive; cursor:pointer; transition:all 0.2s; }
+.saved-tab-btn.active { border-color:#FFD700; color:#FFD700; background:rgba(255,214,0,0.1); }
+
 </style>
 </head>
 <body>
@@ -879,6 +938,7 @@ body {
     </div>
     <div id="continue-section"></div>
     <div id="quiz-stats-card" style="display:none"></div>
+    <div id="saved-items-section"></div>
     <div class="section-title">🏆 Badges</div>
     <div class="badges" id="badges-row"></div>
   </div>
@@ -1093,6 +1153,9 @@ function renderHome() {
     const earned = state.badges.includes(b.id);
     return '<div class="badge '+(earned?'earned':'locked')+'" onclick="showBadgeDetail(\''+b.id+'\')" title="'+b.name+': '+b.desc+'">'+b.icon+'</div>';
   }).join('');
+  
+  // Render bookmarks & highlights
+  renderSavedItems();
 }
 
 // === BADGE DETAIL POPUP ===
@@ -1111,6 +1174,279 @@ function showBadgeDetail(badgeId) {
     '</div>';
   document.body.appendChild(ov);
 }
+
+// === BOOKMARK & HIGHLIGHT SYSTEM ===
+
+// Bookmark functions
+function getBookmarks() {
+  return JSON.parse(localStorage.getItem('bibleBookmarks') || '[]');
+}
+
+function toggleBookmark(book, chNum) {
+  let bookmarks = getBookmarks();
+  const idx = bookmarks.findIndex(b => b.book === book && b.chapter === chNum);
+  if(idx >= 0) {
+    bookmarks.splice(idx, 1);
+  } else {
+    const ch = gospelData[book]?.find(c => c.num === chNum);
+    bookmarks.unshift({ book: book, chapter: chNum, title: ch ? ch.title : 'Chapter ' + chNum, date: new Date().toISOString() });
+  }
+  localStorage.setItem('bibleBookmarks', JSON.stringify(bookmarks));
+  // Update button UI
+  const btn = document.getElementById('bookmark-toggle');
+  if(btn) {
+    const isNowBookmarked = bookmarks.some(b => b.book === book && b.chapter === chNum);
+    btn.className = 'bookmark-btn' + (isNowBookmarked ? ' bookmarked' : '');
+    btn.textContent = isNowBookmarked ? '🔖' : '🏷️';
+  }
+  // Show toast
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:10005;background:linear-gradient(135deg,#1e3a5f,#162d4a);color:#FFD700;padding:10px 20px;border-radius:12px;font-family:Comic Neue,cursive;font-size:14px;border:1px solid rgba(255,214,0,0.3);box-shadow:0 4px 20px rgba(0,0,0,0.4);animation:fadeIn 0.3s;';
+  toast.textContent = idx >= 0 ? '🏷️ Bookmark removed' : '🔖 Bookmarked!';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
+// Highlight functions
+function getHighlights() {
+  return JSON.parse(localStorage.getItem('bibleHighlights') || '[]');
+}
+
+function saveHighlight(book, chNum, text, color, pIdx) {
+  let highlights = getHighlights();
+  // Check if same text already highlighted
+  const existing = highlights.findIndex(h => h.book === book && h.chapter === chNum && h.text === text);
+  if(existing >= 0) {
+    highlights[existing].color = color;
+  } else {
+    highlights.unshift({ book: book, chapter: chNum, text: text, color: color, pIdx: pIdx, date: new Date().toISOString() });
+  }
+  localStorage.setItem('bibleHighlights', JSON.stringify(highlights));
+}
+
+function removeHighlight(book, chNum, text) {
+  let highlights = getHighlights();
+  highlights = highlights.filter(h => !(h.book === book && h.chapter === chNum && h.text === text));
+  localStorage.setItem('bibleHighlights', JSON.stringify(highlights));
+}
+
+// Apply saved highlights to reader body
+function applyHighlights(book, chNum) {
+  const highlights = getHighlights().filter(h => h.book === book && h.chapter === chNum);
+  if(!highlights.length) return;
+  const rb = document.getElementById('reader-body');
+  if(!rb) return;
+  const paragraphs = rb.querySelectorAll('p');
+  highlights.forEach(hl => {
+    paragraphs.forEach(p => {
+      if(p.textContent.includes(hl.text)) {
+        const escaped = hl.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // Only highlight if not already highlighted
+        if(!p.innerHTML.includes('user-highlight') || !p.innerHTML.includes(hl.text)) {
+          p.innerHTML = p.innerHTML.replace(hl.text, '<mark class="user-highlight hl-'+hl.color+'" data-hl-text="'+hl.text.replace(/"/g,'&quot;')+'" onclick="onHighlightClick(event)">'+hl.text+'</mark>');
+        }
+      }
+    });
+  });
+}
+
+// Show highlight toolbar on text selection
+let hlToolbar = null;
+function setupHighlightListener(book, chNum) {
+  const rb = document.getElementById('reader-body');
+  if(!rb) return;
+  
+  rb.addEventListener('mouseup', handleSelection);
+  rb.addEventListener('touchend', function() { setTimeout(handleSelection, 200); });
+  
+  function handleSelection() {
+    const sel = window.getSelection();
+    if(!sel || sel.isCollapsed || !sel.toString().trim()) {
+      if(hlToolbar) { hlToolbar.remove(); hlToolbar = null; }
+      return;
+    }
+    const text = sel.toString().trim();
+    if(text.length < 3 || text.length > 500) return;
+    
+    const range = sel.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+    
+    // Find paragraph index
+    let pIdx = 0;
+    let node = range.startContainer;
+    while(node && node.tagName !== 'P') node = node.parentElement;
+    if(node && node.dataset.pidx) pIdx = parseInt(node.dataset.pidx);
+    
+    showHighlightToolbar(rect, text, book, chNum, pIdx);
+  }
+}
+
+function showHighlightToolbar(rect, text, book, chNum, pIdx) {
+  if(hlToolbar) hlToolbar.remove();
+  hlToolbar = document.createElement('div');
+  hlToolbar.className = 'highlight-toolbar';
+  
+  const colors = ['yellow','green','blue','pink','red'];
+  const colorMap = {yellow:'#fbbf24',green:'#4ade80',blue:'#60a5fa',pink:'#f472b6',red:'#f87171'};
+  
+  colors.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'hl-color-btn ' + c;
+    btn.style.background = colorMap[c];
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      saveHighlight(book, chNum, text, c, pIdx);
+      // Apply highlight to text
+      const sel = window.getSelection();
+      if(sel.rangeCount) {
+        const range = sel.getRangeAt(0);
+        const mark = document.createElement('mark');
+        mark.className = 'user-highlight hl-' + c;
+        mark.dataset.hlText = text;
+        mark.onclick = function(ev) { onHighlightClick(ev); };
+        try {
+          range.surroundContents(mark);
+        } catch(ex) {
+          // If surroundContents fails (cross-element selection), do manual replace
+          let node = range.startContainer;
+          while(node && node.tagName !== 'P') node = node.parentElement;
+          if(node) {
+            node.innerHTML = node.innerHTML.replace(text, '<mark class="user-highlight hl-'+c+'" data-hl-text="'+text.replace(/"/g,'&quot;')+'" onclick="onHighlightClick(event)">'+text+'</mark>');
+          }
+        }
+      }
+      sel.removeAllRanges();
+      if(hlToolbar) { hlToolbar.remove(); hlToolbar = null; }
+      // Toast
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:10005;background:linear-gradient(135deg,#1e3a5f,#162d4a);color:'+colorMap[c]+';padding:10px 20px;border-radius:12px;font-family:Comic Neue,cursive;font-size:14px;border:1px solid '+colorMap[c]+'40;box-shadow:0 4px 20px rgba(0,0,0,0.4);animation:fadeIn 0.3s;';
+      toast.textContent = '✨ Highlighted!';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 1500);
+    };
+    hlToolbar.appendChild(btn);
+  });
+  
+  // Erase button
+  const eraseBtn = document.createElement('button');
+  eraseBtn.className = 'hl-erase-btn';
+  eraseBtn.textContent = '✕';
+  eraseBtn.title = 'Remove highlight';
+  eraseBtn.onclick = function(e) {
+    e.stopPropagation();
+    removeHighlight(book, chNum, text);
+    // Remove mark from DOM
+    document.querySelectorAll('mark.user-highlight').forEach(m => {
+      if(m.dataset.hlText === text) {
+        m.replaceWith(document.createTextNode(m.textContent));
+      }
+    });
+    window.getSelection().removeAllRanges();
+    if(hlToolbar) { hlToolbar.remove(); hlToolbar = null; }
+  };
+  hlToolbar.appendChild(eraseBtn);
+  
+  // Position toolbar above selection
+  const x = rect.left + rect.width / 2 - 90;
+  const y = rect.top - 50 + window.scrollY;
+  hlToolbar.style.left = Math.max(10, Math.min(x, window.innerWidth - 200)) + 'px';
+  hlToolbar.style.top = Math.max(10, y) + 'px';
+  document.body.appendChild(hlToolbar);
+}
+
+function onHighlightClick(event) {
+  const mark = event.target;
+  if(!mark.classList.contains('user-highlight')) return;
+  const text = mark.dataset.hlText;
+  const rect = mark.getBoundingClientRect();
+  // Show mini toolbar to change color or remove
+  const book = window._currentBook;
+  const chNum = window._currentChNum;
+  showHighlightToolbar(rect, text, book, chNum, 0);
+}
+
+// Render saved items (bookmarks + highlights) on Home screen
+function renderSavedItems() {
+  const container = document.getElementById('saved-items-section');
+  if(!container) return;
+  
+  const bookmarks = getBookmarks();
+  const highlights = getHighlights();
+  
+  if(!bookmarks.length && !highlights.length) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  const activeTab = container.dataset.activeTab || 'bookmarks';
+  
+  let html = '<div class="saved-section-header">';
+  html += '<div class="saved-section-title" style="color:#FFD700;">📌 SAVED</div>';
+  html += '<div class="saved-tab-btns">';
+  html += '<button class="saved-tab-btn'+(activeTab==='bookmarks'?' active':'')+'" onclick="switchSavedTab(\'bookmarks\')">🔖 Bookmarks ('+bookmarks.length+')</button>';
+  html += '<button class="saved-tab-btn'+(activeTab==='highlights'?' active':'')+'" onclick="switchSavedTab(\'highlights\')">✨ Highlights ('+highlights.length+')</button>';
+  html += '</div></div>';
+  
+  if(activeTab === 'bookmarks') {
+    if(bookmarks.length === 0) {
+      html += '<div style="text-align:center;color:#6880a8;font-size:13px;padding:16px;">No bookmarks yet. Tap 🏷️ while reading to bookmark a chapter!</div>';
+    } else {
+      bookmarks.slice(0, 5).forEach((bm, i) => {
+        const m = bookMeta[bm.book] || {icon:'📖'};
+        html += '<div class="bookmark-item" onclick="showChapter(\''+bm.book.replace(/'/g,"\\\\'")+'\', '+(bm.chapter-1)+')">';
+        html += '<div class="bm-icon">'+m.icon+'</div>';
+        html += '<div class="bm-info"><div class="bm-title">'+bm.book+' — Ch.'+bm.chapter+'</div><div class="bm-sub">'+bm.title+'</div></div>';
+        html += '<div class="bm-remove" onclick="event.stopPropagation();removeBookmark('+i+')" title="Remove">✕</div>';
+        html += '</div>';
+      });
+      if(bookmarks.length > 5) {
+        html += '<div style="text-align:center;color:#6880a8;font-size:12px;padding:8px;">+' + (bookmarks.length - 5) + ' more bookmarks</div>';
+      }
+    }
+  } else {
+    if(highlights.length === 0) {
+      html += '<div style="text-align:center;color:#6880a8;font-size:13px;padding:16px;">No highlights yet. Select text while reading to highlight!</div>';
+    } else {
+      highlights.slice(0, 5).forEach((hl, i) => {
+        const preview = hl.text.length > 60 ? hl.text.substring(0, 60) + '...' : hl.text;
+        html += '<div class="highlight-item hl-'+hl.color+'" onclick="showChapter(\''+hl.book.replace(/'/g,"\\\\'")+'\', '+(hl.chapter-1)+')">';
+        html += '<div class="hl-text">"'+preview+'"</div>';
+        html += '<div class="hl-source">'+hl.book+' Ch.'+hl.chapter+'</div>';
+        html += '</div>';
+      });
+      if(highlights.length > 5) {
+        html += '<div style="text-align:center;color:#6880a8;font-size:12px;padding:8px;">+' + (highlights.length - 5) + ' more highlights</div>';
+      }
+    }
+  }
+  
+  container.innerHTML = html;
+}
+
+function switchSavedTab(tab) {
+  const container = document.getElementById('saved-items-section');
+  if(container) container.dataset.activeTab = tab;
+  renderSavedItems();
+}
+
+function removeBookmark(idx) {
+  let bookmarks = getBookmarks();
+  bookmarks.splice(idx, 1);
+  localStorage.setItem('bibleBookmarks', JSON.stringify(bookmarks));
+  renderSavedItems();
+}
+
+// Store current book/chapter for highlight click handler
+window._currentBook = '';
+window._currentChNum = 0;
+
+// Close highlight toolbar when clicking elsewhere
+document.addEventListener('click', function(e) {
+  if(hlToolbar && !hlToolbar.contains(e.target) && !e.target.classList.contains('user-highlight')) {
+    hlToolbar.remove();
+    hlToolbar = null;
+  }
+});
 
 // === BIBLE ===
 function renderBible() {
@@ -1212,7 +1548,8 @@ function showChapter(book, idx) {
   if(typeof cloudTtsStop === 'function') cloudTtsStop();
   
   const detail = document.getElementById('chapter-detail');
-  let html = '<div class="reader-header"><div class="reader-title">'+m.icon+' '+book+' '+ch.num+'</div></div>';
+  const isBookmarked = getBookmarks().some(b => b.book === book && b.chapter === ch.num);
+  let html = '<div class="reader-header" style="display:flex;justify-content:space-between;align-items:center"><div class="reader-title">'+m.icon+' '+book+' '+ch.num+'</div><button class="bookmark-btn'+(isBookmarked?' bookmarked':'')+'" id="bookmark-toggle" onclick="toggleBookmark(\''+book.replace(/'/g,"\\\\'")+'\',' +ch.num+')" title="Bookmark this chapter">'+(isBookmarked?'🔖':'🏷️')+'</button></div>';
   html += '<h3 style="color:'+m.color+';font-family:\'Bangers\',cursive;font-size:18px;margin-bottom:8px">'+ch.title+'</h3>';
   
   // Audio controls
@@ -1245,9 +1582,9 @@ function showChapter(book, idx) {
   const keyIdx = findKeyVerse(ch.paragraphs);
   ch.paragraphs.forEach((p, pi) => {
     if(pi === keyIdx) {
-      html += '<p class="key-verse">'+p+'</p>';
+      html += '<p class="key-verse" data-pidx="'+pi+'">'+p+'</p>';
     } else {
-      html += '<p>'+p+'</p>';
+      html += '<p data-pidx="'+pi+'">'+p+'</p>';
     }
   });
   html += '</div>';
@@ -1293,6 +1630,10 @@ function showChapter(book, idx) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-chapter').classList.add('active');
   
+  // Store current book/chapter for highlight system
+  window._currentBook = book;
+  window._currentChNum = ch.num;
+  
   // B4: Setup scroll progress tracking
   const rb = document.getElementById('reader-body');
   if(rb) {
@@ -1302,6 +1643,10 @@ function showChapter(book, idx) {
       if(fill) fill.style.width = pct + '%';
     });
   }
+  
+  // Apply saved highlights and setup highlight listener
+  applyHighlights(book, ch.num);
+  setupHighlightListener(book, ch.num);
   
   // Update last read
   state.lastRead = {book:book, chapter:ch.num};
