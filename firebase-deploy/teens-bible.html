@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v11';
+      const CACHE = 'teens-bible-v12';
       const URLS = ['./', './index.html'];
       self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(URLS))));
       self.addEventListener('fetch', e => {
@@ -2525,7 +2525,7 @@ async function sendChat() {
     ]
   });
   
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-pro-exp-03-25'];
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-pro'];
   let data = null;
   let lastError = '';
   
