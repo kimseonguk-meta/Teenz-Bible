@@ -23,11 +23,69 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v13';
-      const URLS = ['./', './index.html'];
-      self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(URLS))));
+      const CACHE = 'teens-bible-v14';
+      const PRECACHE_URLS = ['./', './index.html'];
+      
+      self.addEventListener('install', e => {
+        self.skipWaiting();
+        e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE_URLS)));
+      });
+      
+      self.addEventListener('activate', e => {
+        e.waitUntil(
+          caches.keys().then(keys => Promise.all(
+            keys.filter(k => k !== CACHE).map(k => caches.delete(k))
+          )).then(() => self.clients.claim())
+        );
+      });
+      
       self.addEventListener('fetch', e => {
-        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match('./index.html'))));
+        const url = new URL(e.request.url);
+        if(e.request.method !== 'GET') return;
+        if(url.hostname === 'generativelanguage.googleapis.com') return;
+        if(url.hostname === 'texttospeech.googleapis.com') return;
+        
+        if(url.origin === self.location.origin) {
+          e.respondWith(
+            caches.match(e.request).then(cached => {
+              const networkFetch = fetch(e.request).then(response => {
+                if(response && response.status === 200) {
+                  const clone = response.clone();
+                  caches.open(CACHE).then(c => c.put(e.request, clone));
+                }
+                return response;
+              }).catch(() => cached || caches.match('./index.html'));
+              return cached || networkFetch;
+            })
+          );
+          return;
+        }
+        
+        if(url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com') || url.hostname.includes('unsplash.com') || url.hostname.includes('cdn')) {
+          e.respondWith(
+            caches.match(e.request).then(cached => {
+              if(cached) return cached;
+              return fetch(e.request).then(response => {
+                if(response && response.status === 200) {
+                  const clone = response.clone();
+                  caches.open(CACHE).then(c => c.put(e.request, clone));
+                }
+                return response;
+              }).catch(() => new Response('', {status: 408}));
+            })
+          );
+          return;
+        }
+        
+        e.respondWith(
+          fetch(e.request).then(response => {
+            if(response && response.status === 200) {
+              const clone = response.clone();
+              caches.open(CACHE).then(c => c.put(e.request, clone));
+            }
+            return response;
+          }).catch(() => caches.match(e.request))
+        );
       });
     `;
     const blob = new Blob([swCode], {type: 'application/javascript'});
@@ -1040,6 +1098,9 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <span class="quick-q" onclick="askQ(this.textContent)">Who were the disciples?</span>
       <span class="quick-q" onclick="askQ(this.textContent)">What is grace?</span>
       <span class="quick-q" onclick="askQ(this.textContent)">What is Revelation about?</span>
+      <span class="quick-q" onclick="askQ(this.textContent)" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;">예수님이 누구야?</span>
+      <span class="quick-q" onclick="askQ(this.textContent)" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;">은혜가 뭐야?</span>
+      <span class="quick-q" onclick="askQ(this.textContent)" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;">요한계시록이 뭔 내용이야?</span>
     </div>
     <div class="chat-messages" id="chat-msgs">
       <div class="chat-msg bot">Hey! 👋 Got questions about the Bible? I'm here to help. Ask me anything!</div>
@@ -2457,12 +2518,18 @@ function showXpToast(text) {
 }
 
 // === AI CHAT (Gemini) ===
-const BIBLE_SYSTEM_PROMPT = `You are Bible AI, a friendly and knowledgeable Bible teacher for teenage boys in middle school. 
-Your style: casual, engaging, like a cool youth pastor. Use simple English. 
+const BIBLE_SYSTEM_PROMPT = `You are Bible AI, a friendly and knowledgeable Bible teacher for teenage boys in middle school.
+
+LANGUAGE RULE (CRITICAL):
+- If the user writes in Korean, you MUST respond entirely in Korean. Use casual, teen-friendly Korean (중학교 남자아이 말투). Example tone: "야 이거 진짜 대박인 게...", "솔직히 이건 좀 충격적이지 않냐?"
+- If the user writes in English, respond in English.
+- NEVER mix languages in a single response.
+
+Your style: casual, engaging, like a cool youth pastor. Use simple language.
 Always reference specific Bible verses when answering. Keep answers concise (2-3 paragraphs max) but ALWAYS complete your response fully - never stop mid-sentence.
 If asked something not related to the Bible or Christianity, gently redirect to Bible topics.
 You know the entire New Testament (27 books) especially well, including the Gospels, Acts, Paul's letters, General letters, and Revelation.
-Note: The Bible text in this app is a modern retelling for teens (MZ translation style), not a traditional summary.`;
+Note: The Bible text in this app is a modern retelling for teens (MZ translation style / 더메시지 성경 기반 10대 말투 번역), not a traditional summary.`;
 
 let chatHistory = [];
 
