@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v14';
+      const CACHE = 'teens-bible-v15';
       const PRECACHE_URLS = ['./', './index.html'];
       
       self.addEventListener('install', e => {
@@ -472,6 +472,8 @@ body {
 .toggle.on { background: #22D3EE; box-shadow: 0 0 10px rgba(34,211,238,0.4); }
 .toggle::after { content: ''; width: 22px; height: 22px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: 0.3s; }
 .toggle.on::after { left: 25px; }
+.day-chip { display:inline-block; padding:4px 8px; border-radius:12px; font-size:11px; font-family:'Comic Neue',cursive; font-weight:bold; cursor:pointer; transition:all 0.3s; background:rgba(40,55,80,0.6); color:#8899aa; border:1px solid rgba(65,105,155,0.2); }
+.day-chip.on { background:linear-gradient(135deg,#22D3EE,#6366F1); color:#fff; border-color:transparent; box-shadow:0 0 8px rgba(34,211,238,0.3); }
 
 /* === XP TOAST === */
 .xp-toast {
@@ -1121,6 +1123,22 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     <div class="setting-row">
       <div><div class="setting-label">Reminder Time</div><div class="setting-sub">When to remind you</div></div>
       <input type="time" id="reminder-time" value="19:00" onchange="saveReminderTime(this.value)" style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px;border-radius:8px;font-family:'Comic Neue',cursive;">
+    </div>
+    <div class="setting-row">
+      <div><div class="setting-label">Reminder Days</div><div class="setting-sub">Which days to remind</div></div>
+      <div id="reminder-days" style="display:flex;gap:4px;flex-wrap:wrap;">
+        <span class="day-chip on" data-day="0" onclick="toggleDay(this)">Sun</span>
+        <span class="day-chip on" data-day="1" onclick="toggleDay(this)">Mon</span>
+        <span class="day-chip on" data-day="2" onclick="toggleDay(this)">Tue</span>
+        <span class="day-chip on" data-day="3" onclick="toggleDay(this)">Wed</span>
+        <span class="day-chip on" data-day="4" onclick="toggleDay(this)">Thu</span>
+        <span class="day-chip on" data-day="5" onclick="toggleDay(this)">Fri</span>
+        <span class="day-chip on" data-day="6" onclick="toggleDay(this)">Sat</span>
+      </div>
+    </div>
+    <div class="setting-row" id="test-notif-row" style="display:none;">
+      <div><div class="setting-label">Test Notification</div><div class="setting-sub">Send a test reminder now</div></div>
+      <button onclick="sendDailyNotification();showToast('\ud83d\udd14 Test notification sent!')" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:'Comic Neue',cursive;cursor:pointer;font-weight:bold;">TEST</button>
     </div>
     <div class="setting-row">
       <div><div class="setting-label">Audio Speed</div><div class="setting-sub">Default listening speed</div></div>
@@ -2620,7 +2638,7 @@ async function sendChat() {
 
 // === SETTINGS ===
 // === DAILY READING NOTIFICATION ===
-const NOTIF_MESSAGES = [
+const NOTIF_MESSAGES_EN = [
   {title:'\ud83d\udcd6 Time to Read!', body:'Your Bible adventure awaits! Open up and earn some XP today.'},
   {title:'\u26a1 Don\'t Break Your Streak!', body:'Keep your reading streak alive. Just one chapter today!'},
   {title:'\ud83d\udd25 Bible Time!', body:'The New Testament has some wild stories waiting for you.'},
@@ -2629,6 +2647,19 @@ const NOTIF_MESSAGES = [
   {title:'\ud83d\udcaa Keep Going!', body:'Champions read daily. Open up and keep your streak going!'},
   {title:'\ud83c\udf1f Hey Champion!', body:'A new chapter is waiting. Earn XP and unlock badges!'}
 ];
+const NOTIF_MESSAGES_KO = [
+  {title:'\ud83d\udcd6 \uc131\uacbd \uc77d\uc744 \uc2dc\uac04!', body:'\uc624\ub298\ub3c4 \uc131\uacbd \ubaa8\ud5d8\uc774 \uae30\ub2e4\ub9ac\uace0 \uc788\uc5b4! XP \ubcf4\ub108\uc2a4 \ubc1b\uc73c\ub7ec \uac00\uc790!'},
+  {title:'\u26a1 \uc2a4\ud2b8\ub9ad \ub04a\uc9c0 \ub9c8!', body:'\uc5f0\uc18d \uc77d\uae30 \uc2a4\ud2b8\ub9ad \uc720\uc9c0\ud558\uc790! \ub531 \ud55c \ucc55\ud130\ub9cc!'},
+  {title:'\ud83d\udd25 \uc131\uacbd \ud0c0\uc784!', body:'\uc2e0\uc57d\uc131\uacbd\uc5d0 \ub808\uc804\ub4dc \uc774\uc57c\uae30\ub4e4\uc774 \uae30\ub2e4\ub9ac\uace0 \uc788\uc5b4!'},
+  {title:'\ud83c\udfae \ub808\ubca8 \uc5c5!', body:'\ucc55\ud130 \uc77d\uace0 \ud034\uc988 \ub9de\ud600\uc11c XP \ud3ed\ud0c4 \ubc1b\uc790!'},
+  {title:'\ud83e\udde0 \ub3c4\uc804!', body:'\ucc55\ud130 \uc77d\uace0 \ud034\uc988 \ub9cc\uc810 \ubc1b\uc744 \uc218 \uc788\uc744\uae4c? \ud55c\ubc88 \ud574\ubcf4\uc790!'},
+  {title:'\ud83d\udcaa \uacc4\uc18d \uac00\uc790!', body:'\ub9e4\uc77c \uc77d\ub294 \uc0ac\ub78c\uc774 \uc9c4\uc9dc \ucc54\ud53c\uc5b8\uc774\uc9c0!'},
+  {title:'\ud83c\udf1f \uc57c \ucc54\ud53c\uc5b8!', body:'\uc0c8\ub85c\uc6b4 \ucc55\ud130\uac00 \uae30\ub2e4\ub9ac\uace0 \uc788\uc5b4. \ubc30\uc9c0 \uc5b8\ub77d\ud558\ub7ec \uac00\uc790!'}
+];
+function getNotifMessages() {
+  const lang = localStorage.getItem('readerLang') || 'en';
+  return lang === 'ko' ? NOTIF_MESSAGES_KO : NOTIF_MESSAGES_EN;
+}
 
 let notifTimer = null;
 
@@ -2637,7 +2668,6 @@ function toggleNotif() {
   const isOn = t.classList.contains('on');
   
   if(!isOn) {
-    // Turning ON - request permission
     if(!('Notification' in window)) {
       showToast('\u274c Notifications not supported on this browser');
       return;
@@ -2648,17 +2678,18 @@ function toggleNotif() {
         localStorage.setItem('notifEnabled', 'true');
         scheduleNotification();
         document.getElementById('notif-status').textContent = '\u2705 Notifications enabled';
+        document.getElementById('test-notif-row').style.display = 'flex';
         showToast('\ud83d\udd14 Daily reminders ON!');
       } else {
         showToast('\u274c Please allow notifications in your browser settings');
       }
     });
   } else {
-    // Turning OFF
     t.classList.remove('on');
     localStorage.setItem('notifEnabled', 'false');
     if(notifTimer) { clearTimeout(notifTimer); notifTimer = null; }
     document.getElementById('notif-status').textContent = 'Get notified to read';
+    document.getElementById('test-notif-row').style.display = 'none';
     showToast('\ud83d\udd15 Daily reminders OFF');
   }
 }
@@ -2679,21 +2710,70 @@ function scheduleNotification() {
   let target = new Date();
   target.setHours(h, m, 0, 0);
   if(target <= now) target.setDate(target.getDate() + 1);
+  
+  const enabledDays = JSON.parse(localStorage.getItem('reminderDays') || '[0,1,2,3,4,5,6]').map(Number);
+  let attempts = 0;
+  while(!enabledDays.includes(target.getDay()) && attempts < 7) {
+    target.setDate(target.getDate() + 1);
+    attempts++;
+  }
+  if(attempts >= 7) return;
   const delay = target - now;
+  
+  updateReminderCountdown(delay);
   
   notifTimer = setTimeout(() => {
     sendDailyNotification();
-    // Schedule next day
     scheduleNotification();
   }, delay);
+  
+  registerSWNotification(time);
+}
+
+function updateReminderCountdown(delayMs) {
+  const hours = Math.floor(delayMs / 3600000);
+  const mins = Math.floor((delayMs % 3600000) / 60000);
+  const statusEl = document.getElementById('notif-status');
+  if(statusEl && localStorage.getItem('notifEnabled') === 'true') {
+    const time = localStorage.getItem('reminderTime') || '19:00';
+    statusEl.textContent = '\u2705 Next: ' + time + ' (in ' + hours + 'h ' + mins + 'm)';
+  }
+}
+
+function registerSWNotification(time) {
+  localStorage.setItem('swReminderTime', time);
+  localStorage.setItem('swReminderEnabled', 'true');
+  if('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.ready.then(reg => {
+      if('periodicSync' in reg) {
+        reg.periodicSync.register('daily-bible-reminder', {
+          minInterval: 24 * 60 * 60 * 1000
+        }).catch(() => {});
+      }
+    });
+  }
+}
+
+function toggleDay(el) {
+  el.classList.toggle('on');
+  const days = [];
+  document.querySelectorAll('#reminder-days .day-chip.on').forEach(c => days.push(c.dataset.day));
+  localStorage.setItem('reminderDays', JSON.stringify(days));
+  if(localStorage.getItem('notifEnabled') === 'true') {
+    scheduleNotification();
+  }
 }
 
 function sendDailyNotification() {
   if(Notification.permission !== 'granted') return;
-  const msg = NOTIF_MESSAGES[Math.floor(Math.random() * NOTIF_MESSAGES.length)];
+  const msgs = getNotifMessages();
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
   const streak = state.streak || 0;
   let body = msg.body;
-  if(streak > 0) body += ' (\ud83d\udd25 ' + streak + ' day streak!)';
+  if(streak > 0) {
+    const lang = localStorage.getItem('readerLang') || 'en';
+    body += lang === 'ko' ? ' (\ud83d\udd25 ' + streak + '\uc77c \uc5f0\uc18d!)' : ' (\ud83d\udd25 ' + streak + ' day streak!)';
+  }
   
   try {
     new Notification(msg.title, {
@@ -2704,7 +2784,6 @@ function sendDailyNotification() {
       renotify: true
     });
   } catch(e) {
-    // Fallback for mobile: use service worker notification
     if(navigator.serviceWorker && navigator.serviceWorker.controller) {
       navigator.serviceWorker.ready.then(reg => {
         reg.showNotification(msg.title, {
@@ -2728,7 +2807,18 @@ function sendDailyNotification() {
   if(enabled && Notification.permission === 'granted') {
     toggle.classList.add('on');
     document.getElementById('notif-status').textContent = '\u2705 Notifications enabled';
+    document.getElementById('test-notif-row').style.display = 'flex';
     scheduleNotification();
+  }
+  const savedDays = JSON.parse(localStorage.getItem('reminderDays') || 'null');
+  if(savedDays) {
+    document.querySelectorAll('#reminder-days .day-chip').forEach(c => {
+      if(savedDays.includes(Number(c.dataset.day)) || savedDays.includes(c.dataset.day)) {
+        c.classList.add('on');
+      } else {
+        c.classList.remove('on');
+      }
+    });
   }
 })();
 
