@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v36';
+      const CACHE = 'teens-bible-v37';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -108,7 +108,8 @@ if('serviceWorker' in navigator) {
    ============================================================ */
 
 /* === RESET & BASE === */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+input, textarea { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
 
 body {
   font-family: 'Comic Neue', cursive;
@@ -404,6 +405,7 @@ body {
 .reader-title { font-family: 'Luckiest Guy', cursive; font-size: 24px; color: #FF6B6B; text-shadow: 0 0 15px rgba(255,107,107,0.3); }
 .reader-body {
   padding: 24px 20px; line-height: 2.0; font-size: 17px; max-height: 60vh; overflow-y: auto;
+  -webkit-user-select: text; user-select: text; -webkit-touch-callout: default;
   background: linear-gradient(160deg, #1e3250 0%, #182a45 100%);
   border: 1px solid rgba(65, 110, 160, 0.32);
   color: #e2e8f0;
