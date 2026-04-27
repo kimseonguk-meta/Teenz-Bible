@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v44';
+      const CACHE = 'teens-bible-v42';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -1920,16 +1920,6 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <button class="map-tab" onclick="switchMapTab('jerusalem')" data-en="Jerusalem" data-ko="예루살렘">Jerusalem</button>
       <button class="map-tab" onclick="switchMapTab('galilee')" data-en="Galilee" data-ko="갈릴리">Galilee</button>
       <button class="map-tab" onclick="switchMapTab('paul')" data-en="Paul's Journeys" data-ko="바울의 여행">Paul's Journeys</button>
-    </div>
-    
-    <!-- Map Search Bar -->
-    <div id="map-search-container" style="margin-bottom:12px;position:relative;">
-      <input type="text" id="map-search-input" placeholder="Search locations or events..." 
-        style="width:100%;padding:10px 40px 10px 36px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#e0e0e0;font-size:14px;font-family:'Comic Neue',cursive;outline:none;box-sizing:border-box;"
-        oninput="handleMapSearch(this.value)" onfocus="this.style.borderColor='#FFD700'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
-      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;opacity:0.5;">🔍</span>
-      <button id="map-search-clear" onclick="clearMapSearch()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;font-size:18px;cursor:pointer;display:none;">✕</button>
-      <div id="map-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:300px;overflow-y:auto;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:12px;margin-top:4px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
     </div>
     
     <!-- Map Content -->
@@ -7165,69 +7155,65 @@ var mapLocationEvents = {
 };
 
 var eventImageMap = {
-  'Triumphal Entry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-triumphal-entry-WNShJMtxMh2ReDKcGuQfKz.webp',
-  'Cleansing the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-cleansing-temple-WYKePwzyLsMfnwUaDN9KBM.webp',
-  'The Last Supper': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-last-supper-F9xCayU9MadmEac2aUVAa6.webp',
-  'Crucifixion & Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Pentecost': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-pentecost-7iQ3fmHhWbHhQzJacGm6dT.webp',
-  'Birth of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Visit of the Magi': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-magi-visit-2522tuyK2LNprYtiWgQkDi.webp',
-  'Escape to Egypt': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Annunciation to Mary': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-annunciation-5vuja3T4ZAzUkxsxsgAgyP.webp',
-  'Jesus Grows Up': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-annunciation-5vuja3T4ZAzUkxsxsgAgyP.webp',
-  'Rejected in Hometown': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Calling the First Disciples': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-calling-disciples-jcRk2z7PyAJQTXHTjdyGH5.webp',
-  'Healing the Paralytic': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Centurion\'s Faith': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-sermon-mount-jYPapTk9WMuAzQTpn7aHNF.webp',
-  'Sermon on the Mount': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-sermon-mount-jYPapTk9WMuAzQTpn7aHNF.webp',
-  'Walking on Water': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
-  'Calming the Storm': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-calming-storm-mNB3QugvHBXfhDHpQD7DPe.webp',
-  'Feeding the 5,000': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
-  'Miraculous Catch of Fish': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-calling-disciples-jcRk2z7PyAJQTXHTjdyGH5.webp',
-  'Baptism of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'John\'s Ministry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Paul Under House Arrest': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
-  'Letter to the Romans': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Riot of the Silversmiths': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
-  'Paul\'s Farewell to Elders': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Letter to Ephesians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Paul\'s 18-Month Stay': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Love Chapter': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
-  'Mars Hill Sermon': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Debating Philosophers': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'First Called Christians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Missionary Journeys Begin': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Paul\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Escape in a Basket': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Jesus Teaches at the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-sermon-mount-jYPapTk9WMuAzQTpn7aHNF.webp',
-  'The Widow\'s Offering': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-sermon-mount-jYPapTk9WMuAzQTpn7aHNF.webp',
-  'Veil Torn in Two': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Olivet Discourse': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-sermon-mount-jYPapTk9WMuAzQTpn7aHNF.webp',
-  'The Ascension': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Jesus Prays in Agony': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
-  'Judas\'s Betrayal': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
   'The Crucifixion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
   'Darkness Over the Land': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Healing on the Sabbath': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Washing the Disciples\' Feet': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-washing-feet-GgTQiEdSMnyBZWM2tjGoFk.webp',
-  'Institution of Communion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-last-supper-F9xCayU9MadmEac2aUVAa6.webp',
-  'Coming of the Holy Spirit': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-pentecost-7iQ3fmHhWbHhQzJacGm6dT.webp',
-  'Healing a Blind Man': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Birth of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Walking on Water': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Calming the Storm': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Baptism of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Prison Earthquake': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
+  'Jesus Prays in Agony': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Judas\'s Betrayal': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'The Ascension': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Olivet Discourse': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Feeding the 5,000': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Healing a Blind Man': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Paul\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Escape in a Basket': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
   'Water Into Wine': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
   'Healing Official\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
-  'Post-Resurrection Appearance': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-calling-disciples-jcRk2z7PyAJQTXHTjdyGH5.webp',
-  'Mary Magdalene Freed': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-annunciation-5vuja3T4ZAzUkxsxsgAgyP.webp',
+  'Crucifixion & Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Veil Torn in Two': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Washing the Disciples\' Feet': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Institution of Communion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Coming of the Holy Spirit': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Healing on the Sabbath': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Post-Resurrection Appearance': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Mary Magdalene Freed': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
   'First Witness of Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Raising the Widow\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-raising-widow-son-2VhwXM4f5NLYxNdszeAMTx.webp',
-  'Commissioning of Paul & Barnabas': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Jerusalem Council': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
+  'Raising the Widow\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Commissioning of Paul & Barnabas': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Jerusalem Council': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
   'Confronting a Sorcerer': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Mistaken for Gods': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
+  'Mistaken for Gods': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
   'Stoned and Left for Dead': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
   'Lydia\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Prison Earthquake': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
-  'Paul Preaches in the Synagogue': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
-  'Letters About Jesus\' Return': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-paul-preaching-82wDwyirAyscf5udqPFCGc.webp',
+  'Paul Preaches in the Synagogue': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Letters About Jesus\' Return': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'The Widow\'s Offering': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Jesus Teaches at the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Triumphal Entry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Cleansing the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'The Last Supper': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Pentecost': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Annunciation to Mary': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Visit of the Magi': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Escape to Egypt': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Jesus Grows Up': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Calling the First Disciples': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Sermon on the Mount': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Healing the Paralytic': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Miraculous Catch of Fish': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Rejected in Hometown': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'First Called Christians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Missionary Journeys Begin': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Debating Philosophers': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Mars Hill Sermon': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Love Chapter': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
+  'Riot of the Silversmiths': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
+  'Letter to Ephesians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Paul Under House Arrest': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
+  'Letter to the Romans': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp'
 };
 
 
@@ -7269,188 +7255,30 @@ var locationBookMap = {
 function isLocationRead(locationName) {
   var books = locationBookMap[locationName];
   if (!books || books.length === 0) return false;
-  // Use the actual state.books data (teensBible localStorage)
-  var appState = null;
-  try { appState = JSON.parse(localStorage.getItem('teensBible') || 'null'); } catch(e) {}
-  if (!appState || !appState.books) return false;
+  var readChapters = JSON.parse(localStorage.getItem('readChapters') || '{}');
+  var readCount = 0;
   for (var i = 0; i < books.length; i++) {
-    var bookData = appState.books[books[i]];
-    if (bookData && bookData.read && bookData.read.length > 0) {
-      return true; // At least 1 related book has been started
+    if (readChapters[books[i]] && Object.keys(readChapters[books[i]]).length > 0) {
+      readCount++;
     }
   }
-  return false;
+  // Location is "read" if at least 1 related book has been started
+  return readCount > 0;
 }
 
 function getLocationReadProgress(locationName) {
   var books = locationBookMap[locationName];
   if (!books || books.length === 0) return 0;
-  var appState = null;
-  try { appState = JSON.parse(localStorage.getItem('teensBible') || 'null'); } catch(e) {}
-  if (!appState || !appState.books) return 0;
-  var totalChapters = 0;
-  var readChapters = 0;
+  var readChapters = JSON.parse(localStorage.getItem('readChapters') || '{}');
+  var readCount = 0;
   for (var i = 0; i < books.length; i++) {
-    var bookData = appState.books[books[i]];
-    // Count total chapters from gospelData if available
-    if (typeof gospelData !== 'undefined' && gospelData[books[i]]) {
-      totalChapters += gospelData[books[i]].length;
-    } else {
-      totalChapters += 1; // fallback
-    }
-    if (bookData && bookData.read && bookData.read.length > 0) {
-      readChapters += bookData.read.length;
+    if (readChapters[books[i]] && Object.keys(readChapters[books[i]]).length > 0) {
+      readCount++;
     }
   }
-  if (totalChapters === 0) return 0;
-  return Math.round((readChapters / totalChapters) * 100);
+  return Math.round((readCount / books.length) * 100);
 }
 
-// Also refresh map pins when returning from Bible reading
-function refreshMapReadStatus() {
-  var activeTab = document.querySelector('.map-tab.active');
-  if (activeTab) {
-    // Extract tab name from the onclick attribute
-    var onclickStr = activeTab.getAttribute('onclick') || '';
-    var match = onclickStr.match(/switchMapTab\('(\w+)'\)/);
-    var tab = match ? match[1] : 'overview';
-    renderMapLocations(tab);
-  }
-}
-
-
-// ============================================================
-// MAP SEARCH FUNCTIONALITY
-// ============================================================
-function handleMapSearch(query) {
-  var clearBtn = document.getElementById('map-search-clear');
-  var resultsDiv = document.getElementById('map-search-results');
-  if (!resultsDiv) return;
-  
-  if (!query || query.trim().length === 0) {
-    resultsDiv.style.display = 'none';
-    if (clearBtn) clearBtn.style.display = 'none';
-    return;
-  }
-  if (clearBtn) clearBtn.style.display = 'block';
-  
-  var q = query.toLowerCase().trim();
-  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
-  var results = [];
-  
-  // Search locations
-  var allTabs = ['overview','jerusalem','galilee','paul'];
-  var tabNames = {overview: lang==='ko'?'전체보기':'Overview', jerusalem: lang==='ko'?'예루살렘':'Jerusalem', galilee: lang==='ko'?'갈릴리':'Galilee', paul: lang==='ko'?'바울의 여행':"Paul's Journeys"};
-  for (var t = 0; t < allTabs.length; t++) {
-    var tab = allTabs[t];
-    var locs = mapLocations[tab] || [];
-    for (var i = 0; i < locs.length; i++) {
-      var loc = locs[i];
-      var nameMatch = loc.name.toLowerCase().indexOf(q) >= 0;
-      var nameKoMatch = loc.nameKo && loc.nameKo.indexOf(q) >= 0;
-      var descMatch = loc.desc && loc.desc.toLowerCase().indexOf(q) >= 0;
-      var descKoMatch = loc.descKo && loc.descKo.indexOf(q) >= 0;
-      if (nameMatch || nameKoMatch || descMatch || descKoMatch) {
-        results.push({
-          type: 'location',
-          name: loc.name,
-          displayName: lang==='ko' ? (loc.nameKo || loc.name) : loc.name,
-          icon: loc.icon || '',
-          tab: tab,
-          tabName: tabNames[tab],
-          desc: lang==='ko' ? (loc.descKo || loc.desc || '') : (loc.desc || '')
-        });
-      }
-    }
-  }
-  
-  // Search events
-  for (var locName in mapLocationEvents) {
-    var evData = mapLocationEvents[locName];
-    if (!evData || !evData.events) continue;
-    for (var e = 0; e < evData.events.length; e++) {
-      var ev = evData.events[e];
-      var evTitle = ev.title || ev.name || '';
-      var evTitleKo = ev.titleKo || ev.nameKo || '';
-      var evDesc = ev.desc || '';
-      var evDescKo = ev.descKo || '';
-      var evNameMatch = evTitle.toLowerCase().indexOf(q) >= 0;
-      var evNameKoMatch = evTitleKo.indexOf(q) >= 0;
-      var evDescMatch = evDesc.toLowerCase().indexOf(q) >= 0;
-      var evDescKoMatch = evDescKo.indexOf(q) >= 0;
-      var evRefMatch = ev.ref && ev.ref.toLowerCase().indexOf(q) >= 0;
-      if (evNameMatch || evNameKoMatch || evDescMatch || evDescKoMatch || evRefMatch) {
-        results.push({
-          type: 'event',
-          name: locName,
-          displayName: lang==='ko' ? (evTitleKo || evTitle) : evTitle,
-          icon: '📜',
-          locationName: locName,
-          ref: ev.ref || '',
-          desc: lang==='ko' ? (evDescKo || evDesc) : evDesc
-        });
-      }
-    }
-  }
-  
-  // Render results
-  if (results.length === 0) {
-    resultsDiv.innerHTML = '<div style="padding:16px;text-align:center;color:#888;font-size:13px;">' + (lang==='ko' ? '검색 결과가 없습니다' : 'No results found') + '</div>';
-    resultsDiv.style.display = 'block';
-    return;
-  }
-  
-  var html = '';
-  // Locations first
-  var locResults = results.filter(function(r) { return r.type === 'location'; });
-  var evResults = results.filter(function(r) { return r.type === 'event'; });
-  
-  if (locResults.length > 0) {
-    html += '<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:#FFD700;text-transform:uppercase;letter-spacing:1px;">' + (lang==='ko' ? '📍 장소' : '📍 Locations') + '</div>';
-    for (var i = 0; i < locResults.length; i++) {
-      var r = locResults[i];
-      html += '<div onclick="clearMapSearch();openLocationDetail(\'' + r.name.replace(/'/g, "\\'") + '\')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;transition:background 0.15s;" onmouseover="this.style.background=\'rgba(255,215,0,0.1)\'" onmouseout="this.style.background=\'transparent\'">';
-      html += '<span style="font-size:20px;">' + r.icon + '</span>';
-      html += '<div><div style="color:#e0e0e0;font-size:14px;font-weight:600;">' + r.displayName + '</div>';
-      html += '<div style="color:#888;font-size:11px;">' + r.tabName + ' · ' + r.desc.substring(0, 60) + (r.desc.length > 60 ? '...' : '') + '</div></div></div>';
-    }
-  }
-  
-  if (evResults.length > 0) {
-    html += '<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:#FFD700;text-transform:uppercase;letter-spacing:1px;">' + (lang==='ko' ? '📜 사건' : '📜 Events') + ' (' + evResults.length + ')</div>';
-    for (var i = 0; i < Math.min(evResults.length, 10); i++) {
-      var r = evResults[i];
-      html += '<div onclick="clearMapSearch();openLocationDetail(\'' + r.locationName.replace(/'/g, "\\'") + '\')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;transition:background 0.15s;" onmouseover="this.style.background=\'rgba(255,215,0,0.1)\'" onmouseout="this.style.background=\'transparent\'">';
-      html += '<span style="font-size:16px;">📜</span>';
-      html += '<div><div style="color:#e0e0e0;font-size:14px;font-weight:600;">' + r.displayName + '</div>';
-      html += '<div style="color:#888;font-size:11px;">📍 ' + r.locationName + (r.ref ? ' · 📖 ' + r.ref : '') + '</div></div></div>';
-    }
-    if (evResults.length > 10) {
-      html += '<div style="padding:8px 14px;text-align:center;color:#888;font-size:12px;">+' + (evResults.length - 10) + (lang==='ko' ? '개 더...' : ' more...') + '</div>';
-    }
-  }
-  
-  resultsDiv.innerHTML = html;
-  resultsDiv.style.display = 'block';
-}
-
-function clearMapSearch() {
-  var input = document.getElementById('map-search-input');
-  var clearBtn = document.getElementById('map-search-clear');
-  var resultsDiv = document.getElementById('map-search-results');
-  if (input) input.value = '';
-  if (clearBtn) clearBtn.style.display = 'none';
-  if (resultsDiv) resultsDiv.style.display = 'none';
-}
-
-// Update search placeholder based on language
-function updateMapSearchLanguage() {
-  var input = document.getElementById('map-search-input');
-  if (input) {
-    var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
-    input.placeholder = lang === 'ko' ? '장소나 사건을 검색하세요...' : 'Search locations or events...';
-  }
-}
 
 // ============================================================
 // LOCATION DETAIL PANEL FUNCTION
@@ -7823,9 +7651,6 @@ showScreen = function(name) {
   if(name === 'biblemap') {
     renderMapLocations('overview');
     updateMapLanguage();
-    updateMapSearchLanguage();
-    // Refresh read status badges when entering map
-    setTimeout(function() { refreshMapReadStatus(); }, 100);
   }
 };
 
