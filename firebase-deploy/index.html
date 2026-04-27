@@ -2020,7 +2020,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     <div id="map-content">
       <!-- Overview Map -->
       <div id="map-overview" class="map-panel active">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-overview" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-main-Q6Ui2C3W7MTSQPzAXiEXVW.webp" alt="New Testament Holy Land Map" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -2075,7 +2075,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       
       <!-- Jerusalem Map -->
       <div id="map-jerusalem" class="map-panel">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-jerusalem" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-jerusalem-FEJpKrbC94dHRKyqWv9xdG.webp" alt="Jerusalem in New Testament Times" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -2120,7 +2120,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       
       <!-- Galilee Map -->
       <div id="map-galilee" class="map-panel">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-galilee" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-galilee-NasJPTzXQJmoqJh9Mv5qpQ.webp" alt="Sea of Galilee Region" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -2170,7 +2170,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       
       <!-- Paul's Journeys Map -->
       <div id="map-paul" class="map-panel">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-paul" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-paul-journeys-3v4xYiX8eMXS37i9Vzj28c.webp" alt="Paul's Missionary Journeys" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -8492,14 +8492,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// ===== PINCH-TO-ZOOM FOR BIBLE MAP =====
+// ===== PINCH-TO-ZOOM FOR BIBLE MAP (CENTER-POINT BASED) =====
 (function() {
   var zoomState = {};
   
   function getState(container) {
-    var id = container.id;
+    var id = container.id || ('zoom_' + Math.random());
+    if (!container.id) container.id = id;
     if (!zoomState[id]) {
-      zoomState[id] = { scale: 1, x: 0, y: 0, startDist: 0, startScale: 1, isPinching: false, isDragging: false, startX: 0, startY: 0, startPanX: 0, startPanY: 0 };
+      zoomState[id] = { scale: 1, x: 0, y: 0, startDist: 0, startScale: 1, startX: 0, startY: 0, startPanX: 0, startPanY: 0, isPinching: false, isDragging: false, pinchCenterX: 0, pinchCenterY: 0 };
     }
     return zoomState[id];
   }
@@ -8516,17 +8517,27 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function clampPan(container) {
     var s = getState(container);
-    var rect = container.getBoundingClientRect();
-    var maxX = Math.max(0, (rect.width * s.scale - rect.width) / 2);
-    var maxY = Math.max(0, (rect.height * s.scale - rect.height) / 2);
-    s.x = Math.max(-maxX, Math.min(maxX, s.x));
-    s.y = Math.max(-maxY, Math.min(maxY, s.y));
+    var inner = container.querySelector('.map-zoom-inner');
+    if (!inner) return;
+    var cw = container.clientWidth;
+    var ch = container.clientHeight;
+    var iw = inner.scrollWidth * s.scale;
+    var ih = inner.scrollHeight * s.scale;
+    // Allow panning only when zoomed content exceeds container
+    var minX = Math.min(0, cw - iw);
+    var minY = Math.min(0, ch - ih);
+    s.x = Math.max(minX, Math.min(0, s.x));
+    s.y = Math.max(minY, Math.min(0, s.y));
   }
   
   function getDist(t1, t2) {
     var dx = t1.clientX - t2.clientX;
     var dy = t1.clientY - t2.clientY;
     return Math.sqrt(dx * dx + dy * dy);
+  }
+  
+  function getMidpoint(t1, t2) {
+    return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
   }
   
   function onTouchStart(e) {
@@ -8538,6 +8549,13 @@ document.addEventListener('DOMContentLoaded', function() {
       s.isDragging = false;
       s.startDist = getDist(e.touches[0], e.touches[1]);
       s.startScale = s.scale;
+      s.startPanX = s.x;
+      s.startPanY = s.y;
+      // Record pinch center relative to container
+      var mid = getMidpoint(e.touches[0], e.touches[1]);
+      var rect = container.getBoundingClientRect();
+      s.pinchCenterX = mid.x - rect.left;
+      s.pinchCenterY = mid.y - rect.top;
     } else if (e.touches.length === 1 && s.scale > 1) {
       s.isDragging = true;
       s.isPinching = false;
@@ -8554,8 +8572,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (s.isPinching && e.touches.length === 2) {
       e.preventDefault();
       var dist = getDist(e.touches[0], e.touches[1]);
-      var newScale = s.startScale * (dist / s.startDist);
-      s.scale = Math.max(1, Math.min(4, newScale));
+      var newScale = Math.max(1, Math.min(4, s.startScale * (dist / s.startDist)));
+      // Zoom toward pinch center: adjust pan so the point under fingers stays put
+      var ratio = newScale / s.startScale;
+      s.x = s.startPanX - (s.pinchCenterX - s.startPanX) * (ratio - 1);
+      s.y = s.startPanY - (s.pinchCenterY - s.startPanY) * (ratio - 1);
+      s.scale = newScale;
+      if (s.scale <= 1) { s.x = 0; s.y = 0; }
       clampPan(container);
       applyTransform(container);
     } else if (s.isDragging && e.touches.length === 1 && s.scale > 1) {
@@ -8580,21 +8603,24 @@ document.addEventListener('DOMContentLoaded', function() {
   // Double-tap to zoom
   var lastTap = 0;
   function onDoubleTap(e) {
+    if (e.touches.length !== 1) return;
     var container = e.currentTarget;
     var s = getState(container);
     var now = Date.now();
     if (now - lastTap < 300) {
       e.preventDefault();
+      var rect = container.getBoundingClientRect();
+      var tapX = e.touches[0].clientX - rect.left;
+      var tapY = e.touches[0].clientY - rect.top;
       if (s.scale > 1) {
+        // Zoom out
         s.scale = 1; s.x = 0; s.y = 0;
       } else {
-        s.scale = 2.5;
-        // Center zoom on tap point
-        var rect = container.getBoundingClientRect();
-        var tapX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-        var tapY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-        s.x = (rect.width / 2 - tapX) * (s.scale - 1);
-        s.y = (rect.height / 2 - tapY) * (s.scale - 1);
+        // Zoom in toward tap point
+        var newScale = 2.5;
+        s.x = -(tapX * (newScale - 1));
+        s.y = -(tapY * (newScale - 1));
+        s.scale = newScale;
         clampPan(container);
       }
       applyTransform(container);
@@ -8602,13 +8628,22 @@ document.addEventListener('DOMContentLoaded', function() {
     lastTap = now;
   }
   
-  // Mouse wheel zoom for desktop
+  // Mouse wheel zoom for desktop (zoom toward cursor)
   function onWheel(e) {
     e.preventDefault();
     var container = e.currentTarget;
     var s = getState(container);
+    var rect = container.getBoundingClientRect();
+    var mouseX = e.clientX - rect.left;
+    var mouseY = e.clientY - rect.top;
+    var oldScale = s.scale;
     var delta = e.deltaY > 0 ? -0.3 : 0.3;
-    s.scale = Math.max(1, Math.min(4, s.scale + delta));
+    var newScale = Math.max(1, Math.min(4, oldScale + delta));
+    // Adjust pan to zoom toward cursor
+    var ratio = newScale / oldScale;
+    s.x = mouseX - ratio * (mouseX - s.x);
+    s.y = mouseY - ratio * (mouseY - s.y);
+    s.scale = newScale;
     if (s.scale <= 1) { s.x = 0; s.y = 0; }
     clampPan(container);
     applyTransform(container);
@@ -8626,18 +8661,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Button controls
+  // Button controls (zoom toward center)
   window.mapZoomIn = function(btn) {
     var container = btn.closest('.map-zoom-container');
     var s = getState(container);
-    s.scale = Math.min(4, s.scale + 0.5);
+    var cx = container.clientWidth / 2;
+    var cy = container.clientHeight / 2;
+    var oldScale = s.scale;
+    var newScale = Math.min(4, oldScale + 0.5);
+    var ratio = newScale / oldScale;
+    s.x = cx - ratio * (cx - s.x);
+    s.y = cy - ratio * (cy - s.y);
+    s.scale = newScale;
     clampPan(container);
     applyTransform(container);
   };
   window.mapZoomOut = function(btn) {
     var container = btn.closest('.map-zoom-container');
     var s = getState(container);
-    s.scale = Math.max(1, s.scale - 0.5);
+    var cx = container.clientWidth / 2;
+    var cy = container.clientHeight / 2;
+    var oldScale = s.scale;
+    var newScale = Math.max(1, oldScale - 0.5);
+    var ratio = newScale / oldScale;
+    s.x = cx - ratio * (cx - s.x);
+    s.y = cy - ratio * (cy - s.y);
+    s.scale = newScale;
     if (s.scale <= 1) { s.x = 0; s.y = 0; }
     clampPan(container);
     applyTransform(container);
