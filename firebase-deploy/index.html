@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v44';
+      const CACHE = 'teens-bible-v45';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -707,11 +707,42 @@ body {
 .badge-unlock .badge-desc { color: #aaa; margin-top: 8px; animation: slideUp .5s ease-out .5s both; }
 .ch-card { opacity: 0; animation: slideUp .3s ease-out forwards; }
 
+
+/* === PAUL'S JOURNEY ROUTE LINES === */
+.journey-routes-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5; }
+.journey-route { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.journey-route.journey-1 { stroke:#FF6B6B; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow1 2s linear infinite; }
+.journey-route.journey-2 { stroke:#4ECDC4; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow2 2s linear infinite; }
+.journey-route.journey-3 { stroke:#FFD700; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow3 2s linear infinite; }
+.journey-route.journey-rome { stroke:#C084FC; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlowRome 2s linear infinite; }
+.journey-route-glow.journey-1 { fill:none; stroke:#FF6B6B; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+.journey-route-glow.journey-2 { fill:none; stroke:#4ECDC4; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+.journey-route-glow.journey-3 { fill:none; stroke:#FFD700; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+.journey-route-glow.journey-rome { fill:none; stroke:#C084FC; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+@keyframes dashFlow1 { to { stroke-dashoffset: -28; } }
+@keyframes dashFlow2 { to { stroke-dashoffset: -28; } }
+@keyframes dashFlow3 { to { stroke-dashoffset: -28; } }
+@keyframes dashFlowRome { to { stroke-dashoffset: -28; } }
+.journey-legend { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 12px; padding:8px 12px; background:rgba(20,35,60,0.6); border-radius:12px; border:1px solid rgba(65,110,160,0.25); }
+.journey-legend-item { display:flex; align-items:center; gap:6px; font-size:12px; font-family:'Comic Neue',cursive; font-weight:700; cursor:pointer; padding:4px 10px; border-radius:8px; transition:all 0.3s; }
+.journey-legend-item:hover { background:rgba(255,255,255,0.1); }
+.journey-legend-item.active { background:rgba(255,255,255,0.15); }
+.journey-legend-item.inactive { opacity:0.35; }
+.journey-legend-line { width:20px; height:3px; border-radius:2px; }
+.journey-legend-item[data-journey="1"] .journey-legend-line { background:#FF6B6B; }
+.journey-legend-item[data-journey="2"] .journey-legend-line { background:#4ECDC4; }
+.journey-legend-item[data-journey="3"] .journey-legend-line { background:#FFD700; }
+.journey-legend-item[data-journey="rome"] .journey-legend-line { background:#C084FC; }
+.journey-legend-item[data-journey="1"] { color:#FF6B6B; }
+.journey-legend-item[data-journey="2"] { color:#4ECDC4; }
+.journey-legend-item[data-journey="3"] { color:#FFD700; }
+.journey-legend-item[data-journey="rome"] { color:#C084FC; }
+
 /* === GAMIFICATION EFFECTS === */
 .xp-float { position: fixed; font-size: 24px; font-weight: 900; color: #FACC15; text-shadow: 0 0 15px rgba(250,204,21,0.8), 0 0 30px rgba(250,204,21,0.4); pointer-events: none; z-index: 9999; animation: xpFloatUp 1.5s ease-out forwards; font-family: 'Bangers', cursive; }
 @keyframes xpFloatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 50% { opacity: 1; transform: translateY(-60px) scale(1.3); } 100% { opacity: 0; transform: translateY(-120px) scale(0.8); } }
 
- 60% { transform: scale(1.3) rotate(5deg); } 100% { transform: scale(1) rotate(0deg); } }
+
 
 .levelup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
 .levelup-overlay .level-icon { font-size: 80px; animation: levelBounce 0.8s ease infinite; }
@@ -2137,10 +2168,31 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     <div class="map-pin-pulse"></div>
   </div>
 </div>
+<svg class="journey-routes-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <!-- Journey 1: Antioch → Cyprus → Lystra/Derbe → Antioch (Red) -->
+  <polyline class="journey-route-glow journey-1" points="90,35 85,45 80,55 78,45 75,35 82,32 90,35" />
+  <polyline class="journey-route journey-1" points="90,35 85,45 80,55 78,45 75,35 82,32 90,35" />
+  <!-- Journey 2: Antioch → Lystra → Philippi → Thessalonica → Athens → Corinth → Ephesus → Antioch (Teal) -->
+  <polyline class="journey-route-glow journey-2" points="90,35 82,34 75,35 65,25 52,12 45,15 44,38 43,42 50,40 60,35 75,34 90,35" />
+  <polyline class="journey-route journey-2" points="90,35 82,34 75,35 65,25 52,12 45,15 44,38 43,42 50,40 60,35 75,34 90,35" />
+  <!-- Journey 3: Antioch → Ephesus → Philippi → Corinth → Philippi → Troas → Antioch (Gold) -->
+  <polyline class="journey-route-glow journey-3" points="90,35 75,33 60,35 55,25 52,12 48,20 43,42 48,20 52,12 55,25 60,35 75,34 90,35" />
+  <polyline class="journey-route journey-3" points="90,35 75,33 60,35 55,25 52,12 48,20 43,42 48,20 52,12 55,25 60,35 75,34 90,35" />
+  <!-- Journey to Rome: Caesarea → Cyprus → Crete → Malta → Rome (Purple) -->
+  <polyline class="journey-route-glow journey-rome" points="90,42 80,55 65,52 45,50 28,42 18,30 8,10" />
+  <polyline class="journey-route journey-rome" points="90,42 80,55 65,52 45,50 28,42 18,30 8,10" />
+</svg>
           </div>
           <div class="map-zoom-controls" style="position:absolute;bottom:10px;right:10px;display:flex;gap:6px;z-index:15;"><button class="map-zoom-btn" onclick="mapZoomIn(this)">+</button><button class="map-zoom-btn" onclick="mapZoomOut(this)">−</button><button class="map-zoom-btn" onclick="mapZoomReset(this)" style="font-size:14px">↺</button></div>
           <div class="map-zoom-level">1.0x</div>
         </div>
+<!-- Journey Legend -->
+<div class="journey-legend" id="paul-journey-legend">
+  <div class="journey-legend-item active" data-journey="1" onclick="toggleJourneyRoute(1)"><div class="journey-legend-line"></div><span data-en="1st Journey" data-ko="1차 여행">1st Journey</span></div>
+  <div class="journey-legend-item active" data-journey="2" onclick="toggleJourneyRoute(2)"><div class="journey-legend-line"></div><span data-en="2nd Journey" data-ko="2차 여행">2nd Journey</span></div>
+  <div class="journey-legend-item active" data-journey="3" onclick="toggleJourneyRoute(3)"><div class="journey-legend-line"></div><span data-en="3rd Journey" data-ko="3차 여행">3rd Journey</span></div>
+  <div class="journey-legend-item active" data-journey="rome" onclick="toggleJourneyRoute('rome')"><div class="journey-legend-line"></div><span data-en="To Rome" data-ko="로마행">To Rome</span></div>
+</div>
         <div class="map-locations-grid" id="map-locations-paul"></div>
       </div>
     </div>
@@ -7452,6 +7504,34 @@ function updateMapSearchLanguage() {
   }
 }
 
+// === PAUL'S JOURNEY ROUTE TOGGLE ===
+function toggleJourneyRoute(journeyId) {
+  var svg = document.querySelector('.journey-routes-svg');
+  if (!svg) return;
+  var className = 'journey-' + journeyId;
+  var routes = svg.querySelectorAll('.' + className);
+  var legendItem = document.querySelector('.journey-legend-item[data-journey="' + journeyId + '"]');
+  if (!legendItem) return;
+  var isActive = legendItem.classList.contains('active');
+  if (isActive) {
+    legendItem.classList.remove('active');
+    legendItem.classList.add('inactive');
+    routes.forEach(function(r) { r.style.display = 'none'; });
+  } else {
+    legendItem.classList.remove('inactive');
+    legendItem.classList.add('active');
+    routes.forEach(function(r) { r.style.display = ''; });
+  }
+}
+
+function updateJourneyLegendLanguage() {
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var items = document.querySelectorAll('.journey-legend-item span[data-en]');
+  items.forEach(function(span) {
+    span.textContent = lang === 'ko' ? (span.getAttribute('data-ko') || span.getAttribute('data-en')) : span.getAttribute('data-en');
+  });
+}
+
 // ============================================================
 // LOCATION DETAIL PANEL FUNCTION
 // ============================================================
@@ -7824,6 +7904,7 @@ showScreen = function(name) {
     renderMapLocations('overview');
     updateMapLanguage();
     updateMapSearchLanguage();
+    updateJourneyLegendLanguage();
     // Refresh read status badges when entering map
     setTimeout(function() { refreshMapReadStatus(); }, 100);
   }
