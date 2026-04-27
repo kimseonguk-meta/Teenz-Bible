@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v30';
+      const CACHE = 'teens-bible-v34';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -516,8 +516,8 @@ body {
 .map-fullscreen img { max-width:95%; max-height:90vh; object-fit:contain; border-radius:8px; }
 .map-fullscreen-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.15); border:none; color:#fff; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 /* Settings gear icon on home */
-.settings-gear { font-size:22px; cursor:pointer; opacity:0.5; transition:all 0.3s; flex-shrink:0; margin-left:auto; padding:4px; }
-.settings-gear:hover { opacity:1; transform:rotate(90deg); }
+.settings-gear-row { font-size:13px; cursor:pointer; opacity:0.45; transition:all 0.3s; text-align:right; padding:4px 4px 0; margin-top:-12px; margin-bottom:8px; color:#8899bb; font-family:'Comic Neue',cursive; letter-spacing:0.5px; }
+.settings-gear-row:hover, .settings-gear-row:active { opacity:0.8; color:#FFD700; }
 
 /* === SETTINGS === */
 
@@ -1715,8 +1715,8 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div class="hero-text">
         <h1>TEENZ BIBLE</h1>
       </div>
-      <div class="settings-gear" onclick="event.stopPropagation();showScreen('settings')">⚙️</div>
     </div>
+    <div class="settings-gear-row" onclick="showScreen('settings')">⚙️ Settings</div>
     <div id="reading-goal-section"></div>
     <div id="streak-card-section"></div>
     <div class="stats">
