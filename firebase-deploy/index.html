@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Teenz Bible</title>
-<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Comic+Neue:wght@400;700&family=Bangers&family=Bungee&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Comic+Neue:wght@400;700&family=Bangers&family=Bungee&family=Noto+Sans+KR:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 
 <script>
@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v27';
+      const CACHE = 'teens-bible-v28';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -170,6 +170,9 @@ body {
 .nav-btn.active { color: #F59E0B; }
 .nav-btn.active .icon { transform: scale(1.1); filter: drop-shadow(0 0 4px rgba(245,158,11,0.4)); }
 .nav-btn .icon { font-size: 28px; transition: all 0.3s; }
+
+.nav-label { font-size:10px; font-family:'Comic Neue',cursive; font-weight:700; letter-spacing:0.5px; }
+
 
 /* === SCREENS === */
 .screen { display: none; padding: 20px 16px; }
@@ -400,11 +403,14 @@ body {
 .reader-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .reader-title { font-family: 'Luckiest Guy', cursive; font-size: 24px; color: #FF6B6B; text-shadow: 0 0 15px rgba(255,107,107,0.3); }
 .reader-body {
-  padding: 20px; line-height: 1.8; font-size: 15px; max-height: 60vh; overflow-y: auto;
-  background: linear-gradient(160deg, #283d5c 0%, #223852 100%);
+  padding: 24px 20px; line-height: 2.0; font-size: 17px; max-height: 60vh; overflow-y: auto;
+  background: linear-gradient(160deg, #1e3250 0%, #182a45 100%);
   border: 1px solid rgba(65, 110, 160, 0.32);
+  color: #e2e8f0;
+  font-family: 'Inter', 'Noto Sans KR', 'Comic Neue', sans-serif;
+  letter-spacing: 0.01em;
 }
-.reader-body p { margin-bottom: 14px; }
+.reader-body p { margin-bottom: 20px; color: #e2e8f0; }
 .reader-actions { display: flex; gap: 10px; margin-top: 16px; }
 .action-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-family: 'Bangers', cursive; font-size: 16px; cursor: pointer; transition: all 0.2s; }
 .mark-read-btn { background: linear-gradient(135deg, #4ECDC4, #45B7D1); color: #000; }
@@ -464,7 +470,61 @@ body {
 }
 .quick-q:hover { border-color: rgba(255,107,107,0.4); color: #FF6B6B; }
 
+
+
+/* === READING GOALS === */
+.goal-card { background:linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.06)); border:1px solid rgba(78,205,196,0.2); border-radius:16px; padding:16px; margin-bottom:16px; }
+.goal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.goal-title { font-family:'Bangers',cursive; font-size:18px; color:#4ECDC4; }
+.goal-edit { font-size:12px; color:#7888a8; cursor:pointer; text-decoration:underline; }
+.goal-progress-bar { height:10px; background:rgba(10,20,40,0.5); border-radius:5px; overflow:hidden; }
+.goal-progress-fill { height:100%; background:linear-gradient(90deg,#4ECDC4,#45B7D1); border-radius:5px; transition:width 0.5s ease; }
+.goal-stats { display:flex; justify-content:space-between; margin-top:8px; font-size:12px; color:#7888a8; }
+.goal-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,20,0.9); z-index:10002; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.3s; }
+.goal-modal-card { background:linear-gradient(160deg,#1a2a4a,#152040); border:1px solid rgba(65,110,160,0.3); border-radius:20px; padding:24px; max-width:340px; width:90%; text-align:center; }
+.goal-modal-title { font-family:'Luckiest Guy',cursive; font-size:22px; color:#4ECDC4; margin-bottom:16px; }
+.goal-options { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+.goal-option { padding:14px 8px; border-radius:12px; border:2px solid rgba(65,110,160,0.25); background:rgba(20,35,60,0.5); cursor:pointer; transition:all 0.3s; text-align:center; }
+.goal-option:hover, .goal-option.selected { border-color:#4ECDC4; background:rgba(78,205,196,0.1); }
+.goal-option-num { font-family:'Bangers',cursive; font-size:24px; color:#FFD700; }
+.goal-option-label { font-size:11px; color:#7888a8; margin-top:2px; }
+.goal-save-btn { width:100%; padding:12px; border-radius:12px; border:none; background:linear-gradient(135deg,#4ECDC4,#45B7D1); color:#000; font-family:'Bangers',cursive; font-size:16px; cursor:pointer; transition:all 0.3s; }
+.goal-save-btn:hover { transform:scale(1.03); }
+
+/* === BIBLE MAP === */
+.map-tabs { display:flex; gap:6px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch; }
+.map-tab { padding:8px 14px; border-radius:10px; border:1px solid rgba(65,110,160,0.25); background:rgba(20,35,60,0.4); color:#7888a8; font-family:'Comic Neue',cursive; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap; transition:all 0.3s; flex-shrink:0; }
+.map-tab.active { background:linear-gradient(135deg,rgba(255,214,0,0.15),rgba(255,159,67,0.1)); border-color:rgba(255,214,0,0.4); color:#FFD700; }
+.map-panel { display:none; }
+.map-panel.active { display:block; animation:fadeIn 0.3s; }
+.map-image-container { position:relative; border-radius:16px; overflow:hidden; margin-bottom:16px; border:1px solid rgba(65,110,160,0.25); }
+.map-image { width:100%; display:block; cursor:zoom-in; transition:transform 0.3s; }
+.map-image:hover { transform:scale(1.02); }
+.map-zoom-hint { position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.6); color:#fff; font-size:11px; padding:4px 10px; border-radius:8px; font-family:'Comic Neue',cursive; pointer-events:none; }
+.map-locations-grid { display:grid; grid-template-columns:1fr; gap:8px; }
+.map-location-card { background:linear-gradient(160deg,#1e3250,#182a45); border:1px solid rgba(65,110,160,0.2); border-radius:14px; padding:14px; cursor:pointer; transition:all 0.3s; }
+.map-location-card:hover { border-color:rgba(255,214,0,0.3); transform:translateY(-1px); }
+.map-loc-header { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.map-loc-icon { font-size:24px; }
+.map-loc-name { font-family:'Bangers',cursive; font-size:16px; color:#FFD700; }
+.map-loc-name-ko { font-size:12px; color:#7888a8; font-family:'Noto Sans KR',sans-serif; }
+.map-loc-desc { font-size:13px; color:#a0b0c8; line-height:1.5; font-family:'Inter','Noto Sans KR',sans-serif; }
+.map-loc-verses { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+.map-loc-verse { font-size:10px; color:#4ECDC4; background:rgba(78,205,196,0.08); border:1px solid rgba(78,205,196,0.15); padding:2px 8px; border-radius:6px; cursor:pointer; }
+.map-loc-verse:hover { background:rgba(78,205,196,0.15); }
+.map-fullscreen { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10003; display:flex; align-items:center; justify-content:center; cursor:zoom-out; animation:fadeIn 0.3s; }
+.map-fullscreen img { max-width:95%; max-height:90vh; object-fit:contain; border-radius:8px; }
+.map-fullscreen-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.15); border:none; color:#fff; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+/* Settings gear icon on home */
+.settings-gear { position:absolute; top:16px; right:16px; font-size:24px; cursor:pointer; opacity:0.6; transition:all 0.3s; z-index:10; }
+.settings-gear:hover { opacity:1; transform:rotate(90deg); }
+
 /* === SETTINGS === */
+
+/* === SETTINGS GROUPS === */
+.settings-group { margin-bottom:20px; }
+.settings-group-title { font-family:'Bangers',cursive; font-size:16px; color:#FFD700; margin-bottom:10px; padding-left:4px; letter-spacing:1px; text-transform:uppercase; }
+
 .setting-row {
   padding: 18px; margin-bottom: 12px;
   display: flex; justify-content: space-between; align-items: center;
@@ -478,6 +538,21 @@ body {
 .toggle::after { content: ''; width: 22px; height: 22px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: 0.3s; }
 .toggle.on::after { left: 25px; }
 
+
+/* === ENHANCED STREAK === */
+.streak-card { background:linear-gradient(135deg, rgba(255,107,107,0.12), rgba(255,159,67,0.08)); border:1px solid rgba(255,107,107,0.25); border-radius:16px; padding:16px; margin-bottom:16px; display:flex; align-items:center; gap:14px; }
+.streak-fire { font-size:40px; animation:fireWiggle 1s ease-in-out infinite; }
+@keyframes fireWiggle { 0%,100%{transform:rotate(-5deg) scale(1)} 50%{transform:rotate(5deg) scale(1.1)} }
+.streak-info { flex:1; }
+.streak-count { font-family:'Bangers',cursive; font-size:28px; color:#FF6B6B; }
+.streak-label { font-size:12px; color:#7888a8; }
+.streak-freeze { font-size:11px; color:#22D3EE; margin-top:4px; cursor:pointer; }
+.streak-freeze:hover { text-decoration:underline; }
+.streak-week { display:flex; gap:4px; margin-top:8px; }
+.streak-day { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; border:2px solid rgba(65,110,160,0.2); color:#556080; }
+.streak-day.done { border-color:#4ECDC4; color:#4ECDC4; background:rgba(78,205,196,0.1); }
+.streak-day.today { border-color:#FFD700; color:#FFD700; background:rgba(255,214,0,0.1); }
+
 /* === XP TOAST === */
 .xp-toast {
   position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
@@ -487,6 +562,29 @@ body {
   z-index: 10003; opacity: 0; pointer-events: none; transition: all 0.4s;
 }
 .xp-toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+
+/* === GEM STORE === */
+.gem-store-btn { display:flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; border:1px solid rgba(139,92,246,0.3); background:rgba(139,92,246,0.08); color:#A78BFA; font-family:'Bangers',cursive; font-size:15px; cursor:pointer; transition:all 0.3s; margin:8px 0; }
+.gem-store-btn:hover { background:rgba(139,92,246,0.15); border-color:rgba(139,92,246,0.5); }
+.gem-balance { display:flex; align-items:center; gap:6px; font-family:'Bangers',cursive; font-size:16px; color:#A78BFA; }
+.store-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,5,20,0.92); z-index:10002; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.3s; }
+.store-card { background:linear-gradient(160deg, #1a2a4a, #152040); border:1px solid rgba(65,110,160,0.3); border-radius:20px; padding:24px; max-width:380px; width:90%; max-height:80vh; overflow-y:auto; }
+.store-title { font-family:'Luckiest Guy',cursive; font-size:22px; color:#A78BFA; margin-bottom:16px; text-align:center; }
+.store-section { margin-bottom:16px; }
+.store-section-title { font-family:'Bangers',cursive; font-size:16px; color:#FFD700; margin-bottom:8px; }
+.store-item { display:flex; align-items:center; justify-content:space-between; padding:12px; margin-bottom:8px; border-radius:12px; border:1px solid rgba(65,110,160,0.25); background:rgba(20,35,60,0.5); transition:all 0.2s; }
+.store-item:hover { border-color:rgba(139,92,246,0.4); }
+.store-item-info { display:flex; align-items:center; gap:10px; }
+.store-item-preview { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.store-item-name { font-family:'Comic Neue',cursive; font-weight:700; color:#d8dce8; font-size:14px; }
+.store-item-desc { font-size:11px; color:#6880a8; }
+.store-buy-btn { padding:6px 14px; border-radius:8px; border:none; font-family:'Bangers',cursive; font-size:14px; cursor:pointer; transition:all 0.2s; }
+.store-buy-btn.affordable { background:linear-gradient(135deg,#8B5CF6,#A78BFA); color:#fff; }
+.store-buy-btn.affordable:hover { transform:scale(1.05); }
+.store-buy-btn.owned { background:rgba(78,205,196,0.15); color:#4ECDC4; border:1px solid rgba(78,205,196,0.3); cursor:default; }
+.store-buy-btn.locked { background:rgba(65,110,160,0.15); color:#556080; cursor:not-allowed; }
+.store-close { display:block; width:100%; padding:12px; margin-top:12px; border-radius:12px; border:1px solid rgba(65,110,160,0.3); background:transparent; color:#7888a8; font-family:'Comic Neue',cursive; font-size:14px; cursor:pointer; }
 
 /* === REACTIVE EFFECTS === */
 .ripple { position: relative; overflow: hidden; }
@@ -538,6 +636,16 @@ body {
 .onboard-dots { display: flex; gap: 6px; justify-content: center; margin: 16px 0; }
 .onboard-dots .dot { width: 8px; height: 8px; border-radius: 4px; background: rgba(65,105,155,0.25); transition: all 0.3s; }
 .onboard-dots .dot.active { background: #F59E0B; width: 20px; }
+
+
+/* === VERSE OF THE DAY === */
+.votd-card { background:linear-gradient(135deg, rgba(139,92,246,0.15), rgba(236,72,153,0.08)); border:1px solid rgba(139,92,246,0.3); border-radius:16px; padding:20px; margin-bottom:16px; cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden; }
+.votd-card::before { content:''; position:absolute; top:-50%; right:-50%; width:100%; height:100%; background:radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%); pointer-events:none; }
+.votd-card:hover { transform:translateY(-2px); border-color:rgba(139,92,246,0.5); box-shadow:0 4px 20px rgba(139,92,246,0.15); }
+.votd-label { font-family:'Bangers',cursive; font-size:13px; color:#A78BFA; letter-spacing:2px; margin-bottom:10px; }
+.votd-text { font-family:'Inter','Noto Sans KR',sans-serif; font-size:16px; color:#e2e8f0; line-height:1.7; font-style:italic; margin-bottom:10px; }
+.votd-ref { font-family:'Bangers',cursive; font-size:14px; color:#8B5CF6; }
+.votd-cta { font-size:12px; color:#6880a8; margin-top:8px; font-family:'Comic Neue',cursive; }
 
 /* === DAILY CHALLENGE === */
 .daily-challenge-card { background: rgba(50,40,100,0.2); border: 1px solid rgba(139,92,246,0.25); border-radius: 16px; padding: 16px; margin: 16px 0; }
@@ -852,7 +960,7 @@ body {
 /* === B3: LIGHT READER MODE === */
 .reader-mode-btn { width:34px; height:34px; border-radius:8px; border:1px solid rgba(65,110,160,0.4); background:rgba(20,35,60,0.8); color:#7888a8; font-size:16px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
 .reader-mode-btn:hover { background:rgba(255,214,0,0.15); color:#FFD700; border-color:rgba(255,214,0,0.4); }
-.reader-body.light-mode { background:linear-gradient(160deg, #f5f0e8 0%, #ebe5d8 100%); border-color:rgba(180,160,130,0.3); color:#2c2416; }
+.reader-body.light-mode { background:linear-gradient(160deg, #faf8f5 0%, #f5f0e8 100%); border-color:rgba(180,160,130,0.3); color:#1a1510; font-family: 'Inter', 'Noto Sans KR', sans-serif; }
 .reader-body.light-mode p { color:#3a3020; }
 .reader-body.light-mode p + p { border-top-color:rgba(160,140,110,0.2); }
 .reader-body.light-mode p:first-of-type::first-letter { color:#c0392b; }
@@ -991,6 +1099,25 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .stats-summary-item { text-align:center; padding:10px 6px; background:rgba(10,20,40,0.5); border-radius:10px; border:1px solid rgba(65,110,160,0.2); }
 .stats-summary-val { font-family:'Bangers',cursive; font-size:20px; color:#FFD700; }
 .stats-summary-lbl { font-size:11px; color:#6880a8; font-family:'Comic Neue',cursive; margin-top:2px; }
+
+
+/* === READING PLANS === */
+.plan-active-card { background:linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.08)); border:1px solid rgba(78,205,196,0.25); border-radius:16px; padding:16px; margin:12px 0; }
+.plan-active-header { display:flex; align-items:center; gap:12px; margin-bottom:4px; }
+.plan-icon { font-size:32px; }
+.plan-active-name { font-family:'Bangers',cursive; font-size:18px; color:#4ECDC4; }
+.plan-active-progress { font-size:12px; color:#6880a8; }
+.plan-next { background:rgba(78,205,196,0.1); border:1px solid rgba(78,205,196,0.2); border-radius:10px; padding:10px 14px; margin-top:8px; color:#4ECDC4; font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; cursor:pointer; transition:all 0.2s; text-align:center; }
+.plan-next:hover { background:rgba(78,205,196,0.2); }
+.plan-quit { text-align:center; font-size:11px; color:#556080; margin-top:8px; cursor:pointer; text-decoration:underline; }
+.plans-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
+.plan-card { background:linear-gradient(160deg, #283d5c 0%, #223852 100%); border:1px solid rgba(65,110,160,0.3); border-radius:14px; padding:16px; text-align:center; cursor:pointer; transition:all 0.3s; position:relative; }
+.plan-card:hover { transform:translateY(-2px); border-color:rgba(100,150,210,0.5); }
+.plan-card.active { border-color:#4ECDC4; background:rgba(78,205,196,0.08); }
+.plan-card-icon { font-size:32px; margin-bottom:8px; }
+.plan-card-name { font-family:'Bangers',cursive; font-size:14px; color:#d0d8e8; margin-bottom:4px; }
+.plan-card-days { font-size:11px; color:#6880a8; }
+.plan-card-badge { position:absolute; top:8px; right:8px; background:#4ECDC4; color:#000; font-size:9px; font-weight:800; padding:2px 6px; border-radius:6px; }
 
 /* === BIBLE JOURNEY MAP === */
 .journey-map { margin-top:16px; padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); }
@@ -1316,6 +1443,20 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
   background: #f4e8d0 !important;
 }
 
+
+/* === ACCESSIBILITY === */
+.nav-btn:focus-visible, .badge:focus-visible, .book-card:focus-visible, .ch-btn:focus-visible, .stat:focus-visible { outline:2px solid #FFD700; outline-offset:2px; border-radius:12px; }
+.setting-row:focus-visible { outline:2px solid #4ECDC4; outline-offset:2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+/* Better touch targets */
+@media (pointer: coarse) {
+  .ch-btn { min-height:48px; }
+  .nav-btn { min-height:48px; }
+  .badge { min-width:48px; min-height:48px; }
+}
+
 </style>
 
 <style>
@@ -1569,21 +1710,30 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 <div class="app">
   <!-- Home -->
   <div class="screen active" id="screen-home">
+    <div class="settings-gear" onclick="showScreen('settings')">⚙️</div>
     <div class="hero">
       <img class="hero-icon-img" src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon-180-v2-darkbg_671d3aad.png" alt="TB">
       <div class="hero-text">
         <h1>TEENZ BIBLE</h1>
       </div>
     </div>
+    <div id="reading-goal-section"></div>
+    <div id="streak-card-section"></div>
     <div class="stats">
       <div class="stat"><div class="val" id="stat-streak">0</div><div class="lbl">🔥 Day Streak</div></div>
       <div class="stat"><div class="val" id="stat-chapters">0</div><div class="lbl">📖 Chapters</div></div>
       <div class="stat"><div class="val" id="stat-xp">0</div><div class="lbl">⚡ Total XP</div></div>
     </div>
+    <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:-8px">
+      <div class="stat"><div class="val" id="stat-gems" style="font-size:24px">0</div><div class="lbl">💎 Gems</div></div>
+      <div class="stat" onclick="openGemStore()" style="cursor:pointer"><div class="val" style="font-size:24px">🏪</div><div class="lbl">Gem Store</div></div>
+    </div>
     <div class="level-bar">
       <div class="level-info"><span class="level-name" id="level-name">Newbie</span><span class="level-xp" id="level-xp">0 / 100 XP</span></div>
       <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
     </div>
+    <div id="votd-section"></div>
+    <div id="quiz-stats-card" style="display:none"></div>
     <div id="daily-challenge-section"></div>
     <div id="continue-section"></div>
     <div id="home-tabs" style="display:flex;gap:8px;margin:16px 0 12px 0;">
@@ -1615,6 +1765,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     <input type="text" id="book-search" placeholder="🔍 Search books..." 
       style="width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(65,105,155,0.3);background:rgba(10,18,35,0.8);color:#d8dce8;font-size:14px;font-family:'Comic Neue',cursive;margin-bottom:16px;box-sizing:border-box;"
       oninput="filterBooks(this.value)">
+    <div id="reading-plans-section"></div>
     <div id="book-list"></div>
   </div>
 
@@ -1659,60 +1810,134 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
   </div>
 
   <!-- Settings -->
+
+  <!-- BIBLE MAP SCREEN -->
+  <div class="screen" id="screen-biblemap">
+    <h2 style="font-family:'Luckiest Guy',cursive;font-size:24px;color:#FFD700;margin-bottom:4px;text-shadow:0 0 8px rgba(255,214,0,0.3)">🗺️ BIBLE MAP</h2>
+    <p style="color:#7888a8;font-size:13px;margin-bottom:16px;font-family:'Comic Neue',cursive">Explore the lands where Bible stories happened!</p>
+    
+    <!-- Map Tabs -->
+    <div class="map-tabs">
+      <button class="map-tab active" onclick="switchMapTab('overview')">Overview</button>
+      <button class="map-tab" onclick="switchMapTab('jerusalem')">Jerusalem</button>
+      <button class="map-tab" onclick="switchMapTab('galilee')">Galilee</button>
+      <button class="map-tab" onclick="switchMapTab('paul')">Paul's Journeys</button>
+    </div>
+    
+    <!-- Map Content -->
+    <div id="map-content">
+      <!-- Overview Map -->
+      <div id="map-overview" class="map-panel active">
+        <div class="map-image-container">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-main-Q6Ui2C3W7MTSQPzAXiEXVW.webp" alt="New Testament Holy Land Map" class="map-image" onclick="openMapFullscreen(this.src)">
+          <div class="map-zoom-hint">Tap to zoom</div>
+        </div>
+        <div class="map-locations-grid" id="overview-locations"></div>
+      </div>
+      
+      <!-- Jerusalem Map -->
+      <div id="map-jerusalem" class="map-panel">
+        <div class="map-image-container">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-jerusalem-FEJpKrbC94dHRKyqWv9xdG.webp" alt="Jerusalem in New Testament Times" class="map-image" onclick="openMapFullscreen(this.src)">
+          <div class="map-zoom-hint">Tap to zoom</div>
+        </div>
+        <div class="map-locations-grid" id="jerusalem-locations"></div>
+      </div>
+      
+      <!-- Galilee Map -->
+      <div id="map-galilee" class="map-panel">
+        <div class="map-image-container">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-galilee-NasJPTzXQJmoqJh9Mv5qpQ.webp" alt="Sea of Galilee Region" class="map-image" onclick="openMapFullscreen(this.src)">
+          <div class="map-zoom-hint">Tap to zoom</div>
+        </div>
+        <div class="map-locations-grid" id="galilee-locations"></div>
+      </div>
+      
+      <!-- Paul's Journeys Map -->
+      <div id="map-paul" class="map-panel">
+        <div class="map-image-container">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-paul-journeys-3v4xYiX8eMXS37i9Vzj28c.webp" alt="Paul's Missionary Journeys" class="map-image" onclick="openMapFullscreen(this.src)">
+          <div class="map-zoom-hint">Tap to zoom</div>
+        </div>
+        <div class="map-locations-grid" id="paul-locations"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="screen" id="screen-settings">
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:24px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">⚙️ SETTINGS</h2>
-    <div class="setting-row">
-      <div><div class="setting-label">Daily Reminder</div><div class="setting-sub" id="notif-status">Get notified to read</div></div>
-      <div class="toggle" id="toggle-notif" onclick="toggleNotif()"></div>
+    
+    <!-- Reading Settings Group -->
+    <div class="settings-group">
+      <div class="settings-group-title">📖 Reading</div>
+      <div class="setting-row" style="cursor:pointer" onclick="document.getElementById('level-roadmap-container').style.display=document.getElementById('level-roadmap-container').style.display==='none'?'block':'none'">
+        <div><div class="setting-label">🗺️ Level Roadmap</div><div class="setting-sub">See all levels and your progress</div></div>
+        <span style="color:#FFD700;font-size:20px">→</span>
+      </div>
+      <div id="level-roadmap-container" style="display:none;margin-bottom:12px;"></div>
+      <div class="setting-row" style="cursor:pointer" onclick="if(typeof showEnjoyGuide==='function')showEnjoyGuide()">
+        <div><div class="setting-label">⚡ How to Enjoy Teenz Bible</div><div class="setting-sub">Quick guide to get the most out of this app</div></div>
+        <span style="color:#FFD700;font-size:20px">→</span>
+      </div>
     </div>
-    <div class="setting-row">
-      <div><div class="setting-label">Reminder Time</div><div class="setting-sub">When to remind you</div></div>
-      <div id="reminder-time-custom" onclick="openTimePicker()" style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px 12px;border-radius:8px;font-family:'Comic Neue',cursive;cursor:pointer;min-width:100px;text-align:center;user-select:none;" >7:00 PM</div>
-      <input type="time" id="reminder-time" value="19:00" onchange="saveReminderTime(this.value)" style="display:none;">
+
+    <!-- Audio Settings Group -->
+    <div class="settings-group">
+      <div class="settings-group-title">🔊 Audio</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Playback Speed</div><div class="setting-sub">Default listening speed</div></div>
+        <button id="default-speed-btn" onclick="showSpeedPicker()" style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px 16px;border-radius:8px;font-family:Comic Neue,cursive;cursor:pointer;min-width:60px;text-align:center">1x</button><select id="default-speed" style="display:none"><option value="0.8">0.8x</option><option value="0.9">0.9x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Narrator Voice</div><div class="setting-sub">Choose your preferred voice</div></div>
+        <select id="voice-select" onchange="changeVoice(this.value)" 
+          style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px;border-radius:8px;font-family:'Comic Neue',cursive;max-width:180px;">
+          <option>Loading voices...</option>
+        </select>
+      </div>
     </div>
-    <div class="setting-row">
-      <div><div class="setting-label">Audio Speed</div><div class="setting-sub">Default listening speed</div></div>
-      <button id="default-speed-btn" onclick="showSpeedPicker()" style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px 16px;border-radius:8px;font-family:Comic Neue,cursive;cursor:pointer;min-width:60px;text-align:center">1x</button><select id="default-speed" style="display:none"><option value="0.8">0.8x</option><option value="0.9">0.9x</option><option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select>
+
+    <!-- Notifications Group -->
+    <div class="settings-group">
+      <div class="settings-group-title">🔔 Notifications</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Daily Reminder</div><div class="setting-sub" id="notif-status">Get notified to read</div></div>
+        <div class="toggle" id="toggle-notif" onclick="toggleNotif()"></div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Reminder Time</div><div class="setting-sub">When to remind you</div></div>
+        <div id="reminder-time-custom" onclick="openTimePicker()" style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px 12px;border-radius:8px;font-family:'Comic Neue',cursive;cursor:pointer;min-width:100px;text-align:center;user-select:none;">7:00 PM</div>
+        <input type="time" id="reminder-time" value="19:00" onchange="saveReminderTime(this.value)" style="display:none;">
+      </div>
     </div>
-    <div class="setting-row">
-      <div><div class="setting-label">Voice</div><div class="setting-sub">Choose narrator voice</div></div>
-      <select id="voice-select" onchange="changeVoice(this.value)" 
-        style="background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:8px;border-radius:8px;font-family:'Comic Neue',cursive;max-width:180px;">
-        <option>Loading voices...</option>
-      </select>
-    </div>
-    <div class="setting-row">
-      <div><div class="setting-label">🤖 Bible AI</div><div class="setting-sub">✅ Connected &amp; Ready</div></div>
-    </div>
-    <div style="padding:0 4px;margin-top:-8px;margin-bottom:12px;">
-      <input type="password" id="apiKeyInput" placeholder="Paste your Gemini API key here" style="display:none" 
-        style="background:#0a0a1a;border:1px solid #353560;color:#fff;padding:10px 14px;border-radius:10px;width:100%;font-family:'Comic Neue',cursive;font-size:14px;box-sizing:border-box;"
-        oninput="localStorage.setItem('geminiApiKey',this.value)">
-      <div style="font-size:11px;color:#888;margin-top:6px;"><span style="display:none">Free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#FF6B6B;">aistudio.google.com/app/apikey</a></div>
-    </div>
-    <div class="setting-row" style="cursor:pointer" onclick="document.getElementById('level-roadmap-container').style.display=document.getElementById('level-roadmap-container').style.display==='none'?'block':'none'">
-      <div><div class="setting-label">🗺️ Level Roadmap</div><div class="setting-sub">See all levels and your progress</div></div>
-      <span style="color:#FFD700;font-size:20px">→</span>
-    </div>
-    <div id="level-roadmap-container" style="display:none;margin-bottom:12px;"></div>
-        <div class="setting-row" style="cursor:pointer" onclick="if(typeof showEnjoyGuide==='function')showEnjoyGuide()">
-      <div><div class="setting-label">⚡ How to Enjoy Teenz Bible</div><div class="setting-sub">Learn how to get the most out of this app</div></div>
-      <span style="color:#FFD700;font-size:20px">→</span>
-    </div>
-    <div class="setting-row" style="margin-top:20px;justify-content:center;">
-      <button class="reset-btn" onclick="showResetConfirm()" 
-        style="background:transparent;color:#556;border:1px solid #334;padding:8px 16px;border-radius:8px;font-size:11px;cursor:pointer;width:auto;margin:30px auto 10px;display:block;opacity:0.6">
-        🗑️ RESET ALL PROGRESS
-      </button>
+
+    <!-- AI & Data Group -->
+    <div class="settings-group">
+      <div class="settings-group-title">🤖 AI & Data</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Bible AI</div><div class="setting-sub">✅ Connected &amp; Ready</div></div>
+      </div>
+      <div style="padding:0 4px;margin-top:-8px;margin-bottom:12px;">
+        <input type="password" id="apiKeyInput" placeholder="Paste your Gemini API key here" style="display:none" 
+          style="background:#0a0a1a;border:1px solid #353560;color:#fff;padding:10px 14px;border-radius:10px;width:100%;font-family:'Comic Neue',cursive;font-size:14px;box-sizing:border-box;"
+          oninput="localStorage.setItem('geminiApiKey',this.value)">
+        <div style="font-size:11px;color:#888;margin-top:6px;"><span style="display:none">Free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#FF6B6B;">aistudio.google.com/app/apikey</a></div>
+      </div>
+      <div class="setting-row" style="justify-content:center;">
+        <button class="reset-btn" onclick="showResetConfirm()" 
+          style="background:transparent;color:#FF6B6B;border:1px solid rgba(255,107,107,0.2);padding:10px 20px;border-radius:10px;font-size:12px;cursor:pointer;width:100%;opacity:0.7;font-family:'Comic Neue',cursive;">
+          🗑️ Reset All Progress
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- Nav -->
   <nav class="nav">
-    <button class="nav-btn active" onclick="showScreen('home')"><span class="icon">🏠</span>Home</button>
-    <button class="nav-btn" onclick="showScreen('bible')"><span class="icon">📖</span>Bible</button>
-    <button class="nav-btn" onclick="showScreen('chat')"><span class="icon">🤖</span>Bible AI</button>
-    <button class="nav-btn" onclick="showScreen('settings')"><span class="icon">⚙️</span>Settings</button>
+    <button class="nav-btn active" onclick="showScreen('home')"><span class="icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-btn" onclick="showScreen('bible')"><span class="icon">📖</span><span class="nav-label">Bible</span></button>
+    <button class="nav-btn" onclick="showScreen('chat')"><span class="icon">🤖</span><span class="nav-label">AI Chat</span></button>
+    <button class="nav-btn" onclick="showScreen('biblemap')"><span class="icon">🗺️</span><span class="nav-label">Map</span></button>
   </nav>
 </div>
 
@@ -1792,7 +2017,7 @@ function showScreen(id) {
   if(typeof stopSpeech === 'function') stopSpeech();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   var _el=document.getElementById('screen-'+id);_el.classList.add('active');_el.style.opacity='0';_el.style.transform='translateY(8px)';requestAnimationFrame(function(){_el.style.transition='opacity 0.25s,transform 0.25s';_el.style.opacity='1';_el.style.transform='translateY(0)';});
-  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',['home','bible','chat','settings'][i]===id));
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',['home','bible','chat','biblemap'][i]===id));
   if(id==='home') renderHome();
   if(id==='bible') renderBible();
   if(id==='settings' && typeof renderLevelRoadmap === 'function') renderLevelRoadmap();
@@ -1886,7 +2111,7 @@ function showBadgeDetail(badgeId) {
   const earned = state.badges.includes(b.id);
   const ov = document.createElement('div');
   ov.className = 'badge-detail-overlay';
-  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  ov.onclick = function(e) { e.stopPropagation(); e.preventDefault(); if(e.target === ov) ov.remove(); };
   ov.innerHTML = '<div class="badge-detail-card">' +
     '<div class="badge-detail-icon">' + b.icon + '</div>' +
     '<div class="badge-detail-name">' + b.name + '</div>' +
@@ -2293,7 +2518,7 @@ function openNoteEditor(book, chNum) {
   
   const ov = document.createElement('div');
   ov.className = 'note-overlay';
-  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  ov.onclick = function(e) { e.stopPropagation(); e.preventDefault(); if(e.target === ov) ov.remove(); };
   
   let cardHtml = '<div class="note-card">';
   cardHtml += '<div class="note-card-title">📝 My Notes</div>';
@@ -4292,7 +4517,7 @@ renderBible();
       document.body.appendChild(ov);
       
       let opened = false;
-      ov.onclick = function(){
+      ov.onclick = function(e){ e.stopPropagation(); e.preventDefault();
         if(!opened){
           opened = true;
           document.getElementById('chestBox').style.animation = 'chestOpen 0.5s ease-out forwards';
@@ -5807,6 +6032,773 @@ function showSpeedPicker() {
 })();
 
 // ===== END ALL UX FIXES =====
+
+// ============================================================
+// BATCH 1 IMPROVEMENTS - Injected Code
+// ============================================================
+
+// === E1: VERSE OF THE DAY ===
+
+// === VERSE OF THE DAY ===
+const dailyVerses = [
+  {ref:"Matthew 5:14",en:"You are the light of the world. A city set on a hill cannot be hidden.",ko:"너는 세상의 빛이야. 언덕 위에 세운 도시는 숨길 수 없어."},
+  {ref:"Matthew 6:34",en:"Don't worry about tomorrow. Tomorrow has enough trouble of its own.",ko:"내일 걱정은 하지 마. 내일은 내일의 걱정이 있을 거야."},
+  {ref:"Matthew 7:7",en:"Ask and it will be given to you; seek and you will find; knock and the door will be opened.",ko:"구하면 받을 거고, 찾으면 찾을 거고, 두드리면 열릴 거야."},
+  {ref:"John 3:16",en:"For God so loved the world that he gave his one and only Son.",ko:"하나님이 세상을 너무 사랑해서 자기 하나뿐인 아들을 보내주셨어."},
+  {ref:"John 14:6",en:"I am the way, the truth, and the life.",ko:"내가 길이고, 진리이고, 생명이야."},
+  {ref:"John 15:12",en:"Love each other as I have loved you.",ko:"내가 너희를 사랑한 것처럼, 서로 사랑해."},
+  {ref:"Romans 8:28",en:"All things work together for good for those who love God.",ko:"하나님을 사랑하는 사람들에게는 모든 것이 합력하여 선을 이뤄."},
+  {ref:"Romans 8:38-39",en:"Nothing can separate us from the love of God.",ko:"그 어떤 것도 우리를 하나님의 사랑에서 떼어놓을 수 없어."},
+  {ref:"Romans 12:2",en:"Do not conform to the pattern of this world, but be transformed by the renewing of your mind.",ko:"이 세상의 틀에 맞추지 마. 마음을 새롭게 해서 변화돼."},
+  {ref:"Philippians 4:13",en:"I can do all things through Christ who strengthens me.",ko:"나에게 힘을 주시는 그리스도 안에서 나는 뭐든지 할 수 있어."},
+  {ref:"Philippians 4:6",en:"Do not be anxious about anything, but in everything, by prayer, present your requests to God.",ko:"아무것도 걱정하지 마. 모든 일을 기도로 하나님께 말씀드려."},
+  {ref:"1 John 4:19",en:"We love because he first loved us.",ko:"우리가 사랑하는 건, 하나님이 먼저 우리를 사랑해주셨기 때문이야."},
+  {ref:"Hebrews 11:1",en:"Faith is being sure of what we hope for and certain of what we do not see.",ko:"믿음은 우리가 바라는 것들의 확신이고, 보이지 않는 것들의 증거야."},
+  {ref:"Hebrews 13:8",en:"Jesus Christ is the same yesterday, today, and forever.",ko:"예수 그리스도는 어제나 오늘이나 영원히 같은 분이야."},
+  {ref:"James 1:5",en:"If any of you lacks wisdom, ask God, who gives generously.",ko:"지혜가 부족하면 하나님께 구해. 하나님은 아낌없이 주시는 분이야."},
+  {ref:"Ephesians 2:8",en:"For it is by grace you have been saved, through faith—and this is not from yourselves, it is the gift of God.",ko:"은혜로 구원받은 거야, 믿음을 통해서. 이건 너의 노력이 아니라 하나님의 선물이야."},
+  {ref:"Galatians 5:22-23",en:"The fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control.",ko:"성령의 열매는 사랑, 기쁨, 평화, 인내, 친절, 선함, 신실함, 온유함, 절제야."},
+  {ref:"1 Corinthians 13:4",en:"Love is patient, love is kind. It does not envy, it does not boast.",ko:"사랑은 참을성이 있고, 친절해. 질투하지 않고, 자랑하지 않아."},
+  {ref:"1 Corinthians 16:13",en:"Be on your guard; stand firm in the faith; be courageous; be strong.",ko:"깨어 있어. 믿음에 굳게 서. 용감해져. 강해져."},
+  {ref:"2 Timothy 1:7",en:"God gave us a spirit not of fear but of power, love, and self-control.",ko:"하나님이 우리에게 주신 건 두려움의 영이 아니라 능력과 사랑과 절제의 영이야."},
+  {ref:"Colossians 3:23",en:"Whatever you do, work at it with all your heart, as working for the Lord.",ko:"무슨 일을 하든지 마음을 다해서 해. 사람이 아니라 주님을 위해 하는 것처럼."},
+  {ref:"1 Peter 5:7",en:"Cast all your anxiety on him because he cares for you.",ko:"너의 모든 걱정을 하나님께 맡겨. 하나님이 너를 돌봐주시니까."},
+  {ref:"Mark 11:24",en:"Whatever you ask for in prayer, believe that you have received it, and it will be yours.",ko:"기도할 때 구하는 것은 뭐든지 받은 줄로 믿어. 그러면 이루어질 거야."},
+  {ref:"Luke 6:31",en:"Do to others as you would have them do to you.",ko:"남에게 대접받고 싶은 대로 남을 대접해."},
+  {ref:"Acts 1:8",en:"You will receive power when the Holy Spirit comes on you.",ko:"성령이 너희에게 임하시면 너희가 능력을 받을 거야."},
+  {ref:"Revelation 21:4",en:"He will wipe every tear from their eyes. There will be no more death or mourning or crying or pain.",ko:"하나님이 모든 눈물을 닦아주실 거야. 더 이상 죽음도, 슬픔도, 울음도, 고통도 없을 거야."},
+  {ref:"Matthew 11:28",en:"Come to me, all you who are weary and burdened, and I will give you rest.",ko:"지치고 힘든 사람들아, 다 나에게 와. 내가 쉬게 해줄게."},
+  {ref:"Matthew 28:20",en:"And surely I am with you always, to the very end of the age.",ko:"내가 세상 끝날까지 항상 너희와 함께 있을 거야."},
+  {ref:"John 8:32",en:"Then you will know the truth, and the truth will set you free.",ko:"진리를 알게 될 거야, 그리고 진리가 너를 자유롭게 할 거야."},
+  {ref:"John 10:10",en:"I have come that they may have life, and have it to the full.",ko:"내가 온 건 너희가 생명을 얻고, 더 풍성히 얻게 하려는 거야."}
+];
+
+function getVerseOfTheDay() {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  return dailyVerses[dayOfYear % dailyVerses.length];
+}
+
+function renderVerseOfTheDay() {
+  const verse = getVerseOfTheDay();
+  const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  const text = lang === 'ko' ? verse.ko : verse.en;
+  return '<div class="votd-card" onclick="showScreen(\'bible\')">' +
+    '<div class="votd-label">✨ VERSE OF THE DAY</div>' +
+    '<div class="votd-text">"' + text + '"</div>' +
+    '<div class="votd-ref">— ' + verse.ref + '</div>' +
+    '<div class="votd-cta">Tap to start reading →</div>' +
+  '</div>';
+}
+
+
+// === E2: READING PLANS ===
+
+// === READING PLANS ===
+const readingPlans = [
+  {id:'miracles',name:'7 Days of Miracles',nameKo:'7일간의 기적',icon:'✨',days:7,chapters:[
+    {book:'Matthew',ch:8},{book:'Matthew',ch:9},{book:'Mark',ch:5},{book:'Luke',ch:7},
+    {book:'John',ch:2},{book:'John',ch:6},{book:'John',ch:11}
+  ]},
+  {id:'love',name:'Love & Grace',nameKo:'사랑과 은혜',icon:'❤️',days:7,chapters:[
+    {book:'John',ch:3},{book:'John',ch:15},{book:'Romans',ch:8},{book:'1 Corinthians',ch:13},
+    {book:'Ephesians',ch:2},{book:'1 John',ch:4},{book:'Galatians',ch:5}
+  ]},
+  {id:'courage',name:'Courage & Faith',nameKo:'용기와 믿음',icon:'🦁',days:7,chapters:[
+    {book:'Matthew',ch:14},{book:'Acts',ch:4},{book:'Hebrews',ch:11},{book:'James',ch:1},
+    {book:'Romans',ch:5},{book:'2 Timothy',ch:1},{book:'1 Peter',ch:5}
+  ]},
+  {id:'matthew30',name:'30-Day Matthew',nameKo:'30일 마태복음 완독',icon:'📖',days:28,chapters:
+    Array.from({length:28},(_,i)=>({book:'Matthew',ch:i+1}))
+  },
+  {id:'gospels',name:'The 4 Gospels Journey',nameKo:'4복음서 여행',icon:'🗺️',days:30,chapters:[
+    ...Array.from({length:7},(_,i)=>({book:'Matthew',ch:i*4+1})),
+    ...Array.from({length:8},(_,i)=>({book:'Mark',ch:i*2+1})),
+    ...Array.from({length:8},(_,i)=>({book:'Luke',ch:i*3+1})),
+    ...Array.from({length:7},(_,i)=>({book:'John',ch:i*3+1}))
+  ]}
+];
+
+function getActivePlan() {
+  return JSON.parse(localStorage.getItem('activePlan') || 'null');
+}
+
+function startPlan(planId) {
+  const plan = readingPlans.find(p=>p.id===planId);
+  if(!plan) return;
+  const active = {id:planId, startDate:new Date().toISOString(), completedDays:[], currentDay:0};
+  localStorage.setItem('activePlan', JSON.stringify(active));
+  renderReadingPlans();
+}
+
+function renderReadingPlans() {
+  const container = document.getElementById('reading-plans-section');
+  if(!container) return;
+  const active = getActivePlan();
+  const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  let h = '<div class="section-title" style="font-size:20px">📋 Reading Plans</div>';
+  
+  if(active) {
+    const plan = readingPlans.find(p=>p.id===active.id);
+    if(plan) {
+      const progress = Math.min(active.completedDays.length, plan.chapters.length);
+      const pct = Math.round((progress/plan.chapters.length)*100);
+      const nextCh = plan.chapters[Math.min(progress, plan.chapters.length-1)];
+      h += '<div class="plan-active-card">';
+      h += '<div class="plan-active-header"><span class="plan-icon">'+plan.icon+'</span><div>';
+      h += '<div class="plan-active-name">'+(lang==='ko'?plan.nameKo:plan.name)+'</div>';
+      h += '<div class="plan-active-progress">Day '+(progress+1)+' of '+plan.chapters.length+' ('+pct+'%)</div>';
+      h += '</div></div>';
+      h += '<div class="goal-progress-bar" style="margin:10px 0"><div class="goal-progress-fill" style="width:'+pct+'%"></div></div>';
+      if(progress < plan.chapters.length) {
+        h += '<div class="plan-next" onclick="showBook(\''+nextCh.book+'\');setTimeout(()=>showChapter(\''+nextCh.book+'\','+nextCh.ch+'),300)">📖 Next: '+nextCh.book+' Ch.'+nextCh.ch+' →</div>';
+      } else {
+        h += '<div style="text-align:center;color:#4ECDC4;font-family:Bangers,cursive;font-size:18px">🎉 Plan Complete!</div>';
+      }
+      h += '<div class="plan-quit" onclick="if(confirm(\'Quit this plan?\'))localStorage.removeItem(\'activePlan\');renderReadingPlans()">Quit Plan</div>';
+      h += '</div>';
+    }
+  }
+  
+  h += '<div class="plans-grid">';
+  readingPlans.forEach(plan => {
+    const isActive = active && active.id === plan.id;
+    h += '<div class="plan-card'+(isActive?' active':'')+'" onclick="'+(isActive?'':'startPlan(\''+plan.id+'\')')+'">';
+    h += '<div class="plan-card-icon">'+plan.icon+'</div>';
+    h += '<div class="plan-card-name">'+(lang==='ko'?plan.nameKo:plan.name)+'</div>';
+    h += '<div class="plan-card-days">'+plan.days+' days</div>';
+    if(isActive) h += '<div class="plan-card-badge">ACTIVE</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  container.innerHTML = h;
+}
+
+
+// === C3: GEM STORE ===
+
+// === GEM STORE ===
+const profileThemes = [
+  {id:'default',name:'Default',cost:0,bg:'linear-gradient(135deg,#1a2848,#0e1830)',unlocked:true},
+  {id:'ocean',name:'Ocean',cost:20,bg:'linear-gradient(135deg,#0c3547,#1a6b7a)',unlocked:false},
+  {id:'sunset',name:'Sunset',cost:20,bg:'linear-gradient(135deg,#4a1942,#c84b31)',unlocked:false},
+  {id:'forest',name:'Forest',cost:20,bg:'linear-gradient(135deg,#1a3c2a,#2d6a4f)',unlocked:false},
+  {id:'galaxy',name:'Galaxy',cost:50,bg:'linear-gradient(135deg,#1a1a4e,#4a1a6b)',unlocked:false},
+  {id:'gold',name:'Royal Gold',cost:100,bg:'linear-gradient(135deg,#3d2e0a,#8b6914)',unlocked:false}
+];
+
+function buyTheme(themeId) {
+  const theme = profileThemes.find(t=>t.id===themeId);
+  if(!theme || theme.unlocked) return;
+  const gems = state.gems || 0;
+  if(gems < theme.cost) {
+    alert('Not enough gems! You need ' + theme.cost + ' gems.');
+    return;
+  }
+  state.gems -= theme.cost;
+  if(!state.unlockedThemes) state.unlockedThemes = ['default'];
+  state.unlockedThemes.push(themeId);
+  state.activeTheme = themeId;
+  saveState();
+  renderProfileCard();
+}
+
+function buyStreakFreeze() {
+  const gems = state.gems || 0;
+  if(gems < 15) { alert('Not enough gems! You need 15 gems.'); return; }
+  state.gems -= 15;
+  state.streakFreezes = (state.streakFreezes || 0) + 1;
+  saveState();
+  alert('Streak Freeze purchased! You now have ' + state.streakFreezes + ' freeze(s).');
+}
+
+
+// === NEW STATE FIELDS ===
+if(!state.earlyBirdReads) state.earlyBirdReads = 0;
+if(!state.nightOwlReads) state.nightOwlReads = 0;
+if(!state.maxChaptersInSession) state.maxChaptersInSession = 0;
+if(!state.quizStreak) state.quizStreak = 0;
+if(!state.bilingualReads) state.bilingualReads = 0;
+if(!state.shareCount) state.shareCount = 0;
+if(!state.unlockedThemes) state.unlockedThemes = ['default'];
+if(!state.activeTheme) state.activeTheme = 'default';
+if(!state.streakFreezes) state.streakFreezes = 0;
+if(!state.sessionsChapters) state.sessionsChapters = 0;
+if(!state.sessionStart) state.sessionStart = null;
+
+// Track reading time for new badges
+const _origMarkRead = typeof markChapterRead === 'function' ? markChapterRead : null;
+if(_origMarkRead) {
+  const _wrappedMark = markChapterRead;
+  // Time-based badge tracking
+  window.addEventListener('load', function() {
+    const hour = new Date().getHours();
+    if(hour < 7) state.earlyBirdReads = (state.earlyBirdReads||0) + 1;
+    if(hour >= 22) state.nightOwlReads = (state.nightOwlReads||0) + 1;
+  });
+}
+
+// Render VOTD on home screen
+function updateVOTD() {
+  const container = document.getElementById('votd-section');
+  if(container) container.innerHTML = renderVerseOfTheDay();
+}
+
+// Initialize new features
+setTimeout(function() {
+  updateVOTD();
+  if(typeof renderReadingPlans === 'function') renderReadingPlans();
+}, 500);
+
+// === B3: ENHANCED CONTINUE READING ===
+// Override continue section rendering to be more prominent
+const _origRenderContinue = typeof renderContinueSection === 'function' ? renderContinueSection : null;
+
+
+// ============================================================
+// BATCH 2: MOTIVATION SYSTEM + HOME IMPROVEMENTS
+// ============================================================
+
+// === C2: ENHANCED STREAK DISPLAY ===
+function renderStreakCard() {
+  const container = document.getElementById('streak-card-section');
+  if(!container) return;
+  const streak = state.streak || 0;
+  const freezes = state.streakFreezes || 0;
+  
+  // Get week data
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0=Sun
+  const days = ['S','M','T','W','T','F','S'];
+  
+  let weekHtml = '<div class="streak-week">';
+  for(let i=0; i<7; i++) {
+    const isToday = i === dayOfWeek;
+    const isPast = i < dayOfWeek;
+    const readToday = isPast || (isToday && state.todayChapters > 0);
+    weekHtml += '<div class="streak-day'+(readToday?' done':'')+(isToday?' today':'')+'">'+days[i]+'</div>';
+  }
+  weekHtml += '</div>';
+  
+  if(streak > 0) {
+    container.innerHTML = '<div class="streak-card">' +
+      '<div class="streak-fire">🔥</div>' +
+      '<div class="streak-info">' +
+        '<div class="streak-count">' + streak + ' Day Streak!</div>' +
+        '<div class="streak-label">Keep it going! Read today to continue.</div>' +
+        (freezes > 0 ? '<div class="streak-freeze">❄️ ' + freezes + ' streak freeze(s) available</div>' : '') +
+        weekHtml +
+      '</div>' +
+    '</div>';
+  } else {
+    container.innerHTML = '<div class="streak-card" style="border-color:rgba(85,96,128,0.3);background:rgba(85,96,128,0.05)">' +
+      '<div class="streak-fire" style="opacity:0.4">🔥</div>' +
+      '<div class="streak-info">' +
+        '<div class="streak-count" style="color:#556080">No Streak Yet</div>' +
+        '<div class="streak-label">Read a chapter today to start your streak!</div>' +
+        weekHtml +
+      '</div>' +
+    '</div>';
+  }
+}
+
+// === C3: GEM STORE ===
+function openGemStore() {
+  const gems = state.gems || 0;
+  const unlockedThemes = state.unlockedThemes || ['default'];
+  const activeTheme = state.activeTheme || 'default';
+  
+  const themes = [
+    {id:'default',name:'Default',cost:0,bg:'linear-gradient(135deg,#1a2848,#0e1830)',icon:'🌙'},
+    {id:'ocean',name:'Ocean Wave',cost:20,bg:'linear-gradient(135deg,#0c3547,#1a6b7a)',icon:'🌊'},
+    {id:'sunset',name:'Sunset Glow',cost:20,bg:'linear-gradient(135deg,#4a1942,#c84b31)',icon:'🌅'},
+    {id:'forest',name:'Forest Green',cost:20,bg:'linear-gradient(135deg,#1a3c2a,#2d6a4f)',icon:'🌲'},
+    {id:'galaxy',name:'Galaxy Purple',cost:50,bg:'linear-gradient(135deg,#1a1a4e,#4a1a6b)',icon:'🌌'},
+    {id:'gold',name:'Royal Gold',cost:100,bg:'linear-gradient(135deg,#3d2e0a,#8b6914)',icon:'👑'}
+  ];
+  
+  let h = '<div class="store-overlay" onclick="if(event.target===this)this.remove()">';
+  h += '<div class="store-card">';
+  h += '<div class="store-title">💎 Gem Store</div>';
+  h += '<div style="text-align:center;margin-bottom:16px"><span class="gem-balance">💎 ' + gems + ' Gems</span></div>';
+  
+  // Profile Themes
+  h += '<div class="store-section"><div class="store-section-title">🎨 Profile Themes</div>';
+  themes.forEach(t => {
+    const owned = unlockedThemes.includes(t.id);
+    const isActive = activeTheme === t.id;
+    const canBuy = gems >= t.cost;
+    h += '<div class="store-item">';
+    h += '<div class="store-item-info">';
+    h += '<div class="store-item-preview" style="background:'+t.bg+'">'+t.icon+'</div>';
+    h += '<div><div class="store-item-name">'+t.name+'</div>';
+    h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):'💎 '+t.cost+' gems')+'</div></div></div>';
+    if(isActive) {
+      h += '<button class="store-buy-btn owned">Active</button>';
+    } else if(owned) {
+      h += '<button class="store-buy-btn affordable" onclick="state.activeTheme=\''+t.id+'\';saveState();openGemStore()">Use</button>';
+    } else if(canBuy) {
+      h += '<button class="store-buy-btn affordable" onclick="buyTheme(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
+    } else {
+      h += '<button class="store-buy-btn locked">💎 '+t.cost+'</button>';
+    }
+    h += '</div>';
+  });
+  h += '</div>';
+  
+  // Power-ups
+  h += '<div class="store-section"><div class="store-section-title">⚡ Power-ups</div>';
+  h += '<div class="store-item">';
+  h += '<div class="store-item-info"><div class="store-item-preview" style="background:rgba(34,211,238,0.15)">❄️</div>';
+  h += '<div><div class="store-item-name">Streak Freeze</div><div class="store-item-desc">Protect your streak for 1 missed day</div></div></div>';
+  h += '<button class="store-buy-btn '+(gems>=15?'affordable':'locked')+'" onclick="buyStreakFreeze();document.querySelector(\'.store-overlay\').remove();openGemStore()">💎 15</button>';
+  h += '</div>';
+  
+  h += '<div class="store-item">';
+  h += '<div class="store-item-info"><div class="store-item-preview" style="background:rgba(250,204,21,0.15)">✨</div>';
+  h += '<div><div class="store-item-name">2x XP Boost (1 hour)</div><div class="store-item-desc">Double XP for 60 minutes</div></div></div>';
+  h += '<button class="store-buy-btn '+(gems>=25?'affordable':'locked')+'" onclick="activateXPBoost();document.querySelector(\'.store-overlay\').remove()">💎 25</button>';
+  h += '</div>';
+  h += '</div>';
+  
+  h += '<button class="store-close" onclick="this.closest(\'.store-overlay\').remove()">Close Store</button>';
+  h += '</div></div>';
+  
+  document.body.insertAdjacentHTML('beforeend', h);
+}
+
+function activateXPBoost() {
+  const gems = state.gems || 0;
+  if(gems < 25) { alert('Not enough gems!'); return; }
+  state.gems -= 25;
+  state.xpBoostUntil = Date.now() + 3600000; // 1 hour
+  saveState();
+  showXPToast('+2x XP BOOST ACTIVE! ✨');
+}
+
+// === UPDATE GEM DISPLAY ===
+function updateGemDisplay() {
+  const gemEl = document.getElementById('stat-gems');
+  if(gemEl) gemEl.textContent = state.gems || 0;
+}
+
+// === ENHANCED HOME SCREEN RENDERING ===
+const _origShowScreen = typeof showScreen === 'function' ? showScreen : null;
+if(_origShowScreen) {
+  const _wrappedShowScreen2 = showScreen;
+  showScreen = function(name) {
+    _wrappedShowScreen2(name);
+    if(name === 'home') {
+      renderStreakCard();
+      updateGemDisplay();
+      updateVOTD();
+    }
+    if(name === 'bible') {
+      if(typeof renderReadingPlans === 'function') renderReadingPlans();
+    }
+  };
+}
+
+// Initialize on load
+setTimeout(function() {
+  renderStreakCard();
+  updateGemDisplay();
+}, 600);
+
+
+// ============================================================
+// BATCH 3: QUIZ + ACCESSIBILITY + POLISH
+// ============================================================
+
+// === E5: QUIZ STREAK TRACKING ===
+if(!state.quizCorrectStreak) state.quizCorrectStreak = 0;
+if(!state.totalQuizCorrect) state.totalQuizCorrect = 0;
+if(!state.totalQuizAttempted) state.totalQuizAttempted = 0;
+
+// Wrap quiz answer handler to track streaks
+const _origHandleQuiz = typeof handleQuizAnswer === 'function' ? handleQuizAnswer : null;
+
+// === F2: ACCESSIBILITY IMPROVEMENTS ===
+// Add keyboard navigation support
+document.addEventListener('keydown', function(e) {
+  // Escape key closes overlays
+  if(e.key === 'Escape') {
+    const overlays = document.querySelectorAll('.quiz-overlay, .store-overlay, .badge-detail-overlay, .badge-unlock, .levelup-overlay, .note-overlay, .goal-modal');
+    overlays.forEach(o => o.remove());
+  }
+  // Arrow keys for chapter navigation in reader
+  if(document.getElementById('screen-chapter') && document.getElementById('screen-chapter').classList.contains('active')) {
+    if(e.key === 'ArrowLeft') {
+      const backBtn = document.getElementById('ch-back-btn');
+      if(backBtn) backBtn.click();
+    }
+  }
+});
+
+// Add ARIA labels to nav buttons
+setTimeout(function() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    const label = btn.querySelector('.nav-label');
+    if(label) btn.setAttribute('aria-label', label.textContent);
+  });
+  
+  // Add role="button" to interactive elements
+  document.querySelectorAll('.badge, .stat, .book-card, .ch-btn, .continue-card').forEach(el => {
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+  });
+}, 1000);
+
+// === QUIZ STATS CARD ===
+function renderQuizStats() {
+  const container = document.getElementById('quiz-stats-card');
+  if(!container) return;
+  const correct = state.totalQuizCorrect || 0;
+  const attempted = state.totalQuizAttempted || 0;
+  const streak = state.quizCorrectStreak || 0;
+  const accuracy = attempted > 0 ? Math.round((correct/attempted)*100) : 0;
+  
+  if(attempted === 0) { container.style.display = 'none'; return; }
+  container.style.display = 'block';
+  
+  container.innerHTML = '<div style="background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(236,72,153,0.06));border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:16px;margin-bottom:16px">' +
+    '<div style="font-family:Luckiest Guy,cursive;font-size:16px;color:#A78BFA;margin-bottom:10px">🧠 Quiz Performance</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' +
+      '<div style="text-align:center;padding:8px;background:rgba(10,20,40,0.5);border-radius:10px">' +
+        '<div style="font-family:Bangers,cursive;font-size:22px;color:#4ECDC4">'+correct+'</div>' +
+        '<div style="font-size:10px;color:#6880a8">Correct</div></div>' +
+      '<div style="text-align:center;padding:8px;background:rgba(10,20,40,0.5);border-radius:10px">' +
+        '<div style="font-family:Bangers,cursive;font-size:22px;color:#FFD700">'+accuracy+'%</div>' +
+        '<div style="font-size:10px;color:#6880a8">Accuracy</div></div>' +
+      '<div style="text-align:center;padding:8px;background:rgba(10,20,40,0.5);border-radius:10px">' +
+        '<div style="font-family:Bangers,cursive;font-size:22px;color:#FF6B6B">'+streak+'</div>' +
+        '<div style="font-size:10px;color:#6880a8">Best Streak</div></div>' +
+    '</div></div>';
+}
+
+// === ENHANCED PROFILE CARD WITH THEME ===
+const _origRenderProfile = typeof renderProfileCard === 'function' ? renderProfileCard : null;
+if(_origRenderProfile) {
+  const _wrappedProfile = renderProfileCard;
+  renderProfileCard = function() {
+    _wrappedProfile();
+    // Apply active theme
+    const theme = state.activeTheme || 'default';
+    const themes = {
+      'default':'linear-gradient(135deg,#1a2848,#0e1830)',
+      'ocean':'linear-gradient(135deg,#0c3547,#1a6b7a)',
+      'sunset':'linear-gradient(135deg,#4a1942,#c84b31)',
+      'forest':'linear-gradient(135deg,#1a3c2a,#2d6a4f)',
+      'galaxy':'linear-gradient(135deg,#1a1a4e,#4a1a6b)',
+      'gold':'linear-gradient(135deg,#3d2e0a,#8b6914)'
+    };
+    const profileCard = document.querySelector('#profile-card-section .profile-card, #profile-card-section > div');
+    if(profileCard && themes[theme]) {
+      profileCard.style.background = themes[theme];
+    }
+  };
+}
+
+// Render quiz stats on stats tab
+const _origSwitchHomeTab = typeof switchHomeTab === 'function' ? switchHomeTab : null;
+if(_origSwitchHomeTab) {
+  const _wrappedTab = switchHomeTab;
+  switchHomeTab = function(tab) {
+    _wrappedTab(tab);
+    if(tab === 'stats') {
+      renderQuizStats();
+    }
+  };
+}
+
+// === SCROLL TO TOP ON SCREEN CHANGE ===
+const _origShowScreen3 = showScreen;
+showScreen = function(name) {
+  _origShowScreen3(name);
+  window.scrollTo({top:0, behavior:'smooth'});
+};
+
+// === DOUBLE-TAP TO BOOKMARK ===
+let lastTapTime = 0;
+document.addEventListener('touchend', function(e) {
+  const readerBody = document.querySelector('.reader-body');
+  if(!readerBody || !readerBody.contains(e.target)) return;
+  
+  const now = Date.now();
+  if(now - lastTapTime < 300) {
+    // Double tap detected - toggle bookmark
+    const bookmarkBtn = document.querySelector('.bookmark-btn');
+    if(bookmarkBtn) bookmarkBtn.click();
+  }
+  lastTapTime = now;
+});
+
+// Initialize
+setTimeout(function() {
+  renderQuizStats();
+}, 700);
+
+
+// ============================================================
+// BATCH 4: BIBLE MAP FEATURE
+// ============================================================
+
+const mapLocations = {
+  overview: [
+    {icon:'⛪',name:'Jerusalem',nameKo:'예루살렘',desc:'The holy city where Jesus was crucified and resurrected. Center of Jewish worship with the great Temple.',descKo:'예수님이 십자가에 못 박히시고 부활하신 거룩한 도시. 위대한 성전이 있던 유대교 예배의 중심지.',verses:['Matthew 21','Luke 19','John 2']},
+    {icon:'⭐',name:'Bethlehem',nameKo:'베들레헴',desc:'The birthplace of Jesus, a small town south of Jerusalem. King David was also born here.',descKo:'예수님이 태어나신 곳. 예루살렘 남쪽의 작은 마을. 다윗 왕도 여기서 태어났어.',verses:['Matthew 2','Luke 2']},
+    {icon:'🏘️',name:'Nazareth',nameKo:'나사렛',desc:'Where Jesus grew up. A small village in the hills of Galilee where Mary and Joseph lived.',descKo:'예수님이 자라신 곳. 갈릴리 언덕에 있는 작은 마을로 마리아와 요셉이 살았어.',verses:['Matthew 2:23','Luke 4']},
+    {icon:'🐟',name:'Capernaum',nameKo:'가버나움',desc:'Jesus\'s home base during his ministry. Many miracles happened here by the Sea of Galilee.',descKo:'예수님의 사역 본거지. 갈릴리 호수 옆에서 많은 기적이 일어난 곳.',verses:['Matthew 4:13','Mark 2','Luke 7']},
+    {icon:'🌊',name:'Sea of Galilee',nameKo:'갈릴리 호수',desc:'A freshwater lake where Jesus walked on water, calmed storms, and called his first disciples.',descKo:'예수님이 물 위를 걸으시고, 폭풍을 잠재우시고, 첫 제자들을 부르신 민물 호수.',verses:['Matthew 14','Mark 4','John 6']},
+    {icon:'💧',name:'Jordan River',nameKo:'요단강',desc:'Where John the Baptist baptized Jesus. A sacred river flowing from Galilee to the Dead Sea.',descKo:'세례 요한이 예수님에게 세례를 베푼 곳. 갈릴리에서 사해까지 흐르는 거룩한 강.',verses:['Matthew 3','Mark 1']},
+    {icon:'🏛️',name:'Rome',nameKo:'로마',desc:'Capital of the Roman Empire. Paul wrote his letter to the Romans and was eventually martyred here.',descKo:'로마 제국의 수도. 바울이 로마서를 쓰고 결국 순교한 곳.',verses:['Romans 1','Acts 28']},
+    {icon:'🏺',name:'Ephesus',nameKo:'에베소',desc:'A major city where Paul spent 3 years teaching. One of the 7 churches in Revelation.',descKo:'바울이 3년간 가르친 주요 도시. 요한계시록의 7개 교회 중 하나.',verses:['Acts 19','Ephesians 1','Revelation 2']},
+    {icon:'🏟️',name:'Corinth',nameKo:'고린도',desc:'A wealthy Greek city where Paul founded a church. He wrote two letters to the Corinthians.',descKo:'바울이 교회를 세운 부유한 그리스 도시. 고린도전후서를 이곳에 보냈어.',verses:['Acts 18','1 Corinthians 1']},
+    {icon:'🏛️',name:'Athens',nameKo:'아테네',desc:'The intellectual capital of Greece where Paul preached about the "unknown god" at the Areopagus.',descKo:'그리스의 지적 수도. 바울이 아레오바고에서 "알지 못하는 신"에 대해 설교한 곳.',verses:['Acts 17']},
+    {icon:'🌴',name:'Antioch',nameKo:'안디옥',desc:'Where believers were first called "Christians." The starting point of Paul\'s missionary journeys.',descKo:'믿는 사람들이 처음 "그리스도인"이라 불린 곳. 바울의 선교 여행 출발지.',verses:['Acts 11','Acts 13']},
+    {icon:'⚔️',name:'Damascus',nameKo:'다마스쿠스',desc:'Where Saul (Paul) had his dramatic conversion on the road, blinded by a heavenly light.',descKo:'사울(바울)이 하늘의 빛에 눈이 멀어 극적으로 회심한 다마스쿠스 도상.',verses:['Acts 9','Acts 22']}
+  ],
+  jerusalem: [
+    {icon:'🏛️',name:'Temple Mount',nameKo:'성전산',desc:'The holiest site in Judaism. Jesus taught here and drove out the money changers.',descKo:'유대교의 가장 거룩한 장소. 예수님이 가르치시고 환전상들을 내쫓으신 곳.',verses:['Matthew 21','John 2']},
+    {icon:'🫒',name:'Mount of Olives',nameKo:'감람산',desc:'Where Jesus often prayed and taught. He ascended to heaven from here after his resurrection.',descKo:'예수님이 자주 기도하고 가르치신 곳. 부활 후 이곳에서 하늘로 올라가셨어.',verses:['Matthew 24','Acts 1']},
+    {icon:'🌿',name:'Garden of Gethsemane',nameKo:'겟세마네 동산',desc:'Where Jesus prayed in agony the night before his crucifixion and was arrested.',descKo:'예수님이 십자가에 못 박히시기 전날 밤 고통 속에 기도하시고 체포되신 곳.',verses:['Matthew 26','Mark 14','Luke 22']},
+    {icon:'✝️',name:'Golgotha',nameKo:'골고다',desc:'The "Place of the Skull" where Jesus was crucified. Also called Calvary.',descKo:'"해골의 장소"라 불리는 예수님이 십자가에 못 박히신 곳. 갈보리라고도 해.',verses:['Matthew 27','Mark 15','John 19']},
+    {icon:'💧',name:'Pool of Bethesda',nameKo:'베데스다 못',desc:'Where Jesus healed a man who had been paralyzed for 38 years.',descKo:'예수님이 38년간 중풍에 걸린 사람을 고치신 곳.',verses:['John 5']},
+    {icon:'🍞',name:'Upper Room',nameKo:'다락방',desc:'Where Jesus shared the Last Supper with his disciples and washed their feet.',descKo:'예수님이 제자들과 최후의 만찬을 나누시고 발을 씻겨주신 곳.',verses:['Matthew 26','John 13','Acts 1']}
+  ],
+  galilee: [
+    {icon:'🐟',name:'Capernaum',nameKo:'가버나움',desc:'Jesus\'s ministry headquarters. Peter\'s house was here. Many healings and teachings took place.',descKo:'예수님의 사역 본부. 베드로의 집이 있었고, 많은 치유와 가르침이 이루어진 곳.',verses:['Matthew 8','Mark 1','Luke 4']},
+    {icon:'🎣',name:'Bethsaida',nameKo:'벳새다',desc:'Hometown of Peter, Andrew, and Philip. Jesus fed 5,000 people near here.',descKo:'베드로, 안드레, 빌립의 고향. 예수님이 이 근처에서 5,000명을 먹이셨어.',verses:['Mark 6','Luke 9','John 6']},
+    {icon:'🏘️',name:'Nazareth',nameKo:'나사렛',desc:'Where Jesus grew up and was rejected by his own townspeople when he preached in the synagogue.',descKo:'예수님이 자라신 곳. 회당에서 설교하셨을 때 마을 사람들에게 거부당하셨어.',verses:['Luke 4','Matthew 13']},
+    {icon:'🍷',name:'Cana',nameKo:'가나',desc:'Where Jesus performed his first miracle, turning water into wine at a wedding feast.',descKo:'예수님이 첫 번째 기적을 행하신 곳. 결혼 잔치에서 물을 포도주로 바꾸셨어.',verses:['John 2']},
+    {icon:'🏛️',name:'Tiberias',nameKo:'디베랴',desc:'A major city on the western shore of the Sea of Galilee, built by Herod Antipas.',descKo:'갈릴리 호수 서쪽 해안의 주요 도시. 헤롯 안티파스가 건설했어.',verses:['John 6:23']},
+    {icon:'👩',name:'Magdala',nameKo:'막달라',desc:'Hometown of Mary Magdalene, one of Jesus\'s most devoted followers.',descKo:'예수님의 가장 헌신적인 추종자 중 한 명인 막달라 마리아의 고향.',verses:['Luke 8','John 20']},
+    {icon:'👦',name:'Nain',nameKo:'나인',desc:'Where Jesus raised a widow\'s son from the dead, showing his power over death.',descKo:'예수님이 과부의 아들을 죽음에서 살리신 곳. 죽음에 대한 권능을 보여주셨어.',verses:['Luke 7:11-17']}
+  ],
+  paul: [
+    {icon:'🚀',name:'Antioch (Start)',nameKo:'안디옥 (출발)',desc:'Paul\'s home church and the launching point for all three missionary journeys.',descKo:'바울의 모교회이자 세 번의 선교 여행 출발지.',verses:['Acts 13','Acts 15','Acts 18']},
+    {icon:'🏝️',name:'Cyprus',nameKo:'키프로스',desc:'First stop on Paul\'s first journey. Barnabas\'s home island where they preached the gospel.',descKo:'바울의 첫 번째 여행 첫 정거장. 바나바의 고향 섬에서 복음을 전했어.',verses:['Acts 13:4-12']},
+    {icon:'⚔️',name:'Lystra & Derbe',nameKo:'루스드라 & 더베',desc:'Paul was stoned and left for dead in Lystra, but got up and continued to Derbe.',descKo:'바울이 루스드라에서 돌에 맞아 죽은 줄 알았지만, 일어나서 더베로 계속 갔어.',verses:['Acts 14']},
+    {icon:'📖',name:'Philippi',nameKo:'빌립보',desc:'Where Paul and Silas were imprisoned and an earthquake freed them. Lydia was converted here.',descKo:'바울과 실라가 투옥되었다가 지진으로 풀려난 곳. 루디아가 여기서 회심했어.',verses:['Acts 16','Philippians 1']},
+    {icon:'🏛️',name:'Thessalonica',nameKo:'데살로니가',desc:'Paul founded a church here but was driven out by jealous opponents.',descKo:'바울이 교회를 세웠지만 질투하는 반대자들에 의해 쫓겨난 곳.',verses:['Acts 17','1 Thessalonians 1']},
+    {icon:'🎓',name:'Athens',nameKo:'아테네',desc:'Paul debated Greek philosophers and preached about the "Unknown God" at Mars Hill.',descKo:'바울이 그리스 철학자들과 토론하고 아레오바고에서 "알지 못하는 신"을 전한 곳.',verses:['Acts 17:16-34']},
+    {icon:'🏟️',name:'Corinth',nameKo:'고린도',desc:'Paul stayed 18 months here, making tents and founding one of the most important early churches.',descKo:'바울이 18개월간 머물며 천막을 만들고 초대교회 중 가장 중요한 교회를 세운 곳.',verses:['Acts 18','1 Corinthians 1']},
+    {icon:'🏺',name:'Ephesus',nameKo:'에베소',desc:'Paul spent 3 years here. A riot broke out when his preaching threatened the idol-making business.',descKo:'바울이 3년간 머문 곳. 그의 설교가 우상 제조업을 위협하자 폭동이 일어났어.',verses:['Acts 19','Ephesians 1']},
+    {icon:'🏛️',name:'Rome',nameKo:'로마',desc:'Paul\'s final destination. He was imprisoned here but continued to preach and write letters.',descKo:'바울의 최종 목적지. 투옥되었지만 계속 설교하고 편지를 썼어.',verses:['Acts 28','Romans 1','Philippians 1']}
+  ]
+};
+
+function switchMapTab(tab) {
+  document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.map-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('map-' + tab).classList.add('active');
+  renderMapLocations(tab);
+}
+
+function renderMapLocations(tab) {
+  const container = document.getElementById(tab + '-locations');
+  if(!container) return;
+  const locations = mapLocations[tab] || [];
+  const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  
+  let h = '';
+  locations.forEach(loc => {
+    h += '<div class="map-location-card">';
+    h += '<div class="map-loc-header">';
+    h += '<div class="map-loc-icon">' + loc.icon + '</div>';
+    h += '<div><div class="map-loc-name">' + loc.name + '</div>';
+    if(loc.nameKo) h += '<div class="map-loc-name-ko">' + loc.nameKo + '</div>';
+    h += '</div></div>';
+    h += '<div class="map-loc-desc">' + (lang === 'ko' ? loc.descKo : loc.desc) + '</div>';
+    if(loc.verses && loc.verses.length) {
+      h += '<div class="map-loc-verses">';
+      loc.verses.forEach(v => {
+        h += '<span class="map-loc-verse" onclick="event.stopPropagation();navigateToVerse(\'' + v + '\')">' + v + '</span>';
+      });
+      h += '</div>';
+    }
+    h += '</div>';
+  });
+  container.innerHTML = h;
+}
+
+function navigateToVerse(ref) {
+  // Parse reference like "Matthew 21" or "Acts 17:16-34"
+  const parts = ref.match(/^(.+?)\s+(\d+)/);
+  if(!parts) return;
+  const book = parts[1];
+  const chapter = parseInt(parts[2]);
+  showScreen('bible');
+  setTimeout(function() {
+    if(typeof showBook === 'function') showBook(book);
+    setTimeout(function() {
+      if(typeof showChapter === 'function') showChapter(book, chapter);
+    }, 300);
+  }, 200);
+}
+
+function openMapFullscreen(src) {
+  const overlay = document.createElement('div');
+  overlay.className = 'map-fullscreen';
+  overlay.onclick = function() { this.remove(); };
+  overlay.innerHTML = '<img src="' + src + '" alt="Bible Map"><button class="map-fullscreen-close" onclick="this.parentElement.remove()">✕</button>';
+  document.body.appendChild(overlay);
+  
+  // Pinch to zoom support
+  let scale = 1;
+  const img = overlay.querySelector('img');
+  overlay.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    scale += e.deltaY * -0.01;
+    scale = Math.min(Math.max(0.5, scale), 4);
+    img.style.transform = 'scale(' + scale + ')';
+  });
+}
+
+// Initialize map on first visit
+setTimeout(function() {
+  renderMapLocations('overview');
+}, 800);
+
+// Update showScreen to handle biblemap
+const _origShowScreen4 = showScreen;
+showScreen = function(name) {
+  _origShowScreen4(name);
+  if(name === 'biblemap') {
+    renderMapLocations('overview');
+  }
+};
+
+
+// ============================================================
+// BATCH 5: FINAL POLISH
+// ============================================================
+
+// === C1: READING GOAL SYSTEM ===
+if(!state.dailyGoal) state.dailyGoal = 2; // default: 2 chapters/day
+if(!state.todayChapters) state.todayChapters = 0;
+if(!state.todayDate) state.todayDate = new Date().toDateString();
+
+function checkTodayReset() {
+  const today = new Date().toDateString();
+  if(state.todayDate !== today) {
+    state.todayChapters = 0;
+    state.todayDate = today;
+    saveState();
+  }
+}
+
+function renderReadingGoal() {
+  checkTodayReset();
+  const container = document.getElementById('reading-goal-section');
+  if(!container) return;
+  
+  const goal = state.dailyGoal || 2;
+  const done = state.todayChapters || 0;
+  const pct = Math.min(100, Math.round((done/goal)*100));
+  const isComplete = done >= goal;
+  
+  let h = '<div class="goal-card">';
+  h += '<div class="goal-header">';
+  h += '<div class="goal-title">' + (isComplete ? '🎉' : '📖') + ' Daily Goal</div>';
+  h += '<div class="goal-edit" onclick="openGoalModal()">Change goal</div>';
+  h += '</div>';
+  h += '<div class="goal-progress-bar"><div class="goal-progress-fill" style="width:' + pct + '%"></div></div>';
+  h += '<div class="goal-stats">';
+  h += '<span>' + done + ' / ' + goal + ' chapters</span>';
+  h += '<span>' + (isComplete ? '✅ Goal reached!' : (goal - done) + ' more to go') + '</span>';
+  h += '</div></div>';
+  container.innerHTML = h;
+}
+
+function openGoalModal() {
+  const current = state.dailyGoal || 2;
+  const options = [1,2,3,5,7,10];
+  
+  let h = '<div class="goal-modal" onclick="if(event.target===this)this.remove()">';
+  h += '<div class="goal-modal-card">';
+  h += '<div class="goal-modal-title">📖 Set Daily Goal</div>';
+  h += '<p style="color:#7888a8;font-size:13px;margin-bottom:16px">How many chapters do you want to read each day?</p>';
+  h += '<div class="goal-options">';
+  options.forEach(n => {
+    h += '<div class="goal-option' + (n === current ? ' selected' : '') + '" onclick="selectGoal(' + n + ',this)">';
+    h += '<div class="goal-option-num">' + n + '</div>';
+    h += '<div class="goal-option-label">chapter' + (n>1?'s':'') + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  h += '<button class="goal-save-btn" onclick="saveGoal()">Save Goal</button>';
+  h += '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', h);
+}
+
+var _pendingGoal = null;
+function selectGoal(n, el) {
+  _pendingGoal = n;
+  document.querySelectorAll('.goal-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveGoal() {
+  if(_pendingGoal) {
+    state.dailyGoal = _pendingGoal;
+    saveState();
+  }
+  document.querySelector('.goal-modal').remove();
+  renderReadingGoal();
+}
+
+// === TRACK CHAPTERS READ TODAY ===
+// Hook into markChapterRead to increment today's count
+const _origMarkRead2 = typeof markChapterRead === 'function' ? markChapterRead : null;
+if(_origMarkRead2) {
+  const _wrappedMark2 = markChapterRead;
+  markChapterRead = function(book, ch) {
+    checkTodayReset();
+    const key = book + '_' + ch;
+    const wasRead = state.read && state.read[key];
+    _wrappedMark2(book, ch);
+    if(!wasRead) {
+      state.todayChapters = (state.todayChapters || 0) + 1;
+      // Track session chapters for Speed Reader badge
+      state.sessionsChapters = (state.sessionsChapters || 0) + 1;
+      if(state.sessionsChapters > (state.maxChaptersInSession || 0)) {
+        state.maxChaptersInSession = state.sessionsChapters;
+      }
+      saveState();
+      renderReadingGoal();
+      renderStreakCard();
+      updateGemDisplay();
+    }
+  };
+}
+
+// Reset session counter periodically
+setTimeout(function() { state.sessionsChapters = 0; }, 1800000); // 30 min
+
+// === FINAL SHOWSCREEN HOOK ===
+const _origShowScreen5 = showScreen;
+showScreen = function(name) {
+  _origShowScreen5(name);
+  if(name === 'home') {
+    renderReadingGoal();
+    renderQuizStats();
+  }
+};
+
+// Initialize
+setTimeout(function() {
+  renderReadingGoal();
+}, 900);
+
+// === SMOOTH SCROLL FOR READER ===
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth scroll behavior to reader body
+  const style = document.createElement('style');
+  style.textContent = '.reader-body { scroll-behavior: smooth; }';
+  document.head.appendChild(style);
+});
+
 </script>
 
 </body>
