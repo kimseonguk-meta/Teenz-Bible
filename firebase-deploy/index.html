@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v45';
+      const CACHE = 'teens-bible-v46';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -709,6 +709,50 @@ body {
 
 
 /* === PAUL'S JOURNEY ROUTE LINES === */
+
+/* === JOURNEY DETAIL POPUP === */
+.journey-detail-popup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90%; max-width:380px; max-height:80vh; overflow-y:auto; background:linear-gradient(135deg,#1a2744 0%,#0d1b2a 100%); border-radius:20px; z-index:1100; padding:24px; box-shadow:0 16px 48px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.1); animation:slideUp 0.3s ease-out; }
+.journey-detail-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1099; backdrop-filter:blur(4px); }
+.journey-detail-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.journey-detail-badge { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; color:#fff; flex-shrink:0; }
+.journey-detail-title { font-family:'Luckiest Guy',cursive; font-size:20px; }
+.journey-detail-subtitle { font-family:'Comic Neue',cursive; font-size:12px; color:#7888a8; margin-top:2px; }
+.journey-detail-section { margin-bottom:14px; }
+.journey-detail-section-title { font-family:'Bangers',cursive; font-size:14px; color:#FFD700; margin-bottom:6px; letter-spacing:0.5px; }
+.journey-detail-info { display:flex; gap:8px; align-items:center; padding:6px 0; font-family:'Comic Neue',cursive; font-size:13px; color:#c8d6e5; border-bottom:1px solid rgba(255,255,255,0.06); }
+.journey-detail-info-icon { font-size:16px; width:24px; text-align:center; flex-shrink:0; }
+.journey-detail-cities { display:flex; flex-wrap:wrap; gap:6px; }
+.journey-detail-city { padding:4px 10px; background:rgba(255,255,255,0.08); border-radius:8px; font-size:12px; font-family:'Comic Neue',cursive; color:#e0e0e0; }
+.journey-detail-event { padding:8px 12px; background:rgba(255,255,255,0.05); border-radius:10px; margin-bottom:6px; cursor:pointer; transition:background 0.2s; }
+.journey-detail-event:hover { background:rgba(255,255,255,0.1); }
+.journey-detail-event-title { font-family:'Comic Neue',cursive; font-weight:700; font-size:13px; color:#fff; }
+.journey-detail-event-loc { font-size:11px; color:#7888a8; margin-top:2px; }
+.journey-detail-close { position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.15); border:none; color:#fff; font-size:18px; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+/* === TIMELINE MODE === */
+.map-view-toggle { display:flex; gap:6px; margin-bottom:12px; }
+.map-view-btn { padding:6px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#7888a8; font-family:'Comic Neue',cursive; font-weight:700; font-size:12px; cursor:pointer; transition:all 0.3s; }
+.map-view-btn.active { background:rgba(255,214,0,0.15); border-color:rgba(255,214,0,0.4); color:#FFD700; }
+.map-timeline-container { display:none; padding:0 4px; }
+.map-timeline-container.active { display:block; }
+.timeline-era { margin-bottom:20px; }
+.timeline-era-header { font-family:'Bangers',cursive; font-size:16px; color:#FFD700; padding:8px 0; border-bottom:2px solid rgba(255,214,0,0.2); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.timeline-era-icon { font-size:20px; }
+.timeline-line { position:relative; padding-left:28px; }
+.timeline-line::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,rgba(255,214,0,0.4),rgba(255,214,0,0.1)); }
+.timeline-event-card { position:relative; margin-bottom:12px; padding:12px 14px; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.08); cursor:pointer; transition:all 0.3s; }
+.timeline-event-card:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,214,0,0.3); transform:translateX(4px); }
+.timeline-event-card::before { content:''; position:absolute; left:-24px; top:16px; width:10px; height:10px; border-radius:50%; background:#FFD700; border:2px solid #0d1b2a; z-index:1; }
+.timeline-event-card.read::before { background:#4ECDC4; box-shadow:0 0 6px rgba(78,205,196,0.5); }
+.timeline-event-title { font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; color:#fff; }
+.timeline-event-location { font-size:11px; color:#7888a8; margin-top:2px; display:flex; align-items:center; gap:4px; }
+.timeline-event-ref { font-size:11px; color:#4ECDC4; margin-top:4px; }
+.timeline-event-desc { font-size:12px; color:#a0b0c0; margin-top:6px; line-height:1.4; display:none; }
+.timeline-event-card.expanded .timeline-event-desc { display:block; }
+.timeline-filter { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+.timeline-filter-btn { padding:4px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); color:#888; font-family:'Comic Neue',cursive; font-size:11px; cursor:pointer; transition:all 0.2s; }
+.timeline-filter-btn.active { background:rgba(78,205,196,0.15); border-color:rgba(78,205,196,0.4); color:#4ECDC4; }
+
 .journey-routes-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5; }
 .journey-route { fill:none; stroke-linecap:round; stroke-linejoin:round; }
 .journey-route.journey-1 { stroke:#FF6B6B; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow1 2s linear infinite; }
@@ -1963,6 +2007,15 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="map-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:300px;overflow-y:auto;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:12px;margin-top:4px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
     </div>
     
+    <!-- View Toggle -->
+    <div class="map-view-toggle" id="map-view-toggle">
+      <button class="map-view-btn active" onclick="switchMapView('map')" data-en="🗺️ Map View" data-ko="🗺️ 지도 보기">🗺️ Map View</button>
+      <button class="map-view-btn" onclick="switchMapView('timeline')" data-en="📅 Timeline" data-ko="📅 타임라인">📅 Timeline</button>
+    </div>
+    
+    <!-- Timeline Container -->
+    <div class="map-timeline-container" id="map-timeline-container"></div>
+    
     <!-- Map Content -->
     <div id="map-content">
       <!-- Overview Map -->
@@ -2188,13 +2241,20 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
         </div>
 <!-- Journey Legend -->
 <div class="journey-legend" id="paul-journey-legend">
-  <div class="journey-legend-item active" data-journey="1" onclick="toggleJourneyRoute(1)"><div class="journey-legend-line"></div><span data-en="1st Journey" data-ko="1차 여행">1st Journey</span></div>
-  <div class="journey-legend-item active" data-journey="2" onclick="toggleJourneyRoute(2)"><div class="journey-legend-line"></div><span data-en="2nd Journey" data-ko="2차 여행">2nd Journey</span></div>
-  <div class="journey-legend-item active" data-journey="3" onclick="toggleJourneyRoute(3)"><div class="journey-legend-line"></div><span data-en="3rd Journey" data-ko="3차 여행">3rd Journey</span></div>
-  <div class="journey-legend-item active" data-journey="rome" onclick="toggleJourneyRoute('rome')"><div class="journey-legend-line"></div><span data-en="To Rome" data-ko="로마행">To Rome</span></div>
+  <div class="journey-legend-item active" data-journey="1" onclick="showJourneyDetail(1)" ondblclick="toggleJourneyRoute(1)"><div class="journey-legend-line"></div><span data-en="1st Journey" data-ko="1차 여행">1st Journey</span></div>
+  <div class="journey-legend-item active" data-journey="2" onclick="showJourneyDetail(2)" ondblclick="toggleJourneyRoute(2)"><div class="journey-legend-line"></div><span data-en="2nd Journey" data-ko="2차 여행">2nd Journey</span></div>
+  <div class="journey-legend-item active" data-journey="3" onclick="showJourneyDetail(3)" ondblclick="toggleJourneyRoute(3)"><div class="journey-legend-line"></div><span data-en="3rd Journey" data-ko="3차 여행">3rd Journey</span></div>
+  <div class="journey-legend-item active" data-journey="rome" onclick="showJourneyDetail('rome')" ondblclick="toggleJourneyRoute('rome')"><div class="journey-legend-line"></div><span data-en="To Rome" data-ko="로마행">To Rome</span></div>
 </div>
         <div class="map-locations-grid" id="map-locations-paul"></div>
       </div>
+    </div>
+
+    <!-- Journey Detail Popup -->
+    <div class="journey-detail-overlay" id="journey-detail-overlay" onclick="closeJourneyDetail()"></div>
+    <div class="journey-detail-popup" id="journey-detail-popup">
+      <button class="journey-detail-close" onclick="closeJourneyDetail()">✕</button>
+      <div id="journey-detail-content"></div>
     </div>
     <!-- Location Detail Panel -->
     <div id="map-location-detail" style="display:none;position:fixed;bottom:0;left:0;right:0;max-height:85vh;background:linear-gradient(135deg,#1a2744 0%,#0d1b2a 100%);border-radius:24px 24px 0 0;z-index:1000;overflow-y:auto;padding:20px;box-shadow:0 -8px 32px rgba(0,0,0,0.6);animation:slideUp 0.3s ease-out;"></div>
@@ -7532,6 +7592,395 @@ function updateJourneyLegendLanguage() {
   });
 }
 
+
+// === PAUL'S JOURNEY DETAIL DATA ===
+var paulJourneyData = {
+  1: {
+    title: "1st Missionary Journey",
+    titleKo: "제1차 선교 여행",
+    period: "AD 46-48",
+    periodKo: "서기 46-48년",
+    duration: "~2 years",
+    durationKo: "약 2년",
+    companions: ["Barnabas", "John Mark (part)"],
+    companionsKo: ["바나바", "요한 마가 (일부)"],
+    distance: "~2,400 km",
+    cities: ["Antioch", "Cyprus", "Perga", "Pisidian Antioch", "Iconium", "Lystra", "Derbe"],
+    citiesKo: ["안디옥", "키프로스", "버가", "비시디아 안디옥", "이코니움", "루스드라", "더베"],
+    color: "#FF6B6B",
+    icon: "1",
+    keyEvents: [
+      {title:"Confronting Bar-Jesus", titleKo:"바예수와 대결", location:"Cyprus", locationKo:"키프로스", ref:"Acts 13:6-12"},
+      {title:"Mistaken for Gods", titleKo:"신으로 오해받음", location:"Lystra", locationKo:"루스드라", ref:"Acts 14:8-18"},
+      {title:"Stoned & Left for Dead", titleKo:"돌에 맞아 죽은 줄", location:"Lystra", locationKo:"루스드라", ref:"Acts 14:19-20"}
+    ],
+    summary: "Paul and Barnabas set out from Antioch, sailed to Cyprus, then traveled through southern Asia Minor. Despite persecution, many believed.",
+    summaryKo: "바울과 바나바가 안디옥에서 출발해 키프로스로 건너간 후 소아시아 남부를 여행했어. 핍박에도 불구하고 많은 사람이 믿었어."
+  },
+  2: {
+    title: "2nd Missionary Journey",
+    titleKo: "제2차 선교 여행",
+    period: "AD 49-52",
+    periodKo: "서기 49-52년",
+    duration: "~3 years",
+    durationKo: "약 3년",
+    companions: ["Silas", "Timothy", "Luke (part)"],
+    companionsKo: ["실라", "디모데", "누가 (일부)"],
+    distance: "~4,500 km",
+    cities: ["Antioch", "Lystra", "Troas", "Philippi", "Thessalonica", "Athens", "Corinth"],
+    citiesKo: ["안디옥", "루스드라", "드로아", "빌립보", "데살로니가", "아테네", "고린도"],
+    color: "#4ECDC4",
+    icon: "2",
+    keyEvents: [
+      {title:"Lydia's Conversion", titleKo:"루디아의 회심", location:"Philippi", locationKo:"빌립보", ref:"Acts 16:11-15"},
+      {title:"Prison Earthquake", titleKo:"감옥 지진", location:"Philippi", locationKo:"빌립보", ref:"Acts 16:25-34"},
+      {title:"Mars Hill Sermon", titleKo:"아레오바고 설교", location:"Athens", locationKo:"아테네", ref:"Acts 17:22-34"},
+      {title:"18 Months in Corinth", titleKo:"고린도에서 18개월", location:"Corinth", locationKo:"고린도", ref:"Acts 18:1-11"}
+    ],
+    summary: "Paul took the Gospel to Europe for the first time. He established churches in Philippi, Thessalonica, and Corinth.",
+    summaryKo: "바울이 처음으로 유럽에 복음을 전했어. 빌립보, 데살로니가, 고린도에 교회를 세웠어."
+  },
+  3: {
+    title: "3rd Missionary Journey",
+    titleKo: "제3차 선교 여행",
+    period: "AD 53-57",
+    periodKo: "서기 53-57년",
+    duration: "~4 years",
+    durationKo: "약 4년",
+    companions: ["Timothy", "Erastus", "Titus", "Luke"],
+    companionsKo: ["디모데", "에라스도", "디도", "누가"],
+    distance: "~4,800 km",
+    cities: ["Antioch", "Galatia", "Ephesus", "Macedonia", "Corinth", "Troas", "Miletus"],
+    citiesKo: ["안디옥", "갈라디아", "에베소", "마게도냐", "고린도", "드로아", "밀레도"],
+    color: "#FFD700",
+    icon: "3",
+    keyEvents: [
+      {title:"3 Years in Ephesus", titleKo:"에베소에서 3년", location:"Ephesus", locationKo:"에베소", ref:"Acts 19:1-10"},
+      {title:"Riot of Silversmiths", titleKo:"은장이들의 폭동", location:"Ephesus", locationKo:"에베소", ref:"Acts 19:23-41"},
+      {title:"Farewell to Elders", titleKo:"장로들 작별", location:"Miletus", locationKo:"밀레도", ref:"Acts 20:17-38"}
+    ],
+    summary: "Paul spent 3 years in Ephesus, wrote major letters (1 Corinthians, Romans), and strengthened churches across Asia Minor and Greece.",
+    summaryKo: "바울이 에베소에서 3년을 보내며 주요 서신(고린도전서, 로마서)을 쓰고 소아시아와 그리스의 교회들을 강화했어."
+  },
+  rome: {
+    title: "Journey to Rome",
+    titleKo: "로마행",
+    period: "AD 59-60",
+    periodKo: "서기 59-60년",
+    duration: "~6 months",
+    durationKo: "약 6개월",
+    companions: ["Luke", "Aristarchus"],
+    companionsKo: ["누가", "아리스다고"],
+    distance: "~3,600 km",
+    cities: ["Caesarea", "Sidon", "Crete", "Malta", "Syracuse", "Rome"],
+    citiesKo: ["가이사랴", "시돈", "크레타", "몰타", "시라쿠사", "로마"],
+    color: "#C084FC",
+    icon: "R",
+    keyEvents: [
+      {title:"Shipwreck at Malta", titleKo:"몰타에서 난파", location:"Malta", locationKo:"몰타", ref:"Acts 27:39-44"},
+      {title:"Viper on Malta", titleKo:"몰타에서 독사", location:"Malta", locationKo:"몰타", ref:"Acts 28:1-6"},
+      {title:"House Arrest in Rome", titleKo:"로마에서 가택 연금", location:"Rome", locationKo:"로마", ref:"Acts 28:16-31"}
+    ],
+    summary: "Paul appealed to Caesar and was sent to Rome as a prisoner. After a dramatic shipwreck on Malta, he arrived in Rome and preached for 2 years under house arrest.",
+    summaryKo: "바울이 가이사에게 상소하여 죄수로 로마에 보내졌어. 몰타에서 극적인 난파 후 로마에 도착해 2년간 가택 연금 상태에서 전도했어."
+  }
+};
+
+function showJourneyDetail(journeyId) {
+  var data = paulJourneyData[journeyId];
+  if (!data) return;
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var isKo = lang === 'ko';
+  
+  var title = isKo ? data.titleKo : data.title;
+  var period = isKo ? data.periodKo : data.period;
+  var duration = isKo ? data.durationKo : data.duration;
+  var companions = isKo ? data.companionsKo : data.companions;
+  var cities = isKo ? data.citiesKo : data.cities;
+  var summary = isKo ? data.summaryKo : data.summary;
+  var keyEvents = data.keyEvents;
+  
+  var html = '<div class="journey-detail-header">' +
+    '<div class="journey-detail-badge" style="background:' + data.color + '">' + data.icon + '</div>' +
+    '<div><div class="journey-detail-title" style="color:' + data.color + '">' + title + '</div>' +
+    '<div class="journey-detail-subtitle">' + period + ' · ' + data.distance + '</div></div></div>';
+  
+  html += '<p style="font-family:Comic Neue,cursive;font-size:13px;color:#a0b0c0;line-height:1.5;margin-bottom:14px;">' + summary + '</p>';
+  
+  // Info section
+  html += '<div class="journey-detail-section">' +
+    '<div class="journey-detail-section-title">' + (isKo ? '📋 여행 정보' : '📋 Journey Info') + '</div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">📅</span><span>' + (isKo ? '기간: ' : 'Period: ') + period + '</span></div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">⏱️</span><span>' + (isKo ? '소요: ' : 'Duration: ') + duration + '</span></div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">📏</span><span>' + (isKo ? '거리: ' : 'Distance: ') + data.distance + '</span></div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">👥</span><span>' + (isKo ? '동행자: ' : 'Companions: ') + companions.join(', ') + '</span></div>' +
+    '</div>';
+  
+  // Cities
+  html += '<div class="journey-detail-section">' +
+    '<div class="journey-detail-section-title">' + (isKo ? '🏙️ 방문 도시' : '🏙️ Cities Visited') + '</div>' +
+    '<div class="journey-detail-cities">';
+  for (var i = 0; i < cities.length; i++) {
+    html += '<span class="journey-detail-city">' + (i+1) + '. ' + cities[i] + '</span>';
+  }
+  html += '</div></div>';
+  
+  // Key Events
+  html += '<div class="journey-detail-section">' +
+    '<div class="journey-detail-section-title">' + (isKo ? '⚡ 주요 사건' : '⚡ Key Events') + '</div>';
+  for (var j = 0; j < keyEvents.length; j++) {
+    var ev = keyEvents[j];
+    var evTitle = isKo ? ev.titleKo : ev.title;
+    var evLoc = isKo ? ev.locationKo : ev.location;
+    html += '<div class="journey-detail-event" onclick="closeJourneyDetail();openLocationDetail(\'' + ev.location.replace(/'/g,"\\'") + '\')">' +
+      '<div class="journey-detail-event-title">' + evTitle + '</div>' +
+      '<div class="journey-detail-event-loc">📍 ' + evLoc + ' · 📖 ' + ev.ref + '</div></div>';
+  }
+  html += '</div>';
+  
+  document.getElementById('journey-detail-content').innerHTML = html;
+  document.getElementById('journey-detail-popup').style.display = 'block';
+  document.getElementById('journey-detail-overlay').style.display = 'block';
+}
+
+function closeJourneyDetail() {
+  document.getElementById('journey-detail-popup').style.display = 'none';
+  document.getElementById('journey-detail-overlay').style.display = 'none';
+}
+
+// === TIMELINE MODE ===
+var timelineEras = [
+  {
+    id: 'birth',
+    title: 'Birth & Early Life',
+    titleKo: '탄생과 어린 시절',
+    icon: '⭐',
+    events: [
+      {loc:'Nazareth',event:'Annunciation to Mary'},
+      {loc:'Bethlehem',event:'Birth of Jesus'},
+      {loc:'Bethlehem',event:'Visit of the Magi'},
+      {loc:'Bethlehem',event:'Escape to Egypt'},
+      {loc:'Nazareth',event:'Jesus Grows Up'}
+    ]
+  },
+  {
+    id: 'ministry-start',
+    title: 'Ministry Begins',
+    titleKo: '사역의 시작',
+    icon: '💧',
+    events: [
+      {loc:'Jordan River',event:"John's Ministry"},
+      {loc:'Jordan River',event:'Baptism of Jesus'},
+      {loc:'Capernaum',event:'Calling the First Disciples'},
+      {loc:'Cana',event:'Water Into Wine'},
+      {loc:'Magdala',event:'Mary Magdalene Freed'}
+    ]
+  },
+  {
+    id: 'galilee-ministry',
+    title: 'Galilee Ministry',
+    titleKo: '갈릴리 사역',
+    icon: '🌊',
+    events: [
+      {loc:'Capernaum',event:'Sermon on the Mount'},
+      {loc:'Capernaum',event:'Healing the Paralytic'},
+      {loc:'Capernaum',event:"Centurion's Faith"},
+      {loc:'Cana',event:"Healing Official's Son"},
+      {loc:'Nain',event:"Raising the Widow's Son"},
+      {loc:'Sea of Galilee',event:'Calming the Storm'},
+      {loc:'Sea of Galilee',event:'Feeding the 5,000'},
+      {loc:'Bethsaida',event:'Feeding the 5,000'},
+      {loc:'Bethsaida',event:'Healing a Blind Man'},
+      {loc:'Sea of Galilee',event:'Walking on Water'},
+      {loc:'Pool of Bethesda',event:'Healing on the Sabbath'},
+      {loc:'Nazareth',event:'Rejected in Hometown'}
+    ]
+  },
+  {
+    id: 'jerusalem-final',
+    title: 'Final Week in Jerusalem',
+    titleKo: '예루살렘 마지막 주간',
+    icon: '⛪',
+    events: [
+      {loc:'Jerusalem',event:'Triumphal Entry'},
+      {loc:'Jerusalem',event:'Cleansing the Temple'},
+      {loc:'Temple Mount',event:'Jesus Teaches at the Temple'},
+      {loc:'Temple Mount',event:"The Widow's Offering"},
+      {loc:'Mount of Olives',event:'Olivet Discourse'},
+      {loc:'Upper Room',event:"Washing the Disciples' Feet"},
+      {loc:'Jerusalem',event:'The Last Supper'},
+      {loc:'Upper Room',event:'Institution of Communion'},
+      {loc:'Garden of Gethsemane',event:'Jesus Prays in Agony'},
+      {loc:'Garden of Gethsemane',event:"Judas's Betrayal"}
+    ]
+  },
+  {
+    id: 'crucifixion',
+    title: 'Crucifixion & Resurrection',
+    titleKo: '십자가와 부활',
+    icon: '✝️',
+    events: [
+      {loc:'Golgotha',event:'The Crucifixion'},
+      {loc:'Golgotha',event:'Darkness Over the Land'},
+      {loc:'Temple Mount',event:'Veil Torn in Two'},
+      {loc:'Jerusalem',event:'Crucifixion & Resurrection'},
+      {loc:'Magdala',event:'First Witness of Resurrection'},
+      {loc:'Tiberias',event:'Post-Resurrection Appearance'},
+      {loc:'Sea of Galilee',event:'Miraculous Catch of Fish'},
+      {loc:'Mount of Olives',event:'The Ascension'}
+    ]
+  },
+  {
+    id: 'early-church',
+    title: 'Early Church & Paul',
+    titleKo: '초대교회와 바울',
+    icon: '🔥',
+    events: [
+      {loc:'Jerusalem',event:'Pentecost'},
+      {loc:'Upper Room',event:'Coming of the Holy Spirit'},
+      {loc:'Damascus',event:"Paul's Conversion"},
+      {loc:'Damascus',event:'Escape in a Basket'},
+      {loc:'Antioch',event:'First Called Christians'},
+      {loc:'Antioch',event:'Missionary Journeys Begin'}
+    ]
+  },
+  {
+    id: 'paul-journeys',
+    title: "Paul's Missionary Journeys",
+    titleKo: '바울의 선교 여행',
+    icon: '🚀',
+    events: [
+      {loc:'Antioch (Start)',event:'Commissioning of Paul & Barnabas'},
+      {loc:'Cyprus',event:'Confronting a Sorcerer'},
+      {loc:'Lystra & Derbe',event:'Mistaken for Gods'},
+      {loc:'Lystra & Derbe',event:'Stoned and Left for Dead'},
+      {loc:'Antioch (Start)',event:'Jerusalem Council'},
+      {loc:'Philippi',event:"Lydia's Conversion"},
+      {loc:'Philippi',event:'Prison Earthquake'},
+      {loc:'Thessalonica',event:'Paul Preaches in the Synagogue'},
+      {loc:'Athens',event:'Debating Philosophers'},
+      {loc:'Athens',event:'Mars Hill Sermon'},
+      {loc:'Corinth',event:"Paul's 18-Month Stay"},
+      {loc:'Corinth',event:'Love Chapter'},
+      {loc:'Ephesus',event:'Riot of the Silversmiths'},
+      {loc:'Ephesus',event:"Paul's Farewell to Elders"},
+      {loc:'Ephesus',event:'Letter to Ephesians'},
+      {loc:'Thessalonica',event:"Letters About Jesus' Return"},
+      {loc:'Rome',event:'Letter to the Romans'},
+      {loc:'Rome',event:'Paul Under House Arrest'}
+    ]
+  }
+];
+
+function renderTimeline() {
+  var container = document.getElementById('map-timeline-container');
+  if (!container) return;
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var isKo = lang === 'ko';
+  
+  var html = '';
+  
+  // Filter buttons
+  html += '<div class="timeline-filter">';
+  html += '<button class="timeline-filter-btn active" onclick="filterTimeline(\'all\')" data-filter="all">' + (isKo ? '전체' : 'All') + '</button>';
+  html += '<button class="timeline-filter-btn" onclick="filterTimeline(\'jesus\')" data-filter="jesus">' + (isKo ? '예수님' : 'Jesus') + '</button>';
+  html += '<button class="timeline-filter-btn" onclick="filterTimeline(\'paul\')" data-filter="paul">' + (isKo ? '바울' : 'Paul') + '</button>';
+  html += '</div>';
+  
+  for (var e = 0; e < timelineEras.length; e++) {
+    var era = timelineEras[e];
+    var eraTitle = isKo ? era.titleKo : era.title;
+    var eraClass = (era.id === 'paul-journeys' || era.id === 'early-church') ? 'paul' : 'jesus';
+    
+    html += '<div class="timeline-era" data-era-type="' + eraClass + '">';
+    html += '<div class="timeline-era-header"><span class="timeline-era-icon">' + era.icon + '</span> ' + eraTitle + '</div>';
+    html += '<div class="timeline-line">';
+    
+    for (var i = 0; i < era.events.length; i++) {
+      var item = era.events[i];
+      var locData = mapLocationEvents[item.loc];
+      if (!locData) continue;
+      var evData = null;
+      for (var k = 0; k < locData.events.length; k++) {
+        if (locData.events[k].title === item.event) { evData = locData.events[k]; break; }
+      }
+      if (!evData) continue;
+      
+      var evTitle = isKo ? (evData.titleKo || evData.title) : evData.title;
+      var evDesc = isKo ? (evData.descKo || evData.desc) : evData.desc;
+      var locName = item.loc;
+      // Find Korean location name
+      var locNameKo = locName;
+      var allTabs = ['overview','jerusalem','galilee','paul'];
+      for (var t = 0; t < allTabs.length; t++) {
+        var locs = mapLocations[allTabs[t]] || [];
+        for (var m = 0; m < locs.length; m++) {
+          if (locs[m].name === locName) { locNameKo = locs[m].nameKo || locName; break; }
+        }
+      }
+      var displayLoc = isKo ? locNameKo : locName;
+      
+      html += '<div class="timeline-event-card" onclick="toggleTimelineEvent(this)" data-location="' + locName.replace(/"/g,'&quot;') + '">';
+      html += '<div class="timeline-event-title">' + evTitle + '</div>';
+      html += '<div class="timeline-event-location">📍 ' + displayLoc + '</div>';
+      html += '<div class="timeline-event-ref">📖 ' + evData.ref + '</div>';
+      html += '<div class="timeline-event-desc">' + evDesc + '</div>';
+      html += '</div>';
+    }
+    
+    html += '</div></div>';
+  }
+  
+  container.innerHTML = html;
+}
+
+function toggleTimelineEvent(card) {
+  if (card.classList.contains('expanded')) {
+    card.classList.remove('expanded');
+  } else {
+    // Close others
+    var all = document.querySelectorAll('.timeline-event-card.expanded');
+    all.forEach(function(c) { c.classList.remove('expanded'); });
+    card.classList.add('expanded');
+  }
+}
+
+function filterTimeline(type) {
+  var btns = document.querySelectorAll('.timeline-filter-btn');
+  btns.forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-filter') === type); });
+  
+  var eras = document.querySelectorAll('.timeline-era');
+  eras.forEach(function(era) {
+    if (type === 'all') { era.style.display = ''; }
+    else { era.style.display = era.getAttribute('data-era-type') === type ? '' : 'none'; }
+  });
+}
+
+function switchMapView(view) {
+  var btns = document.querySelectorAll('.map-view-btn');
+  btns.forEach(function(b, i) { b.classList.toggle('active', (view === 'map' && i === 0) || (view === 'timeline' && i === 1)); });
+  
+  var mapContent = document.getElementById('map-content');
+  var timeline = document.getElementById('map-timeline-container');
+  
+  if (view === 'timeline') {
+    mapContent.style.display = 'none';
+    timeline.classList.add('active');
+    renderTimeline();
+  } else {
+    mapContent.style.display = '';
+    timeline.classList.remove('active');
+  }
+}
+
+function updateMapViewToggleLanguage() {
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var btns = document.querySelectorAll('.map-view-btn[data-en]');
+  btns.forEach(function(b) {
+    b.textContent = lang === 'ko' ? (b.getAttribute('data-ko') || b.getAttribute('data-en')) : b.getAttribute('data-en');
+  });
+}
+
 // ============================================================
 // LOCATION DETAIL PANEL FUNCTION
 // ============================================================
@@ -7904,6 +8353,7 @@ showScreen = function(name) {
     renderMapLocations('overview');
     updateMapLanguage();
     updateMapSearchLanguage();
+    updateMapViewToggleLanguage();
     updateJourneyLegendLanguage();
     // Refresh read status badges when entering map
     setTimeout(function() { refreshMapReadStatus(); }, 100);
