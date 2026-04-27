@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v29';
+      const CACHE = 'teens-bible-v30';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -6226,8 +6226,8 @@ if(!state.sessionsChapters) state.sessionsChapters = 0;
 if(!state.sessionStart) state.sessionStart = null;
 
 // Track reading time for new badges
-const _origMarkRead = typeof markChapterRead === 'function' ? markChapterRead : null;
-if(_origMarkRead) {
+var _origMarkReadBatch = typeof markChapterRead === 'function' ? markChapterRead : null;
+if(_origMarkReadBatch) {
   const _wrappedMark = markChapterRead;
   // Time-based badge tracking
   window.addEventListener('load', function() {
