@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v38';
+      const CACHE = 'teens-bible-v41';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -2118,6 +2118,8 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
         <div class="map-locations-grid" id="paul-locations"></div>
       </div>
     </div>
+    <!-- Location Detail Panel -->
+    <div id="map-location-detail" style="display:none;position:fixed;bottom:0;left:0;right:0;max-height:85vh;background:linear-gradient(135deg,#1a2744 0%,#0d1b2a 100%);border-radius:24px 24px 0 0;z-index:1000;overflow-y:auto;padding:20px;box-shadow:0 -8px 32px rgba(0,0,0,0.6);animation:slideUp 0.3s ease-out;"></div>
   </div>
 
   <div class="screen" id="screen-settings">
@@ -5747,6 +5749,75 @@ if (_origMarkRead) {
 .lr-name { font-family: 'Bangers', cursive; font-size: 14px; color: #d8dce8; flex: 1; }
 .lr-xp { font-size: 12px; color: #6878a0; }
 
+
+/* Event card illustration image */
+.event-card-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+  margin: -16px -16px 12px -16px;
+  width: calc(100% + 32px);
+}
+
+/* Gold highlight for read location pins */
+.map-pin.location-read {
+  background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6), 0 0 24px rgba(255, 215, 0, 0.3) !important;
+  animation: goldPulse 2s ease-in-out infinite !important;
+}
+.map-pin.location-read::after {
+  border-top-color: #FFD700 !important;
+}
+
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 215, 0, 0.6), 0 0 24px rgba(255, 215, 0, 0.3); transform: translate(-50%, -100%) scale(1); }
+  50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.5); transform: translate(-50%, -100%) scale(1.15); }
+}
+
+/* Read location chip styling */
+.map-chip.location-read-chip {
+  background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+  color: #1a1a2e !important;
+  font-weight: 700 !important;
+  border: none !important;
+}
+
+/* Location detail read badge */
+.location-read-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #1a1a2e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-left: 8px;
+}
+
+/* Improved event card styling for larger text */
+.event-card {
+  min-height: auto !important;
+}
+.event-card h4 {
+  font-size: 18px !important;
+  line-height: 1.3 !important;
+  margin-bottom: 10px !important;
+}
+.event-card p {
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  color: #d0d0e0 !important;
+}
+
+/* Mobile zoom improvements */
+.map-image-container {
+  touch-action: none !important;
+  -webkit-overflow-scrolling: touch;
+}
+
 </style>
 
 
@@ -6852,20 +6923,35 @@ function switchMapTab(tab) {
 }
 
 function renderMapLocations(tab) {
-  const container = document.getElementById(tab + '-locations');
+  var container = document.getElementById('map-locations-' + tab);
+  var pinsContainer = document.getElementById('map-pins-' + tab);
   if(!container) return;
-  const locations = mapLocations[tab] || [];
-  const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var locs = mapLocations[tab] || [];
   
-  let h = '<div style="font-size:12px;color:#556680;margin-bottom:8px;font-family:Comic Neue,cursive;">' + (lang === 'ko' ? '📍 지도의 핀을 탭하거나 아래 장소를 선택하세요' : '📍 Tap a pin on the map or select a location below') + '</div>';
-  locations.forEach(loc => {
-    h += '<div class="map-location-chip" onclick="openLocationDetail(\'' + loc.name.replace(/'/g,"\\'") + '\')">';
-    h += '<span class="chip-icon">' + loc.icon + '</span>';
-    h += '<div><div class="chip-name">' + loc.name + '</div>';
-    if(loc.nameKo) h += '<div class="chip-name-ko">' + loc.nameKo + '</div>';
-    h += '</div></div>';
-  });
-  container.innerHTML = h;
+  // Render chips
+  var chipsHtml = '';
+  for(var i=0; i<locs.length; i++) {
+    var loc = locs[i];
+    var isRead = (typeof isLocationRead === 'function') ? isLocationRead(loc.name) : false;
+    var readClass = isRead ? ' location-read-chip' : '';
+    var readIcon = isRead ? '✨ ' : '';
+    chipsHtml += '<button class="map-chip' + readClass + '" onclick="openLocationDetail(\'' + loc.name.replace(/'/g, "\\'") + '\')" style="display:inline-flex;align-items:center;gap:4px;padding:8px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:#e0e0e0;font-size:13px;cursor:pointer;white-space:nowrap;">' + readIcon + loc.emoji + ' ' + loc.name + '</button> ';
+  }
+  container.innerHTML = chipsHtml;
+  
+  // Render pins on map
+  if(pinsContainer) {
+    var pinsHtml = '';
+    for(var i=0; i<locs.length; i++) {
+      var loc = locs[i];
+      if(loc.pinTop !== undefined && loc.pinLeft !== undefined) {
+        var isRead = (typeof isLocationRead === 'function') ? isLocationRead(loc.name) : false;
+        var readClass = isRead ? ' location-read' : '';
+        pinsHtml += '<div class="map-pin' + readClass + '" onclick="openLocationDetail(\'' + loc.name.replace(/'/g, "\\'") + '\')" style="top:' + loc.pinTop + '%;left:' + loc.pinLeft + '%;" title="' + loc.name + '">' + loc.emoji + '</div>';
+      }
+    }
+    pinsContainer.innerHTML = pinsHtml;
+  }
 }
 
 // ============================================================
@@ -7050,11 +7136,136 @@ var mapLocationEvents = {
   }
 };
 
+var eventImageMap = {
+  'The Crucifixion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Darkness Over the Land': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Birth of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Walking on Water': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Calming the Storm': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Baptism of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Prison Earthquake': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
+  'Jesus Prays in Agony': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Judas\'s Betrayal': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'The Ascension': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Olivet Discourse': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Feeding the 5,000': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Healing a Blind Man': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Paul\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Escape in a Basket': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Water Into Wine': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
+  'Healing Official\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
+  'Crucifixion & Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Veil Torn in Two': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Washing the Disciples\' Feet': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Institution of Communion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Coming of the Holy Spirit': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Healing on the Sabbath': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Post-Resurrection Appearance': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Mary Magdalene Freed': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'First Witness of Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Raising the Widow\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Commissioning of Paul & Barnabas': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Jerusalem Council': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Confronting a Sorcerer': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Mistaken for Gods': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Stoned and Left for Dead': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'Lydia\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Paul Preaches in the Synagogue': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Letters About Jesus\' Return': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'The Widow\'s Offering': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Jesus Teaches at the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Triumphal Entry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Cleansing the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
+  'The Last Supper': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
+  'Pentecost': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
+  'Annunciation to Mary': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Visit of the Magi': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Escape to Egypt': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Jesus Grows Up': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
+  'Calling the First Disciples': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Sermon on the Mount': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
+  'Healing the Paralytic': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
+  'Miraculous Catch of Fish': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
+  'Rejected in Hometown': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'First Called Christians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Missionary Journeys Begin': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Debating Philosophers': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Mars Hill Sermon': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Love Chapter': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
+  'Riot of the Silversmiths': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
+  'Letter to Ephesians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
+  'Paul Under House Arrest': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
+  'Letter to the Romans': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp'
+};
+
+
+var locationBookMap = {
+  'Jerusalem': ['Matthew','Mark','Luke','John','Acts'],
+  'Bethlehem': ['Matthew','Luke'],
+  'Nazareth': ['Matthew','Luke','Mark'],
+  'Capernaum': ['Matthew','Mark','Luke'],
+  'Sea of Galilee': ['Matthew','Mark','Luke','John'],
+  'Jordan River': ['Matthew','Mark','Luke'],
+  'Jericho': ['Luke','Mark'],
+  'Bethany': ['John','Mark','Luke'],
+  'Samaria': ['John','Acts'],
+  'Caesarea Philippi': ['Matthew','Mark'],
+  'Mount Tabor': ['Matthew','Mark','Luke'],
+  'Damascus': ['Acts'],
+  'Temple Mount': ['Luke','Mark','Matthew'],
+  'Mount of Olives': ['Matthew','Acts'],
+  'Garden of Gethsemane': ['Matthew','Mark','Luke'],
+  'Golgotha': ['John','Matthew','Mark','Luke'],
+  'Pool of Bethesda': ['John'],
+  'Upper Room': ['John','Matthew','Acts'],
+  'Bethsaida': ['Luke','Mark'],
+  'Cana': ['John'],
+  'Tiberias': ['John'],
+  'Magdala': ['Luke','John'],
+  'Nain': ['Luke'],
+  'Antioch (Start)': ['Acts'],
+  'Cyprus': ['Acts'],
+  'Lystra & Derbe': ['Acts'],
+  'Philippi': ['Acts'],
+  'Thessalonica': ['Acts','1 Thessalonians'],
+  'Athens': ['Acts'],
+  'Corinth': ['Acts','1 Corinthians','2 Corinthians'],
+  'Ephesus': ['Acts','Ephesians'],
+  'Rome': ['Acts','Romans']
+};
+
+function isLocationRead(locationName) {
+  var books = locationBookMap[locationName];
+  if (!books || books.length === 0) return false;
+  var readChapters = JSON.parse(localStorage.getItem('readChapters') || '{}');
+  var readCount = 0;
+  for (var i = 0; i < books.length; i++) {
+    if (readChapters[books[i]] && Object.keys(readChapters[books[i]]).length > 0) {
+      readCount++;
+    }
+  }
+  // Location is "read" if at least 1 related book has been started
+  return readCount > 0;
+}
+
+function getLocationReadProgress(locationName) {
+  var books = locationBookMap[locationName];
+  if (!books || books.length === 0) return 0;
+  var readChapters = JSON.parse(localStorage.getItem('readChapters') || '{}');
+  var readCount = 0;
+  for (var i = 0; i < books.length; i++) {
+    if (readChapters[books[i]] && Object.keys(readChapters[books[i]]).length > 0) {
+      readCount++;
+    }
+  }
+  return Math.round((readCount / books.length) * 100);
+}
+
+
 // ============================================================
 // LOCATION DETAIL PANEL FUNCTION
 // ============================================================
 function openLocationDetail(locationName) {
-  // Find location data across all tabs
   var loc = null;
   var allTabs = ['overview','jerusalem','galilee','paul'];
   for(var t=0; t<allTabs.length; t++) {
@@ -7068,86 +7279,118 @@ function openLocationDetail(locationName) {
   
   var events = (mapLocationEvents[locationName] && mapLocationEvents[locationName].events) || [];
   var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
-  var sliderId = 'slider-' + Date.now();
+  var isRead = isLocationRead(locationName);
+  var readProgress = getLocationReadProgress(locationName);
   
-  // Build the detail panel HTML
-  var h = '<div class="map-detail-overlay" onclick="if(event.target===this)this.remove()">';
-  h += '<div class="map-detail-panel">';
-  h += '<div class="map-detail-handle"></div>';
+  var panel = document.getElementById('map-location-detail');
+  if(!panel) return;
   
-  // Header
-  h += '<div class="map-detail-header">';
-  h += '<div class="map-detail-icon">' + loc.icon + '</div>';
-  h += '<div>';
-  h += '<div class="map-detail-title">' + loc.name + '</div>';
-  if(loc.nameKo) h += '<div class="map-detail-title-ko">' + loc.nameKo + '</div>';
-  h += '</div>';
-  if(events.length > 0) h += '<span class="event-count-badge">' + events.length + ' ' + (lang === 'ko' ? '사건' : 'events') + '</span>';
-  h += '<button class="map-detail-close" onclick="this.closest(\'.map-detail-overlay\').remove()">\u2715</button>';
-  h += '</div>';
+  var readBadge = isRead ? '<span class="location-read-badge">✨ ' + (lang==='ko' ? readProgress+'% 탐험' : readProgress+'% Explored') + '</span>' : '';
   
-  // Description
-  h += '<div class="map-detail-intro">' + (lang === 'ko' ? (loc.descKo || loc.desc) : loc.desc) + '</div>';
+  var headerHtml = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
+    '<div><h3 style="font-size:22px;font-weight:800;color:#FFD700;margin:0;display:inline;">' + (loc.icon||loc.emoji||'') + ' ' + (lang==='ko' ? (loc.nameKo||loc.name) : loc.name) + '</h3>' + readBadge + '</div>' +
+    '<button onclick="document.getElementById(\'map-location-detail\').style.display=\'none\'" style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>' +
+    '</div>';
   
-  // Events as swipeable card slider
-  if(events.length > 0) {
-    h += '<div class="map-events-title">\u{1F4DC} ' + (lang === 'ko' ? '이곳에서 일어난 사건들' : 'Events That Happened Here') + '</div>';
-    
-    h += '<div class="event-slider-container" id="' + sliderId + '">';
-    h += '<div class="event-slider-track">';
-    for(var e=0; e<events.length; e++) {
-      var evt = events[e];
-      h += '<div class="event-slide">';
-      h += '<div class="event-card-big">';
-      h += '<div class="event-card-num">' + (e+1) + '</div>';
-      h += '<div class="event-card-big-title">' + (lang === 'ko' ? (evt.titleKo || evt.title) : evt.title) + '</div>';
-      if(lang === 'ko' && evt.title) h += '<div class="event-card-big-title-ko" style="font-size:12px;color:#556680;margin-bottom:8px;">' + evt.title + '</div>';
-      if(lang !== 'ko' && evt.titleKo) h += '<div class="event-card-big-title-ko">' + evt.titleKo + '</div>';
-      h += '<div class="event-card-big-desc">' + (lang === 'ko' ? (evt.descKo || evt.desc) : evt.desc) + '</div>';
-      if(evt.ref) {
-        h += '<div class="event-card-big-ref" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + evt.ref + '\')">\u{1F4D6} ' + evt.ref + '</div>';
-      }
-      h += '</div></div>';
-    }
-    h += '</div>';
-    
-    // Navigation arrows + dots
-    if(events.length > 1) {
-      h += '<div class="event-slider-nav">';
-      h += '<button class="event-slider-arrow" onclick="slideEvent(\'' + sliderId + '\',-1)">\u276E</button>';
-      h += '<div class="event-slider-dots">';
-      for(var d=0; d<events.length; d++) {
-        h += '<div class="event-slider-dot' + (d===0?' active':'') + '" onclick="goToSlide(\'' + sliderId + '\',' + d + ')"></div>';
-      }
-      h += '</div>';
-      h += '<button class="event-slider-arrow" onclick="slideEvent(\'' + sliderId + '\',1)">\u276F</button>';
-      h += '</div>';
-    }
-    h += '</div>';
+  var descHtml = '<p style="font-size:14px;color:#a0a0c0;margin-bottom:16px;">' + (lang==='ko' ? (loc.descKo||loc.desc) : loc.desc) + '</p>';
+  
+  if(events.length === 0) {
+    panel.innerHTML = '<div style="padding:20px;">' + headerHtml + descHtml + '<p style="color:#666;">No events recorded.</p></div>';
+    panel.style.display = 'block';
+    return;
   }
   
-  // All related verses
-  if(loc.verses && loc.verses.length) {
-    h += '<div class="map-detail-verses">';
-    h += '<div class="map-detail-verses-label">' + (lang === 'ko' ? '관련 성경 구절' : 'Related Bible Passages') + '</div>';
-    h += '<div class="map-detail-verses-list">';
-    for(var v=0; v<loc.verses.length; v++) {
-      h += '<span class="map-detail-verse-chip" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + loc.verses[v] + '\')">' + loc.verses[v] + '</span>';
-    }
-    h += '</div></div>';
+  var currentSlide = 0;
+  var sliderId = 'event-slider-' + Date.now();
+  
+  var cardsHtml = '';
+  for(var i=0; i<events.length; i++) {
+    var ev = events[i];
+    var imgUrl = (typeof eventImageMap !== 'undefined' && eventImageMap[ev.title]) ? eventImageMap[ev.title] : '';
+    var imgHtml = imgUrl ? '<img src="' + imgUrl + '" class="event-card-img" alt="' + ev.title + '" loading="lazy">' : '';
+    
+    var cardHtml = '<div class="event-card" style="min-width:100%;scroll-snap-align:start;padding:16px;background:rgba(255,255,255,0.06);border-radius:14px;box-sizing:border-box;' + (i===0?'':'') + '">' +
+      imgHtml +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+        '<span style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e;font-size:12px;font-weight:800;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;">' + (i+1) + '</span>' +
+        '<span style="font-size:11px;color:#888;">' + (lang==='ko' ? '이벤트 ' + (i+1) + '/' + events.length : 'Event ' + (i+1) + ' of ' + events.length) + '</span>' +
+      '</div>' +
+      '<h4 style="font-size:18px;font-weight:700;color:#fff;margin:0 0 10px 0;line-height:1.3;">' + (lang==='ko' ? (ev.titleKo||ev.title) : ev.title) + '</h4>' +
+      '<p style="font-size:15px;line-height:1.6;color:#d0d0e0;margin:0 0 14px 0;">' + (lang==='ko' ? (ev.descKo||ev.desc) : ev.desc) + '</p>' +
+      '<button onclick="goToVerseFromMap(\'' + ev.ref + '\')" style="background:linear-gradient(135deg,#4a90d9,#357abd);color:#fff;border:none;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">📖 ' + ev.ref + '</button>' +
+    '</div>';
+    cardsHtml += cardHtml;
   }
   
-  h += '</div></div>';
-  
-  // Remove existing detail panel if any
-  var existing = document.querySelector('.map-detail-overlay');
-  if(existing) existing.remove();
-  
-  document.body.insertAdjacentHTML('beforeend', h);
-  
-  // Initialize touch swipe for the slider
+  var dotsHtml = '';
   if(events.length > 1) {
-    initSliderSwipe(sliderId, events.length);
+    dotsHtml = '<div style="display:flex;justify-content:center;gap:6px;margin-top:12px;">';
+    for(var d=0; d<events.length; d++) {
+      dotsHtml += '<span class="slider-dot" data-idx="' + d + '" style="width:' + (d===0?'20px':'8px') + ';height:8px;border-radius:4px;background:' + (d===0?'#FFD700':'rgba(255,255,255,0.3)') + ';transition:all 0.3s;cursor:pointer;"></span>';
+    }
+    dotsHtml += '</div>';
+  }
+  
+  var navHtml = '';
+  if(events.length > 1) {
+    navHtml = '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">' +
+      '<button id="' + sliderId + '-prev" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.5;" disabled>‹</button>' +
+      '<span id="' + sliderId + '-counter" style="color:#888;font-size:13px;">' + (lang==='ko' ? '1 / ' + events.length : '1 / ' + events.length) + '</span>' +
+      '<button id="' + sliderId + '-next" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>' +
+    '</div>';
+  }
+  
+  panel.innerHTML = '<div style="padding:20px;max-height:80vh;overflow-y:auto;">' +
+    headerHtml + descHtml +
+    '<div style="font-size:13px;font-weight:700;color:#FFD700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">' + (lang==='ko' ? '📜 주요 사건들' : '📜 Key Events') + '</div>' +
+    '<div id="' + sliderId + '" style="display:flex;overflow-x:hidden;scroll-snap-type:x mandatory;gap:12px;scroll-behavior:smooth;">' + cardsHtml + '</div>' +
+    dotsHtml + navHtml +
+  '</div>';
+  
+  panel.style.display = 'block';
+  
+  // Setup slider navigation
+  if(events.length > 1) {
+    var slider = document.getElementById(sliderId);
+    var prevBtn = document.getElementById(sliderId + '-prev');
+    var nextBtn = document.getElementById(sliderId + '-next');
+    var counter = document.getElementById(sliderId + '-counter');
+    var dots = panel.querySelectorAll('.slider-dot');
+    var current = 0;
+    
+    function updateSlider(idx) {
+      current = idx;
+      var cards = slider.children;
+      if(cards[idx]) {
+        slider.scrollTo({ left: cards[idx].offsetLeft - slider.offsetLeft, behavior: 'smooth' });
+      }
+      if(counter) counter.textContent = (idx+1) + ' / ' + events.length;
+      if(prevBtn) { prevBtn.disabled = (idx===0); prevBtn.style.opacity = idx===0 ? '0.5' : '1'; }
+      if(nextBtn) { nextBtn.disabled = (idx===events.length-1); nextBtn.style.opacity = idx===events.length-1 ? '0.5' : '1'; }
+      dots.forEach(function(dot, di) {
+        dot.style.width = di===idx ? '20px' : '8px';
+        dot.style.background = di===idx ? '#FFD700' : 'rgba(255,255,255,0.3)';
+      });
+    }
+    
+    if(prevBtn) prevBtn.onclick = function() { if(current>0) updateSlider(current-1); };
+    if(nextBtn) nextBtn.onclick = function() { if(current<events.length-1) updateSlider(current+1); };
+    dots.forEach(function(dot) {
+      dot.onclick = function() { updateSlider(parseInt(this.getAttribute('data-idx'))); };
+    });
+    
+    // Touch swipe support
+    var touchStartX = 0;
+    var touchEndX = 0;
+    slider.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; }, {passive:true});
+    slider.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      var diff = touchStartX - touchEndX;
+      if(Math.abs(diff) > 50) {
+        if(diff > 0 && current < events.length-1) updateSlider(current+1);
+        else if(diff < 0 && current > 0) updateSlider(current-1);
+      }
+    }, {passive:true});
   }
 }
 
