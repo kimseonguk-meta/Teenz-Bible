@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v34';
+      const CACHE = 'teens-bible-v35';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -515,6 +515,37 @@ body {
 .map-fullscreen { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10003; display:flex; align-items:center; justify-content:center; cursor:zoom-out; animation:fadeIn 0.3s; }
 .map-fullscreen img { max-width:95%; max-height:90vh; object-fit:contain; border-radius:8px; }
 .map-fullscreen-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.15); border:none; color:#fff; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+/* === MAP LOCATION DETAIL PANEL === */
+.map-detail-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10002; display:flex; align-items:flex-end; justify-content:center; animation:fadeIn 0.2s; backdrop-filter:blur(3px); }
+.map-detail-panel { width:100%; max-width:500px; max-height:85vh; background:linear-gradient(180deg,#1a2d4d 0%,#0f1b35 100%); border-radius:20px 20px 0 0; overflow-y:auto; animation:slideUp 0.35s ease; padding-bottom:env(safe-area-inset-bottom,16px); }
+@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+.map-detail-handle { width:40px; height:4px; background:rgba(255,255,255,0.2); border-radius:2px; margin:12px auto 0; }
+.map-detail-header { padding:16px 20px 12px; display:flex; align-items:center; gap:14px; border-bottom:1px solid rgba(65,110,160,0.15); position:relative; }
+.map-detail-icon { font-size:36px; flex-shrink:0; }
+.map-detail-title { font-family:'Bangers',cursive; font-size:22px; color:#FFD700; letter-spacing:1px; }
+.map-detail-title-ko { font-size:13px; color:#7888a8; font-family:'Noto Sans KR',sans-serif; margin-top:2px; }
+.map-detail-close { position:absolute; top:14px; right:16px; background:rgba(255,255,255,0.08); border:none; color:#7888a8; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.map-detail-close:hover { background:rgba(255,255,255,0.15); color:#fff; }
+.map-detail-intro { padding:12px 20px; font-size:14px; color:#a0b0c8; line-height:1.6; font-family:'Inter','Noto Sans KR',sans-serif; }
+.map-events-title { padding:4px 20px 8px; font-family:'Bangers',cursive; font-size:16px; color:#4ECDC4; letter-spacing:1px; display:flex; align-items:center; gap:6px; }
+.map-event-timeline { padding:0 16px 16px 20px; position:relative; }
+.map-event-timeline::before { content:''; position:absolute; left:28px; top:0; bottom:16px; width:2px; background:linear-gradient(180deg,rgba(78,205,196,0.4),rgba(78,205,196,0.05)); }
+.map-event-item { position:relative; padding-left:28px; margin-bottom:14px; }
+.map-event-dot { position:absolute; left:-3px; top:8px; width:10px; height:10px; border-radius:50%; background:#4ECDC4; box-shadow:0 0 8px rgba(78,205,196,0.4); }
+.map-event-card { background:linear-gradient(160deg,rgba(30,50,80,0.6),rgba(24,42,69,0.6)); border:1px solid rgba(65,110,160,0.15); border-radius:12px; padding:12px 14px; }
+.map-event-title { font-family:'Bangers',cursive; font-size:14px; color:#FFD700; margin-bottom:4px; letter-spacing:0.5px; }
+.map-event-desc { font-size:12.5px; color:#a0b0c8; line-height:1.55; font-family:'Inter','Noto Sans KR',sans-serif; margin-bottom:8px; }
+.map-event-ref { display:inline-flex; align-items:center; gap:4px; font-size:11px; color:#4ECDC4; background:rgba(78,205,196,0.08); border:1px solid rgba(78,205,196,0.15); padding:3px 10px; border-radius:8px; cursor:pointer; transition:all 0.2s; font-family:'Comic Neue',cursive; }
+.map-event-ref:hover { background:rgba(78,205,196,0.18); }
+.map-detail-verses { padding:8px 20px 16px; }
+.map-detail-verses-label { font-size:12px; color:#556680; margin-bottom:6px; font-family:'Comic Neue',cursive; }
+.map-detail-verses-list { display:flex; flex-wrap:wrap; gap:6px; }
+.map-detail-verse-chip { font-size:12px; color:#4ECDC4; background:rgba(78,205,196,0.08); border:1px solid rgba(78,205,196,0.15); padding:4px 12px; border-radius:8px; cursor:pointer; transition:all 0.2s; font-family:'Comic Neue',cursive; }
+.map-detail-verse-chip:hover { background:rgba(78,205,196,0.2); }
+.map-location-card { position:relative; }
+.map-loc-tap-hint { position:absolute; bottom:8px; right:10px; font-size:10px; color:#556680; font-family:'Comic Neue',cursive; }
+
 /* Settings gear icon on home */
 .settings-gear-row { font-size:13px; cursor:pointer; opacity:0.45; transition:all 0.3s; text-align:right; padding:4px 4px 0; margin-top:-12px; margin-bottom:8px; color:#8899bb; font-family:'Comic Neue',cursive; letter-spacing:0.5px; }
 .settings-gear-row:hover, .settings-gear-row:active { opacity:0.8; color:#FFD700; }
@@ -6603,7 +6634,7 @@ function renderMapLocations(tab) {
   
   let h = '';
   locations.forEach(loc => {
-    h += '<div class="map-location-card">';
+    h += '<div class="map-location-card" onclick="openLocationDetail(\'' + loc.name.replace(/'/g,"\\'") + '\')">';
     h += '<div class="map-loc-header">';
     h += '<div class="map-loc-icon">' + loc.icon + '</div>';
     h += '<div><div class="map-loc-name">' + loc.name + '</div>';
@@ -6617,10 +6648,270 @@ function renderMapLocations(tab) {
       });
       h += '</div>';
     }
+    h += '<div class="map-loc-tap-hint">' + (lang === 'ko' ? '탭하여 자세히 보기' : 'Tap for details') + ' →</div>';
     h += '</div>';
   });
   container.innerHTML = h;
 }
+
+// ============================================================
+// MAP LOCATION EVENTS DATA
+// ============================================================
+var mapLocationEvents = {
+  'Jerusalem': {
+    events: [
+      {title:'Triumphal Entry',titleKo:'예루살렘 입성',desc:'Jesus rode into Jerusalem on a donkey while crowds waved palm branches and shouted "Hosanna!" fulfilling the prophecy of Zechariah.',descKo:'예수님이 나귀를 타고 예루살렘에 입성하시자 군중이 종려나무 가지를 흔들며 "호산나!"를 외쳤어. 스가랴 예언의 성취.',ref:'Matthew 21:1-11'},
+      {title:'Cleansing the Temple',titleKo:'성전 정화',desc:'Jesus overturned the tables of money changers and drove out merchants, declaring "My house shall be called a house of prayer."',descKo:'예수님이 환전상들의 상을 뒤엎고 상인들을 내쫓으며 "내 집은 기도하는 집이라 불리리라"고 선언하셨어.',ref:'Matthew 21:12-13'},
+      {title:'The Last Supper',titleKo:'최후의 만찬',desc:'Jesus shared a final Passover meal with his 12 disciples, breaking bread and sharing wine as symbols of his body and blood.',descKo:'예수님이 12제자와 마지막 유월절 식사를 하시며 떡과 포도주를 자신의 몸과 피의 상징으로 나누셨어.',ref:'Matthew 26:17-30'},
+      {title:'Crucifixion & Resurrection',titleKo:'십자가와 부활',desc:'Jesus was crucified at Golgotha, buried in a tomb, and rose again on the third day - the most important event in Christianity.',descKo:'예수님이 골고다에서 십자가에 못 박히시고, 무덤에 묻히셨다가 사흘 만에 부활하셨어 - 기독교에서 가장 중요한 사건.',ref:'Matthew 27-28'},
+      {title:'Pentecost',titleKo:'오순절',desc:'The Holy Spirit descended on the disciples like tongues of fire. Peter preached and 3,000 people were baptized - the birth of the Church.',descKo:'성령이 불꽃 같은 혀로 제자들에게 임하셨어. 베드로가 설교하자 3,000명이 세례를 받았어 - 교회의 탄생.',ref:'Acts 2:1-41'}
+    ]
+  },
+  'Bethlehem': {
+    events: [
+      {title:'Birth of Jesus',titleKo:'예수님의 탄생',desc:'Mary and Joseph traveled to Bethlehem for a census. With no room at the inn, Jesus was born in a manger and angels announced it to shepherds.',descKo:'마리아와 요셉이 인구조사로 베들레헴에 갔어. 여관에 방이 없어 예수님이 구유에서 태어나셨고, 천사들이 목자들에게 알렸어.',ref:'Luke 2:1-20'},
+      {title:'Visit of the Magi',titleKo:'동방박사의 방문',desc:'Wise men from the East followed a star to find baby Jesus, bringing gifts of gold, frankincense, and myrrh.',descKo:'동방에서 온 박사들이 별을 따라 아기 예수님을 찾아와 황금, 유향, 몰약을 선물했어.',ref:'Matthew 2:1-12'},
+      {title:'Escape to Egypt',titleKo:'애굽으로 피신',desc:'An angel warned Joseph in a dream to flee to Egypt because King Herod planned to kill all baby boys in Bethlehem.',descKo:'천사가 요셉에게 꿈에서 애굽으로 도망치라고 경고했어. 헤롯 왕이 베들레헴의 모든 사내아이를 죽이려 했거든.',ref:'Matthew 2:13-18'}
+    ]
+  },
+  'Nazareth': {
+    events: [
+      {title:'Annunciation to Mary',titleKo:'마리아에게 수태고지',desc:'The angel Gabriel appeared to Mary and told her she would give birth to the Son of God. Mary said "Let it be according to your word."',descKo:'천사 가브리엘이 마리아에게 나타나 하나님의 아들을 낳을 것이라 전했어. 마리아는 "말씀대로 되기를 원합니다"라고 대답했어.',ref:'Luke 1:26-38'},
+      {title:'Jesus Grows Up',titleKo:'예수님의 성장',desc:'Jesus spent about 30 years in Nazareth, working as a carpenter with Joseph. He grew in wisdom and stature.',descKo:'예수님이 나사렛에서 약 30년간 요셉과 함께 목수로 일하시며 지혜와 키가 자라셨어.',ref:'Luke 2:39-52'},
+      {title:'Rejected in Hometown',titleKo:'고향에서 거부당함',desc:'When Jesus preached in the Nazareth synagogue, the people were furious and tried to throw him off a cliff. "No prophet is accepted in his hometown."',descKo:'예수님이 나사렛 회당에서 설교하시자 사람들이 분노하여 낭떠러지에서 떨어뜨리려 했어. "선지자가 자기 고향에서는 환영받지 못한다."',ref:'Luke 4:16-30'}
+    ]
+  },
+  'Capernaum': {
+    events: [
+      {title:'Calling the First Disciples',titleKo:'첫 제자들을 부르심',desc:'Jesus called Peter, Andrew, James, and John from their fishing boats. "Follow me, and I will make you fishers of men."',descKo:'예수님이 베드로, 안드레, 야고보, 요한을 고기잡이 배에서 부르셨어. "나를 따라오너라, 너희를 사람 낚는 어부가 되게 하리라."',ref:'Matthew 4:18-22'},
+      {title:'Healing the Paralytic',titleKo:'중풍병자 치유',desc:'Four friends lowered a paralyzed man through the roof. Jesus forgave his sins and healed him, shocking the religious leaders.',descKo:'네 친구가 중풍병자를 지붕을 통해 내려보냈어. 예수님이 그의 죄를 용서하고 치유하시자 종교 지도자들이 충격받았어.',ref:'Mark 2:1-12'},
+      {title:"Centurion's Faith",titleKo:'백부장의 믿음',desc:'A Roman centurion asked Jesus to heal his servant. Jesus marveled at his faith: "I have not found such great faith even in Israel."',descKo:'로마 백부장이 예수님에게 하인을 고쳐달라고 부탁했어. 예수님이 그의 믿음에 놀라셨어: "이스라엘에서도 이만한 믿음을 본 적이 없다."',ref:'Luke 7:1-10'},
+      {title:'Sermon on the Mount',titleKo:'산상수훈',desc:'Near Capernaum, Jesus delivered his most famous teaching including the Beatitudes, the Lord\'s Prayer, and "Love your enemies."',descKo:'가버나움 근처에서 예수님이 팔복, 주기도문, "원수를 사랑하라" 등 가장 유명한 가르침을 전하셨어.',ref:'Matthew 5-7'}
+    ]
+  },
+  'Sea of Galilee': {
+    events: [
+      {title:'Walking on Water',titleKo:'물 위를 걸으심',desc:'During a storm, Jesus walked on the water toward the disciples\' boat. Peter stepped out too but began to sink when he lost faith.',descKo:'폭풍 속에서 예수님이 물 위를 걸어 제자들의 배로 오셨어. 베드로도 나왔지만 믿음을 잃자 가라앉기 시작했어.',ref:'Matthew 14:22-33'},
+      {title:'Calming the Storm',titleKo:'폭풍을 잠재우심',desc:'While Jesus slept in the boat, a fierce storm arose. He woke up and commanded "Peace, be still!" and the wind and waves obeyed.',descKo:'예수님이 배에서 주무시는 동안 거센 폭풍이 일어났어. 깨어나셔서 "조용하라, 잔잔하라!" 명하시자 바람과 파도가 순종했어.',ref:'Mark 4:35-41'},
+      {title:'Feeding the 5,000',titleKo:'5,000명을 먹이심',desc:'With just 5 loaves and 2 fish from a boy\'s lunch, Jesus fed over 5,000 people and there were 12 baskets of leftovers.',descKo:'한 소년의 도시락인 떡 5개와 물고기 2마리로 예수님이 5,000명 이상을 먹이시고 12바구니가 남았어.',ref:'John 6:1-14'},
+      {title:'Miraculous Catch of Fish',titleKo:'기적의 물고기 잡이',desc:'After his resurrection, Jesus appeared at the shore and told the disciples to cast their nets on the right side, catching 153 fish.',descKo:'부활 후 예수님이 호수가에 나타나 제자들에게 오른쪽에 그물을 던지라고 하시자 153마리를 잡았어.',ref:'John 21:1-14'}
+    ]
+  },
+  'Jordan River': {
+    events: [
+      {title:'Baptism of Jesus',titleKo:'예수님의 세례',desc:'John baptized Jesus in the Jordan. The heavens opened, the Spirit descended like a dove, and God\'s voice said "This is my beloved Son."',descKo:'요한이 요단강에서 예수님에게 세례를 베풀었어. 하늘이 열리고 성령이 비둘기처럼 내려오시며 하나님의 음성이 "이는 내 사랑하는 아들"이라 하셨어.',ref:'Matthew 3:13-17'},
+      {title:"John's Ministry",titleKo:'요한의 사역',desc:'John the Baptist preached repentance and baptized people in the Jordan, preparing the way for Jesus.',descKo:'세례 요한이 요단강에서 회개를 전하고 사람들에게 세례를 베풀며 예수님의 길을 준비했어.',ref:'Mark 1:1-8'}
+    ]
+  },
+  'Rome': {
+    events: [
+      {title:'Paul Under House Arrest',titleKo:'바울의 가택 연금',desc:'Paul spent 2 years under house arrest in Rome, but continued preaching to everyone who visited him.',descKo:'바울이 로마에서 2년간 가택 연금 상태였지만 방문하는 모든 사람에게 계속 전도했어.',ref:'Acts 28:16-31'},
+      {title:'Letter to the Romans',titleKo:'로마서',desc:'Paul wrote his most theological letter to the Roman church, explaining salvation by faith. "For all have sinned and fall short of the glory of God."',descKo:'바울이 로마 교회에 믿음으로 말미암아 구원을 설명하는 가장 신학적인 편지를 썼어. "모든 사람이 죄를 범하여 하나님의 영광에 이르지 못하는데."',ref:'Romans 3:23'}
+    ]
+  },
+  'Ephesus': {
+    events: [
+      {title:'Riot of the Silversmiths',titleKo:'은장이들의 폭동',desc:'Paul\'s preaching was so effective that idol sales dropped. Silversmith Demetrius started a riot, and the crowd chanted "Great is Artemis!" for 2 hours.',descKo:'바울의 설교가 너무 효과적이어서 우상 판매가 떨어졌어. 은장이 데메데리우스가 폭동을 일으켰고 군중이 2시간이나 "아르데미스는 위대하다!"를 외쳤어.',ref:'Acts 19:23-41'},
+      {title:"Paul's Farewell to Elders",titleKo:'바울의 장로들 작별',desc:'Paul gave an emotional farewell speech to the Ephesian elders, warning them to guard the church. They wept and embraced him.',descKo:'바울이 에베소 장로들에게 감동적인 작별 연설을 하며 교회를 지키라고 경고했어. 그들은 울며 그를 껴안았어.',ref:'Acts 20:17-38'},
+      {title:'Letter to Ephesians',titleKo:'에베소서',desc:'Paul wrote about the Church as the body of Christ, spiritual armor, and unity. "Put on the full armor of God."',descKo:'바울이 교회를 그리스도의 몸, 영적 무장, 연합에 대해 썼어. "하나님의 전신 갑주를 입으라."',ref:'Ephesians 6:10-18'}
+    ]
+  },
+  'Corinth': {
+    events: [
+      {title:"Paul's 18-Month Stay",titleKo:'바울의 18개월 체류',desc:'Paul lived and worked as a tentmaker with Aquila and Priscilla, preaching every Sabbath. God told him in a vision "Do not be afraid."',descKo:'바울이 아굴라와 브리스길라와 함께 천막 만드는 일을 하며 매 안식일에 전도했어. 하나님이 환상으로 "두려워하지 말라"고 하셨어.',ref:'Acts 18:1-11'},
+      {title:'Love Chapter',titleKo:'사랑의 장',desc:'Paul wrote the famous "love chapter": "Love is patient, love is kind... the greatest of these is love."',descKo:'바울이 유명한 "사랑의 장"을 썼어: "사랑은 오래 참고, 사랑은 온유하며... 그 중에 제일은 사랑이라."',ref:'1 Corinthians 13'}
+    ]
+  },
+  'Athens': {
+    events: [
+      {title:'Mars Hill Sermon',titleKo:'아레오바고 설교',desc:'Paul found an altar "To An Unknown God" and used it to preach about the true God. Some mocked him, but others believed.',descKo:'바울이 "알지 못하는 신에게"라는 제단을 발견하고 참 하나님에 대해 전했어. 어떤 사람들은 비웃었지만 다른 사람들은 믿었어.',ref:'Acts 17:22-34'},
+      {title:'Debating Philosophers',titleKo:'철학자들과 토론',desc:'Paul debated with Epicurean and Stoic philosophers in the marketplace. They called him a "babbler" but were curious about his "new teaching."',descKo:'바울이 시장에서 에피쿠로스학파와 스토아학파 철학자들과 토론했어. 그들은 그를 "떠벌이"라 불렀지만 그의 "새로운 가르침"에 호기심을 가졌어.',ref:'Acts 17:16-21'}
+    ]
+  },
+  'Antioch': {
+    events: [
+      {title:'First Called Christians',titleKo:'처음 "그리스도인"이라 불림',desc:'The believers in Antioch were the first to be called "Christians." Barnabas and Paul taught there for a whole year.',descKo:'안디옥의 믿는 사람들이 처음으로 "그리스도인"이라 불렸어. 바나바와 바울이 1년간 그곳에서 가르쳤어.',ref:'Acts 11:25-26'},
+      {title:'Missionary Journeys Begin',titleKo:'선교 여행의 시작',desc:'The Holy Spirit said "Set apart Barnabas and Saul for the work I have called them to." This launched Paul\'s three great missionary journeys.',descKo:'성령이 "내가 부른 일을 위해 바나바와 사울을 따로 세우라"고 하셨어. 이것이 바울의 세 번의 위대한 선교 여행의 시작이었어.',ref:'Acts 13:1-3'}
+    ]
+  },
+  'Damascus': {
+    events: [
+      {title:"Paul's Conversion",titleKo:'바울의 회심',desc:'A blinding light from heaven struck Saul down. Jesus asked "Why are you persecuting me?" Saul was blind for 3 days until Ananias healed him.',descKo:'하늘에서 눈부신 빛이 사울을 쓰러뜨렸어. 예수님이 "왜 나를 핍박하느냐?"고 물으셨어. 사울은 3일간 눈이 멀었다가 아나니아가 고쳐줬어.',ref:'Acts 9:1-19'},
+      {title:'Escape in a Basket',titleKo:'바구니를 타고 탈출',desc:'When Jews plotted to kill Paul, the disciples lowered him in a basket through an opening in the city wall at night.',descKo:'유대인들이 바울을 죽이려고 음모하자, 제자들이 밤에 성벽의 구멍으로 바구니에 그를 내려보냈어.',ref:'Acts 9:23-25'}
+    ]
+  },
+  'Temple Mount': {
+    events: [
+      {title:'Jesus Teaches at the Temple',titleKo:'성전에서 가르치심',desc:'Jesus regularly taught in the Temple courts, debating with religious leaders and teaching crowds about the Kingdom of God.',descKo:'예수님이 성전 뜰에서 정기적으로 가르치시며 종교 지도자들과 토론하고 군중에게 하나님 나라에 대해 가르치셨어.',ref:'Luke 20:1-8'},
+      {title:"The Widow's Offering",titleKo:'과부의 헌금',desc:'Jesus watched people giving offerings and praised a poor widow who gave two small coins - all she had to live on.',descKo:'예수님이 사람들이 헌금하는 것을 보시며 작은 동전 두 닢을 낸 가난한 과부를 칭찬하셨어 - 그녀의 생활비 전부였어.',ref:'Mark 12:41-44'},
+      {title:'Veil Torn in Two',titleKo:'휘장이 둘로 찢어짐',desc:'When Jesus died on the cross, the Temple\'s thick curtain tore from top to bottom, symbolizing direct access to God for all people.',descKo:'예수님이 십자가에서 돌아가셨을 때 성전의 두꺼운 휘장이 위에서 아래로 찢어졌어 - 모든 사람이 하나님에게 직접 다가갈 수 있음을 상징.',ref:'Matthew 27:51'}
+    ]
+  },
+  'Mount of Olives': {
+    events: [
+      {title:'Olivet Discourse',titleKo:'감람산 강화',desc:'Jesus sat on the Mount of Olives and told his disciples about the end times, signs of his return, and the importance of being ready.',descKo:'예수님이 감람산에 앉아 제자들에게 마지막 때, 재림의 징조, 준비의 중요성에 대해 말씀하셨어.',ref:'Matthew 24:1-51'},
+      {title:'The Ascension',titleKo:'승천',desc:'40 days after his resurrection, Jesus was taken up into heaven before his disciples\' eyes. Angels said he would return the same way.',descKo:'부활 후 40일 만에 예수님이 제자들이 보는 앞에서 하늘로 올라가셨어. 천사들이 같은 방식으로 돌아오실 것이라 했어.',ref:'Acts 1:6-11'}
+    ]
+  },
+  'Garden of Gethsemane': {
+    events: [
+      {title:'Jesus Prays in Agony',titleKo:'예수님의 고통의 기도',desc:'Jesus prayed so intensely that his sweat became like drops of blood. "Father, if possible, take this cup from me. Yet not my will, but yours."',descKo:'예수님이 너무 간절히 기도하셔서 땀이 피 방울처럼 되었어. "아버지, 가능하면 이 잔을 내게서 지나가게 하소서. 그러나 내 뜻이 아닌 아버지의 뜻대로."',ref:'Luke 22:39-46'},
+      {title:"Judas's Betrayal",titleKo:'유다의 배신',desc:'Judas arrived with soldiers and betrayed Jesus with a kiss. Jesus was arrested while the disciples fled in fear.',descKo:'유다가 군병들과 함께 와서 입맞춤으로 예수님을 배신했어. 예수님이 체포되시고 제자들은 두려움에 도망쳤어.',ref:'Matthew 26:47-56'}
+    ]
+  },
+  'Golgotha': {
+    events: [
+      {title:'The Crucifixion',titleKo:'십자가 처형',desc:'Jesus was nailed to a cross between two criminals. He said "Father, forgive them" and "It is finished" before giving up his spirit.',descKo:'예수님이 두 범죄자 사이에서 십자가에 못 박히셨어. "아버지, 저들을 용서하소서" 그리고 "다 이루었다"고 말씀하신 후 숨을 거두셨어.',ref:'John 19:17-30'},
+      {title:'Darkness Over the Land',titleKo:'땅을 덮은 어둠',desc:'From noon to 3pm, darkness covered the whole land. The earth shook and rocks split when Jesus died.',descKo:'정오부터 오후 3시까지 어둠이 온 땅을 덮었어. 예수님이 돌아가셨을 때 땅이 흔들리고 바위가 갈라졌어.',ref:'Matthew 27:45-54'}
+    ]
+  },
+  'Pool of Bethesda': {
+    events: [
+      {title:'Healing on the Sabbath',titleKo:'안식일의 치유',desc:'Jesus told the man "Get up! Pick up your mat and walk." The man was instantly healed, but religious leaders were angry it happened on the Sabbath.',descKo:'예수님이 "일어나 네 자리를 들고 걸어가라"고 하시자 그 사람이 즉시 나았어. 하지만 종교 지도자들은 안식일에 일어난 일이라 화를 냈어.',ref:'John 5:1-15'}
+    ]
+  },
+  'Upper Room': {
+    events: [
+      {title:"Washing the Disciples' Feet",titleKo:'제자들의 발을 씻기심',desc:'Jesus, the Son of God, knelt down and washed his disciples\' dirty feet, teaching them about humble service.',descKo:'하나님의 아들인 예수님이 무릎을 꿇고 제자들의 더러운 발을 씻겨주시며 겸손한 섬김에 대해 가르치셨어.',ref:'John 13:1-17'},
+      {title:'Institution of Communion',titleKo:'성찬의 제정',desc:'Jesus broke bread saying "This is my body" and shared wine saying "This is my blood of the new covenant, poured out for many."',descKo:'예수님이 떡을 떼며 "이것은 내 몸이다" 포도주를 나누며 "이것은 많은 사람을 위해 흘린 나의 새 언약의 피다"고 하셨어.',ref:'Matthew 26:26-29'},
+      {title:'Coming of the Holy Spirit',titleKo:'성령 강림',desc:'After Jesus ascended, the disciples gathered in the Upper Room. On Pentecost, the Holy Spirit came with wind and fire.',descKo:'예수님 승천 후 제자들이 다락방에 모였어. 오순절에 성령이 바람과 불과 함께 임하셨어.',ref:'Acts 2:1-4'}
+    ]
+  },
+  'Bethsaida': {
+    events: [
+      {title:'Feeding the 5,000',titleKo:'5,000명을 먹이심',desc:'Near Bethsaida, Jesus multiplied 5 loaves and 2 fish to feed a massive crowd. This is the only miracle recorded in all 4 Gospels.',descKo:'벳새다 근처에서 예수님이 떡 5개와 물고기 2마리를 늘려 많은 군중을 먹이셨어. 4복음서 모두에 기록된 유일한 기적.',ref:'Luke 9:10-17'},
+      {title:'Healing a Blind Man',titleKo:'눈 먼 사람 치유',desc:'Jesus healed a blind man in two stages - first he saw people "like trees walking," then Jesus touched his eyes again and he saw clearly.',descKo:'예수님이 눈 먼 사람을 두 단계로 치유하셨어 - 처음에는 사람들이 "나무처럼 걷는 것"으로 보였고, 다시 눈을 만지시자 명확히 보았어.',ref:'Mark 8:22-26'}
+    ]
+  },
+  'Cana': {
+    events: [
+      {title:'Water Into Wine',titleKo:'물을 포도주로',desc:'When the wine ran out at a wedding, Mary told Jesus. He turned 6 stone jars of water into the finest wine - his first miracle.',descKo:'결혼식에서 포도주가 떨어지자 마리아가 예수님에게 말했어. 돌 항아리 6개의 물을 최고급 포도주로 바꾸셨어 - 첫 번째 기적.',ref:'John 2:1-11'},
+      {title:"Healing Official's Son",titleKo:'관리의 아들 치유',desc:'A royal official begged Jesus to heal his dying son in Capernaum. Jesus said "Go, your son will live" and the boy was healed at that exact moment.',descKo:'한 관리가 가버나움에서 죽어가는 아들을 고쳐달라고 예수님에게 간청했어. "가라, 네 아들이 살 것이다" 하시자 그 순간 아이가 나았어.',ref:'John 4:46-54'}
+    ]
+  },
+  'Tiberias': {
+    events: [
+      {title:'Post-Resurrection Appearance',titleKo:'부활 후 나타남',desc:'After his resurrection, Jesus appeared to his disciples by the Sea of Tiberias, cooked breakfast for them, and restored Peter.',descKo:'부활 후 예수님이 디베랴 호수가에서 제자들에게 나타나 아침을 지어주시고 베드로를 회복시켰어.',ref:'John 21:1-19'}
+    ]
+  },
+  'Magdala': {
+    events: [
+      {title:'Mary Magdalene Freed',titleKo:'막달라 마리아의 해방',desc:'Jesus cast 7 demons out of Mary Magdalene. She became one of his most faithful followers and supported his ministry.',descKo:'예수님이 막달라 마리아에게서 7귀신을 쫓아내셨어. 그녀는 가장 충실한 추종자가 되어 사역을 지원했어.',ref:'Luke 8:1-3'},
+      {title:'First Witness of Resurrection',titleKo:'부활의 첫 번째 목격자',desc:'Mary Magdalene was the first person to see the risen Jesus. He told her "Go and tell my brothers" - making her the first evangelist.',descKo:'막달라 마리아가 부활하신 예수님을 처음 본 사람이었어. "가서 내 형제들에게 전하라" - 첫 번째 전도자가 된 거야.',ref:'John 20:11-18'}
+    ]
+  },
+  'Nain': {
+    events: [
+      {title:"Raising the Widow's Son",titleKo:'과부의 아들을 살리심',desc:'Jesus met a funeral procession and was moved with compassion. He touched the coffin and said "Young man, I say to you, get up!" The dead man sat up.',descKo:'예수님이 장례 행렬을 만나 깊은 동정심을 느꼈어. 관을 만지시며 "철은이야, 일어나라!"고 하시자 죽은 사람이 일어났어.',ref:'Luke 7:11-17'}
+    ]
+  },
+  'Antioch (Start)': {
+    events: [
+      {title:'Commissioning of Paul & Barnabas',titleKo:'바울과 바나바 파송',desc:'The church fasted and prayed, then sent Paul and Barnabas on the first missionary journey.',descKo:'교회가 금식하고 기도한 후 바울과 바나바를 첫 선교 여행에 보냈어.',ref:'Acts 13:1-3'},
+      {title:'Jerusalem Council',titleKo:'예루살렘 공의회',desc:'Paul and Barnabas went to Jerusalem to settle whether Gentile believers needed to follow Jewish law. The council decided they did not.',descKo:'바울과 바나바가 이방인 믿는 자들이 유대 율법을 따라야 하는지 결정하러 예루살렘에 갔어. 공의회는 필요 없다고 결정했어.',ref:'Acts 15:1-29'}
+    ]
+  },
+  'Cyprus': {
+    events: [
+      {title:'Confronting a Sorcerer',titleKo:'마술사와 대결',desc:'Paul confronted the sorcerer Bar-Jesus who tried to turn the governor away from faith. Paul struck him blind, and the governor believed.',descKo:'바울이 총독을 믿음에서 돌리려는 마술사 바예수와 대결했어. 바울이 그를 눈멀게 하자 총독이 믿었어.',ref:'Acts 13:6-12'}
+    ]
+  },
+  'Lystra & Derbe': {
+    events: [
+      {title:'Mistaken for Gods',titleKo:'신으로 오해받음',desc:'After Paul healed a lame man, the crowd thought he and Barnabas were the gods Zeus and Hermes.',descKo:'바울이 절는 사람을 고치자 군중이 그와 바나바를 제우스와 헤르메스 신으로 생각했어.',ref:'Acts 14:8-18'},
+      {title:'Stoned and Left for Dead',titleKo:'돌에 맞아 죽은 줄 알았음',desc:'Jews from Antioch turned the crowd against Paul. They stoned him and dragged him outside the city, thinking he was dead. But he got up!',descKo:'안디옥에서 온 유대인들이 군중을 바울에게 돌렸어. 돌을 던지고 성 밖으로 끌고 갔지만 바울은 일어났어!',ref:'Acts 14:19-20'}
+    ]
+  },
+  'Philippi': {
+    events: [
+      {title:"Lydia's Conversion",titleKo:'루디아의 회심',desc:'Paul met Lydia, a dealer in purple cloth, by the river. She became the first European convert to Christianity.',descKo:'바울이 강가에서 자주색 옷감 장사 루디아를 만났어. 그녀는 유럽 최초의 그리스도인이 되었어.',ref:'Acts 16:11-15'},
+      {title:'Prison Earthquake',titleKo:'감옥 지진',desc:'Paul and Silas sang hymns at midnight in prison. A violent earthquake opened all doors. The jailer asked "What must I do to be saved?"',descKo:'바울과 실라가 한밤중에 감옥에서 찬송을 불렀어. 강력한 지진이 모든 문을 열었어. 간수가 "구원받으려면 어떻게 해야 합니까?"라고 물었어.',ref:'Acts 16:25-34'}
+    ]
+  },
+  'Thessalonica': {
+    events: [
+      {title:'Paul Preaches in the Synagogue',titleKo:'회당에서 전도',desc:'For 3 Sabbaths, Paul reasoned from Scripture that Jesus is the Messiah. Some Jews and many Greeks believed.',descKo:'3주간 안식일에 바울이 성경으로 예수님이 메시아임을 설명했어. 일부 유대인과 많은 그리스인이 믿었어.',ref:'Acts 17:1-4'},
+      {title:"Letters About Jesus' Return",titleKo:'예수님 재림에 대한 편지',desc:'Paul wrote to encourage the Thessalonians about Jesus\' return: "The Lord himself will come down from heaven with a loud command."',descKo:'바울이 예수님의 재림에 대해 데살로니가 교인들을 격려했어: "주님이 큰 호령과 함께 하늘에서 친히 내려오시리니."',ref:'1 Thessalonians 4:16-17'}
+    ]
+  }
+};
+
+// ============================================================
+// LOCATION DETAIL PANEL FUNCTION
+// ============================================================
+function openLocationDetail(locationName) {
+  // Find location data across all tabs
+  var loc = null;
+  var allTabs = ['overview','jerusalem','galilee','paul'];
+  for(var t=0; t<allTabs.length; t++) {
+    var locs = mapLocations[allTabs[t]] || [];
+    for(var i=0; i<locs.length; i++) {
+      if(locs[i].name === locationName) { loc = locs[i]; break; }
+    }
+    if(loc) break;
+  }
+  if(!loc) return;
+  
+  var events = (mapLocationEvents[locationName] && mapLocationEvents[locationName].events) || [];
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  
+  // Build the detail panel HTML
+  var h = '<div class="map-detail-overlay" onclick="if(event.target===this)this.remove()">';
+  h += '<div class="map-detail-panel">';
+  h += '<div class="map-detail-handle"></div>';
+  
+  // Header
+  h += '<div class="map-detail-header">';
+  h += '<div class="map-detail-icon">' + loc.icon + '</div>';
+  h += '<div>';
+  h += '<div class="map-detail-title">' + loc.name + '</div>';
+  if(loc.nameKo) h += '<div class="map-detail-title-ko">' + loc.nameKo + '</div>';
+  h += '</div>';
+  h += '<button class="map-detail-close" onclick="this.closest(\'.map-detail-overlay\').remove()">\u2715</button>';
+  h += '</div>';
+  
+  // Description
+  h += '<div class="map-detail-intro">' + (lang === 'ko' ? (loc.descKo || loc.desc) : loc.desc) + '</div>';
+  
+  // Events timeline
+  if(events.length > 0) {
+    h += '<div class="map-events-title">\u{1F4DC} ' + (lang === 'ko' ? '\uC774\uACF3\uC5D0\uC11C \uC77C\uC5B4\uB09C \uC0AC\uAC74\uB4E4' : 'Events That Happened Here') + '</div>';
+    h += '<div class="map-event-timeline">';
+    for(var e=0; e<events.length; e++) {
+      var evt = events[e];
+      h += '<div class="map-event-item">';
+      h += '<div class="map-event-dot"></div>';
+      h += '<div class="map-event-card">';
+      h += '<div class="map-event-title">' + (lang === 'ko' ? (evt.titleKo || evt.title) : evt.title) + '</div>';
+      h += '<div class="map-event-desc">' + (lang === 'ko' ? (evt.descKo || evt.desc) : evt.desc) + '</div>';
+      if(evt.ref) {
+        h += '<span class="map-event-ref" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + evt.ref + '\')">\u{1F4D6} ' + evt.ref + '</span>';
+      }
+      h += '</div></div>';
+    }
+    h += '</div>';
+  }
+  
+  // All related verses
+  if(loc.verses && loc.verses.length) {
+    h += '<div class="map-detail-verses">';
+    h += '<div class="map-detail-verses-label">' + (lang === 'ko' ? '\uAD00\uB828 \uC131\uACBD \uAD6C\uC808' : 'Related Bible Passages') + '</div>';
+    h += '<div class="map-detail-verses-list">';
+    for(var v=0; v<loc.verses.length; v++) {
+      h += '<span class="map-detail-verse-chip" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + loc.verses[v] + '\')">' + loc.verses[v] + '</span>';
+    }
+    h += '</div></div>';
+  }
+  
+  h += '</div></div>';
+  
+  // Remove existing detail panel if any
+  var existing = document.querySelector('.map-detail-overlay');
+  if(existing) existing.remove();
+  
+  document.body.insertAdjacentHTML('beforeend', h);
+}
+
 
 function navigateToVerse(ref) {
   // Parse reference like "Matthew 21" or "Acts 17:16-34"
