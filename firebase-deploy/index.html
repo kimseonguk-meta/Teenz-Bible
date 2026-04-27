@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v28';
+      const CACHE = 'teens-bible-v29';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -516,7 +516,7 @@ body {
 .map-fullscreen img { max-width:95%; max-height:90vh; object-fit:contain; border-radius:8px; }
 .map-fullscreen-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.15); border:none; color:#fff; width:40px; height:40px; border-radius:50%; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 /* Settings gear icon on home */
-.settings-gear { position:absolute; top:16px; right:16px; font-size:24px; cursor:pointer; opacity:0.6; transition:all 0.3s; z-index:10; }
+.settings-gear { font-size:22px; cursor:pointer; opacity:0.5; transition:all 0.3s; flex-shrink:0; margin-left:auto; padding:4px; }
 .settings-gear:hover { opacity:1; transform:rotate(90deg); }
 
 /* === SETTINGS === */
@@ -1710,12 +1710,12 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 <div class="app">
   <!-- Home -->
   <div class="screen active" id="screen-home">
-    <div class="settings-gear" onclick="showScreen('settings')">⚙️</div>
     <div class="hero">
       <img class="hero-icon-img" src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon-180-v2-darkbg_671d3aad.png" alt="TB">
       <div class="hero-text">
         <h1>TEENZ BIBLE</h1>
       </div>
+      <div class="settings-gear" onclick="event.stopPropagation();showScreen('settings')">⚙️</div>
     </div>
     <div id="reading-goal-section"></div>
     <div id="streak-card-section"></div>
