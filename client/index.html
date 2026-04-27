@@ -5695,8 +5695,8 @@ function showContextTip(tipId, message, anchorEl) {
 }
 
 // Hook contextual tips into existing flow
-var _origMarkRead = typeof markChapterRead === 'function' ? markChapterRead : null;
-if (_origMarkRead) {
+var _origMarkReadTip = typeof markChapterRead === 'function' ? markChapterRead : null;
+if (_origMarkReadTip) {
   var _tipChapterCount = 0;
   var _origMark2 = markChapterRead;
   markChapterRead = function() {
