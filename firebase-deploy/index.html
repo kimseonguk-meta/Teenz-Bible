@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v35';
+      const CACHE = 'teens-bible-v36';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -545,6 +545,60 @@ body {
 .map-detail-verse-chip:hover { background:rgba(78,205,196,0.2); }
 .map-location-card { position:relative; }
 .map-loc-tap-hint { position:absolute; bottom:8px; right:10px; font-size:10px; color:#556680; font-family:'Comic Neue',cursive; }
+
+/* === INTERACTIVE MAP PINS === */
+.map-image-container { position:relative; }
+.map-pins-overlay { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+.map-pin { position:absolute; pointer-events:all; cursor:pointer; z-index:10; transform:translate(-50%,-100%); transition:transform 0.2s; }
+.map-pin:active { transform:translate(-50%,-100%) scale(1.3); }
+.map-pin-icon { width:32px; height:32px; background:linear-gradient(135deg,#FF6B6B,#ee5a24); border-radius:50% 50% 50% 0; transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; box-shadow:0 3px 12px rgba(255,107,107,0.5); border:2px solid #fff; }
+.map-pin-icon span { transform:rotate(45deg); font-size:14px; }
+.map-pin-label { position:absolute; top:-6px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:9px; font-family:'Bangers',cursive; color:#FFD700; text-shadow:0 1px 4px rgba(0,0,0,0.9),0 0 8px rgba(0,0,0,0.7); letter-spacing:0.5px; pointer-events:none; }
+.map-pin-pulse { position:absolute; bottom:-2px; left:50%; transform:translateX(-50%); width:12px; height:6px; background:rgba(255,107,107,0.3); border-radius:50%; animation:pinPulse 2s ease-in-out infinite; }
+@keyframes pinPulse { 0%,100% { transform:translateX(-50%) scale(1); opacity:0.4; } 50% { transform:translateX(-50%) scale(2.5); opacity:0; } }
+
+/* Gold pins for special locations */
+.map-pin.gold .map-pin-icon { background:linear-gradient(135deg,#FFD700,#FFA502); box-shadow:0 3px 12px rgba(255,215,0,0.5); }
+.map-pin.gold .map-pin-pulse { background:rgba(255,215,0,0.3); }
+
+/* Blue pins for water locations */
+.map-pin.blue .map-pin-icon { background:linear-gradient(135deg,#45B7D1,#4ECDC4); box-shadow:0 3px 12px rgba(78,205,196,0.5); }
+.map-pin.blue .map-pin-pulse { background:rgba(78,205,196,0.3); }
+
+/* === EVENT CARD SLIDER === */
+.event-slider-container { position:relative; overflow:hidden; margin:0 -4px; }
+.event-slider-track { display:flex; transition:transform 0.4s cubic-bezier(0.25,0.8,0.25,1); touch-action:pan-y; }
+.event-slide { min-width:100%; padding:0 16px; box-sizing:border-box; }
+.event-card-big { background:linear-gradient(160deg,#1a3050 0%,#0f2040 100%); border:1px solid rgba(78,205,196,0.2); border-radius:20px; padding:24px 20px; min-height:200px; position:relative; overflow:hidden; }
+.event-card-big::before { content:''; position:absolute; top:-30px; right:-30px; width:100px; height:100px; background:radial-gradient(circle,rgba(255,214,0,0.06) 0%,transparent 70%); }
+.event-card-num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,#4ECDC4,#45B7D1); color:#0a1628; font-family:'Bangers',cursive; font-size:14px; margin-bottom:12px; }
+.event-card-big-title { font-family:'Bangers',cursive; font-size:22px; color:#FFD700; letter-spacing:1px; margin-bottom:4px; line-height:1.2; }
+.event-card-big-title-ko { font-size:14px; color:#7888a8; font-family:'Noto Sans KR',sans-serif; margin-bottom:12px; }
+.event-card-big-desc { font-size:15px; color:#c8d6e8; line-height:1.75; font-family:'Inter','Noto Sans KR',sans-serif; margin-bottom:16px; }
+.event-card-big-ref { display:inline-flex; align-items:center; gap:6px; font-size:14px; color:#4ECDC4; background:rgba(78,205,196,0.1); border:1px solid rgba(78,205,196,0.2); padding:8px 16px; border-radius:12px; cursor:pointer; transition:all 0.3s; font-family:'Comic Neue',cursive; font-weight:700; }
+.event-card-big-ref:hover { background:rgba(78,205,196,0.2); transform:translateY(-1px); }
+
+/* Slider navigation */
+.event-slider-nav { display:flex; align-items:center; justify-content:center; gap:16px; padding:16px 0 8px; }
+.event-slider-dots { display:flex; gap:6px; }
+.event-slider-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.15); transition:all 0.3s; cursor:pointer; }
+.event-slider-dot.active { background:#4ECDC4; width:24px; border-radius:4px; }
+.event-slider-arrow { width:36px; height:36px; border-radius:50%; border:1px solid rgba(78,205,196,0.2); background:rgba(20,35,60,0.6); color:#4ECDC4; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s; }
+.event-slider-arrow:hover { background:rgba(78,205,196,0.15); border-color:rgba(78,205,196,0.4); }
+.event-slider-arrow:disabled { opacity:0.2; cursor:default; }
+
+/* Updated detail panel for card slider */
+.map-detail-panel { padding-bottom:max(16px, env(safe-area-inset-bottom,16px)); }
+.event-count-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; color:#4ECDC4; background:rgba(78,205,196,0.1); padding:3px 10px; border-radius:8px; margin-left:8px; font-family:'Comic Neue',cursive; }
+
+/* Compact location list below map */
+.map-location-chip { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:12px; background:rgba(20,35,60,0.5); border:1px solid rgba(65,110,160,0.2); cursor:pointer; transition:all 0.3s; font-size:13px; }
+.map-location-chip:hover { border-color:rgba(255,214,0,0.3); background:rgba(30,50,80,0.6); }
+.map-location-chip .chip-icon { font-size:16px; }
+.map-location-chip .chip-name { font-family:'Bangers',cursive; color:#FFD700; font-size:14px; }
+.map-location-chip .chip-name-ko { font-size:10px; color:#7888a8; font-family:'Noto Sans KR',sans-serif; }
+.map-locations-grid { display:flex; flex-wrap:wrap; gap:8px; }
+
 
 /* Settings gear icon on home */
 .settings-gear-row { font-size:13px; cursor:pointer; opacity:0.45; transition:all 0.3s; text-align:right; padding:4px 4px 0; margin-top:-12px; margin-bottom:8px; color:#8899bb; font-family:'Comic Neue',cursive; letter-spacing:0.5px; }
@@ -1861,7 +1915,49 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="map-overview" class="map-panel active">
         <div class="map-image-container">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-main-Q6Ui2C3W7MTSQPzAXiEXVW.webp" alt="New Testament Holy Land Map" class="map-image" onclick="openMapFullscreen(this.src)">
-          <div class="map-zoom-hint">Tap to zoom</div>
+          <div class="map-zoom-hint">Tap pins to explore | Pinch to zoom</div>
+<div class="map-pins-overlay">
+  <div class="map-pin gold" style="left:52%;top:62%" onclick="openLocationDetail('Jerusalem')">
+    <div class="map-pin-label">Jerusalem</div>
+    <div class="map-pin-icon"><span>⛪</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin gold" style="left:54%;top:67%" onclick="openLocationDetail('Bethlehem')">
+    <div class="map-pin-label">Bethlehem</div>
+    <div class="map-pin-icon"><span>⭐</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:42%;top:30%" onclick="openLocationDetail('Nazareth')">
+    <div class="map-pin-label">Nazareth</div>
+    <div class="map-pin-icon"><span>🏘️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:50%;top:20%" onclick="openLocationDetail('Capernaum')">
+    <div class="map-pin-label">Capernaum</div>
+    <div class="map-pin-icon"><span>🐟</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin blue" style="left:56%;top:24%" onclick="openLocationDetail('Sea of Galilee')">
+    <div class="map-pin-label">Sea of Galilee</div>
+    <div class="map-pin-icon"><span>🌊</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin blue" style="left:58%;top:45%" onclick="openLocationDetail('Jordan River')">
+    <div class="map-pin-label">Jordan River</div>
+    <div class="map-pin-icon"><span>💧</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:62%;top:8%" onclick="openLocationDetail('Damascus')">
+    <div class="map-pin-label">Damascus</div>
+    <div class="map-pin-icon"><span>⚔️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:30%;top:5%" onclick="openLocationDetail('Antioch')">
+    <div class="map-pin-label">Antioch</div>
+    <div class="map-pin-icon"><span>🌴</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+</div>
         </div>
         <div class="map-locations-grid" id="overview-locations"></div>
       </div>
@@ -1870,7 +1966,39 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="map-jerusalem" class="map-panel">
         <div class="map-image-container">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-jerusalem-FEJpKrbC94dHRKyqWv9xdG.webp" alt="Jerusalem in New Testament Times" class="map-image" onclick="openMapFullscreen(this.src)">
-          <div class="map-zoom-hint">Tap to zoom</div>
+          <div class="map-zoom-hint">Tap pins to explore | Pinch to zoom</div>
+<div class="map-pins-overlay">
+  <div class="map-pin gold" style="left:60%;top:38%" onclick="openLocationDetail('Temple Mount')">
+    <div class="map-pin-label">Temple Mount</div>
+    <div class="map-pin-icon"><span>🏛️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:78%;top:32%" onclick="openLocationDetail('Mount of Olives')">
+    <div class="map-pin-label">Mount of Olives</div>
+    <div class="map-pin-icon"><span>🫒</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:72%;top:42%" onclick="openLocationDetail('Garden of Gethsemane')">
+    <div class="map-pin-label">Garden of Gethsemane</div>
+    <div class="map-pin-icon"><span>🌿</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin gold" style="left:38%;top:28%" onclick="openLocationDetail('Golgotha')">
+    <div class="map-pin-label">Golgotha</div>
+    <div class="map-pin-icon"><span>✝️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin blue" style="left:55%;top:22%" onclick="openLocationDetail('Pool of Bethesda')">
+    <div class="map-pin-label">Pool of Bethesda</div>
+    <div class="map-pin-icon"><span>💧</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:40%;top:62%" onclick="openLocationDetail('Upper Room')">
+    <div class="map-pin-label">Upper Room</div>
+    <div class="map-pin-icon"><span>🍞</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+</div>
         </div>
         <div class="map-locations-grid" id="jerusalem-locations"></div>
       </div>
@@ -1879,7 +2007,44 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="map-galilee" class="map-panel">
         <div class="map-image-container">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-galilee-NasJPTzXQJmoqJh9Mv5qpQ.webp" alt="Sea of Galilee Region" class="map-image" onclick="openMapFullscreen(this.src)">
-          <div class="map-zoom-hint">Tap to zoom</div>
+          <div class="map-zoom-hint">Tap pins to explore | Pinch to zoom</div>
+<div class="map-pins-overlay">
+  <div class="map-pin" style="left:58%;top:18%" onclick="openLocationDetail('Capernaum')">
+    <div class="map-pin-label">Capernaum</div>
+    <div class="map-pin-icon"><span>🐟</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:72%;top:20%" onclick="openLocationDetail('Bethsaida')">
+    <div class="map-pin-label">Bethsaida</div>
+    <div class="map-pin-icon"><span>🎣</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:28%;top:68%" onclick="openLocationDetail('Nazareth')">
+    <div class="map-pin-label">Nazareth</div>
+    <div class="map-pin-icon"><span>🏘️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:25%;top:48%" onclick="openLocationDetail('Cana')">
+    <div class="map-pin-label">Cana</div>
+    <div class="map-pin-icon"><span>🍷</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:52%;top:45%" onclick="openLocationDetail('Tiberias')">
+    <div class="map-pin-label">Tiberias</div>
+    <div class="map-pin-icon"><span>🏛️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:42%;top:32%" onclick="openLocationDetail('Magdala')">
+    <div class="map-pin-label">Magdala</div>
+    <div class="map-pin-icon"><span>👩</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:38%;top:80%" onclick="openLocationDetail('Nain')">
+    <div class="map-pin-label">Nain</div>
+    <div class="map-pin-icon"><span>👦</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+</div>
         </div>
         <div class="map-locations-grid" id="galilee-locations"></div>
       </div>
@@ -1888,7 +2053,54 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="map-paul" class="map-panel">
         <div class="map-image-container">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-paul-journeys-3v4xYiX8eMXS37i9Vzj28c.webp" alt="Paul's Missionary Journeys" class="map-image" onclick="openMapFullscreen(this.src)">
-          <div class="map-zoom-hint">Tap to zoom</div>
+          <div class="map-zoom-hint">Tap pins to explore | Pinch to zoom</div>
+<div class="map-pins-overlay">
+  <div class="map-pin gold" style="left:72%;top:32%" onclick="openLocationDetail('Antioch (Start)')">
+    <div class="map-pin-label">Antioch</div>
+    <div class="map-pin-icon"><span>🚀</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:55%;top:48%" onclick="openLocationDetail('Cyprus')">
+    <div class="map-pin-label">Cyprus</div>
+    <div class="map-pin-icon"><span>🏝️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:58%;top:28%" onclick="openLocationDetail('Lystra & Derbe')">
+    <div class="map-pin-label">Lystra & Derbe</div>
+    <div class="map-pin-icon"><span>⚔️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:30%;top:18%" onclick="openLocationDetail('Philippi')">
+    <div class="map-pin-label">Philippi</div>
+    <div class="map-pin-icon"><span>📖</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:25%;top:22%" onclick="openLocationDetail('Thessalonica')">
+    <div class="map-pin-label">Thessalonica</div>
+    <div class="map-pin-icon"><span>🏛️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin gold" style="left:24%;top:42%" onclick="openLocationDetail('Athens')">
+    <div class="map-pin-label">Athens</div>
+    <div class="map-pin-icon"><span>🎓</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:20%;top:44%" onclick="openLocationDetail('Corinth')">
+    <div class="map-pin-label">Corinth</div>
+    <div class="map-pin-icon"><span>🏟️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin" style="left:38%;top:32%" onclick="openLocationDetail('Ephesus')">
+    <div class="map-pin-label">Ephesus</div>
+    <div class="map-pin-icon"><span>🏺</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+  <div class="map-pin gold" style="left:5%;top:18%" onclick="openLocationDetail('Rome')">
+    <div class="map-pin-label">Rome</div>
+    <div class="map-pin-icon"><span>🏛️</span></div>
+    <div class="map-pin-pulse"></div>
+  </div>
+</div>
         </div>
         <div class="map-locations-grid" id="paul-locations"></div>
       </div>
@@ -6632,24 +6844,13 @@ function renderMapLocations(tab) {
   const locations = mapLocations[tab] || [];
   const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
   
-  let h = '';
+  let h = '<div style="font-size:12px;color:#556680;margin-bottom:8px;font-family:Comic Neue,cursive;">' + (lang === 'ko' ? '📍 지도의 핀을 탭하거나 아래 장소를 선택하세요' : '📍 Tap a pin on the map or select a location below') + '</div>';
   locations.forEach(loc => {
-    h += '<div class="map-location-card" onclick="openLocationDetail(\'' + loc.name.replace(/'/g,"\\'") + '\')">';
-    h += '<div class="map-loc-header">';
-    h += '<div class="map-loc-icon">' + loc.icon + '</div>';
-    h += '<div><div class="map-loc-name">' + loc.name + '</div>';
-    if(loc.nameKo) h += '<div class="map-loc-name-ko">' + loc.nameKo + '</div>';
+    h += '<div class="map-location-chip" onclick="openLocationDetail(\'' + loc.name.replace(/'/g,"\\'") + '\')">';
+    h += '<span class="chip-icon">' + loc.icon + '</span>';
+    h += '<div><div class="chip-name">' + loc.name + '</div>';
+    if(loc.nameKo) h += '<div class="chip-name-ko">' + loc.nameKo + '</div>';
     h += '</div></div>';
-    h += '<div class="map-loc-desc">' + (lang === 'ko' ? loc.descKo : loc.desc) + '</div>';
-    if(loc.verses && loc.verses.length) {
-      h += '<div class="map-loc-verses">';
-      loc.verses.forEach(v => {
-        h += '<span class="map-loc-verse" onclick="event.stopPropagation();navigateToVerse(\'' + v + '\')">' + v + '</span>';
-      });
-      h += '</div>';
-    }
-    h += '<div class="map-loc-tap-hint">' + (lang === 'ko' ? '탭하여 자세히 보기' : 'Tap for details') + ' →</div>';
-    h += '</div>';
   });
   container.innerHTML = h;
 }
@@ -6854,6 +7055,7 @@ function openLocationDetail(locationName) {
   
   var events = (mapLocationEvents[locationName] && mapLocationEvents[locationName].events) || [];
   var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var sliderId = 'slider-' + Date.now();
   
   // Build the detail panel HTML
   var h = '<div class="map-detail-overlay" onclick="if(event.target===this)this.remove()">';
@@ -6867,27 +7069,46 @@ function openLocationDetail(locationName) {
   h += '<div class="map-detail-title">' + loc.name + '</div>';
   if(loc.nameKo) h += '<div class="map-detail-title-ko">' + loc.nameKo + '</div>';
   h += '</div>';
+  if(events.length > 0) h += '<span class="event-count-badge">' + events.length + ' ' + (lang === 'ko' ? '사건' : 'events') + '</span>';
   h += '<button class="map-detail-close" onclick="this.closest(\'.map-detail-overlay\').remove()">\u2715</button>';
   h += '</div>';
   
   // Description
   h += '<div class="map-detail-intro">' + (lang === 'ko' ? (loc.descKo || loc.desc) : loc.desc) + '</div>';
   
-  // Events timeline
+  // Events as swipeable card slider
   if(events.length > 0) {
-    h += '<div class="map-events-title">\u{1F4DC} ' + (lang === 'ko' ? '\uC774\uACF3\uC5D0\uC11C \uC77C\uC5B4\uB09C \uC0AC\uAC74\uB4E4' : 'Events That Happened Here') + '</div>';
-    h += '<div class="map-event-timeline">';
+    h += '<div class="map-events-title">\u{1F4DC} ' + (lang === 'ko' ? '이곳에서 일어난 사건들' : 'Events That Happened Here') + '</div>';
+    
+    h += '<div class="event-slider-container" id="' + sliderId + '">';
+    h += '<div class="event-slider-track">';
     for(var e=0; e<events.length; e++) {
       var evt = events[e];
-      h += '<div class="map-event-item">';
-      h += '<div class="map-event-dot"></div>';
-      h += '<div class="map-event-card">';
-      h += '<div class="map-event-title">' + (lang === 'ko' ? (evt.titleKo || evt.title) : evt.title) + '</div>';
-      h += '<div class="map-event-desc">' + (lang === 'ko' ? (evt.descKo || evt.desc) : evt.desc) + '</div>';
+      h += '<div class="event-slide">';
+      h += '<div class="event-card-big">';
+      h += '<div class="event-card-num">' + (e+1) + '</div>';
+      h += '<div class="event-card-big-title">' + (lang === 'ko' ? (evt.titleKo || evt.title) : evt.title) + '</div>';
+      if(lang === 'ko' && evt.title) h += '<div class="event-card-big-title-ko" style="font-size:12px;color:#556680;margin-bottom:8px;">' + evt.title + '</div>';
+      if(lang !== 'ko' && evt.titleKo) h += '<div class="event-card-big-title-ko">' + evt.titleKo + '</div>';
+      h += '<div class="event-card-big-desc">' + (lang === 'ko' ? (evt.descKo || evt.desc) : evt.desc) + '</div>';
       if(evt.ref) {
-        h += '<span class="map-event-ref" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + evt.ref + '\')">\u{1F4D6} ' + evt.ref + '</span>';
+        h += '<div class="event-card-big-ref" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + evt.ref + '\')">\u{1F4D6} ' + evt.ref + '</div>';
       }
       h += '</div></div>';
+    }
+    h += '</div>';
+    
+    // Navigation arrows + dots
+    if(events.length > 1) {
+      h += '<div class="event-slider-nav">';
+      h += '<button class="event-slider-arrow" onclick="slideEvent(\'' + sliderId + '\',-1)">\u276E</button>';
+      h += '<div class="event-slider-dots">';
+      for(var d=0; d<events.length; d++) {
+        h += '<div class="event-slider-dot' + (d===0?' active':'') + '" onclick="goToSlide(\'' + sliderId + '\',' + d + ')"></div>';
+      }
+      h += '</div>';
+      h += '<button class="event-slider-arrow" onclick="slideEvent(\'' + sliderId + '\',1)">\u276F</button>';
+      h += '</div>';
     }
     h += '</div>';
   }
@@ -6895,7 +7116,7 @@ function openLocationDetail(locationName) {
   // All related verses
   if(loc.verses && loc.verses.length) {
     h += '<div class="map-detail-verses">';
-    h += '<div class="map-detail-verses-label">' + (lang === 'ko' ? '\uAD00\uB828 \uC131\uACBD \uAD6C\uC808' : 'Related Bible Passages') + '</div>';
+    h += '<div class="map-detail-verses-label">' + (lang === 'ko' ? '관련 성경 구절' : 'Related Bible Passages') + '</div>';
     h += '<div class="map-detail-verses-list">';
     for(var v=0; v<loc.verses.length; v++) {
       h += '<span class="map-detail-verse-chip" onclick="event.stopPropagation();this.closest(\'.map-detail-overlay\').remove();navigateToVerse(\'' + loc.verses[v] + '\')">' + loc.verses[v] + '</span>';
@@ -6910,6 +7131,88 @@ function openLocationDetail(locationName) {
   if(existing) existing.remove();
   
   document.body.insertAdjacentHTML('beforeend', h);
+  
+  // Initialize touch swipe for the slider
+  if(events.length > 1) {
+    initSliderSwipe(sliderId, events.length);
+  }
+}
+
+// Slider state management
+var sliderStates = {};
+
+function initSliderSwipe(sliderId, totalSlides) {
+  sliderStates[sliderId] = { current: 0, total: totalSlides };
+  var container = document.getElementById(sliderId);
+  if(!container) return;
+  var track = container.querySelector('.event-slider-track');
+  var startX = 0, diffX = 0, isDragging = false;
+  
+  track.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    track.style.transition = 'none';
+  }, {passive:true});
+  
+  track.addEventListener('touchmove', function(e) {
+    if(!isDragging) return;
+    diffX = e.touches[0].clientX - startX;
+    var state = sliderStates[sliderId];
+    var offset = -(state.current * 100) + (diffX / container.offsetWidth * 100);
+    track.style.transform = 'translateX(' + offset + '%)';
+  }, {passive:true});
+  
+  track.addEventListener('touchend', function(e) {
+    if(!isDragging) return;
+    isDragging = false;
+    track.style.transition = 'transform 0.4s cubic-bezier(0.25,0.8,0.25,1)';
+    var state = sliderStates[sliderId];
+    if(Math.abs(diffX) > 50) {
+      if(diffX < 0 && state.current < state.total - 1) {
+        state.current++;
+      } else if(diffX > 0 && state.current > 0) {
+        state.current--;
+      }
+    }
+    track.style.transform = 'translateX(' + -(state.current * 100) + '%)';
+    updateSliderDots(sliderId);
+    diffX = 0;
+  });
+}
+
+function slideEvent(sliderId, direction) {
+  var state = sliderStates[sliderId];
+  if(!state) return;
+  var newIdx = state.current + direction;
+  if(newIdx < 0 || newIdx >= state.total) return;
+  state.current = newIdx;
+  var container = document.getElementById(sliderId);
+  if(!container) return;
+  var track = container.querySelector('.event-slider-track');
+  track.style.transform = 'translateX(' + -(state.current * 100) + '%)';
+  updateSliderDots(sliderId);
+}
+
+function goToSlide(sliderId, idx) {
+  var state = sliderStates[sliderId];
+  if(!state) return;
+  state.current = idx;
+  var container = document.getElementById(sliderId);
+  if(!container) return;
+  var track = container.querySelector('.event-slider-track');
+  track.style.transform = 'translateX(' + -(state.current * 100) + '%)';
+  updateSliderDots(sliderId);
+}
+
+function updateSliderDots(sliderId) {
+  var state = sliderStates[sliderId];
+  if(!state) return;
+  var container = document.getElementById(sliderId);
+  if(!container) return;
+  var dots = container.querySelectorAll('.event-slider-dot');
+  dots.forEach(function(dot, i) {
+    dot.classList.toggle('active', i === state.current);
+  });
 }
 
 
