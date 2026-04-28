@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v50';
+      const CACHE = 'teens-bible-v52';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -260,15 +260,66 @@ body {
   box-shadow: 0 0 14px rgba(0,229,255,0.6), 0 0 28px rgba(0,229,255,0.3);
 }
 
-/* === CONTINUE READING === */
-.continue-card {
-  padding: 18px; margin: 16px 0; cursor: pointer; transition: all 0.3s;
-  background: linear-gradient(160deg, #2c4565 0%, #253a58 100%);
-  border: 1px solid rgba(70, 115, 170, 0.35);
+/* === CONTINUE READING (Enhanced) === */
+.continue-card-enhanced {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; margin: 12px 0; cursor: pointer; transition: all 0.3s;
+  background: linear-gradient(160deg, #1a3050 0%, #162845 100%);
+  border: 1px solid rgba(78, 205, 196, 0.2);
+  border-radius: 16px; position: relative; overflow: hidden;
 }
-.continue-card:hover { transform: scale(1.02); }
-.continue-card h3 { font-family: 'Bangers', cursive; font-size: 22px; color: #4ECDC4; }
-.continue-card p { font-size: 13px; color: #7888a8; margin-top: 4px; }
+.continue-card-enhanced::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(78,205,196,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+.continue-card-enhanced:active { transform: scale(0.98); }
+.cce-left { flex-shrink: 0; }
+.cce-icon { font-size: 36px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+  background: rgba(78,205,196,0.1); border-radius: 14px; }
+.cce-right { flex: 1; min-width: 0; }
+.cce-book { font-family: 'Bangers', cursive; font-size: 18px; color: #4ECDC4; line-height: 1.2; }
+.cce-title { font-size: 12px; color: #8898b8; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cce-progress-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.cce-progress-fill { height: 100%; background: linear-gradient(90deg, #4ECDC4, #45b7aa); border-radius: 2px; transition: width 0.5s; }
+.cce-meta { font-size: 11px; color: #6878a0; margin-top: 4px; }
+.cce-resume { flex-shrink: 0; font-family: 'Bangers', cursive; font-size: 12px; color: #ffd700;
+  background: rgba(255,215,0,0.1); padding: 6px 12px; border-radius: 20px;
+  border: 1px solid rgba(255,215,0,0.2); white-space: nowrap; letter-spacing: 0.5px; }
+
+
+/* === QUIZ SHARE === */
+.quiz-share-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 10px; padding: 8px 16px; cursor: pointer;
+  background: linear-gradient(135deg, #4ECDC4, #45b7aa);
+  border: none; border-radius: 20px; color: #0a1628;
+  font-family: 'Bangers', cursive; font-size: 14px; letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+.quiz-share-btn:active { transform: scale(0.95); }
+.quiz-share-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85); z-index: 10000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px; animation: fadeIn 0.3s;
+}
+.quiz-share-card-container {
+  max-width: 360px; width: 100%; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.quiz-share-actions {
+  display: flex; gap: 12px; margin-top: 20px;
+}
+.quiz-share-actions button {
+  padding: 10px 24px; border: none; border-radius: 12px; cursor: pointer;
+  font-family: 'Bangers', cursive; font-size: 15px; letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+.quiz-share-actions button:active { transform: scale(0.95); }
+.qsa-save { background: linear-gradient(135deg, #4ECDC4, #45b7aa); color: #0a1628; }
+.qsa-share { background: linear-gradient(135deg, #ffd700, #ffb800); color: #0a1628; }
+.qsa-close { background: rgba(255,255,255,0.1); color: #d0d8e8; border: 1px solid rgba(255,255,255,0.2) !important; }
 
 /* === SECTION TITLES === */
 .section-title {
@@ -1897,7 +1948,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="profile-card-section"></div>
     </div>
     <div id="home-tab-stats" style="display:none">
-      <div id="quiz-stats-card" style="display:none"></div>
+      <div id="quiz-stats-card-tab" style="display:none"></div>
       <div id="stats-dashboard"></div>
       <div id="journey-map-section"></div>
     </div>
@@ -2416,20 +2467,50 @@ function renderHome() {
   document.getElementById('level-xp').textContent = state.xp + ' / ' + nextLvl.xp + ' XP';
   document.getElementById('xp-fill').style.width = Math.min(pct,100) + '%';
   
-  // Continue reading
+  // Continue reading - enhanced with one-click resume
   const sec = document.getElementById('continue-section');
   if(state.lastRead) {
     const lr = state.lastRead;
     const book = gospelData[lr.book];
     const readCount = state.books[lr.book]?.read?.length || 0;
     const total = book ? book.length : 1;
-    sec.innerHTML = '<div class="section-title">📚 Continue Reading</div>' +
-      '<div class="continue-card" onclick="showBook(\''+lr.book+'\')">'+
-      '<h3>'+bookMeta[lr.book].icon+' '+lr.book+' — Chapter '+lr.chapter+'</h3>'+
-      '<p>'+readCount+'/'+total+' chapters · '+Math.round(readCount/total*100)+'% complete</p></div>';
+    const pctDone = Math.round(readCount/total*100);
+    const m = bookMeta[lr.book];
+    // Get chapter title
+    const chIdx = book.findIndex(c => c.num === lr.chapter);
+    let chTitle = chIdx >= 0 ? book[chIdx].title : '';
+    if(readerLang === 'ko' && typeof gospelDataKo !== 'undefined' && gospelDataKo[lr.book]) {
+      const koC = gospelDataKo[lr.book].find(c => c.num === lr.chapter);
+      if(koC && koC.title) chTitle = koC.title;
+    }
+    const isKo = readerLang === 'ko';
+    const sectionTitle = isKo ? '📖 이어서 읽기' : '📖 Continue Reading';
+    const progressText = isKo ? readCount+'/'+total+' 챕터 · '+pctDone+'% 완료' : readCount+'/'+total+' chapters · '+pctDone+'% complete';
+    const resumeText = isKo ? '▶ 바로 이어 읽기' : '▶ RESUME READING';
+    sec.innerHTML = '<div class="section-title">'+sectionTitle+'</div>' +
+      '<div class="continue-card-enhanced" onclick="resumeLastChapter()">' +
+        '<div class="cce-left">' +
+          '<div class="cce-icon">'+m.icon+'</div>' +
+        '</div>' +
+        '<div class="cce-right">' +
+          '<div class="cce-book">'+lr.book+' — '+(isKo?'':'Ch.')+lr.chapter+'</div>' +
+          '<div class="cce-title">'+chTitle+'</div>' +
+          '<div class="cce-progress-bar"><div class="cce-progress-fill" style="width:'+pctDone+'%"></div></div>' +
+          '<div class="cce-meta">'+progressText+'</div>' +
+        '</div>' +
+        '<div class="cce-resume">'+resumeText+'</div>' +
+      '</div>';
   } else {
-    sec.innerHTML = '<div class="section-title">📚 Start Reading</div>' +
-      '<div class="continue-card" onclick="showScreen(\'bible\')"><h3>⚡ Pick a book to begin!</h3><p>Choose from 27 New Testament books</p></div>';
+    const isKo = readerLang === 'ko';
+    sec.innerHTML = '<div class="section-title">'+(isKo?'📖 읽기 시작':'📖 Start Reading')+'</div>' +
+      '<div class="continue-card-enhanced" onclick="showScreen(\'bible\')">' +
+        '<div class="cce-left"><div class="cce-icon">⚡</div></div>' +
+        '<div class="cce-right">' +
+          '<div class="cce-book">'+(isKo?'책을 골라보자!':'Pick a book to begin!')+'</div>' +
+          '<div class="cce-title">'+(isKo?'신약성경 27권이 기다리고 있어':'27 New Testament books await')+'</div>' +
+        '</div>' +
+        '<div class="cce-resume">'+(isKo?'시작 ▶':'START ▶')+'</div>' +
+      '</div>';
   }
   
   // Quiz Stats
@@ -2451,7 +2532,11 @@ function renderHome() {
       '<div style="display:flex;justify-content:space-between;font-size:12px;color:#6878a0;">' +
       '<span>'+correct+' correct / '+total+' total</span>' +
       '<span>'+(total-correct)+' missed</span>' +
-      '</div></div>';
+      '</div>' +
+      '<button class="quiz-share-btn" onclick="event.stopPropagation();showQuizShareOverlay();">' +
+      (readerLang==='ko'?'📤 결과 공유하기':'📤 Share My Results') +
+      '</button>' +
+      '</div>';
   }
   
   // Badges
@@ -3244,6 +3329,20 @@ function showChapter(book, idx) {
 
 // B1: Font size adjustment
 
+function resumeLastChapter() {
+  if(!state.lastRead) return;
+  const lr = state.lastRead;
+  const book = gospelData[lr.book];
+  if(!book) return;
+  const chIdx = book.findIndex(c => c.num === lr.chapter);
+  if(chIdx >= 0) {
+    showScreen('bible');
+    setTimeout(function() { showChapter(lr.book, chIdx); }, 100);
+  } else {
+    showBook(lr.book);
+  }
+}
+
 function switchLang(lang, book, idx) {
   readerLang = lang;
   localStorage.setItem('readerLang', lang);
@@ -3399,7 +3498,7 @@ function answerQuiz(btn, correctIdx, book, chNum) {
   if(idx === correctIdx) {
     state.quizCorrect = (state.quizCorrect || 0) + 1;
     btn.classList.add('correct');
-    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP BONUS</div>';
+    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP BONUS</div><button class="quiz-share-btn" style="margin-top:6px;font-size:12px;padding:5px 12px" onclick="event.stopPropagation();showQuizShareOverlay();">'+(readerLang==='ko'?'📤 결과 공유':'📤 Share')+'</button>';
     state.xp = (state.xp || 0) + 10;
     save();
     if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
@@ -3541,6 +3640,215 @@ function showFocusNextChapter(book, chNum) {
   }
 }
 
+
+
+// === QUIZ RESULT SHARING ===
+function generateQuizShareCard() {
+  const total = state.quizTotal || 0;
+  const correct = state.quizCorrect || 0;
+  if(total === 0) return;
+  const pct = Math.round(correct / total * 100);
+  const isKo = readerLang === 'ko';
+  
+  // Create canvas
+  const canvas = document.createElement('canvas');
+  canvas.width = 720;
+  canvas.height = 960;
+  const ctx = canvas.getContext('2d');
+  
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 720, 960);
+  bg.addColorStop(0, '#0a1628');
+  bg.addColorStop(0.5, '#162845');
+  bg.addColorStop(1, '#0a1628');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 720, 960);
+  
+  // Decorative circles
+  ctx.globalAlpha = 0.05;
+  ctx.beginPath(); ctx.arc(100, 200, 200, 0, Math.PI*2); ctx.fillStyle = '#4ECDC4'; ctx.fill();
+  ctx.beginPath(); ctx.arc(620, 700, 250, 0, Math.PI*2); ctx.fillStyle = '#ffd700'; ctx.fill();
+  ctx.globalAlpha = 1;
+  
+  // Stars decoration
+  ctx.font = '24px serif';
+  ctx.fillText('✨', 50, 80);
+  ctx.fillText('⭐', 640, 150);
+  ctx.fillText('✨', 580, 850);
+  ctx.fillText('⭐', 100, 780);
+  
+  // App title
+  ctx.font = 'bold 28px sans-serif';
+  ctx.fillStyle = '#4ECDC4';
+  ctx.textAlign = 'center';
+  ctx.fillText('TEENZ BIBLE', 360, 100);
+  
+  // Subtitle
+  ctx.font = '16px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '퀴즈 결과 카드' : 'QUIZ RESULT CARD', 360, 135);
+  
+  // Score circle
+  const cx = 360, cy = 380, r = 130;
+  // Outer ring background
+  ctx.beginPath(); ctx.arc(cx, cy, r+8, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 16; ctx.stroke();
+  // Score arc
+  const startAngle = -Math.PI/2;
+  const endAngle = startAngle + (Math.PI*2 * pct/100);
+  const scoreColor = pct >= 80 ? '#4ade80' : pct >= 50 ? '#fbbf24' : '#f87171';
+  ctx.beginPath(); ctx.arc(cx, cy, r+8, startAngle, endAngle);
+  ctx.strokeStyle = scoreColor; ctx.lineWidth = 16; ctx.lineCap = 'round'; ctx.stroke();
+  // Inner circle
+  const innerBg = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+  innerBg.addColorStop(0, '#1e3a5f');
+  innerBg.addColorStop(1, '#162845');
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+  ctx.fillStyle = innerBg; ctx.fill();
+  // Score text
+  ctx.font = 'bold 72px sans-serif';
+  ctx.fillStyle = scoreColor;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(pct + '%', cx, cy - 10);
+  ctx.font = '18px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '정답률' : 'ACCURACY', cx, cy + 40);
+  ctx.textBaseline = 'alphabetic';
+  
+  // Stats
+  const statsY = 570;
+  // Correct
+  ctx.fillStyle = '#1a3050';
+  roundRect(ctx, 80, statsY, 260, 80, 16);
+  ctx.fill();
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillStyle = '#4ade80';
+  ctx.textAlign = 'center';
+  ctx.fillText(correct.toString(), 210, statsY + 38);
+  ctx.font = '14px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '정답' : 'CORRECT', 210, statsY + 62);
+  
+  // Total
+  ctx.fillStyle = '#1a3050';
+  roundRect(ctx, 380, statsY, 260, 80, 16);
+  ctx.fill();
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.textAlign = 'center';
+  ctx.fillText(total.toString(), 510, statsY + 38);
+  ctx.font = '14px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '전체 문제' : 'TOTAL', 510, statsY + 62);
+  
+  // Grade/Rank
+  let grade, gradeEmoji;
+  if(pct >= 90) { grade = isKo ? '성경 마스터!' : 'BIBLE MASTER!'; gradeEmoji = '👑'; }
+  else if(pct >= 80) { grade = isKo ? '성경 박사!' : 'BIBLE SCHOLAR!'; gradeEmoji = '🎓'; }
+  else if(pct >= 60) { grade = isKo ? '열심히 공부 중!' : 'GETTING THERE!'; gradeEmoji = '📚'; }
+  else { grade = isKo ? '계속 도전하자!' : 'KEEP GOING!'; gradeEmoji = '💪'; }
+  
+  ctx.font = '40px serif';
+  ctx.fillText(gradeEmoji, 360, 720);
+  ctx.font = 'bold 26px sans-serif';
+  ctx.fillStyle = '#ffd700';
+  ctx.fillText(grade, 360, 765);
+  
+  // Level info
+  const lvl = state.level || 1;
+  const xp = state.xp || 0;
+  ctx.font = '16px sans-serif';
+  ctx.fillStyle = '#6878a0';
+  ctx.fillText((isKo ? 'Lv.' : 'Level ') + lvl + ' · ' + xp + ' XP', 360, 810);
+  
+  // Footer
+  ctx.font = '13px sans-serif';
+  ctx.fillStyle = '#4a5a7a';
+  ctx.fillText(isKo ? 'teens-bible-94271.web.app 에서 나도 도전!' : 'Try it at teens-bible-94271.web.app', 360, 910);
+  
+  return canvas;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function showQuizShareOverlay() {
+  const canvas = generateQuizShareCard();
+  if(!canvas) return;
+  const isKo = readerLang === 'ko';
+  
+  const ov = document.createElement('div');
+  ov.className = 'quiz-share-overlay';
+  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  
+  const container = document.createElement('div');
+  container.className = 'quiz-share-card-container';
+  
+  const img = document.createElement('img');
+  img.src = canvas.toDataURL('image/png');
+  img.style.cssText = 'width:100%;display:block;';
+  container.appendChild(img);
+  ov.appendChild(container);
+  
+  const actions = document.createElement('div');
+  actions.className = 'quiz-share-actions';
+  
+  // Save button
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'qsa-save';
+  saveBtn.textContent = isKo ? '💾 저장' : '💾 Save';
+  saveBtn.onclick = function() {
+    const link = document.createElement('a');
+    link.download = 'teenz-bible-quiz-result.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+  actions.appendChild(saveBtn);
+  
+  // Share button (Web Share API)
+  if(navigator.share && navigator.canShare) {
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'qsa-share';
+    shareBtn.textContent = isKo ? '📤 공유' : '📤 Share';
+    shareBtn.onclick = async function() {
+      try {
+        canvas.toBlob(async function(blob) {
+          const file = new File([blob], 'teenz-bible-quiz.png', {type: 'image/png'});
+          if(navigator.canShare({files: [file]})) {
+            await navigator.share({
+              title: 'Teenz Bible Quiz Result',
+              text: isKo ? '나의 Teenz Bible 퀴즈 결과!' : 'My Teenz Bible Quiz Result!',
+              files: [file]
+            });
+          }
+        }, 'image/png');
+      } catch(e) { console.log('Share cancelled'); }
+    };
+    actions.appendChild(shareBtn);
+  }
+  
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'qsa-close';
+  closeBtn.textContent = isKo ? '닫기' : 'Close';
+  closeBtn.onclick = function() { ov.remove(); };
+  actions.appendChild(closeBtn);
+  
+  ov.appendChild(actions);
+  document.body.appendChild(ov);
+}
 
 // === A3: READING GOAL ===
 function getWeeklyGoal() {
@@ -6785,7 +7093,7 @@ setTimeout(function() {
 
 // === QUIZ STATS CARD ===
 function renderQuizStats() {
-  const container = document.getElementById('quiz-stats-card');
+  const container = document.getElementById('quiz-stats-card-tab');
   if(!container) return;
   const correct = state.totalQuizCorrect || 0;
   const attempted = state.totalQuizAttempted || 0;
