@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v46';
+      const CACHE = 'teens-bible-v50';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -3567,23 +3567,21 @@ function renderGoalBanner() {
   const banner = document.getElementById('reading-goal-banner');
   if(!banner) return;
   const goal = getWeeklyGoal();
-  if(!goal) {
-    banner.innerHTML = '<div class="goal-banner" style="text-align:center;cursor:pointer" onclick="showGoalModal()">' +
-      '<div class="goal-title">🎯 SET YOUR WEEKLY READING GOAL</div>' +
-      '<div class="goal-text" style="margin-top:4px">Tap to choose how many chapters you want to read this week!</div>' +
-      '</div>';
+  // If goal already set, hide the banner completely - progress shown on home screen
+  if(goal) {
+    banner.innerHTML = '';
     return;
   }
-  const progress = getWeeklyProgress();
-  const pct = Math.min(100, (progress / goal) * 100);
-  const isComplete = progress >= goal;
-  banner.innerHTML = '<div class="goal-banner">' +
-    '<div class="goal-header">' +
-    '<div class="goal-title">'+(isComplete ? '🏆' : '🎯')+' WEEKLY GOAL</div>' +
-    '<span class="goal-edit" onclick="showGoalModal()">Change</span>' +
-    '</div>' +
-    '<div class="goal-progress-bar"><div class="goal-progress-fill" style="width:'+pct+'%"></div></div>' +
-    '<div class="goal-text">'+(isComplete ? '🎉 Goal smashed! '+progress+'/'+goal+' chapters' : progress+' / '+goal+' chapters this week')+'</div>' +
+  // Only show on first visit when no goal is set
+  const dismissed = localStorage.getItem('goalBannerDismissed');
+  if(dismissed) {
+    banner.innerHTML = '';
+    return;
+  }
+  banner.innerHTML = '<div class="goal-banner" style="text-align:center;cursor:pointer;position:relative" onclick="showGoalModal()">' +
+    '<div style="position:absolute;top:8px;right:12px;color:#556080;font-size:16px;cursor:pointer" onclick="event.stopPropagation();localStorage.setItem(\'goalBannerDismissed\',\'1\');this.parentElement.parentElement.innerHTML=\'\'">✕</div>' +
+    '<div class="goal-title">🎯 SET YOUR WEEKLY READING GOAL</div>' +
+    '<div class="goal-text" style="margin-top:4px">Tap to choose how many chapters you want to read this week!</div>' +
     '</div>';
 }
 
@@ -8256,22 +8254,31 @@ function renderReadingGoal() {
   const container = document.getElementById('reading-goal-section');
   if(!container) return;
   
-  const goal = state.dailyGoal || 2;
+  const goal = state.dailyGoal;
   const done = state.todayChapters || 0;
+  
+  // If no goal set yet and never dismissed, show setup prompt
+  if(!goal) {
+    const dismissed = localStorage.getItem('dailyGoalDismissed');
+    if(dismissed) { container.innerHTML = ''; return; }
+    container.innerHTML = '<div class="goal-card" style="text-align:center;cursor:pointer;position:relative" onclick="openGoalModal()">' +
+      '<div style="position:absolute;top:8px;right:12px;color:#556080;font-size:16px;cursor:pointer" onclick="event.stopPropagation();localStorage.setItem(\'dailyGoalDismissed\',\'1\');this.parentElement.parentElement.innerHTML=\'\'">✕</div>' +
+      '<div class="goal-title">📖 Set Daily Reading Goal</div>' +
+      '<div style="color:#7888a8;font-size:12px;margin-top:4px">Tap to set your daily chapter goal</div>' +
+      '</div>';
+    return;
+  }
+  
+  // Goal is set - show compact progress only
   const pct = Math.min(100, Math.round((done/goal)*100));
   const isComplete = done >= goal;
-  
-  let h = '<div class="goal-card">';
-  h += '<div class="goal-header">';
-  h += '<div class="goal-title">' + (isComplete ? '🎉' : '📖') + ' Daily Goal</div>';
-  h += '<div class="goal-edit" onclick="openGoalModal()">Change goal</div>';
-  h += '</div>';
-  h += '<div class="goal-progress-bar"><div class="goal-progress-fill" style="width:' + pct + '%"></div></div>';
-  h += '<div class="goal-stats">';
-  h += '<span>' + done + ' / ' + goal + ' chapters</span>';
-  h += '<span>' + (isComplete ? '✅ Goal reached!' : (goal - done) + ' more to go') + '</span>';
-  h += '</div></div>';
-  container.innerHTML = h;
+  container.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(10,20,40,0.4);border-radius:10px;border:1px solid rgba(65,110,160,0.15);margin-bottom:8px;cursor:pointer" onclick="openGoalModal()">' +
+    '<span style="font-size:16px">' + (isComplete ? '🎉' : '📖') + '</span>' +
+    '<div style="flex:1">' +
+    '<div style="height:6px;background:rgba(10,20,40,0.6);border-radius:3px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:' + (isComplete ? '#4ECDC4' : 'linear-gradient(90deg,#FF6B6B,#FFD700)') + ';border-radius:3px;transition:width 0.5s"></div></div>' +
+    '</div>' +
+    '<span style="font-family:\'Comic Neue\',cursive;font-size:12px;color:' + (isComplete ? '#4ECDC4' : '#7888a8') + ';white-space:nowrap">' + done + '/' + goal + (isComplete ? ' ✅' : '') + '</span>' +
+    '</div>';
 }
 
 function openGoalModal() {
