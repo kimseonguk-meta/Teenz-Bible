@@ -1188,11 +1188,6 @@ body {
 .goal-option:hover, .goal-option.selected { border-color:#4ECDC4; background:rgba(78,205,196,0.15); color:#4ECDC4; }
 
 /* === A4: RANDOM CHAPTER === */
-.random-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; margin-bottom:16px; border-radius:14px; border:1px dashed rgba(255,214,0,0.3); background:rgba(255,214,0,0.05); color:#FFD700; font-family:'Bangers',cursive; font-size:17px; cursor:pointer; transition:all 0.3s; letter-spacing:1px; }
-.random-btn:hover { background:rgba(255,214,0,0.12); border-color:rgba(255,214,0,0.5); transform:scale(1.02); box-shadow:0 0 20px rgba(255,214,0,0.1); }
-.random-btn .dice { display:inline-block; font-size:22px; animation:diceWiggle 2s ease-in-out infinite; }
-@keyframes diceWiggle { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(15deg)} 75%{transform:rotate(-15deg)} }
-
 /* === A5: REACTIONS === */
 .reactions-bar { display:flex; gap:6px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
 .reaction-btn { padding:8px 14px; border-radius:20px; border:1px solid rgba(65,110,160,0.25); background:rgba(20,35,60,0.5); font-size:18px; cursor:pointer; transition:all 0.25s; position:relative; }
@@ -1273,24 +1268,6 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .stats-summary-val { font-family:'Bangers',cursive; font-size:20px; color:#FFD700; }
 .stats-summary-lbl { font-size:11px; color:#6880a8; font-family:'Comic Neue',cursive; margin-top:2px; }
 
-
-/* === READING PLANS === */
-.plan-active-card { background:linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.08)); border:1px solid rgba(78,205,196,0.25); border-radius:16px; padding:16px; margin:12px 0; }
-.plan-active-header { display:flex; align-items:center; gap:12px; margin-bottom:4px; }
-.plan-icon { font-size:32px; }
-.plan-active-name { font-family:'Bangers',cursive; font-size:18px; color:#4ECDC4; }
-.plan-active-progress { font-size:12px; color:#6880a8; }
-.plan-next { background:rgba(78,205,196,0.1); border:1px solid rgba(78,205,196,0.2); border-radius:10px; padding:10px 14px; margin-top:8px; color:#4ECDC4; font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; cursor:pointer; transition:all 0.2s; text-align:center; }
-.plan-next:hover { background:rgba(78,205,196,0.2); }
-.plan-quit { text-align:center; font-size:11px; color:#556080; margin-top:8px; cursor:pointer; text-decoration:underline; }
-.plans-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
-.plan-card { background:linear-gradient(160deg, #283d5c 0%, #223852 100%); border:1px solid rgba(65,110,160,0.3); border-radius:14px; padding:16px; text-align:center; cursor:pointer; transition:all 0.3s; position:relative; }
-.plan-card:hover { transform:translateY(-2px); border-color:rgba(100,150,210,0.5); }
-.plan-card.active { border-color:#4ECDC4; background:rgba(78,205,196,0.08); }
-.plan-card-icon { font-size:32px; margin-bottom:8px; }
-.plan-card-name { font-family:'Bangers',cursive; font-size:14px; color:#d0d8e8; margin-bottom:4px; }
-.plan-card-days { font-size:11px; color:#6880a8; }
-.plan-card-badge { position:absolute; top:8px; right:8px; background:#4ECDC4; color:#000; font-size:9px; font-weight:800; padding:2px 6px; border-radius:6px; }
 
 /* === BIBLE JOURNEY MAP === */
 .journey-map { margin-top:16px; padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); }
@@ -1934,11 +1911,9 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
   <div class="screen" id="screen-bible">
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:26px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">📖 NEW TESTAMENT</h2>
     <div id="reading-goal-banner"></div>
-    <button class="random-btn" onclick="openRandomChapter()"><span class="dice">🎲</span> SURPRISE ME — RANDOM CHAPTER</button>
     <input type="text" id="book-search" placeholder="🔍 Search books..." 
       style="width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(65,105,155,0.3);background:rgba(10,18,35,0.8);color:#d8dce8;font-size:14px;font-family:'Comic Neue',cursive;margin-bottom:16px;box-sizing:border-box;"
       oninput="filterBooks(this.value)">
-    <div id="reading-plans-section"></div>
     <div id="book-list"></div>
   </div>
 
@@ -3632,24 +3607,6 @@ function setWeeklyGoal(n) {
   const modal = document.querySelector('.goal-modal');
   if(modal) modal.remove();
   renderGoalBanner();
-}
-
-// === A4: RANDOM CHAPTER ===
-function openRandomChapter() {
-  const books = Object.keys(gospelData);
-  const book = books[Math.floor(Math.random() * books.length)];
-  const chapters = gospelData[book];
-  const idx = Math.floor(Math.random() * chapters.length);
-  
-  // Fun dice animation
-  const btn = document.querySelector('.random-btn .dice');
-  if(btn) {
-    btn.style.animation = 'none';
-    btn.offsetHeight; // trigger reflow
-    btn.style.animation = 'diceWiggle 0.15s ease-in-out 6';
-  }
-  
-  setTimeout(() => showChapter(book, idx), 900);
 }
 
 // === SPEECH SYNTHESIS (Enhanced Natural Voice) ===
@@ -6556,89 +6513,6 @@ function renderVerseOfTheDay() {
 }
 
 
-// === E2: READING PLANS ===
-
-// === READING PLANS ===
-const readingPlans = [
-  {id:'miracles',name:'7 Days of Miracles',nameKo:'7일간의 기적',icon:'✨',days:7,chapters:[
-    {book:'Matthew',ch:8},{book:'Matthew',ch:9},{book:'Mark',ch:5},{book:'Luke',ch:7},
-    {book:'John',ch:2},{book:'John',ch:6},{book:'John',ch:11}
-  ]},
-  {id:'love',name:'Love & Grace',nameKo:'사랑과 은혜',icon:'❤️',days:7,chapters:[
-    {book:'John',ch:3},{book:'John',ch:15},{book:'Romans',ch:8},{book:'1 Corinthians',ch:13},
-    {book:'Ephesians',ch:2},{book:'1 John',ch:4},{book:'Galatians',ch:5}
-  ]},
-  {id:'courage',name:'Courage & Faith',nameKo:'용기와 믿음',icon:'🦁',days:7,chapters:[
-    {book:'Matthew',ch:14},{book:'Acts',ch:4},{book:'Hebrews',ch:11},{book:'James',ch:1},
-    {book:'Romans',ch:5},{book:'2 Timothy',ch:1},{book:'1 Peter',ch:5}
-  ]},
-  {id:'matthew30',name:'30-Day Matthew',nameKo:'30일 마태복음 완독',icon:'📖',days:28,chapters:
-    Array.from({length:28},(_,i)=>({book:'Matthew',ch:i+1}))
-  },
-  {id:'gospels',name:'The 4 Gospels Journey',nameKo:'4복음서 여행',icon:'🗺️',days:30,chapters:[
-    ...Array.from({length:7},(_,i)=>({book:'Matthew',ch:i*4+1})),
-    ...Array.from({length:8},(_,i)=>({book:'Mark',ch:i*2+1})),
-    ...Array.from({length:8},(_,i)=>({book:'Luke',ch:i*3+1})),
-    ...Array.from({length:7},(_,i)=>({book:'John',ch:i*3+1}))
-  ]}
-];
-
-function getActivePlan() {
-  return JSON.parse(localStorage.getItem('activePlan') || 'null');
-}
-
-function startPlan(planId) {
-  const plan = readingPlans.find(p=>p.id===planId);
-  if(!plan) return;
-  const active = {id:planId, startDate:new Date().toISOString(), completedDays:[], currentDay:0};
-  localStorage.setItem('activePlan', JSON.stringify(active));
-  renderReadingPlans();
-}
-
-function renderReadingPlans() {
-  const container = document.getElementById('reading-plans-section');
-  if(!container) return;
-  const active = getActivePlan();
-  const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
-  let h = '<div class="section-title" style="font-size:20px">📋 Reading Plans</div>';
-  
-  if(active) {
-    const plan = readingPlans.find(p=>p.id===active.id);
-    if(plan) {
-      const progress = Math.min(active.completedDays.length, plan.chapters.length);
-      const pct = Math.round((progress/plan.chapters.length)*100);
-      const nextCh = plan.chapters[Math.min(progress, plan.chapters.length-1)];
-      h += '<div class="plan-active-card">';
-      h += '<div class="plan-active-header"><span class="plan-icon">'+plan.icon+'</span><div>';
-      h += '<div class="plan-active-name">'+(lang==='ko'?plan.nameKo:plan.name)+'</div>';
-      h += '<div class="plan-active-progress">Day '+(progress+1)+' of '+plan.chapters.length+' ('+pct+'%)</div>';
-      h += '</div></div>';
-      h += '<div class="goal-progress-bar" style="margin:10px 0"><div class="goal-progress-fill" style="width:'+pct+'%"></div></div>';
-      if(progress < plan.chapters.length) {
-        h += '<div class="plan-next" onclick="showBook(\''+nextCh.book+'\');setTimeout(()=>showChapter(\''+nextCh.book+'\','+nextCh.ch+'),300)">📖 Next: '+nextCh.book+' Ch.'+nextCh.ch+' →</div>';
-      } else {
-        h += '<div style="text-align:center;color:#4ECDC4;font-family:Bangers,cursive;font-size:18px">🎉 Plan Complete!</div>';
-      }
-      h += '<div class="plan-quit" onclick="if(confirm(\'Quit this plan?\'))localStorage.removeItem(\'activePlan\');renderReadingPlans()">Quit Plan</div>';
-      h += '</div>';
-    }
-  }
-  
-  h += '<div class="plans-grid">';
-  readingPlans.forEach(plan => {
-    const isActive = active && active.id === plan.id;
-    h += '<div class="plan-card'+(isActive?' active':'')+'" onclick="'+(isActive?'':'startPlan(\''+plan.id+'\')')+'">';
-    h += '<div class="plan-card-icon">'+plan.icon+'</div>';
-    h += '<div class="plan-card-name">'+(lang==='ko'?plan.nameKo:plan.name)+'</div>';
-    h += '<div class="plan-card-days">'+plan.days+' days</div>';
-    if(isActive) h += '<div class="plan-card-badge">ACTIVE</div>';
-    h += '</div>';
-  });
-  h += '</div>';
-  container.innerHTML = h;
-}
-
-
 // === C3: GEM STORE ===
 
 // === GEM STORE ===
@@ -6711,7 +6585,6 @@ function updateVOTD() {
 // Initialize new features
 setTimeout(function() {
   updateVOTD();
-  if(typeof renderReadingPlans === 'function') renderReadingPlans();
 }, 500);
 
 // === B3: ENHANCED CONTINUE READING ===
@@ -6858,7 +6731,6 @@ if(_origShowScreen) {
       updateVOTD();
     }
     if(name === 'bible') {
-      if(typeof renderReadingPlans === 'function') renderReadingPlans();
     }
   };
 }
