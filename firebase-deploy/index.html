@@ -484,6 +484,8 @@ body {
 }
 .audio-btn:hover { background: rgba(78,205,196,0.15); }
 .audio-btn.playing { background: #4ECDC4; color: #000; box-shadow: 0 0 15px rgba(78,205,196,0.5); animation: audioPulse 1.5s ease-in-out infinite; }
+.audio-btn.loading { background: rgba(78,205,196,0.3); color: #4ECDC4; animation: audioLoading 0.8s ease-in-out infinite; }
+@keyframes audioLoading { 0%,100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 @keyframes audioPulse { 0%,100% { box-shadow: 0 0 15px rgba(78,205,196,0.5); } 50% { box-shadow: 0 0 25px rgba(78,205,196,0.8); } }
 .audio-info { flex: 1; }
 .audio-info .label { font-size: 11px; color: #7888a8; }
@@ -3304,6 +3306,13 @@ function showChapter(book, idx) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-chapter').classList.add('active');
   
+  // Scroll to top when navigating to a new chapter
+  const rb_scroll = document.getElementById('reader-body');
+  if(rb_scroll) { rb_scroll.scrollTop = 0; }
+  window.scrollTo(0, 0);
+  // Also scroll the chapter detail container
+  detail.scrollTop = 0;
+  
   // Store current book/chapter for highlight system
   window._currentBook = book;
   window._currentChNum = ch.num;
@@ -4161,6 +4170,11 @@ function toggleSpeech() {
     document.getElementById('audio-status').textContent = '▶ HD Playing...';
     const b = document.getElementById('audio-play-btn'); if(b) b.classList.add('playing');
   } else {
+    // Immediate loading feedback before async TTS starts
+    const statusEl = document.getElementById('audio-status');
+    if(statusEl) statusEl.textContent = '⏳ Loading...';
+    const audioBtnEl = document.getElementById('audio-play-btn');
+    if(audioBtnEl) audioBtnEl.classList.add('playing');
     const text = getChapterText();
     if(text) cloudTtsSpeak(text);
   }
