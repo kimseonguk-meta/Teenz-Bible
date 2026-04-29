@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "groups": {
+      "$groupCode": {
+        "members": {
+          "$uid": {
+            ".read": true,
+            ".write": "$uid === auth.uid"
+          }
+        },
+        ".read": true
+      }
+    }
+  }
+}
