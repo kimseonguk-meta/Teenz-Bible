@@ -235,6 +235,52 @@ function goToStep2() {
   showOnboardStep2();
 }
 
+// Default class config (fallback if Firebase hasn't loaded yet)
+var _classConfig = [
+  { label: '2010년생', classes: ['10A','10B','10C','10D'] },
+  { label: '2011년생', classes: ['11A','11B','11C','11D','11E'] },
+  { label: '2012년생', classes: ['12A','12B','12C','12D','12E','12G'] },
+  { label: '2013년생', classes: ['13A','13B','13C','13D','13E','13G'] }
+];
+var _classConfigLoaded = false;
+
+function loadClassConfig(callback) {
+  if (_classConfigLoaded && callback) { callback(); return; }
+  if (!fbDb) { if (callback) callback(); return; }
+  fbDb.ref('classConfig').once('value').then(function(snap) {
+    var val = snap.val();
+    if (val && Array.isArray(val) && val.length > 0) {
+      _classConfig = val;
+    }
+    _classConfigLoaded = true;
+    if (callback) callback();
+  }).catch(function() {
+    _classConfigLoaded = true;
+    if (callback) callback();
+  });
+}
+
+function saveClassConfig(callback) {
+  if (!fbDb) return;
+  fbDb.ref('classConfig').set(_classConfig).then(function() {
+    if (callback) callback();
+  }).catch(function(err) {
+    console.log('Error saving classConfig:', err);
+  });
+}
+
+function buildClassDropdownHtml(isKo) {
+  var html = '<option value="" style="background:#1a2848;color:#8899bb;">' + (isKo ? '-- 반 선택 --' : '-- Select Class --') + '</option>';
+  _classConfig.forEach(function(group) {
+    html += '<optgroup label="' + group.label + '" style="background:#1a2848;color:#8899bb;">';
+    group.classes.forEach(function(cls) {
+      html += '<option value="' + cls + '" style="background:#1a2848;color:#fff;">' + cls + '</option>';
+    });
+    html += '</optgroup>';
+  });
+  return html;
+}
+
 function showOnboardStep2() {
   const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
   
@@ -242,6 +288,13 @@ function showOnboardStep2() {
   var existing = document.getElementById('onboarding-overlay');
   if (existing) existing.remove();
   
+  // Load class config from Firebase first, then render
+  loadClassConfig(function() {
+    _renderOnboardStep2(isKo);
+  });
+}
+
+function _renderOnboardStep2(isKo) {
   const overlay = document.createElement('div');
   overlay.id = 'onboarding-overlay';
   overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
@@ -266,36 +319,7 @@ function showOnboardStep2() {
         style="width:100%;padding:16px 20px;border-radius:14px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.07);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;"
         onfocus="this.style.borderColor='#4ECDC4';this.style.boxShadow='0 0 20px rgba(78,205,196,0.2)'" 
         onblur="this.style.borderColor='rgba(100,140,200,0.3)';this.style.boxShadow='none'">
-        <option value="" style="background:#1a2848;color:#8899bb;">${isKo ? '-- 반 선택 --' : '-- Select Class --'}</option>
-        <optgroup label="2010년생" style="background:#1a2848;color:#8899bb;">
-          <option value="10A" style="background:#1a2848;color:#fff;">10A</option>
-          <option value="10B" style="background:#1a2848;color:#fff;">10B</option>
-          <option value="10C" style="background:#1a2848;color:#fff;">10C</option>
-          <option value="10D" style="background:#1a2848;color:#fff;">10D</option>
-        </optgroup>
-        <optgroup label="2011년생" style="background:#1a2848;color:#8899bb;">
-          <option value="11A" style="background:#1a2848;color:#fff;">11A</option>
-          <option value="11B" style="background:#1a2848;color:#fff;">11B</option>
-          <option value="11C" style="background:#1a2848;color:#fff;">11C</option>
-          <option value="11D" style="background:#1a2848;color:#fff;">11D</option>
-          <option value="11E" style="background:#1a2848;color:#fff;">11E</option>
-        </optgroup>
-        <optgroup label="2012년생" style="background:#1a2848;color:#8899bb;">
-          <option value="12A" style="background:#1a2848;color:#fff;">12A</option>
-          <option value="12B" style="background:#1a2848;color:#fff;">12B</option>
-          <option value="12C" style="background:#1a2848;color:#fff;">12C</option>
-          <option value="12D" style="background:#1a2848;color:#fff;">12D</option>
-          <option value="12E" style="background:#1a2848;color:#fff;">12E</option>
-          <option value="12G" style="background:#1a2848;color:#fff;">12G</option>
-        </optgroup>
-        <optgroup label="2013년생" style="background:#1a2848;color:#8899bb;">
-          <option value="13A" style="background:#1a2848;color:#fff;">13A</option>
-          <option value="13B" style="background:#1a2848;color:#fff;">13B</option>
-          <option value="13C" style="background:#1a2848;color:#fff;">13C</option>
-          <option value="13D" style="background:#1a2848;color:#fff;">13D</option>
-          <option value="13E" style="background:#1a2848;color:#fff;">13E</option>
-          <option value="13G" style="background:#1a2848;color:#fff;">13G</option>
-        </optgroup>
+        ${buildClassDropdownHtml(isKo)}
       </select>
     </div>
     <div style="display:flex;gap:10px;">
@@ -335,7 +359,7 @@ function completeOnboarding() {
   // Save to Firebase
   syncUserData();
   
-  // Remove overlay
+  // Remove overlay with celebration
   const overlay = document.getElementById('onboarding-overlay');
   if (overlay) {
     overlay.style.opacity = '0';
@@ -343,8 +367,96 @@ function completeOnboarding() {
     setTimeout(() => overlay.remove(), 300);
   }
   
+  // Show celebration effect!
+  showWelcomeCelebration(_onboardNickname);
+  
   updateSocialUI();
-  if (typeof showXpToast === 'function') showXpToast('🎉 Welcome, ' + _onboardNickname + '!');
+}
+
+// === WELCOME CELEBRATION ANIMATION ===
+function showWelcomeCelebration(name) {
+  const celebOverlay = document.createElement('div');
+  celebOverlay.id = 'celebration-overlay';
+  celebOverlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:10001;pointer-events:none;overflow:hidden;';
+  document.body.appendChild(celebOverlay);
+  
+  // Create confetti particles
+  const colors = ['#FFD700','#FF6B6B','#4ECDC4','#a78bfa','#f97316','#ec4899','#22d3ee','#84cc16'];
+  const emojis = ['🎉','🎊','⭐','🔥','💎','🏆','⚡','🌟','🥳','🚀'];
+  
+  for (var i = 0; i < 60; i++) {
+    var particle = document.createElement('div');
+    var isEmoji = Math.random() > 0.6;
+    var size = isEmoji ? 24 : (Math.random() * 10 + 6);
+    var color = colors[Math.floor(Math.random() * colors.length)];
+    var left = Math.random() * 100;
+    var delay = Math.random() * 0.8;
+    var duration = Math.random() * 1.5 + 2;
+    var rotation = Math.random() * 720 - 360;
+    var drift = Math.random() * 200 - 100;
+    
+    if (isEmoji) {
+      particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      particle.style.cssText = 'position:absolute;top:-30px;left:' + left + '%;font-size:' + size + 'px;opacity:0;animation:confettiFall ' + duration + 's ease-out ' + delay + 's forwards;';
+    } else {
+      particle.style.cssText = 'position:absolute;top:-20px;left:' + left + '%;width:' + size + 'px;height:' + size + 'px;background:' + color + ';border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';opacity:0;animation:confettiFall ' + duration + 's ease-out ' + delay + 's forwards;';
+    }
+    particle.style.setProperty('--drift', drift + 'px');
+    particle.style.setProperty('--rotation', rotation + 'deg');
+    celebOverlay.appendChild(particle);
+  }
+  
+  // Add confetti animation keyframes if not already added
+  if (!document.getElementById('confetti-keyframes')) {
+    var style = document.createElement('style');
+    style.id = 'confetti-keyframes';
+    style.textContent = `
+      @keyframes confettiFall {
+        0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0); opacity: 1; }
+        10% { opacity: 1; transform: translateY(10vh) translateX(calc(var(--drift) * 0.2)) rotate(calc(var(--rotation) * 0.3)) scale(1); }
+        100% { transform: translateY(100vh) translateX(var(--drift)) rotate(var(--rotation)) scale(0.5); opacity: 0; }
+      }
+      @keyframes welcomePulse {
+        0% { transform: scale(0); opacity: 0; }
+        50% { transform: scale(1.1); opacity: 1; }
+        70% { transform: scale(0.95); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      @keyframes welcomeFadeOut {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(1.1); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Show welcome message card
+  var msgCard = document.createElement('div');
+  msgCard.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:10002;background:linear-gradient(160deg,#1a2848,#0e1830);border:2px solid #FFD700;border-radius:24px;padding:40px 32px;text-align:center;max-width:340px;width:90%;box-shadow:0 0 60px rgba(255,215,0,0.3),0 20px 60px rgba(0,0,0,0.5);animation:welcomePulse 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;pointer-events:auto;';
+  msgCard.innerHTML = `
+    <div style="font-size:64px;margin-bottom:12px;">🎉</div>
+    <h2 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:28px;margin-bottom:8px;text-shadow:0 0 20px rgba(255,215,0,0.3);">
+      WELCOME!</h2>
+    <p style="color:#4ECDC4;font-size:18px;font-family:'Comic Neue',sans-serif;font-weight:bold;margin-bottom:4px;">
+      ${name}</p>
+    <p style="color:#8899bb;font-size:14px;margin-bottom:24px;line-height:1.5;">
+      Your adventure begins now!<br>Read, earn XP, and level up! 🚀</p>
+    <button onclick="dismissCelebration()" style="padding:14px 40px;border-radius:14px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a2848;font-size:17px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(255,215,0,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
+      LET'S GO! ⚡</button>
+  `;
+  celebOverlay.appendChild(msgCard);
+  celebOverlay.style.pointerEvents = 'auto';
+  
+  // Auto dismiss after 8 seconds
+  setTimeout(function() { dismissCelebration(); }, 8000);
+}
+
+function dismissCelebration() {
+  var overlay = document.getElementById('celebration-overlay');
+  if (!overlay) return;
+  overlay.style.transition = 'opacity 0.5s';
+  overlay.style.opacity = '0';
+  setTimeout(function() { overlay.remove(); }, 500);
 }
 
 function skipOnboarding() {
@@ -1325,11 +1437,95 @@ function showAdminDashboard() {
         <div style="text-align:center;padding:40px;color:#6880a8;">Loading data...</div>
       </div>
       <div id="admin-class-list"></div>
+      
+      <!-- Class Management Section -->
+      <div style="margin-top:24px;background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(255,215,0,0.2);border-radius:16px;padding:20px;">
+        <h3 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:18px;margin-bottom:16px;">
+          ⚙️ ${isKo ? '반 관리' : 'Class Management'}
+        </h3>
+        <div id="admin-class-manager">
+          <div style="text-align:center;padding:20px;color:#6880a8;">Loading classes...</div>
+        </div>
+      </div>
     </div>
   `;
   
   document.body.appendChild(overlay);
   loadAdminData();
+  loadClassConfig(function() { renderClassManager(); });
+}
+
+function renderClassManager() {
+  var el = document.getElementById('admin-class-manager');
+  if (!el) return;
+  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  
+  var html = '';
+  _classConfig.forEach(function(group, gi) {
+    html += '<div style="margin-bottom:16px;background:rgba(0,0,0,0.2);border-radius:12px;padding:14px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+    html += '<input type="text" value="' + group.label + '" onchange="_classConfig[' + gi + '].label=this.value" style="background:transparent;border:1px solid rgba(100,140,200,0.3);border-radius:8px;padding:6px 10px;color:#FFD700;font-size:14px;font-weight:bold;font-family:Comic Neue,sans-serif;width:120px;outline:none;" />';
+    html += '<button onclick="removeClassGroup(' + gi + ')" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:8px;padding:4px 10px;color:#f87171;font-size:12px;cursor:pointer;">' + (isKo ? '삭제' : 'Remove') + '</button>';
+    html += '</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">';
+    group.classes.forEach(function(cls, ci) {
+      html += '<div style="display:flex;align-items:center;gap:4px;background:rgba(78,205,196,0.1);border:1px solid rgba(78,205,196,0.2);border-radius:8px;padding:4px 8px;">';
+      html += '<span style="color:#4ECDC4;font-size:13px;font-weight:bold;">' + cls + '</span>';
+      html += '<button onclick="removeClassFromGroup(' + gi + ',' + ci + ')" style="background:none;border:none;color:#f87171;font-size:14px;cursor:pointer;padding:0 2px;">&times;</button>';
+      html += '</div>';
+    });
+    html += '</div>';
+    html += '<div style="display:flex;gap:6px;">';
+    html += '<input type="text" id="new-class-' + gi + '" placeholder="' + (isKo ? '새 반 (e.g. 10E)' : 'New class (e.g. 10E)') + '" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(100,140,200,0.3);border-radius:8px;padding:6px 10px;color:#fff;font-size:13px;outline:none;font-family:Comic Neue,sans-serif;" onkeyup="if(event.key===\'Enter\')addClassToGroup(' + gi + ')" />';
+    html += '<button onclick="addClassToGroup(' + gi + ')" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);border-radius:8px;padding:6px 12px;color:#4ECDC4;font-size:12px;cursor:pointer;white-space:nowrap;">+ ' + (isKo ? '추가' : 'Add') + '</button>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  html += '<div style="display:flex;gap:8px;margin-top:12px;">';
+  html += '<button onclick="addClassGroup()" style="flex:1;padding:10px;border-radius:12px;border:1px dashed rgba(255,215,0,0.3);background:transparent;color:#FFD700;font-size:13px;cursor:pointer;font-family:Comic Neue,sans-serif;">+ ' + (isKo ? '새 그룹 추가' : 'Add New Group') + '</button>';
+  html += '<button onclick="saveClassConfigAndRefresh()" style="flex:1;padding:10px;border-radius:12px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a2848;font-size:13px;font-weight:bold;cursor:pointer;font-family:Comic Neue,sans-serif;">' + (isKo ? '💾 저장' : '💾 Save Changes') + '</button>';
+  html += '</div>';
+  
+  el.innerHTML = html;
+}
+
+function addClassToGroup(gi) {
+  var input = document.getElementById('new-class-' + gi);
+  if (!input || !input.value.trim()) return;
+  var val = input.value.trim().toUpperCase();
+  if (_classConfig[gi].classes.indexOf(val) === -1) {
+    _classConfig[gi].classes.push(val);
+  }
+  renderClassManager();
+}
+
+function removeClassFromGroup(gi, ci) {
+  _classConfig[gi].classes.splice(ci, 1);
+  renderClassManager();
+}
+
+function removeClassGroup(gi) {
+  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  if (!confirm(isKo ? '이 그룹을 삭제하시겠습니까?' : 'Remove this group?')) return;
+  _classConfig.splice(gi, 1);
+  renderClassManager();
+}
+
+function addClassGroup() {
+  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  var label = prompt(isKo ? '그룹 이름 (e.g. 2014년생):' : 'Group label (e.g. Grade 9):');
+  if (!label) return;
+  _classConfig.push({ label: label, classes: [] });
+  renderClassManager();
+}
+
+function saveClassConfigAndRefresh() {
+  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  saveClassConfig(function() {
+    _classConfigLoaded = false; // Force reload next time
+    if (typeof showXpToast === 'function') showXpToast(isKo ? '✅ 반 목록이 저장되었습니다!' : '✅ Class list saved!');
+  });
 }
 
 function loadAdminData() {

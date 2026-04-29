@@ -21,6 +21,10 @@
     "rankSnapshots": {
       ".read": "auth != null",
       ".write": "auth != null"
+    },
+    "classConfig": {
+      ".read": true,
+      ".write": "auth != null"
     }
   }
 }
