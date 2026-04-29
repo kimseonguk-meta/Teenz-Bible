@@ -265,8 +265,13 @@ function showLeaderboard() {
         <button class="lb-tab" onclick="switchLbTab('chapters')" id="lb-tab-chapters" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">📖 ${isKo ? '챕터' : 'Chapters'}</button>
         <button class="lb-tab" onclick="switchLbTab('quiz')" id="lb-tab-quiz" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🧠 ${isKo ? '퀴즈' : 'Quiz'}</button>
       </div>
-      <div style="color:#6880a8;font-size:12px;text-align:center;margin-bottom:8px;">
-        ${isKo ? '반' : 'Class'}: <span style="color:#4ECDC4;font-weight:bold;">${groupCode}</span>
+      <div style="display:flex;gap:6px;margin-bottom:10px;" id="lb-scope-tabs">
+        <button onclick="switchLbScope('myclass')" id="lb-scope-myclass" style="flex:1;padding:8px;border-radius:8px;border:none;background:#4ECDC4;color:#fff;font-size:12px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+          ${isKo ? '🏫 내 반' : '🏫 My Class'} (${groupCode})
+        </button>
+        <button onclick="switchLbScope('all')" id="lb-scope-all" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:12px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+          ${isKo ? '🌍 전체' : '🌍 All Classes'}
+        </button>
       </div>
       <div id="lb-list" style="min-height:200px;">
         <div style="text-align:center;padding:40px;color:#6880a8;">Loading...</div>
@@ -287,6 +292,32 @@ function showLeaderboard() {
 }
 
 let currentLbTab = 'xp';
+let currentLbScope = 'myclass'; // 'myclass' or 'all'
+
+function switchLbScope(scope) {
+  currentLbScope = scope;
+  // Update scope tab styles
+  const myBtn = document.getElementById('lb-scope-myclass');
+  const allBtn = document.getElementById('lb-scope-all');
+  if (myBtn && allBtn) {
+    if (scope === 'myclass') {
+      myBtn.style.background = '#4ECDC4';
+      myBtn.style.color = '#fff';
+      myBtn.style.border = 'none';
+      allBtn.style.background = 'transparent';
+      allBtn.style.color = '#6880a8';
+      allBtn.style.border = '1px solid rgba(100,140,200,0.3)';
+    } else {
+      allBtn.style.background = '#4ECDC4';
+      allBtn.style.color = '#fff';
+      allBtn.style.border = 'none';
+      myBtn.style.background = 'transparent';
+      myBtn.style.color = '#6880a8';
+      myBtn.style.border = '1px solid rgba(100,140,200,0.3)';
+    }
+  }
+  loadLeaderboard(currentLbTab);
+}
 function switchLbTab(tab) {
   currentLbTab = tab;
   // Update tab styles
@@ -314,6 +345,32 @@ function loadLeaderboard(sortBy) {
   
   listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">Loading...</div>';
   
+  if (currentLbScope === 'all') {
+    // Load ALL groups
+    fbDb.ref('groups').once('value').then(function(snapshot) {
+      const allGroups = snapshot.val();
+      if (!allGroups) {
+        listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">' + 
+          (isKo ? '아직 멤버가 없어요.' : 'No members yet.') + '</div>';
+        return;
+      }
+      let members = [];
+      Object.entries(allGroups).forEach(([gCode, gData]) => {
+        if (gData && gData.members) {
+          Object.entries(gData.members).forEach(([uid, d]) => {
+            members.push({uid, groupCode: gCode, ...d});
+          });
+        }
+      });
+      renderLeaderboardList(members, sortBy, isKo, listEl, true);
+    }).catch(function(err) {
+      console.log('Leaderboard error:', err);
+      listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#f87171;">Error loading data</div>';
+    });
+    return;
+  }
+  
+  // Load MY CLASS only
   fbDb.ref('groups/' + groupCode + '/members').once('value').then(function(snapshot) {
     const data = snapshot.val();
     if (!data) {
@@ -324,7 +381,14 @@ function loadLeaderboard(sortBy) {
     
     // Convert to array and sort
     let members = Object.entries(data).map(([uid, d]) => ({uid, ...d}));
-    
+    renderLeaderboardList(members, sortBy, isKo, listEl, false);
+  }).catch(function(err) {
+    console.log('Leaderboard error:', err);
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#f87171;">Error loading data</div>';
+  });
+}
+
+function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
     switch(sortBy) {
       case 'xp': members.sort((a,b) => (b.xp||0) - (a.xp||0)); break;
       case 'streak': members.sort((a,b) => (b.streak||0) - (a.streak||0)); break;
@@ -336,10 +400,14 @@ function loadLeaderboard(sortBy) {
       }); break;
     }
     
-    const medals = ['🥇','🥈','🥉'];
+    const medals = ['\u{1F947}','\u{1F948}','\u{1F949}'];
     const myUid = currentUser ? currentUser.uid : '';
     
     let html = '';
+    if (showClass) {
+      html += '<div style="text-align:center;color:#4ECDC4;font-size:11px;margin-bottom:8px;font-weight:bold;">' + 
+        (isKo ? '전체 ' + members.length + '명' : 'All ' + members.length + ' members') + '</div>';
+    }
     members.forEach((m, i) => {
       const isMe = m.uid === myUid;
       const rank = i < 3 ? medals[i] : (i+1);
@@ -356,28 +424,24 @@ function loadLeaderboard(sortBy) {
           break;
       }
       
-      html += `
-        <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:6px;
-          background:${isMe ? 'rgba(255,107,107,0.15)' : 'rgba(255,255,255,0.03)'};
-          border:${isMe ? '1px solid rgba(255,107,107,0.3)' : '1px solid transparent'};">
-          <div style="${rankStyle}min-width:32px;text-align:center;">${rank}</div>
-          <div style="font-size:28px;">${m.avatar||'😎'}</div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:14px;font-weight:bold;color:${isMe ? '#FF6B6B' : '#dde4f0'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-              ${m.nickname||'Anonymous'}${isMe ? (isKo ? ' (나)' : ' (You)') : ''}
-            </div>
-            <div style="font-size:11px;color:#6880a8;">${valueText}</div>
-          </div>
-          ${i < 3 ? '<div style="font-size:10px;color:#FFD700;">★</div>' : ''}
-        </div>
-      `;
+      const classTag = showClass && m.groupCode ? '<span style="background:rgba(78,205,196,0.15);color:#4ECDC4;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;">' + m.groupCode + '</span>' : '';
+      
+      html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:6px;' +
+        'background:' + (isMe ? 'rgba(255,107,107,0.15)' : 'rgba(255,255,255,0.03)') + ';' +
+        'border:' + (isMe ? '1px solid rgba(255,107,107,0.3)' : '1px solid transparent') + ';">' +
+        '<div style="' + rankStyle + 'min-width:32px;text-align:center;">' + rank + '</div>' +
+        '<div style="font-size:28px;">' + (m.avatar||'😎') + '</div>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:14px;font-weight:bold;color:' + (isMe ? '#FF6B6B' : '#dde4f0') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+            (m.nickname||'Anonymous') + (isMe ? (isKo ? ' (나)' : ' (You)') : '') + classTag +
+          '</div>' +
+          '<div style="font-size:11px;color:#6880a8;">' + valueText + '</div>' +
+        '</div>' +
+        (i < 3 ? '<div style="font-size:10px;color:#FFD700;">★</div>' : '') +
+      '</div>';
     });
     
     listEl.innerHTML = html;
-  }).catch(function(err) {
-    console.log('Leaderboard error:', err);
-    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#f87171;">Error loading data</div>';
-  });
 }
 
 // === INVITE / CHALLENGE ===
@@ -793,13 +857,21 @@ function addSocialSettings() {
       </div>
       <div style="color:#6880a8;">▶</div>
     </div>
-    <div onclick="showInviteCard()" style="background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.2);border-radius:14px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;">
+    <div onclick="showInviteCard()" style="background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.2);border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px;">
       <div style="font-size:28px;">📨</div>
       <div style="flex:1;">
         <div style="color:#dde4f0;font-size:15px;font-weight:bold;">${isKo?'친구 초대':'Invite Friends'}</div>
         <div style="color:#6880a8;font-size:12px;">${isKo?'친구 초대하기':'Invite your friends'}</div>
       </div>
       <div style="color:#6880a8;">▶</div>
+    </div>
+    <div onclick="showAdminLogin()" style="background:linear-gradient(160deg,#2a1848,#1e1030);border:1px solid rgba(255,215,0,0.2);border-radius:14px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:28px;">📊</div>
+      <div style="flex:1;">
+        <div style="color:#FFD700;font-size:15px;font-weight:bold;">${isKo?'선생님 대시보드':'Teacher Dashboard'}</div>
+        <div style="color:#6880a8;font-size:12px;">${isKo?'반별 학생 진행률 확인':'View class progress (PIN required)'}</div>
+      </div>
+      <div style="color:#FFD700;">▶</div>
     </div>
   `;
   
@@ -878,6 +950,244 @@ showQuizShareOverlay = function() {
   ov.appendChild(actions);
   document.body.appendChild(ov);
 };
+
+
+// === TEACHER ADMIN DASHBOARD ===
+const ADMIN_PIN = '7777';
+
+function showAdminLogin() {
+  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const overlay = document.createElement('div');
+  overlay.id = 'admin-login-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
+  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+  
+  const card = document.createElement('div');
+  card.style.cssText = 'background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.3);border-radius:20px;padding:32px 24px;max-width:360px;width:100%;text-align:center;';
+  card.innerHTML = `
+    <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+    <h3 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:22px;margin-bottom:8px;">
+      ${isKo ? '선생님 대시보드' : 'Teacher Dashboard'}
+    </h3>
+    <p style="color:#6880a8;font-size:13px;margin-bottom:20px;">
+      ${isKo ? 'PIN을 입력해주세요' : 'Enter your PIN to access'}
+    </p>
+    <input id="admin-pin-input" type="password" maxlength="4" placeholder="PIN" 
+      style="width:120px;padding:14px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:24px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;letter-spacing:8px;box-sizing:border-box;"
+      onfocus="this.style.borderColor='#FFD700'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'"
+      onkeyup="if(event.key==='Enter')verifyAdminPin()">
+    <div id="admin-pin-error" style="color:#f87171;font-size:12px;margin-top:8px;display:none;">
+      ${isKo ? '잘못된 PIN입니다' : 'Incorrect PIN'}
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button onclick="document.getElementById('admin-login-overlay').remove()" 
+        style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:14px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+        ${isKo ? '취소' : 'Cancel'}
+      </button>
+      <button onclick="verifyAdminPin()" 
+        style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a2848;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+        ${isKo ? '확인' : 'Enter'}
+      </button>
+    </div>
+  `;
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+  setTimeout(() => document.getElementById('admin-pin-input').focus(), 100);
+}
+
+function verifyAdminPin() {
+  const input = document.getElementById('admin-pin-input');
+  if (!input) return;
+  if (input.value === ADMIN_PIN) {
+    document.getElementById('admin-login-overlay').remove();
+    showAdminDashboard();
+  } else {
+    const err = document.getElementById('admin-pin-error');
+    if (err) err.style.display = 'block';
+    input.value = '';
+    input.style.borderColor = '#f87171';
+    setTimeout(() => { input.style.borderColor = 'rgba(100,140,200,0.3)'; if(err) err.style.display = 'none'; }, 2000);
+  }
+}
+
+function showAdminDashboard() {
+  if (!fbDb) return;
+  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'admin-dashboard-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#0a0a2e;z-index:10000;overflow-y:auto;';
+  
+  overlay.innerHTML = `
+    <div style="max-width:600px;margin:0 auto;padding:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:24px;margin:0;">
+          📊 ${isKo ? '선생님 대시보드' : 'Teacher Dashboard'}
+        </h2>
+        <button onclick="document.getElementById('admin-dashboard-overlay').remove()" 
+          style="background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
+      </div>
+      <div id="admin-summary" style="margin-bottom:20px;">
+        <div style="text-align:center;padding:40px;color:#6880a8;">Loading data...</div>
+      </div>
+      <div id="admin-class-list"></div>
+    </div>
+  `;
+  
+  document.body.appendChild(overlay);
+  loadAdminData();
+}
+
+function loadAdminData() {
+  if (!fbDb) return;
+  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  
+  fbDb.ref('groups').once('value').then(function(snapshot) {
+    const allGroups = snapshot.val();
+    if (!allGroups) {
+      document.getElementById('admin-summary').innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">No data yet</div>';
+      return;
+    }
+    
+    // Aggregate stats
+    let totalStudents = 0;
+    let totalChapters = 0;
+    let totalQuizzes = 0;
+    let activeToday = 0;
+    const now = Date.now();
+    const dayMs = 24 * 60 * 60 * 1000;
+    
+    const classData = {};
+    
+    Object.entries(allGroups).forEach(([gCode, gData]) => {
+      if (!gData || !gData.members) return;
+      const members = Object.entries(gData.members).map(([uid, d]) => ({uid, ...d}));
+      classData[gCode] = members;
+      
+      members.forEach(m => {
+        totalStudents++;
+        totalChapters += (m.chaptersRead || 0);
+        totalQuizzes += (m.quizTotal || 0);
+        if (m.lastActive && (now - m.lastActive) < dayMs) activeToday++;
+      });
+    });
+    
+    // Render summary cards
+    const summaryEl = document.getElementById('admin-summary');
+    summaryEl.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="background:linear-gradient(135deg,#4ECDC4,#3dbdb5);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:bold;color:#fff;font-family:'Luckiest Guy',cursive;">${totalStudents}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${isKo ? '전체 학생' : 'Total Students'}</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#FF6B6B,#ee5a5a);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:bold;color:#fff;font-family:'Luckiest Guy',cursive;">${activeToday}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${isKo ? '오늘 활동' : 'Active Today'}</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:bold;color:#1a2848;font-family:'Luckiest Guy',cursive;">${totalChapters}</div>
+          <div style="font-size:12px;color:rgba(26,40,72,0.8);">${isKo ? '총 읽은 챕터' : 'Chapters Read'}</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#a78bfa,#8b5cf6);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:bold;color:#fff;font-family:'Luckiest Guy',cursive;">${totalQuizzes}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${isKo ? '총 퀴즈 수' : 'Quizzes Taken'}</div>
+        </div>
+      </div>
+    `;
+    
+    // Sort classes naturally
+    const sortedClasses = Object.keys(classData).sort((a, b) => {
+      const numA = parseInt(a); const numB = parseInt(b);
+      if (numA !== numB) return numA - numB;
+      return a.localeCompare(b);
+    });
+    
+    // Render per-class breakdown
+    const classListEl = document.getElementById('admin-class-list');
+    let classHtml = '';
+    
+    sortedClasses.forEach(gCode => {
+      const members = classData[gCode];
+      if (!members || members.length === 0) return;
+      
+      // Sort by XP desc
+      members.sort((a, b) => (b.xp || 0) - (a.xp || 0));
+      
+      const avgXp = Math.round(members.reduce((s, m) => s + (m.xp || 0), 0) / members.length);
+      const avgChapters = (members.reduce((s, m) => s + (m.chaptersRead || 0), 0) / members.length).toFixed(1);
+      const activeCount = members.filter(m => m.lastActive && (now - m.lastActive) < dayMs).length;
+      
+      classHtml += `
+        <div style="background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.2);border-radius:16px;padding:16px;margin-bottom:12px;">
+          <div onclick="toggleClassDetail('class-detail-${gCode}')" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;">
+            <div>
+              <span style="font-family:'Luckiest Guy',cursive;color:#4ECDC4;font-size:20px;">${gCode}</span>
+              <span style="color:#6880a8;font-size:13px;margin-left:8px;">${members.length} ${isKo ? '명' : 'students'}</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <span style="color:#FFD700;font-size:12px;">⚡${avgXp} avg</span>
+              <span style="color:#4ECDC4;font-size:12px;">📖${avgChapters} avg</span>
+              <span style="color:#6880a8;font-size:16px;" id="class-arrow-${gCode}">▼</span>
+            </div>
+          </div>
+          <div id="class-detail-${gCode}" style="display:none;margin-top:12px;border-top:1px solid rgba(100,140,200,0.15);padding-top:12px;">
+            <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+              <div style="background:rgba(78,205,196,0.1);border-radius:8px;padding:6px 10px;font-size:11px;color:#4ECDC4;">
+                ${isKo ? '활동중' : 'Active'}: ${activeCount}/${members.length}
+              </div>
+            </div>
+            <div style="font-size:11px;color:#6880a8;margin-bottom:6px;display:grid;grid-template-columns:36px 28px 1fr 60px 50px 50px 50px;gap:4px;padding:0 4px;">
+              <div>#</div><div></div><div>${isKo ? '이름' : 'Name'}</div><div style="text-align:right;">XP</div><div style="text-align:right;">📖</div><div style="text-align:right;">🔥</div><div style="text-align:right;">🧠</div>
+            </div>`;
+      
+      members.forEach((m, i) => {
+        const quizRate = (m.quizTotal || 0) > 0 ? Math.round((m.quizCorrect || 0) / (m.quizTotal || 1) * 100) : 0;
+        const isActive = m.lastActive && (now - m.lastActive) < dayMs;
+        const medals = ['🥇','🥈','🥉'];
+        const rankDisplay = i < 3 ? medals[i] : (i + 1);
+        
+        classHtml += `
+            <div style="display:grid;grid-template-columns:36px 28px 1fr 60px 50px 50px 50px;gap:4px;padding:8px 4px;border-radius:8px;align-items:center;
+              background:${i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent'};">
+              <div style="font-size:${i < 3 ? '18px' : '13px'};color:${i < 3 ? '#FFD700' : '#6880a8'};text-align:center;">${rankDisplay}</div>
+              <div style="font-size:20px;">${m.avatar || '😎'}</div>
+              <div style="font-size:13px;color:#dde4f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${m.nickname || 'Anonymous'}
+                ${isActive ? '<span style="display:inline-block;width:6px;height:6px;background:#4ECDC4;border-radius:50%;margin-left:4px;vertical-align:middle;"></span>' : ''}
+              </div>
+              <div style="font-size:12px;color:#FFD700;text-align:right;font-weight:bold;">${(m.xp || 0).toLocaleString()}</div>
+              <div style="font-size:12px;color:#4ECDC4;text-align:right;">${m.chaptersRead || 0}</div>
+              <div style="font-size:12px;color:#FF6B6B;text-align:right;">${m.streak || 0}</div>
+              <div style="font-size:12px;color:#a78bfa;text-align:right;">${quizRate}%</div>
+            </div>`;
+      });
+      
+      classHtml += `
+          </div>
+        </div>`;
+    });
+    
+    classListEl.innerHTML = classHtml;
+    
+  }).catch(function(err) {
+    console.log('Admin data error:', err);
+    document.getElementById('admin-summary').innerHTML = '<div style="text-align:center;padding:40px;color:#f87171;">Error loading data</div>';
+  });
+}
+
+function toggleClassDetail(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const arrowId = id.replace('class-detail-', 'class-arrow-');
+  const arrow = document.getElementById(arrowId);
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    if (arrow) arrow.textContent = '▲';
+  } else {
+    el.style.display = 'none';
+    if (arrow) arrow.textContent = '▼';
+  }
+}
 
 // === INIT ===
 document.addEventListener('DOMContentLoaded', function() {
