@@ -86,20 +86,20 @@ function showOnboarding() {
         style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;appearance:none;-webkit-appearance:none;cursor:pointer;"
         onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'">
         <option value="" style="background:#1a2848;color:#8899bb;">${isKo ? '-- 반 선택 --' : '-- Select Class --'}</option>
-        <optgroup label="10학년" style="background:#1a2848;color:#8899bb;">
+        <optgroup label="2010년생" style="background:#1a2848;color:#8899bb;">
           <option value="10A" style="background:#1a2848;color:#fff;">10A</option>
           <option value="10B" style="background:#1a2848;color:#fff;">10B</option>
           <option value="10C" style="background:#1a2848;color:#fff;">10C</option>
           <option value="10D" style="background:#1a2848;color:#fff;">10D</option>
         </optgroup>
-        <optgroup label="11학년" style="background:#1a2848;color:#8899bb;">
+        <optgroup label="2011년생" style="background:#1a2848;color:#8899bb;">
           <option value="11A" style="background:#1a2848;color:#fff;">11A</option>
           <option value="11B" style="background:#1a2848;color:#fff;">11B</option>
           <option value="11C" style="background:#1a2848;color:#fff;">11C</option>
           <option value="11D" style="background:#1a2848;color:#fff;">11D</option>
           <option value="11E" style="background:#1a2848;color:#fff;">11E</option>
         </optgroup>
-        <optgroup label="12학년" style="background:#1a2848;color:#8899bb;">
+        <optgroup label="2012년생" style="background:#1a2848;color:#8899bb;">
           <option value="12A" style="background:#1a2848;color:#fff;">12A</option>
           <option value="12B" style="background:#1a2848;color:#fff;">12B</option>
           <option value="12C" style="background:#1a2848;color:#fff;">12C</option>
@@ -107,7 +107,7 @@ function showOnboarding() {
           <option value="12E" style="background:#1a2848;color:#fff;">12E</option>
           <option value="12G" style="background:#1a2848;color:#fff;">12G</option>
         </optgroup>
-        <optgroup label="13학년" style="background:#1a2848;color:#8899bb;">
+        <optgroup label="2013년생" style="background:#1a2848;color:#8899bb;">
           <option value="13A" style="background:#1a2848;color:#fff;">13A</option>
           <option value="13B" style="background:#1a2848;color:#fff;">13B</option>
           <option value="13C" style="background:#1a2848;color:#fff;">13C</option>
@@ -118,10 +118,7 @@ function showOnboarding() {
       </select>
     </div>
     <div style="display:flex;gap:8px;">
-      <button onclick="skipOnboarding()" style="flex:1;padding:14px;border-radius:12px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:14px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-        ${isKo ? '나중에' : 'Later'}
-      </button>
-      <button onclick="completeOnboarding()" style="flex:2;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;">
+      <button onclick="completeOnboarding()" style="flex:1;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;">
         ${isKo ? '시작! 🚀' : "LET'S GO! 🚀"}
       </button>
     </div>
@@ -146,6 +143,14 @@ function completeOnboarding() {
     input.style.borderColor = '#f87171';
     input.style.animation = 'shake 0.3s';
     setTimeout(() => input.style.animation = '', 300);
+    return;
+  }
+  
+  if (!groupCode) {
+    const sel = document.getElementById('onboard-group');
+    sel.style.borderColor = '#f87171';
+    sel.style.animation = 'shake 0.3s';
+    setTimeout(() => sel.style.animation = '', 300);
     return;
   }
   
