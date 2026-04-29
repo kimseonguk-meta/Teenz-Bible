@@ -86,10 +86,35 @@ function showOnboarding() {
         style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;appearance:none;-webkit-appearance:none;cursor:pointer;"
         onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'">
         <option value="" style="background:#1a2848;color:#8899bb;">${isKo ? '-- 반 선택 --' : '-- Select Class --'}</option>
-        <option value="10A" style="background:#1a2848;color:#fff;">10A</option>
-        <option value="10B" style="background:#1a2848;color:#fff;">10B</option>
-        <option value="11A" style="background:#1a2848;color:#fff;">11A</option>
-        <option value="12A" style="background:#1a2848;color:#fff;">12A</option>
+        <optgroup label="10학년" style="background:#1a2848;color:#8899bb;">
+          <option value="10A" style="background:#1a2848;color:#fff;">10A</option>
+          <option value="10B" style="background:#1a2848;color:#fff;">10B</option>
+          <option value="10C" style="background:#1a2848;color:#fff;">10C</option>
+          <option value="10D" style="background:#1a2848;color:#fff;">10D</option>
+        </optgroup>
+        <optgroup label="11학년" style="background:#1a2848;color:#8899bb;">
+          <option value="11A" style="background:#1a2848;color:#fff;">11A</option>
+          <option value="11B" style="background:#1a2848;color:#fff;">11B</option>
+          <option value="11C" style="background:#1a2848;color:#fff;">11C</option>
+          <option value="11D" style="background:#1a2848;color:#fff;">11D</option>
+          <option value="11E" style="background:#1a2848;color:#fff;">11E</option>
+        </optgroup>
+        <optgroup label="12학년" style="background:#1a2848;color:#8899bb;">
+          <option value="12A" style="background:#1a2848;color:#fff;">12A</option>
+          <option value="12B" style="background:#1a2848;color:#fff;">12B</option>
+          <option value="12C" style="background:#1a2848;color:#fff;">12C</option>
+          <option value="12D" style="background:#1a2848;color:#fff;">12D</option>
+          <option value="12E" style="background:#1a2848;color:#fff;">12E</option>
+          <option value="12G" style="background:#1a2848;color:#fff;">12G</option>
+        </optgroup>
+        <optgroup label="13학년" style="background:#1a2848;color:#8899bb;">
+          <option value="13A" style="background:#1a2848;color:#fff;">13A</option>
+          <option value="13B" style="background:#1a2848;color:#fff;">13B</option>
+          <option value="13C" style="background:#1a2848;color:#fff;">13C</option>
+          <option value="13D" style="background:#1a2848;color:#fff;">13D</option>
+          <option value="13E" style="background:#1a2848;color:#fff;">13E</option>
+          <option value="13G" style="background:#1a2848;color:#fff;">13G</option>
+        </optgroup>
       </select>
     </div>
     <div style="display:flex;gap:8px;">
