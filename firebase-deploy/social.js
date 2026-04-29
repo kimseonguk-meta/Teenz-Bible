@@ -771,11 +771,15 @@ function addSocialSettings() {
     </div>
   `;
   
-  // Insert before the API key section or at the end
-  const apiSection = settingsScreen.querySelector('[style*="margin-top"]') || settingsScreen.lastElementChild;
-  if (apiSection) {
-    settingsScreen.insertBefore(section, apiSection);
-  } else {
+  // Safely append to settings screen
+  try {
+    const apiSection = settingsScreen.querySelector('[style*="margin-top"]');
+    if (apiSection && apiSection.parentNode === settingsScreen) {
+      settingsScreen.insertBefore(section, apiSection);
+    } else {
+      settingsScreen.appendChild(section);
+    }
+  } catch(e) {
     settingsScreen.appendChild(section);
   }
 }
