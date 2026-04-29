@@ -172,6 +172,7 @@ function showOnboarding() {
   }
   
   _onboardNickname = '';
+  _isNasumMember = false;
   showOnboardStep1();
 }
 
@@ -191,7 +192,7 @@ function showOnboardStep1() {
   
   card.innerHTML = `
     <div style="font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">👋</div>
-    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 1 / 2</div>
+    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 1 / 3</div>
     <h2 style="font-family:'Luckiest Guy',cursive;color:#FF6B6B;font-size:26px;margin-bottom:8px;">
       ${isKo ? '이름이 뭐야?' : "What's your name?"}
     </h2>
@@ -232,7 +233,70 @@ function goToStep2() {
   }
   
   _onboardNickname = nickname;
-  showOnboardStep2();
+  showOnboardStep1b();
+}
+
+// Step 1b: Are you a Nasum Teenz member?
+var _isNasumMember = false;
+
+function showOnboardStep1b() {
+  var existing = document.getElementById('onboarding-overlay');
+  if (existing) existing.remove();
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'onboarding-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
+  
+  const card = document.createElement('div');
+  card.style.cssText = 'background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.3);border-radius:20px;padding:32px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);animation:slideInUp 0.4s cubic-bezier(0.34,1.56,0.64,1);';
+  
+  card.innerHTML = `
+    <div style="font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">⛪</div>
+    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 2 / 3</div>
+    <h2 style="font-family:'Luckiest Guy',cursive;color:#a78bfa;font-size:24px;margin-bottom:8px;">
+      Are you a Nasum Teenz member?
+    </h2>
+    <p style="color:#8899bb;font-size:14px;margin-bottom:28px;line-height:1.5;">
+      If yes, you can join your class leaderboard and compete with friends!
+    </p>
+    <div style="display:flex;gap:12px;margin-bottom:16px;">
+      <button onclick="_isNasumMember=true;showOnboardStep2()" style="flex:1;padding:18px 16px;border-radius:14px;border:none;background:linear-gradient(135deg,#4ECDC4,#38b2ac);color:#fff;font-size:18px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(78,205,196,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
+        YES! ✋
+      </button>
+      <button onclick="_isNasumMember=false;completeOnboardingAsIndividual()" style="flex:1;padding:18px 16px;border-radius:14px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:18px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(255,107,107,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
+        NOPE
+      </button>
+    </div>
+    <button onclick="showOnboardStep1()" style="padding:12px 20px;border-radius:14px;border:1px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#8899bb;font-size:14px;cursor:pointer;font-family:'Comic Neue',sans-serif;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+      ← BACK
+    </button>
+  `;
+  
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+}
+
+function completeOnboardingAsIndividual() {
+  userProfile = {
+    nickname: _onboardNickname,
+    groupCode: 'INDIVIDUAL',
+    joinedAt: Date.now(),
+    avatar: getRandomAvatar(),
+    isNasumMember: false
+  };
+  
+  localStorage.setItem('teensBibleProfile', JSON.stringify(userProfile));
+  syncUserData();
+  
+  const overlay = document.getElementById('onboarding-overlay');
+  if (overlay) {
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.3s';
+    setTimeout(() => overlay.remove(), 300);
+  }
+  
+  showWelcomeCelebration(_onboardNickname);
+  updateSocialUI();
 }
 
 // Default class config (fallback if Firebase hasn't loaded yet)
@@ -304,15 +368,15 @@ function _renderOnboardStep2(isKo) {
   
   card.innerHTML = `
     <div style="font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">🏫</div>
-    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 2 / 2</div>
+    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 3 / 3</div>
     <h2 style="font-family:'Luckiest Guy',cursive;color:#4ECDC4;font-size:26px;margin-bottom:4px;">
-      ${isKo ? '반을 선택해줘!' : 'Pick your class!'}
+      Pick your class!
     </h2>
     <p style="color:#FFD700;font-size:15px;margin-bottom:6px;font-family:'Comic Neue',sans-serif;font-weight:bold;">
-      ${isKo ? '👋 ' + _onboardNickname + ', 반가워!' : '👋 Hey ' + _onboardNickname + '!'}
+      👋 Hey ${_onboardNickname}!
     </p>
     <p style="color:#8899bb;font-size:14px;margin-bottom:24px;line-height:1.5;">
-      ${isKo ? '나섬틴즈부 반을 선택하면 친구들과 경쟁할 수 있어!' : 'Select your Nasam Teens class to compete with friends!'}
+      Select your Nasum Teenz class to compete with friends!
     </p>
     <div style="margin-bottom:24px;">
       <select id="onboard-group" 
@@ -323,11 +387,11 @@ function _renderOnboardStep2(isKo) {
       </select>
     </div>
     <div style="display:flex;gap:10px;">
-      <button onclick="showOnboardStep1()" style="flex:0 0 auto;padding:16px 20px;border-radius:14px;border:1px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#8899bb;font-size:15px;cursor:pointer;font-family:'Comic Neue',sans-serif;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-        ← ${isKo ? '이전' : 'BACK'}
+      <button onclick="showOnboardStep1b()" style="flex:0 0 auto;padding:16px 20px;border-radius:14px;border:1px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#8899bb;font-size:15px;cursor:pointer;font-family:'Comic Neue',sans-serif;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+        ← BACK
       </button>
       <button onclick="completeOnboarding()" style="flex:1;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#4ECDC4,#38b2ac);color:#fff;font-size:17px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(78,205,196,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
-        ${isKo ? '시작! 🚀' : "LET'S GO! 🚀"}
+        LET'S GO! 🚀
       </button>
     </div>
   `;
@@ -351,7 +415,8 @@ function completeOnboarding() {
     nickname: _onboardNickname,
     groupCode: groupCode || 'GLOBAL',
     joinedAt: Date.now(),
-    avatar: getRandomAvatar()
+    avatar: getRandomAvatar(),
+    isNasumMember: true
   };
   
   localStorage.setItem('teensBibleProfile', JSON.stringify(userProfile));
