@@ -73,17 +73,24 @@ function showOnboarding() {
       ${isKo ? '환영해!' : 'Welcome!'}
     </h2>
     <p style="color:#8899bb;font-size:14px;margin-bottom:24px;line-height:1.5;">
-      ${isKo ? '닉네임을 정하고 친구들과 함께 성경읽기 도전을 시작하자!' : 'Set your nickname and start the Bible reading challenge with friends!'}
+      ${isKo ? '이름을 적고 반을 선택하면 친구들과 리더보드에서 경쟁할 수 있어!' : 'Enter your name and select your class to compete with friends on the leaderboard!'}
     </p>
     <div style="margin-bottom:16px;">
-      <input id="onboard-nickname" type="text" maxlength="12" placeholder="${isKo ? '닉네임 (최대 12자)' : 'Nickname (max 12 chars)'}" 
+      <input id="onboard-nickname" type="text" maxlength="12" placeholder="${isKo ? '이름 (한국어/영어 OK!)' : 'Your name (Korean or English!)'}" 
         style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;"
         onfocus="this.style.borderColor='#FF6B6B'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'">
     </div>
     <div style="margin-bottom:20px;">
-      <input id="onboard-group" type="text" maxlength="20" placeholder="${isKo ? '그룹 코드 (선생님이 알려줄 거야!)' : 'Group code (your leader will share it!)'}" 
-        style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;"
+      <div style="color:#8899bb;font-size:13px;margin-bottom:8px;">${isKo ? '나섬틴즈부 반을 선택해줘!' : 'Select your Nasam Teens class!'}</div>
+      <select id="onboard-group" 
+        style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;appearance:none;-webkit-appearance:none;cursor:pointer;"
         onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'">
+        <option value="" style="background:#1a2848;color:#8899bb;">${isKo ? '-- 반 선택 --' : '-- Select Class --'}</option>
+        <option value="10A" style="background:#1a2848;color:#fff;">10A</option>
+        <option value="10B" style="background:#1a2848;color:#fff;">10B</option>
+        <option value="11A" style="background:#1a2848;color:#fff;">11A</option>
+        <option value="12A" style="background:#1a2848;color:#fff;">12A</option>
+      </select>
     </div>
     <div style="display:flex;gap:8px;">
       <button onclick="skipOnboarding()" style="flex:1;padding:14px;border-radius:12px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:14px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
@@ -234,7 +241,7 @@ function showLeaderboard() {
         <button class="lb-tab" onclick="switchLbTab('quiz')" id="lb-tab-quiz" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🧠 ${isKo ? '퀴즈' : 'Quiz'}</button>
       </div>
       <div style="color:#6880a8;font-size:12px;text-align:center;margin-bottom:8px;">
-        ${isKo ? '그룹' : 'Group'}: <span style="color:#4ECDC4;font-weight:bold;">${groupCode}</span>
+        ${isKo ? '반' : 'Class'}: <span style="color:#4ECDC4;font-weight:bold;">${groupCode}</span>
       </div>
       <div id="lb-list" style="min-height:200px;">
         <div style="text-align:center;padding:40px;color:#6880a8;">Loading...</div>
@@ -363,8 +370,8 @@ function showInviteCard() {
   card.style.cssText = 'background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.3);border-radius:20px;padding:28px 24px;max-width:360px;width:100%;text-align:center;';
   
   const inviteMsg = isKo 
-    ? `🔥 ${nickname}이(가) 너를 Teenz Bible 성경읽기 챌린지에 초대했어!\n\n📖 같이 성경 읽으면서 퀴즈도 풀고 XP도 모으자!\n\n그룹 코드: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
-    : `🔥 ${nickname} invited you to the Teenz Bible reading challenge!\n\n📖 Read the Bible together, take quizzes, and earn XP!\n\nGroup code: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
+    ? `🔥 ${nickname}이(가) 너를 Teenz Bible 성경읽기 챌린지에 초대했어!\n\n📖 같이 성경 읽으면서 퀴즈도 풀고 XP도 모으자!\n\n반: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
+    : `🔥 ${nickname} invited you to the Teenz Bible reading challenge!\n\n📖 Read the Bible together, take quizzes, and earn XP!\n\nClass: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
   
   card.innerHTML = `
     <div style="font-size:48px;margin-bottom:12px;">📨</div>
@@ -383,7 +390,7 @@ function showInviteCard() {
       </button>` : ''}
     </div>
     <div style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:12px;margin-bottom:12px;">
-      <div style="color:#FFD700;font-size:12px;font-weight:bold;margin-bottom:4px;">${isKo ? '그룹 코드' : 'Group Code'}</div>
+      <div style="color:#FFD700;font-size:12px;font-weight:bold;margin-bottom:4px;">${isKo ? '나섬틴즈부 반' : 'Nasam Teens Class'}</div>
       <div style="color:#fff;font-size:24px;font-family:'Luckiest Guy',cursive;letter-spacing:3px;">${groupCode}</div>
     </div>
     <button onclick="document.getElementById('invite-overlay').remove()" style="padding:10px 24px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;">
@@ -401,8 +408,8 @@ function copyInvite() {
   const nickname = userProfile ? userProfile.nickname : '';
   
   const msg = isKo 
-    ? `🔥 ${nickname}이(가) 너를 Teenz Bible 성경읽기 챌린지에 초대했어!\n\n📖 같이 성경 읽으면서 퀴즈도 풀고 XP도 모으자!\n\n그룹 코드: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
-    : `🔥 ${nickname} invited you to the Teenz Bible reading challenge!\n\n📖 Read the Bible together, take quizzes, and earn XP!\n\nGroup code: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
+    ? `🔥 ${nickname}이(가) 너를 Teenz Bible 성경읽기 챌린지에 초대했어!\n\n📖 같이 성경 읽으면서 퀴즈도 풀고 XP도 모으자!\n\n반: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
+    : `🔥 ${nickname} invited you to the Teenz Bible reading challenge!\n\n📖 Read the Bible together, take quizzes, and earn XP!\n\nClass: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
   
   navigator.clipboard.writeText(msg).then(() => {
     const btn = document.getElementById('copy-invite-btn');
@@ -419,8 +426,8 @@ function shareInvite() {
   const nickname = userProfile ? userProfile.nickname : '';
   
   const msg = isKo 
-    ? `🔥 ${nickname}이(가) 너를 Teenz Bible 성경읽기 챌린지에 초대했어! 📖 같이 성경 읽으면서 퀴즈도 풀고 XP도 모으자! 그룹 코드: ${groupCode}`
-    : `🔥 ${nickname} invited you to the Teenz Bible reading challenge! 📖 Read the Bible together, take quizzes, and earn XP! Group code: ${groupCode}`;
+    ? `🔥 ${nickname}이(가) 너를 Teenz Bible 성경읽기 챌린지에 초대했어! 📖 같이 성경 읽으면서 퀴즈도 풀고 XP도 모으자! 반: ${groupCode}`
+    : `🔥 ${nickname} invited you to the Teenz Bible reading challenge! 📖 Read the Bible together, take quizzes, and earn XP! Class: ${groupCode}`;
   
   navigator.share({
     title: 'Teenz Bible Challenge',
@@ -540,7 +547,7 @@ function generateEnhancedShareCard() {
   if (userProfile && userProfile.groupCode && userProfile.groupCode !== 'GLOBAL') {
     ctx.font = '14px "Comic Neue", sans-serif';
     ctx.fillStyle = '#6880a8';
-    ctx.fillText((isKo ? '그룹 코드: ' : 'Group: ') + userProfile.groupCode, 300, 700);
+    ctx.fillText((isKo ? '반: ' : 'Class: ') + userProfile.groupCode, 300, 700);
   }
   
   // Footer
@@ -640,7 +647,7 @@ function showProfileEdit() {
       style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;margin-bottom:12px;box-sizing:border-box;">
     <input id="edit-group" type="text" maxlength="20" value="${userProfile?userProfile.groupCode:''}" 
       style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;margin-bottom:20px;box-sizing:border-box;"
-      placeholder="${isKo ? '그룹 코드' : 'Group Code'}">
+      placeholder="${isKo ? '나섬틴즈부 반' : 'Nasam Teens Class'}">
     <div style="display:flex;gap:8px;">
       <button onclick="document.getElementById('profile-edit-overlay').remove()" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:14px;cursor:pointer;">
         ${isKo ? '취소' : 'Cancel'}
@@ -701,18 +708,18 @@ function createChallenge(type) {
   switch(type) {
     case '7day':
       challengeText = isKo 
-        ? `🔥 ${nickname}의 7일 연속 성경읽기 챌린지!\n\n매일 1장씩, 7일 연속으로 읽어보자!\n그룹 코드: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
-        : `🔥 ${nickname}'s 7-Day Bible Reading Challenge!\n\nRead 1 chapter every day for 7 days straight!\nGroup code: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
+        ? `🔥 ${nickname}의 7일 연속 성경읽기 챌린지!\n\n매일 1장씩, 7일 연속으로 읽어보자!\n반: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
+        : `🔥 ${nickname}'s 7-Day Bible Reading Challenge!\n\nRead 1 chapter every day for 7 days straight!\nClass: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
       break;
     case 'quiz':
       challengeText = isKo 
-        ? `🧠 ${nickname}의 퀴즈 챌린지!\n\n나보다 퀴즈 점수 높을 수 있어? 도전해봐!\n그룹 코드: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
-        : `🧠 ${nickname}'s Quiz Challenge!\n\nCan you beat my quiz score? Try it!\nGroup code: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
+        ? `🧠 ${nickname}의 퀴즈 챌린지!\n\n나보다 퀴즈 점수 높을 수 있어? 도전해봐!\n반: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
+        : `🧠 ${nickname}'s Quiz Challenge!\n\nCan you beat my quiz score? Try it!\nClass: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
       break;
     case 'book':
       challengeText = isKo 
-        ? `📖 ${nickname}의 마태복음 완독 챌린지!\n\n같이 마태복음 28장 다 읽어보자!\n그룹 코드: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
-        : `📖 ${nickname}'s Matthew Challenge!\n\nLet's read all 28 chapters of Matthew together!\nGroup code: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
+        ? `📖 ${nickname}의 마태복음 완독 챌린지!\n\n같이 마태복음 28장 다 읽어보자!\n반: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`
+        : `📖 ${nickname}'s Matthew Challenge!\n\nLet's read all 28 chapters of Matthew together!\nClass: ${groupCode}\n\n👉 https://teens-bible-94271.web.app`;
       break;
   }
   
@@ -749,7 +756,7 @@ function addSocialSettings() {
       <div style="font-size:28px;">${userProfile?userProfile.avatar:'😎'}</div>
       <div style="flex:1;">
         <div style="color:#dde4f0;font-size:15px;font-weight:bold;">${userProfile?userProfile.nickname:(isKo?'프로필 설정':'Set Profile')}</div>
-        <div style="color:#6880a8;font-size:12px;">${isKo?'닉네임, 아바타, 그룹 코드 변경':'Edit nickname, avatar, group code'}</div>
+        <div style="color:#6880a8;font-size:12px;">${isKo?'이름, 아바타, 반 변경':'Edit name, avatar, class'}</div>
       </div>
       <div style="color:#6880a8;">▶</div>
     </div>
@@ -765,21 +772,18 @@ function addSocialSettings() {
       <div style="font-size:28px;">📨</div>
       <div style="flex:1;">
         <div style="color:#dde4f0;font-size:15px;font-weight:bold;">${isKo?'친구 초대':'Invite Friends'}</div>
-        <div style="color:#6880a8;font-size:12px;">${isKo?'그룹 코드 공유하기':'Share your group code'}</div>
+        <div style="color:#6880a8;font-size:12px;">${isKo?'친구 초대하기':'Invite your friends'}</div>
       </div>
       <div style="color:#6880a8;">▶</div>
     </div>
   `;
   
-  // Safely append to settings screen
-  try {
-    const apiSection = settingsScreen.querySelector('[style*="margin-top"]');
-    if (apiSection && apiSection.parentNode === settingsScreen) {
-      settingsScreen.insertBefore(section, apiSection);
-    } else {
-      settingsScreen.appendChild(section);
-    }
-  } catch(e) {
+  // Append social settings before the reset button (last settings-group)
+  const allGroups = settingsScreen.querySelectorAll('.settings-group');
+  const lastGroup = allGroups.length > 0 ? allGroups[allGroups.length - 1] : null;
+  if (lastGroup && lastGroup.parentNode === settingsScreen) {
+    settingsScreen.insertBefore(section, lastGroup);
+  } else {
     settingsScreen.appendChild(section);
   }
 }
