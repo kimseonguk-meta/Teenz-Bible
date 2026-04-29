@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v58';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
+      const CACHE = 'teens-bible-v59';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -2289,6 +2289,10 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
   </div>
 
   <div class="screen" id="screen-settings">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(100,140,200,0.15);">
+      <button onclick="showScreen('home')" style="background:rgba(255,255,255,0.08);border:none;color:#dde4f0;font-size:20px;width:40px;height:40px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+      <h2 style="font-family:'Luckiest Guy',cursive;color:#dde4f0;font-size:22px;margin:0;">Settings</h2>
+    </div>
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:24px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">⚙️ SETTINGS</h2>
     
     <!-- Reading Settings Group -->
@@ -3355,6 +3359,10 @@ function resumeLastChapter() {
 function switchLang(lang, book, idx) {
   readerLang = lang;
   localStorage.setItem('readerLang', lang);
+  // FIX 5: Show warning if Korean not available for this book
+  if (lang === 'ko' && book !== 'Matthew' && typeof gospelDataKo !== 'undefined' && !gospelDataKo[book]) {
+    if (typeof showXpToast === 'function') showXpToast('⚠️ Korean translation available for Matthew only');
+  }
   showChapter(book, idx);
 }
 
@@ -8912,7 +8920,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=58"></script>
+<script src="social.js?v=59"></script>
 </body>
 </html>
 

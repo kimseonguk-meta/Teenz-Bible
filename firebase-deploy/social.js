@@ -18,11 +18,66 @@ let fbApp, fbAuth, fbDb;
 let currentUser = null;
 let userProfile = null;
 
+let isOnline = true;
+
 function initFirebase() {
   try {
     fbApp = firebase.initializeApp(firebaseConfig);
     fbAuth = firebase.auth();
     fbDb = firebase.database();
+    
+    // FIX 3: Enable offline persistence
+    fbDb.goOnline();
+    
+    // FIX 3: Monitor connection state
+    fbDb.ref('.info/connected').on('value', function(snap) {
+      isOnline = snap.val() === true;
+      console.log('Firebase connected:', isOnline);
+    });
+    
+    // FIX 8: Restore reading progress from Firebase on new device
+    function restoreProgressFromFirebase(uid) {
+      fbDb.ref('users/' + uid + '/booksProgress').once('value').then(function(snap) {
+        const booksProgress = snap.val();
+        if (!booksProgress) return;
+        
+        const s = typeof state !== 'undefined' ? state : JSON.parse(localStorage.getItem('teensBible') || '{}');
+        if (!s.books) s.books = {};
+        
+        let restored = false;
+        Object.entries(booksProgress).forEach(([book, chapters]) => {
+          if (!s.books[book]) s.books[book] = { chapters: {} };
+          if (!s.books[book].chapters) s.books[book].chapters = {};
+          chapters.forEach(ch => {
+            if (!s.books[book].chapters[ch] || !s.books[book].chapters[ch].read) {
+              s.books[book].chapters[ch] = { read: true };
+              restored = true;
+            }
+          });
+        });
+        
+        if (restored) {
+          // Recalculate chaptersRead
+          let total = 0;
+          Object.values(s.books).forEach(b => {
+            if (b.chapters) {
+              total += Object.values(b.chapters).filter(c => c && c.read).length;
+            }
+          });
+          s.chaptersRead = total;
+          
+          if (typeof state !== 'undefined') {
+            Object.assign(state, s);
+            if (typeof saveState === 'function') saveState();
+          } else {
+            localStorage.setItem('teensBible', JSON.stringify(s));
+          }
+          console.log('Restored reading progress from Firebase');
+        }
+      }).catch(function(err) {
+        console.log('Restore progress error:', err);
+      });
+    }
     
     // Listen for auth state changes
     fbAuth.onAuthStateChanged(function(user) {
@@ -34,6 +89,8 @@ function initFirebase() {
           // Sync to Firebase
           syncUserData();
           updateSocialUI();
+          // FIX 8: Try to restore progress from Firebase
+          restoreProgressFromFirebase(user.uid);
         } else {
           // First time - show onboarding
           showOnboarding();
@@ -42,11 +99,49 @@ function initFirebase() {
         // Sign in anonymously
         fbAuth.signInAnonymously().catch(function(err) {
           console.log('Auth error:', err);
+          // FIX 7: Auth failure fallback - allow local-only mode after timeout
+          setTimeout(function() {
+            if (!currentUser) {
+              console.log('Auth timeout - enabling local-only mode');
+              const savedProfile = localStorage.getItem('teensBibleProfile');
+              if (savedProfile) {
+                userProfile = JSON.parse(savedProfile);
+                updateSocialUI();
+              } else {
+                showOnboarding();
+              }
+            }
+          }, 10000);
         });
       }
     });
+    
+    // FIX 7: Additional auth timeout fallback
+    setTimeout(function() {
+      if (!currentUser) {
+        console.log('Auth timeout fallback triggered');
+        const savedProfile = localStorage.getItem('teensBibleProfile');
+        if (savedProfile) {
+          userProfile = JSON.parse(savedProfile);
+          updateSocialUI();
+        } else {
+          showOnboarding();
+        }
+      }
+    }, 15000);
+    
   } catch(e) {
     console.log('Firebase init error:', e);
+    // FIX 7: If Firebase fails entirely, still allow app usage
+    setTimeout(function() {
+      const savedProfile = localStorage.getItem('teensBibleProfile');
+      if (savedProfile) {
+        userProfile = JSON.parse(savedProfile);
+        updateSocialUI();
+      } else {
+        showOnboarding();
+      }
+    }, 2000);
   }
 }
 
@@ -196,30 +291,53 @@ function getRandomAvatar() {
 function syncUserData() {
   if (!currentUser || !userProfile || !fbDb) return;
   
-  const uid = currentUser.uid;
-  const groupCode = userProfile.groupCode || 'GLOBAL';
-  
-  // Get current state
-  const s = typeof state !== 'undefined' ? state : JSON.parse(localStorage.getItem('teensBible') || '{}');
-  
-  const userData = {
-    nickname: userProfile.nickname,
-    avatar: userProfile.avatar || '😎',
-    groupCode: groupCode,
-    xp: s.xp || 0,
-    streak: s.streak || 0,
-    chaptersRead: s.chaptersRead || 0,
-    quizTotal: s.quizTotal || 0,
-    quizCorrect: s.quizCorrect || 0,
-    lastActive: firebase.database.ServerValue.TIMESTAMP,
-    updatedAt: firebase.database.ServerValue.TIMESTAMP
-  };
-  
-  // Save to user's own node
-  fbDb.ref('users/' + uid).update(userData);
-  
-  // Save to group leaderboard
-  fbDb.ref('groups/' + groupCode + '/members/' + uid).update(userData);
+  try {
+    const uid = currentUser.uid;
+    const groupCode = userProfile.groupCode || 'GLOBAL';
+    
+    // Get current state
+    const s = typeof state !== 'undefined' ? state : JSON.parse(localStorage.getItem('teensBible') || '{}');
+    
+    const userData = {
+      nickname: userProfile.nickname,
+      avatar: userProfile.avatar || '😎',
+      groupCode: groupCode,
+      xp: s.xp || 0,
+      streak: s.streak || 0,
+      chaptersRead: s.chaptersRead || 0,
+      quizTotal: s.quizTotal || 0,
+      quizCorrect: s.quizCorrect || 0,
+      booksProgress: {},
+      lastActive: firebase.database.ServerValue.TIMESTAMP,
+      updatedAt: firebase.database.ServerValue.TIMESTAMP
+    };
+    
+    // FIX 8: Sync reading progress for cross-device restore
+    if (s.books) {
+      Object.entries(s.books).forEach(([book, bookData]) => {
+        if (bookData && bookData.chapters) {
+          const readChapters = Object.entries(bookData.chapters)
+            .filter(([ch, data]) => data && data.read)
+            .map(([ch]) => parseInt(ch));
+          if (readChapters.length > 0) {
+            userData.booksProgress[book] = readChapters;
+          }
+        }
+      });
+    }
+    
+    // Save to user's own node
+    fbDb.ref('users/' + uid).update(userData).catch(function(err) {
+      console.log('Sync user error:', err);
+    });
+    
+    // Save to group leaderboard
+    fbDb.ref('groups/' + groupCode + '/members/' + uid).update(userData).catch(function(err) {
+      console.log('Sync group error:', err);
+    });
+  } catch(e) {
+    console.log('syncUserData error:', e);
+  }
 }
 
 // Debounced sync
@@ -270,6 +388,17 @@ function showLeaderboard() {
         <button class="lb-tab" onclick="switchLbTab('chapters')" id="lb-tab-chapters" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">📖 ${isKo ? '챕터' : 'Chapters'}</button>
         <button class="lb-tab" onclick="switchLbTab('quiz')" id="lb-tab-quiz" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🧠 ${isKo ? '퀴즈' : 'Quiz'}</button>
       </div>
+      <div style="display:flex;gap:4px;margin-bottom:8px;" id="lb-time-tabs">
+        <button onclick="switchLbTime('all')" id="lb-time-all" style="flex:1;padding:6px;border-radius:8px;border:none;background:#a78bfa;color:#fff;font-size:11px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+          ${isKo ? '전체' : 'All Time'}
+        </button>
+        <button onclick="switchLbTime('week')" id="lb-time-week" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:11px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+          ${isKo ? '이번 주' : 'This Week'}
+        </button>
+        <button onclick="switchLbTime('month')" id="lb-time-month" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:11px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
+          ${isKo ? '이번 달' : 'This Month'}
+        </button>
+      </div>
       <div style="display:flex;gap:6px;margin-bottom:10px;" id="lb-scope-tabs">
         <button onclick="switchLbScope('myclass')" id="lb-scope-myclass" style="flex:1;padding:8px;border-radius:8px;border:none;background:#4ECDC4;color:#fff;font-size:12px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
           ${isKo ? '🏫 내 반' : '🏫 My Class'} (${groupCode})
@@ -298,6 +427,28 @@ function showLeaderboard() {
 
 let currentLbTab = 'xp';
 let currentLbScope = 'myclass'; // 'myclass' or 'all'
+
+let currentLbTime = 'all'; // 'all', 'week', 'month'
+
+function switchLbTime(period) {
+  currentLbTime = period;
+  // Update time filter button styles
+  ['all','week','month'].forEach(p => {
+    const btn = document.getElementById('lb-time-' + p);
+    if (btn) {
+      if (p === period) {
+        btn.style.background = '#a78bfa';
+        btn.style.color = '#fff';
+        btn.style.border = 'none';
+      } else {
+        btn.style.background = 'transparent';
+        btn.style.color = '#6880a8';
+        btn.style.border = '1px solid rgba(100,140,200,0.3)';
+      }
+    }
+  });
+  loadLeaderboard(currentLbTab);
+}
 
 function switchLbScope(scope) {
   currentLbScope = scope;
@@ -394,6 +545,22 @@ function loadLeaderboard(sortBy) {
 }
 
 function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
+    // FIX 9: Filter by time period
+    const now = Date.now();
+    if (currentLbTime === 'week') {
+      const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
+      members = members.filter(m => m.lastActive && m.lastActive > weekAgo);
+    } else if (currentLbTime === 'month') {
+      const monthAgo = now - 30 * 24 * 60 * 60 * 1000;
+      members = members.filter(m => m.lastActive && m.lastActive > monthAgo);
+    }
+    
+    if (members.length === 0) {
+      listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">' + 
+        (isKo ? '해당 기간에 활동한 멤버가 없어요.' : 'No active members in this period.') + '</div>';
+      return;
+    }
+    
     switch(sortBy) {
       case 'xp': members.sort((a,b) => (b.xp||0) - (a.xp||0)); break;
       case 'streak': members.sort((a,b) => (b.streak||0) - (a.streak||0)); break;
