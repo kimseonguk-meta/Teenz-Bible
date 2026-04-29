@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v42';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
+      const CACHE = 'teens-bible-v61';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=61'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -260,15 +260,66 @@ body {
   box-shadow: 0 0 14px rgba(0,229,255,0.6), 0 0 28px rgba(0,229,255,0.3);
 }
 
-/* === CONTINUE READING === */
-.continue-card {
-  padding: 18px; margin: 16px 0; cursor: pointer; transition: all 0.3s;
-  background: linear-gradient(160deg, #2c4565 0%, #253a58 100%);
-  border: 1px solid rgba(70, 115, 170, 0.35);
+/* === CONTINUE READING (Enhanced) === */
+.continue-card-enhanced {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; margin: 12px 0; cursor: pointer; transition: all 0.3s;
+  background: linear-gradient(160deg, #1a3050 0%, #162845 100%);
+  border: 1px solid rgba(78, 205, 196, 0.2);
+  border-radius: 16px; position: relative; overflow: hidden;
 }
-.continue-card:hover { transform: scale(1.02); }
-.continue-card h3 { font-family: 'Bangers', cursive; font-size: 22px; color: #4ECDC4; }
-.continue-card p { font-size: 13px; color: #7888a8; margin-top: 4px; }
+.continue-card-enhanced::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(78,205,196,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+.continue-card-enhanced:active { transform: scale(0.98); }
+.cce-left { flex-shrink: 0; }
+.cce-icon { font-size: 36px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+  background: rgba(78,205,196,0.1); border-radius: 14px; }
+.cce-right { flex: 1; min-width: 0; }
+.cce-book { font-family: 'Bangers', cursive; font-size: 18px; color: #4ECDC4; line-height: 1.2; }
+.cce-title { font-size: 12px; color: #8898b8; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cce-progress-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.cce-progress-fill { height: 100%; background: linear-gradient(90deg, #4ECDC4, #45b7aa); border-radius: 2px; transition: width 0.5s; }
+.cce-meta { font-size: 11px; color: #6878a0; margin-top: 4px; }
+.cce-resume { flex-shrink: 0; font-family: 'Bangers', cursive; font-size: 12px; color: #ffd700;
+  background: rgba(255,215,0,0.1); padding: 6px 12px; border-radius: 20px;
+  border: 1px solid rgba(255,215,0,0.2); white-space: nowrap; letter-spacing: 0.5px; }
+
+
+/* === QUIZ SHARE === */
+.quiz-share-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 10px; padding: 8px 16px; cursor: pointer;
+  background: linear-gradient(135deg, #4ECDC4, #45b7aa);
+  border: none; border-radius: 20px; color: #0a1628;
+  font-family: 'Bangers', cursive; font-size: 14px; letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+.quiz-share-btn:active { transform: scale(0.95); }
+.quiz-share-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85); z-index: 10000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px; animation: fadeIn 0.3s;
+}
+.quiz-share-card-container {
+  max-width: 360px; width: 100%; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.quiz-share-actions {
+  display: flex; gap: 12px; margin-top: 20px;
+}
+.quiz-share-actions button {
+  padding: 10px 24px; border: none; border-radius: 12px; cursor: pointer;
+  font-family: 'Bangers', cursive; font-size: 15px; letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+.quiz-share-actions button:active { transform: scale(0.95); }
+.qsa-save { background: linear-gradient(135deg, #4ECDC4, #45b7aa); color: #0a1628; }
+.qsa-share { background: linear-gradient(135deg, #ffd700, #ffb800); color: #0a1628; }
+.qsa-close { background: rgba(255,255,255,0.1); color: #d0d8e8; border: 1px solid rgba(255,255,255,0.2) !important; }
 
 /* === SECTION TITLES === */
 .section-title {
@@ -433,6 +484,8 @@ body {
 }
 .audio-btn:hover { background: rgba(78,205,196,0.15); }
 .audio-btn.playing { background: #4ECDC4; color: #000; box-shadow: 0 0 15px rgba(78,205,196,0.5); animation: audioPulse 1.5s ease-in-out infinite; }
+.audio-btn.loading { background: rgba(78,205,196,0.3); color: #4ECDC4; animation: audioLoading 0.8s ease-in-out infinite; }
+@keyframes audioLoading { 0%,100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 @keyframes audioPulse { 0%,100% { box-shadow: 0 0 15px rgba(78,205,196,0.5); } 50% { box-shadow: 0 0 25px rgba(78,205,196,0.8); } }
 .audio-info { flex: 1; }
 .audio-info .label { font-size: 11px; color: #7888a8; }
@@ -707,11 +760,86 @@ body {
 .badge-unlock .badge-desc { color: #aaa; margin-top: 8px; animation: slideUp .5s ease-out .5s both; }
 .ch-card { opacity: 0; animation: slideUp .3s ease-out forwards; }
 
+
+/* === PAUL'S JOURNEY ROUTE LINES === */
+
+/* === JOURNEY DETAIL POPUP === */
+.journey-detail-popup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90%; max-width:380px; max-height:80vh; overflow-y:auto; background:linear-gradient(135deg,#1a2744 0%,#0d1b2a 100%); border-radius:20px; z-index:1100; padding:24px; box-shadow:0 16px 48px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.1); animation:slideUp 0.3s ease-out; }
+.journey-detail-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:1099; backdrop-filter:blur(4px); }
+.journey-detail-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.journey-detail-badge { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; color:#fff; flex-shrink:0; }
+.journey-detail-title { font-family:'Luckiest Guy',cursive; font-size:20px; }
+.journey-detail-subtitle { font-family:'Comic Neue',cursive; font-size:12px; color:#7888a8; margin-top:2px; }
+.journey-detail-section { margin-bottom:14px; }
+.journey-detail-section-title { font-family:'Bangers',cursive; font-size:14px; color:#FFD700; margin-bottom:6px; letter-spacing:0.5px; }
+.journey-detail-info { display:flex; gap:8px; align-items:center; padding:6px 0; font-family:'Comic Neue',cursive; font-size:13px; color:#c8d6e5; border-bottom:1px solid rgba(255,255,255,0.06); }
+.journey-detail-info-icon { font-size:16px; width:24px; text-align:center; flex-shrink:0; }
+.journey-detail-cities { display:flex; flex-wrap:wrap; gap:6px; }
+.journey-detail-city { padding:4px 10px; background:rgba(255,255,255,0.08); border-radius:8px; font-size:12px; font-family:'Comic Neue',cursive; color:#e0e0e0; }
+.journey-detail-event { padding:8px 12px; background:rgba(255,255,255,0.05); border-radius:10px; margin-bottom:6px; cursor:pointer; transition:background 0.2s; }
+.journey-detail-event:hover { background:rgba(255,255,255,0.1); }
+.journey-detail-event-title { font-family:'Comic Neue',cursive; font-weight:700; font-size:13px; color:#fff; }
+.journey-detail-event-loc { font-size:11px; color:#7888a8; margin-top:2px; }
+.journey-detail-close { position:absolute; top:12px; right:12px; background:rgba(255,255,255,0.15); border:none; color:#fff; font-size:18px; width:32px; height:32px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+/* === TIMELINE MODE === */
+.map-view-toggle { display:flex; gap:6px; margin-bottom:12px; }
+.map-view-btn { padding:6px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#7888a8; font-family:'Comic Neue',cursive; font-weight:700; font-size:12px; cursor:pointer; transition:all 0.3s; }
+.map-view-btn.active { background:rgba(255,214,0,0.15); border-color:rgba(255,214,0,0.4); color:#FFD700; }
+.map-timeline-container { display:none; padding:0 4px; }
+.map-timeline-container.active { display:block; }
+.timeline-era { margin-bottom:20px; }
+.timeline-era-header { font-family:'Bangers',cursive; font-size:16px; color:#FFD700; padding:8px 0; border-bottom:2px solid rgba(255,214,0,0.2); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.timeline-era-icon { font-size:20px; }
+.timeline-line { position:relative; padding-left:28px; }
+.timeline-line::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,rgba(255,214,0,0.4),rgba(255,214,0,0.1)); }
+.timeline-event-card { position:relative; margin-bottom:12px; padding:12px 14px; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.08); cursor:pointer; transition:all 0.3s; }
+.timeline-event-card:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,214,0,0.3); transform:translateX(4px); }
+.timeline-event-card::before { content:''; position:absolute; left:-24px; top:16px; width:10px; height:10px; border-radius:50%; background:#FFD700; border:2px solid #0d1b2a; z-index:1; }
+.timeline-event-card.read::before { background:#4ECDC4; box-shadow:0 0 6px rgba(78,205,196,0.5); }
+.timeline-event-title { font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; color:#fff; }
+.timeline-event-location { font-size:11px; color:#7888a8; margin-top:2px; display:flex; align-items:center; gap:4px; }
+.timeline-event-ref { font-size:11px; color:#4ECDC4; margin-top:4px; }
+.timeline-event-desc { font-size:12px; color:#a0b0c0; margin-top:6px; line-height:1.4; display:none; }
+.timeline-event-card.expanded .timeline-event-desc { display:block; }
+.timeline-filter { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+.timeline-filter-btn { padding:4px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); color:#888; font-family:'Comic Neue',cursive; font-size:11px; cursor:pointer; transition:all 0.2s; }
+.timeline-filter-btn.active { background:rgba(78,205,196,0.15); border-color:rgba(78,205,196,0.4); color:#4ECDC4; }
+
+.journey-routes-svg { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5; }
+.journey-route { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.journey-route.journey-1 { stroke:#FF6B6B; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow1 2s linear infinite; }
+.journey-route.journey-2 { stroke:#4ECDC4; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow2 2s linear infinite; }
+.journey-route.journey-3 { stroke:#FFD700; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlow3 2s linear infinite; }
+.journey-route.journey-rome { stroke:#C084FC; stroke-width:2.5; stroke-dasharray:8,6; animation:dashFlowRome 2s linear infinite; }
+.journey-route-glow.journey-1 { fill:none; stroke:#FF6B6B; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+.journey-route-glow.journey-2 { fill:none; stroke:#4ECDC4; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+.journey-route-glow.journey-3 { fill:none; stroke:#FFD700; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+.journey-route-glow.journey-rome { fill:none; stroke:#C084FC; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; opacity:0.15; filter:blur(3px); }
+@keyframes dashFlow1 { to { stroke-dashoffset: -28; } }
+@keyframes dashFlow2 { to { stroke-dashoffset: -28; } }
+@keyframes dashFlow3 { to { stroke-dashoffset: -28; } }
+@keyframes dashFlowRome { to { stroke-dashoffset: -28; } }
+.journey-legend { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 12px; padding:8px 12px; background:rgba(20,35,60,0.6); border-radius:12px; border:1px solid rgba(65,110,160,0.25); }
+.journey-legend-item { display:flex; align-items:center; gap:6px; font-size:12px; font-family:'Comic Neue',cursive; font-weight:700; cursor:pointer; padding:4px 10px; border-radius:8px; transition:all 0.3s; }
+.journey-legend-item:hover { background:rgba(255,255,255,0.1); }
+.journey-legend-item.active { background:rgba(255,255,255,0.15); }
+.journey-legend-item.inactive { opacity:0.35; }
+.journey-legend-line { width:20px; height:3px; border-radius:2px; }
+.journey-legend-item[data-journey="1"] .journey-legend-line { background:#FF6B6B; }
+.journey-legend-item[data-journey="2"] .journey-legend-line { background:#4ECDC4; }
+.journey-legend-item[data-journey="3"] .journey-legend-line { background:#FFD700; }
+.journey-legend-item[data-journey="rome"] .journey-legend-line { background:#C084FC; }
+.journey-legend-item[data-journey="1"] { color:#FF6B6B; }
+.journey-legend-item[data-journey="2"] { color:#4ECDC4; }
+.journey-legend-item[data-journey="3"] { color:#FFD700; }
+.journey-legend-item[data-journey="rome"] { color:#C084FC; }
+
 /* === GAMIFICATION EFFECTS === */
 .xp-float { position: fixed; font-size: 24px; font-weight: 900; color: #FACC15; text-shadow: 0 0 15px rgba(250,204,21,0.8), 0 0 30px rgba(250,204,21,0.4); pointer-events: none; z-index: 9999; animation: xpFloatUp 1.5s ease-out forwards; font-family: 'Bangers', cursive; }
 @keyframes xpFloatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 50% { opacity: 1; transform: translateY(-60px) scale(1.3); } 100% { opacity: 0; transform: translateY(-120px) scale(0.8); } }
 
- 60% { transform: scale(1.3) rotate(5deg); } 100% { transform: scale(1) rotate(0deg); } }
+
 
 .levelup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
 .levelup-overlay .level-icon { font-size: 80px; animation: levelBounce 0.8s ease infinite; }
@@ -1113,11 +1241,6 @@ body {
 .goal-option:hover, .goal-option.selected { border-color:#4ECDC4; background:rgba(78,205,196,0.15); color:#4ECDC4; }
 
 /* === A4: RANDOM CHAPTER === */
-.random-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; margin-bottom:16px; border-radius:14px; border:1px dashed rgba(255,214,0,0.3); background:rgba(255,214,0,0.05); color:#FFD700; font-family:'Bangers',cursive; font-size:17px; cursor:pointer; transition:all 0.3s; letter-spacing:1px; }
-.random-btn:hover { background:rgba(255,214,0,0.12); border-color:rgba(255,214,0,0.5); transform:scale(1.02); box-shadow:0 0 20px rgba(255,214,0,0.1); }
-.random-btn .dice { display:inline-block; font-size:22px; animation:diceWiggle 2s ease-in-out infinite; }
-@keyframes diceWiggle { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(15deg)} 75%{transform:rotate(-15deg)} }
-
 /* === A5: REACTIONS === */
 .reactions-bar { display:flex; gap:6px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
 .reaction-btn { padding:8px 14px; border-radius:20px; border:1px solid rgba(65,110,160,0.25); background:rgba(20,35,60,0.5); font-size:18px; cursor:pointer; transition:all 0.25s; position:relative; }
@@ -1198,24 +1321,6 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .stats-summary-val { font-family:'Bangers',cursive; font-size:20px; color:#FFD700; }
 .stats-summary-lbl { font-size:11px; color:#6880a8; font-family:'Comic Neue',cursive; margin-top:2px; }
 
-
-/* === READING PLANS === */
-.plan-active-card { background:linear-gradient(135deg, rgba(78,205,196,0.1), rgba(69,183,209,0.08)); border:1px solid rgba(78,205,196,0.25); border-radius:16px; padding:16px; margin:12px 0; }
-.plan-active-header { display:flex; align-items:center; gap:12px; margin-bottom:4px; }
-.plan-icon { font-size:32px; }
-.plan-active-name { font-family:'Bangers',cursive; font-size:18px; color:#4ECDC4; }
-.plan-active-progress { font-size:12px; color:#6880a8; }
-.plan-next { background:rgba(78,205,196,0.1); border:1px solid rgba(78,205,196,0.2); border-radius:10px; padding:10px 14px; margin-top:8px; color:#4ECDC4; font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; cursor:pointer; transition:all 0.2s; text-align:center; }
-.plan-next:hover { background:rgba(78,205,196,0.2); }
-.plan-quit { text-align:center; font-size:11px; color:#556080; margin-top:8px; cursor:pointer; text-decoration:underline; }
-.plans-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
-.plan-card { background:linear-gradient(160deg, #283d5c 0%, #223852 100%); border:1px solid rgba(65,110,160,0.3); border-radius:14px; padding:16px; text-align:center; cursor:pointer; transition:all 0.3s; position:relative; }
-.plan-card:hover { transform:translateY(-2px); border-color:rgba(100,150,210,0.5); }
-.plan-card.active { border-color:#4ECDC4; background:rgba(78,205,196,0.08); }
-.plan-card-icon { font-size:32px; margin-bottom:8px; }
-.plan-card-name { font-family:'Bangers',cursive; font-size:14px; color:#d0d8e8; margin-bottom:4px; }
-.plan-card-days { font-size:11px; color:#6880a8; }
-.plan-card-badge { position:absolute; top:8px; right:8px; background:#4ECDC4; color:#000; font-size:9px; font-weight:800; padding:2px 6px; border-radius:6px; }
 
 /* === BIBLE JOURNEY MAP === */
 .journey-map { margin-top:16px; padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); }
@@ -1626,7 +1731,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     var h = '';
     
     // Full-screen styled overlay
-    h += '<style>';
+    h += '<sty' + 'le>';
     h += '#inapp-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:999999;background:#0a1628;overflow-y:auto;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}';
     h += '#inapp-overlay *{box-sizing:border-box;}';
     h += '.io-inner{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px 32px;}';
@@ -1652,7 +1757,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     h += '.io-badge:nth-child(2){animation-delay:0.5s;}';
     h += '.io-badge:nth-child(3){animation-delay:1s;}';
     h += '.io-badge:nth-child(4){animation-delay:1.5s;}';
-    h += '</style>';
+    h += '</sty' + 'le>';
     
     h += '<div class="io-inner">';
     
@@ -1845,7 +1950,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <div id="profile-card-section"></div>
     </div>
     <div id="home-tab-stats" style="display:none">
-      <div id="quiz-stats-card" style="display:none"></div>
+      <div id="quiz-stats-card-tab" style="display:none"></div>
       <div id="stats-dashboard"></div>
       <div id="journey-map-section"></div>
     </div>
@@ -1859,11 +1964,9 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
   <div class="screen" id="screen-bible">
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:26px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">📖 NEW TESTAMENT</h2>
     <div id="reading-goal-banner"></div>
-    <button class="random-btn" onclick="openRandomChapter()"><span class="dice">🎲</span> SURPRISE ME — RANDOM CHAPTER</button>
     <input type="text" id="book-search" placeholder="🔍 Search books..." 
       style="width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(65,105,155,0.3);background:rgba(10,18,35,0.8);color:#d8dce8;font-size:14px;font-family:'Comic Neue',cursive;margin-bottom:16px;box-sizing:border-box;"
       oninput="filterBooks(this.value)">
-    <div id="reading-plans-section"></div>
     <div id="book-list"></div>
   </div>
 
@@ -1922,11 +2025,30 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       <button class="map-tab" onclick="switchMapTab('paul')" data-en="Paul's Journeys" data-ko="바울의 여행">Paul's Journeys</button>
     </div>
     
+    <!-- Map Search Bar -->
+    <div id="map-search-container" style="margin-bottom:12px;position:relative;">
+      <input type="text" id="map-search-input" placeholder="Search locations or events..." 
+        style="width:100%;padding:10px 40px 10px 36px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#e0e0e0;font-size:14px;font-family:'Comic Neue',cursive;outline:none;box-sizing:border-box;"
+        oninput="handleMapSearch(this.value)" onfocus="this.style.borderColor='#FFD700'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;opacity:0.5;">🔍</span>
+      <button id="map-search-clear" onclick="clearMapSearch()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#888;font-size:18px;cursor:pointer;display:none;">✕</button>
+      <div id="map-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:300px;overflow-y:auto;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:12px;margin-top:4px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
+    </div>
+    
+    <!-- View Toggle -->
+    <div class="map-view-toggle" id="map-view-toggle">
+      <button class="map-view-btn active" onclick="switchMapView('map')" data-en="🗺️ Map View" data-ko="🗺️ 지도 보기">🗺️ Map View</button>
+      <button class="map-view-btn" onclick="switchMapView('timeline')" data-en="📅 Timeline" data-ko="📅 타임라인">📅 Timeline</button>
+    </div>
+    
+    <!-- Timeline Container -->
+    <div class="map-timeline-container" id="map-timeline-container"></div>
+    
     <!-- Map Content -->
     <div id="map-content">
       <!-- Overview Map -->
       <div id="map-overview" class="map-panel active">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-overview" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-main-Q6Ui2C3W7MTSQPzAXiEXVW.webp" alt="New Testament Holy Land Map" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -1981,7 +2103,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       
       <!-- Jerusalem Map -->
       <div id="map-jerusalem" class="map-panel">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-jerusalem" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-jerusalem-FEJpKrbC94dHRKyqWv9xdG.webp" alt="Jerusalem in New Testament Times" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -2026,7 +2148,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       
       <!-- Galilee Map -->
       <div id="map-galilee" class="map-panel">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-galilee" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-galilee-NasJPTzXQJmoqJh9Mv5qpQ.webp" alt="Sea of Galilee Region" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -2076,7 +2198,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
       
       <!-- Paul's Journeys Map -->
       <div id="map-paul" class="map-panel">
-        <div class="map-image-container map-zoom-container">
+        <div id="zoom-paul" class="map-image-container map-zoom-container">
           <div class="map-zoom-inner">
           <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/bible-map-paul-journeys-3v4xYiX8eMXS37i9Vzj28c.webp" alt="Paul's Missionary Journeys" class="map-image" onclick="openMapFullscreen(this.src)">
           <div class="map-zoom-hint map-hint-text">Tap pins to explore | Pinch to zoom</div>
@@ -2127,18 +2249,50 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     <div class="map-pin-pulse"></div>
   </div>
 </div>
+<svg class="journey-routes-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <!-- Journey 1: Antioch → Cyprus → Lystra/Derbe → Antioch (Red) -->
+  <polyline class="journey-route-glow journey-1" points="90,35 85,45 80,55 78,45 75,35 82,32 90,35" />
+  <polyline class="journey-route journey-1" points="90,35 85,45 80,55 78,45 75,35 82,32 90,35" />
+  <!-- Journey 2: Antioch → Lystra → Philippi → Thessalonica → Athens → Corinth → Ephesus → Antioch (Teal) -->
+  <polyline class="journey-route-glow journey-2" points="90,35 82,34 75,35 65,25 52,12 45,15 44,38 43,42 50,40 60,35 75,34 90,35" />
+  <polyline class="journey-route journey-2" points="90,35 82,34 75,35 65,25 52,12 45,15 44,38 43,42 50,40 60,35 75,34 90,35" />
+  <!-- Journey 3: Antioch → Ephesus → Philippi → Corinth → Philippi → Troas → Antioch (Gold) -->
+  <polyline class="journey-route-glow journey-3" points="90,35 75,33 60,35 55,25 52,12 48,20 43,42 48,20 52,12 55,25 60,35 75,34 90,35" />
+  <polyline class="journey-route journey-3" points="90,35 75,33 60,35 55,25 52,12 48,20 43,42 48,20 52,12 55,25 60,35 75,34 90,35" />
+  <!-- Journey to Rome: Caesarea → Cyprus → Crete → Malta → Rome (Purple) -->
+  <polyline class="journey-route-glow journey-rome" points="90,42 80,55 65,52 45,50 28,42 18,30 8,10" />
+  <polyline class="journey-route journey-rome" points="90,42 80,55 65,52 45,50 28,42 18,30 8,10" />
+</svg>
           </div>
           <div class="map-zoom-controls" style="position:absolute;bottom:10px;right:10px;display:flex;gap:6px;z-index:15;"><button class="map-zoom-btn" onclick="mapZoomIn(this)">+</button><button class="map-zoom-btn" onclick="mapZoomOut(this)">−</button><button class="map-zoom-btn" onclick="mapZoomReset(this)" style="font-size:14px">↺</button></div>
           <div class="map-zoom-level">1.0x</div>
         </div>
+<!-- Journey Legend -->
+<div class="journey-legend" id="paul-journey-legend">
+  <div class="journey-legend-item active" data-journey="1" onclick="showJourneyDetail(1)" ondblclick="toggleJourneyRoute(1)"><div class="journey-legend-line"></div><span data-en="1st Journey" data-ko="1차 여행">1st Journey</span></div>
+  <div class="journey-legend-item active" data-journey="2" onclick="showJourneyDetail(2)" ondblclick="toggleJourneyRoute(2)"><div class="journey-legend-line"></div><span data-en="2nd Journey" data-ko="2차 여행">2nd Journey</span></div>
+  <div class="journey-legend-item active" data-journey="3" onclick="showJourneyDetail(3)" ondblclick="toggleJourneyRoute(3)"><div class="journey-legend-line"></div><span data-en="3rd Journey" data-ko="3차 여행">3rd Journey</span></div>
+  <div class="journey-legend-item active" data-journey="rome" onclick="showJourneyDetail('rome')" ondblclick="toggleJourneyRoute('rome')"><div class="journey-legend-line"></div><span data-en="To Rome" data-ko="로마행">To Rome</span></div>
+</div>
         <div class="map-locations-grid" id="map-locations-paul"></div>
       </div>
+    </div>
+
+    <!-- Journey Detail Popup -->
+    <div class="journey-detail-overlay" id="journey-detail-overlay" onclick="closeJourneyDetail()"></div>
+    <div class="journey-detail-popup" id="journey-detail-popup">
+      <button class="journey-detail-close" onclick="closeJourneyDetail()">✕</button>
+      <div id="journey-detail-content"></div>
     </div>
     <!-- Location Detail Panel -->
     <div id="map-location-detail" style="display:none;position:fixed;bottom:0;left:0;right:0;max-height:85vh;background:linear-gradient(135deg,#1a2744 0%,#0d1b2a 100%);border-radius:24px 24px 0 0;z-index:1000;overflow-y:auto;padding:20px;box-shadow:0 -8px 32px rgba(0,0,0,0.6);animation:slideUp 0.3s ease-out;"></div>
   </div>
 
   <div class="screen" id="screen-settings">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(100,140,200,0.15);">
+      <button onclick="showScreen('home')" style="background:rgba(255,255,255,0.08);border:none;color:#dde4f0;font-size:20px;width:40px;height:40px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+      <h2 style="font-family:'Luckiest Guy',cursive;color:#dde4f0;font-size:22px;margin:0;">Settings</h2>
+    </div>
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:24px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">⚙️ SETTINGS</h2>
     
     <!-- Reading Settings Group -->
@@ -2319,20 +2473,50 @@ function renderHome() {
   document.getElementById('level-xp').textContent = state.xp + ' / ' + nextLvl.xp + ' XP';
   document.getElementById('xp-fill').style.width = Math.min(pct,100) + '%';
   
-  // Continue reading
+  // Continue reading - enhanced with one-click resume
   const sec = document.getElementById('continue-section');
   if(state.lastRead) {
     const lr = state.lastRead;
     const book = gospelData[lr.book];
     const readCount = state.books[lr.book]?.read?.length || 0;
     const total = book ? book.length : 1;
-    sec.innerHTML = '<div class="section-title">📚 Continue Reading</div>' +
-      '<div class="continue-card" onclick="showBook(\''+lr.book+'\')">'+
-      '<h3>'+bookMeta[lr.book].icon+' '+lr.book+' — Chapter '+lr.chapter+'</h3>'+
-      '<p>'+readCount+'/'+total+' chapters · '+Math.round(readCount/total*100)+'% complete</p></div>';
+    const pctDone = Math.round(readCount/total*100);
+    const m = bookMeta[lr.book];
+    // Get chapter title
+    const chIdx = book.findIndex(c => c.num === lr.chapter);
+    let chTitle = chIdx >= 0 ? book[chIdx].title : '';
+    if(readerLang === 'ko' && typeof gospelDataKo !== 'undefined' && gospelDataKo[lr.book]) {
+      const koC = gospelDataKo[lr.book].find(c => c.num === lr.chapter);
+      if(koC && koC.title) chTitle = koC.title;
+    }
+    const isKo = readerLang === 'ko';
+    const sectionTitle = isKo ? '📖 이어서 읽기' : '📖 Continue Reading';
+    const progressText = isKo ? readCount+'/'+total+' 챕터 · '+pctDone+'% 완료' : readCount+'/'+total+' chapters · '+pctDone+'% complete';
+    const resumeText = isKo ? '▶ 바로 이어 읽기' : '▶ RESUME READING';
+    sec.innerHTML = '<div class="section-title">'+sectionTitle+'</div>' +
+      '<div class="continue-card-enhanced" onclick="resumeLastChapter()">' +
+        '<div class="cce-left">' +
+          '<div class="cce-icon">'+m.icon+'</div>' +
+        '</div>' +
+        '<div class="cce-right">' +
+          '<div class="cce-book">'+lr.book+' — '+(isKo?'':'Ch.')+lr.chapter+'</div>' +
+          '<div class="cce-title">'+chTitle+'</div>' +
+          '<div class="cce-progress-bar"><div class="cce-progress-fill" style="width:'+pctDone+'%"></div></div>' +
+          '<div class="cce-meta">'+progressText+'</div>' +
+        '</div>' +
+        '<div class="cce-resume">'+resumeText+'</div>' +
+      '</div>';
   } else {
-    sec.innerHTML = '<div class="section-title">📚 Start Reading</div>' +
-      '<div class="continue-card" onclick="showScreen(\'bible\')"><h3>⚡ Pick a book to begin!</h3><p>Choose from 27 New Testament books</p></div>';
+    const isKo = readerLang === 'ko';
+    sec.innerHTML = '<div class="section-title">'+(isKo?'📖 읽기 시작':'📖 Start Reading')+'</div>' +
+      '<div class="continue-card-enhanced" onclick="showScreen(\'bible\')">' +
+        '<div class="cce-left"><div class="cce-icon">⚡</div></div>' +
+        '<div class="cce-right">' +
+          '<div class="cce-book">'+(isKo?'책을 골라보자!':'Pick a book to begin!')+'</div>' +
+          '<div class="cce-title">'+(isKo?'신약성경 27권이 기다리고 있어':'27 New Testament books await')+'</div>' +
+        '</div>' +
+        '<div class="cce-resume">'+(isKo?'시작 ▶':'START ▶')+'</div>' +
+      '</div>';
   }
   
   // Quiz Stats
@@ -2354,7 +2538,11 @@ function renderHome() {
       '<div style="display:flex;justify-content:space-between;font-size:12px;color:#6878a0;">' +
       '<span>'+correct+' correct / '+total+' total</span>' +
       '<span>'+(total-correct)+' missed</span>' +
-      '</div></div>';
+      '</div>' +
+      '<button class="quiz-share-btn" onclick="event.stopPropagation();showQuizShareOverlay();">' +
+      (readerLang==='ko'?'📤 결과 공유하기':'📤 Share My Results') +
+      '</button>' +
+      '</div>';
   }
   
   // Badges
@@ -3122,6 +3310,13 @@ function showChapter(book, idx) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-chapter').classList.add('active');
   
+  // Scroll to top when navigating to a new chapter
+  const rb_scroll = document.getElementById('reader-body');
+  if(rb_scroll) { rb_scroll.scrollTop = 0; }
+  window.scrollTo(0, 0);
+  // Also scroll the chapter detail container
+  detail.scrollTop = 0;
+  
   // Store current book/chapter for highlight system
   window._currentBook = book;
   window._currentChNum = ch.num;
@@ -3147,9 +3342,27 @@ function showChapter(book, idx) {
 
 // B1: Font size adjustment
 
+function resumeLastChapter() {
+  if(!state.lastRead) return;
+  const lr = state.lastRead;
+  const book = gospelData[lr.book];
+  if(!book) return;
+  const chIdx = book.findIndex(c => c.num === lr.chapter);
+  if(chIdx >= 0) {
+    showScreen('bible');
+    setTimeout(function() { showChapter(lr.book, chIdx); }, 100);
+  } else {
+    showBook(lr.book);
+  }
+}
+
 function switchLang(lang, book, idx) {
   readerLang = lang;
   localStorage.setItem('readerLang', lang);
+  // FIX 5: Show warning if Korean not available for this book
+  if (lang === 'ko' && book !== 'Matthew' && typeof gospelDataKo !== 'undefined' && !gospelDataKo[book]) {
+    if (typeof showXpToast === 'function') showXpToast('⚠️ Korean translation available for Matthew only');
+  }
   showChapter(book, idx);
 }
 
@@ -3302,7 +3515,7 @@ function answerQuiz(btn, correctIdx, book, chNum) {
   if(idx === correctIdx) {
     state.quizCorrect = (state.quizCorrect || 0) + 1;
     btn.classList.add('correct');
-    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP BONUS</div>';
+    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP BONUS</div><button class="quiz-share-btn" style="margin-top:6px;font-size:12px;padding:5px 12px" onclick="event.stopPropagation();showQuizShareOverlay();">'+(readerLang==='ko'?'📤 결과 공유':'📤 Share')+'</button>';
     state.xp = (state.xp || 0) + 10;
     save();
     if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
@@ -3445,6 +3658,215 @@ function showFocusNextChapter(book, chNum) {
 }
 
 
+
+// === QUIZ RESULT SHARING ===
+function generateQuizShareCard() {
+  const total = state.quizTotal || 0;
+  const correct = state.quizCorrect || 0;
+  if(total === 0) return;
+  const pct = Math.round(correct / total * 100);
+  const isKo = readerLang === 'ko';
+  
+  // Create canvas
+  const canvas = document.createElement('canvas');
+  canvas.width = 720;
+  canvas.height = 960;
+  const ctx = canvas.getContext('2d');
+  
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 720, 960);
+  bg.addColorStop(0, '#0a1628');
+  bg.addColorStop(0.5, '#162845');
+  bg.addColorStop(1, '#0a1628');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 720, 960);
+  
+  // Decorative circles
+  ctx.globalAlpha = 0.05;
+  ctx.beginPath(); ctx.arc(100, 200, 200, 0, Math.PI*2); ctx.fillStyle = '#4ECDC4'; ctx.fill();
+  ctx.beginPath(); ctx.arc(620, 700, 250, 0, Math.PI*2); ctx.fillStyle = '#ffd700'; ctx.fill();
+  ctx.globalAlpha = 1;
+  
+  // Stars decoration
+  ctx.font = '24px serif';
+  ctx.fillText('✨', 50, 80);
+  ctx.fillText('⭐', 640, 150);
+  ctx.fillText('✨', 580, 850);
+  ctx.fillText('⭐', 100, 780);
+  
+  // App title
+  ctx.font = 'bold 28px sans-serif';
+  ctx.fillStyle = '#4ECDC4';
+  ctx.textAlign = 'center';
+  ctx.fillText('TEENZ BIBLE', 360, 100);
+  
+  // Subtitle
+  ctx.font = '16px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '퀴즈 결과 카드' : 'QUIZ RESULT CARD', 360, 135);
+  
+  // Score circle
+  const cx = 360, cy = 380, r = 130;
+  // Outer ring background
+  ctx.beginPath(); ctx.arc(cx, cy, r+8, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 16; ctx.stroke();
+  // Score arc
+  const startAngle = -Math.PI/2;
+  const endAngle = startAngle + (Math.PI*2 * pct/100);
+  const scoreColor = pct >= 80 ? '#4ade80' : pct >= 50 ? '#fbbf24' : '#f87171';
+  ctx.beginPath(); ctx.arc(cx, cy, r+8, startAngle, endAngle);
+  ctx.strokeStyle = scoreColor; ctx.lineWidth = 16; ctx.lineCap = 'round'; ctx.stroke();
+  // Inner circle
+  const innerBg = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+  innerBg.addColorStop(0, '#1e3a5f');
+  innerBg.addColorStop(1, '#162845');
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+  ctx.fillStyle = innerBg; ctx.fill();
+  // Score text
+  ctx.font = 'bold 72px sans-serif';
+  ctx.fillStyle = scoreColor;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(pct + '%', cx, cy - 10);
+  ctx.font = '18px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '정답률' : 'ACCURACY', cx, cy + 40);
+  ctx.textBaseline = 'alphabetic';
+  
+  // Stats
+  const statsY = 570;
+  // Correct
+  ctx.fillStyle = '#1a3050';
+  roundRect(ctx, 80, statsY, 260, 80, 16);
+  ctx.fill();
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillStyle = '#4ade80';
+  ctx.textAlign = 'center';
+  ctx.fillText(correct.toString(), 210, statsY + 38);
+  ctx.font = '14px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '정답' : 'CORRECT', 210, statsY + 62);
+  
+  // Total
+  ctx.fillStyle = '#1a3050';
+  roundRect(ctx, 380, statsY, 260, 80, 16);
+  ctx.fill();
+  ctx.font = 'bold 32px sans-serif';
+  ctx.fillStyle = '#fbbf24';
+  ctx.textAlign = 'center';
+  ctx.fillText(total.toString(), 510, statsY + 38);
+  ctx.font = '14px sans-serif';
+  ctx.fillStyle = '#8898b8';
+  ctx.fillText(isKo ? '전체 문제' : 'TOTAL', 510, statsY + 62);
+  
+  // Grade/Rank
+  let grade, gradeEmoji;
+  if(pct >= 90) { grade = isKo ? '성경 마스터!' : 'BIBLE MASTER!'; gradeEmoji = '👑'; }
+  else if(pct >= 80) { grade = isKo ? '성경 박사!' : 'BIBLE SCHOLAR!'; gradeEmoji = '🎓'; }
+  else if(pct >= 60) { grade = isKo ? '열심히 공부 중!' : 'GETTING THERE!'; gradeEmoji = '📚'; }
+  else { grade = isKo ? '계속 도전하자!' : 'KEEP GOING!'; gradeEmoji = '💪'; }
+  
+  ctx.font = '40px serif';
+  ctx.fillText(gradeEmoji, 360, 720);
+  ctx.font = 'bold 26px sans-serif';
+  ctx.fillStyle = '#ffd700';
+  ctx.fillText(grade, 360, 765);
+  
+  // Level info
+  const lvl = state.level || 1;
+  const xp = state.xp || 0;
+  ctx.font = '16px sans-serif';
+  ctx.fillStyle = '#6878a0';
+  ctx.fillText((isKo ? 'Lv.' : 'Level ') + lvl + ' · ' + xp + ' XP', 360, 810);
+  
+  // Footer
+  ctx.font = '13px sans-serif';
+  ctx.fillStyle = '#4a5a7a';
+  ctx.fillText(isKo ? 'teens-bible-94271.web.app 에서 나도 도전!' : 'Try it at teens-bible-94271.web.app', 360, 910);
+  
+  return canvas;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function showQuizShareOverlay() {
+  const canvas = generateQuizShareCard();
+  if(!canvas) return;
+  const isKo = readerLang === 'ko';
+  
+  const ov = document.createElement('div');
+  ov.className = 'quiz-share-overlay';
+  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  
+  const container = document.createElement('div');
+  container.className = 'quiz-share-card-container';
+  
+  const img = document.createElement('img');
+  img.src = canvas.toDataURL('image/png');
+  img.style.cssText = 'width:100%;display:block;';
+  container.appendChild(img);
+  ov.appendChild(container);
+  
+  const actions = document.createElement('div');
+  actions.className = 'quiz-share-actions';
+  
+  // Save button
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'qsa-save';
+  saveBtn.textContent = isKo ? '💾 저장' : '💾 Save';
+  saveBtn.onclick = function() {
+    const link = document.createElement('a');
+    link.download = 'teenz-bible-quiz-result.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+  actions.appendChild(saveBtn);
+  
+  // Share button (Web Share API)
+  if(navigator.share && navigator.canShare) {
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'qsa-share';
+    shareBtn.textContent = isKo ? '📤 공유' : '📤 Share';
+    shareBtn.onclick = async function() {
+      try {
+        canvas.toBlob(async function(blob) {
+          const file = new File([blob], 'teenz-bible-quiz.png', {type: 'image/png'});
+          if(navigator.canShare({files: [file]})) {
+            await navigator.share({
+              title: 'Teenz Bible Quiz Result',
+              text: isKo ? '나의 Teenz Bible 퀴즈 결과!' : 'My Teenz Bible Quiz Result!',
+              files: [file]
+            });
+          }
+        }, 'image/png');
+      } catch(e) { console.log('Share cancelled'); }
+    };
+    actions.appendChild(shareBtn);
+  }
+  
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'qsa-close';
+  closeBtn.textContent = isKo ? '닫기' : 'Close';
+  closeBtn.onclick = function() { ov.remove(); };
+  actions.appendChild(closeBtn);
+  
+  ov.appendChild(actions);
+  document.body.appendChild(ov);
+}
+
 // === A3: READING GOAL ===
 function getWeeklyGoal() {
   return parseInt(localStorage.getItem('weeklyGoal') || '0');
@@ -3470,23 +3892,21 @@ function renderGoalBanner() {
   const banner = document.getElementById('reading-goal-banner');
   if(!banner) return;
   const goal = getWeeklyGoal();
-  if(!goal) {
-    banner.innerHTML = '<div class="goal-banner" style="text-align:center;cursor:pointer" onclick="showGoalModal()">' +
-      '<div class="goal-title">🎯 SET YOUR WEEKLY READING GOAL</div>' +
-      '<div class="goal-text" style="margin-top:4px">Tap to choose how many chapters you want to read this week!</div>' +
-      '</div>';
+  // If goal already set, hide the banner completely - progress shown on home screen
+  if(goal) {
+    banner.innerHTML = '';
     return;
   }
-  const progress = getWeeklyProgress();
-  const pct = Math.min(100, (progress / goal) * 100);
-  const isComplete = progress >= goal;
-  banner.innerHTML = '<div class="goal-banner">' +
-    '<div class="goal-header">' +
-    '<div class="goal-title">'+(isComplete ? '🏆' : '🎯')+' WEEKLY GOAL</div>' +
-    '<span class="goal-edit" onclick="showGoalModal()">Change</span>' +
-    '</div>' +
-    '<div class="goal-progress-bar"><div class="goal-progress-fill" style="width:'+pct+'%"></div></div>' +
-    '<div class="goal-text">'+(isComplete ? '🎉 Goal smashed! '+progress+'/'+goal+' chapters' : progress+' / '+goal+' chapters this week')+'</div>' +
+  // Only show on first visit when no goal is set
+  const dismissed = localStorage.getItem('goalBannerDismissed');
+  if(dismissed) {
+    banner.innerHTML = '';
+    return;
+  }
+  banner.innerHTML = '<div class="goal-banner" style="text-align:center;cursor:pointer;position:relative" onclick="showGoalModal()">' +
+    '<div style="position:absolute;top:8px;right:12px;color:#556080;font-size:16px;cursor:pointer" onclick="event.stopPropagation();localStorage.setItem(\'goalBannerDismissed\',\'1\');this.parentElement.parentElement.innerHTML=\'\'">✕</div>' +
+    '<div class="goal-title">🎯 SET YOUR WEEKLY READING GOAL</div>' +
+    '<div class="goal-text" style="margin-top:4px">Tap to choose how many chapters you want to read this week!</div>' +
     '</div>';
 }
 
@@ -3510,24 +3930,6 @@ function setWeeklyGoal(n) {
   const modal = document.querySelector('.goal-modal');
   if(modal) modal.remove();
   renderGoalBanner();
-}
-
-// === A4: RANDOM CHAPTER ===
-function openRandomChapter() {
-  const books = Object.keys(gospelData);
-  const book = books[Math.floor(Math.random() * books.length)];
-  const chapters = gospelData[book];
-  const idx = Math.floor(Math.random() * chapters.length);
-  
-  // Fun dice animation
-  const btn = document.querySelector('.random-btn .dice');
-  if(btn) {
-    btn.style.animation = 'none';
-    btn.offsetHeight; // trigger reflow
-    btn.style.animation = 'diceWiggle 0.15s ease-in-out 6';
-  }
-  
-  setTimeout(() => showChapter(book, idx), 900);
 }
 
 // === SPEECH SYNTHESIS (Enhanced Natural Voice) ===
@@ -3776,6 +4178,11 @@ function toggleSpeech() {
     document.getElementById('audio-status').textContent = '▶ HD Playing...';
     const b = document.getElementById('audio-play-btn'); if(b) b.classList.add('playing');
   } else {
+    // Immediate loading feedback before async TTS starts
+    const statusEl = document.getElementById('audio-status');
+    if(statusEl) statusEl.textContent = '⏳ Loading...';
+    const audioBtnEl = document.getElementById('audio-play-btn');
+    if(audioBtnEl) audioBtnEl.classList.add('playing');
     const text = getChapterText();
     if(text) cloudTtsSpeak(text);
   }
@@ -5451,7 +5858,16 @@ renderBible();
     var el = document.getElementById('enjoy-guide-overlay');
     if (el) {
       el.style.animation = 'fadeOut 0.3s ease forwards';
-      setTimeout(function() { el.remove(); }, 300);
+      setTimeout(function() { 
+        el.remove();
+        // After enjoy guide closes, trigger onboarding if no profile yet
+        if (typeof showOnboarding === 'function') {
+          var savedProfile = localStorage.getItem('teensBibleProfile');
+          if (!savedProfile) {
+            setTimeout(function() { showOnboarding(); }, 200);
+          }
+        }
+      }, 300);
     }
   }
 
@@ -5573,8 +5989,8 @@ function showContextTip(tipId, message, anchorEl) {
 }
 
 // Hook contextual tips into existing flow
-var _origMarkRead = typeof markChapterRead === 'function' ? markChapterRead : null;
-if (_origMarkRead) {
+var _origMarkReadTip = typeof markChapterRead === 'function' ? markChapterRead : null;
+if (_origMarkReadTip) {
   var _tipChapterCount = 0;
   var _origMark2 = markChapterRead;
   markChapterRead = function() {
@@ -6434,89 +6850,6 @@ function renderVerseOfTheDay() {
 }
 
 
-// === E2: READING PLANS ===
-
-// === READING PLANS ===
-const readingPlans = [
-  {id:'miracles',name:'7 Days of Miracles',nameKo:'7일간의 기적',icon:'✨',days:7,chapters:[
-    {book:'Matthew',ch:8},{book:'Matthew',ch:9},{book:'Mark',ch:5},{book:'Luke',ch:7},
-    {book:'John',ch:2},{book:'John',ch:6},{book:'John',ch:11}
-  ]},
-  {id:'love',name:'Love & Grace',nameKo:'사랑과 은혜',icon:'❤️',days:7,chapters:[
-    {book:'John',ch:3},{book:'John',ch:15},{book:'Romans',ch:8},{book:'1 Corinthians',ch:13},
-    {book:'Ephesians',ch:2},{book:'1 John',ch:4},{book:'Galatians',ch:5}
-  ]},
-  {id:'courage',name:'Courage & Faith',nameKo:'용기와 믿음',icon:'🦁',days:7,chapters:[
-    {book:'Matthew',ch:14},{book:'Acts',ch:4},{book:'Hebrews',ch:11},{book:'James',ch:1},
-    {book:'Romans',ch:5},{book:'2 Timothy',ch:1},{book:'1 Peter',ch:5}
-  ]},
-  {id:'matthew30',name:'30-Day Matthew',nameKo:'30일 마태복음 완독',icon:'📖',days:28,chapters:
-    Array.from({length:28},(_,i)=>({book:'Matthew',ch:i+1}))
-  },
-  {id:'gospels',name:'The 4 Gospels Journey',nameKo:'4복음서 여행',icon:'🗺️',days:30,chapters:[
-    ...Array.from({length:7},(_,i)=>({book:'Matthew',ch:i*4+1})),
-    ...Array.from({length:8},(_,i)=>({book:'Mark',ch:i*2+1})),
-    ...Array.from({length:8},(_,i)=>({book:'Luke',ch:i*3+1})),
-    ...Array.from({length:7},(_,i)=>({book:'John',ch:i*3+1}))
-  ]}
-];
-
-function getActivePlan() {
-  return JSON.parse(localStorage.getItem('activePlan') || 'null');
-}
-
-function startPlan(planId) {
-  const plan = readingPlans.find(p=>p.id===planId);
-  if(!plan) return;
-  const active = {id:planId, startDate:new Date().toISOString(), completedDays:[], currentDay:0};
-  localStorage.setItem('activePlan', JSON.stringify(active));
-  renderReadingPlans();
-}
-
-function renderReadingPlans() {
-  const container = document.getElementById('reading-plans-section');
-  if(!container) return;
-  const active = getActivePlan();
-  const lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
-  let h = '<div class="section-title" style="font-size:20px">📋 Reading Plans</div>';
-  
-  if(active) {
-    const plan = readingPlans.find(p=>p.id===active.id);
-    if(plan) {
-      const progress = Math.min(active.completedDays.length, plan.chapters.length);
-      const pct = Math.round((progress/plan.chapters.length)*100);
-      const nextCh = plan.chapters[Math.min(progress, plan.chapters.length-1)];
-      h += '<div class="plan-active-card">';
-      h += '<div class="plan-active-header"><span class="plan-icon">'+plan.icon+'</span><div>';
-      h += '<div class="plan-active-name">'+(lang==='ko'?plan.nameKo:plan.name)+'</div>';
-      h += '<div class="plan-active-progress">Day '+(progress+1)+' of '+plan.chapters.length+' ('+pct+'%)</div>';
-      h += '</div></div>';
-      h += '<div class="goal-progress-bar" style="margin:10px 0"><div class="goal-progress-fill" style="width:'+pct+'%"></div></div>';
-      if(progress < plan.chapters.length) {
-        h += '<div class="plan-next" onclick="showBook(\''+nextCh.book+'\');setTimeout(()=>showChapter(\''+nextCh.book+'\','+nextCh.ch+'),300)">📖 Next: '+nextCh.book+' Ch.'+nextCh.ch+' →</div>';
-      } else {
-        h += '<div style="text-align:center;color:#4ECDC4;font-family:Bangers,cursive;font-size:18px">🎉 Plan Complete!</div>';
-      }
-      h += '<div class="plan-quit" onclick="if(confirm(\'Quit this plan?\'))localStorage.removeItem(\'activePlan\');renderReadingPlans()">Quit Plan</div>';
-      h += '</div>';
-    }
-  }
-  
-  h += '<div class="plans-grid">';
-  readingPlans.forEach(plan => {
-    const isActive = active && active.id === plan.id;
-    h += '<div class="plan-card'+(isActive?' active':'')+'" onclick="'+(isActive?'':'startPlan(\''+plan.id+'\')')+'">';
-    h += '<div class="plan-card-icon">'+plan.icon+'</div>';
-    h += '<div class="plan-card-name">'+(lang==='ko'?plan.nameKo:plan.name)+'</div>';
-    h += '<div class="plan-card-days">'+plan.days+' days</div>';
-    if(isActive) h += '<div class="plan-card-badge">ACTIVE</div>';
-    h += '</div>';
-  });
-  h += '</div>';
-  container.innerHTML = h;
-}
-
-
 // === C3: GEM STORE ===
 
 // === GEM STORE ===
@@ -6589,7 +6922,6 @@ function updateVOTD() {
 // Initialize new features
 setTimeout(function() {
   updateVOTD();
-  if(typeof renderReadingPlans === 'function') renderReadingPlans();
 }, 500);
 
 // === B3: ENHANCED CONTINUE READING ===
@@ -6736,7 +7068,6 @@ if(_origShowScreen) {
       updateVOTD();
     }
     if(name === 'bible') {
-      if(typeof renderReadingPlans === 'function') renderReadingPlans();
     }
   };
 }
@@ -6793,7 +7124,7 @@ setTimeout(function() {
 
 // === QUIZ STATS CARD ===
 function renderQuizStats() {
-  const container = document.getElementById('quiz-stats-card');
+  const container = document.getElementById('quiz-stats-card-tab');
   if(!container) return;
   const correct = state.totalQuizCorrect || 0;
   const attempted = state.totalQuizAttempted || 0;
@@ -7155,65 +7486,69 @@ var mapLocationEvents = {
 };
 
 var eventImageMap = {
-  'The Crucifixion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Darkness Over the Land': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Birth of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Walking on Water': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
-  'Calming the Storm': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
-  'Baptism of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Prison Earthquake': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
-  'Jesus Prays in Agony': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
-  'Judas\'s Betrayal': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
-  'The Ascension': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Olivet Discourse': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Feeding the 5,000': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
-  'Healing a Blind Man': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
-  'Paul\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Escape in a Basket': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Water Into Wine': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
-  'Healing Official\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
-  'Crucifixion & Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Veil Torn in Two': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Washing the Disciples\' Feet': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
-  'Institution of Communion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
-  'Coming of the Holy Spirit': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Healing on the Sabbath': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Post-Resurrection Appearance': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
-  'Mary Magdalene Freed': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'First Witness of Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Raising the Widow\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
-  'Commissioning of Paul & Barnabas': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Jerusalem Council': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Confronting a Sorcerer': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Mistaken for Gods': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Stoned and Left for Dead': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'Lydia\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Paul Preaches in the Synagogue': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Letters About Jesus\' Return': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'The Widow\'s Offering': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Jesus Teaches at the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
-  'Triumphal Entry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Cleansing the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-crucifixion-gLKeAEZiVfyo2UtRAXqUWY.webp',
-  'The Last Supper': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-gethsemane-PQgPiacMrnid6wHqGiY2DG.webp',
-  'Pentecost': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-ascension-nNJcnzTSqdTW4aMsDRQRck.webp',
-  'Annunciation to Mary': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Visit of the Magi': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Escape to Egypt': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Jesus Grows Up': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-nativity-K5PS2ein7Prab2XM9edLAm.webp',
-  'Calling the First Disciples': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
-  'Sermon on the Mount': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-feeding5000-j7KJdr8EheAMv3pbhA5K3M.webp',
-  'Healing the Paralytic': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-baptism-VT8j22WHnNRPjSB39bDQgS.webp',
-  'Miraculous Catch of Fish': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-walking-water-3iLqvFgk2wmBEbsUC67Rkb.webp',
-  'Rejected in Hometown': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'First Called Christians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Missionary Journeys Begin': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Debating Philosophers': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Mars Hill Sermon': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Love Chapter': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-water-wine-V3JqRxgdnD4MFXVUrz9t2g.webp',
-  'Riot of the Silversmiths': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
-  'Letter to Ephesians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp',
-  'Paul Under House Arrest': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-prison-earthquake-ingDbwuRwAa6NZdTdtwbN8.webp',
-  'Letter to the Romans': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/event-conversion-paul-GKuB2kNsFrnm9vCDJp8UL7.webp'
+  'Triumphal Entry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-triumphal-entry-V86geDvzh3HxXUYgZVwgAw.webp',
+  'Cleansing the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-cleansing-temple-8TYd69uBtzKbV8NcPMS2re.webp',
+  'The Last Supper': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-last-supper-imeP4WxhxLoYrMo62o2wTC.webp',
+  'Crucifixion & Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-crucifixion-6PRN5PaBxRN2zDL7zmwDM8.webp',
+  'Pentecost': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-pentecost-3E5qZJfKxjokuyWno8Yc4a.webp',
+  'Birth of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-nativity-c44YAEu99ZoKKwE8NuWqvf.webp',
+  'Visit of the Magi': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-magi-visit-7PhEHN7HDhjsPHc2dr3S8V.webp',
+  'Escape to Egypt': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-nativity-c44YAEu99ZoKKwE8NuWqvf.webp',
+  'Annunciation to Mary': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-annunciation-CfT5b89LfRnoySEDaPYzZE.webp',
+  'Jesus Grows Up': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-annunciation-CfT5b89LfRnoySEDaPYzZE.webp',
+  'Rejected in Hometown': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Calling the First Disciples': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-calling-disciples-fpvAbFwLZm6nJPS4y7B7uC.webp',
+  'Healing the Paralytic': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-baptism-gTH8cdJQzEuHMzgnfEJPGA.webp',
+  'Centurion\'s Faith': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-sermon-mount-EhUb8a4rDEtAg7Jz8mXa3S.webp',
+  'Sermon on the Mount': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-sermon-mount-EhUb8a4rDEtAg7Jz8mXa3S.webp',
+  'Walking on Water': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-walking-water-gdmYpCp3YabCUwg7tgdQny.webp',
+  'Calming the Storm': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-calming-storm-iRenT3VWh5UaykuKegdfCv.webp',
+  'Feeding the 5,000': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-feeding5000-ErNtXKFDSQpdvzHvrcH4Tn.webp',
+  'Miraculous Catch of Fish': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-calling-disciples-fpvAbFwLZm6nJPS4y7B7uC.webp',
+  'Baptism of Jesus': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-baptism-gTH8cdJQzEuHMzgnfEJPGA.webp',
+  'John\'s Ministry': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-baptism-gTH8cdJQzEuHMzgnfEJPGA.webp',
+  'Paul Under House Arrest': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Letter to the Romans': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Riot of the Silversmiths': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-conversion-paul-FEZhb9KwnmdPbmvFPFLVPw.webp',
+  'Paul\'s Farewell to Elders': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Letter to Ephesians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Paul\'s 18-Month Stay': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Love Chapter': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-water-wine-eKb6jMkyjhZ87Em4WgPq2A.webp',
+  'Mars Hill Sermon': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Debating Philosophers': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'First Called Christians': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Missionary Journeys Begin': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Paul\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-conversion-paul-FEZhb9KwnmdPbmvFPFLVPw.webp',
+  'Escape in a Basket': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-conversion-paul-FEZhb9KwnmdPbmvFPFLVPw.webp',
+  'Jesus Teaches at the Temple': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-sermon-mount-EhUb8a4rDEtAg7Jz8mXa3S.webp',
+  'The Widow\'s Offering': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-sermon-mount-EhUb8a4rDEtAg7Jz8mXa3S.webp',
+  'Veil Torn in Two': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-crucifixion-6PRN5PaBxRN2zDL7zmwDM8.webp',
+  'Olivet Discourse': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-sermon-mount-EhUb8a4rDEtAg7Jz8mXa3S.webp',
+  'The Ascension': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-ascension-KkotKyJ7QCxeDxpjNisREs.webp',
+  'Jesus Prays in Agony': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-gethsemane-8kg4DWN2psssfpsWFYDxZW.webp',
+  'Judas\'s Betrayal': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-gethsemane-8kg4DWN2psssfpsWFYDxZW.webp',
+  'The Crucifixion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-crucifixion-6PRN5PaBxRN2zDL7zmwDM8.webp',
+  'Darkness Over the Land': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-crucifixion-6PRN5PaBxRN2zDL7zmwDM8.webp',
+  'Healing on the Sabbath': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-baptism-gTH8cdJQzEuHMzgnfEJPGA.webp',
+  'Washing the Disciples\' Feet': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-washing-feet-UFSAKhVPEiFeQy8FUwUvsA.webp',
+  'Institution of Communion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-last-supper-imeP4WxhxLoYrMo62o2wTC.webp',
+  'Coming of the Holy Spirit': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-pentecost-3E5qZJfKxjokuyWno8Yc4a.webp',
+  'Healing a Blind Man': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-baptism-gTH8cdJQzEuHMzgnfEJPGA.webp',
+  'Water Into Wine': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-water-wine-eKb6jMkyjhZ87Em4WgPq2A.webp',
+  'Healing Official\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-water-wine-eKb6jMkyjhZ87Em4WgPq2A.webp',
+  'Post-Resurrection Appearance': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-calling-disciples-fpvAbFwLZm6nJPS4y7B7uC.webp',
+  'Mary Magdalene Freed': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-annunciation-CfT5b89LfRnoySEDaPYzZE.webp',
+  'First Witness of Resurrection': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-ascension-KkotKyJ7QCxeDxpjNisREs.webp',
+  'Raising the Widow\'s Son': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-raising-widow-son-Z3z4qCiirU8se6B7AyVQvz.webp',
+  'Commissioning of Paul & Barnabas': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Jerusalem Council': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Confronting a Sorcerer': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-conversion-paul-FEZhb9KwnmdPbmvFPFLVPw.webp',
+  'Mistaken for Gods': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Stoned and Left for Dead': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-crucifixion-6PRN5PaBxRN2zDL7zmwDM8.webp',
+  'Lydia\'s Conversion': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-baptism-gTH8cdJQzEuHMzgnfEJPGA.webp',
+  'Prison Earthquake': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-conversion-paul-FEZhb9KwnmdPbmvFPFLVPw.webp',
+  'Paul Preaches in the Synagogue': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
+  'Letters About Jesus\' Return': 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb-paul-preaching-mASA4Nr7xXrCorfFGEV6XQ.webp',
 };
 
 
@@ -7255,30 +7590,605 @@ var locationBookMap = {
 function isLocationRead(locationName) {
   var books = locationBookMap[locationName];
   if (!books || books.length === 0) return false;
-  var readChapters = JSON.parse(localStorage.getItem('readChapters') || '{}');
-  var readCount = 0;
+  // Use the actual state.books data (teensBible localStorage)
+  var appState = null;
+  try { appState = JSON.parse(localStorage.getItem('teensBible') || 'null'); } catch(e) {}
+  if (!appState || !appState.books) return false;
   for (var i = 0; i < books.length; i++) {
-    if (readChapters[books[i]] && Object.keys(readChapters[books[i]]).length > 0) {
-      readCount++;
+    var bookData = appState.books[books[i]];
+    if (bookData && bookData.read && bookData.read.length > 0) {
+      return true; // At least 1 related book has been started
     }
   }
-  // Location is "read" if at least 1 related book has been started
-  return readCount > 0;
+  return false;
 }
 
 function getLocationReadProgress(locationName) {
   var books = locationBookMap[locationName];
   if (!books || books.length === 0) return 0;
-  var readChapters = JSON.parse(localStorage.getItem('readChapters') || '{}');
-  var readCount = 0;
+  var appState = null;
+  try { appState = JSON.parse(localStorage.getItem('teensBible') || 'null'); } catch(e) {}
+  if (!appState || !appState.books) return 0;
+  var totalChapters = 0;
+  var readChapters = 0;
   for (var i = 0; i < books.length; i++) {
-    if (readChapters[books[i]] && Object.keys(readChapters[books[i]]).length > 0) {
-      readCount++;
+    var bookData = appState.books[books[i]];
+    // Count total chapters from gospelData if available
+    if (typeof gospelData !== 'undefined' && gospelData[books[i]]) {
+      totalChapters += gospelData[books[i]].length;
+    } else {
+      totalChapters += 1; // fallback
+    }
+    if (bookData && bookData.read && bookData.read.length > 0) {
+      readChapters += bookData.read.length;
     }
   }
-  return Math.round((readCount / books.length) * 100);
+  if (totalChapters === 0) return 0;
+  return Math.round((readChapters / totalChapters) * 100);
 }
 
+// Also refresh map pins when returning from Bible reading
+function refreshMapReadStatus() {
+  var activeTab = document.querySelector('.map-tab.active');
+  if (activeTab) {
+    // Extract tab name from the onclick attribute
+    var onclickStr = activeTab.getAttribute('onclick') || '';
+    var match = onclickStr.match(/switchMapTab\('(\w+)'\)/);
+    var tab = match ? match[1] : 'overview';
+    renderMapLocations(tab);
+  }
+}
+
+
+// ============================================================
+// MAP SEARCH FUNCTIONALITY
+// ============================================================
+function handleMapSearch(query) {
+  var clearBtn = document.getElementById('map-search-clear');
+  var resultsDiv = document.getElementById('map-search-results');
+  if (!resultsDiv) return;
+  
+  if (!query || query.trim().length === 0) {
+    resultsDiv.style.display = 'none';
+    if (clearBtn) clearBtn.style.display = 'none';
+    return;
+  }
+  if (clearBtn) clearBtn.style.display = 'block';
+  
+  var q = query.toLowerCase().trim();
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var results = [];
+  
+  // Search locations
+  var allTabs = ['overview','jerusalem','galilee','paul'];
+  var tabNames = {overview: lang==='ko'?'전체보기':'Overview', jerusalem: lang==='ko'?'예루살렘':'Jerusalem', galilee: lang==='ko'?'갈릴리':'Galilee', paul: lang==='ko'?'바울의 여행':"Paul's Journeys"};
+  for (var t = 0; t < allTabs.length; t++) {
+    var tab = allTabs[t];
+    var locs = mapLocations[tab] || [];
+    for (var i = 0; i < locs.length; i++) {
+      var loc = locs[i];
+      var nameMatch = loc.name.toLowerCase().indexOf(q) >= 0;
+      var nameKoMatch = loc.nameKo && loc.nameKo.indexOf(q) >= 0;
+      var descMatch = loc.desc && loc.desc.toLowerCase().indexOf(q) >= 0;
+      var descKoMatch = loc.descKo && loc.descKo.indexOf(q) >= 0;
+      if (nameMatch || nameKoMatch || descMatch || descKoMatch) {
+        results.push({
+          type: 'location',
+          name: loc.name,
+          displayName: lang==='ko' ? (loc.nameKo || loc.name) : loc.name,
+          icon: loc.icon || '',
+          tab: tab,
+          tabName: tabNames[tab],
+          desc: lang==='ko' ? (loc.descKo || loc.desc || '') : (loc.desc || '')
+        });
+      }
+    }
+  }
+  
+  // Search events
+  for (var locName in mapLocationEvents) {
+    var evData = mapLocationEvents[locName];
+    if (!evData || !evData.events) continue;
+    for (var e = 0; e < evData.events.length; e++) {
+      var ev = evData.events[e];
+      var evTitle = ev.title || ev.name || '';
+      var evTitleKo = ev.titleKo || ev.nameKo || '';
+      var evDesc = ev.desc || '';
+      var evDescKo = ev.descKo || '';
+      var evNameMatch = evTitle.toLowerCase().indexOf(q) >= 0;
+      var evNameKoMatch = evTitleKo.indexOf(q) >= 0;
+      var evDescMatch = evDesc.toLowerCase().indexOf(q) >= 0;
+      var evDescKoMatch = evDescKo.indexOf(q) >= 0;
+      var evRefMatch = ev.ref && ev.ref.toLowerCase().indexOf(q) >= 0;
+      if (evNameMatch || evNameKoMatch || evDescMatch || evDescKoMatch || evRefMatch) {
+        results.push({
+          type: 'event',
+          name: locName,
+          displayName: lang==='ko' ? (evTitleKo || evTitle) : evTitle,
+          icon: '📜',
+          locationName: locName,
+          ref: ev.ref || '',
+          desc: lang==='ko' ? (evDescKo || evDesc) : evDesc
+        });
+      }
+    }
+  }
+  
+  // Render results
+  if (results.length === 0) {
+    resultsDiv.innerHTML = '<div style="padding:16px;text-align:center;color:#888;font-size:13px;">' + (lang==='ko' ? '검색 결과가 없습니다' : 'No results found') + '</div>';
+    resultsDiv.style.display = 'block';
+    return;
+  }
+  
+  var html = '';
+  // Locations first
+  var locResults = results.filter(function(r) { return r.type === 'location'; });
+  var evResults = results.filter(function(r) { return r.type === 'event'; });
+  
+  if (locResults.length > 0) {
+    html += '<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:#FFD700;text-transform:uppercase;letter-spacing:1px;">' + (lang==='ko' ? '📍 장소' : '📍 Locations') + '</div>';
+    for (var i = 0; i < locResults.length; i++) {
+      var r = locResults[i];
+      html += '<div onclick="clearMapSearch();openLocationDetail(\'' + r.name.replace(/'/g, "\\'") + '\')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;transition:background 0.15s;" onmouseover="this.style.background=\'rgba(255,215,0,0.1)\'" onmouseout="this.style.background=\'transparent\'">';
+      html += '<span style="font-size:20px;">' + r.icon + '</span>';
+      html += '<div><div style="color:#e0e0e0;font-size:14px;font-weight:600;">' + r.displayName + '</div>';
+      html += '<div style="color:#888;font-size:11px;">' + r.tabName + ' · ' + r.desc.substring(0, 60) + (r.desc.length > 60 ? '...' : '') + '</div></div></div>';
+    }
+  }
+  
+  if (evResults.length > 0) {
+    html += '<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:#FFD700;text-transform:uppercase;letter-spacing:1px;">' + (lang==='ko' ? '📜 사건' : '📜 Events') + ' (' + evResults.length + ')</div>';
+    for (var i = 0; i < Math.min(evResults.length, 10); i++) {
+      var r = evResults[i];
+      html += '<div onclick="clearMapSearch();openLocationDetail(\'' + r.locationName.replace(/'/g, "\\'") + '\')" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;transition:background 0.15s;" onmouseover="this.style.background=\'rgba(255,215,0,0.1)\'" onmouseout="this.style.background=\'transparent\'">';
+      html += '<span style="font-size:16px;">📜</span>';
+      html += '<div><div style="color:#e0e0e0;font-size:14px;font-weight:600;">' + r.displayName + '</div>';
+      html += '<div style="color:#888;font-size:11px;">📍 ' + r.locationName + (r.ref ? ' · 📖 ' + r.ref : '') + '</div></div></div>';
+    }
+    if (evResults.length > 10) {
+      html += '<div style="padding:8px 14px;text-align:center;color:#888;font-size:12px;">+' + (evResults.length - 10) + (lang==='ko' ? '개 더...' : ' more...') + '</div>';
+    }
+  }
+  
+  resultsDiv.innerHTML = html;
+  resultsDiv.style.display = 'block';
+}
+
+function clearMapSearch() {
+  var input = document.getElementById('map-search-input');
+  var clearBtn = document.getElementById('map-search-clear');
+  var resultsDiv = document.getElementById('map-search-results');
+  if (input) input.value = '';
+  if (clearBtn) clearBtn.style.display = 'none';
+  if (resultsDiv) resultsDiv.style.display = 'none';
+}
+
+// Update search placeholder based on language
+function updateMapSearchLanguage() {
+  var input = document.getElementById('map-search-input');
+  if (input) {
+    var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+    input.placeholder = lang === 'ko' ? '장소나 사건을 검색하세요...' : 'Search locations or events...';
+  }
+}
+
+// === PAUL'S JOURNEY ROUTE TOGGLE ===
+function toggleJourneyRoute(journeyId) {
+  var svg = document.querySelector('.journey-routes-svg');
+  if (!svg) return;
+  var className = 'journey-' + journeyId;
+  var routes = svg.querySelectorAll('.' + className);
+  var legendItem = document.querySelector('.journey-legend-item[data-journey="' + journeyId + '"]');
+  if (!legendItem) return;
+  var isActive = legendItem.classList.contains('active');
+  if (isActive) {
+    legendItem.classList.remove('active');
+    legendItem.classList.add('inactive');
+    routes.forEach(function(r) { r.style.display = 'none'; });
+  } else {
+    legendItem.classList.remove('inactive');
+    legendItem.classList.add('active');
+    routes.forEach(function(r) { r.style.display = ''; });
+  }
+}
+
+function updateJourneyLegendLanguage() {
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var items = document.querySelectorAll('.journey-legend-item span[data-en]');
+  items.forEach(function(span) {
+    span.textContent = lang === 'ko' ? (span.getAttribute('data-ko') || span.getAttribute('data-en')) : span.getAttribute('data-en');
+  });
+}
+
+
+// === PAUL'S JOURNEY DETAIL DATA ===
+var paulJourneyData = {
+  1: {
+    title: "1st Missionary Journey",
+    titleKo: "제1차 선교 여행",
+    period: "AD 46-48",
+    periodKo: "서기 46-48년",
+    duration: "~2 years",
+    durationKo: "약 2년",
+    companions: ["Barnabas", "John Mark (part)"],
+    companionsKo: ["바나바", "요한 마가 (일부)"],
+    distance: "~2,400 km",
+    cities: ["Antioch", "Cyprus", "Perga", "Pisidian Antioch", "Iconium", "Lystra", "Derbe"],
+    citiesKo: ["안디옥", "키프로스", "버가", "비시디아 안디옥", "이코니움", "루스드라", "더베"],
+    color: "#FF6B6B",
+    icon: "1",
+    keyEvents: [
+      {title:"Confronting Bar-Jesus", titleKo:"바예수와 대결", location:"Cyprus", locationKo:"키프로스", ref:"Acts 13:6-12"},
+      {title:"Mistaken for Gods", titleKo:"신으로 오해받음", location:"Lystra", locationKo:"루스드라", ref:"Acts 14:8-18"},
+      {title:"Stoned & Left for Dead", titleKo:"돌에 맞아 죽은 줄", location:"Lystra", locationKo:"루스드라", ref:"Acts 14:19-20"}
+    ],
+    summary: "Paul and Barnabas set out from Antioch, sailed to Cyprus, then traveled through southern Asia Minor. Despite persecution, many believed.",
+    summaryKo: "바울과 바나바가 안디옥에서 출발해 키프로스로 건너간 후 소아시아 남부를 여행했어. 핍박에도 불구하고 많은 사람이 믿었어."
+  },
+  2: {
+    title: "2nd Missionary Journey",
+    titleKo: "제2차 선교 여행",
+    period: "AD 49-52",
+    periodKo: "서기 49-52년",
+    duration: "~3 years",
+    durationKo: "약 3년",
+    companions: ["Silas", "Timothy", "Luke (part)"],
+    companionsKo: ["실라", "디모데", "누가 (일부)"],
+    distance: "~4,500 km",
+    cities: ["Antioch", "Lystra", "Troas", "Philippi", "Thessalonica", "Athens", "Corinth"],
+    citiesKo: ["안디옥", "루스드라", "드로아", "빌립보", "데살로니가", "아테네", "고린도"],
+    color: "#4ECDC4",
+    icon: "2",
+    keyEvents: [
+      {title:"Lydia's Conversion", titleKo:"루디아의 회심", location:"Philippi", locationKo:"빌립보", ref:"Acts 16:11-15"},
+      {title:"Prison Earthquake", titleKo:"감옥 지진", location:"Philippi", locationKo:"빌립보", ref:"Acts 16:25-34"},
+      {title:"Mars Hill Sermon", titleKo:"아레오바고 설교", location:"Athens", locationKo:"아테네", ref:"Acts 17:22-34"},
+      {title:"18 Months in Corinth", titleKo:"고린도에서 18개월", location:"Corinth", locationKo:"고린도", ref:"Acts 18:1-11"}
+    ],
+    summary: "Paul took the Gospel to Europe for the first time. He established churches in Philippi, Thessalonica, and Corinth.",
+    summaryKo: "바울이 처음으로 유럽에 복음을 전했어. 빌립보, 데살로니가, 고린도에 교회를 세웠어."
+  },
+  3: {
+    title: "3rd Missionary Journey",
+    titleKo: "제3차 선교 여행",
+    period: "AD 53-57",
+    periodKo: "서기 53-57년",
+    duration: "~4 years",
+    durationKo: "약 4년",
+    companions: ["Timothy", "Erastus", "Titus", "Luke"],
+    companionsKo: ["디모데", "에라스도", "디도", "누가"],
+    distance: "~4,800 km",
+    cities: ["Antioch", "Galatia", "Ephesus", "Macedonia", "Corinth", "Troas", "Miletus"],
+    citiesKo: ["안디옥", "갈라디아", "에베소", "마게도냐", "고린도", "드로아", "밀레도"],
+    color: "#FFD700",
+    icon: "3",
+    keyEvents: [
+      {title:"3 Years in Ephesus", titleKo:"에베소에서 3년", location:"Ephesus", locationKo:"에베소", ref:"Acts 19:1-10"},
+      {title:"Riot of Silversmiths", titleKo:"은장이들의 폭동", location:"Ephesus", locationKo:"에베소", ref:"Acts 19:23-41"},
+      {title:"Farewell to Elders", titleKo:"장로들 작별", location:"Miletus", locationKo:"밀레도", ref:"Acts 20:17-38"}
+    ],
+    summary: "Paul spent 3 years in Ephesus, wrote major letters (1 Corinthians, Romans), and strengthened churches across Asia Minor and Greece.",
+    summaryKo: "바울이 에베소에서 3년을 보내며 주요 서신(고린도전서, 로마서)을 쓰고 소아시아와 그리스의 교회들을 강화했어."
+  },
+  rome: {
+    title: "Journey to Rome",
+    titleKo: "로마행",
+    period: "AD 59-60",
+    periodKo: "서기 59-60년",
+    duration: "~6 months",
+    durationKo: "약 6개월",
+    companions: ["Luke", "Aristarchus"],
+    companionsKo: ["누가", "아리스다고"],
+    distance: "~3,600 km",
+    cities: ["Caesarea", "Sidon", "Crete", "Malta", "Syracuse", "Rome"],
+    citiesKo: ["가이사랴", "시돈", "크레타", "몰타", "시라쿠사", "로마"],
+    color: "#C084FC",
+    icon: "R",
+    keyEvents: [
+      {title:"Shipwreck at Malta", titleKo:"몰타에서 난파", location:"Malta", locationKo:"몰타", ref:"Acts 27:39-44"},
+      {title:"Viper on Malta", titleKo:"몰타에서 독사", location:"Malta", locationKo:"몰타", ref:"Acts 28:1-6"},
+      {title:"House Arrest in Rome", titleKo:"로마에서 가택 연금", location:"Rome", locationKo:"로마", ref:"Acts 28:16-31"}
+    ],
+    summary: "Paul appealed to Caesar and was sent to Rome as a prisoner. After a dramatic shipwreck on Malta, he arrived in Rome and preached for 2 years under house arrest.",
+    summaryKo: "바울이 가이사에게 상소하여 죄수로 로마에 보내졌어. 몰타에서 극적인 난파 후 로마에 도착해 2년간 가택 연금 상태에서 전도했어."
+  }
+};
+
+function showJourneyDetail(journeyId) {
+  var data = paulJourneyData[journeyId];
+  if (!data) return;
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var isKo = lang === 'ko';
+  
+  var title = isKo ? data.titleKo : data.title;
+  var period = isKo ? data.periodKo : data.period;
+  var duration = isKo ? data.durationKo : data.duration;
+  var companions = isKo ? data.companionsKo : data.companions;
+  var cities = isKo ? data.citiesKo : data.cities;
+  var summary = isKo ? data.summaryKo : data.summary;
+  var keyEvents = data.keyEvents;
+  
+  var html = '<div class="journey-detail-header">' +
+    '<div class="journey-detail-badge" style="background:' + data.color + '">' + data.icon + '</div>' +
+    '<div><div class="journey-detail-title" style="color:' + data.color + '">' + title + '</div>' +
+    '<div class="journey-detail-subtitle">' + period + ' · ' + data.distance + '</div></div></div>';
+  
+  html += '<p style="font-family:Comic Neue,cursive;font-size:13px;color:#a0b0c0;line-height:1.5;margin-bottom:14px;">' + summary + '</p>';
+  
+  // Info section
+  html += '<div class="journey-detail-section">' +
+    '<div class="journey-detail-section-title">' + (isKo ? '📋 여행 정보' : '📋 Journey Info') + '</div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">📅</span><span>' + (isKo ? '기간: ' : 'Period: ') + period + '</span></div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">⏱️</span><span>' + (isKo ? '소요: ' : 'Duration: ') + duration + '</span></div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">📏</span><span>' + (isKo ? '거리: ' : 'Distance: ') + data.distance + '</span></div>' +
+    '<div class="journey-detail-info"><span class="journey-detail-info-icon">👥</span><span>' + (isKo ? '동행자: ' : 'Companions: ') + companions.join(', ') + '</span></div>' +
+    '</div>';
+  
+  // Cities
+  html += '<div class="journey-detail-section">' +
+    '<div class="journey-detail-section-title">' + (isKo ? '🏙️ 방문 도시' : '🏙️ Cities Visited') + '</div>' +
+    '<div class="journey-detail-cities">';
+  for (var i = 0; i < cities.length; i++) {
+    html += '<span class="journey-detail-city">' + (i+1) + '. ' + cities[i] + '</span>';
+  }
+  html += '</div></div>';
+  
+  // Key Events
+  html += '<div class="journey-detail-section">' +
+    '<div class="journey-detail-section-title">' + (isKo ? '⚡ 주요 사건' : '⚡ Key Events') + '</div>';
+  for (var j = 0; j < keyEvents.length; j++) {
+    var ev = keyEvents[j];
+    var evTitle = isKo ? ev.titleKo : ev.title;
+    var evLoc = isKo ? ev.locationKo : ev.location;
+    html += '<div class="journey-detail-event" onclick="closeJourneyDetail();openLocationDetail(\'' + ev.location.replace(/'/g,"\\'") + '\')">' +
+      '<div class="journey-detail-event-title">' + evTitle + '</div>' +
+      '<div class="journey-detail-event-loc">📍 ' + evLoc + ' · 📖 ' + ev.ref + '</div></div>';
+  }
+  html += '</div>';
+  
+  document.getElementById('journey-detail-content').innerHTML = html;
+  document.getElementById('journey-detail-popup').style.display = 'block';
+  document.getElementById('journey-detail-overlay').style.display = 'block';
+}
+
+function closeJourneyDetail() {
+  document.getElementById('journey-detail-popup').style.display = 'none';
+  document.getElementById('journey-detail-overlay').style.display = 'none';
+}
+
+// === TIMELINE MODE ===
+var timelineEras = [
+  {
+    id: 'birth',
+    title: 'Birth & Early Life',
+    titleKo: '탄생과 어린 시절',
+    icon: '⭐',
+    events: [
+      {loc:'Nazareth',event:'Annunciation to Mary'},
+      {loc:'Bethlehem',event:'Birth of Jesus'},
+      {loc:'Bethlehem',event:'Visit of the Magi'},
+      {loc:'Bethlehem',event:'Escape to Egypt'},
+      {loc:'Nazareth',event:'Jesus Grows Up'}
+    ]
+  },
+  {
+    id: 'ministry-start',
+    title: 'Ministry Begins',
+    titleKo: '사역의 시작',
+    icon: '💧',
+    events: [
+      {loc:'Jordan River',event:"John's Ministry"},
+      {loc:'Jordan River',event:'Baptism of Jesus'},
+      {loc:'Capernaum',event:'Calling the First Disciples'},
+      {loc:'Cana',event:'Water Into Wine'},
+      {loc:'Magdala',event:'Mary Magdalene Freed'}
+    ]
+  },
+  {
+    id: 'galilee-ministry',
+    title: 'Galilee Ministry',
+    titleKo: '갈릴리 사역',
+    icon: '🌊',
+    events: [
+      {loc:'Capernaum',event:'Sermon on the Mount'},
+      {loc:'Capernaum',event:'Healing the Paralytic'},
+      {loc:'Capernaum',event:"Centurion's Faith"},
+      {loc:'Cana',event:"Healing Official's Son"},
+      {loc:'Nain',event:"Raising the Widow's Son"},
+      {loc:'Sea of Galilee',event:'Calming the Storm'},
+      {loc:'Sea of Galilee',event:'Feeding the 5,000'},
+      {loc:'Bethsaida',event:'Feeding the 5,000'},
+      {loc:'Bethsaida',event:'Healing a Blind Man'},
+      {loc:'Sea of Galilee',event:'Walking on Water'},
+      {loc:'Pool of Bethesda',event:'Healing on the Sabbath'},
+      {loc:'Nazareth',event:'Rejected in Hometown'}
+    ]
+  },
+  {
+    id: 'jerusalem-final',
+    title: 'Final Week in Jerusalem',
+    titleKo: '예루살렘 마지막 주간',
+    icon: '⛪',
+    events: [
+      {loc:'Jerusalem',event:'Triumphal Entry'},
+      {loc:'Jerusalem',event:'Cleansing the Temple'},
+      {loc:'Temple Mount',event:'Jesus Teaches at the Temple'},
+      {loc:'Temple Mount',event:"The Widow's Offering"},
+      {loc:'Mount of Olives',event:'Olivet Discourse'},
+      {loc:'Upper Room',event:"Washing the Disciples' Feet"},
+      {loc:'Jerusalem',event:'The Last Supper'},
+      {loc:'Upper Room',event:'Institution of Communion'},
+      {loc:'Garden of Gethsemane',event:'Jesus Prays in Agony'},
+      {loc:'Garden of Gethsemane',event:"Judas's Betrayal"}
+    ]
+  },
+  {
+    id: 'crucifixion',
+    title: 'Crucifixion & Resurrection',
+    titleKo: '십자가와 부활',
+    icon: '✝️',
+    events: [
+      {loc:'Golgotha',event:'The Crucifixion'},
+      {loc:'Golgotha',event:'Darkness Over the Land'},
+      {loc:'Temple Mount',event:'Veil Torn in Two'},
+      {loc:'Jerusalem',event:'Crucifixion & Resurrection'},
+      {loc:'Magdala',event:'First Witness of Resurrection'},
+      {loc:'Tiberias',event:'Post-Resurrection Appearance'},
+      {loc:'Sea of Galilee',event:'Miraculous Catch of Fish'},
+      {loc:'Mount of Olives',event:'The Ascension'}
+    ]
+  },
+  {
+    id: 'early-church',
+    title: 'Early Church & Paul',
+    titleKo: '초대교회와 바울',
+    icon: '🔥',
+    events: [
+      {loc:'Jerusalem',event:'Pentecost'},
+      {loc:'Upper Room',event:'Coming of the Holy Spirit'},
+      {loc:'Damascus',event:"Paul's Conversion"},
+      {loc:'Damascus',event:'Escape in a Basket'},
+      {loc:'Antioch',event:'First Called Christians'},
+      {loc:'Antioch',event:'Missionary Journeys Begin'}
+    ]
+  },
+  {
+    id: 'paul-journeys',
+    title: "Paul's Missionary Journeys",
+    titleKo: '바울의 선교 여행',
+    icon: '🚀',
+    events: [
+      {loc:'Antioch (Start)',event:'Commissioning of Paul & Barnabas'},
+      {loc:'Cyprus',event:'Confronting a Sorcerer'},
+      {loc:'Lystra & Derbe',event:'Mistaken for Gods'},
+      {loc:'Lystra & Derbe',event:'Stoned and Left for Dead'},
+      {loc:'Antioch (Start)',event:'Jerusalem Council'},
+      {loc:'Philippi',event:"Lydia's Conversion"},
+      {loc:'Philippi',event:'Prison Earthquake'},
+      {loc:'Thessalonica',event:'Paul Preaches in the Synagogue'},
+      {loc:'Athens',event:'Debating Philosophers'},
+      {loc:'Athens',event:'Mars Hill Sermon'},
+      {loc:'Corinth',event:"Paul's 18-Month Stay"},
+      {loc:'Corinth',event:'Love Chapter'},
+      {loc:'Ephesus',event:'Riot of the Silversmiths'},
+      {loc:'Ephesus',event:"Paul's Farewell to Elders"},
+      {loc:'Ephesus',event:'Letter to Ephesians'},
+      {loc:'Thessalonica',event:"Letters About Jesus' Return"},
+      {loc:'Rome',event:'Letter to the Romans'},
+      {loc:'Rome',event:'Paul Under House Arrest'}
+    ]
+  }
+];
+
+function renderTimeline() {
+  var container = document.getElementById('map-timeline-container');
+  if (!container) return;
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var isKo = lang === 'ko';
+  
+  var html = '';
+  
+  // Filter buttons
+  html += '<div class="timeline-filter">';
+  html += '<button class="timeline-filter-btn active" onclick="filterTimeline(\'all\')" data-filter="all">' + (isKo ? '전체' : 'All') + '</button>';
+  html += '<button class="timeline-filter-btn" onclick="filterTimeline(\'jesus\')" data-filter="jesus">' + (isKo ? '예수님' : 'Jesus') + '</button>';
+  html += '<button class="timeline-filter-btn" onclick="filterTimeline(\'paul\')" data-filter="paul">' + (isKo ? '바울' : 'Paul') + '</button>';
+  html += '</div>';
+  
+  for (var e = 0; e < timelineEras.length; e++) {
+    var era = timelineEras[e];
+    var eraTitle = isKo ? era.titleKo : era.title;
+    var eraClass = (era.id === 'paul-journeys' || era.id === 'early-church') ? 'paul' : 'jesus';
+    
+    html += '<div class="timeline-era" data-era-type="' + eraClass + '">';
+    html += '<div class="timeline-era-header"><span class="timeline-era-icon">' + era.icon + '</span> ' + eraTitle + '</div>';
+    html += '<div class="timeline-line">';
+    
+    for (var i = 0; i < era.events.length; i++) {
+      var item = era.events[i];
+      var locData = mapLocationEvents[item.loc];
+      if (!locData) continue;
+      var evData = null;
+      for (var k = 0; k < locData.events.length; k++) {
+        if (locData.events[k].title === item.event) { evData = locData.events[k]; break; }
+      }
+      if (!evData) continue;
+      
+      var evTitle = isKo ? (evData.titleKo || evData.title) : evData.title;
+      var evDesc = isKo ? (evData.descKo || evData.desc) : evData.desc;
+      var locName = item.loc;
+      // Find Korean location name
+      var locNameKo = locName;
+      var allTabs = ['overview','jerusalem','galilee','paul'];
+      for (var t = 0; t < allTabs.length; t++) {
+        var locs = mapLocations[allTabs[t]] || [];
+        for (var m = 0; m < locs.length; m++) {
+          if (locs[m].name === locName) { locNameKo = locs[m].nameKo || locName; break; }
+        }
+      }
+      var displayLoc = isKo ? locNameKo : locName;
+      
+      html += '<div class="timeline-event-card" onclick="toggleTimelineEvent(this)" data-location="' + locName.replace(/"/g,'&quot;') + '">';
+      html += '<div class="timeline-event-title">' + evTitle + '</div>';
+      html += '<div class="timeline-event-location">📍 ' + displayLoc + '</div>';
+      html += '<div class="timeline-event-ref">📖 ' + evData.ref + '</div>';
+      html += '<div class="timeline-event-desc">' + evDesc + '</div>';
+      html += '</div>';
+    }
+    
+    html += '</div></div>';
+  }
+  
+  container.innerHTML = html;
+}
+
+function toggleTimelineEvent(card) {
+  if (card.classList.contains('expanded')) {
+    card.classList.remove('expanded');
+  } else {
+    // Close others
+    var all = document.querySelectorAll('.timeline-event-card.expanded');
+    all.forEach(function(c) { c.classList.remove('expanded'); });
+    card.classList.add('expanded');
+  }
+}
+
+function filterTimeline(type) {
+  var btns = document.querySelectorAll('.timeline-filter-btn');
+  btns.forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-filter') === type); });
+  
+  var eras = document.querySelectorAll('.timeline-era');
+  eras.forEach(function(era) {
+    if (type === 'all') { era.style.display = ''; }
+    else { era.style.display = era.getAttribute('data-era-type') === type ? '' : 'none'; }
+  });
+}
+
+function switchMapView(view) {
+  var btns = document.querySelectorAll('.map-view-btn');
+  btns.forEach(function(b, i) { b.classList.toggle('active', (view === 'map' && i === 0) || (view === 'timeline' && i === 1)); });
+  
+  var mapContent = document.getElementById('map-content');
+  var timeline = document.getElementById('map-timeline-container');
+  
+  if (view === 'timeline') {
+    mapContent.style.display = 'none';
+    timeline.classList.add('active');
+    renderTimeline();
+  } else {
+    mapContent.style.display = '';
+    timeline.classList.remove('active');
+  }
+}
+
+function updateMapViewToggleLanguage() {
+  var lang = (typeof readerLang !== 'undefined') ? readerLang : 'en';
+  var btns = document.querySelectorAll('.map-view-btn[data-en]');
+  btns.forEach(function(b) {
+    b.textContent = lang === 'ko' ? (b.getAttribute('data-ko') || b.getAttribute('data-en')) : b.getAttribute('data-en');
+  });
+}
 
 // ============================================================
 // LOCATION DETAIL PANEL FUNCTION
@@ -7651,6 +8561,11 @@ showScreen = function(name) {
   if(name === 'biblemap') {
     renderMapLocations('overview');
     updateMapLanguage();
+    updateMapSearchLanguage();
+    updateMapViewToggleLanguage();
+    updateJourneyLegendLanguage();
+    // Refresh read status badges when entering map
+    setTimeout(function() { refreshMapReadStatus(); }, 100);
   }
 };
 
@@ -7678,22 +8593,31 @@ function renderReadingGoal() {
   const container = document.getElementById('reading-goal-section');
   if(!container) return;
   
-  const goal = state.dailyGoal || 2;
+  const goal = state.dailyGoal;
   const done = state.todayChapters || 0;
+  
+  // If no goal set yet and never dismissed, show setup prompt
+  if(!goal) {
+    const dismissed = localStorage.getItem('dailyGoalDismissed');
+    if(dismissed) { container.innerHTML = ''; return; }
+    container.innerHTML = '<div class="goal-card" style="text-align:center;cursor:pointer;position:relative" onclick="openGoalModal()">' +
+      '<div style="position:absolute;top:8px;right:12px;color:#556080;font-size:16px;cursor:pointer" onclick="event.stopPropagation();localStorage.setItem(\'dailyGoalDismissed\',\'1\');this.parentElement.parentElement.innerHTML=\'\'">✕</div>' +
+      '<div class="goal-title">📖 Set Daily Reading Goal</div>' +
+      '<div style="color:#7888a8;font-size:12px;margin-top:4px">Tap to set your daily chapter goal</div>' +
+      '</div>';
+    return;
+  }
+  
+  // Goal is set - show compact progress only
   const pct = Math.min(100, Math.round((done/goal)*100));
   const isComplete = done >= goal;
-  
-  let h = '<div class="goal-card">';
-  h += '<div class="goal-header">';
-  h += '<div class="goal-title">' + (isComplete ? '🎉' : '📖') + ' Daily Goal</div>';
-  h += '<div class="goal-edit" onclick="openGoalModal()">Change goal</div>';
-  h += '</div>';
-  h += '<div class="goal-progress-bar"><div class="goal-progress-fill" style="width:' + pct + '%"></div></div>';
-  h += '<div class="goal-stats">';
-  h += '<span>' + done + ' / ' + goal + ' chapters</span>';
-  h += '<span>' + (isComplete ? '✅ Goal reached!' : (goal - done) + ' more to go') + '</span>';
-  h += '</div></div>';
-  container.innerHTML = h;
+  container.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(10,20,40,0.4);border-radius:10px;border:1px solid rgba(65,110,160,0.15);margin-bottom:8px;cursor:pointer" onclick="openGoalModal()">' +
+    '<span style="font-size:16px">' + (isComplete ? '🎉' : '📖') + '</span>' +
+    '<div style="flex:1">' +
+    '<div style="height:6px;background:rgba(10,20,40,0.6);border-radius:3px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:' + (isComplete ? '#4ECDC4' : 'linear-gradient(90deg,#FF6B6B,#FFD700)') + ';border-radius:3px;transition:width 0.5s"></div></div>' +
+    '</div>' +
+    '<span style="font-family:\'Comic Neue\',cursive;font-size:12px;color:' + (isComplete ? '#4ECDC4' : '#7888a8') + ';white-space:nowrap">' + done + '/' + goal + (isComplete ? ' ✅' : '') + '</span>' +
+    '</div>';
 }
 
 function openGoalModal() {
@@ -7786,14 +8710,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// ===== PINCH-TO-ZOOM FOR BIBLE MAP =====
+// ===== PINCH-TO-ZOOM FOR BIBLE MAP (CENTER-POINT BASED) =====
 (function() {
   var zoomState = {};
   
   function getState(container) {
-    var id = container.id;
+    var id = container.id || ('zoom_' + Math.random());
+    if (!container.id) container.id = id;
     if (!zoomState[id]) {
-      zoomState[id] = { scale: 1, x: 0, y: 0, startDist: 0, startScale: 1, isPinching: false, isDragging: false, startX: 0, startY: 0, startPanX: 0, startPanY: 0 };
+      zoomState[id] = { scale: 1, x: 0, y: 0, startDist: 0, startScale: 1, startX: 0, startY: 0, startPanX: 0, startPanY: 0, isPinching: false, isDragging: false, pinchCenterX: 0, pinchCenterY: 0 };
     }
     return zoomState[id];
   }
@@ -7810,17 +8735,27 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function clampPan(container) {
     var s = getState(container);
-    var rect = container.getBoundingClientRect();
-    var maxX = Math.max(0, (rect.width * s.scale - rect.width) / 2);
-    var maxY = Math.max(0, (rect.height * s.scale - rect.height) / 2);
-    s.x = Math.max(-maxX, Math.min(maxX, s.x));
-    s.y = Math.max(-maxY, Math.min(maxY, s.y));
+    var inner = container.querySelector('.map-zoom-inner');
+    if (!inner) return;
+    var cw = container.clientWidth;
+    var ch = container.clientHeight;
+    var iw = inner.scrollWidth * s.scale;
+    var ih = inner.scrollHeight * s.scale;
+    // Allow panning only when zoomed content exceeds container
+    var minX = Math.min(0, cw - iw);
+    var minY = Math.min(0, ch - ih);
+    s.x = Math.max(minX, Math.min(0, s.x));
+    s.y = Math.max(minY, Math.min(0, s.y));
   }
   
   function getDist(t1, t2) {
     var dx = t1.clientX - t2.clientX;
     var dy = t1.clientY - t2.clientY;
     return Math.sqrt(dx * dx + dy * dy);
+  }
+  
+  function getMidpoint(t1, t2) {
+    return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
   }
   
   function onTouchStart(e) {
@@ -7832,6 +8767,13 @@ document.addEventListener('DOMContentLoaded', function() {
       s.isDragging = false;
       s.startDist = getDist(e.touches[0], e.touches[1]);
       s.startScale = s.scale;
+      s.startPanX = s.x;
+      s.startPanY = s.y;
+      // Record pinch center relative to container
+      var mid = getMidpoint(e.touches[0], e.touches[1]);
+      var rect = container.getBoundingClientRect();
+      s.pinchCenterX = mid.x - rect.left;
+      s.pinchCenterY = mid.y - rect.top;
     } else if (e.touches.length === 1 && s.scale > 1) {
       s.isDragging = true;
       s.isPinching = false;
@@ -7848,8 +8790,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (s.isPinching && e.touches.length === 2) {
       e.preventDefault();
       var dist = getDist(e.touches[0], e.touches[1]);
-      var newScale = s.startScale * (dist / s.startDist);
-      s.scale = Math.max(1, Math.min(4, newScale));
+      var newScale = Math.max(1, Math.min(4, s.startScale * (dist / s.startDist)));
+      // Zoom toward pinch center: adjust pan so the point under fingers stays put
+      var ratio = newScale / s.startScale;
+      s.x = s.startPanX - (s.pinchCenterX - s.startPanX) * (ratio - 1);
+      s.y = s.startPanY - (s.pinchCenterY - s.startPanY) * (ratio - 1);
+      s.scale = newScale;
+      if (s.scale <= 1) { s.x = 0; s.y = 0; }
       clampPan(container);
       applyTransform(container);
     } else if (s.isDragging && e.touches.length === 1 && s.scale > 1) {
@@ -7874,21 +8821,24 @@ document.addEventListener('DOMContentLoaded', function() {
   // Double-tap to zoom
   var lastTap = 0;
   function onDoubleTap(e) {
+    if (e.touches.length !== 1) return;
     var container = e.currentTarget;
     var s = getState(container);
     var now = Date.now();
     if (now - lastTap < 300) {
       e.preventDefault();
+      var rect = container.getBoundingClientRect();
+      var tapX = e.touches[0].clientX - rect.left;
+      var tapY = e.touches[0].clientY - rect.top;
       if (s.scale > 1) {
+        // Zoom out
         s.scale = 1; s.x = 0; s.y = 0;
       } else {
-        s.scale = 2.5;
-        // Center zoom on tap point
-        var rect = container.getBoundingClientRect();
-        var tapX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-        var tapY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-        s.x = (rect.width / 2 - tapX) * (s.scale - 1);
-        s.y = (rect.height / 2 - tapY) * (s.scale - 1);
+        // Zoom in toward tap point
+        var newScale = 2.5;
+        s.x = -(tapX * (newScale - 1));
+        s.y = -(tapY * (newScale - 1));
+        s.scale = newScale;
         clampPan(container);
       }
       applyTransform(container);
@@ -7896,13 +8846,22 @@ document.addEventListener('DOMContentLoaded', function() {
     lastTap = now;
   }
   
-  // Mouse wheel zoom for desktop
+  // Mouse wheel zoom for desktop (zoom toward cursor)
   function onWheel(e) {
     e.preventDefault();
     var container = e.currentTarget;
     var s = getState(container);
+    var rect = container.getBoundingClientRect();
+    var mouseX = e.clientX - rect.left;
+    var mouseY = e.clientY - rect.top;
+    var oldScale = s.scale;
     var delta = e.deltaY > 0 ? -0.3 : 0.3;
-    s.scale = Math.max(1, Math.min(4, s.scale + delta));
+    var newScale = Math.max(1, Math.min(4, oldScale + delta));
+    // Adjust pan to zoom toward cursor
+    var ratio = newScale / oldScale;
+    s.x = mouseX - ratio * (mouseX - s.x);
+    s.y = mouseY - ratio * (mouseY - s.y);
+    s.scale = newScale;
     if (s.scale <= 1) { s.x = 0; s.y = 0; }
     clampPan(container);
     applyTransform(container);
@@ -7920,18 +8879,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Button controls
+  // Button controls (zoom toward center)
   window.mapZoomIn = function(btn) {
     var container = btn.closest('.map-zoom-container');
     var s = getState(container);
-    s.scale = Math.min(4, s.scale + 0.5);
+    var cx = container.clientWidth / 2;
+    var cy = container.clientHeight / 2;
+    var oldScale = s.scale;
+    var newScale = Math.min(4, oldScale + 0.5);
+    var ratio = newScale / oldScale;
+    s.x = cx - ratio * (cx - s.x);
+    s.y = cy - ratio * (cy - s.y);
+    s.scale = newScale;
     clampPan(container);
     applyTransform(container);
   };
   window.mapZoomOut = function(btn) {
     var container = btn.closest('.map-zoom-container');
     var s = getState(container);
-    s.scale = Math.max(1, s.scale - 0.5);
+    var cx = container.clientWidth / 2;
+    var cy = container.clientHeight / 2;
+    var oldScale = s.scale;
+    var newScale = Math.max(1, oldScale - 0.5);
+    var ratio = newScale / oldScale;
+    s.x = cx - ratio * (cx - s.x);
+    s.y = cy - ratio * (cy - s.y);
+    s.scale = newScale;
     if (s.scale <= 1) { s.x = 0; s.y = 0; }
     clampPan(container);
     applyTransform(container);
@@ -7952,6 +8925,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="social.js?v=61"></script>
 </body>
 </html>
 

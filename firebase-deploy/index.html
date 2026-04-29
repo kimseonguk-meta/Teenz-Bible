@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v59';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js'];
+      const CACHE = 'teens-bible-v61';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=61'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -5858,7 +5858,16 @@ renderBible();
     var el = document.getElementById('enjoy-guide-overlay');
     if (el) {
       el.style.animation = 'fadeOut 0.3s ease forwards';
-      setTimeout(function() { el.remove(); }, 300);
+      setTimeout(function() { 
+        el.remove();
+        // After enjoy guide closes, trigger onboarding if no profile yet
+        if (typeof showOnboarding === 'function') {
+          var savedProfile = localStorage.getItem('teensBibleProfile');
+          if (!savedProfile) {
+            setTimeout(function() { showOnboarding(); }, 200);
+          }
+        }
+      }, 300);
     }
   }
 
@@ -8920,7 +8929,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=59"></script>
+<script src="social.js?v=61"></script>
 </body>
 </html>
 

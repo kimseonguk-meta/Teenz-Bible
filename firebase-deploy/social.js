@@ -146,6 +146,9 @@ function initFirebase() {
 }
 
 // === ONBOARDING ===
+// === 2-STEP ONBOARDING: Name → Class ===
+var _onboardNickname = '';
+
 function showOnboarding() {
   // Don't show if profile already exists
   if (userProfile && userProfile.nickname) {
@@ -153,33 +156,116 @@ function showOnboarding() {
     return;
   }
   
+  // Don't show if enjoy guide is currently visible - it will trigger onboarding when it closes
+  if (document.getElementById('enjoy-guide-overlay')) {
+    return;
+  }
+  
+  // Don't show if enjoy guide hasn't been completed yet (it will trigger onboarding when done)
+  if (!localStorage.getItem('enjoyGuideDone')) {
+    return;
+  }
+  
+  // Don't show if already showing
+  if (document.getElementById('onboarding-overlay')) {
+    return;
+  }
+  
+  _onboardNickname = '';
+  showOnboardStep1();
+}
+
+function showOnboardStep1() {
   const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  
+  // Remove existing overlay if any
+  var existing = document.getElementById('onboarding-overlay');
+  if (existing) existing.remove();
   
   const overlay = document.createElement('div');
   overlay.id = 'onboarding-overlay';
   overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
   
   const card = document.createElement('div');
-  card.style.cssText = 'background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.3);border-radius:20px;padding:32px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);';
+  card.style.cssText = 'background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.3);border-radius:20px;padding:32px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);animation:slideInUp 0.4s cubic-bezier(0.34,1.56,0.64,1);';
   
   card.innerHTML = `
-    <div style="font-size:48px;margin-bottom:12px;">👋</div>
-    <h2 style="font-family:'Luckiest Guy',cursive;color:#FF6B6B;font-size:24px;margin-bottom:8px;">
-      ${isKo ? '환영해!' : 'Welcome!'}
+    <div style="font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">👋</div>
+    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 1 / 2</div>
+    <h2 style="font-family:'Luckiest Guy',cursive;color:#FF6B6B;font-size:26px;margin-bottom:8px;">
+      ${isKo ? '이름이 뭐야?' : "What's your name?"}
     </h2>
-    <p style="color:#8899bb;font-size:14px;margin-bottom:24px;line-height:1.5;">
-      ${isKo ? '이름을 적고 반을 선택하면 친구들과 리더보드에서 경쟁할 수 있어!' : 'Enter your name and select your class to compete with friends on the leaderboard!'}
+    <p style="color:#8899bb;font-size:14px;margin-bottom:28px;line-height:1.5;">
+      ${isKo ? '리더보드에 표시될 이름을 적어줘!' : 'This will show on the leaderboard!'}
     </p>
-    <div style="margin-bottom:16px;">
-      <input id="onboard-nickname" type="text" maxlength="12" placeholder="${isKo ? '이름 (한국어/영어 OK!)' : 'Your name (Korean or English!)'}" 
-        style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;"
-        onfocus="this.style.borderColor='#FF6B6B'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'">
+    <div style="margin-bottom:28px;">
+      <input id="onboard-nickname" type="text" maxlength="12" placeholder="${isKo ? '이름 입력 (한국어/영어 OK!)' : 'Type your name here...'}" 
+        style="width:100%;padding:16px 20px;border-radius:14px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.07);color:#fff;font-size:18px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s;"
+        onfocus="this.style.borderColor='#FF6B6B';this.style.boxShadow='0 0 20px rgba(255,107,107,0.2)'" 
+        onblur="this.style.borderColor='rgba(100,140,200,0.3)';this.style.boxShadow='none'"
+        onkeypress="if(event.key==='Enter')goToStep2()">
     </div>
-    <div style="margin-bottom:20px;">
-      <div style="color:#8899bb;font-size:13px;margin-bottom:8px;">${isKo ? '나섬틴즈부 반을 선택해줘!' : 'Select your Nasam Teens class!'}</div>
+    <button onclick="goToStep2()" style="width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:17px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(255,107,107,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
+      ${isKo ? '다음 →' : 'NEXT →'}
+    </button>
+  `;
+  
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+  
+  // Focus nickname input
+  setTimeout(() => {
+    const input = document.getElementById('onboard-nickname');
+    if (input) input.focus();
+  }, 300);
+}
+
+function goToStep2() {
+  const nickname = (document.getElementById('onboard-nickname').value || '').trim();
+  
+  if (!nickname) {
+    const input = document.getElementById('onboard-nickname');
+    input.style.borderColor = '#f87171';
+    input.style.animation = 'shake 0.3s';
+    setTimeout(() => input.style.animation = '', 300);
+    return;
+  }
+  
+  _onboardNickname = nickname;
+  showOnboardStep2();
+}
+
+function showOnboardStep2() {
+  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  
+  // Remove existing overlay
+  var existing = document.getElementById('onboarding-overlay');
+  if (existing) existing.remove();
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'onboarding-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
+  
+  const card = document.createElement('div');
+  card.style.cssText = 'background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.3);border-radius:20px;padding:32px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);animation:slideInUp 0.4s cubic-bezier(0.34,1.56,0.64,1);';
+  
+  card.innerHTML = `
+    <div style="font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">🏫</div>
+    <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 2 / 2</div>
+    <h2 style="font-family:'Luckiest Guy',cursive;color:#4ECDC4;font-size:26px;margin-bottom:4px;">
+      ${isKo ? '반을 선택해줘!' : 'Pick your class!'}
+    </h2>
+    <p style="color:#FFD700;font-size:15px;margin-bottom:6px;font-family:'Comic Neue',sans-serif;font-weight:bold;">
+      ${isKo ? '👋 ' + _onboardNickname + ', 반가워!' : '👋 Hey ' + _onboardNickname + '!'}
+    </p>
+    <p style="color:#8899bb;font-size:14px;margin-bottom:24px;line-height:1.5;">
+      ${isKo ? '나섬틴즈부 반을 선택하면 친구들과 경쟁할 수 있어!' : 'Select your Nasam Teens class to compete with friends!'}
+    </p>
+    <div style="margin-bottom:24px;">
       <select id="onboard-group" 
-        style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;appearance:none;-webkit-appearance:none;cursor:pointer;"
-        onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'">
+        style="width:100%;padding:16px 20px;border-radius:14px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.07);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;"
+        onfocus="this.style.borderColor='#4ECDC4';this.style.boxShadow='0 0 20px rgba(78,205,196,0.2)'" 
+        onblur="this.style.borderColor='rgba(100,140,200,0.3)';this.style.boxShadow='none'">
         <option value="" style="background:#1a2848;color:#8899bb;">${isKo ? '-- 반 선택 --' : '-- Select Class --'}</option>
         <optgroup label="2010년생" style="background:#1a2848;color:#8899bb;">
           <option value="10A" style="background:#1a2848;color:#fff;">10A</option>
@@ -212,8 +298,11 @@ function showOnboarding() {
         </optgroup>
       </select>
     </div>
-    <div style="display:flex;gap:8px;">
-      <button onclick="completeOnboarding()" style="flex:1;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;">
+    <div style="display:flex;gap:10px;">
+      <button onclick="showOnboardStep1()" style="flex:0 0 auto;padding:16px 20px;border-radius:14px;border:1px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#8899bb;font-size:15px;cursor:pointer;font-family:'Comic Neue',sans-serif;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+        ← ${isKo ? '이전' : 'BACK'}
+      </button>
+      <button onclick="completeOnboarding()" style="flex:1;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#4ECDC4,#38b2ac);color:#fff;font-size:17px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(78,205,196,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
         ${isKo ? '시작! 🚀' : "LET'S GO! 🚀"}
       </button>
     </div>
@@ -221,25 +310,10 @@ function showOnboarding() {
   
   overlay.appendChild(card);
   document.body.appendChild(overlay);
-  
-  // Focus nickname input
-  setTimeout(() => {
-    const input = document.getElementById('onboard-nickname');
-    if (input) input.focus();
-  }, 300);
 }
 
 function completeOnboarding() {
-  const nickname = (document.getElementById('onboard-nickname').value || '').trim();
   const groupCode = (document.getElementById('onboard-group').value || '').trim().toUpperCase();
-  
-  if (!nickname) {
-    const input = document.getElementById('onboard-nickname');
-    input.style.borderColor = '#f87171';
-    input.style.animation = 'shake 0.3s';
-    setTimeout(() => input.style.animation = '', 300);
-    return;
-  }
   
   if (!groupCode) {
     const sel = document.getElementById('onboard-group');
@@ -250,7 +324,7 @@ function completeOnboarding() {
   }
   
   userProfile = {
-    nickname: nickname,
+    nickname: _onboardNickname,
     groupCode: groupCode || 'GLOBAL',
     joinedAt: Date.now(),
     avatar: getRandomAvatar()
@@ -270,7 +344,7 @@ function completeOnboarding() {
   }
   
   updateSocialUI();
-  if (typeof showXpToast === 'function') showXpToast('🎉 Welcome, ' + nickname + '!');
+  if (typeof showXpToast === 'function') showXpToast('🎉 Welcome, ' + _onboardNickname + '!');
 }
 
 function skipOnboarding() {

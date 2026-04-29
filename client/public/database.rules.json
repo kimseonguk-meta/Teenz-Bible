@@ -1,0 +1,26 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "groups": {
+      ".read": "auth != null",
+      "$groupCode": {
+        "members": {
+          "$uid": {
+            ".read": true,
+            ".write": "$uid === auth.uid"
+          }
+        },
+        ".read": true
+      }
+    },
+    "rankSnapshots": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
