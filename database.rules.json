@@ -17,6 +17,10 @@
         },
         ".read": true
       }
+    },
+    "rankSnapshots": {
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

@@ -544,6 +544,47 @@ function loadLeaderboard(sortBy) {
   });
 }
 
+// === RANK SNAPSHOT SYSTEM ===
+// Saves current rankings to Firebase and compares with previous snapshot
+let previousRankSnapshot = null;
+
+function getRankSnapshotKey(sortBy, scope, time) {
+  const groupCode = userProfile ? userProfile.groupCode : 'GLOBAL';
+  return (scope === 'all' ? 'ALL' : groupCode) + '_' + sortBy + '_' + time;
+}
+
+function loadPreviousRankSnapshot(sortBy, callback) {
+  if (!fbDb) { callback({}); return; }
+  const key = getRankSnapshotKey(sortBy, currentLbScope, currentLbTime);
+  fbDb.ref('rankSnapshots/' + key).once('value').then(function(snap) {
+    callback(snap.val() || {});
+  }).catch(function() { callback({}); });
+}
+
+function saveRankSnapshot(members, sortBy) {
+  if (!fbDb) return;
+  const key = getRankSnapshotKey(sortBy, currentLbScope, currentLbTime);
+  const snapshot = {};
+  members.forEach((m, i) => { snapshot[m.uid] = i + 1; });
+  fbDb.ref('rankSnapshots/' + key).set(snapshot).catch(function(e) {
+    console.log('Save rank snapshot error:', e);
+  });
+}
+
+function getRankDeltaHtml(uid, currentRank, prevSnapshot, isKo) {
+  if (!prevSnapshot || !prevSnapshot[uid]) {
+    return '<span style="font-size:9px;color:#6880a8;margin-left:2px;">NEW</span>';
+  }
+  const prevRank = prevSnapshot[uid];
+  const delta = prevRank - currentRank; // positive = moved up
+  if (delta > 0) {
+    return '<span style="font-size:10px;color:#4ECDC4;margin-left:3px;font-weight:bold;">▲' + delta + '</span>';
+  } else if (delta < 0) {
+    return '<span style="font-size:10px;color:#FF6B6B;margin-left:3px;font-weight:bold;">▼' + Math.abs(delta) + '</span>';
+  }
+  return '<span style="font-size:9px;color:#6880a8;margin-left:3px;">—</span>';
+}
+
 function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
     // FIX 9: Filter by time period
     const now = Date.now();
@@ -572,48 +613,55 @@ function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
       }); break;
     }
     
-    const medals = ['\u{1F947}','\u{1F948}','\u{1F949}'];
-    const myUid = currentUser ? currentUser.uid : '';
-    
-    let html = '';
-    if (showClass) {
-      html += '<div style="text-align:center;color:#4ECDC4;font-size:11px;margin-bottom:8px;font-weight:bold;">' + 
-        (isKo ? '전체 ' + members.length + '명' : 'All ' + members.length + ' members') + '</div>';
-    }
-    members.forEach((m, i) => {
-      const isMe = m.uid === myUid;
-      const rank = i < 3 ? medals[i] : (i+1);
-      const rankStyle = i < 3 ? 'font-size:24px;' : 'font-size:16px;color:#6880a8;font-weight:bold;';
+    // Load previous rank snapshot and render with deltas
+    loadPreviousRankSnapshot(sortBy, function(prevSnapshot) {
+      const medals = ['\u{1F947}','\u{1F948}','\u{1F949}'];
+      const myUid = currentUser ? currentUser.uid : '';
       
-      let valueText = '';
-      switch(sortBy) {
-        case 'xp': valueText = (m.xp||0).toLocaleString() + ' XP'; break;
-        case 'streak': valueText = (m.streak||0) + (isKo ? '일' : ' days'); break;
-        case 'chapters': valueText = (m.chaptersRead||0) + (isKo ? '장' : ' ch'); break;
-        case 'quiz': 
-          const rate = (m.quizTotal||0) > 0 ? Math.round((m.quizCorrect||0)/(m.quizTotal||1)*100) : 0;
-          valueText = rate + '% (' + (m.quizCorrect||0) + '/' + (m.quizTotal||0) + ')';
-          break;
+      let html = '';
+      if (showClass) {
+        html += '<div style="text-align:center;color:#4ECDC4;font-size:11px;margin-bottom:8px;font-weight:bold;">' + 
+          (isKo ? '전체 ' + members.length + '명' : 'All ' + members.length + ' members') + '</div>';
       }
-      
-      const classTag = showClass && m.groupCode ? '<span style="background:rgba(78,205,196,0.15);color:#4ECDC4;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;">' + m.groupCode + '</span>' : '';
-      
-      html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:6px;' +
-        'background:' + (isMe ? 'rgba(255,107,107,0.15)' : 'rgba(255,255,255,0.03)') + ';' +
-        'border:' + (isMe ? '1px solid rgba(255,107,107,0.3)' : '1px solid transparent') + ';">' +
-        '<div style="' + rankStyle + 'min-width:32px;text-align:center;">' + rank + '</div>' +
-        '<div style="font-size:28px;">' + (m.avatar||'😎') + '</div>' +
-        '<div style="flex:1;min-width:0;">' +
-          '<div style="font-size:14px;font-weight:bold;color:' + (isMe ? '#FF6B6B' : '#dde4f0') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-            (m.nickname||'Anonymous') + (isMe ? (isKo ? ' (나)' : ' (You)') : '') + classTag +
+      members.forEach((m, i) => {
+        const isMe = m.uid === myUid;
+        const rank = i < 3 ? medals[i] : (i+1);
+        const rankStyle = i < 3 ? 'font-size:24px;' : 'font-size:16px;color:#6880a8;font-weight:bold;';
+        const rankDelta = getRankDeltaHtml(m.uid, i + 1, prevSnapshot, isKo);
+        
+        let valueText = '';
+        switch(sortBy) {
+          case 'xp': valueText = (m.xp||0).toLocaleString() + ' XP'; break;
+          case 'streak': valueText = (m.streak||0) + (isKo ? '일' : ' days'); break;
+          case 'chapters': valueText = (m.chaptersRead||0) + (isKo ? '장' : ' ch'); break;
+          case 'quiz': 
+            const rate = (m.quizTotal||0) > 0 ? Math.round((m.quizCorrect||0)/(m.quizTotal||1)*100) : 0;
+            valueText = rate + '% (' + (m.quizCorrect||0) + '/' + (m.quizTotal||0) + ')';
+            break;
+        }
+        
+        const classTag = showClass && m.groupCode ? '<span style="background:rgba(78,205,196,0.15);color:#4ECDC4;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;">' + m.groupCode + '</span>' : '';
+        
+        html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:6px;' +
+          'background:' + (isMe ? 'rgba(255,107,107,0.15)' : 'rgba(255,255,255,0.03)') + ';' +
+          'border:' + (isMe ? '1px solid rgba(255,107,107,0.3)' : '1px solid transparent') + ';">' +
+          '<div style="' + rankStyle + 'min-width:32px;text-align:center;">' + rank + '</div>' +
+          '<div style="font-size:28px;">' + (m.avatar||'😎') + '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-size:14px;font-weight:bold;color:' + (isMe ? '#FF6B6B' : '#dde4f0') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+              (m.nickname||'Anonymous') + (isMe ? (isKo ? ' (나)' : ' (You)') : '') + rankDelta + classTag +
+            '</div>' +
+            '<div style="font-size:11px;color:#6880a8;">' + valueText + '</div>' +
           '</div>' +
-          '<div style="font-size:11px;color:#6880a8;">' + valueText + '</div>' +
-        '</div>' +
-        (i < 3 ? '<div style="font-size:10px;color:#FFD700;">★</div>' : '') +
-      '</div>';
+          (i < 3 ? '<div style="font-size:10px;color:#FFD700;">★</div>' : '') +
+        '</div>';
+      });
+      
+      listEl.innerHTML = html;
+      
+      // Save current ranking as the new snapshot for next comparison
+      saveRankSnapshot(members, sortBy);
     });
-    
-    listEl.innerHTML = html;
 }
 
 // === INVITE / CHALLENGE ===
@@ -1274,6 +1322,26 @@ function loadAdminData() {
       return a.localeCompare(b);
     });
     
+    // Book chapter counts for progress calculation
+    const bookChapterCounts = {
+      'Matthew': 28, 'Mark': 16, 'Luke': 24, 'John': 21,
+      'Acts': 28, 'Romans': 16, '1 Corinthians': 16, '2 Corinthians': 13,
+      'Galatians': 6, 'Ephesians': 6, 'Philippians': 4, 'Colossians': 4,
+      '1 Thessalonians': 5, '2 Thessalonians': 3, '1 Timothy': 6, '2 Timothy': 4,
+      'Titus': 3, 'Philemon': 1, 'Hebrews': 13, 'James': 5,
+      '1 Peter': 5, '2 Peter': 3, '1 John': 5, '2 John': 1, '3 John': 1,
+      'Jude': 1, 'Revelation': 22
+    };
+    const bookColors = {
+      'Matthew': '#FF6B6B', 'Mark': '#4ECDC4', 'Luke': '#FFD700', 'John': '#a78bfa',
+      'Acts': '#f97316', 'Romans': '#06b6d4', '1 Corinthians': '#ec4899', '2 Corinthians': '#8b5cf6',
+      'Galatians': '#10b981', 'Ephesians': '#f59e0b', 'Philippians': '#3b82f6', 'Colossians': '#ef4444',
+      '1 Thessalonians': '#14b8a6', '2 Thessalonians': '#6366f1', '1 Timothy': '#d946ef', '2 Timothy': '#0ea5e9',
+      'Titus': '#84cc16', 'Philemon': '#f43f5e', 'Hebrews': '#22d3ee', 'James': '#a855f7',
+      '1 Peter': '#eab308', '2 Peter': '#2dd4bf', '1 John': '#fb923c', '2 John': '#818cf8',
+      '3 John': '#34d399', 'Jude': '#f472b6', 'Revelation': '#c084fc'
+    };
+    
     // Render per-class breakdown
     const classListEl = document.getElementById('admin-class-list');
     let classHtml = '';
@@ -1308,6 +1376,61 @@ function loadAdminData() {
                 ${isKo ? '활동중' : 'Active'}: ${activeCount}/${members.length}
               </div>
             </div>
+            
+            <!-- READING PROGRESS CHART -->
+            <div style="background:rgba(0,0,0,0.2);border-radius:12px;padding:14px;margin-bottom:14px;">
+              <div style="font-size:12px;font-weight:bold;color:#dde4f0;margin-bottom:10px;">
+                📊 ${isKo ? '학생별 읽기 진행률' : 'Reading Progress by Student'}
+              </div>
+              ${members.map(m => {
+                const bp = m.booksProgress || {};
+                let totalRead = 0;
+                let totalChapters = 0;
+                // Only count books that exist in the app
+                Object.keys(bookChapterCounts).forEach(book => {
+                  totalChapters += bookChapterCounts[book];
+                  if (bp[book] && Array.isArray(bp[book])) {
+                    totalRead += Math.min(bp[book].length, bookChapterCounts[book]);
+                  }
+                });
+                const overallPct = totalChapters > 0 ? Math.round((totalRead / totalChapters) * 100) : 0;
+                return `
+                  <div style="margin-bottom:8px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                      <span style="font-size:11px;color:#dde4f0;">${m.avatar || '\ud83d\ude0e'} ${m.nickname || 'Anonymous'}</span>
+                      <span style="font-size:10px;color:#4ECDC4;font-weight:bold;">${overallPct}% (${totalRead}/${totalChapters})</span>
+                    </div>
+                    <div style="height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;">
+                      <div style="height:100%;width:${overallPct}%;background:linear-gradient(90deg,#4ECDC4,#a78bfa);border-radius:4px;transition:width 0.3s;"></div>
+                    </div>
+                  </div>`;
+              }).join('')}
+              
+              <!-- Per-book breakdown -->
+              <div style="margin-top:12px;border-top:1px solid rgba(100,140,200,0.1);padding-top:10px;">
+                <div style="font-size:11px;color:#6880a8;margin-bottom:8px;">${isKo ? '책별 진행률 (반 평균)' : 'Per-Book Progress (Class Avg)'}</div>
+                ${Object.entries(bookChapterCounts).filter(([book]) => {
+                  // Only show books that at least one student has started
+                  return members.some(m => m.booksProgress && m.booksProgress[book] && m.booksProgress[book].length > 0);
+                }).map(([book, total]) => {
+                  const avgRead = members.reduce((sum, m) => {
+                    const bp = m.booksProgress || {};
+                    return sum + (bp[book] && Array.isArray(bp[book]) ? Math.min(bp[book].length, total) : 0);
+                  }, 0) / members.length;
+                  const pct = Math.round((avgRead / total) * 100);
+                  const color = bookColors[book] || '#4ECDC4';
+                  return `
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+                      <span style="font-size:10px;color:#dde4f0;min-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${book}</span>
+                      <div style="flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;">
+                        <div style="height:100%;width:${pct}%;background:${color};border-radius:3px;"></div>
+                      </div>
+                      <span style="font-size:9px;color:${color};min-width:30px;text-align:right;">${pct}%</span>
+                    </div>`;
+                }).join('')}
+              </div>
+            </div>
+            
             <div style="font-size:11px;color:#6880a8;margin-bottom:6px;display:grid;grid-template-columns:36px 28px 1fr 60px 50px 50px 50px;gap:4px;padding:0 4px;">
               <div>#</div><div></div><div>${isKo ? '이름' : 'Name'}</div><div style="text-align:right;">XP</div><div style="text-align:right;">📖</div><div style="text-align:right;">🔥</div><div style="text-align:right;">🧠</div>
             </div>`;
