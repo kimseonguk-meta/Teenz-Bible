@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v74';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=74'];
+      const CACHE = 'teens-bible-v75';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=75'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -4912,8 +4912,8 @@ function showPwaInstallGuide() {
   var ctaFontSize = isTablet ? '24px' : '20px';
   var ctaPad = isTablet ? '18px' : '16px';
   var cardPad = isTablet ? '28px' : '20px';
-  var cardMaxW = isTablet ? '480px' : '340px';
-  var contentMaxW = isTablet ? '520px' : '400px';
+  var cardMaxW = isTablet ? '520px' : '380px';
+  var contentMaxW = isTablet ? '560px' : '420px';
 
   var html = '';
 
@@ -5029,39 +5029,39 @@ function showPwaInstallGuide() {
 // Helper to build platform-specific instructions
 function buildInstructions(titleSize, stepSize, badgeSize, badgeFont) {
   var h = '';
+  
+  // PWA explanation - why install this way
+  h += '<div style="text-align:center;margin-bottom:16px;">';
+  h += '<p style="color:#FFD700;font-size:'+titleSize+';font-weight:700;margin:0 0 8px;opacity:0.95;">Install as App</p>';
+  h += '<p style="color:rgba(255,255,255,0.6);font-size:12px;margin:0;line-height:1.5;">Teenz Bible is a <b style="color:rgba(255,255,255,0.85)">web app</b> — no app store needed!<br>Install it directly from your browser in seconds.</p>';
+  h += '</div>';
+  
   if(isAndroid) {
-    h += '<p style="color:#fff;font-size:'+titleSize+';font-weight:700;margin:0 0 14px;text-align:center;opacity:0.9;">Add to Home Screen in seconds</p>';
-    h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-    h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
-    h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Tap Chrome menu <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:6px;font-size:16px;font-weight:900;">\u22EE</span> (top right)</p>';
-    h += '</div>';
-    h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-    h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
-    h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Tap <span style="color:#FFD700;">"Add to Home screen"</span></p>';
-    h += '</div>';
-    h += '<div style="display:flex;align-items:center;gap:12px;">';
-    h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">\u2713</div>';
-    h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Tap "Add" \u2014 Done!</p>';
-    h += '</div>';
+    // Android: show the guide image directly
+    h += '<img src="/android-install-guide.webp" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="Android Install Guide">';
   } else if(isIPhone) {
-    h += '<p style="color:#fff;font-size:'+titleSize+';font-weight:700;margin:0 0 14px;text-align:center;opacity:0.9;">Add to Home Screen in seconds</p>';
-    h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-    h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
-    h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Tap Share <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:6px;font-size:16px;">\u2191</span> at the bottom</p>';
-    h += '</div>';
-    h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-    h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
-    h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Tap <span style="color:#FFD700;">"Add to Home Screen"</span></p>';
-    h += '</div>';
-    h += '<div style="display:flex;align-items:center;gap:12px;">';
-    h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">\u2713</div>';
-    h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Tap "Add" \u2014 Done!</p>';
-    h += '</div>';
+    // iPhone: show the guide image directly
+    h += '<img src="/iphone-install-guide.webp" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="iPhone Install Guide">';
   } else {
-    // Desktop: detect browser and show specific instructions
+    // Desktop: show tabs for iPhone / Android(Galaxy) + desktop instructions
+    h += '<div id="install-tabs" style="display:flex;gap:6px;margin-bottom:12px;">';
+    h += '<button onclick="switchInstallTab(\'iphone\')" id="install-tab-iphone" style="flex:1;padding:8px;background:rgba(147,197,253,0.15);border:2px solid rgba(147,197,253,0.4);color:#93c5fd;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s">🍏 iPhone</button>';
+    h += '<button onclick="switchInstallTab(\'android\')" id="install-tab-android" style="flex:1;padding:8px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:rgba(74,222,128,0.6);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s">📱 Android (Galaxy)</button>';
+    h += '<button onclick="switchInstallTab(\'desktop\')" id="install-tab-desktop" style="flex:1;padding:8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);color:rgba(250,204,21,0.6);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s">🖥️ Desktop</button>';
+    h += '</div>';
+    
+    // Tab content panels
+    h += '<div id="install-content-iphone" style="display:block;">';
+    h += '<img src="/iphone-install-guide.webp" style="width:100%;border-radius:12px;" alt="iPhone Install Guide">';
+    h += '</div>';
+    
+    h += '<div id="install-content-android" style="display:none;">';
+    h += '<img src="/android-install-guide.webp" style="width:100%;border-radius:12px;" alt="Android Install Guide">';
+    h += '</div>';
+    
+    h += '<div id="install-content-desktop" style="display:none;">';
+    // Desktop-specific text instructions
     if(isSafari && isMac) {
-      // macOS Safari
-      h += '<p style="color:#fff;font-size:'+titleSize+';font-weight:700;margin:0 0 14px;text-align:center;opacity:0.9;">Install as Mac App</p>';
       h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
       h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
       h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">File</span> in the menu bar</p>';
@@ -5071,42 +5071,61 @@ function buildInstructions(titleSize, stepSize, badgeSize, badgeFont) {
       h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Add to Dock"</span></p>';
       h += '</div>';
       h += '<div style="display:flex;align-items:center;gap:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">\u2713</div>';
-      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Click "Add" \u2014 Done!</p>';
+      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div>';
+      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Click "Add" — Done!</p>';
       h += '</div>';
     } else if(isEdge) {
-      // Microsoft Edge
-      h += '<p style="color:#fff;font-size:'+titleSize+';font-weight:700;margin:0 0 14px;text-align:center;opacity:0.9;">Install as Desktop App</p>';
       h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
       h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
       h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:6px;font-size:16px;font-weight:900;">&#x22EF;</span> menu (top right)</p>';
       h += '</div>';
       h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
       h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Apps" \u2192 "Install this site as an app"</span></p>';
+      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Apps" → "Install this site as an app"</span></p>';
       h += '</div>';
       h += '<div style="display:flex;align-items:center;gap:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">\u2713</div>';
-      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Click "Install" \u2014 Done!</p>';
+      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div>';
+      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Click "Install" — Done!</p>';
       h += '</div>';
     } else {
-      // Chrome (default for desktop)
-      h += '<p style="color:#fff;font-size:'+titleSize+';font-weight:700;margin:0 0 14px;text-align:center;opacity:0.9;">Install as Desktop App</p>';
       h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
       h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click the <span style="background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:6px;font-size:14px;">\u2B73</span> install icon in the address bar</p>';
+      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click the <span style="background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:6px;font-size:14px;">⭳</span> install icon in the address bar</p>';
       h += '</div>';
       h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
       h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
       h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Install"</span> in the popup</p>';
       h += '</div>';
       h += '<div style="display:flex;align-items:center;gap:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">\u2713</div>';
-      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">App opens in its own window \u2014 Done!</p>';
+      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div>';
+      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">App opens in its own window — Done!</p>';
       h += '</div>';
     }
+    h += '</div>';
   }
   return h;
+}
+
+// Tab switching for install guide
+function switchInstallTab(tab) {
+  var tabs = ['iphone','android','desktop'];
+  var colors = {iphone:['147,197,253','#93c5fd'], android:['74,222,128','#4ade80'], desktop:['250,204,21','#fbbf24']};
+  tabs.forEach(function(t) {
+    var btn = document.getElementById('install-tab-'+t);
+    var content = document.getElementById('install-content-'+t);
+    if(!btn || !content) return;
+    if(t === tab) {
+      content.style.display = 'block';
+      btn.style.background = 'rgba('+colors[t][0]+',0.15)';
+      btn.style.border = '2px solid rgba('+colors[t][0]+',0.4)';
+      btn.style.color = colors[t][1];
+    } else {
+      content.style.display = 'none';
+      btn.style.background = 'rgba('+colors[t][0]+',0.08)';
+      btn.style.border = '1px solid rgba('+colors[t][0]+',0.2)';
+      btn.style.color = 'rgba('+colors[t][0]+',0.6)';
+    }
+  });
 }
 
 // triggerPwaInstall removed - manual install only
@@ -9723,7 +9742,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=74"></script>
+<script src="social.js?v=75"></script>
 </body>
 </html>
 
