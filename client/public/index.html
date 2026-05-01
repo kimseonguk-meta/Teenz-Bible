@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v72';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=72'];
+      const CACHE = 'teens-bible-v73';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=73'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -7251,12 +7251,41 @@ function openGemStore() {
   const seasonNames = {spring:'🌸 Spring',summer:'☀️ Summer',fall:'🍂 Fall',winter:'❄️ Winter'};
   const seasonColors = {spring:'#f9a8d4',summer:'#fb923c',fall:'#d97706',winter:'#93c5fd'};
   
+  // === SEASON COLLECTION COMPLETION CHECK ===
+  const allSeasonItemIds = [...activeSeasonFrames.map(f=>f.id), ...activeSeasonBgs.map(b=>b.id)];
+  const ownedSeasonItems = allSeasonItemIds.filter(id => (state.unlockedFrames||['none']).includes(id) || (state.unlockedBgs||['default']).includes(id));
+  const seasonComplete = ownedSeasonItems.length === allSeasonItemIds.length && allSeasonItemIds.length > 0;
+  const seasonBadgeId = 'collector_' + currentSeason + '_' + new Date().getFullYear();
+  const hasSeasonBadge = (state.badges||[]).includes(seasonBadgeId);
+  
+  // Auto-award season completion bonus
+  if(seasonComplete && !hasSeasonBadge) {
+    if(!state.badges) state.badges = [];
+    state.badges.push(seasonBadgeId);
+    state.gems = (state.gems||0) + 20;
+    save();
+    setTimeout(() => showSeasonCompletePopup(currentSeason, seasonNames[currentSeason]), 500);
+  }
+  
   // Limited-Time Section
   h += '<div class="store-section" style="border:2px solid '+seasonColors[currentSeason]+';border-radius:16px;padding:2px;margin-bottom:16px;position:relative;overflow:hidden">';
   h += '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,'+seasonColors[currentSeason]+',transparent);animation:shimmer 2s infinite"></div>';
   h += '<div class="store-section-title" style="display:flex;align-items:center;justify-content:space-between">';
   h += '<span>'+seasonNames[currentSeason]+' Season Collection</span>';
   h += '<span style="font-size:11px;background:rgba(239,68,68,0.2);color:#fca5a5;padding:3px 8px;border-radius:8px;font-weight:bold;animation:pulse 2s infinite">⏰ '+daysLeft+' days left</span>';
+  h += '</div>';
+  
+  // Collection progress bar
+  h += '<div style="margin:4px 4px 8px;padding:8px 12px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:10px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">';
+  h += '<span style="font-size:11px;color:#c4b5fd;font-weight:600">🏅 Collection Progress</span>';
+  h += '<span style="font-size:11px;color:'+(seasonComplete?'#4ade80':'#94a3b8')+'">'+ownedSeasonItems.length+'/'+allSeasonItemIds.length+(seasonComplete?' ✅':'')+'</span>';
+  h += '</div>';
+  h += '<div style="height:6px;background:rgba(100,116,139,0.2);border-radius:3px;overflow:hidden">';
+  h += '<div style="height:100%;width:'+(allSeasonItemIds.length>0?Math.round(ownedSeasonItems.length/allSeasonItemIds.length*100):0)+'%;background:linear-gradient(90deg,'+seasonColors[currentSeason]+',#a78bfa);border-radius:3px;transition:width 0.5s"></div>';
+  h += '</div>';
+  if(!seasonComplete) h += '<div style="font-size:10px;color:#94a3b8;margin-top:4px">Complete all items → +20💎 bonus + exclusive badge!</div>';
+  else h += '<div style="font-size:10px;color:#4ade80;margin-top:4px">🎉 Collection complete! Bonus claimed!</div>';
   h += '</div>';
   
   // Seasonal Frames
@@ -7415,11 +7444,154 @@ function openGemStore() {
   h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">💪</span><span><b>14-day streak</b> — +20 gems bonus</span></div>';
   h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">🏆</span><span><b>30-day streak</b> — +50 gems bonus</span></div>';
   h += '</div></div>';
+  
+  // === PAST SEASON SOLD OUT SECTION ===
+  const allSeasons = ['spring','summer','fall','winter'];
+  const pastSeasons = allSeasons.filter(s => s !== currentSeason);
+  const pastSeasonNames = {spring:'🌸 Spring',summer:'☀️ Summer',fall:'🍂 Fall',winter:'❄️ Winter'};
+  let hasPastItems = false;
+  pastSeasons.forEach(ps => {
+    const psFrames = seasonalFrames[ps] || [];
+    const psBgs = seasonalBgs[ps] || [];
+    const ownedPsFrames = psFrames.filter(f => (state.unlockedFrames||['none']).includes(f.id));
+    const ownedPsBgs = psBgs.filter(b => (state.unlockedBgs||['default']).includes(b.id));
+    if(ownedPsFrames.length > 0 || ownedPsBgs.length > 0) hasPastItems = true;
+  });
+  
+  h += '<div class="store-section"><div class="store-section-title" style="display:flex;align-items:center;justify-content:space-between">🕰️ Past Seasons<span style="font-size:10px;color:#64748b">ARCHIVED</span></div>';
+  let pastItemCount = 0;
+  pastSeasons.forEach(ps => {
+    const psFrames = seasonalFrames[ps] || [];
+    const psBgs = seasonalBgs[ps] || [];
+    const allPsItems = [...psFrames, ...psBgs];
+    allPsItems.forEach(item => {
+      const isFrame = psFrames.includes(item);
+      const ownedList = isFrame ? (state.unlockedFrames||['none']) : (state.unlockedBgs||['default']);
+      const owned = ownedList.includes(item.id);
+      const isActiveFrame = isFrame && (state.activeFrame||'none') === item.id;
+      const isActiveBg = !isFrame && (state.activeReaderBg||'default') === item.id;
+      const isActive = isActiveFrame || isActiveBg;
+      pastItemCount++;
+      h += '<div class="store-item" style="opacity:'+(owned?'1':'0.5')+';border:1px solid rgba(100,116,139,0.15)">';
+      h += '<div class="store-item-info">';
+      if(isFrame) {
+        h += '<div class="store-item-preview" style="border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#1a2848;'+(owned?item.border:'')+'">'+item.icon+'</div>';
+      } else {
+        h += '<div class="store-item-preview" style="background:'+(owned?item.bg:'#1e293b')+';color:'+(owned?item.textColor:'#475569')+';font-size:11px;font-weight:bold;display:flex;align-items:center;justify-content:center">'+item.icon+'</div>';
+      }
+      h += '<div><div class="store-item-name" style="display:flex;align-items:center;gap:4px">'+item.name+'<span style="font-size:9px;background:rgba(100,116,139,0.2);color:#94a3b8;padding:1px 5px;border-radius:4px">'+pastSeasonNames[ps].split(' ')[0]+'</span></div>';
+      if(owned) {
+        h += '<div class="store-item-desc">'+(isActive?'Currently active':'Owned - tap to use')+'</div>';
+      } else {
+        h += '<div class="store-item-desc" style="color:#ef4444">SOLD OUT · Wait for next '+ps+'</div>';
+      }
+      h += '</div></div>';
+      if(isActive) {
+        h += '<button class="store-buy-btn owned">Active</button>';
+      } else if(owned) {
+        if(isFrame) {
+          h += '<button class="store-buy-btn affordable" onclick="state.activeFrame=\''+item.id+'\';save();document.querySelector(\'.store-overlay\').remove();openGemStore()">Use</button>';
+        } else {
+          h += '<button class="store-buy-btn affordable" onclick="state.activeReaderBg=\''+item.id+'\';save();document.querySelector(\'.store-overlay\').remove();openGemStore()">Use</button>';
+        }
+      } else {
+        h += '<button class="store-buy-btn locked" style="background:rgba(100,116,139,0.15);color:#64748b;font-size:10px">SOLD OUT</button>';
+      }
+      h += '</div>';
+    });
+  });
+  if(pastItemCount === 0) {
+    h += '<div style="text-align:center;padding:12px;color:#64748b;font-size:12px">Past season items will appear here when seasons change</div>';
+  }
+  h += '</div>';
+  
+  // === GEM BUNDLE PACKS ===
+  h += '<div class="store-section" style="border:2px solid rgba(250,204,21,0.3);border-radius:16px;padding:2px;position:relative;overflow:hidden">';
+  h += '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#fbbf24,transparent);animation:shimmer 2s infinite"></div>';
+  h += '<div class="store-section-title">💰 Gem Bundles</div>';
+  h += '<div style="font-size:11px;color:#94a3b8;margin:-4px 0 8px 4px">Earn bonus gems with bigger bundles!</div>';
+  
+  const bundles = [
+    {id:'starter',name:'Starter Pack',gems:50,bonus:0,icon:'💎',color:'#60a5fa',desc:'Perfect for beginners',taskReq:'Read 5 chapters',taskKey:'chapters_5'},
+    {id:'explorer',name:'Explorer Pack',gems:120,bonus:20,icon:'🌟',color:'#a78bfa',desc:'+20 bonus gems!',taskReq:'Read 15 chapters',taskKey:'chapters_15'},
+    {id:'champion',name:'Champion Pack',gems:250,bonus:50,icon:'🏆',color:'#fbbf24',desc:'+50 bonus gems!',taskReq:'Read 30 chapters',taskKey:'chapters_30'},
+    {id:'legend',name:'Legend Pack',gems:500,bonus:150,icon:'👑',color:'#f472b6',desc:'+150 bonus gems!',taskReq:'Complete 3 books',taskKey:'books_3'}
+  ];
+  const claimedBundles = state.claimedBundles || [];
+  const chaptersRead = state.chaptersRead || 0;
+  const booksCompleted = Object.keys(state.completedBooks || {}).length;
+  
+  bundles.forEach(b => {
+    const claimed = claimedBundles.includes(b.id);
+    let eligible = false;
+    if(b.taskKey === 'chapters_5') eligible = chaptersRead >= 5;
+    else if(b.taskKey === 'chapters_15') eligible = chaptersRead >= 15;
+    else if(b.taskKey === 'chapters_30') eligible = chaptersRead >= 30;
+    else if(b.taskKey === 'books_3') eligible = booksCompleted >= 3;
+    
+    h += '<div class="store-item" style="border:1px solid '+(claimed?'rgba(74,222,128,0.2)':eligible?'rgba(250,204,21,0.2)':'rgba(100,116,139,0.15)')+'">';
+    h += '<div class="store-item-info">';
+    h += '<div class="store-item-preview" style="background:rgba('+(claimed?'74,222,128':eligible?'250,204,21':'100,116,139')+',0.15);font-size:20px;display:flex;align-items:center;justify-content:center">'+b.icon+'</div>';
+    h += '<div><div class="store-item-name" style="color:'+b.color+'">'+b.name+'</div>';
+    if(claimed) {
+      h += '<div class="store-item-desc" style="color:#4ade80">✅ Claimed! +'+b.gems+' gems received</div>';
+    } else if(eligible) {
+      h += '<div class="store-item-desc" style="color:#fde68a">🎁 '+b.gems+' gems'+(b.bonus>0?' (incl. +'+b.bonus+' bonus!)':'')+' · Ready to claim!</div>';
+    } else {
+      h += '<div class="store-item-desc">'+b.gems+' gems'+(b.bonus>0?' (+'+b.bonus+' bonus)':'')+' · '+b.taskReq+'</div>';
+    }
+    h += '</div></div>';
+    if(claimed) {
+      h += '<button class="store-buy-btn owned">Claimed</button>';
+    } else if(eligible) {
+      h += '<button class="store-buy-btn affordable" style="background:linear-gradient(135deg,#f59e0b,#d97706);animation:pulse 2s infinite" onclick="claimGemBundle(\''+b.id+'\','+b.gems+');document.querySelector(\'.store-overlay\').remove();openGemStore()">Claim!</button>';
+    } else {
+      h += '<button class="store-buy-btn locked" style="font-size:10px">'+b.taskReq+'</button>';
+    }
+    h += '</div>';
+  });
+  h += '</div>';
 
   h += '<button class="store-close" onclick="this.closest(\'.store-overlay\').remove()">Close Store</button>';
   h += '</div></div>';
   
   document.body.insertAdjacentHTML('beforeend', h);
+}
+
+// === CLAIM GEM BUNDLE ===
+function claimGemBundle(bundleId, gemAmount) {
+  if(!state.claimedBundles) state.claimedBundles = [];
+  if(state.claimedBundles.includes(bundleId)) { showGemToast('Already claimed!'); return; }
+  state.claimedBundles.push(bundleId);
+  state.gems = (state.gems || 0) + gemAmount;
+  save();
+  updateGemDisplay();
+  showGemToast('+' + gemAmount + ' Gems claimed! 🎉');
+}
+
+// === SEASON COLLECTION COMPLETE POPUP ===
+function showSeasonCompletePopup(season, seasonLabel) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s';
+  const card = document.createElement('div');
+  card.style.cssText = 'background:linear-gradient(135deg,#1a1a4e,#2d1b69);border:2px solid rgba(167,139,250,0.6);border-radius:20px;padding:32px 28px;text-align:center;max-width:320px;width:90%;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(167,139,250,0.3)';
+  // Sparkle particles
+  for(let i=0;i<10;i++) {
+    const spark = document.createElement('div');
+    spark.style.cssText = 'position:absolute;width:4px;height:4px;background:#fbbf24;border-radius:50%;opacity:0;animation:sparkle 1.5s ease-in-out '+(i*0.15)+'s infinite;top:'+Math.random()*100+'%;left:'+Math.random()*100+'%';
+    card.appendChild(spark);
+  }
+  card.innerHTML += '<div style="font-size:48px;margin-bottom:12px">🏅</div>';
+  card.innerHTML += '<div style="font-size:20px;font-weight:800;color:#e0e7ff;margin-bottom:8px;font-family:Bangers,cursive;letter-spacing:1px">COLLECTION COMPLETE!</div>';
+  card.innerHTML += '<div style="font-size:14px;color:#c4b5fd;margin-bottom:16px">'+seasonLabel+' Season — All items collected!</div>';
+  card.innerHTML += '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px">';
+  card.innerHTML += '<div style="font-size:28px;font-weight:800;color:#fbbf24;font-family:Bangers,cursive">+20 💎</div>';
+  card.innerHTML += '</div>';
+  card.innerHTML += '<div style="font-size:12px;color:#94a3b8;margin-bottom:16px">Exclusive collector badge earned!</div>';
+  card.innerHTML += '<button onclick="this.closest(\'.store-overlay\')?.remove();this.parentElement.parentElement.remove()" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;padding:12px 32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:Bangers,cursive;letter-spacing:1px">AWESOME!</button>';
+  overlay.appendChild(card);
+  overlay.addEventListener('click', e => { if(e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
 }
 
 function activateXPBoost() {
@@ -9312,7 +9484,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=72"></script>
+<script src="social.js?v=73"></script>
 </body>
 </html>
 
