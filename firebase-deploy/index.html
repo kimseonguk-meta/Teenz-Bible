@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v80';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=80'];
+      const CACHE = 'teens-bible-v81';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=81'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -1782,6 +1782,74 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 
 /* Notification prompt */
 @keyframes bellRing { 0%,100% { transform:rotate(0); } 10% { transform:rotate(15deg); } 20% { transform:rotate(-15deg); } 30% { transform:rotate(10deg); } 40% { transform:rotate(-10deg); } 50% { transform:rotate(0); } }
+
+/* Reading Reminder Banner */
+.reading-reminder {
+  position:fixed; top:0; left:0; right:0; z-index:9998;
+  padding:0; transform:translateY(-100%); transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.reading-reminder.show { transform:translateY(0); }
+.reading-reminder-inner {
+  display:flex; align-items:center; gap:12px; padding:14px 16px;
+  background:linear-gradient(135deg, rgba(15,25,50,0.97), rgba(25,35,65,0.97));
+  border-bottom:2px solid rgba(255,215,0,0.3); backdrop-filter:blur(12px);
+}
+.reading-reminder-icon {
+  font-size:28px; animation:reminderBounce 2s ease infinite;
+}
+.reading-reminder-text {
+  flex:1; font-family:'Comic Neue',cursive;
+}
+.reading-reminder-title {
+  font-size:14px; font-weight:700; color:#FFD700; margin-bottom:2px;
+}
+.reading-reminder-sub {
+  font-size:12px; color:#8899bb; line-height:1.3;
+}
+.reading-reminder-action {
+  display:flex; gap:8px; align-items:center;
+}
+.reading-reminder-btn {
+  background:linear-gradient(135deg,#FFD700,#FFA500); color:#0a1428;
+  border:none; border-radius:20px; padding:8px 16px; font-family:'Bangers',cursive;
+  font-size:13px; letter-spacing:0.5px; cursor:pointer; white-space:nowrap;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.reading-reminder-btn:active { transform:scale(0.95); }
+.reading-reminder-close {
+  background:none; border:none; color:#556080; font-size:18px; cursor:pointer;
+  padding:4px 8px; line-height:1;
+}
+.reading-reminder-progress {
+  height:3px; background:rgba(255,255,255,0.05); margin-top:0;
+}
+.reading-reminder-progress-bar {
+  height:100%; background:linear-gradient(90deg,#FF6B6B,#FFD700);
+  transition:width 0.8s ease;
+}
+.reading-reminder.evening .reading-reminder-inner {
+  border-bottom-color:rgba(255,107,107,0.4);
+}
+.reading-reminder.evening .reading-reminder-title { color:#FF6B6B; }
+.reading-reminder.evening .reading-reminder-btn {
+  background:linear-gradient(135deg,#FF6B6B,#FF4757);
+  color:#fff;
+}
+.reading-reminder.weekly .reading-reminder-inner {
+  border-bottom-color:rgba(162,155,254,0.4);
+}
+.reading-reminder.weekly .reading-reminder-title { color:#A29BFE; }
+.reading-reminder.weekly .reading-reminder-btn {
+  background:linear-gradient(135deg,#A29BFE,#6C5CE7);
+  color:#fff;
+}
+@keyframes reminderBounce {
+  0%,100% { transform:translateY(0); }
+  15% { transform:translateY(-6px); }
+  30% { transform:translateY(0); }
+  45% { transform:translateY(-3px); }
+  60% { transform:translateY(0); }
+}
 
 </style>
 
@@ -10258,6 +10326,178 @@ setTimeout(function() {
   renderReadingGoal();
 }, 900);
 
+// === READING REMINDER SYSTEM ===
+var _reminderDismissedKey = 'reminderDismissed_' + new Date().toDateString();
+var _weeklyReminderKey = 'weeklyReminderDismissed_' + getWeekKey();
+
+function getWeekKey() {
+  var d = new Date();
+  var day = d.getDay();
+  var diff = d.getDate() - day;
+  var weekStart = new Date(d.setDate(diff));
+  return weekStart.toISOString().slice(0,10);
+}
+
+function checkReadingReminder() {
+  // Don't show if no goals set
+  var dailyG = state.readingGoalDaily || state.dailyGoal || 0;
+  var weeklyG = state.readingGoalWeekly || 0;
+  if(dailyG <= 0 && weeklyG <= 0) return;
+  
+  // Don't show on splash screen
+  if(document.getElementById('pwa-install-guide')) return;
+  
+  var now = new Date();
+  var hour = now.getHours();
+  var dayOfWeek = now.getDay(); // 0=Sun, 5=Fri, 6=Sat
+  var rh = state.readingHistory || {};
+  var todayKey = now.toISOString().slice(0,10);
+  var todayRead = rh[todayKey] || 0;
+  
+  // Calculate weekly progress
+  var weekRead = 0;
+  var todayDow = now.getDay();
+  for(var i = 0; i < 7; i++) {
+    var d = new Date(now); d.setDate(d.getDate() - todayDow + i);
+    var k = d.toISOString().slice(0,10);
+    if(new Date(k+'T12:00:00') <= now) weekRead += (rh[k] || 0);
+  }
+  
+  // Priority 1: Weekly reminder (Friday-Sunday, goal not met)
+  if(weeklyG > 0 && dayOfWeek >= 5 && weekRead < weeklyG && !localStorage.getItem(_weeklyReminderKey)) {
+    var remaining = weeklyG - weekRead;
+    showReadingReminder({
+      type: 'weekly',
+      icon: '📅',
+      title: 'Weekly Goal Reminder!',
+      sub: remaining + ' more chapter' + (remaining > 1 ? 's' : '') + ' to hit your weekly goal of ' + weeklyG + '!',
+      btnText: 'Read Now 📖',
+      progress: Math.round(weekRead / weeklyG * 100),
+      dismissKey: _weeklyReminderKey
+    });
+    return;
+  }
+  
+  // Priority 2: Evening daily reminder (7pm+, goal not met)
+  if(dailyG > 0 && hour >= 19 && todayRead < dailyG && !localStorage.getItem(_reminderDismissedKey + '_evening')) {
+    var remaining = dailyG - todayRead;
+    var messages = [
+      'Still ' + remaining + ' chapter' + (remaining > 1 ? 's' : '') + ' to go today!',
+      'You\'re almost there! Just ' + remaining + ' more chapter' + (remaining > 1 ? 's' : '') + ' tonight.',
+      remaining + ' chapter' + (remaining > 1 ? 's' : '') + ' left before bed — you got this! 💪'
+    ];
+    showReadingReminder({
+      type: 'evening',
+      icon: '🌙',
+      title: 'Evening Reading Reminder',
+      sub: messages[Math.floor(Math.random() * messages.length)],
+      btnText: 'Read Now 🔥',
+      progress: Math.round(todayRead / dailyG * 100),
+      dismissKey: _reminderDismissedKey + '_evening'
+    });
+    return;
+  }
+  
+  // Priority 3: Regular daily reminder (after 2pm, goal not met)
+  if(dailyG > 0 && hour >= 14 && todayRead < dailyG && !localStorage.getItem(_reminderDismissedKey)) {
+    var remaining = dailyG - todayRead;
+    var messages = [
+      todayRead === 0 
+        ? 'You haven\'t read any chapters today yet. Start now!' 
+        : 'Nice start! ' + remaining + ' more chapter' + (remaining > 1 ? 's' : '') + ' to reach your daily goal.',
+      'Your daily goal: ' + dailyG + ' chapter' + (dailyG > 1 ? 's' : '') + '. You\'ve read ' + todayRead + ' so far.'
+    ];
+    showReadingReminder({
+      type: 'daily',
+      icon: todayRead === 0 ? '📖' : '⚡',
+      title: todayRead === 0 ? 'Time to Read!' : 'Keep Going!',
+      sub: messages[Math.floor(Math.random() * messages.length)],
+      btnText: 'Open Bible 📖',
+      progress: Math.round(todayRead / dailyG * 100),
+      dismissKey: _reminderDismissedKey
+    });
+    return;
+  }
+}
+
+function showReadingReminder(opts) {
+  // Remove existing reminder if any
+  var existing = document.querySelector('.reading-reminder');
+  if(existing) existing.remove();
+  
+  var el = document.createElement('div');
+  el.className = 'reading-reminder' + (opts.type === 'evening' ? ' evening' : '') + (opts.type === 'weekly' ? ' weekly' : '');
+  el.innerHTML = '<div class="reading-reminder-inner">' +
+    '<div class="reading-reminder-icon">' + opts.icon + '</div>' +
+    '<div class="reading-reminder-text">' +
+      '<div class="reading-reminder-title">' + opts.title + '</div>' +
+      '<div class="reading-reminder-sub">' + opts.sub + '</div>' +
+    '</div>' +
+    '<div class="reading-reminder-action">' +
+      '<button class="reading-reminder-btn" onclick="dismissReminder(this, true)">' + opts.btnText + '</button>' +
+      '<button class="reading-reminder-close" onclick="dismissReminder(this, false)">✕</button>' +
+    '</div>' +
+  '</div>' +
+  '<div class="reading-reminder-progress"><div class="reading-reminder-progress-bar" style="width:0%"></div></div>';
+  
+  el.dataset.dismissKey = opts.dismissKey;
+  el.dataset.goToBible = opts.type === 'weekly' || opts.type === 'evening' ? '1' : '1';
+  document.body.appendChild(el);
+  
+  // Animate in
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      el.classList.add('show');
+      // Animate progress bar
+      var bar = el.querySelector('.reading-reminder-progress-bar');
+      if(bar) bar.style.width = opts.progress + '%';
+    });
+  });
+  
+  // Auto-dismiss after 15 seconds
+  setTimeout(function() {
+    if(el.parentElement) {
+      el.classList.remove('show');
+      setTimeout(function() { if(el.parentElement) el.remove(); }, 500);
+    }
+  }, 15000);
+}
+
+function dismissReminder(btn, goRead) {
+  var reminder = btn.closest('.reading-reminder');
+  if(!reminder) return;
+  var key = reminder.dataset.dismissKey;
+  if(key) localStorage.setItem(key, '1');
+  reminder.classList.remove('show');
+  setTimeout(function() { if(reminder.parentElement) reminder.remove(); }, 500);
+  
+  if(goRead) {
+    // Navigate to Bible tab
+    if(typeof showScreen === 'function') showScreen('bible');
+    var bibleTab = document.querySelector('[hint="Bible"]') || document.querySelector('button[onclick*="bible"]');
+    if(bibleTab) bibleTab.click();
+  }
+}
+
+// Check reminder on app load (with delay to let splash screen pass)
+setTimeout(function() {
+  checkReadingReminder();
+}, 3000);
+
+// Also check when returning to home screen
+var _origShowScreen6 = showScreen;
+showScreen = function(name) {
+  _origShowScreen6(name);
+  if(name === 'home') {
+    setTimeout(checkReadingReminder, 1000);
+  }
+};
+
+// Check periodically (every 30 minutes) in case user stays in app
+setInterval(function() {
+  checkReadingReminder();
+}, 1800000);
+
 // === SMOOTH SCROLL FOR READER ===
 document.addEventListener('DOMContentLoaded', function() {
   // Add smooth scroll behavior to reader body
@@ -10489,7 +10729,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=80"></script>
+<script src="social.js?v=81"></script>
 </body>
 </html>
 
