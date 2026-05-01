@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v71';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=71'];
+      const CACHE = 'teens-bible-v72';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=72'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -6921,7 +6921,12 @@ function applyReaderBackground(detailEl) {
     midnight: {bg:'#0a1628',text:'#7dd3fc'},
     nature: {bg:'#0d2818',text:'#86efac'},
     lavender: {bg:'#1a1028',text:'#d8b4fe'},
-    matrix: {bg:'#001a00',text:'#00ff41'}
+    matrix: {bg:'#001a00',text:'#00ff41'},
+    // Seasonal backgrounds
+    spring_garden: {bg:'#1a2e1a',text:'#bbf7d0'},
+    ocean_breeze: {bg:'#0c2d4a',text:'#7dd3fc'},
+    cozy_autumn: {bg:'#2d1b0e',text:'#fcd34d'},
+    snowy_night: {bg:'#0f172a',text:'#e2e8f0'}
   };
   const cfg = bgMap[bgId];
   if(!cfg) return;
@@ -6942,7 +6947,17 @@ function getAvatarFrameStyle() {
     gold: '3px solid #FACC15;box-shadow:0 0 15px rgba(250,204,21,0.6)',
     rainbow: '3px solid transparent;background:linear-gradient(#1a2848,#1a2848) padding-box,linear-gradient(45deg,#ef4444,#f59e0b,#22c55e,#3b82f6,#8b5cf6) border-box;box-shadow:0 0 15px rgba(139,92,246,0.4)',
     lightning: '3px solid #a78bfa;box-shadow:0 0 20px rgba(167,139,250,0.7),0 0 40px rgba(167,139,250,0.3)',
-    diamond: '3px solid #67e8f9;box-shadow:0 0 25px rgba(103,232,249,0.6),inset 0 0 10px rgba(103,232,249,0.2)'
+    diamond: '3px solid #67e8f9;box-shadow:0 0 25px rgba(103,232,249,0.6),inset 0 0 10px rgba(103,232,249,0.2)',
+    // Seasonal frames
+    cherry_blossom: '3px solid #f9a8d4;box-shadow:0 0 16px rgba(249,168,212,0.7),0 0 32px rgba(236,72,153,0.3)',
+    spring_rain: '3px solid #67e8f9;box-shadow:0 0 12px rgba(103,232,249,0.5)',
+    summer_flame: '3px solid #fb923c;box-shadow:0 0 16px rgba(251,146,60,0.7),0 0 32px rgba(234,88,12,0.3)',
+    tropical: '3px solid #34d399;box-shadow:0 0 12px rgba(52,211,153,0.5)',
+    autumn_leaf: '3px solid #d97706;box-shadow:0 0 16px rgba(217,119,6,0.7),0 0 32px rgba(180,83,9,0.3)',
+    harvest_moon: '3px solid #fbbf24;box-shadow:0 0 12px rgba(251,191,36,0.5)',
+    snowflake: '3px solid #e0f2fe;box-shadow:0 0 16px rgba(224,242,254,0.7),0 0 32px rgba(186,230,253,0.3)',
+    northern_lights: '3px solid #a78bfa;box-shadow:0 0 12px rgba(167,139,250,0.5),0 0 24px rgba(139,92,246,0.3)',
+    holy_light: '3px solid #fef08a;box-shadow:0 0 20px rgba(254,240,138,0.6),0 0 40px rgba(250,204,21,0.3),inset 0 0 8px rgba(254,240,138,0.15)'
   };
   return frameMap[frameId] || '';
 }
@@ -7174,6 +7189,128 @@ function openGemStore() {
       h += '<button class="store-buy-btn affordable" onclick="buyTheme(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
       h += '<button class="store-buy-btn locked">💎 '+t.cost+'</button>';
+    }
+    h += '</div>';
+  });
+  h += '</div>';
+  
+  // === LIMITED-TIME SEASONAL ITEMS ===
+  const now = Date.now();
+  // Season config: each season runs for ~30 days, cycling through the year
+  // Spring: Mar-May, Summer: Jun-Aug, Fall: Sep-Nov, Winter: Dec-Feb
+  const month = new Date().getMonth(); // 0-11
+  let currentSeason = 'spring';
+  if(month >= 2 && month <= 4) currentSeason = 'spring';
+  else if(month >= 5 && month <= 7) currentSeason = 'summer';
+  else if(month >= 8 && month <= 10) currentSeason = 'fall';
+  else currentSeason = 'winter';
+  
+  // Calculate end of current season
+  const seasonEndMonth = currentSeason === 'spring' ? 5 : currentSeason === 'summer' ? 8 : currentSeason === 'fall' ? 11 : 2;
+  const seasonEndYear = currentSeason === 'winter' && month <= 1 ? new Date().getFullYear() : (seasonEndMonth < month ? new Date().getFullYear() + 1 : new Date().getFullYear());
+  const seasonEnd = new Date(seasonEndYear, seasonEndMonth, 1).getTime();
+  const daysLeft = Math.max(1, Math.ceil((seasonEnd - now) / 86400000));
+  
+  const seasonalFrames = {
+    spring: [
+      {id:'cherry_blossom',name:'Cherry Blossom',cost:40,border:'3px solid #f9a8d4;box-shadow:0 0 16px rgba(249,168,212,0.7),0 0 32px rgba(236,72,153,0.3)',icon:'🌸',desc:'Delicate pink petals glow'},
+      {id:'spring_rain',name:'Spring Rain',cost:25,border:'3px solid #67e8f9;box-shadow:0 0 12px rgba(103,232,249,0.5)',icon:'🌧️',desc:'Fresh rain droplet shimmer'}
+    ],
+    summer: [
+      {id:'summer_flame',name:'Summer Flame',cost:40,border:'3px solid #fb923c;box-shadow:0 0 16px rgba(251,146,60,0.7),0 0 32px rgba(234,88,12,0.3)',icon:'☀️',desc:'Blazing orange fire effect'},
+      {id:'tropical',name:'Tropical Wave',cost:25,border:'3px solid #34d399;box-shadow:0 0 12px rgba(52,211,153,0.5)',icon:'🏝️',desc:'Cool tropical vibes'}
+    ],
+    fall: [
+      {id:'autumn_leaf',name:'Autumn Leaf',cost:40,border:'3px solid #d97706;box-shadow:0 0 16px rgba(217,119,6,0.7),0 0 32px rgba(180,83,9,0.3)',icon:'🍂',desc:'Golden autumn glow'},
+      {id:'harvest_moon',name:'Harvest Moon',cost:25,border:'3px solid #fbbf24;box-shadow:0 0 12px rgba(251,191,36,0.5)',icon:'🌕',desc:'Warm moonlit aura'}
+    ],
+    winter: [
+      {id:'snowflake',name:'Snowflake',cost:40,border:'3px solid #e0f2fe;box-shadow:0 0 16px rgba(224,242,254,0.7),0 0 32px rgba(186,230,253,0.3)',icon:'❄️',desc:'Icy crystal shimmer'},
+      {id:'northern_lights',name:'Northern Lights',cost:25,border:'3px solid #a78bfa;box-shadow:0 0 12px rgba(167,139,250,0.5),0 0 24px rgba(139,92,246,0.3)',icon:'🌌',desc:'Aurora borealis glow'}
+    ]
+  };
+  const seasonalBgs = {
+    spring: [
+      {id:'spring_garden',name:'Spring Garden',cost:30,bg:'#1a2e1a',textColor:'#bbf7d0',icon:'🌱',desc:'Fresh green nature theme'}
+    ],
+    summer: [
+      {id:'ocean_breeze',name:'Ocean Breeze',cost:30,bg:'#0c2d4a',textColor:'#7dd3fc',icon:'🌊',desc:'Cool ocean blue reading'}
+    ],
+    fall: [
+      {id:'cozy_autumn',name:'Cozy Autumn',cost:30,bg:'#2d1b0e',textColor:'#fcd34d',icon:'🍁',desc:'Warm autumn reading vibe'}
+    ],
+    winter: [
+      {id:'snowy_night',name:'Snowy Night',cost:30,bg:'#0f172a',textColor:'#e2e8f0',icon:'🌨️',desc:'Peaceful snowy ambiance'}
+    ]
+  };
+  // Always-available event frame
+  const eventFrame = {id:'holy_light',name:'Holy Light',cost:60,border:'3px solid #fef08a;box-shadow:0 0 20px rgba(254,240,138,0.6),0 0 40px rgba(250,204,21,0.3),inset 0 0 8px rgba(254,240,138,0.15)',icon:'✝️',desc:'Divine golden radiance'};
+  
+  const activeSeasonFrames = seasonalFrames[currentSeason] || [];
+  const activeSeasonBgs = seasonalBgs[currentSeason] || [];
+  const seasonNames = {spring:'🌸 Spring',summer:'☀️ Summer',fall:'🍂 Fall',winter:'❄️ Winter'};
+  const seasonColors = {spring:'#f9a8d4',summer:'#fb923c',fall:'#d97706',winter:'#93c5fd'};
+  
+  // Limited-Time Section
+  h += '<div class="store-section" style="border:2px solid '+seasonColors[currentSeason]+';border-radius:16px;padding:2px;margin-bottom:16px;position:relative;overflow:hidden">';
+  h += '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,'+seasonColors[currentSeason]+',transparent);animation:shimmer 2s infinite"></div>';
+  h += '<div class="store-section-title" style="display:flex;align-items:center;justify-content:space-between">';
+  h += '<span>'+seasonNames[currentSeason]+' Season Collection</span>';
+  h += '<span style="font-size:11px;background:rgba(239,68,68,0.2);color:#fca5a5;padding:3px 8px;border-radius:8px;font-weight:bold;animation:pulse 2s infinite">⏰ '+daysLeft+' days left</span>';
+  h += '</div>';
+  
+  // Seasonal Frames
+  h += '<div style="font-size:12px;color:#94a3b8;margin:8px 0 4px 4px;font-weight:600">🖼️ Limited Frames</div>';
+  const allLimitedFrames = [...activeSeasonFrames, eventFrame];
+  allLimitedFrames.forEach(f => {
+    const owned = (state.unlockedFrames||['none']).includes(f.id);
+    const isActive = (state.activeFrame||'none') === f.id;
+    const canBuy = gems >= f.cost;
+    h += '<div class="store-item" style="border:1px solid rgba(250,204,21,0.15);background:rgba(250,204,21,0.03)">';
+    h += '<div class="store-item-info">';
+    h += '<div class="store-item-preview" style="border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#1a2848;'+f.border+';position:relative">';
+    h += f.icon;
+    if(!owned) h += '<span style="position:absolute;top:-6px;right:-8px;font-size:8px;background:#ef4444;color:#fff;padding:1px 4px;border-radius:4px;font-weight:bold">LIMITED</span>';
+    h += '</div>';
+    h += '<div><div class="store-item-name" style="display:flex;align-items:center;gap:4px">'+f.name;
+    if(f.id==='holy_light') h += '<span style="font-size:9px;background:rgba(250,204,21,0.2);color:#fde68a;padding:1px 5px;border-radius:4px">EVENT</span>';
+    else h += '<span style="font-size:9px;background:rgba(239,68,68,0.2);color:#fca5a5;padding:1px 5px;border-radius:4px">SEASON</span>';
+    h += '</div>';
+    h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):'💎 '+f.cost+' gems · '+f.desc)+'</div></div></div>';
+    if(isActive) {
+      h += '<button class="store-buy-btn owned">Active</button>';
+    } else if(owned) {
+      h += '<button class="store-buy-btn affordable" onclick="state.activeFrame=\''+f.id+'\';save();document.querySelector(\'.store-overlay\').remove();openGemStore()">Use</button>';
+    } else if(canBuy) {
+      h += '<button class="store-buy-btn affordable" style="background:linear-gradient(135deg,#f59e0b,#d97706);animation:pulse 2s infinite" onclick="buyFrame(\''+f.id+'\','+f.cost+');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
+    } else {
+      h += '<button class="store-buy-btn locked">💎 '+f.cost+'</button>';
+    }
+    h += '</div>';
+  });
+  
+  // Seasonal Reader Backgrounds
+  h += '<div style="font-size:12px;color:#94a3b8;margin:12px 0 4px 4px;font-weight:600">📖 Limited Backgrounds</div>';
+  activeSeasonBgs.forEach(b => {
+    const owned = (state.unlockedBgs||['default']).includes(b.id);
+    const isActive = (state.activeReaderBg||'default') === b.id;
+    const canBuy = gems >= b.cost;
+    h += '<div class="store-item" style="border:1px solid rgba(250,204,21,0.15);background:rgba(250,204,21,0.03)">';
+    h += '<div class="store-item-info">';
+    h += '<div class="store-item-preview" style="background:'+b.bg+';color:'+b.textColor+';font-size:11px;font-weight:bold;display:flex;align-items:center;justify-content:center;position:relative">';
+    h += b.icon;
+    if(!owned) h += '<span style="position:absolute;top:-6px;right:-8px;font-size:8px;background:#ef4444;color:#fff;padding:1px 4px;border-radius:4px;font-weight:bold">LIMITED</span>';
+    h += '</div>';
+    h += '<div><div class="store-item-name" style="display:flex;align-items:center;gap:4px">'+b.name+'<span style="font-size:9px;background:rgba(239,68,68,0.2);color:#fca5a5;padding:1px 5px;border-radius:4px">SEASON</span></div>';
+    h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):'💎 '+b.cost+' gems · '+b.desc)+'</div></div></div>';
+    if(isActive) {
+      h += '<button class="store-buy-btn owned">Active</button>';
+    } else if(owned) {
+      h += '<button class="store-buy-btn affordable" onclick="state.activeReaderBg=\''+b.id+'\';save();document.querySelector(\'.store-overlay\').remove();openGemStore()">Use</button>';
+    } else if(canBuy) {
+      h += '<button class="store-buy-btn affordable" style="background:linear-gradient(135deg,#f59e0b,#d97706);animation:pulse 2s infinite" onclick="buyReaderBg(\''+b.id+'\','+b.cost+');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
+    } else {
+      h += '<button class="store-buy-btn locked">💎 '+b.cost+'</button>';
     }
     h += '</div>';
   });
@@ -9175,7 +9312,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=71"></script>
+<script src="social.js?v=72"></script>
 </body>
 </html>
 
