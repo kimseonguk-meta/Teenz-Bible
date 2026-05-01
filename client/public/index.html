@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v81';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=81'];
+      const CACHE = 'teens-bible-v82';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=82'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -3203,7 +3203,7 @@ function renderStatsDashboard() {
   
   // === SECTION 1: HERO STATS ===
   html += '<div class="stats-section">';
-  html += '<div class="stats-dash-title">📊 Reading Dashboard</div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;"><div class="stats-dash-title">📊 Reading Dashboard</div><button onclick="shareWeeklyStats()" style="background:linear-gradient(135deg,#4ECDC4,#45B7AA);color:#fff;border:none;padding:6px 14px;border-radius:20px;font-size:12px;font-family:Comic Neue,cursive;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(78,205,196,0.3);">📤 Share Stats</button></div>';
   html += '<div class="stats-hero-row">';
   html += '<div class="stats-hero-item gold"><div class="stats-hero-icon">📖</div><div class="stats-hero-val">'+(state.chaptersRead||0)+'</div><div class="stats-hero-lbl">Chapters</div></div>';
   html += '<div class="stats-hero-item teal"><div class="stats-hero-icon">📅</div><div class="stats-hero-val">'+totalDaysActive+'</div><div class="stats-hero-lbl">Days Active</div></div>';
@@ -3454,6 +3454,418 @@ function saveReadingGoals() {
   document.getElementById('goal-setting-modal').remove();
   renderStatsDashboard();
   if(typeof showGemToast === 'function') showGemToast('🎯 Goals updated!');
+}
+
+// === SHARE WEEKLY STATS CARD ===
+function shareWeeklyStats() {
+  const rh = state.readingHistory || {};
+  const today = new Date();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const allDates = Object.keys(rh);
+  const totalDaysActive = allDates.length;
+  const totalCh = state.chaptersRead || 0;
+  
+  // Calculate streaks
+  let longestStreak = 0, cs = 0;
+  const sorted = allDates.sort();
+  for(let i = 0; i < sorted.length; i++) {
+    if(i === 0) cs = 1;
+    else {
+      const diff = (new Date(sorted[i]+'T12:00:00') - new Date(sorted[i-1]+'T12:00:00')) / 86400000;
+      cs = diff === 1 ? cs + 1 : 1;
+    }
+    if(cs > longestStreak) longestStreak = cs;
+  }
+  
+  // This week data
+  const todayDow = today.getDay();
+  const weekData = [];
+  let thisWeekTotal = 0, maxVal = 1;
+  for(let i = 0; i < 7; i++) {
+    const d = new Date(today); d.setDate(d.getDate() - todayDow + i);
+    const key = d.toISOString().slice(0,10);
+    const val = rh[key] || 0;
+    if(val > maxVal) maxVal = val;
+    thisWeekTotal += val;
+    weekData.push({ day: days[d.getDay()], val, isToday: d.toISOString().slice(0,10) === today.toISOString().slice(0,10) });
+  }
+  
+  // Level
+  var lvl = LEVELS[0];
+  for(var i = 0; i < LEVELS.length; i++) { if(state.xp >= LEVELS[i].xp) lvl = LEVELS[i]; }
+  var name = getPlayerName();
+  
+  // Create canvas
+  var W = 720, H = 1280;
+  var canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  var ctx = canvas.getContext('2d');
+  
+  // === BACKGROUND ===
+  var bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+  bgGrad.addColorStop(0, '#0a0e1a');
+  bgGrad.addColorStop(0.3, '#0d1528');
+  bgGrad.addColorStop(0.7, '#0f1a30');
+  bgGrad.addColorStop(1, '#0a0e1a');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+  
+  // Decorative circles
+  ctx.globalAlpha = 0.05;
+  ctx.beginPath(); ctx.arc(100, 200, 300, 0, Math.PI*2); ctx.fillStyle = '#4ECDC4'; ctx.fill();
+  ctx.beginPath(); ctx.arc(620, 900, 250, 0, Math.PI*2); ctx.fillStyle = '#FFD700'; ctx.fill();
+  ctx.globalAlpha = 1;
+  
+  // === TOP BRANDING ===
+  ctx.fillStyle = '#4a5a7a';
+  ctx.font = '600 18px Comic Neue, cursive';
+  ctx.textAlign = 'center';
+  ctx.fillText('TEENZ BIBLE', W/2, 50);
+  
+  // Horizontal line
+  var lineGrad = ctx.createLinearGradient(100, 0, W-100, 0);
+  lineGrad.addColorStop(0, 'rgba(78,205,196,0)');
+  lineGrad.addColorStop(0.5, 'rgba(78,205,196,0.4)');
+  lineGrad.addColorStop(1, 'rgba(78,205,196,0)');
+  ctx.strokeStyle = lineGrad;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(100, 65); ctx.lineTo(W-100, 65); ctx.stroke();
+  
+  // === TITLE ===
+  ctx.fillStyle = '#FFD700';
+  ctx.font = 'bold 42px Bangers, cursive';
+  ctx.textAlign = 'center';
+  ctx.fillText('📊 MY WEEKLY REPORT', W/2, 120);
+  
+  // Week date range
+  var weekStart = new Date(today); weekStart.setDate(weekStart.getDate() - todayDow);
+  var weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate() + 6);
+  var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  ctx.fillStyle = '#6880a8';
+  ctx.font = '600 18px Comic Neue, cursive';
+  ctx.fillText(monthNames[weekStart.getMonth()]+' '+weekStart.getDate()+' - '+monthNames[weekEnd.getMonth()]+' '+weekEnd.getDate()+', '+weekEnd.getFullYear(), W/2, 155);
+  
+  // === PLAYER INFO ===
+  ctx.fillStyle = '#e8eaf0';
+  ctx.font = 'bold 28px Comic Neue, cursive';
+  ctx.fillText(name, W/2, 210);
+  ctx.fillStyle = '#FF6B6B';
+  ctx.font = '600 18px Comic Neue, cursive';
+  ctx.fillText('⭐ ' + lvl.name, W/2, 240);
+  
+  // === HERO STATS CARDS ===
+  var cardY = 275;
+  var cardW = 145, cardH = 110, cardGap = 18;
+  var startX = (W - (4*cardW + 3*cardGap)) / 2;
+  var statCards = [
+    { icon:'📖', val: totalCh, label:'Chapters', color:'#FFD700', bg:'rgba(255,215,0,0.08)' },
+    { icon:'📅', val: totalDaysActive, label:'Days Active', color:'#4ECDC4', bg:'rgba(78,205,196,0.08)' },
+    { icon:'🔥', val: longestStreak, label:'Best Streak', color:'#FF6B6B', bg:'rgba(255,107,107,0.08)' },
+    { icon:'⚡', val: thisWeekTotal, label:'This Week', color:'#A29BFE', bg:'rgba(162,155,254,0.08)' }
+  ];
+  
+  statCards.forEach(function(sc, idx) {
+    var cx = startX + idx * (cardW + cardGap);
+    // Card background
+    ctx.fillStyle = sc.bg;
+    ctx.beginPath();
+    ctx.roundRect(cx, cardY, cardW, cardH, 14);
+    ctx.fill();
+    // Border
+    ctx.strokeStyle = sc.color + '30';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(cx, cardY, cardW, cardH, 14);
+    ctx.stroke();
+    // Top accent line
+    ctx.fillStyle = sc.color;
+    ctx.beginPath();
+    ctx.roundRect(cx, cardY, cardW, 3, [14, 14, 0, 0]);
+    ctx.fill();
+    // Icon
+    ctx.font = '24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(sc.icon, cx + cardW/2, cardY + 35);
+    // Value
+    ctx.fillStyle = sc.color;
+    ctx.font = 'bold 30px Bangers, cursive';
+    ctx.fillText(sc.val + '', cx + cardW/2, cardY + 70);
+    // Label
+    ctx.fillStyle = '#6880a8';
+    ctx.font = '600 11px Comic Neue, cursive';
+    ctx.fillText(sc.label, cx + cardW/2, cardY + 90);
+  });
+  
+  // === WEEKLY BAR CHART ===
+  var chartY = 420;
+  var chartH = 200;
+  var chartPad = 60;
+  var barAreaW = W - chartPad*2;
+  var barW = barAreaW / 7 - 12;
+  
+  // Section title
+  ctx.fillStyle = '#e8eaf0';
+  ctx.font = 'bold 22px Comic Neue, cursive';
+  ctx.textAlign = 'left';
+  ctx.fillText('📅 This Week', chartPad, chartY);
+  
+  // Chart background
+  ctx.fillStyle = 'rgba(10,20,40,0.4)';
+  ctx.beginPath();
+  ctx.roundRect(chartPad - 10, chartY + 15, barAreaW + 20, chartH + 10, 14);
+  ctx.fill();
+  
+  // Grid lines
+  ctx.strokeStyle = 'rgba(65,110,160,0.15)';
+  ctx.lineWidth = 1;
+  for(var g = 0; g < 4; g++) {
+    var gy = chartY + 25 + (chartH - 20) * g / 3;
+    ctx.beginPath(); ctx.moveTo(chartPad, gy); ctx.lineTo(W - chartPad, gy); ctx.stroke();
+  }
+  
+  // Bars
+  var barMaxH = chartH - 50;
+  weekData.forEach(function(d, idx) {
+    var bx = chartPad + idx * (barAreaW / 7) + (barAreaW / 7 - barW) / 2;
+    var bh = d.val > 0 ? Math.max(8, (d.val / maxVal) * barMaxH) : 4;
+    var by = chartY + 25 + (chartH - 30) - bh;
+    
+    // Bar
+    var barGrad = ctx.createLinearGradient(0, by, 0, by + bh);
+    if(d.isToday) {
+      barGrad.addColorStop(0, '#FFD700');
+      barGrad.addColorStop(1, '#f59e0b');
+    } else if(d.val > 0) {
+      barGrad.addColorStop(0, '#4ECDC4');
+      barGrad.addColorStop(1, '#45B7AA');
+    } else {
+      barGrad.addColorStop(0, 'rgba(65,110,160,0.3)');
+      barGrad.addColorStop(1, 'rgba(65,110,160,0.15)');
+    }
+    ctx.fillStyle = barGrad;
+    ctx.beginPath();
+    ctx.roundRect(bx, by, barW, bh, [6, 6, 0, 0]);
+    ctx.fill();
+    
+    // Value on top
+    if(d.val > 0) {
+      ctx.fillStyle = d.isToday ? '#FFD700' : '#e8eaf0';
+      ctx.font = 'bold 14px Comic Neue, cursive';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.val + '', bx + barW/2, by - 6);
+    }
+    
+    // Day label
+    ctx.fillStyle = d.isToday ? '#FFD700' : '#6880a8';
+    ctx.font = (d.isToday ? 'bold ' : '600 ') + '13px Comic Neue, cursive';
+    ctx.textAlign = 'center';
+    ctx.fillText(d.day, bx + barW/2, chartY + chartH + 18);
+  });
+  
+  // === MONTHLY HEATMAP MINI ===
+  var hmY = 670;
+  ctx.fillStyle = '#e8eaf0';
+  ctx.font = 'bold 22px Comic Neue, cursive';
+  ctx.textAlign = 'left';
+  ctx.fillText('🗓️ ' + monthNames[today.getMonth()] + ' Activity', chartPad, hmY);
+  
+  var hmCellSize = 28;
+  var hmGap = 4;
+  var hmStartX = (W - (7 * (hmCellSize + hmGap))) / 2;
+  var hmStartY = hmY + 35;
+  
+  // Day headers
+  var dayHeaders = ['S','M','T','W','T','F','S'];
+  ctx.fillStyle = '#4a5a7a';
+  ctx.font = '600 11px Comic Neue, cursive';
+  ctx.textAlign = 'center';
+  dayHeaders.forEach(function(dh, idx) {
+    ctx.fillText(dh, hmStartX + idx * (hmCellSize + hmGap) + hmCellSize/2, hmStartY);
+  });
+  hmStartY += 18;
+  
+  // Heatmap cells
+  var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+  var daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  var row = 0, col = firstDayOfMonth;
+  
+  for(var dd = 1; dd <= daysInMonth; dd++) {
+    var dateStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+    var val = rh[dateStr] || 0;
+    var isFuture = dd > today.getDate();
+    var isToday = dd === today.getDate();
+    
+    var cx = hmStartX + col * (hmCellSize + hmGap);
+    var cy = hmStartY + row * (hmCellSize + hmGap);
+    
+    // Cell color
+    if(isFuture) ctx.fillStyle = 'rgba(30,45,70,0.2)';
+    else if(val >= 4) ctx.fillStyle = 'rgba(255,215,0,0.5)';
+    else if(val >= 3) ctx.fillStyle = 'rgba(78,205,196,0.6)';
+    else if(val >= 2) ctx.fillStyle = 'rgba(78,205,196,0.4)';
+    else if(val >= 1) ctx.fillStyle = 'rgba(78,205,196,0.2)';
+    else ctx.fillStyle = 'rgba(30,45,70,0.5)';
+    
+    ctx.beginPath();
+    ctx.roundRect(cx, cy, hmCellSize, hmCellSize, 5);
+    ctx.fill();
+    
+    if(isToday) {
+      ctx.strokeStyle = '#4ECDC4';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(cx, cy, hmCellSize, hmCellSize, 5);
+      ctx.stroke();
+    }
+    
+    col++;
+    if(col > 6) { col = 0; row++; }
+  }
+  
+  // Legend
+  var legY = hmStartY + (row + 1) * (hmCellSize + hmGap) + 10;
+  ctx.fillStyle = '#4a5a7a';
+  ctx.font = '600 11px Comic Neue, cursive';
+  ctx.textAlign = 'center';
+  var legColors = ['rgba(30,45,70,0.5)','rgba(78,205,196,0.2)','rgba(78,205,196,0.4)','rgba(78,205,196,0.6)','rgba(255,215,0,0.5)'];
+  var legStartX = W/2 - 80;
+  ctx.fillText('Less', legStartX - 20, legY + 12);
+  legColors.forEach(function(lc, li) {
+    ctx.fillStyle = lc;
+    ctx.beginPath();
+    ctx.roundRect(legStartX + li * 22, legY, 18, 18, 4);
+    ctx.fill();
+  });
+  ctx.fillStyle = '#4a5a7a';
+  ctx.fillText('More', legStartX + 5*22 + 15, legY + 12);
+  
+  // === CATEGORY PROGRESS ===
+  var catY = legY + 50;
+  ctx.fillStyle = '#e8eaf0';
+  ctx.font = 'bold 22px Comic Neue, cursive';
+  ctx.textAlign = 'left';
+  ctx.fillText('📚 Book Progress', chartPad, catY);
+  
+  var catData = [
+    { name:'Gospels', icon:'✨', color:'#FF6B6B', books:['Matthew','Mark','Luke','John'] },
+    { name:'History', icon:'🔥', color:'#FF9F43', books:['Acts'] },
+    { name:"Paul's Letters", icon:'💌', color:'#A29BFE', books:['Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon'] },
+    { name:'General', icon:'📜', color:'#4ECDC4', books:['Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude'] },
+    { name:'Prophecy', icon:'🌟', color:'#FFD700', books:['Revelation'] }
+  ];
+  
+  catY += 20;
+  catData.forEach(function(cat) {
+    var totalChs = 0, readChs = 0;
+    cat.books.forEach(function(b) {
+      if(typeof gospelData !== 'undefined' && gospelData[b]) {
+        totalChs += gospelData[b].length;
+        readChs += (state.books && state.books[b] && state.books[b].read) ? state.books[b].read.length : 0;
+      }
+    });
+    var pct = totalChs > 0 ? Math.round(readChs / totalChs * 100) : 0;
+    
+    // Label
+    ctx.fillStyle = '#e8eaf0';
+    ctx.font = '600 14px Comic Neue, cursive';
+    ctx.textAlign = 'left';
+    ctx.fillText(cat.icon + ' ' + cat.name, chartPad + 10, catY + 14);
+    
+    // Percentage
+    ctx.fillStyle = cat.color;
+    ctx.font = 'bold 14px Comic Neue, cursive';
+    ctx.textAlign = 'right';
+    ctx.fillText(pct + '%', W - chartPad - 10, catY + 14);
+    
+    // Progress bar background
+    var barX = chartPad + 10;
+    var barWidth = W - chartPad*2 - 20;
+    ctx.fillStyle = 'rgba(30,45,70,0.5)';
+    ctx.beginPath();
+    ctx.roundRect(barX, catY + 22, barWidth, 10, 5);
+    ctx.fill();
+    
+    // Progress bar fill
+    if(pct > 0) {
+      var fillGrad = ctx.createLinearGradient(barX, 0, barX + barWidth * pct / 100, 0);
+      fillGrad.addColorStop(0, cat.color);
+      fillGrad.addColorStop(1, cat.color + '80');
+      ctx.fillStyle = fillGrad;
+      ctx.beginPath();
+      ctx.roundRect(barX, catY + 22, barWidth * pct / 100, 10, 5);
+      ctx.fill();
+    }
+    
+    catY += 45;
+  });
+  
+  // === MOTIVATIONAL QUOTE ===
+  var quoteY = catY + 20;
+  var quotes = [
+    '"Your word is a lamp to my feet" — Psalm 119:105',
+    '"Be strong and courageous" — Joshua 1:9',
+    '"I can do all things through Christ" — Philippians 4:13',
+    '"The Lord is my shepherd" — Psalm 23:1',
+    '"Trust in the Lord with all your heart" — Proverbs 3:5'
+  ];
+  var quote = quotes[Math.floor(Math.random() * quotes.length)];
+  
+  ctx.fillStyle = 'rgba(255,215,0,0.06)';
+  ctx.beginPath();
+  ctx.roundRect(chartPad, quoteY, W - chartPad*2, 60, 14);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,215,0,0.15)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(chartPad, quoteY, W - chartPad*2, 60, 14);
+  ctx.stroke();
+  
+  ctx.fillStyle = '#FFD700';
+  ctx.font = 'italic 600 15px Comic Neue, cursive';
+  ctx.textAlign = 'center';
+  ctx.fillText(quote, W/2, quoteY + 35);
+  
+  // === FOOTER ===
+  ctx.fillStyle = '#3a4a6a';
+  ctx.font = '600 14px Comic Neue, cursive';
+  ctx.textAlign = 'center';
+  ctx.fillText('teens-bible-94271.web.app', W/2, H - 30);
+  
+  // Bottom accent line
+  var btmGrad = ctx.createLinearGradient(100, 0, W-100, 0);
+  btmGrad.addColorStop(0, 'rgba(255,215,0,0)');
+  btmGrad.addColorStop(0.5, 'rgba(255,215,0,0.3)');
+  btmGrad.addColorStop(1, 'rgba(255,215,0,0)');
+  ctx.strokeStyle = btmGrad;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(100, H - 50); ctx.lineTo(W-100, H - 50); ctx.stroke();
+  
+  // === SHARE / DOWNLOAD ===
+  canvas.toBlob(function(blob) {
+    if(navigator.share && navigator.canShare) {
+      var file = new File([blob], 'teenz-bible-weekly-stats.png', {type: 'image/png'});
+      var shareData = {
+        title: 'My Teenz Bible Weekly Stats',
+        text: name + ' read ' + thisWeekTotal + ' chapters this week! 📖🔥 #TeenzBible',
+        files: [file]
+      };
+      if(navigator.canShare(shareData)) {
+        navigator.share(shareData).catch(function(){});
+      } else {
+        // Fallback without files
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'teenz-bible-weekly-stats.png';
+        a.click();
+      }
+    } else {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'teenz-bible-weekly-stats.png';
+      a.click();
+    }
+    if(typeof showGemToast === 'function') showGemToast('📤 Stats card generated!');
+  });
 }
 
 // === BIBLE JOURNEY MAP ===
@@ -10729,7 +11141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=81"></script>
+<script src="social.js?v=82"></script>
 </body>
 </html>
 
