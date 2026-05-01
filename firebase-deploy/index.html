@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v77';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=77'];
+      const CACHE = 'teens-bible-v78';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=78'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -5030,24 +5030,8 @@ function showPwaInstallGuide() {
     html += '<h1 style="color:#FFD700;font-family:Bangers,cursive;font-size:'+titleSize+';margin:0 0 4px;text-align:center;letter-spacing:2px;text-shadow:0 2px 20px rgba(255,215,0,0.4);">TEENZ BIBLE</h1>';
     html += '<p style="color:rgba(255,255,255,0.7);font-size:'+subSize+';margin:0 0 18px;text-align:center;font-weight:500;">The Bible, but actually easy to read</p>';
 
-    // Feature pills
-    html += '<div style="display:flex;gap:'+pillGap+';margin-bottom:20px;flex-wrap:wrap;justify-content:center;">';
-    var feats = [['\u26A1','Offline'],['\uD83C\uDFC6','XP & Badges'],['\uD83E\uDD16','AI Chat'],['\uD83C\uDFA7','Audio'],['\uD83C\uDFAC','Videos']];
-    for(var fi=0;fi<feats.length;fi++){
-      html += '<div style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:'+pillPad+';display:flex;align-items:center;gap:6px;">';
-      html += '<span style="font-size:'+pillEmojiSize+';">'+feats[fi][0]+'</span>';
-      html += '<span style="color:#FFD700;font-size:'+pillFontSize+';font-weight:700;letter-spacing:0.5px;">'+feats[fi][1]+'</span>';
-      html += '</div>';
-    }
-    html += '</div>';
-
-    // Instructions card
-    html += '<div style="background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:'+cardPad+';margin-bottom:18px;width:100%;max-width:'+cardMaxW+';">';
-    html += buildInstructions(instrTitleSize, instrStepSize, instrBadgeSize, instrBadgeFont);
-    html += '</div>';
-
-    // CTA
-    html += '<button onclick="dismissPwaGuide()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);font-size:13px;padding:10px 28px;border-radius:12px;cursor:pointer;margin-top:8px;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'">Skip for now</button>';
+    // CTA - Start button
+    html += '<button onclick="dismissPwaGuide()" style="background:linear-gradient(135deg,#FFD700,#f59e0b);color:#0f172a;border:none;font-size:16px;font-weight:700;padding:14px 40px;border-radius:14px;cursor:pointer;margin-top:12px;box-shadow:0 4px 20px rgba(255,215,0,0.3);transition:transform 0.2s;font-family:Luckiest Guy,cursive;letter-spacing:1px;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">START READING 📖</button>';
 
     html += '</div>'; // end right side
     html += '</div>'; // end pwa-guide-inner
@@ -5079,24 +5063,8 @@ function showPwaInstallGuide() {
     html += '<h1 style="color:#FFD700;font-family:Bangers,cursive;font-size:'+titleSize+';margin:0 0 4px;text-align:center;letter-spacing:2px;text-shadow:0 2px 20px rgba(255,215,0,0.4);">TEENZ BIBLE</h1>';
     html += '<p style="color:rgba(255,255,255,0.7);font-size:'+subSize+';margin:0 0 20px;text-align:center;font-weight:500;">The Bible, but actually easy to read</p>';
 
-    // Feature pills
-    html += '<div style="display:flex;gap:'+pillGap+';margin-bottom:22px;flex-wrap:wrap;justify-content:center;">';
-    var feats = [['\u26A1','Offline'],['\uD83C\uDFC6','XP & Badges'],['\uD83E\uDD16','AI Chat'],['\uD83C\uDFA7','Audio'],['\uD83C\uDFAC','Videos']];
-    for(var fi=0;fi<feats.length;fi++){
-      html += '<div style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:'+pillPad+';display:flex;align-items:center;gap:6px;">';
-      html += '<span style="font-size:'+pillEmojiSize+';">'+feats[fi][0]+'</span>';
-      html += '<span style="color:#FFD700;font-size:'+pillFontSize+';font-weight:700;letter-spacing:0.5px;">'+feats[fi][1]+'</span>';
-      html += '</div>';
-    }
-    html += '</div>';
-
-    // Instructions card
-    html += '<div style="background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:'+cardPad+';margin-bottom:18px;width:100%;max-width:'+cardMaxW+';">';
-    html += buildInstructions(instrTitleSize, instrStepSize, instrBadgeSize, instrBadgeFont);
-    html += '</div>';
-
-    // CTA
-    html += '<button onclick="dismissPwaGuide()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);font-size:13px;padding:10px 28px;border-radius:12px;cursor:pointer;margin-bottom:24px;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'">Skip for now</button>';
+    // CTA - Start button
+    html += '<button onclick="dismissPwaGuide()" style="background:linear-gradient(135deg,#FFD700,#f59e0b);color:#0f172a;border:none;font-size:16px;font-weight:700;padding:14px 40px;border-radius:14px;cursor:pointer;margin-bottom:24px;box-shadow:0 4px 20px rgba(255,215,0,0.3);transition:transform 0.2s;font-family:Luckiest Guy,cursive;letter-spacing:1px;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">START READING 📖</button>';
 
     html += '</div>'; // end content
     html += '</div>'; // end pwa-guide-inner
@@ -10095,7 +10063,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=77"></script>
+<script src="social.js?v=78"></script>
 </body>
 </html>
 
