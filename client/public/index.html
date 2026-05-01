@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v75';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=75'];
+      const CACHE = 'teens-bible-v76';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=76'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -4874,10 +4874,83 @@ window.addEventListener('beforeinstallprompt', function(e) {
   deferredInstallPrompt = e;
 });
 
+// Korean browser detection (needed early for install celebration)
+const isKoreanBrowser = /^ko/i.test(navigator.language || navigator.userLanguage || '');
+
+// PWA install completion detection
+window.addEventListener('appinstalled', function() {
+  localStorage.setItem('pwaGuideShown', 'installed');
+  // Remove the install guide overlay if visible
+  var ov = document.getElementById('pwa-guide-overlay');
+  if(ov) ov.remove();
+  var banner = document.getElementById('pwa-mini-banner');
+  if(banner) banner.remove();
+  // Show celebration after a brief delay
+  setTimeout(showInstallCelebration, 500);
+});
+
+// Also detect if user just installed and is opening for the first time as standalone
+if(window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+  if(!localStorage.getItem('installCelebrationShown')) {
+    setTimeout(showInstallCelebration, 1500);
+  }
+}
+
+function showInstallCelebration() {
+  if(localStorage.getItem('installCelebrationShown')) return;
+  localStorage.setItem('installCelebrationShown', 'true');
+  localStorage.setItem('pwaGuideShown', 'installed');
+  
+  // Award bonus gems
+  var bonusGems = 15;
+  if(typeof state !== 'undefined') {
+    state.gems = (state.gems || 0) + bonusGems;
+    if(typeof save === 'function') save();
+    if(typeof updateGemDisplay === 'function') updateGemDisplay();
+  }
+  
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:10001;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s';
+  overlay.className = 'install-celebrate-overlay';
+  
+  var card = document.createElement('div');
+  card.style.cssText = 'background:linear-gradient(135deg,#0a2e1a,#1a4e2e);border:2px solid rgba(34,197,94,0.6);border-radius:24px;padding:36px 28px;text-align:center;max-width:340px;width:90%;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(34,197,94,0.3)';
+  
+  // Confetti particles
+  var confettiColors = ['#FACC15','#22c55e','#3b82f6','#ec4899','#f97316','#a855f7'];
+  for(var i=0;i<20;i++) {
+    var p = document.createElement('div');
+    var x = Math.random()*100, delay = Math.random()*2, dur = Math.random()*2+2;
+    var color = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+    p.style.cssText = 'position:absolute;left:'+x+'%;top:-10px;width:'+(Math.random()*6+4)+'px;height:'+(Math.random()*6+4)+'px;background:'+color+';border-radius:'+(Math.random()>0.5?'50%':'2px')+';animation:confettiFall '+dur+'s ease-in '+delay+'s infinite;pointer-events:none;opacity:0.8';
+    card.appendChild(p);
+  }
+  
+  card.innerHTML += '<div style="font-size:56px;margin-bottom:12px;animation:bounce 0.6s ease">\ud83c\udf89</div>'
+    + '<div style="font-family:Luckiest Guy,cursive;font-size:26px;color:#22c55e;text-shadow:0 0 20px rgba(34,197,94,0.5);margin-bottom:4px">'+(isKoreanBrowser?'\uc124\uce58 \uc644\ub8cc!':'INSTALLED!')+'</div>'
+    + '<div style="font-size:14px;color:#86efac;margin-bottom:6px;font-weight:600">'+(isKoreanBrowser?'Teenz Bible\uc774 \uc571\uc73c\ub85c \uc124\uce58\ub418\uc5c8\uc5b4\uc694!':'Teenz Bible is now on your device!')+'</div>'
+    + '<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.5">'+(isKoreanBrowser?'\uc774\uc81c \ud648 \ud654\uba74\uc5d0\uc11c \ubc14\ub85c \uc5f4 \uc218 \uc788\uc5b4\uc694!<br>\uc624\ud504\ub77c\uc778\uc5d0\uc11c\ub3c4 \uc0ac\uc6a9\ud560 \uc218 \uc788\uc5b5\ub2c8\ub2e4.':'Now you can open it from your home screen!<br>It even works offline.')+'</div>'
+    + '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px">'
+    + '<span style="font-size:14px;color:#94a3b8">'+(isKoreanBrowser?'\uc124\uce58 \ubcf4\ub108\uc2a4':'Install Bonus')+'</span></div>'
+    + '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px">'
+    + '<span style="font-size:36px">\ud83d\udc8e</span>'
+    + '<span style="font-family:Bangers,cursive;font-size:48px;color:#22d3ee;text-shadow:0 0 20px rgba(34,211,238,0.5)">+'+bonusGems+'</span>'
+    + '<span style="font-size:16px;color:#67e8f9">GEMS</span></div>'
+    + '<button onclick="this.closest(\'.install-celebrate-overlay\').remove()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:14px;padding:14px 36px;font-family:Luckiest Guy,cursive;font-size:20px;cursor:pointer;box-shadow:0 4px 20px rgba(34,197,94,0.4);transition:transform 0.2s" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">'+(isKoreanBrowser?'\uc2dc\uc791\ud558\uae30! \ud83d\ude80':'LET\u2019S GO! \ud83d\ude80')+'</button>';
+  
+  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+  
+  // Auto-dismiss after 12 seconds
+  setTimeout(function(){ if(document.body.contains(overlay)) overlay.remove(); }, 12000);
+}
+
 // Check if already installed as PWA
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone || window.navigator.standalone;
 const isAndroid = /Android/i.test(navigator.userAgent);
-const isIPhone = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const isIPad = /iPad/i.test(navigator.userAgent) || (/Macintosh/i.test(navigator.userAgent) && 'ontouchend' in document);
+const isIPhone = (/iPhone|iPod/i.test(navigator.userAgent)) && !isIPad;
 const isMac = /Macintosh|MacIntel/i.test(navigator.userAgent);
 const isSafari = /Safari/i.test(navigator.userAgent) && !/Chrome|CriOS|Chromium/i.test(navigator.userAgent);
 const isEdge = /Edg\//i.test(navigator.userAgent);
@@ -5029,77 +5102,76 @@ function showPwaInstallGuide() {
 // Helper to build platform-specific instructions
 function buildInstructions(titleSize, stepSize, badgeSize, badgeFont) {
   var h = '';
+  // Image URLs
+  var imgEN = {
+    iphone: '/iphone-install-guide.webp',
+    android: '/android-install-guide.webp',
+    ipad: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-ipad-en-ajnSZC7Yen7Bkmqij7GH5a.webp'
+  };
+  var imgKR = {
+    iphone: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-iphone-kr-SvK4eSZ9SssxpFHhRSk7ya.webp',
+    android: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-android-kr-hJbAQjnCVRCmv84DTaqTWE.webp',
+    ipad: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-ipad-kr-gsEdwVUxe9hnZ22oyA6fXm.webp'
+  };
+  var useKR = isKoreanBrowser;
+  var imgs = useKR ? imgKR : imgEN;
   
-  // PWA explanation - why install this way
-  h += '<div style="text-align:center;margin-bottom:16px;">';
-  h += '<p style="color:#FFD700;font-size:'+titleSize+';font-weight:700;margin:0 0 8px;opacity:0.95;">Install as App</p>';
-  h += '<p style="color:rgba(255,255,255,0.6);font-size:12px;margin:0;line-height:1.5;">Teenz Bible is a <b style="color:rgba(255,255,255,0.85)">web app</b> — no app store needed!<br>Install it directly from your browser in seconds.</p>';
+  // PWA explanation
+  h += '<div style="text-align:center;margin-bottom:12px;">';
+  h += '<p style="color:#FFD700;font-size:'+titleSize+';font-weight:700;margin:0 0 6px;opacity:0.95;">'+(useKR?'앱으로 설치하기':'Install as App')+'</p>';
+  h += '<p style="color:rgba(255,255,255,0.6);font-size:12px;margin:0;line-height:1.5;">'+(useKR?'Teenz Bible은 <b style="color:rgba(255,255,255,0.85)">웹앱</b>이에요!<br>앱스토어 없이 브라우저에서 바로 설치할 수 있어요.':'Teenz Bible is a <b style="color:rgba(255,255,255,0.85)">web app</b> — no app store needed!<br>Install it directly from your browser in seconds.')+'</p>';
+  h += '</div>';
+  
+  // Language toggle
+  h += '<div style="display:flex;justify-content:center;gap:6px;margin-bottom:12px;">';
+  h += '<button onclick="toggleInstallLang(false)" id="install-lang-en" style="padding:4px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;'+(useKR?'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4)':'background:rgba(147,197,253,0.15);border:2px solid rgba(147,197,253,0.4);color:#93c5fd')+'">🇺🇸 English</button>';
+  h += '<button onclick="toggleInstallLang(true)" id="install-lang-kr" style="padding:4px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;'+(useKR?'background:rgba(147,197,253,0.15);border:2px solid rgba(147,197,253,0.4);color:#93c5fd':'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4)')+'">🇰🇷 한국어</button>';
   h += '</div>';
   
   if(isAndroid) {
-    // Android: show the guide image directly
-    h += '<img src="/android-install-guide.webp" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="Android Install Guide">';
+    h += '<img id="install-img-main" src="'+imgs.android+'" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="Android Install Guide">';
   } else if(isIPhone) {
-    // iPhone: show the guide image directly
-    h += '<img src="/iphone-install-guide.webp" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="iPhone Install Guide">';
+    h += '<img id="install-img-main" src="'+imgs.iphone+'" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="iPhone Install Guide">';
+  } else if(isIPad) {
+    h += '<img id="install-img-main" src="'+imgs.ipad+'" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="iPad Install Guide">';
   } else {
-    // Desktop: show tabs for iPhone / Android(Galaxy) + desktop instructions
-    h += '<div id="install-tabs" style="display:flex;gap:6px;margin-bottom:12px;">';
-    h += '<button onclick="switchInstallTab(\'iphone\')" id="install-tab-iphone" style="flex:1;padding:8px;background:rgba(147,197,253,0.15);border:2px solid rgba(147,197,253,0.4);color:#93c5fd;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s">🍏 iPhone</button>';
-    h += '<button onclick="switchInstallTab(\'android\')" id="install-tab-android" style="flex:1;padding:8px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:rgba(74,222,128,0.6);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s">📱 Android (Galaxy)</button>';
-    h += '<button onclick="switchInstallTab(\'desktop\')" id="install-tab-desktop" style="flex:1;padding:8px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);color:rgba(250,204,21,0.6);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s">🖥️ Desktop</button>';
+    // Desktop: show tabs for iPhone / iPad / Android(Galaxy) + desktop instructions
+    h += '<div id="install-tabs" style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;">';
+    h += '<button onclick="switchInstallTab(\'iphone\')" id="install-tab-iphone" style="flex:1;min-width:70px;padding:7px 4px;background:rgba(147,197,253,0.15);border:2px solid rgba(147,197,253,0.4);color:#93c5fd;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s">🍏 iPhone</button>';
+    h += '<button onclick="switchInstallTab(\'ipad\')" id="install-tab-ipad" style="flex:1;min-width:70px;padding:7px 4px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);color:rgba(168,85,247,0.6);border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s">📱 iPad</button>';
+    h += '<button onclick="switchInstallTab(\'android\')" id="install-tab-android" style="flex:1;min-width:70px;padding:7px 4px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);color:rgba(74,222,128,0.6);border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s">📱 Galaxy</button>';
+    h += '<button onclick="switchInstallTab(\'desktop\')" id="install-tab-desktop" style="flex:1;min-width:70px;padding:7px 4px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);color:rgba(250,204,21,0.6);border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s">🖥️ Desktop</button>';
     h += '</div>';
     
     // Tab content panels
     h += '<div id="install-content-iphone" style="display:block;">';
-    h += '<img src="/iphone-install-guide.webp" style="width:100%;border-radius:12px;" alt="iPhone Install Guide">';
+    h += '<img id="install-img-iphone" src="'+imgs.iphone+'" style="width:100%;border-radius:12px;" alt="iPhone Install Guide">';
+    h += '</div>';
+    
+    h += '<div id="install-content-ipad" style="display:none;">';
+    h += '<img id="install-img-ipad" src="'+imgs.ipad+'" style="width:100%;border-radius:12px;" alt="iPad Install Guide">';
     h += '</div>';
     
     h += '<div id="install-content-android" style="display:none;">';
-    h += '<img src="/android-install-guide.webp" style="width:100%;border-radius:12px;" alt="Android Install Guide">';
+    h += '<img id="install-img-android" src="'+imgs.android+'" style="width:100%;border-radius:12px;" alt="Android Install Guide">';
     h += '</div>';
     
     h += '<div id="install-content-desktop" style="display:none;">';
-    // Desktop-specific text instructions
     if(isSafari && isMac) {
-      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">File</span> in the menu bar</p>';
-      h += '</div>';
-      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Add to Dock"</span></p>';
-      h += '</div>';
-      h += '<div style="display:flex;align-items:center;gap:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div>';
-      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Click "Add" — Done!</p>';
-      h += '</div>';
+      h += '<div style="text-align:center;margin-bottom:8px;"><p style="color:rgba(255,255,255,0.5);font-size:11px;margin:0;">'+(useKR?'Mac Safari에서 설치하기':'Install as Desktop App (Safari)')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div><p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'메뉴바에서 <span style="color:#FFD700">파일</span>을 클릭':'Click <span style="color:#FFD700">File</span> in the menu bar')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div><p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'<span style="color:#FFD700">"Dock에 추가"</span>를 클릭':'Click <span style="color:#FFD700">"Add to Dock"</span>')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div><p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'"추가"를 클릭하면 완료!':'Click "Add" — Done!')+'</p></div>';
     } else if(isEdge) {
-      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:6px;font-size:16px;font-weight:900;">&#x22EF;</span> menu (top right)</p>';
-      h += '</div>';
-      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Apps" → "Install this site as an app"</span></p>';
-      h += '</div>';
-      h += '<div style="display:flex;align-items:center;gap:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div>';
-      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">Click "Install" — Done!</p>';
-      h += '</div>';
+      h += '<div style="text-align:center;margin-bottom:8px;"><p style="color:rgba(255,255,255,0.5);font-size:11px;margin:0;">'+(useKR?'Edge에서 설치하기':'Install as Desktop App (Edge)')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div><p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'오른쪽 상단 <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:6px;font-size:16px;font-weight:900;">⋯</span> 메뉴를 클릭':'Click <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:6px;font-size:16px;font-weight:900;">⋯</span> menu (top right)')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div><p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'<span style="color:#FFD700">"앱" → "이 사이트를 앱으로 설치"</span>를 클릭':'Click <span style="color:#FFD700">"Apps" → "Install this site as an app"</span>')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div><p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'"설치"를 클릭하면 완료!':'Click "Install" — Done!')+'</p></div>';
     } else {
-      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click the <span style="background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:6px;font-size:14px;">⭳</span> install icon in the address bar</p>';
-      h += '</div>';
-      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div>';
-      h += '<p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">Click <span style="color:#FFD700;">"Install"</span> in the popup</p>';
-      h += '</div>';
-      h += '<div style="display:flex;align-items:center;gap:12px;">';
-      h += '<div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div>';
-      h += '<p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">App opens in its own window — Done!</p>';
-      h += '</div>';
+      h += '<div style="text-align:center;margin-bottom:8px;"><p style="color:rgba(255,255,255,0.5);font-size:11px;margin:0;">'+(useKR?'Chrome에서 설치하기':'Install as Desktop App')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">1</div><p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'주소창의 <span style="background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:6px;font-size:14px;">⭳</span> 설치 아이콘을 클릭':'Click the <span style="background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:6px;font-size:14px;">⭳</span> install icon in the address bar')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#FFD700,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;color:#0a0a2e;font-size:'+badgeFont+';">2</div><p style="color:#fff;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'팝업에서 <span style="color:#FFD700">"설치"</span>를 클릭':'Click <span style="color:#FFD700">"Install"</span> in the popup')+'</p></div>';
+      h += '<div style="display:flex;align-items:center;gap:12px;"><div style="min-width:'+badgeSize+';height:'+badgeSize+';border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+badgeFont+';">✓</div><p style="color:#22c55e;font-size:'+stepSize+';margin:0;font-weight:600;">'+(useKR?'앱이 새 창에서 열립니다 — 완료!':'App opens in its own window — Done!')+'</p></div>';
     }
     h += '</div>';
   }
@@ -5108,8 +5180,8 @@ function buildInstructions(titleSize, stepSize, badgeSize, badgeFont) {
 
 // Tab switching for install guide
 function switchInstallTab(tab) {
-  var tabs = ['iphone','android','desktop'];
-  var colors = {iphone:['147,197,253','#93c5fd'], android:['74,222,128','#4ade80'], desktop:['250,204,21','#fbbf24']};
+  var tabs = ['iphone','ipad','android','desktop'];
+  var colors = {iphone:['147,197,253','#93c5fd'], ipad:['168,85,247','#a855f7'], android:['74,222,128','#4ade80'], desktop:['250,204,21','#fbbf24']};
   tabs.forEach(function(t) {
     var btn = document.getElementById('install-tab-'+t);
     var content = document.getElementById('install-content-'+t);
@@ -5125,6 +5197,48 @@ function switchInstallTab(tab) {
       btn.style.border = '1px solid rgba('+colors[t][0]+',0.2)';
       btn.style.color = 'rgba('+colors[t][0]+',0.6)';
     }
+  });
+}
+
+// Language toggle for install guide
+function toggleInstallLang(useKR) {
+  var imgEN = {
+    iphone: '/iphone-install-guide.webp',
+    android: '/android-install-guide.webp',
+    ipad: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-ipad-en-ajnSZC7Yen7Bkmqij7GH5a.webp'
+  };
+  var imgKR = {
+    iphone: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-iphone-kr-SvK4eSZ9SssxpFHhRSk7ya.webp',
+    android: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-android-kr-hJbAQjnCVRCmv84DTaqTWE.webp',
+    ipad: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/install-guide-ipad-kr-gsEdwVUxe9hnZ22oyA6fXm.webp'
+  };
+  var imgs = useKR ? imgKR : imgEN;
+  
+  // Update language toggle buttons
+  var enBtn = document.getElementById('install-lang-en');
+  var krBtn = document.getElementById('install-lang-kr');
+  if(enBtn) {
+    enBtn.style.background = useKR ? 'rgba(255,255,255,0.05)' : 'rgba(147,197,253,0.15)';
+    enBtn.style.border = useKR ? '1px solid rgba(255,255,255,0.15)' : '2px solid rgba(147,197,253,0.4)';
+    enBtn.style.color = useKR ? 'rgba(255,255,255,0.4)' : '#93c5fd';
+  }
+  if(krBtn) {
+    krBtn.style.background = useKR ? 'rgba(147,197,253,0.15)' : 'rgba(255,255,255,0.05)';
+    krBtn.style.border = useKR ? '2px solid rgba(147,197,253,0.4)' : '1px solid rgba(255,255,255,0.15)';
+    krBtn.style.color = useKR ? '#93c5fd' : 'rgba(255,255,255,0.4)';
+  }
+  
+  // Update images (mobile single image or desktop tabbed images)
+  var mainImg = document.getElementById('install-img-main');
+  if(mainImg) {
+    if(isAndroid) mainImg.src = imgs.android;
+    else if(isIPhone) mainImg.src = imgs.iphone;
+    else if(isIPad) mainImg.src = imgs.ipad;
+  }
+  // Desktop tabbed images
+  ['iphone','ipad','android'].forEach(function(d) {
+    var img = document.getElementById('install-img-'+d);
+    if(img) img.src = imgs[d];
   });
 }
 
@@ -9742,7 +9856,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=75"></script>
+<script src="social.js?v=76"></script>
 </body>
 </html>
 
