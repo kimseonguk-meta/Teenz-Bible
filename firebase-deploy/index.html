@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v76';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=76'];
+      const CACHE = 'teens-bible-v77';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=77'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -1659,6 +1659,21 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
   .nav-btn { min-height:48px; }
   .badge { min-width:48px; min-height:48px; }
 }
+
+/* Install guide step animations */
+@keyframes stepReveal { 0% { opacity:0; transform:translateX(-20px); } 100% { opacity:1; transform:translateX(0); } }
+@keyframes stepPulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(255,215,0,0.4); } 50% { transform:scale(1.05); box-shadow:0 0 0 8px rgba(255,215,0,0); } }
+@keyframes fingerTap { 0%,100% { transform:translate(0,0) scale(1); } 30% { transform:translate(0,4px) scale(0.9); } 60% { transform:translate(0,0) scale(1.05); } }
+@keyframes phoneSlide { 0% { opacity:0; transform:translateY(30px) scale(0.9); } 100% { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes arrowBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+@keyframes dotPing { 0% { transform:scale(1); opacity:1; } 100% { transform:scale(2.5); opacity:0; } }
+
+/* Onboarding tour spotlight */
+@keyframes spotlightPulse { 0%,100% { box-shadow:0 0 0 4px rgba(255,215,0,0.3), 0 0 0 9999px rgba(0,0,0,0.85); } 50% { box-shadow:0 0 0 8px rgba(255,215,0,0.5), 0 0 0 9999px rgba(0,0,0,0.85); } }
+@keyframes tourCardSlide { 0% { opacity:0; transform:translateY(20px); } 100% { opacity:1; transform:translateY(0); } }
+
+/* Notification prompt */
+@keyframes bellRing { 0%,100% { transform:rotate(0); } 10% { transform:rotate(15deg); } 20% { transform:rotate(-15deg); } 30% { transform:rotate(10deg); } 40% { transform:rotate(-10deg); } 50% { transform:rotate(0); } }
 
 </style>
 
@@ -4936,14 +4951,14 @@ function showInstallCelebration() {
     + '<span style="font-size:36px">\ud83d\udc8e</span>'
     + '<span style="font-family:Bangers,cursive;font-size:48px;color:#22d3ee;text-shadow:0 0 20px rgba(34,211,238,0.5)">+'+bonusGems+'</span>'
     + '<span style="font-size:16px;color:#67e8f9">GEMS</span></div>'
-    + '<button onclick="this.closest(\'.install-celebrate-overlay\').remove()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:14px;padding:14px 36px;font-family:Luckiest Guy,cursive;font-size:20px;cursor:pointer;box-shadow:0 4px 20px rgba(34,197,94,0.4);transition:transform 0.2s" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">'+(isKoreanBrowser?'\uc2dc\uc791\ud558\uae30! \ud83d\ude80':'LET\u2019S GO! \ud83d\ude80')+'</button>';
+    + '<button onclick="this.closest(\'.install-celebrate-overlay\').remove();setTimeout(function(){if(typeof showPostInstallTour===\'function\')showPostInstallTour();},300)" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:14px;padding:14px 36px;font-family:Luckiest Guy,cursive;font-size:20px;cursor:pointer;box-shadow:0 4px 20px rgba(34,197,94,0.4);transition:transform 0.2s" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">'+(isKoreanBrowser?'\uc2dc\uc791\ud558\uae30! \ud83d\ude80':'LET\u2019S GO! \ud83d\ude80')+'</button>';
   
-  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+  overlay.onclick = function(e) { if(e.target === overlay) { overlay.remove(); setTimeout(function(){if(typeof showPostInstallTour==='function')showPostInstallTour();},300); } };
   overlay.appendChild(card);
   document.body.appendChild(overlay);
   
   // Auto-dismiss after 12 seconds
-  setTimeout(function(){ if(document.body.contains(overlay)) overlay.remove(); }, 12000);
+  setTimeout(function(){ if(document.body.contains(overlay)) { overlay.remove(); setTimeout(function(){if(typeof showPostInstallTour==='function')showPostInstallTour();},300); } }, 12000);
 }
 
 // Check if already installed as PWA
@@ -5128,12 +5143,56 @@ function buildInstructions(titleSize, stepSize, badgeSize, badgeFont) {
   h += '<button onclick="toggleInstallLang(true)" id="install-lang-kr" style="padding:4px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;'+(useKR?'background:rgba(147,197,253,0.15);border:2px solid rgba(147,197,253,0.4);color:#93c5fd':'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4)')+'">🇰🇷 한국어</button>';
   h += '</div>';
   
+  // Animated step-by-step mini tutorial for mobile
+  function buildAnimatedSteps(device, useKR) {
+    var s = '';
+    s += '<div style="margin-bottom:12px;">';
+    if(device === 'android') {
+      s += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:12px;margin-bottom:8px;animation:stepReveal 0.5s ease 0.2s both">';
+      s += '<div style="min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px;animation:stepPulse 2s ease infinite">1</div>';
+      s += '<p style="color:#e2e8f0;font-size:12px;margin:0;line-height:1.4">'+(useKR?'Chrome에서 <b style="color:#4ade80">점 3개(⋮)</b>를 탭하세요':'Open Chrome, tap <b style="color:#4ade80">⋮ (3 dots)</b> at top right')+'</p>';
+      s += '<span style="font-size:20px;animation:fingerTap 1.5s ease infinite">👆</span></div>';
+      s += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:12px;margin-bottom:8px;animation:stepReveal 0.5s ease 0.6s both">';
+      s += '<div style="min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px">2</div>';
+      s += '<p style="color:#e2e8f0;font-size:12px;margin:0;line-height:1.4">'+(useKR?'<b style="color:#4ade80">앱 설치</b> 또는 <b style="color:#4ade80">홈 화면에 추가</b>를 탭':'Tap <b style="color:#4ade80">Install App</b> or <b style="color:#4ade80">Add to Home Screen</b>')+'</p></div>';
+      s += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);border-radius:12px;animation:stepReveal 0.5s ease 1s both">';
+      s += '<div style="min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px">✓</div>';
+      s += '<p style="color:#4ade80;font-size:12px;margin:0;font-weight:600">'+(useKR?'<b>설치</b>를 탭하면 완료!':'Tap <b>Install</b> — Done!')+'</p>';
+      s += '<span style="font-size:16px">🎉</span></div>';
+    } else {
+      // iPhone / iPad
+      var isIPadDevice = (device === 'ipad');
+      s += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(147,197,253,0.08);border:1px solid rgba(147,197,253,0.2);border-radius:12px;margin-bottom:8px;animation:stepReveal 0.5s ease 0.2s both">';
+      s += '<div style="min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px;animation:stepPulse 2s ease infinite">1</div>';
+      s += '<p style="color:#e2e8f0;font-size:12px;margin:0;line-height:1.4">'+(useKR?'Safari에서 '+(isIPadDevice?'오른쪽 상단':'하단')+' <b style="color:#93c5fd">공유 버튼 ⬆</b>을 탭':'In Safari, tap <b style="color:#93c5fd">Share ⬆</b> at the '+(isIPadDevice?'top right':'bottom'))+'</p>';
+      s += '<span style="font-size:20px;animation:arrowBounce 1s ease infinite">⬆</span></div>';
+      s += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(147,197,253,0.08);border:1px solid rgba(147,197,253,0.2);border-radius:12px;margin-bottom:8px;animation:stepReveal 0.5s ease 0.6s both">';
+      s += '<div style="min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px">2</div>';
+      s += '<p style="color:#e2e8f0;font-size:12px;margin:0;line-height:1.4">'+(useKR?'<b style="color:#93c5fd">홈 화면에 추가</b>를 탭':'Tap <b style="color:#93c5fd">Add to Home Screen</b>')+'</p></div>';
+      s += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:12px;animation:stepReveal 0.5s ease 1s both">';
+      s += '<div style="min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px">✓</div>';
+      s += '<p style="color:#4ade80;font-size:12px;margin:0;font-weight:600">'+(useKR?'<b>추가</b>를 탭하면 완료!':'Tap <b>Add</b> — Done!')+'</p>';
+      s += '<span style="font-size:16px">🎉</span></div>';
+    }
+    s += '</div>';
+    return s;
+  }
+
   if(isAndroid) {
-    h += '<img id="install-img-main" src="'+imgs.android+'" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="Android Install Guide">';
+    h += buildAnimatedSteps('android', useKR);
+    h += '<details style="margin-bottom:8px;"><summary style="color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;text-align:center;padding:4px;">'+(useKR?'📸 상세 이미지 가이드 보기':'📸 See detailed image guide')+'</summary>';
+    h += '<img id="install-img-main" src="'+imgs.android+'" style="width:100%;border-radius:12px;margin-top:8px;animation:phoneSlide 0.5s ease" alt="Android Install Guide">';
+    h += '</details>';
   } else if(isIPhone) {
-    h += '<img id="install-img-main" src="'+imgs.iphone+'" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="iPhone Install Guide">';
+    h += buildAnimatedSteps('iphone', useKR);
+    h += '<details style="margin-bottom:8px;"><summary style="color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;text-align:center;padding:4px;">'+(useKR?'📸 상세 이미지 가이드 보기':'📸 See detailed image guide')+'</summary>';
+    h += '<img id="install-img-main" src="'+imgs.iphone+'" style="width:100%;border-radius:12px;margin-top:8px;animation:phoneSlide 0.5s ease" alt="iPhone Install Guide">';
+    h += '</details>';
   } else if(isIPad) {
-    h += '<img id="install-img-main" src="'+imgs.ipad+'" style="width:100%;border-radius:12px;margin-bottom:8px;" alt="iPad Install Guide">';
+    h += buildAnimatedSteps('ipad', useKR);
+    h += '<details style="margin-bottom:8px;"><summary style="color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;text-align:center;padding:4px;">'+(useKR?'📸 상세 이미지 가이드 보기':'📸 See detailed image guide')+'</summary>';
+    h += '<img id="install-img-main" src="'+imgs.ipad+'" style="width:100%;border-radius:12px;margin-top:8px;animation:phoneSlide 0.5s ease" alt="iPad Install Guide">';
+    h += '</details>';
   } else {
     // Desktop: show tabs for iPhone / iPad / Android(Galaxy) + desktop instructions
     h += '<div id="install-tabs" style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;">';
@@ -5304,6 +5363,186 @@ setTimeout(function() {
     showSmallInstallReminder();
   }
 }, 5000);
+
+// === POST-INSTALL ONBOARDING TOUR ===
+function showPostInstallTour() {
+  if(localStorage.getItem('postInstallTourDone')) return;
+  localStorage.setItem('postInstallTourDone', 'true');
+  var kr = typeof isKoreanBrowser !== 'undefined' && isKoreanBrowser;
+  
+  var tourSteps = [
+    {
+      icon: '📖',
+      title: kr ? '성경 읽기' : 'Read the Bible',
+      desc: kr ? '10대를 위한 쉬운 성경! 탭 하나로 바로 읽을 수 있어요. 챕터를 읽으면 <b>XP</b>와 <b>Gems</b>을 얻어요!' : 'The Bible made easy for teens! Tap to start reading. Earn <b>XP</b> and <b>Gems</b> for every chapter!',
+      color: '#4ade80',
+      emoji: '📖✨'
+    },
+    {
+      icon: '🤖',
+      title: kr ? 'AI 채팅' : 'Bible AI Chat',
+      desc: kr ? '성경에 대해 궁금한 건 뭐든 물어보세요! AI가 쉽게 설명해줘요.' : 'Ask anything about the Bible! AI explains it in a way that makes sense.',
+      color: '#f472b6',
+      emoji: '🤖💬'
+    },
+    {
+      icon: '🎧',
+      title: kr ? '오디오 듣기' : 'Listen to Audio',
+      desc: kr ? 'HD 음성으로 성경을 들을 수 있어요. 이동 중에도 편하게!' : 'Listen to chapters in HD voice. Perfect for on-the-go!',
+      color: '#60a5fa',
+      emoji: '🎧🎵'
+    },
+    {
+      icon: '🏆',
+      title: kr ? '퀴즈 & 배지' : 'Quizzes & Badges',
+      desc: kr ? '읽은 후 퀴즈를 풀고 배지를 모아보세요! 레벨업도 할 수 있어요.' : 'Take quizzes after reading and collect badges! Level up as you go.',
+      color: '#a78bfa',
+      emoji: '🏆🎯'
+    },
+    {
+      icon: '💎',
+      title: kr ? 'Gem 스토어' : 'Gem Store',
+      desc: kr ? 'Gems으로 아바타 프레임, 리더 배경 등을 구매하세요! 시즌 한정 아이템도 있어요.' : 'Spend Gems on avatar frames, reader backgrounds & more! Seasonal items available!',
+      color: '#fbbf24',
+      emoji: '💎🛒'
+    }
+  ];
+  
+  var currentStep = 0;
+  
+  function renderTourStep() {
+    var s = tourSteps[currentStep];
+    var isLast = currentStep === tourSteps.length - 1;
+    var progress = ((currentStep + 1) / tourSteps.length * 100).toFixed(0);
+    
+    var overlay = document.getElementById('tour-overlay');
+    if(!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'tour-overlay';
+      overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.88);z-index:10002;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s ease';
+      document.body.appendChild(overlay);
+    }
+    
+    var dotsHtml = tourSteps.map(function(_, i) {
+      return '<div style="width:'+(i===currentStep?'24px':'8px')+';height:8px;border-radius:4px;background:'+(i===currentStep?s.color:'rgba(255,255,255,0.2)')+';transition:all 0.3s"></div>';
+    }).join('');
+    
+    overlay.innerHTML = '<div style="max-width:360px;width:90%;animation:tourCardSlide 0.4s ease">' +
+      '<div style="background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(30,41,59,0.95));border:1px solid '+s.color+'40;border-radius:24px;padding:32px 24px;text-align:center;backdrop-filter:blur(20px);box-shadow:0 0 40px '+s.color+'20">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+        '<span style="color:rgba(255,255,255,0.4);font-size:11px;font-weight:600">'+(kr?'기능 안내':'FEATURE TOUR')+'</span>' +
+        '<span style="color:rgba(255,255,255,0.4);font-size:11px;font-weight:600">'+(currentStep+1)+'/'+tourSteps.length+'</span>' +
+      '</div>' +
+      '<div style="width:100%;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-bottom:24px;overflow:hidden">' +
+        '<div style="width:'+progress+'%;height:100%;background:'+s.color+';border-radius:2px;transition:width 0.4s ease"></div>' +
+      '</div>' +
+      '<div style="font-size:56px;margin-bottom:8px;animation:bounce 0.6s ease">'+s.emoji+'</div>' +
+      '<div style="font-family:Luckiest Guy,cursive;font-size:22px;color:'+s.color+';margin-bottom:8px;text-shadow:0 0 20px '+s.color+'40">'+s.title+'</div>' +
+      '<p style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.6;margin:0 0 24px">'+s.desc+'</p>' +
+      '<div style="display:flex;justify-content:center;gap:4px;margin-bottom:20px">'+dotsHtml+'</div>' +
+      '<div style="display:flex;gap:10px;justify-content:center">' +
+        (currentStep > 0 ? '<button onclick="tourPrev()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:12px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s">'+(kr?'← 이전':'← Back')+'</button>' : '') +
+        '<button onclick="'+(isLast?'closeTour()':'tourNext()')+'" style="background:linear-gradient(135deg,'+s.color+','+s.color+'cc);color:#0f172a;border:none;border-radius:12px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px '+s.color+'40;transition:transform 0.2s" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">'+(isLast?(kr?'시작하기! 🚀':'START! 🚀'):(kr?'다음 →':'Next →'))+'</button>' +
+      '</div>' +
+      (isLast ? '' : '<button onclick="closeTour()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:11px;cursor:pointer;margin-top:12px;padding:4px">'+(kr?'건너뛰기':'Skip tour')+'</button>') +
+      '</div></div>';
+  }
+  
+  window.tourNext = function() {
+    if(currentStep < tourSteps.length - 1) {
+      currentStep++;
+      renderTourStep();
+    }
+  };
+  
+  window.tourPrev = function() {
+    if(currentStep > 0) {
+      currentStep--;
+      renderTourStep();
+    }
+  };
+  
+  window.closeTour = function() {
+    var ov = document.getElementById('tour-overlay');
+    if(ov) {
+      ov.style.transition = 'opacity 0.3s';
+      ov.style.opacity = '0';
+      setTimeout(function() {
+        ov.remove();
+        // After tour ends, show notification prompt
+        setTimeout(function() { showNotificationPrompt(); }, 500);
+      }, 300);
+    }
+  };
+  
+  renderTourStep();
+}
+
+// === PUSH NOTIFICATION SUBSCRIPTION PROMPT ===
+function showNotificationPrompt() {
+  if(localStorage.getItem('notifPromptShown')) return;
+  if(localStorage.getItem('notifEnabled') === 'true') return;
+  if(!('Notification' in window)) return;
+  localStorage.setItem('notifPromptShown', 'true');
+  
+  var kr = typeof isKoreanBrowser !== 'undefined' && isKoreanBrowser;
+  
+  var overlay = document.createElement('div');
+  overlay.id = 'notif-prompt-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.88);z-index:10003;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s ease';
+  
+  overlay.innerHTML = '<div style="max-width:340px;width:90%;animation:tourCardSlide 0.4s ease">' +
+    '<div style="background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(30,41,59,0.95));border:1px solid rgba(250,204,21,0.3);border-radius:24px;padding:32px 24px;text-align:center;backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(250,204,21,0.15)">' +
+    '<div style="font-size:64px;margin-bottom:12px;animation:bellRing 1s ease 0.5s">' + '🔔' + '</div>' +
+    '<div style="font-family:Luckiest Guy,cursive;font-size:22px;color:#fbbf24;margin-bottom:8px;text-shadow:0 0 20px rgba(250,204,21,0.3)">' + (kr ? '매일 말씀 알림' : 'Daily Reminders') + '</div>' +
+    '<p style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.6;margin:0 0 8px">' + (kr ? '매일 정해진 시간에 성경 읽기 알림을 받아보세요!<br>연속 읽기 기록도 유지할 수 있어요.' : 'Get daily reminders to read the Bible!<br>Keep your reading streak going strong.') + '</p>' +
+    '<div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;margin-top:16px">' +
+      '<div style="background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);border-radius:12px;padding:10px 14px;flex:1">' +
+        '<div style="font-size:24px;margin-bottom:4px">📖</div>' +
+        '<div style="color:rgba(255,255,255,0.6);font-size:10px">' + (kr ? '오늘의 말씀' : 'Daily Verse') + '</div>' +
+      '</div>' +
+      '<div style="background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);border-radius:12px;padding:10px 14px;flex:1">' +
+        '<div style="font-size:24px;margin-bottom:4px">🔥</div>' +
+        '<div style="color:rgba(255,255,255,0.6);font-size:10px">' + (kr ? '연속 기록' : 'Streak Alert') + '</div>' +
+      '</div>' +
+      '<div style="background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.2);border-radius:12px;padding:10px 14px;flex:1">' +
+        '<div style="font-size:24px;margin-bottom:4px">🏆</div>' +
+        '<div style="color:rgba(255,255,255,0.6);font-size:10px">' + (kr ? '퀴즈 알림' : 'Quiz Time') + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<button onclick="enableNotifFromPrompt()" style="width:100%;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0f172a;border:none;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(250,204,21,0.3);transition:transform 0.2s;margin-bottom:10px" onmouseover="this.style.transform=\'scale(1.03)\'" onmouseout="this.style.transform=\'scale(1)\'">' + (kr ? '🔔 알림 받기' : '🔔 Enable Notifications') + '</button>' +
+    '<button onclick="dismissNotifPrompt()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;padding:6px">' + (kr ? '나중에 할게요' : 'Maybe later') + '</button>' +
+    '</div></div>';
+  
+  overlay.onclick = function(e) { if(e.target === overlay) dismissNotifPrompt(); };
+  document.body.appendChild(overlay);
+}
+
+function enableNotifFromPrompt() {
+  Notification.requestPermission().then(function(perm) {
+    if(perm === 'granted') {
+      localStorage.setItem('notifEnabled', 'true');
+      var toggle = document.getElementById('toggle-notif');
+      if(toggle) toggle.classList.add('on');
+      var status = document.getElementById('notif-status');
+      if(status) status.textContent = '\u2705 Notifications enabled';
+      if(typeof scheduleNotification === 'function') scheduleNotification();
+      if(typeof showToast === 'function') showToast('🔔 ' + (typeof isKoreanBrowser !== 'undefined' && isKoreanBrowser ? '알림이 설정되었어요!' : 'Notifications enabled!'));
+    } else {
+      if(typeof showToast === 'function') showToast('❌ ' + (typeof isKoreanBrowser !== 'undefined' && isKoreanBrowser ? '브라우저 설정에서 알림을 허용해주세요' : 'Please allow notifications in browser settings'));
+    }
+    dismissNotifPrompt();
+  });
+}
+
+function dismissNotifPrompt() {
+  var ov = document.getElementById('notif-prompt-overlay');
+  if(ov) {
+    ov.style.transition = 'opacity 0.3s';
+    ov.style.opacity = '0';
+    setTimeout(function() { ov.remove(); }, 300);
+  }
+}
 
 // === INIT ===
 renderHome();
@@ -9856,7 +10095,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=76"></script>
+<script src="social.js?v=77"></script>
 </body>
 </html>
 
