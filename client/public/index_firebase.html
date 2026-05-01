@@ -24,7 +24,7 @@ if('serviceWorker' in navigator) {
     // Create inline service worker
     const swCode = `
       const CACHE = 'teens-bible-v61';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=67'];
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=68'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -3514,8 +3514,9 @@ function answerQuiz(btn, correctIdx, book, chNum) {
   
   if(idx === correctIdx) {
     state.quizCorrect = (state.quizCorrect || 0) + 1;
+    state.gems = (state.gems || 0) + 3;
     btn.classList.add('correct');
-    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP BONUS</div><button class="quiz-share-btn" style="margin-top:6px;font-size:12px;padding:5px 12px" onclick="event.stopPropagation();showQuizShareOverlay();">'+(readerLang==='ko'?'📤 결과 공유':'📤 Share')+'</button>';
+    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP +3 💎 Gems</div><button class="quiz-share-btn" style="margin-top:6px;font-size:12px;padding:5px 12px" onclick="event.stopPropagation();showQuizShareOverlay();">'+(readerLang==='ko'?'📤 결과 공유':'📤 Share')+'</button>';
     state.xp = (state.xp || 0) + 10;
     save();
     if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
@@ -3572,8 +3573,9 @@ function showFocusInlineQuiz(book, chNum, qd, options, correctIdx) {
       
       if(idx === correctIdx) {
         state.quizCorrect = (state.quizCorrect || 0) + 1;
+        state.gems = (state.gems || 0) + 3;
         this.classList.add('fq-correct');
-        quizDiv.querySelector('.fq-feedback').innerHTML = '<span style="color:#4ECDC4">\u2705 NICE! +10 XP</span>';
+        quizDiv.querySelector('.fq-feedback').innerHTML = '<span style="color:#4ECDC4">\u2705 NICE! +10 XP +3 \ud83d\udc8e</span>';
         state.xp = (state.xp || 0) + 10;
         save();
         if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
@@ -4238,6 +4240,14 @@ function markRead(book, chNum) {
     if(state.lastDate !== today) {
       state.streak++;
       state.lastDate = today;
+      // Streak milestone gem bonuses
+      const streakMilestones = {3:5, 7:10, 14:20, 30:50};
+      if(streakMilestones[state.streak]) {
+        state.gems = (state.gems||0) + streakMilestones[state.streak];
+        setTimeout(()=>{
+          showGemToast('🔥 ' + state.streak + '-Day Streak! +' + streakMilestones[state.streak] + ' Gems!');
+        }, 1500);
+      }
     }
     
     // Reading history tracking
@@ -4299,6 +4309,13 @@ function showXpToast(text) {
   toast.textContent = text;
   toast.classList.add('show');
   setTimeout(()=>toast.classList.remove('show'), 2000);
+}
+function showGemToast(text) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:12px 24px;border-radius:20px;font-family:Bangers,cursive;font-size:16px;z-index:99999;box-shadow:0 4px 20px rgba(139,92,246,0.5);animation:slideDown .4s ease;pointer-events:none';
+  t.textContent = text;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},2500);
 }
 
 // === AI CHAT (Gemini) ===
@@ -7035,6 +7052,19 @@ function openGemStore() {
   h += '</div>';
   h += '</div>';
   
+  // How to Earn Gems guide
+  h += '<div class="store-section"><div class="store-section-title">💡 How to Earn Gems</div>';
+  h += '<div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:12px;padding:14px;font-size:13px;color:#c4b5fd">';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">📖</span><span><b>Read chapters</b> — +2 gems each</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">📚</span><span><b>Complete a book</b> — +15 gems</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">✅</span><span><b>Quiz correct answer</b> — +3 gems</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">🎁</span><span><b>Daily Chest</b> — +5~15 gems (random)</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">🔥</span><span><b>3-day streak</b> — +5 gems bonus</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">⚡</span><span><b>7-day streak</b> — +10 gems bonus</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:18px">💪</span><span><b>14-day streak</b> — +20 gems bonus</span></div>';
+  h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">🏆</span><span><b>30-day streak</b> — +50 gems bonus</span></div>';
+  h += '</div></div>';
+
   h += '<button class="store-close" onclick="this.closest(\'.store-overlay\').remove()">Close Store</button>';
   h += '</div></div>';
   
@@ -8929,7 +8959,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=67"></script>
+<script src="social.js?v=68"></script>
 </body>
 </html>
 
