@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v82';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=82'];
+      const CACHE = 'teens-bible-v83';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=83'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -2130,6 +2130,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     <div id="quiz-stats-card" style="display:none"></div>
     <div id="daily-challenge-section"></div>
     <div id="daily-login-calendar"></div>
+    <div id="weekly-challenge-section"></div>
     <div id="continue-section"></div>
     <div id="home-tabs" style="display:flex;gap:8px;margin:16px 0 12px 0;">
       <button class="home-tab active" onclick="switchHomeTab('overview')" id="htab-overview">Overview</button>
@@ -2782,6 +2783,7 @@ function renderHome() {
   // New features
   if(typeof renderDailyChallenge === 'function') renderDailyChallenge();
   if(typeof renderDailyLoginCalendar === 'function') renderDailyLoginCalendar();
+  if(typeof renderWeeklyChallenge === 'function') renderWeeklyChallenge();
   if(typeof renderProfileCard === 'function') renderProfileCard();
   if(typeof renderInviteFriend === 'function') renderInviteFriend();
   if(typeof checkDailyChallenge === 'function') checkDailyChallenge();
@@ -3545,13 +3547,62 @@ function shareWeeklyStats() {
   ctx.font = '600 18px Comic Neue, cursive';
   ctx.fillText(monthNames[weekStart.getMonth()]+' '+weekStart.getDate()+' - '+monthNames[weekEnd.getMonth()]+' '+weekEnd.getDate()+', '+weekEnd.getFullYear(), W/2, 155);
   
-  // === PLAYER INFO ===
+  // === PLAYER INFO WITH AVATAR FRAME ===
+  var frameId = state.activeFrame || 'none';
+  var frameColors = {
+    fire: { primary:'#ef4444', glow:'rgba(239,68,68,0.5)' },
+    ice: { primary:'#22d3ee', glow:'rgba(34,211,238,0.5)' },
+    gold: { primary:'#FACC15', glow:'rgba(250,204,21,0.5)' },
+    rainbow: { primary:'#8b5cf6', glow:'rgba(139,92,246,0.5)' },
+    lightning: { primary:'#a78bfa', glow:'rgba(167,139,250,0.5)' },
+    diamond: { primary:'#67e8f9', glow:'rgba(103,232,249,0.5)' },
+    cherry_blossom: { primary:'#f9a8d4', glow:'rgba(249,168,212,0.5)' },
+    spring_rain: { primary:'#67e8f9', glow:'rgba(103,232,249,0.4)' },
+    summer_flame: { primary:'#fb923c', glow:'rgba(251,146,60,0.5)' },
+    tropical: { primary:'#34d399', glow:'rgba(52,211,153,0.4)' },
+    autumn_leaf: { primary:'#d97706', glow:'rgba(217,119,6,0.5)' },
+    harvest_moon: { primary:'#fbbf24', glow:'rgba(251,191,36,0.4)' },
+    snowflake: { primary:'#e0f2fe', glow:'rgba(224,242,254,0.5)' },
+    northern_lights: { primary:'#a78bfa', glow:'rgba(167,139,250,0.4)' },
+    holy_light: { primary:'#fef08a', glow:'rgba(254,240,138,0.5)' }
+  };
+  var fc = frameColors[frameId];
+  
+  if(fc) {
+    // Draw avatar frame circle behind name
+    var avatarCx = W/2, avatarCy = 195;
+    ctx.save();
+    ctx.shadowColor = fc.glow;
+    ctx.shadowBlur = 25;
+    ctx.strokeStyle = fc.primary;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(W/2 - 180, 170, 360, 55, 28);
+    ctx.stroke();
+    ctx.restore();
+    
+    // Inner glow fill
+    ctx.fillStyle = fc.glow.replace('0.5','0.06').replace('0.4','0.04');
+    ctx.beginPath();
+    ctx.roundRect(W/2 - 180, 170, 360, 55, 28);
+    ctx.fill();
+  }
+  
   ctx.fillStyle = '#e8eaf0';
   ctx.font = 'bold 28px Comic Neue, cursive';
-  ctx.fillText(name, W/2, 210);
+  ctx.textAlign = 'center';
+  ctx.fillText(name, W/2, 200);
+  
+  // Frame label
+  if(fc) {
+    ctx.fillStyle = fc.primary;
+    ctx.font = '600 13px Comic Neue, cursive';
+    ctx.fillText('✨ ' + frameId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase()}) + ' Frame', W/2, 218);
+  }
+  
   ctx.fillStyle = '#FF6B6B';
   ctx.font = '600 18px Comic Neue, cursive';
-  ctx.fillText('⭐ ' + lvl.name, W/2, 240);
+  ctx.fillText('⭐ ' + lvl.name, W/2, fc ? 245 : 240);
   
   // === HERO STATS CARDS ===
   var cardY = 275;
@@ -8968,6 +9019,120 @@ function claimDailyLogin() {
   renderDailyLoginCalendar();
 }
 
+// === WEEKLY CHALLENGE SYSTEM ===
+function renderWeeklyChallenge() {
+  const sec = document.getElementById('weekly-challenge-section');
+  if(!sec) return;
+  
+  // Initialize weekly challenge state
+  if(!state.weeklyChallenge) state.weeklyChallenge = {};
+  
+  // Determine current week key (Monday-based)
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((dayOfWeek + 6) % 7));
+  const weekKey = monday.toISOString().slice(0,10);
+  
+  // Reset if new week
+  if(state.weeklyChallenge.weekKey !== weekKey) {
+    state.weeklyChallenge = { weekKey: weekKey, claimed: [] };
+    save();
+  }
+  
+  const rh = state.readingHistory || {};
+  const claimed = state.weeklyChallenge.claimed || [];
+  
+  // Calculate this week's chapters (Mon-Sun)
+  let weekChapters = 0;
+  for(let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const key = d.toISOString().slice(0,10);
+    weekChapters += (rh[key] || 0);
+  }
+  
+  // Calculate this week's active days
+  let weekDays = 0;
+  for(let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const key = d.toISOString().slice(0,10);
+    if(rh[key] && rh[key] > 0) weekDays++;
+  }
+  
+  // Calculate days remaining in week
+  const daysLeft = 7 - ((dayOfWeek + 6) % 7) - 1;
+  
+  // Define weekly challenges
+  const challenges = [
+    { id:'wc_read5', icon:'📖', title:'Read 5 Chapters', desc:'Read 5 chapters this week', target:5, current:weekChapters, type:'chapters', reward:15, color:'#4ECDC4' },
+    { id:'wc_read10', icon:'📚', title:'Read 10 Chapters', desc:'Read 10 chapters this week', target:10, current:weekChapters, type:'chapters', reward:30, color:'#FFD700' },
+    { id:'wc_read20', icon:'🏆', title:'Read 20 Chapters', desc:'Read 20 chapters this week', target:20, current:weekChapters, type:'chapters', reward:60, color:'#FF6B6B' },
+    { id:'wc_days3', icon:'🔥', title:'3-Day Streak', desc:'Read on 3 different days', target:3, current:weekDays, type:'days', reward:20, color:'#A29BFE' },
+    { id:'wc_days5', icon:'⚡', title:'5-Day Warrior', desc:'Read on 5 different days', target:5, current:weekDays, type:'days', reward:40, color:'#f59e0b' },
+    { id:'wc_days7', icon:'👑', title:'Perfect Week', desc:'Read every single day!', target:7, current:weekDays, type:'days', reward:80, color:'#ec4899' }
+  ];
+  
+  let h = '<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(78,205,196,0.05));border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:16px;margin-bottom:14px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
+  h += '<div style="font-family:Bangers,cursive;font-size:20px;color:#A29BFE;letter-spacing:1px">🎯 WEEKLY CHALLENGES</div>';
+  h += '<div style="font-size:11px;color:#64748b;background:rgba(100,116,139,0.15);padding:3px 10px;border-radius:10px">' + daysLeft + ' days left</div>';
+  h += '</div>';
+  
+  challenges.forEach(function(ch) {
+    const pct = Math.min(100, Math.round(ch.current / ch.target * 100));
+    const isClaimed = claimed.includes(ch.id);
+    const isComplete = ch.current >= ch.target;
+    const canClaim = isComplete && !isClaimed;
+    
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:10px;margin-bottom:6px;border-radius:12px;background:' + (isClaimed ? 'rgba(78,205,196,0.06)' : canClaim ? 'rgba(250,204,21,0.08)' : 'rgba(30,40,60,0.3)') + ';border:1px solid ' + (canClaim ? 'rgba(250,204,21,0.3)' : isClaimed ? 'rgba(78,205,196,0.15)' : 'rgba(100,116,139,0.1)') + ';transition:all 0.3s">';
+    
+    // Icon
+    h += '<div style="font-size:24px;min-width:36px;text-align:center;' + (isClaimed ? 'opacity:0.5' : '') + '">' + ch.icon + '</div>';
+    
+    // Info
+    h += '<div style="flex:1;min-width:0">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center">';
+    h += '<div style="font-family:Comic Neue,cursive;font-weight:700;font-size:13px;color:' + (isClaimed ? '#64748b' : '#e8eaf0') + ';' + (isClaimed ? 'text-decoration:line-through' : '') + '">' + ch.title + '</div>';
+    h += '<div style="font-size:11px;color:' + ch.color + ';font-weight:700">' + ch.current + '/' + ch.target + '</div>';
+    h += '</div>';
+    
+    // Progress bar
+    h += '<div style="height:6px;background:rgba(30,45,70,0.5);border-radius:3px;margin-top:4px;overflow:hidden">';
+    h += '<div style="height:100%;width:' + pct + '%;background:' + (isClaimed ? '#64748b' : ch.color) + ';border-radius:3px;transition:width 0.5s"></div>';
+    h += '</div>';
+    h += '</div>';
+    
+    // Reward / Claim button
+    if(isClaimed) {
+      h += '<div style="font-size:11px;color:#4ECDC4;font-weight:700;min-width:55px;text-align:center">✅ Done</div>';
+    } else if(canClaim) {
+      h += '<button onclick="claimWeeklyChallenge(\'' + ch.id + '\', ' + ch.reward + ')" style="background:linear-gradient(135deg,#FACC15,#F59E0B);color:#1a1a2e;border:none;padding:5px 10px;border-radius:10px;font-family:Comic Neue,cursive;font-weight:700;font-size:11px;cursor:pointer;min-width:55px;animation:pulse 2s infinite;box-shadow:0 2px 8px rgba(250,204,21,0.3)">+' + ch.reward + ' 💎</button>';
+    } else {
+      h += '<div style="font-size:11px;color:#64748b;min-width:55px;text-align:center">+' + ch.reward + ' 💎</div>';
+    }
+    
+    h += '</div>';
+  });
+  
+  h += '</div>';
+  sec.innerHTML = h;
+}
+
+function claimWeeklyChallenge(challengeId, reward) {
+  if(!state.weeklyChallenge) state.weeklyChallenge = {};
+  if(!state.weeklyChallenge.claimed) state.weeklyChallenge.claimed = [];
+  if(state.weeklyChallenge.claimed.includes(challengeId)) return;
+  
+  state.weeklyChallenge.claimed.push(challengeId);
+  state.gems = (state.gems || 0) + reward;
+  save();
+  updateGemDisplay();
+  showGemToast('+' + reward + ' Weekly Challenge Gems! 🎯');
+  renderWeeklyChallenge();
+}
+
 // === INVITE FRIEND SECTION ===
 function renderInviteFriend() {
   const sec = document.getElementById('invite-friend-section');
@@ -9101,6 +9266,7 @@ if(_origShowScreen) {
       updateGemDisplay();
       updateVOTD();
       if(typeof renderDailyLoginCalendar === 'function') renderDailyLoginCalendar();
+      if(typeof renderWeeklyChallenge === 'function') renderWeeklyChallenge();
       if(typeof renderInviteFriend === 'function') renderInviteFriend();
     }
     if(name === 'bible') {
@@ -9113,6 +9279,7 @@ setTimeout(function() {
   renderStreakCard();
   updateGemDisplay();
   if(typeof renderDailyLoginCalendar === 'function') renderDailyLoginCalendar();
+  if(typeof renderWeeklyChallenge === 'function') renderWeeklyChallenge();
   if(typeof renderInviteFriend === 'function') renderInviteFriend();
 }, 600);
 
@@ -11141,7 +11308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=82"></script>
+<script src="social.js?v=83"></script>
 </body>
 </html>
 
