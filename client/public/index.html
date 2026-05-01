@@ -23,8 +23,8 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v79';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=79'];
+      const CACHE = 'teens-bible-v80';
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=80'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -1348,6 +1348,50 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .stats-heatmap-legend { display:flex; align-items:center; gap:4px; justify-content:flex-end; margin-top:6px; font-size:9px; color:#6880a8; font-family:'Comic Neue',cursive; }
 .stats-heatmap-legend-cell { width:12px; height:12px; border-radius:3px; }
 .stats-heatmap-tooltip { position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:#1a2a4a; color:#d8dce8; font-size:10px; padding:4px 8px; border-radius:6px; white-space:nowrap; font-family:'Comic Neue',cursive; pointer-events:none; z-index:10; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+
+/* Heatmap Month Navigation */
+.stats-hm-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.stats-hm-nav-btn { width:32px; height:32px; border-radius:50%; border:1px solid rgba(65,110,160,0.3); background:rgba(10,20,40,0.5); color:#d8dce8; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.stats-hm-nav-btn:hover { background:rgba(78,205,196,0.2); border-color:#4ECDC4; color:#4ECDC4; }
+.stats-hm-nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
+.stats-hm-nav-btn:disabled:hover { background:rgba(10,20,40,0.5); border-color:rgba(65,110,160,0.3); color:#d8dce8; }
+.stats-hm-nav-title { font-family:'Bangers',cursive; font-size:16px; color:#d8dce8; }
+.stats-hm-today-btn { font-size:10px; padding:3px 10px; border-radius:12px; border:1px solid rgba(78,205,196,0.4); background:rgba(78,205,196,0.1); color:#4ECDC4; cursor:pointer; font-family:'Comic Neue',cursive; font-weight:700; transition:all 0.2s; }
+.stats-hm-today-btn:hover { background:rgba(78,205,196,0.25); }
+
+/* Reading Goal Section */
+.stats-goal-section { padding:16px; background:rgba(20,35,60,0.6); border-radius:16px; border:1px solid rgba(65,110,160,0.25); margin-bottom:12px; }
+.stats-goal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.stats-goal-edit-btn { font-size:11px; padding:4px 12px; border-radius:10px; border:1px solid rgba(255,214,0,0.3); background:rgba(255,214,0,0.08); color:#FFD700; cursor:pointer; font-family:'Comic Neue',cursive; font-weight:700; transition:all 0.2s; }
+.stats-goal-edit-btn:hover { background:rgba(255,214,0,0.2); }
+.stats-goal-cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.stats-goal-card { text-align:center; padding:16px 10px; background:rgba(10,20,40,0.5); border-radius:14px; border:1px solid rgba(65,110,160,0.2); position:relative; }
+.stats-goal-ring { position:relative; width:80px; height:80px; margin:0 auto 8px; }
+.stats-goal-ring svg { width:80px; height:80px; transform:rotate(-90deg); }
+.stats-goal-ring-bg { fill:none; stroke:rgba(30,45,70,0.8); stroke-width:6; }
+.stats-goal-ring-fill { fill:none; stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.stats-goal-ring-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Bangers',cursive; font-size:18px; color:#FFD700; }
+.stats-goal-label { font-size:12px; color:#d8dce8; font-family:'Comic Neue',cursive; font-weight:700; }
+.stats-goal-sub { font-size:10px; color:#6880a8; font-family:'Comic Neue',cursive; margin-top:2px; }
+.stats-goal-achieved { color:#4ECDC4 !important; }
+.stats-goal-achieved-badge { display:inline-block; background:rgba(78,205,196,0.2); color:#4ECDC4; font-size:9px; font-weight:700; padding:2px 8px; border-radius:8px; margin-top:4px; font-family:'Comic Neue',cursive; }
+
+/* Goal Setting Modal */
+.stats-goal-modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; }
+.stats-goal-modal-card { background:linear-gradient(135deg,#0f1a2e,#1a2a4a); border-radius:20px; padding:24px; max-width:340px; width:100%; border:1px solid rgba(65,110,160,0.3); box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+.stats-goal-modal-title { font-family:'Luckiest Guy',cursive; font-size:20px; color:#FFD700; text-align:center; margin-bottom:16px; }
+.stats-goal-input-group { margin-bottom:16px; }
+.stats-goal-input-label { font-size:12px; color:#6880a8; font-family:'Comic Neue',cursive; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.stats-goal-slider-row { display:flex; align-items:center; gap:10px; }
+.stats-goal-slider { flex:1; -webkit-appearance:none; appearance:none; height:6px; border-radius:3px; background:rgba(30,45,70,0.8); outline:none; }
+.stats-goal-slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,#FFD700,#f59e0b); cursor:pointer; box-shadow:0 2px 8px rgba(255,215,0,0.4); }
+.stats-goal-slider-val { font-family:'Bangers',cursive; font-size:20px; color:#FFD700; min-width:36px; text-align:center; }
+.stats-goal-modal-btns { display:flex; gap:8px; margin-top:20px; }
+.stats-goal-modal-btns button { flex:1; padding:10px; border-radius:12px; font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; cursor:pointer; transition:all 0.2s; }
+.stats-goal-save-btn { background:linear-gradient(135deg,#FFD700,#f59e0b); color:#1a1a2e; border:none; }
+.stats-goal-save-btn:hover { transform:scale(1.03); box-shadow:0 4px 15px rgba(255,215,0,0.3); }
+.stats-goal-cancel-btn { background:transparent; color:#6880a8; border:1px solid rgba(65,110,160,0.3); }
+.stats-goal-cancel-btn:hover { background:rgba(65,110,160,0.1); }
 
 /* Day-of-Week Pattern */
 .stats-dow-chart { display:flex; align-items:flex-end; gap:4px; height:60px; padding:8px 4px; }
@@ -3035,6 +3079,60 @@ function renderStatsDashboard() {
   
   let html = '<div class="stats-dashboard">';
   
+  // === SECTION 0: READING GOALS ===
+  const dailyGoal = state.readingGoalDaily || 0;
+  const weeklyGoal = state.readingGoalWeekly || 0;
+  if(dailyGoal > 0 || weeklyGoal > 0) {
+    const todayKey = today.toISOString().slice(0,10);
+    const todayRead = rh[todayKey] || 0;
+    const todayDowG = today.getDay();
+    let weekRead = 0;
+    for(let i = 0; i < 7; i++) {
+      const d = new Date(today); d.setDate(d.getDate() - todayDowG + i);
+      const k = d.toISOString().slice(0,10);
+      if(new Date(k+'T12:00:00') <= today) weekRead += (rh[k] || 0);
+    }
+    html += '<div class="stats-goal-section">';
+    html += '<div class="stats-goal-header"><div class="stats-dash-title" style="margin-bottom:0">🎯 My Reading Goals</div>';
+    html += '<button class="stats-goal-edit-btn" onclick="showGoalSettingModal()">✏️ Edit</button></div>';
+    html += '<div class="stats-goal-cards">';
+    if(dailyGoal > 0) {
+      const dPct = Math.min(100, Math.round(todayRead / dailyGoal * 100));
+      const dAchieved = todayRead >= dailyGoal;
+      const dCirc = 2 * Math.PI * 34;
+      const dOffset = dCirc - (dPct / 100) * dCirc;
+      const dColor = dAchieved ? '#4ECDC4' : '#FFD700';
+      html += '<div class="stats-goal-card">';
+      html += '<div class="stats-goal-ring"><svg viewBox="0 0 80 80"><circle class="stats-goal-ring-bg" cx="40" cy="40" r="34"/><circle class="stats-goal-ring-fill" cx="40" cy="40" r="34" stroke="'+dColor+'" stroke-dasharray="'+dCirc+'" stroke-dashoffset="'+dOffset+'"/></svg>';
+      html += '<div class="stats-goal-ring-text'+(dAchieved?' stats-goal-achieved':'')+'">'+todayRead+'/'+dailyGoal+'</div></div>';
+      html += '<div class="stats-goal-label">📖 Daily Goal</div>';
+      html += '<div class="stats-goal-sub">'+dPct+'% complete</div>';
+      if(dAchieved) html += '<div class="stats-goal-achieved-badge">✅ Achieved!</div>';
+      html += '</div>';
+    }
+    if(weeklyGoal > 0) {
+      const wPct = Math.min(100, Math.round(weekRead / weeklyGoal * 100));
+      const wAchieved = weekRead >= weeklyGoal;
+      const wCirc = 2 * Math.PI * 34;
+      const wOffset = wCirc - (wPct / 100) * wCirc;
+      const wColor = wAchieved ? '#4ECDC4' : '#A29BFE';
+      html += '<div class="stats-goal-card">';
+      html += '<div class="stats-goal-ring"><svg viewBox="0 0 80 80"><circle class="stats-goal-ring-bg" cx="40" cy="40" r="34"/><circle class="stats-goal-ring-fill" cx="40" cy="40" r="34" stroke="'+wColor+'" stroke-dasharray="'+wCirc+'" stroke-dashoffset="'+wOffset+'"/></svg>';
+      html += '<div class="stats-goal-ring-text'+(wAchieved?' stats-goal-achieved':'')+'">'+weekRead+'/'+weeklyGoal+'</div></div>';
+      html += '<div class="stats-goal-label">📅 Weekly Goal</div>';
+      html += '<div class="stats-goal-sub">'+wPct+'% complete</div>';
+      if(wAchieved) html += '<div class="stats-goal-achieved-badge">✅ Achieved!</div>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+  } else {
+    html += '<div class="stats-goal-section" style="text-align:center;">';
+    html += '<div class="stats-dash-title" style="justify-content:center">🎯 Set Your Reading Goals</div>';
+    html += '<div class="stats-goal-sub" style="margin-bottom:12px">Track your daily and weekly reading progress!</div>';
+    html += '<button class="stats-goal-edit-btn" onclick="showGoalSettingModal()" style="font-size:13px;padding:8px 20px;">📝 Set Goals</button>';
+    html += '</div>';
+  }
+  
   // === SECTION 1: HERO STATS ===
   html += '<div class="stats-section">';
   html += '<div class="stats-dash-title">📊 Reading Dashboard</div>';
@@ -3070,46 +3168,10 @@ function renderStatsDashboard() {
   html += '</div>';
   html += '</div>';
   
-  // === SECTION 3: MONTHLY HEATMAP ===
+  // === SECTION 3: MONTHLY HEATMAP (with navigation) ===
   html += '<div class="stats-section">';
-  const hmMonth = today.getMonth();
-  const hmYear = today.getFullYear();
-  html += '<div class="stats-dash-title">🗓️ '+months[hmMonth]+' '+hmYear+' Activity</div>';
-  // Day headers
-  html += '<div class="stats-heatmap">';
-  ['S','M','T','W','T','F','S'].forEach(d => { html += '<div class="stats-heatmap-header">'+d+'</div>'; });
-  // Calculate first day offset
-  const firstDay = new Date(hmYear, hmMonth, 1).getDay();
-  const daysInMonth = new Date(hmYear, hmMonth + 1, 0).getDate();
-  const todayDate = today.getDate();
-  // Empty cells before first day
-  for(let i = 0; i < firstDay; i++) html += '<div class="stats-heatmap-cell empty"></div>';
-  // Day cells
-  for(let d = 1; d <= daysInMonth; d++) {
-    const dateStr = hmYear+'-'+String(hmMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const val = rh[dateStr] || 0;
-    const isFuture = d > todayDate;
-    let lvl = 'lv0';
-    if(isFuture) lvl = 'future';
-    else if(val >= 4) lvl = 'lv4';
-    else if(val >= 3) lvl = 'lv3';
-    else if(val >= 2) lvl = 'lv2';
-    else if(val >= 1) lvl = 'lv1';
-    html += '<div class="stats-heatmap-cell '+lvl+'" onclick="this.querySelector(\'.stats-heatmap-tooltip\')&&(this.querySelector(\'.stats-heatmap-tooltip\').style.display=this.querySelector(\'.stats-heatmap-tooltip\').style.display===\'block\'?\'none\':\'block\')">';
-    if(!isFuture && val > 0) html += '<div class="stats-heatmap-tooltip" style="display:none">'+months[hmMonth]+' '+d+': '+val+' ch</div>';
-    html += '</div>';
-  }
-  html += '</div>';
-  // Legend
-  html += '<div class="stats-heatmap-legend">';
-  html += '<span>Less</span>';
-  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(30,45,70,0.5)"></div>';
-  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(78,205,196,0.2)"></div>';
-  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(78,205,196,0.4)"></div>';
-  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(78,205,196,0.6)"></div>';
-  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(255,215,0,0.5)"></div>';
-  html += '<span>More</span>';
-  html += '</div>';
+  html += '<div class="stats-dash-title">🗓️ Activity Heatmap</div>';
+  html += '<div id="stats-heatmap-container"></div>';
   html += '</div>';
   
   // === SECTION 4: DAY-OF-WEEK PATTERN ===
@@ -3183,6 +3245,147 @@ function renderStatsDashboard() {
   
   html += '</div>'; // end stats-dashboard
   container.innerHTML = html;
+  
+  // Render navigable heatmap after innerHTML is set
+  renderHeatmapMonth(today.getFullYear(), today.getMonth());
+}
+
+// === HEATMAP MONTH NAVIGATION ===
+var _hmCurrentYear = new Date().getFullYear();
+var _hmCurrentMonth = new Date().getMonth();
+
+function renderHeatmapMonth(year, month) {
+  const container = document.getElementById('stats-heatmap-container');
+  if(!container) return;
+  _hmCurrentYear = year;
+  _hmCurrentMonth = month;
+  
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const today = new Date();
+  const rh = state.readingHistory || {};
+  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth();
+  
+  // Don't allow navigating to future months
+  const isNextDisabled = year > today.getFullYear() || (year === today.getFullYear() && month >= today.getMonth());
+  // Don't allow navigating more than 12 months back
+  const minDate = new Date(today.getFullYear() - 1, today.getMonth(), 1);
+  const isPrevDisabled = new Date(year, month, 1) <= minDate;
+  
+  let html = '';
+  // Navigation header
+  html += '<div class="stats-hm-nav">';
+  html += '<button class="stats-hm-nav-btn" onclick="navigateHeatmap(-1)"'+(isPrevDisabled?' disabled':'')+'>◀</button>';
+  html += '<div style="display:flex;align-items:center;gap:8px;">';
+  html += '<span class="stats-hm-nav-title">'+months[month]+' '+year+'</span>';
+  if(!isCurrentMonth) html += '<button class="stats-hm-today-btn" onclick="renderHeatmapMonth('+today.getFullYear()+','+today.getMonth()+')">Today</button>';
+  html += '</div>';
+  html += '<button class="stats-hm-nav-btn" onclick="navigateHeatmap(1)"'+(isNextDisabled?' disabled':'')+'>▶</button>';
+  html += '</div>';
+  
+  // Heatmap grid
+  html += '<div class="stats-heatmap">';
+  ['S','M','T','W','T','F','S'].forEach(d => { html += '<div class="stats-heatmap-header">'+d+'</div>'; });
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayDate = today.getDate();
+  
+  for(let i = 0; i < firstDay; i++) html += '<div class="stats-heatmap-cell empty"></div>';
+  
+  // Monthly total for summary
+  let monthTotal = 0;
+  let monthActiveDays = 0;
+  
+  for(let d = 1; d <= daysInMonth; d++) {
+    const dateStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const val = rh[dateStr] || 0;
+    if(val > 0) { monthTotal += val; monthActiveDays++; }
+    const isFuture = isCurrentMonth ? d > todayDate : (year > today.getFullYear() || (year === today.getFullYear() && month > today.getMonth()));
+    const isToday = isCurrentMonth && d === todayDate;
+    let lvl = 'lv0';
+    if(isFuture) lvl = 'future';
+    else if(val >= 4) lvl = 'lv4';
+    else if(val >= 3) lvl = 'lv3';
+    else if(val >= 2) lvl = 'lv2';
+    else if(val >= 1) lvl = 'lv1';
+    html += '<div class="stats-heatmap-cell '+lvl+'" style="'+(isToday?'outline:2px solid #4ECDC4;outline-offset:1px;':'')+'" onclick="this.querySelector(\'.stats-heatmap-tooltip\')&&(this.querySelector(\'.stats-heatmap-tooltip\').style.display=this.querySelector(\'.stats-heatmap-tooltip\').style.display===\'block\'?\'none\':\'block\')">';
+    if(!isFuture) html += '<div class="stats-heatmap-tooltip" style="display:none">'+monthsShort[month]+' '+d+': '+(val > 0 ? val+' ch' : 'No reading')+'</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  
+  // Legend + Monthly summary
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">';
+  html += '<div style="font-size:10px;color:#6880a8;font-family:Comic Neue,cursive;"><strong style="color:#FFD700">'+monthTotal+'</strong> chapters in <strong style="color:#4ECDC4">'+monthActiveDays+'</strong> days</div>';
+  html += '<div class="stats-heatmap-legend">';
+  html += '<span>Less</span>';
+  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(30,45,70,0.5)"></div>';
+  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(78,205,196,0.2)"></div>';
+  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(78,205,196,0.4)"></div>';
+  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(78,205,196,0.6)"></div>';
+  html += '<div class="stats-heatmap-legend-cell" style="background:rgba(255,215,0,0.5)"></div>';
+  html += '<span>More</span>';
+  html += '</div></div>';
+  
+  container.innerHTML = html;
+}
+
+function navigateHeatmap(dir) {
+  let m = _hmCurrentMonth + dir;
+  let y = _hmCurrentYear;
+  if(m < 0) { m = 11; y--; }
+  else if(m > 11) { m = 0; y++; }
+  renderHeatmapMonth(y, m);
+}
+
+// === READING GOAL SETTING ===
+function showGoalSettingModal() {
+  const currentDaily = state.readingGoalDaily || 2;
+  const currentWeekly = state.readingGoalWeekly || 10;
+  
+  const overlay = document.createElement('div');
+  overlay.className = 'stats-goal-modal';
+  overlay.id = 'goal-setting-modal';
+  overlay.innerHTML = '<div class="stats-goal-modal-card">'
+    + '<div class="stats-goal-modal-title">🎯 Set Reading Goals</div>'
+    + '<div class="stats-goal-input-group">'
+    + '<div class="stats-goal-input-label">📖 Daily Goal (chapters per day)</div>'
+    + '<div class="stats-goal-slider-row">'
+    + '<input type="range" class="stats-goal-slider" id="goal-daily-slider" min="0" max="10" value="'+currentDaily+'" oninput="document.getElementById(\'goal-daily-val\').textContent=this.value">'
+    + '<div class="stats-goal-slider-val" id="goal-daily-val">'+currentDaily+'</div>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:space-between;font-size:9px;color:#4a5a7a;font-family:Comic Neue,cursive;margin-top:2px;"><span>Off</span><span>10</span></div>'
+    + '</div>'
+    + '<div class="stats-goal-input-group">'
+    + '<div class="stats-goal-input-label">📅 Weekly Goal (chapters per week)</div>'
+    + '<div class="stats-goal-slider-row">'
+    + '<input type="range" class="stats-goal-slider" id="goal-weekly-slider" min="0" max="50" step="5" value="'+currentWeekly+'" oninput="document.getElementById(\'goal-weekly-val\').textContent=this.value">'
+    + '<div class="stats-goal-slider-val" id="goal-weekly-val">'+currentWeekly+'</div>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:space-between;font-size:9px;color:#4a5a7a;font-family:Comic Neue,cursive;margin-top:2px;"><span>Off</span><span>50</span></div>'
+    + '</div>'
+    + '<div style="text-align:center;margin-top:8px;">'
+    + '<div style="font-size:11px;color:#6880a8;font-family:Comic Neue,cursive;">Set to 0 to disable a goal</div>'
+    + '</div>'
+    + '<div class="stats-goal-modal-btns">'
+    + '<button class="stats-goal-cancel-btn" onclick="document.getElementById(\'goal-setting-modal\').remove()">Cancel</button>'
+    + '<button class="stats-goal-save-btn" onclick="saveReadingGoals()">Save Goals 💪</button>'
+    + '</div>'
+    + '</div>';
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(e) { if(e.target === overlay) overlay.remove(); });
+}
+
+function saveReadingGoals() {
+  const daily = parseInt(document.getElementById('goal-daily-slider').value) || 0;
+  const weekly = parseInt(document.getElementById('goal-weekly-slider').value) || 0;
+  state.readingGoalDaily = daily;
+  state.readingGoalWeekly = weekly;
+  save();
+  document.getElementById('goal-setting-modal').remove();
+  renderStatsDashboard();
+  if(typeof showGemToast === 'function') showGemToast('🎯 Goals updated!');
 }
 
 // === BIBLE JOURNEY MAP ===
@@ -10286,7 +10489,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=79"></script>
+<script src="social.js?v=80"></script>
 </body>
 </html>
 
