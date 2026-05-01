@@ -24,7 +24,7 @@ if('serviceWorker' in navigator) {
     // Create inline service worker
     const swCode = `
       const CACHE = 'teens-bible-v61';
-      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=68'];
+      const PRECACHE_URLS = ['./', './index.html', './teens-bible.html', './social.js?v=70'];
       
       self.addEventListener('install', e => {
         self.skipWaiting();
@@ -2437,6 +2437,31 @@ let state = JSON.parse(localStorage.getItem('teensBible')||'null') || {
 // Migrate old state
 if(!state.readingHistory) state.readingHistory = {};
 if(!state.notes) state.notes = {};
+
+// Retroactive gem calculation for existing users
+if(!state.gemsRetroApplied && state.chaptersRead > 0 && (!state.gems || state.gems === 0)) {
+  let retroGems = state.chaptersRead * 2; // +2 per chapter read
+  // Check for completed books
+  const BOOK_TOTAL_CHAPTERS = {"Matthew":28,"Mark":16,"Luke":24,"John":21,"Acts":28,"Romans":16,"1 Corinthians":16,"2 Corinthians":13,"Galatians":6,"Ephesians":6,"Philippians":4,"Colossians":4,"1 Thessalonians":5,"2 Thessalonians":3,"1 Timothy":6,"2 Timothy":4,"Titus":3,"Philemon":1,"Hebrews":13,"James":5,"1 Peter":5,"2 Peter":3,"1 John":5,"2 John":1,"3 John":1,"Jude":1,"Revelation":22};
+  if(state.books) {
+    Object.keys(state.books).forEach(function(book) {
+      if(state.books[book].read && BOOK_TOTAL_CHAPTERS[book]) {
+        if(state.books[book].read.length >= BOOK_TOTAL_CHAPTERS[book]) {
+          retroGems += 15; // +15 per completed book
+        }
+      }
+    });
+  }
+  state.gems = retroGems;
+  state.gemsRetroApplied = true;
+  console.log('[Teenz Bible] Retroactive gems applied: +' + retroGems + ' gems');
+  localStorage.setItem('teensBible', JSON.stringify(state));
+}
+if(!state.gemsRetroApplied && state.chaptersRead > 0 && state.gems > 0) {
+  state.gemsRetroApplied = true; // Mark as done for users who already have gems
+  localStorage.setItem('teensBible', JSON.stringify(state));
+}
+
 function save() { localStorage.setItem('teensBible', JSON.stringify(state)); }
 
 // === NAVIGATION ===
@@ -8959,7 +8984,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="social.js?v=68"></script>
+<script src="social.js?v=70"></script>
 </body>
 </html>
 
