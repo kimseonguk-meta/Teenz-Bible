@@ -6828,7 +6828,7 @@ renderBible();
           setTimeout(()=>{
             if(typeof confettiBurst==='function') confettiBurst(window.innerWidth/2, window.innerHeight/2, 25);
           }, 600);
-          state.gems += gemsReward;
+          state.gems += gemsReward; checkWishlistAffordable();
           state.coins += coinsReward;
           state.dailyChestOpened = today;
           save();
@@ -8830,7 +8830,7 @@ function buyMissionReroll() {
     document.querySelector('.store-overlay')?.remove();
   });
 }
-function toggleWishlist(itemId, itemName) {
+function toggleWishlist(itemId, itemName, itemCost) {
   if(!state.wishlist) state.wishlist = [];
   var idx = state.wishlist.findIndex(function(w){return w.id === itemId;});
   if(idx >= 0) {
@@ -8838,7 +8838,7 @@ function toggleWishlist(itemId, itemName) {
     save();
     showRewardToast('Removed from wishlist ❌');
   } else {
-    state.wishlist.push({id: itemId, name: itemName, addedAt: Date.now()});
+    state.wishlist.push({id: itemId, name: itemName, cost: itemCost || 0, addedAt: Date.now()});
     save();
     showRewardToast('Added to wishlist! 💫');
   }
@@ -8848,6 +8848,20 @@ function toggleWishlist(itemId, itemName) {
 }
 function isInWishlist(itemId) {
   return (state.wishlist||[]).some(function(w){return w.id === itemId;});
+}
+
+function checkWishlistAffordable() {
+  var wl = state.wishlist || [];
+  var gems = state.gems || 0;
+  var affordable = wl.filter(function(w) { return w.cost > 0 && gems >= w.cost; });
+  if(affordable.length > 0 && !sessionStorage.getItem('wishlistNotified_' + gems)) {
+    sessionStorage.setItem('wishlistNotified_' + gems, '1');
+    var item = affordable[0];
+    showRewardToast('💫 You can now afford ' + item.name + '! Check Gem Store!');
+    // Add pulse to gem store button
+    var gsBtn = document.querySelector('.gem-store-btn');
+    if(gsBtn) { gsBtn.style.animation = 'pulse 1s infinite'; setTimeout(function(){ gsBtn.style.animation=''; }, 5000); }
+  }
 }
 function showPurchaseEffect() {
   var colors = ['#FFD700','#FF6B35','#4ECDC4','#FF4081','#7C4DFF','#00E5FF','#FFEB3B','#E040FB'];
@@ -9064,13 +9078,34 @@ function openGemStore() {
     wl.forEach(function(w) {
       h += '<div class="store-item" style="border-bottom:1px solid rgba(255,255,255,0.05)">';
       h += '<div class="store-item-info"><div style="flex:1"><div class="store-item-name">' + w.name + '</div>';
-      h += '<div class="store-item-desc" style="font-size:10px;color:#6880a8">Added ' + new Date(w.addedAt).toLocaleDateString() + '</div></div></div>';
-      h += '<button class="store-buy-btn wishlisted" onclick="toggleWishlist(\'' + w.id + '\',\'' + w.name + '\')">Remove</button>';
+      h += '<div class="store-item-desc" style="font-size:10px;color:#6880a8">' + (w.cost ? '💎 ' + w.cost + ' · ' : '') + 'Added ' + new Date(w.addedAt).toLocaleDateString() + '</div></div></div>';
+      var wAffordable = (state.gems||0) >= (w.cost||0) && w.cost > 0;
+      h += wAffordable ? '<button class="store-buy-btn affordable" style="animation:pulse 1.5s infinite" onclick="toggleWishlist(\'' + w.id + '\',\'' + w.name + '\','+w.cost+')">🎉 Buy Now!</button>' : '<button class="store-buy-btn wishlisted" onclick="toggleWishlist(\'' + w.id + '\',\'' + w.name + '\','+w.cost+')">Remove</button>';
       h += '</div>';
     });
     h += '</div>';
   }
   
+
+  // Most Popular section
+  h += '<div class="store-section" style="border:1px solid rgba(255,107,53,0.3);background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,64,129,0.05))">';
+  h += '<div class="store-section-title" style="color:#FF6B35">🏆 Most Popular</div>';
+  var popularItems = [
+    {icon:'🌊', name:'Ocean Wave', desc:'Profile Theme', cost:20, action:'buyTheme(\'ocean\')'},
+    {icon:'🛡️', name:'Streak Shield', desc:'Protect your streak', cost:25, action:'buyStreakFreeze()'},
+    {icon:'⚡', name:'2x XP Boost', desc:'Double XP for 24h', cost:30, action:'buyXPBoost()'}
+  ];
+  popularItems.forEach(function(p) {
+    var canBuy = gems >= p.cost;
+    h += '<div class="store-item" style="border:1px solid rgba(255,107,53,0.15)">';
+    h += '<div class="store-item-info"><div class="store-item-preview" style="background:linear-gradient(135deg,rgba(255,107,53,0.2),rgba(255,64,129,0.2))">'+p.icon+'</div>';
+    h += '<div><div class="store-item-name">'+p.name+' <span style="font-size:9px;background:linear-gradient(135deg,#FF6B35,#FF4081);color:#fff;padding:2px 6px;border-radius:8px;margin-left:4px">HOT</span></div>';
+    h += '<div class="store-item-desc">'+p.desc+' · 💎 '+p.cost+'</div></div></div>';
+    h += '<button class="store-buy-btn '+(canBuy?'affordable':'locked')+'" onclick="'+p.action+'">'+(canBuy?'Buy':'💎 '+p.cost)+'</button>';
+    h += '</div>';
+  });
+  h += '</div>';
+
   // Profile Themes
   h += '<div class="store-section"><div class="store-section-title">🎨 Profile Themes</div>';
   themes.forEach(t => {
@@ -9089,7 +9124,7 @@ function openGemStore() {
     } else if(canBuy) {
       h += '<button class="store-buy-btn affordable" onclick="buyTheme(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
-      h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.name+'\');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>';
+      h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.name+'\','+t.cost+');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>';
     }
     h += '</div>';
   });
@@ -9255,7 +9290,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     } else if(canBuy) {
       h += '<button class="store-buy-btn affordable" style="background:linear-gradient(135deg,#f59e0b,#d97706);animation:pulse 2s infinite" onclick="buyReaderBg(\''+b.id+'\','+b.cost+');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
-      h += '<button class="store-buy-btn '+(isInWishlist(b.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+b.id+'\',\''+b.name+'\');event.stopPropagation()">'+(isInWishlist(b.id)?'💫 Saved':'💎 '+b.cost)+'</button>';
+      h += '<button class="store-buy-btn '+(isInWishlist(b.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+b.id+'\',\''+b.name+'\','+b.cost+');event.stopPropagation()">'+(isInWishlist(b.id)?'💫 Saved':'💎 '+b.cost)+'</button>';
     }
     h += '</div>';
   });
@@ -9375,7 +9410,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     if(isActive) { h += '<button class="store-buy-btn owned">Equipped</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipTitle(\''+t.id+'\');\">Equip</button>'; }
     else if(gems >= t.cost) { h += '<button class="store-buy-btn affordable" onclick="buyTitle(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>'; }
-    else { h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.nameEn+'\');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>'; }
+    else { h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.nameEn+'\','+t.cost+');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>'; }
     h += '</div>';
   });
   h += '</div>';
@@ -9393,7 +9428,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     if(isActive) { h += '<button class="store-buy-btn owned">Active</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipEffect(\''+e.id+'\')">Use</button>'; }
     else if(gems >= e.cost) { h += '<button class="store-buy-btn affordable" onclick="buyEffect(\''+e.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>'; }
-    else { h += '<button class="store-buy-btn '+(isInWishlist(e.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+e.id+'\',\''+e.name+'\');event.stopPropagation()">'+(isInWishlist(e.id)?'💫 Saved':'💎 '+e.cost)+'</button>'; }
+    else { h += '<button class="store-buy-btn '+(isInWishlist(e.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+e.id+'\',\''+e.name+'\','+e.cost+');event.stopPropagation()">'+(isInWishlist(e.id)?'💫 Saved':'💎 '+e.cost)+'</button>'; }
     h += '</div>';
   });
   h += '</div>';
