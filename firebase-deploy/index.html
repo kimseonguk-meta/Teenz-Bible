@@ -672,6 +672,19 @@ body {
 .settings-gear-row { position:relative; }
 .settings-badge { position:absolute; top:-2px; right:-2px; width:10px; height:10px; background:#FF4444; border-radius:50%; border:2px solid #0a1223; animation:badgePulse 2s infinite; }
 @keyframes badgePulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.3);opacity:0.8;} }
+.purchase-modal-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.2s ease;backdrop-filter:blur(4px); }
+.purchase-modal { background:linear-gradient(160deg,#2c4565 0%,#1e3250 100%);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:24px;max-width:300px;width:90%;text-align:center;box-shadow:0 0 30px rgba(255,215,0,0.15);animation:modalPop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes modalPop { from{transform:scale(0.8);opacity:0;} to{transform:scale(1);opacity:1;} }
+.purchase-modal-icon { font-size:48px;margin-bottom:12px; }
+.purchase-modal-title { font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:18px;margin-bottom:8px; }
+.purchase-modal-desc { color:#a8b8d8;font-size:14px;margin-bottom:16px;font-family:'Comic Neue',cursive; }
+.purchase-modal-cost { display:inline-block;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:6px 14px;color:#FFD700;font-family:'Bangers',cursive;font-size:18px;margin-bottom:16px; }
+.purchase-modal-btns { display:flex;gap:10px;justify-content:center; }
+.purchase-modal-btns button { flex:1;padding:12px;border-radius:12px;font-family:'Comic Neue',cursive;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:all 0.2s; }
+.purchase-modal-cancel { background:rgba(100,120,150,0.3);color:#8899bb;border:1px solid rgba(100,120,150,0.3)!important; }
+.purchase-modal-cancel:hover { background:rgba(100,120,150,0.5); }
+.purchase-modal-confirm { background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e; }
+.purchase-modal-confirm:hover { transform:scale(1.03);box-shadow:0 0 15px rgba(255,215,0,0.4); }
 
 /* === SETTINGS === */
 
@@ -2181,7 +2194,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     </div>
     <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:-8px">
       <div class="stat"><div class="val" id="stat-gems" style="font-size:24px">0</div><div class="lbl">💎 Gems</div></div>
-      <div class="stat" onclick="openGemStore()" style="cursor:pointer"><div class="val" style="font-size:24px">🏪</div><div class="lbl">Gem Store</div></div>
+      <div class="stat" onclick="openGemStore()" style="cursor:pointer;position:relative"><div class="val" style="font-size:24px">🏪</div><div class="lbl">Gem Store</div><span id="gem-store-badge" style="display:none;position:absolute;top:6px;right:6px;background:#FF4444;color:#fff;font-size:9px;font-family:Comic Neue,cursive;font-weight:700;padding:2px 5px;border-radius:8px;border:2px solid #1e3250;animation:badgePulse 2s infinite;">NEW</span></div>
     </div>
     <div class="level-bar">
       <div class="level-info"><span class="level-name" id="level-name">Newbie</span><span class="level-xp" id="level-xp">0 / 100 XP</span></div>
@@ -2834,7 +2847,7 @@ function renderHome() {
   
   document.getElementById('stat-streak').textContent = state.streak;
   document.getElementById('stat-chapters').textContent = state.chaptersRead;
-  document.getElementById('stat-xp').textContent = state.xp;
+  document.getElementById('stat-xp').textContent = state.xp || 0;
   
   // Level
   let lvl = LEVELS[0];
@@ -2842,7 +2855,7 @@ function renderHome() {
   const nextLvl = LEVELS[LEVELS.indexOf(lvl)+1] || {xp:lvl.xp+1000};
   const pct = ((state.xp - lvl.xp) / (nextLvl.xp - lvl.xp) * 100);
   document.getElementById('level-name').textContent = '🎖️ ' + lvl.name;
-  document.getElementById('level-xp').textContent = state.xp + ' / ' + nextLvl.xp + ' XP';
+  document.getElementById('level-xp').textContent = (state.xp||0) + ' / ' + nextLvl.xp + ' XP';
   document.getElementById('xp-fill').style.width = Math.min(pct,100) + '%';
   
   // Continue reading - enhanced with one-click resume
@@ -8575,48 +8588,52 @@ function buyTheme(themeId) {
     alert('Not enough gems! You need ' + theme.cost + ' gems.');
     return;
   }
-  if(!confirm('Buy ' + theme.name + ' for ' + theme.cost + ' 💎?')) return;
-  state.gems -= theme.cost;
-  if(!state.unlockedThemes) state.unlockedThemes = ['default'];
-  state.unlockedThemes.push(themeId);
-  state.activeTheme = themeId;
-  save();
-  renderProfileCard();
+  confirmPurchase(theme.name, theme.cost, '🎨', function() {
+    state.gems -= theme.cost;
+    if(!state.unlockedThemes) state.unlockedThemes = ['default'];
+    state.unlockedThemes.push(themeId);
+    state.activeTheme = themeId;
+    save();
+    renderProfileCard();
+  });
 }
 
 function buyFrame(frameId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
-  if(!confirm('Buy this frame for ' + cost + ' 💎?')) return;
-  state.gems -= cost;
-  if(!state.unlockedFrames) state.unlockedFrames = ['none'];
-  if(!state.unlockedFrames.includes(frameId)) state.unlockedFrames.push(frameId);
-  state.activeFrame = frameId;
-  save();
-  showGemToast('🖼️ ' + frameId.charAt(0).toUpperCase() + frameId.slice(1) + ' frame unlocked!');
-  if(typeof renderProfileCard === 'function') renderProfileCard();
+  confirmPurchase('Profile Frame', cost, '🖼️', function() {
+    state.gems -= cost;
+    if(!state.unlockedFrames) state.unlockedFrames = ['none'];
+    if(!state.unlockedFrames.includes(frameId)) state.unlockedFrames.push(frameId);
+    state.activeFrame = frameId;
+    save();
+    showGemToast('🖼️ ' + frameId.charAt(0).toUpperCase() + frameId.slice(1) + ' frame unlocked!');
+    if(typeof renderProfileCard === 'function') renderProfileCard();
+  });
 }
 
 function buyReaderBg(bgId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
-  if(!confirm('Buy this background for ' + cost + ' 💎?')) return;
-  state.gems -= cost;
-  if(!state.unlockedBgs) state.unlockedBgs = ['default'];
-  if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
-  state.activeReaderBg = bgId;
-  save();
-  showGemToast('📖 Reader background changed!');
+  confirmPurchase('Reader Background', cost, '📖', function() {
+    state.gems -= cost;
+    if(!state.unlockedBgs) state.unlockedBgs = ['default'];
+    if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
+    state.activeReaderBg = bgId;
+    save();
+    showGemToast('📖 Reader background changed!');
+  });
 }
 
 function buyStreakFreeze() {
   const gems = state.gems || 0;
   if(gems < 15) { alert('Not enough gems! You need 15 gems.'); return; }
-  if(!confirm('Buy Streak Shield for 15 💎?')) return;
-  state.gems -= 15;
-  state.streakFreezes = (state.streakFreezes || 0) + 1;
-  save();
-  alert('Streak Freeze purchased! You now have ' + state.streakFreezes + ' freeze(s).');
+  confirmPurchase('Streak Shield', 15, '🛡️', function() {
+    state.gems -= 15;
+    state.streakFreezes = (state.streakFreezes || 0) + 1;
+    save();
+    showGemToast('🛡️ Streak Shield purchased! You have ' + state.streakFreezes + ' shield(s).');
+  });
 }
 
 
@@ -8719,13 +8736,14 @@ function buyTitle(titleId) {
   const title = STORE_TITLES.find(t => t.id === titleId);
   if(!title) return;
   if((state.gems||0) < title.cost) { showRewardToast('Not enough gems! 💎'); return; }
-  if(!confirm('Buy ' + title.nameEn + ' for ' + title.cost + ' 💎?')) return;
-  state.gems -= title.cost;
-  if(!state.unlockedTitles) state.unlockedTitles = [];
-  state.unlockedTitles.push(titleId);
-  state.activeTitle = titleId;
-  save();
-  showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉');
+  confirmPurchase(title.nameEn, title.cost, '🏷️', function() {
+    state.gems -= title.cost;
+    if(!state.unlockedTitles) state.unlockedTitles = [];
+    state.unlockedTitles.push(titleId);
+    state.activeTitle = titleId;
+    save();
+    showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉');
+  });
 }
 function equipTitle(titleId) {
   state.activeTitle = titleId;
@@ -8737,13 +8755,14 @@ function buyEffect(effectId) {
   const effect = COMPLETION_EFFECTS.find(e => e.id === effectId);
   if(!effect) return;
   if((state.gems||0) < effect.cost) { showRewardToast('Not enough gems! 💎'); return; }
-  if(!confirm('Buy ' + effect.name + ' for ' + effect.cost + ' 💎?')) return;
-  state.gems -= effect.cost;
-  if(!state.unlockedEffects) state.unlockedEffects = ['default'];
-  state.unlockedEffects.push(effectId);
-  state.activeEffect = effectId;
-  save();
-  showRewardToast('Effect unlocked: ' + effect.name + ' 🎉');
+  confirmPurchase(effect.name, effect.cost, '✨', function() {
+    state.gems -= effect.cost;
+    if(!state.unlockedEffects) state.unlockedEffects = ['default'];
+    state.unlockedEffects.push(effectId);
+    state.activeEffect = effectId;
+    save();
+    showRewardToast('Effect unlocked: ' + effect.name + ' 🎉');
+  });
 }
 function equipEffect(effectId) {
   state.activeEffect = effectId;
@@ -8755,39 +8774,60 @@ function buyReaction(reactionId) {
   const reaction = EXTRA_REACTIONS.find(r => r.id === reactionId);
   if(!reaction) return;
   if((state.gems||0) < reaction.cost) { showRewardToast('Not enough gems! 💎'); return; }
-  if(!confirm('Buy ' + reaction.emoji + ' reaction for ' + reaction.cost + ' 💎?')) return;
-  state.gems -= reaction.cost;
-  if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
-  state.unlockedReactions.push(reactionId);
-  save();
-  showRewardToast('Reaction unlocked: ' + reaction.emoji + ' 🎉');
+  confirmPurchase(reaction.emoji + ' Reaction', reaction.cost, reaction.emoji, function() {
+    state.gems -= reaction.cost;
+    if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
+    state.unlockedReactions.push(reactionId);
+    save();
+    showRewardToast('Reaction unlocked: ' + reaction.emoji + ' 🎉');
+  });
 }
 function buyQuizHints() {
   if((state.gems||0) < 10) { showRewardToast('Not enough gems! 💎'); return; }
-  if(!confirm('Buy 3 Quiz Hints for 10 💎?')) return;
-  state.gems -= 10;
-  state.quizHints = (state.quizHints || 0) + 3;
-  save();
-  showRewardToast('Quiz Hints +3! 🧠');
+  confirmPurchase('3 Quiz Hints', 10, '💡', function() {
+    state.gems -= 10;
+    state.quizHints = (state.quizHints || 0) + 3;
+    save();
+    showRewardToast('Quiz Hints +3! 🧠');
+  });
 }
 function buyAIQuestions() {
   if((state.gems||0) < 15) { showRewardToast('Not enough gems! 💎'); return; }
-  if(!confirm('Buy 5 AI Questions for 15 💎?')) return;
-  state.gems -= 15;
-  state.aiQuestions = (state.aiQuestions || 5) + 5;
-  save();
-  showRewardToast('AI Questions +5! 🤖');
+  confirmPurchase('5 AI Questions', 15, '🤖', function() {
+    state.gems -= 15;
+    state.aiQuestions = (state.aiQuestions || 5) + 5;
+    save();
+    showRewardToast('AI Questions +5! 🤖');
+  });
 }
 function buyMissionReroll() {
   if((state.gems||0) < 20) { showRewardToast('Not enough gems! 💎'); return; }
-  if(!confirm('Reroll Daily Mission for 20 💎?')) return;
-  state.gems -= 20;
-  // Generate new mission
-  localStorage.removeItem('dailyChallenge');
-  save();
-  renderDailyChallenge();
-  showRewardToast('Mission rerolled! 🎲');
-  document.querySelector('.store-overlay')?.remove();
+  confirmPurchase('Mission Reroll', 20, '🎲', function() {
+    state.gems -= 20;
+    // Generate new mission
+    localStorage.removeItem('dailyChallenge');
+    save();
+    renderDailyChallenge();
+    showRewardToast('Mission rerolled! 🎲');
+    document.querySelector('.store-overlay')?.remove();
+  });
+}
+function confirmPurchase(itemName, cost, icon, onConfirm) {
+  var overlay = document.createElement('div');
+  overlay.className = 'purchase-modal-overlay';
+  overlay.innerHTML = '<div class="purchase-modal">'
+    + '<div class="purchase-modal-icon">' + (icon || '🛒') + '</div>'
+    + '<div class="purchase-modal-title">Confirm Purchase</div>'
+    + '<div class="purchase-modal-desc">' + itemName + '</div>'
+    + '<div class="purchase-modal-cost">💎 ' + cost + '</div>'
+    + '<div class="purchase-modal-btns">'
+    + '<button class="purchase-modal-cancel" id="pm-cancel">Cancel</button>'
+    + '<button class="purchase-modal-confirm" id="pm-confirm">Buy Now</button>'
+    + '</div></div>';
+  document.body.appendChild(overlay);
+  overlay.querySelector('#pm-cancel').onclick = function() { overlay.remove(); };
+  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+  overlay.querySelector('#pm-confirm').onclick = function() { overlay.remove(); onConfirm(); };
 }
 function checkSettingsBadge() {
   var badge = document.getElementById('settings-badge');
@@ -8807,6 +8847,12 @@ function checkSettingsBadge() {
 }
 // Check badge on load and after state changes
 setTimeout(checkSettingsBadge, 500);
+setTimeout(function() {
+  var badge = document.getElementById('gem-store-badge');
+  if(!badge) return;
+  var storeOpened = localStorage.getItem('gemStoreLastOpened') || '0';
+  badge.style.display = (storeOpened < '89') ? 'block' : 'none';
+}, 600);
 function redeemCode() {
   var input = document.getElementById('secret-code-input');
   var result = document.getElementById('code-result');
@@ -8927,6 +8973,8 @@ function claimSeasonPassReward(tier) {
 // === END v89 FUNCTIONS ===
 
 function openGemStore() {
+  localStorage.setItem('gemStoreLastOpened', '89');
+  var gsb = document.getElementById('gem-store-badge'); if(gsb) gsb.style.display='none';
   const gems = state.gems || 0;
   const unlockedThemes = state.unlockedThemes || ['default'];
   const activeTheme = state.activeTheme || 'default';
