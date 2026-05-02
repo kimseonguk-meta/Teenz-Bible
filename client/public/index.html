@@ -2603,6 +2603,19 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
           oninput="localStorage.setItem('geminiApiKey',this.value)">
         <div style="font-size:11px;color:#888;margin-top:6px;"><span style="display:none">Free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#FF6B6B;">aistudio.google.com/app/apikey</a></div>
       </div>
+      <!-- Secret Code Section -->
+      <div class="setting-row" style="flex-direction:column;align-items:stretch;gap:8px;">
+        <div><div class="setting-label">🎁 Redeem Code</div><div class="setting-sub">Enter a special code to get rewards</div></div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="secret-code-input" placeholder="Enter code..." 
+            style="flex:1;background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:10px 14px;border-radius:8px;font-family:'Comic Neue',cursive;font-size:14px;text-transform:uppercase;" />
+          <button onclick="redeemCode()" 
+            style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e;border:none;padding:10px 16px;border-radius:8px;font-family:'Luckiest Guy',cursive;font-size:14px;cursor:pointer;white-space:nowrap;">
+            Redeem
+          </button>
+        </div>
+        <div id="code-result" style="font-size:12px;font-family:'Comic Neue',cursive;min-height:16px;"></div>
+      </div>
       <div class="setting-row" style="justify-content:center;">
         <button class="reset-btn" onclick="showResetConfirm()" 
           style="background:transparent;color:#FF6B6B;border:1px solid rgba(255,107,107,0.2);padding:10px 20px;border-radius:10px;font-size:12px;cursor:pointer;width:100%;opacity:0.7;font-family:'Comic Neue',cursive;">
@@ -8772,6 +8785,35 @@ function buyMissionReroll() {
   renderDailyChallenge();
   showRewardToast('Mission rerolled! 🎲');
   document.querySelector('.store-overlay')?.remove();
+}
+function redeemCode() {
+  var input = document.getElementById('secret-code-input');
+  var result = document.getElementById('code-result');
+  var code = (input.value || '').trim().toUpperCase();
+  if(!code) { result.innerHTML = '<span style="color:#FF6B6B;">Please enter a code</span>'; return; }
+  var usedCodes = JSON.parse(localStorage.getItem('usedCodes') || '[]');
+  if(usedCodes.includes(code)) { result.innerHTML = '<span style="color:#FF6B6B;">This code has already been used!</span>'; input.value=''; return; }
+  // Code definitions
+  var codes = {
+    'REFUND2026': { gems: 50, msg: '50 Gems refunded! 💎' },
+    'WELCOME': { gems: 20, msg: 'Welcome bonus: +20 Gems! 🎉' },
+    'TEENZ2026': { gems: 30, msg: 'Special bonus: +30 Gems! ⭐' }
+  };
+  if(codes[code]) {
+    var reward = codes[code];
+    state.gems = (state.gems || 0) + reward.gems;
+    save();
+    usedCodes.push(code);
+    localStorage.setItem('usedCodes', JSON.stringify(usedCodes));
+    result.innerHTML = '<span style="color:#4ade80;">' + reward.msg + '</span>';
+    input.value = '';
+    showRewardToast(reward.msg);
+    // Update gems display
+    var gemsEl = document.querySelector('[onclick*="openGemStore"]');
+    if(gemsEl) { var numEl = gemsEl.querySelector('.stat-num'); if(numEl) numEl.textContent = state.gems; }
+  } else {
+    result.innerHTML = '<span style="color:#FF6B6B;">Invalid code. Try again!</span>';
+  }
 }
 function showRewardToast(msg) {
   const existing = document.querySelector('.reward-toast');
