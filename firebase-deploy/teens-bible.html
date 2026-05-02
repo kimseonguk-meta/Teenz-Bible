@@ -8607,6 +8607,7 @@ if(!state.unlockedThemes) state.unlockedThemes = ['default'];
     state.unlockedThemes.push(themeId);
     state.activeTheme = themeId;
     save();
+    trackPurchase(themeId, theme.name, 'theme');
     renderProfileCard();
   }, preview);
 }
@@ -8620,6 +8621,7 @@ function buyFrame(frameId, cost) {
     if(!state.unlockedFrames.includes(frameId)) state.unlockedFrames.push(frameId);
     state.activeFrame = frameId;
     save();
+    trackPurchase(frameId, 'Frame: '+frameId, 'frame');
     showGemToast('🖼️ ' + frameId.charAt(0).toUpperCase() + frameId.slice(1) + ' frame unlocked!');
     if(typeof renderProfileCard === 'function') renderProfileCard();
   });
@@ -8637,6 +8639,7 @@ function buyReaderBg(bgId, cost) {
     if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
     state.activeReaderBg = bgId;
     save();
+    trackPurchase(bgId, bgInfo.name, 'reader_bg');
     showGemToast('📖 Reader background changed!');
   }, preview);
 }
@@ -8648,6 +8651,7 @@ function buyStreakFreeze() {
     state.gems -= 15;
     state.streakFreezes = (state.streakFreezes || 0) + 1;
     save();
+    trackPurchase('streak_freeze', 'Streak Shield', 'utility');
     showGemToast('🛡️ Streak Shield purchased! You have ' + state.streakFreezes + ' shield(s).');
   });
 }
@@ -8759,7 +8763,7 @@ function buyTitle(titleId) {
     state.unlockedTitles.push(titleId);
     state.activeTitle = titleId;
     save();
-    showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉');
+    showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉'); trackPurchase(titleId, title.nameEn, 'title');
   }, titlePreview);
 }
 function equipTitle(titleId) {
@@ -8779,7 +8783,7 @@ function buyEffect(effectId) {
     state.unlockedEffects.push(effectId);
     state.activeEffect = effectId;
     save();
-    showRewardToast('Effect unlocked: ' + effect.name + ' 🎉');
+    showRewardToast('Effect unlocked: ' + effect.name + ' 🎉'); trackPurchase(effectId, effect.name, 'effect');
   }, effectPreview);
 }
 function equipEffect(effectId) {
@@ -8797,7 +8801,7 @@ function buyReaction(reactionId) {
     if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
     state.unlockedReactions.push(reactionId);
     save();
-    showRewardToast('Reaction unlocked: ' + reaction.emoji + ' 🎉');
+    showRewardToast('Reaction unlocked: ' + reaction.emoji + ' 🎉'); trackPurchase(reactionId, reaction.emoji, 'reaction');
   });
 }
 function buyQuizHints() {
@@ -8806,7 +8810,7 @@ function buyQuizHints() {
     state.gems -= 10;
     state.quizHints = (state.quizHints || 0) + 3;
     save();
-    showRewardToast('Quiz Hints +3! 🧠');
+    showRewardToast('Quiz Hints +3! 🧠'); trackPurchase('quiz_hint', 'Quiz Hints', 'utility');
   });
 }
 function buyAIQuestions() {
@@ -8815,7 +8819,7 @@ function buyAIQuestions() {
     state.gems -= 15;
     state.aiQuestions = (state.aiQuestions || 5) + 5;
     save();
-    showRewardToast('AI Questions +5! 🤖');
+    showRewardToast('AI Questions +5! 🤖'); trackPurchase('ai_questions', 'AI Questions', 'utility');
   });
 }
 function buyMissionReroll() {
@@ -8826,7 +8830,7 @@ function buyMissionReroll() {
     localStorage.removeItem('dailyChallenge');
     save();
     renderDailyChallenge();
-    showRewardToast('Mission rerolled! 🎲');
+    showRewardToast('Mission rerolled! 🎲'); trackPurchase('mission_reroll', 'Mission Reroll', 'utility');
     document.querySelector('.store-overlay')?.remove();
   });
 }
@@ -8848,6 +8852,37 @@ function toggleWishlist(itemId, itemName, itemCost) {
 }
 function isInWishlist(itemId) {
   return (state.wishlist||[]).some(function(w){return w.id === itemId;});
+}
+
+function trackPurchase(itemId, itemName, category) {
+  if(!state.purchaseHistory) state.purchaseHistory = [];
+  state.purchaseHistory.push({id: itemId, name: itemName, category: category, time: Date.now()});
+  save();
+}
+function getPopularItems() {
+  var history = state.purchaseHistory || [];
+  // Count purchases per item
+  var counts = {};
+  history.forEach(function(p) { counts[p.id] = (counts[p.id]||0) + 1; });
+  // Build all purchasable items list with their data
+  var allItems = [
+    {id:'ocean',icon:'\u{1F30A}',name:'Ocean Wave',desc:'Profile Theme',cost:20,action:"buyTheme('ocean')",category:'theme'},
+    {id:'sunset',icon:'\u{1F305}',name:'Sunset Glow',desc:'Profile Theme',cost:20,action:"buyTheme('sunset')",category:'theme'},
+    {id:'forest',icon:'\u{1F332}',name:'Forest Green',desc:'Profile Theme',cost:20,action:"buyTheme('forest')",category:'theme'},
+    {id:'galaxy',icon:'\u{1F30C}',name:'Galaxy Purple',desc:'Profile Theme',cost:50,action:"buyTheme('galaxy')",category:'theme'},
+    {id:'streak_freeze',icon:'\u{1F6E1}\uFE0F',name:'Streak Shield',desc:'Protect your streak',cost:25,action:'buyStreakFreeze()',category:'utility'},
+    {id:'xp_boost',icon:'\u26A1',name:'2x XP Boost',desc:'Double XP for 24h',cost:30,action:'buyXPBoost()',category:'utility'},
+    {id:'quiz_hint',icon:'\u{1F9E0}',name:'Quiz Hints x3',desc:'Eliminate wrong answers',cost:10,action:'buyQuizHint()',category:'utility'},
+    {id:'ai_questions',icon:'\u{1F916}',name:'AI Questions +5',desc:'Ask more questions',cost:15,action:'buyAIQuestions()',category:'utility'},
+    {id:'mission_reroll',icon:'\u{1F3B2}',name:'Mission Reroll',desc:'Get a new daily mission',cost:20,action:'buyMissionReroll()',category:'utility'}
+  ];
+  // Sort by purchase count (descending), then return top 3
+  allItems.sort(function(a,b) { return (counts[b.id]||0) - (counts[a.id]||0); });
+  // If no purchase history, use defaults
+  if(history.length === 0) {
+    return [allItems[0], allItems[4], allItems[5]]; // Ocean, Streak Shield, XP Boost
+  }
+  return allItems.slice(0, 3);
 }
 
 function checkWishlistAffordable() {
@@ -9087,21 +9122,37 @@ function openGemStore() {
   }
   
 
-  // Most Popular section
+  // Most Popular section (dynamic based on purchase history)
+  var popularItems = getPopularItems();
   h += '<div class="store-section" style="border:1px solid rgba(255,107,53,0.3);background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,64,129,0.05))">';
-  h += '<div class="store-section-title" style="color:#FF6B35">🏆 Most Popular</div>';
-  var popularItems = [
-    {icon:'🌊', name:'Ocean Wave', desc:'Profile Theme', cost:20, action:'buyTheme(\'ocean\')'},
-    {icon:'🛡️', name:'Streak Shield', desc:'Protect your streak', cost:25, action:'buyStreakFreeze()'},
-    {icon:'⚡', name:'2x XP Boost', desc:'Double XP for 24h', cost:30, action:'buyXPBoost()'}
-  ];
+  h += '<div class="store-section-title" style="color:#FF6B35">🏆 Most Popular <span style="font-size:10px;color:#8899bb;font-family:Comic Neue,cursive">based on purchases</span></div>';
   popularItems.forEach(function(p) {
     var canBuy = gems >= p.cost;
+    var purchaseCount = (state.purchaseHistory||[]).filter(function(ph){return ph.id===p.id}).length;
     h += '<div class="store-item" style="border:1px solid rgba(255,107,53,0.15)">';
     h += '<div class="store-item-info"><div class="store-item-preview" style="background:linear-gradient(135deg,rgba(255,107,53,0.2),rgba(255,64,129,0.2))">'+p.icon+'</div>';
     h += '<div><div class="store-item-name">'+p.name+' <span style="font-size:9px;background:linear-gradient(135deg,#FF6B35,#FF4081);color:#fff;padding:2px 6px;border-radius:8px;margin-left:4px">HOT</span></div>';
-    h += '<div class="store-item-desc">'+p.desc+' · 💎 '+p.cost+'</div></div></div>';
+    h += '<div class="store-item-desc">'+p.desc+' · 💎 '+p.cost+(purchaseCount>0?' · Bought '+purchaseCount+'x':'')+'</div></div></div>';
     h += '<button class="store-buy-btn '+(canBuy?'affordable':'locked')+'" onclick="'+p.action+'">'+(canBuy?'Buy':'💎 '+p.cost)+'</button>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // New Arrivals section
+  var newArrivals = [
+    {icon:'🎭', name:'Drama Queen', desc:'Leaderboard Title', cost:40, action:"buyTitle('drama_queen')", isNew:true, addedDate:'2026-05-01'},
+    {icon:'🌈', name:'Rainbow Burst', desc:'Chapter Complete Effect', cost:35, action:"buyEffect('rainbow')", isNew:true, addedDate:'2026-05-01'},
+    {icon:'🦋', name:'Butterfly', desc:'Reaction Emoji', cost:15, action:"buyReaction('butterfly')", isNew:true, addedDate:'2026-04-28'}
+  ];
+  h += '<div class="store-section" style="border:1px solid rgba(0,229,255,0.3);background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(124,77,255,0.05))">';
+  h += '<div class="store-section-title" style="color:#00E5FF">✨ New Arrivals <span style="font-size:10px;color:#8899bb;font-family:Comic Neue,cursive">just added!</span></div>';
+  newArrivals.forEach(function(item) {
+    var canBuy = gems >= item.cost;
+    h += '<div class="store-item" style="border:1px solid rgba(0,229,255,0.15)">';
+    h += '<div class="store-item-info"><div class="store-item-preview" style="background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(124,77,255,0.15))">'+item.icon+'</div>';
+    h += '<div><div class="store-item-name">'+item.name+' <span style="font-size:9px;background:linear-gradient(135deg,#00E5FF,#7C4DFF);color:#fff;padding:2px 6px;border-radius:8px;margin-left:4px">NEW</span></div>';
+    h += '<div class="store-item-desc">'+item.desc+' · 💎 '+item.cost+'</div></div></div>';
+    h += '<button class="store-buy-btn '+(canBuy?'affordable':'locked')+'" onclick="'+item.action+'">'+(canBuy?'Buy':'💎 '+item.cost)+'</button>';
     h += '</div>';
   });
   h += '</div>';
