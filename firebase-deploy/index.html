@@ -667,8 +667,8 @@ body {
 
 
 /* Settings gear icon on home */
-.settings-gear-row { font-size:13px; cursor:pointer; opacity:0.45; transition:all 0.3s; text-align:right; padding:4px 4px 0; margin-top:-12px; margin-bottom:8px; color:#8899bb; font-family:'Comic Neue',cursive; letter-spacing:0.5px; }
-.settings-gear-row:hover, .settings-gear-row:active { opacity:0.8; color:#FFD700; }
+.settings-gear-row { font-size:14px; cursor:pointer; opacity:0.85; transition:all 0.3s; text-align:right; padding:8px 12px; margin-top:-8px; margin-bottom:8px; color:#d8dce8; font-family:'Comic Neue',cursive; letter-spacing:0.5px; background:rgba(65,105,155,0.15); border:1px solid rgba(65,105,155,0.3); border-radius:20px; display:inline-block; float:right; }
+.settings-gear-row:hover, .settings-gear-row:active { opacity:1; color:#FFD700; background:rgba(255,215,0,0.1); border-color:rgba(255,215,0,0.3); }
 
 /* === SETTINGS === */
 
@@ -2168,7 +2168,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
         <h1>TEENZ BIBLE</h1>
       </div>
     </div>
-    <div class="settings-gear-row" onclick="showScreen('settings')">⚙️ Settings</div>
+    <div style="text-align:right;padding:0 4px;margin-top:-8px;margin-bottom:8px;overflow:hidden;"><div class="settings-gear-row" onclick="showScreen('settings')">⚙️ Settings</div></div>
     <div id="reading-goal-section"></div>
     <div id="streak-card-section"></div>
     <div class="stats">
