@@ -8793,9 +8793,6 @@ function checkSettingsBadge() {
   var badge = document.getElementById('settings-badge');
   if(!badge) return;
   var show = false;
-  // Check if user has never used any redeem code (hint that codes exist)
-  var usedCodes = JSON.parse(localStorage.getItem('usedCodes') || '[]');
-  if(usedCodes.length === 0) show = true;
   // Check unclaimed level rewards
   var levels = [{level:'Explorer',xp:100},{level:'Scholar',xp:300},{level:'Disciple',xp:600},{level:'Teacher',xp:1000},{level:'Apostle',xp:2000},{level:'Prophet',xp:3500},{level:'Evangelist',xp:5000}];
   var claimed = state.levelRewardsClaimed || [];
