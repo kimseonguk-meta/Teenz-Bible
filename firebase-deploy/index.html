@@ -686,6 +686,9 @@ body {
 .purchase-modal-confirm { background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e; }
 .purchase-modal-confirm:hover { transform:scale(1.03);box-shadow:0 0 15px rgba(255,215,0,0.4); }
 .purchase-modal-balance { color:#8899bb;font-size:12px;font-family:'Comic Neue',cursive;margin-bottom:14px;padding:6px 10px;background:rgba(0,0,0,0.2);border-radius:8px; }
+.purchase-modal-preview { margin:12px 0;padding:8px;border-radius:12px;border:1px solid rgba(255,215,0,0.2);background:rgba(0,0,0,0.15); }
+.store-buy-btn.wishlisted { background:linear-gradient(135deg,#4a1a6b,#7C4DFF);color:#fff;border:1px solid rgba(124,77,255,0.5);font-size:11px; }
+.store-buy-btn.wishlisted:hover { box-shadow:0 0 10px rgba(124,77,255,0.4); }
 .store-tag { display:inline-block;font-size:9px;padding:2px 6px;border-radius:6px;background:linear-gradient(135deg,#FF6B35,#FF4444);color:#fff;font-weight:700;margin-left:6px;vertical-align:middle;animation:tagGlow 2s infinite;font-family:'Comic Neue',cursive; }
 @keyframes tagGlow { 0%,100%{box-shadow:0 0 4px rgba(255,107,53,0.4);} 50%{box-shadow:0 0 10px rgba(255,107,53,0.7);} }
 .purchase-celebrate { position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10000;overflow:hidden; }
@@ -8596,14 +8599,16 @@ function buyTheme(themeId) {
     alert('Not enough gems! You need ' + theme.cost + ' gems.');
     return;
   }
+  var preview = '<div style="width:100%;height:60px;border-radius:10px;background:'+theme.bg+';display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 15px rgba(0,0,0,0.3)">'+(theme.icon||'🎨')+' <span style="color:#fff;margin-left:8px;font-size:13px;font-family:Comic Neue,cursive">'+theme.name+'</span></div>';
   confirmPurchase(theme.name, theme.cost, '🎨', function() {
     state.gems -= theme.cost;
-    if(!state.unlockedThemes) state.unlockedThemes = ['default'];
+    if(!state.wishlist) state.wishlist = [];
+if(!state.unlockedThemes) state.unlockedThemes = ['default'];
     state.unlockedThemes.push(themeId);
     state.activeTheme = themeId;
     save();
     renderProfileCard();
-  });
+  }, preview);
 }
 
 function buyFrame(frameId, cost) {
@@ -8623,14 +8628,17 @@ function buyFrame(frameId, cost) {
 function buyReaderBg(bgId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
-  confirmPurchase('Reader Background', cost, '📖', function() {
+  var bgData = [{id:'default',name:'Classic Dark',bg:'#0e1830',textColor:'#e2e8f0'},{id:'parchment',name:'Parchment',bg:'#f5e6c8',textColor:'#3d2b1f'},{id:'sepia',name:'Warm Sepia',bg:'#2c1810',textColor:'#d4a574'},{id:'midnight',name:'Midnight Blue',bg:'#0a1628',textColor:'#7dd3fc'},{id:'nature',name:'Forest Calm',bg:'#0d2818',textColor:'#86efac'},{id:'lavender',name:'Lavender Dream',bg:'#1a1028',textColor:'#d8b4fe'},{id:'matrix',name:'Matrix Code',bg:'#001a00',textColor:'#00ff41'}];
+  var bgInfo = bgData.find(function(b){return b.id===bgId}) || {name:bgId,bg:'#0e1830',textColor:'#e2e8f0'};
+  var preview = '<div style="width:100%;height:60px;border-radius:10px;background:'+bgInfo.bg+';display:flex;align-items:center;justify-content:center;padding:8px 16px;box-shadow:0 4px 15px rgba(0,0,0,0.3)"><span style="color:'+bgInfo.textColor+';font-size:12px;font-family:Comic Neue,cursive">In the beginning was the Word...</span></div>';
+  confirmPurchase(bgInfo.name, cost, '📖', function() {
     state.gems -= cost;
     if(!state.unlockedBgs) state.unlockedBgs = ['default'];
     if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
     state.activeReaderBg = bgId;
     save();
     showGemToast('📖 Reader background changed!');
-  });
+  }, preview);
 }
 
 function buyStreakFreeze() {
@@ -8744,6 +8752,7 @@ function buyTitle(titleId) {
   const title = STORE_TITLES.find(t => t.id === titleId);
   if(!title) return;
   if((state.gems||0) < title.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  var titlePreview = '<div style="text-align:center;padding:10px;background:rgba(0,0,0,0.2);border-radius:10px;font-size:16px;font-weight:700;font-family:Comic Neue,cursive;color:#ffd700">' + title.nameEn + '</div>';
   confirmPurchase(title.nameEn, title.cost, '🏷️', function() {
     state.gems -= title.cost;
     if(!state.unlockedTitles) state.unlockedTitles = [];
@@ -8751,7 +8760,7 @@ function buyTitle(titleId) {
     state.activeTitle = titleId;
     save();
     showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉');
-  });
+  }, titlePreview);
 }
 function equipTitle(titleId) {
   state.activeTitle = titleId;
@@ -8763,6 +8772,7 @@ function buyEffect(effectId) {
   const effect = COMPLETION_EFFECTS.find(e => e.id === effectId);
   if(!effect) return;
   if((state.gems||0) < effect.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  var effectPreview = '<div style="text-align:center;padding:12px;font-size:40px;animation:sparkleIn 0.8s ease-out infinite">' + (effect.preview||'✨') + '</div>';
   confirmPurchase(effect.name, effect.cost, '✨', function() {
     state.gems -= effect.cost;
     if(!state.unlockedEffects) state.unlockedEffects = ['default'];
@@ -8770,7 +8780,7 @@ function buyEffect(effectId) {
     state.activeEffect = effectId;
     save();
     showRewardToast('Effect unlocked: ' + effect.name + ' 🎉');
-  });
+  }, effectPreview);
 }
 function equipEffect(effectId) {
   state.activeEffect = effectId;
@@ -8820,6 +8830,25 @@ function buyMissionReroll() {
     document.querySelector('.store-overlay')?.remove();
   });
 }
+function toggleWishlist(itemId, itemName) {
+  if(!state.wishlist) state.wishlist = [];
+  var idx = state.wishlist.findIndex(function(w){return w.id === itemId;});
+  if(idx >= 0) {
+    state.wishlist.splice(idx, 1);
+    save();
+    showRewardToast('Removed from wishlist ❌');
+  } else {
+    state.wishlist.push({id: itemId, name: itemName, addedAt: Date.now()});
+    save();
+    showRewardToast('Added to wishlist! 💫');
+  }
+  // Refresh store
+  document.querySelector('.store-overlay')?.remove();
+  openGemStore();
+}
+function isInWishlist(itemId) {
+  return (state.wishlist||[]).some(function(w){return w.id === itemId;});
+}
 function showPurchaseEffect() {
   var colors = ['#FFD700','#FF6B35','#4ECDC4','#FF4081','#7C4DFF','#00E5FF','#FFEB3B','#E040FB'];
   var container = document.createElement('div');
@@ -8841,15 +8870,17 @@ function showPurchaseEffect() {
   document.body.appendChild(sparkle);
   setTimeout(function() { container.remove(); sparkle.remove(); }, 2000);
 }
-function confirmPurchase(itemName, cost, icon, onConfirm) {
+function confirmPurchase(itemName, cost, icon, onConfirm, previewHtml) {
   var currentGems = state.gems || 0;
   var remaining = currentGems - cost;
+  var previewSection = previewHtml ? '<div class="purchase-modal-preview">' + previewHtml + '</div>' : '';
   var overlay = document.createElement('div');
   overlay.className = 'purchase-modal-overlay';
   overlay.innerHTML = '<div class="purchase-modal">'
     + '<div class="purchase-modal-icon">' + (icon || '🛒') + '</div>'
     + '<div class="purchase-modal-title">Confirm Purchase</div>'
     + '<div class="purchase-modal-desc">' + itemName + '</div>'
+    + previewSection
     + '<div class="purchase-modal-cost">💎 ' + cost + '</div>'
     + '<div class="purchase-modal-balance">Balance: 💎 ' + currentGems + ' → 💎 ' + remaining + ' after purchase</div>'
     + '<div class="purchase-modal-btns">'
@@ -9025,6 +9056,21 @@ function openGemStore() {
   h += '<div class="store-title">💎 Gem Store</div>';
   h += '<div style="text-align:center;margin-bottom:16px"><span class="gem-balance">💎 ' + gems + ' Gems</span></div>';
   
+  // Wishlist section
+  var wl = state.wishlist || [];
+  if(wl.length > 0) {
+    h += '<div class="store-section" style="border:1px solid rgba(255,215,0,0.2);background:rgba(255,215,0,0.05)">';
+    h += '<div class="store-section-title">⭐ My Wishlist <span style="font-size:11px;color:#8899bb">(' + wl.length + ' items)</span></div>';
+    wl.forEach(function(w) {
+      h += '<div class="store-item" style="border-bottom:1px solid rgba(255,255,255,0.05)">';
+      h += '<div class="store-item-info"><div style="flex:1"><div class="store-item-name">' + w.name + '</div>';
+      h += '<div class="store-item-desc" style="font-size:10px;color:#6880a8">Added ' + new Date(w.addedAt).toLocaleDateString() + '</div></div></div>';
+      h += '<button class="store-buy-btn wishlisted" onclick="toggleWishlist(\'' + w.id + '\',\'' + w.name + '\')">Remove</button>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  
   // Profile Themes
   h += '<div class="store-section"><div class="store-section-title">🎨 Profile Themes</div>';
   themes.forEach(t => {
@@ -9043,7 +9089,7 @@ function openGemStore() {
     } else if(canBuy) {
       h += '<button class="store-buy-btn affordable" onclick="buyTheme(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
-      h += '<button class="store-buy-btn locked">💎 '+t.cost+'</button>';
+      h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.name+'\');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>';
     }
     h += '</div>';
   });
@@ -9209,7 +9255,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     } else if(canBuy) {
       h += '<button class="store-buy-btn affordable" style="background:linear-gradient(135deg,#f59e0b,#d97706);animation:pulse 2s infinite" onclick="buyReaderBg(\''+b.id+'\','+b.cost+');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
-      h += '<button class="store-buy-btn locked">💎 '+b.cost+'</button>';
+      h += '<button class="store-buy-btn '+(isInWishlist(b.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+b.id+'\',\''+b.name+'\');event.stopPropagation()">'+(isInWishlist(b.id)?'💫 Saved':'💎 '+b.cost)+'</button>';
     }
     h += '</div>';
   });
@@ -9329,7 +9375,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     if(isActive) { h += '<button class="store-buy-btn owned">Equipped</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipTitle(\''+t.id+'\');\">Equip</button>'; }
     else if(gems >= t.cost) { h += '<button class="store-buy-btn affordable" onclick="buyTitle(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>'; }
-    else { h += '<button class="store-buy-btn locked">💎 '+t.cost+'</button>'; }
+    else { h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.nameEn+'\');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>'; }
     h += '</div>';
   });
   h += '</div>';
@@ -9347,7 +9393,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     if(isActive) { h += '<button class="store-buy-btn owned">Active</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipEffect(\''+e.id+'\')">Use</button>'; }
     else if(gems >= e.cost) { h += '<button class="store-buy-btn affordable" onclick="buyEffect(\''+e.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>'; }
-    else { h += '<button class="store-buy-btn locked">💎 '+e.cost+'</button>'; }
+    else { h += '<button class="store-buy-btn '+(isInWishlist(e.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+e.id+'\',\''+e.name+'\');event.stopPropagation()">'+(isInWishlist(e.id)?'💫 Saved':'💎 '+e.cost)+'</button>'; }
     h += '</div>';
   });
   h += '</div>';
