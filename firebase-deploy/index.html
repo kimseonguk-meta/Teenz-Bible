@@ -8559,6 +8559,7 @@ function buyTheme(themeId) {
     alert('Not enough gems! You need ' + theme.cost + ' gems.');
     return;
   }
+  if(!confirm('Buy ' + theme.name + ' for ' + theme.cost + ' 💎?')) return;
   state.gems -= theme.cost;
   if(!state.unlockedThemes) state.unlockedThemes = ['default'];
   state.unlockedThemes.push(themeId);
@@ -8570,6 +8571,7 @@ function buyTheme(themeId) {
 function buyFrame(frameId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
+  if(!confirm('Buy this frame for ' + cost + ' 💎?')) return;
   state.gems -= cost;
   if(!state.unlockedFrames) state.unlockedFrames = ['none'];
   if(!state.unlockedFrames.includes(frameId)) state.unlockedFrames.push(frameId);
@@ -8582,6 +8584,7 @@ function buyFrame(frameId, cost) {
 function buyReaderBg(bgId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
+  if(!confirm('Buy this background for ' + cost + ' 💎?')) return;
   state.gems -= cost;
   if(!state.unlockedBgs) state.unlockedBgs = ['default'];
   if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
@@ -8593,6 +8596,7 @@ function buyReaderBg(bgId, cost) {
 function buyStreakFreeze() {
   const gems = state.gems || 0;
   if(gems < 15) { alert('Not enough gems! You need 15 gems.'); return; }
+  if(!confirm('Buy Streak Shield for 15 💎?')) return;
   state.gems -= 15;
   state.streakFreezes = (state.streakFreezes || 0) + 1;
   save();
@@ -8699,6 +8703,7 @@ function buyTitle(titleId) {
   const title = STORE_TITLES.find(t => t.id === titleId);
   if(!title) return;
   if((state.gems||0) < title.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  if(!confirm('Buy ' + title.nameEn + ' for ' + title.cost + ' 💎?')) return;
   state.gems -= title.cost;
   if(!state.unlockedTitles) state.unlockedTitles = [];
   state.unlockedTitles.push(titleId);
@@ -8716,6 +8721,7 @@ function buyEffect(effectId) {
   const effect = COMPLETION_EFFECTS.find(e => e.id === effectId);
   if(!effect) return;
   if((state.gems||0) < effect.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  if(!confirm('Buy ' + effect.name + ' for ' + effect.cost + ' 💎?')) return;
   state.gems -= effect.cost;
   if(!state.unlockedEffects) state.unlockedEffects = ['default'];
   state.unlockedEffects.push(effectId);
@@ -8733,6 +8739,7 @@ function buyReaction(reactionId) {
   const reaction = EXTRA_REACTIONS.find(r => r.id === reactionId);
   if(!reaction) return;
   if((state.gems||0) < reaction.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  if(!confirm('Buy ' + reaction.emoji + ' reaction for ' + reaction.cost + ' 💎?')) return;
   state.gems -= reaction.cost;
   if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
   state.unlockedReactions.push(reactionId);
@@ -8741,6 +8748,7 @@ function buyReaction(reactionId) {
 }
 function buyQuizHints() {
   if((state.gems||0) < 10) { showRewardToast('Not enough gems! 💎'); return; }
+  if(!confirm('Buy 3 Quiz Hints for 10 💎?')) return;
   state.gems -= 10;
   state.quizHints = (state.quizHints || 0) + 3;
   save();
@@ -8748,6 +8756,7 @@ function buyQuizHints() {
 }
 function buyAIQuestions() {
   if((state.gems||0) < 15) { showRewardToast('Not enough gems! 💎'); return; }
+  if(!confirm('Buy 5 AI Questions for 15 💎?')) return;
   state.gems -= 15;
   state.aiQuestions = (state.aiQuestions || 5) + 5;
   save();
@@ -8755,6 +8764,7 @@ function buyAIQuestions() {
 }
 function buyMissionReroll() {
   if((state.gems||0) < 20) { showRewardToast('Not enough gems! 💎'); return; }
+  if(!confirm('Reroll Daily Mission for 20 💎?')) return;
   state.gems -= 20;
   // Generate new mission
   localStorage.removeItem('dailyChallenge');
