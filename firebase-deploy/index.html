@@ -685,6 +685,14 @@ body {
 .purchase-modal-cancel:hover { background:rgba(100,120,150,0.5); }
 .purchase-modal-confirm { background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e; }
 .purchase-modal-confirm:hover { transform:scale(1.03);box-shadow:0 0 15px rgba(255,215,0,0.4); }
+.purchase-modal-balance { color:#8899bb;font-size:12px;font-family:'Comic Neue',cursive;margin-bottom:14px;padding:6px 10px;background:rgba(0,0,0,0.2);border-radius:8px; }
+.store-tag { display:inline-block;font-size:9px;padding:2px 6px;border-radius:6px;background:linear-gradient(135deg,#FF6B35,#FF4444);color:#fff;font-weight:700;margin-left:6px;vertical-align:middle;animation:tagGlow 2s infinite;font-family:'Comic Neue',cursive; }
+@keyframes tagGlow { 0%,100%{box-shadow:0 0 4px rgba(255,107,53,0.4);} 50%{box-shadow:0 0 10px rgba(255,107,53,0.7);} }
+.purchase-celebrate { position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10000;overflow:hidden; }
+.purchase-particle { position:absolute;width:10px;height:10px;border-radius:50%;animation:particleFall 1.5s ease-out forwards; }
+@keyframes particleFall { 0%{transform:translateY(-20px) rotate(0deg) scale(1);opacity:1;} 100%{transform:translateY(100vh) rotate(720deg) scale(0.3);opacity:0;} }
+.purchase-sparkle { position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;animation:sparkleIn 0.8s ease-out forwards;z-index:10001;pointer-events:none; }
+@keyframes sparkleIn { 0%{transform:translate(-50%,-50%) scale(0) rotate(-180deg);opacity:0;} 50%{transform:translate(-50%,-50%) scale(1.3) rotate(0deg);opacity:1;} 100%{transform:translate(-50%,-50%) scale(1) rotate(0deg);opacity:0;} }
 
 /* === SETTINGS === */
 
@@ -2715,7 +2723,7 @@ const BADGES = [
 ];
 // === v89 REWARD SYSTEM DATA ===
 const STORE_TITLES = [
-  {id:'bookworm',name:'📚 독서왕',nameEn:'📚 Bookworm',cost:40,desc:'Show everyone you love reading'},
+  {id:'bookworm',name:'📚 독서왕',nameEn:'📚 Bookworm',cost:40,desc:'Show everyone you love reading',tag:'🔥 Popular'},
   {id:'fire_starter',name:'🔥 열정러',nameEn:'🔥 Fire Starter',cost:40,desc:'For streak enthusiasts'},
   {id:'brain',name:'🧠 성경박사',nameEn:'🧠 Bible Brain',cost:60,desc:'Quiz master title'},
   {id:'warrior',name:'⚔️ 믿음전사',nameEn:'⚔️ Faith Warrior',cost:60,desc:'For dedicated readers'},
@@ -2726,7 +2734,7 @@ const STORE_TITLES = [
 ];
 
 const COMPLETION_EFFECTS = [
-  {id:'fireworks',name:'🎆 Fireworks',cost:50,desc:'Colorful explosion on chapter complete',preview:'🎆'},
+  {id:'fireworks',name:'🎆 Fireworks',cost:50,desc:'Colorful explosion on chapter complete',preview:'🎆',tag:'⭐ Best Seller'},
   {id:'stars',name:'⭐ Starfall',cost:50,desc:'Stars rain down from above',preview:'⭐'},
   {id:'angels',name:'😇 Angels',cost:70,desc:'Angel wings appear',preview:'😇'},
   {id:'rainbow',name:'🌈 Rainbow',cost:60,desc:'Rainbow arc celebration',preview:'🌈'},
@@ -8812,7 +8820,30 @@ function buyMissionReroll() {
     document.querySelector('.store-overlay')?.remove();
   });
 }
+function showPurchaseEffect() {
+  var colors = ['#FFD700','#FF6B35','#4ECDC4','#FF4081','#7C4DFF','#00E5FF','#FFEB3B','#E040FB'];
+  var container = document.createElement('div');
+  container.className = 'purchase-celebrate';
+  for(var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'purchase-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = Math.random() * 0.5 + 's';
+    p.style.width = (6 + Math.random() * 10) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+  document.body.appendChild(container);
+  var sparkle = document.createElement('div');
+  sparkle.className = 'purchase-sparkle';
+  sparkle.textContent = '✨';
+  document.body.appendChild(sparkle);
+  setTimeout(function() { container.remove(); sparkle.remove(); }, 2000);
+}
 function confirmPurchase(itemName, cost, icon, onConfirm) {
+  var currentGems = state.gems || 0;
+  var remaining = currentGems - cost;
   var overlay = document.createElement('div');
   overlay.className = 'purchase-modal-overlay';
   overlay.innerHTML = '<div class="purchase-modal">'
@@ -8820,6 +8851,7 @@ function confirmPurchase(itemName, cost, icon, onConfirm) {
     + '<div class="purchase-modal-title">Confirm Purchase</div>'
     + '<div class="purchase-modal-desc">' + itemName + '</div>'
     + '<div class="purchase-modal-cost">💎 ' + cost + '</div>'
+    + '<div class="purchase-modal-balance">Balance: 💎 ' + currentGems + ' → 💎 ' + remaining + ' after purchase</div>'
     + '<div class="purchase-modal-btns">'
     + '<button class="purchase-modal-cancel" id="pm-cancel">Cancel</button>'
     + '<button class="purchase-modal-confirm" id="pm-confirm">Buy Now</button>'
@@ -8827,7 +8859,7 @@ function confirmPurchase(itemName, cost, icon, onConfirm) {
   document.body.appendChild(overlay);
   overlay.querySelector('#pm-cancel').onclick = function() { overlay.remove(); };
   overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
-  overlay.querySelector('#pm-confirm').onclick = function() { overlay.remove(); onConfirm(); };
+  overlay.querySelector('#pm-confirm').onclick = function() { overlay.remove(); onConfirm(); showPurchaseEffect(); };
 }
 function checkSettingsBadge() {
   var badge = document.getElementById('settings-badge');
@@ -8981,8 +9013,8 @@ function openGemStore() {
   
   const themes = [
     {id:'default',name:'Default',cost:0,bg:'linear-gradient(135deg,#1a2848,#0e1830)',icon:'🌙'},
-    {id:'ocean',name:'Ocean Wave',cost:20,bg:'linear-gradient(135deg,#0c3547,#1a6b7a)',icon:'🌊'},
-    {id:'sunset',name:'Sunset Glow',cost:20,bg:'linear-gradient(135deg,#4a1942,#c84b31)',icon:'🌅'},
+    {id:'ocean',name:'Ocean Wave',cost:20,bg:'linear-gradient(135deg,#0c3547,#1a6b7a)',icon:'🌊',tag:'🔥 Popular'},
+    {id:'sunset',name:'Sunset Glow',cost:20,bg:'linear-gradient(135deg,#4a1942,#c84b31)',icon:'🌅',tag:'⭐ Recommended'},
     {id:'forest',name:'Forest Green',cost:20,bg:'linear-gradient(135deg,#1a3c2a,#2d6a4f)',icon:'🌲'},
     {id:'galaxy',name:'Galaxy Purple',cost:50,bg:'linear-gradient(135deg,#1a1a4e,#4a1a6b)',icon:'🌌'},
     {id:'gold',name:'Royal Gold',cost:100,bg:'linear-gradient(135deg,#3d2e0a,#8b6914)',icon:'👑'}
@@ -9002,7 +9034,7 @@ function openGemStore() {
     h += '<div class="store-item">';
     h += '<div class="store-item-info">';
     h += '<div class="store-item-preview" style="background:'+t.bg+'">'+t.icon+'</div>';
-    h += '<div><div class="store-item-name">'+t.name+'</div>';
+    h += '<div><div class="store-item-name">'+t.name+(t.tag?' <span class="store-tag">'+t.tag+'</span>':'')+'</div>';
     h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):'💎 '+t.cost+' gems')+'</div></div></div>';
     if(isActive) {
       h += '<button class="store-buy-btn owned">Active</button>';
@@ -9259,7 +9291,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
   h += '<div class="store-section"><div class="store-section-title">⚡ Power-ups & Utilities</div>';
   h += '<div class="store-item">';
   h += '<div class="store-item-info"><div class="store-item-preview" style="background:rgba(34,211,238,0.15)">❄️</div>';
-  h += '<div><div class="store-item-name">Streak Freeze</div><div class="store-item-desc">Protect your streak for 1 missed day (Have: '+(state.streakFreezes||0)+')</div></div></div>';
+  h += '<div><div class="store-item-name">Streak Freeze <span class="store-tag">🔥 Popular</span></div><div class="store-item-desc">Protect your streak for 1 missed day (Have: '+(state.streakFreezes||0)+')</div></div></div>';
   h += '<button class="store-buy-btn '+(gems>=15?'affordable':'locked')+'" onclick="buyStreakFreeze();document.querySelector(\'.store-overlay\').remove();openGemStore()">💎 15</button>';
   h += '</div>';
   h += '<div class="store-item">';
@@ -9292,7 +9324,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     var isActive = (state.activeTitle||'') === t.id;
     h += '<div class="store-item">';
     h += '<div class="store-item-info"><div class="store-item-preview" style="background:rgba(139,92,246,0.15);font-size:14px;display:flex;align-items:center;justify-content:center">'+t.nameEn.split(' ')[0]+'</div>';
-    h += '<div><div class="store-item-name">'+t.nameEn+'</div>';
+    h += '<div><div class="store-item-name">'+t.nameEn+(t.tag?' <span class="store-tag">'+t.tag+'</span>':'')+'</div>';
     h += '<div class="store-item-desc">'+(owned?(isActive?'Currently equipped':'Owned - tap to equip'):t.desc+' · 💎 '+t.cost)+'</div></div></div>';
     if(isActive) { h += '<button class="store-buy-btn owned">Equipped</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipTitle(\''+t.id+'\');\">Equip</button>'; }
@@ -9310,7 +9342,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     var isActive = (state.activeEffect||'default') === e.id;
     h += '<div class="store-item">';
     h += '<div class="store-item-info"><div class="completion-effect-preview" style="background:rgba(250,204,21,0.1)">'+e.preview+'</div>';
-    h += '<div><div class="store-item-name">'+e.name+'</div>';
+    h += '<div><div class="store-item-name">'+e.name+(e.tag?' <span class="store-tag">'+e.tag+'</span>':'')+'</div>';
     h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):e.desc+' · 💎 '+e.cost)+'</div></div></div>';
     if(isActive) { h += '<button class="store-buy-btn owned">Active</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipEffect(\''+e.id+'\')">Use</button>'; }
