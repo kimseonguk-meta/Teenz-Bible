@@ -667,8 +667,35 @@ body {
 
 
 /* Settings gear icon on home */
-.settings-gear-row { font-size:13px; cursor:pointer; opacity:0.45; transition:all 0.3s; text-align:right; padding:4px 4px 0; margin-top:-12px; margin-bottom:8px; color:#8899bb; font-family:'Comic Neue',cursive; letter-spacing:0.5px; }
-.settings-gear-row:hover, .settings-gear-row:active { opacity:0.8; color:#FFD700; }
+.settings-gear-row { font-size:14px; cursor:pointer; opacity:0.85; transition:all 0.3s; text-align:right; padding:8px 12px; margin-top:-8px; margin-bottom:8px; color:#d8dce8; font-family:'Comic Neue',cursive; letter-spacing:0.5px; background:rgba(65,105,155,0.15); border:1px solid rgba(65,105,155,0.3); border-radius:20px; display:inline-block; float:right; }
+.settings-gear-row:hover, .settings-gear-row:active { opacity:1; color:#FFD700; background:rgba(255,215,0,0.1); border-color:rgba(255,215,0,0.3); }
+.settings-gear-row { position:relative; }
+.settings-badge { position:absolute; top:-2px; right:-2px; width:10px; height:10px; background:#FF4444; border-radius:50%; border:2px solid #0a1223; animation:badgePulse 2s infinite; }
+@keyframes badgePulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.3);opacity:0.8;} }
+.purchase-modal-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:10010;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.2s ease;backdrop-filter:blur(4px); }
+.purchase-modal { background:linear-gradient(160deg,#2c4565 0%,#1e3250 100%);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:24px;max-width:300px;width:90%;text-align:center;box-shadow:0 0 30px rgba(255,215,0,0.15);animation:modalPop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes modalPop { from{transform:scale(0.8);opacity:0;} to{transform:scale(1);opacity:1;} }
+.purchase-modal-icon { font-size:48px;margin-bottom:12px; }
+.purchase-modal-title { font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:18px;margin-bottom:8px; }
+.purchase-modal-desc { color:#a8b8d8;font-size:14px;margin-bottom:16px;font-family:'Comic Neue',cursive; }
+.purchase-modal-cost { display:inline-block;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:6px 14px;color:#FFD700;font-family:'Bangers',cursive;font-size:18px;margin-bottom:16px; }
+.purchase-modal-btns { display:flex;gap:10px;justify-content:center; }
+.purchase-modal-btns button { flex:1;padding:12px;border-radius:12px;font-family:'Comic Neue',cursive;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:all 0.2s; }
+.purchase-modal-cancel { background:rgba(100,120,150,0.3);color:#8899bb;border:1px solid rgba(100,120,150,0.3)!important; }
+.purchase-modal-cancel:hover { background:rgba(100,120,150,0.5); }
+.purchase-modal-confirm { background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e; }
+.purchase-modal-confirm:hover { transform:scale(1.03);box-shadow:0 0 15px rgba(255,215,0,0.4); }
+.purchase-modal-balance { color:#8899bb;font-size:12px;font-family:'Comic Neue',cursive;margin-bottom:14px;padding:6px 10px;background:rgba(0,0,0,0.2);border-radius:8px; }
+.purchase-modal-preview { margin:12px 0;padding:8px;border-radius:12px;border:1px solid rgba(255,215,0,0.2);background:rgba(0,0,0,0.15); }
+.store-buy-btn.wishlisted { background:linear-gradient(135deg,#4a1a6b,#7C4DFF);color:#fff;border:1px solid rgba(124,77,255,0.5);font-size:11px; }
+.store-buy-btn.wishlisted:hover { box-shadow:0 0 10px rgba(124,77,255,0.4); }
+.store-tag { display:inline-block;font-size:9px;padding:2px 6px;border-radius:6px;background:linear-gradient(135deg,#FF6B35,#FF4444);color:#fff;font-weight:700;margin-left:6px;vertical-align:middle;animation:tagGlow 2s infinite;font-family:'Comic Neue',cursive; }
+@keyframes tagGlow { 0%,100%{box-shadow:0 0 4px rgba(255,107,53,0.4);} 50%{box-shadow:0 0 10px rgba(255,107,53,0.7);} }
+.purchase-celebrate { position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10000;overflow:hidden; }
+.purchase-particle { position:absolute;width:10px;height:10px;border-radius:50%;animation:particleFall 1.5s ease-out forwards; }
+@keyframes particleFall { 0%{transform:translateY(-20px) rotate(0deg) scale(1);opacity:1;} 100%{transform:translateY(100vh) rotate(720deg) scale(0.3);opacity:0;} }
+.purchase-sparkle { position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;animation:sparkleIn 0.8s ease-out forwards;z-index:10001;pointer-events:none; }
+@keyframes sparkleIn { 0%{transform:translate(-50%,-50%) scale(0) rotate(-180deg);opacity:0;} 50%{transform:translate(-50%,-50%) scale(1.3) rotate(0deg);opacity:1;} 100%{transform:translate(-50%,-50%) scale(1) rotate(0deg);opacity:0;} }
 
 /* === SETTINGS === */
 
@@ -2168,7 +2195,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
         <h1>TEENZ BIBLE</h1>
       </div>
     </div>
-    <div class="settings-gear-row" onclick="showScreen('settings')">⚙️ Settings</div>
+    <div style="text-align:right;padding:0 4px;margin-top:-8px;margin-bottom:8px;overflow:hidden;"><div class="settings-gear-row" onclick="showScreen('settings')">⚙️ Settings<span id="settings-badge" class="settings-badge" style="display:none;"></span></div></div>
     <div id="reading-goal-section"></div>
     <div id="streak-card-section"></div>
     <div class="stats">
@@ -2178,7 +2205,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
     </div>
     <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:-8px">
       <div class="stat"><div class="val" id="stat-gems" style="font-size:24px">0</div><div class="lbl">💎 Gems</div></div>
-      <div class="stat" onclick="openGemStore()" style="cursor:pointer"><div class="val" style="font-size:24px">🏪</div><div class="lbl">Gem Store</div></div>
+      <div class="stat" onclick="openGemStore()" style="cursor:pointer;position:relative"><div class="val" style="font-size:24px">🏪</div><div class="lbl">Gem Store</div><span id="gem-store-badge" style="display:none;position:absolute;top:6px;right:6px;background:#FF4444;color:#fff;font-size:9px;font-family:Comic Neue,cursive;font-weight:700;padding:2px 5px;border-radius:8px;border:2px solid #1e3250;animation:badgePulse 2s infinite;">NEW</span></div>
     </div>
     <div class="level-bar">
       <div class="level-info"><span class="level-name" id="level-name">Newbie</span><span class="level-xp" id="level-xp">0 / 100 XP</span></div>
@@ -2603,6 +2630,19 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
           oninput="localStorage.setItem('geminiApiKey',this.value)">
         <div style="font-size:11px;color:#888;margin-top:6px;"><span style="display:none">Free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#FF6B6B;">aistudio.google.com/app/apikey</a></div>
       </div>
+      <!-- Secret Code Section -->
+      <div class="setting-row" style="flex-direction:column;align-items:stretch;gap:8px;">
+        <div><div class="setting-label">🎁 Redeem Code</div><div class="setting-sub">Enter a special code to get rewards</div></div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="secret-code-input" placeholder="Enter code..." 
+            style="flex:1;background:rgba(10,18,35,0.8);border:1px solid rgba(65,105,155,0.3);color:#d8dce8;padding:10px 14px;border-radius:8px;font-family:'Comic Neue',cursive;font-size:14px;text-transform:uppercase;" />
+          <button onclick="redeemCode()" 
+            style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a1a2e;border:none;padding:10px 16px;border-radius:8px;font-family:'Luckiest Guy',cursive;font-size:14px;cursor:pointer;white-space:nowrap;">
+            Redeem
+          </button>
+        </div>
+        <div id="code-result" style="font-size:12px;font-family:'Comic Neue',cursive;min-height:16px;"></div>
+      </div>
       <div class="setting-row" style="justify-content:center;">
         <button class="reset-btn" onclick="showResetConfirm()" 
           style="background:transparent;color:#FF6B6B;border:1px solid rgba(255,107,107,0.2);padding:10px 20px;border-radius:10px;font-size:12px;cursor:pointer;width:100%;opacity:0.7;font-family:'Comic Neue',cursive;">
@@ -2686,7 +2726,7 @@ const BADGES = [
 ];
 // === v89 REWARD SYSTEM DATA ===
 const STORE_TITLES = [
-  {id:'bookworm',name:'📚 독서왕',nameEn:'📚 Bookworm',cost:40,desc:'Show everyone you love reading'},
+  {id:'bookworm',name:'📚 독서왕',nameEn:'📚 Bookworm',cost:40,desc:'Show everyone you love reading',tag:'🔥 Popular'},
   {id:'fire_starter',name:'🔥 열정러',nameEn:'🔥 Fire Starter',cost:40,desc:'For streak enthusiasts'},
   {id:'brain',name:'🧠 성경박사',nameEn:'🧠 Bible Brain',cost:60,desc:'Quiz master title'},
   {id:'warrior',name:'⚔️ 믿음전사',nameEn:'⚔️ Faith Warrior',cost:60,desc:'For dedicated readers'},
@@ -2697,7 +2737,7 @@ const STORE_TITLES = [
 ];
 
 const COMPLETION_EFFECTS = [
-  {id:'fireworks',name:'🎆 Fireworks',cost:50,desc:'Colorful explosion on chapter complete',preview:'🎆'},
+  {id:'fireworks',name:'🎆 Fireworks',cost:50,desc:'Colorful explosion on chapter complete',preview:'🎆',tag:'⭐ Best Seller'},
   {id:'stars',name:'⭐ Starfall',cost:50,desc:'Stars rain down from above',preview:'⭐'},
   {id:'angels',name:'😇 Angels',cost:70,desc:'Angel wings appear',preview:'😇'},
   {id:'rainbow',name:'🌈 Rainbow',cost:60,desc:'Rainbow arc celebration',preview:'🌈'},
@@ -2818,7 +2858,7 @@ function renderHome() {
   
   document.getElementById('stat-streak').textContent = state.streak;
   document.getElementById('stat-chapters').textContent = state.chaptersRead;
-  document.getElementById('stat-xp').textContent = state.xp;
+  document.getElementById('stat-xp').textContent = state.xp || 0;
   
   // Level
   let lvl = LEVELS[0];
@@ -2826,7 +2866,7 @@ function renderHome() {
   const nextLvl = LEVELS[LEVELS.indexOf(lvl)+1] || {xp:lvl.xp+1000};
   const pct = ((state.xp - lvl.xp) / (nextLvl.xp - lvl.xp) * 100);
   document.getElementById('level-name').textContent = '🎖️ ' + lvl.name;
-  document.getElementById('level-xp').textContent = state.xp + ' / ' + nextLvl.xp + ' XP';
+  document.getElementById('level-xp').textContent = (state.xp||0) + ' / ' + nextLvl.xp + ' XP';
   document.getElementById('xp-fill').style.width = Math.min(pct,100) + '%';
   
   // Continue reading - enhanced with one-click resume
@@ -6788,7 +6828,7 @@ renderBible();
           setTimeout(()=>{
             if(typeof confettiBurst==='function') confettiBurst(window.innerWidth/2, window.innerHeight/2, 25);
           }, 600);
-          state.gems += gemsReward;
+          state.gems += gemsReward; checkWishlistAffordable();
           state.coins += coinsReward;
           state.dailyChestOpened = today;
           save();
@@ -8559,44 +8599,61 @@ function buyTheme(themeId) {
     alert('Not enough gems! You need ' + theme.cost + ' gems.');
     return;
   }
-  state.gems -= theme.cost;
-  if(!state.unlockedThemes) state.unlockedThemes = ['default'];
-  state.unlockedThemes.push(themeId);
-  state.activeTheme = themeId;
-  save();
-  renderProfileCard();
+  var preview = '<div style="width:100%;height:60px;border-radius:10px;background:'+theme.bg+';display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 15px rgba(0,0,0,0.3)">'+(theme.icon||'🎨')+' <span style="color:#fff;margin-left:8px;font-size:13px;font-family:Comic Neue,cursive">'+theme.name+'</span></div>';
+  confirmPurchase(theme.name, theme.cost, '🎨', function() {
+    state.gems -= theme.cost;
+    if(!state.wishlist) state.wishlist = [];
+if(!state.unlockedThemes) state.unlockedThemes = ['default'];
+    state.unlockedThemes.push(themeId);
+    state.activeTheme = themeId;
+    save();
+    trackPurchase(themeId, theme.name, 'theme');
+    renderProfileCard();
+  }, preview);
 }
 
 function buyFrame(frameId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
-  state.gems -= cost;
-  if(!state.unlockedFrames) state.unlockedFrames = ['none'];
-  if(!state.unlockedFrames.includes(frameId)) state.unlockedFrames.push(frameId);
-  state.activeFrame = frameId;
-  save();
-  showGemToast('🖼️ ' + frameId.charAt(0).toUpperCase() + frameId.slice(1) + ' frame unlocked!');
-  if(typeof renderProfileCard === 'function') renderProfileCard();
+  confirmPurchase('Profile Frame', cost, '🖼️', function() {
+    state.gems -= cost;
+    if(!state.unlockedFrames) state.unlockedFrames = ['none'];
+    if(!state.unlockedFrames.includes(frameId)) state.unlockedFrames.push(frameId);
+    state.activeFrame = frameId;
+    save();
+    trackPurchase(frameId, 'Frame: '+frameId, 'frame');
+    showGemToast('🖼️ ' + frameId.charAt(0).toUpperCase() + frameId.slice(1) + ' frame unlocked!');
+    if(typeof renderProfileCard === 'function') renderProfileCard();
+  });
 }
 
 function buyReaderBg(bgId, cost) {
   const gems = state.gems || 0;
   if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
-  state.gems -= cost;
-  if(!state.unlockedBgs) state.unlockedBgs = ['default'];
-  if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
-  state.activeReaderBg = bgId;
-  save();
-  showGemToast('📖 Reader background changed!');
+  var bgData = [{id:'default',name:'Classic Dark',bg:'#0e1830',textColor:'#e2e8f0'},{id:'parchment',name:'Parchment',bg:'#f5e6c8',textColor:'#3d2b1f'},{id:'sepia',name:'Warm Sepia',bg:'#2c1810',textColor:'#d4a574'},{id:'midnight',name:'Midnight Blue',bg:'#0a1628',textColor:'#7dd3fc'},{id:'nature',name:'Forest Calm',bg:'#0d2818',textColor:'#86efac'},{id:'lavender',name:'Lavender Dream',bg:'#1a1028',textColor:'#d8b4fe'},{id:'matrix',name:'Matrix Code',bg:'#001a00',textColor:'#00ff41'}];
+  var bgInfo = bgData.find(function(b){return b.id===bgId}) || {name:bgId,bg:'#0e1830',textColor:'#e2e8f0'};
+  var preview = '<div style="width:100%;height:60px;border-radius:10px;background:'+bgInfo.bg+';display:flex;align-items:center;justify-content:center;padding:8px 16px;box-shadow:0 4px 15px rgba(0,0,0,0.3)"><span style="color:'+bgInfo.textColor+';font-size:12px;font-family:Comic Neue,cursive">In the beginning was the Word...</span></div>';
+  confirmPurchase(bgInfo.name, cost, '📖', function() {
+    state.gems -= cost;
+    if(!state.unlockedBgs) state.unlockedBgs = ['default'];
+    if(!state.unlockedBgs.includes(bgId)) state.unlockedBgs.push(bgId);
+    state.activeReaderBg = bgId;
+    save();
+    trackPurchase(bgId, bgInfo.name, 'reader_bg');
+    showGemToast('📖 Reader background changed!');
+  }, preview);
 }
 
 function buyStreakFreeze() {
   const gems = state.gems || 0;
   if(gems < 15) { alert('Not enough gems! You need 15 gems.'); return; }
-  state.gems -= 15;
-  state.streakFreezes = (state.streakFreezes || 0) + 1;
-  save();
-  alert('Streak Freeze purchased! You now have ' + state.streakFreezes + ' freeze(s).');
+  confirmPurchase('Streak Shield', 15, '🛡️', function() {
+    state.gems -= 15;
+    state.streakFreezes = (state.streakFreezes || 0) + 1;
+    save();
+    trackPurchase('streak_freeze', 'Streak Shield', 'utility');
+    showGemToast('🛡️ Streak Shield purchased! You have ' + state.streakFreezes + ' shield(s).');
+  });
 }
 
 
@@ -8699,12 +8756,15 @@ function buyTitle(titleId) {
   const title = STORE_TITLES.find(t => t.id === titleId);
   if(!title) return;
   if((state.gems||0) < title.cost) { showRewardToast('Not enough gems! 💎'); return; }
-  state.gems -= title.cost;
-  if(!state.unlockedTitles) state.unlockedTitles = [];
-  state.unlockedTitles.push(titleId);
-  state.activeTitle = titleId;
-  save();
-  showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉');
+  var titlePreview = '<div style="text-align:center;padding:10px;background:rgba(0,0,0,0.2);border-radius:10px;font-size:16px;font-weight:700;font-family:Comic Neue,cursive;color:#ffd700">' + title.nameEn + '</div>';
+  confirmPurchase(title.nameEn, title.cost, '🏷️', function() {
+    state.gems -= title.cost;
+    if(!state.unlockedTitles) state.unlockedTitles = [];
+    state.unlockedTitles.push(titleId);
+    state.activeTitle = titleId;
+    save();
+    showRewardToast('Title unlocked: ' + title.nameEn + ' 🎉'); trackPurchase(titleId, title.nameEn, 'title');
+  }, titlePreview);
 }
 function equipTitle(titleId) {
   state.activeTitle = titleId;
@@ -8716,12 +8776,15 @@ function buyEffect(effectId) {
   const effect = COMPLETION_EFFECTS.find(e => e.id === effectId);
   if(!effect) return;
   if((state.gems||0) < effect.cost) { showRewardToast('Not enough gems! 💎'); return; }
-  state.gems -= effect.cost;
-  if(!state.unlockedEffects) state.unlockedEffects = ['default'];
-  state.unlockedEffects.push(effectId);
-  state.activeEffect = effectId;
-  save();
-  showRewardToast('Effect unlocked: ' + effect.name + ' 🎉');
+  var effectPreview = '<div style="text-align:center;padding:12px;font-size:40px;animation:sparkleIn 0.8s ease-out infinite">' + (effect.preview||'✨') + '</div>';
+  confirmPurchase(effect.name, effect.cost, '✨', function() {
+    state.gems -= effect.cost;
+    if(!state.unlockedEffects) state.unlockedEffects = ['default'];
+    state.unlockedEffects.push(effectId);
+    state.activeEffect = effectId;
+    save();
+    showRewardToast('Effect unlocked: ' + effect.name + ' 🎉'); trackPurchase(effectId, effect.name, 'effect');
+  }, effectPreview);
 }
 function equipEffect(effectId) {
   state.activeEffect = effectId;
@@ -8733,35 +8796,203 @@ function buyReaction(reactionId) {
   const reaction = EXTRA_REACTIONS.find(r => r.id === reactionId);
   if(!reaction) return;
   if((state.gems||0) < reaction.cost) { showRewardToast('Not enough gems! 💎'); return; }
-  state.gems -= reaction.cost;
-  if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
-  state.unlockedReactions.push(reactionId);
-  save();
-  showRewardToast('Reaction unlocked: ' + reaction.emoji + ' 🎉');
+  confirmPurchase(reaction.emoji + ' Reaction', reaction.cost, reaction.emoji, function() {
+    state.gems -= reaction.cost;
+    if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
+    state.unlockedReactions.push(reactionId);
+    save();
+    showRewardToast('Reaction unlocked: ' + reaction.emoji + ' 🎉'); trackPurchase(reactionId, reaction.emoji, 'reaction');
+  });
 }
 function buyQuizHints() {
   if((state.gems||0) < 10) { showRewardToast('Not enough gems! 💎'); return; }
-  state.gems -= 10;
-  state.quizHints = (state.quizHints || 0) + 3;
-  save();
-  showRewardToast('Quiz Hints +3! 🧠');
+  confirmPurchase('3 Quiz Hints', 10, '💡', function() {
+    state.gems -= 10;
+    state.quizHints = (state.quizHints || 0) + 3;
+    save();
+    showRewardToast('Quiz Hints +3! 🧠'); trackPurchase('quiz_hint', 'Quiz Hints', 'utility');
+  });
 }
 function buyAIQuestions() {
   if((state.gems||0) < 15) { showRewardToast('Not enough gems! 💎'); return; }
-  state.gems -= 15;
-  state.aiQuestions = (state.aiQuestions || 5) + 5;
-  save();
-  showRewardToast('AI Questions +5! 🤖');
+  confirmPurchase('5 AI Questions', 15, '🤖', function() {
+    state.gems -= 15;
+    state.aiQuestions = (state.aiQuestions || 5) + 5;
+    save();
+    showRewardToast('AI Questions +5! 🤖'); trackPurchase('ai_questions', 'AI Questions', 'utility');
+  });
 }
 function buyMissionReroll() {
   if((state.gems||0) < 20) { showRewardToast('Not enough gems! 💎'); return; }
-  state.gems -= 20;
-  // Generate new mission
-  localStorage.removeItem('dailyChallenge');
-  save();
-  renderDailyChallenge();
-  showRewardToast('Mission rerolled! 🎲');
+  confirmPurchase('Mission Reroll', 20, '🎲', function() {
+    state.gems -= 20;
+    // Generate new mission
+    localStorage.removeItem('dailyChallenge');
+    save();
+    renderDailyChallenge();
+    showRewardToast('Mission rerolled! 🎲'); trackPurchase('mission_reroll', 'Mission Reroll', 'utility');
+    document.querySelector('.store-overlay')?.remove();
+  });
+}
+function toggleWishlist(itemId, itemName, itemCost) {
+  if(!state.wishlist) state.wishlist = [];
+  var idx = state.wishlist.findIndex(function(w){return w.id === itemId;});
+  if(idx >= 0) {
+    state.wishlist.splice(idx, 1);
+    save();
+    showRewardToast('Removed from wishlist ❌');
+  } else {
+    state.wishlist.push({id: itemId, name: itemName, cost: itemCost || 0, addedAt: Date.now()});
+    save();
+    showRewardToast('Added to wishlist! 💫');
+  }
+  // Refresh store
   document.querySelector('.store-overlay')?.remove();
+  openGemStore();
+}
+function isInWishlist(itemId) {
+  return (state.wishlist||[]).some(function(w){return w.id === itemId;});
+}
+
+function trackPurchase(itemId, itemName, category) {
+  if(!state.purchaseHistory) state.purchaseHistory = [];
+  state.purchaseHistory.push({id: itemId, name: itemName, category: category, time: Date.now()});
+  save();
+}
+function getPopularItems() {
+  var history = state.purchaseHistory || [];
+  // Count purchases per item
+  var counts = {};
+  history.forEach(function(p) { counts[p.id] = (counts[p.id]||0) + 1; });
+  // Build all purchasable items list with their data
+  var allItems = [
+    {id:'ocean',icon:'\u{1F30A}',name:'Ocean Wave',desc:'Profile Theme',cost:20,action:"buyTheme('ocean')",category:'theme'},
+    {id:'sunset',icon:'\u{1F305}',name:'Sunset Glow',desc:'Profile Theme',cost:20,action:"buyTheme('sunset')",category:'theme'},
+    {id:'forest',icon:'\u{1F332}',name:'Forest Green',desc:'Profile Theme',cost:20,action:"buyTheme('forest')",category:'theme'},
+    {id:'galaxy',icon:'\u{1F30C}',name:'Galaxy Purple',desc:'Profile Theme',cost:50,action:"buyTheme('galaxy')",category:'theme'},
+    {id:'streak_freeze',icon:'\u{1F6E1}\uFE0F',name:'Streak Shield',desc:'Protect your streak',cost:25,action:'buyStreakFreeze()',category:'utility'},
+    {id:'xp_boost',icon:'\u26A1',name:'2x XP Boost',desc:'Double XP for 24h',cost:30,action:'buyXPBoost()',category:'utility'},
+    {id:'quiz_hint',icon:'\u{1F9E0}',name:'Quiz Hints x3',desc:'Eliminate wrong answers',cost:10,action:'buyQuizHint()',category:'utility'},
+    {id:'ai_questions',icon:'\u{1F916}',name:'AI Questions +5',desc:'Ask more questions',cost:15,action:'buyAIQuestions()',category:'utility'},
+    {id:'mission_reroll',icon:'\u{1F3B2}',name:'Mission Reroll',desc:'Get a new daily mission',cost:20,action:'buyMissionReroll()',category:'utility'}
+  ];
+  // Sort by purchase count (descending), then return top 3
+  allItems.sort(function(a,b) { return (counts[b.id]||0) - (counts[a.id]||0); });
+  // If no purchase history, use defaults
+  if(history.length === 0) {
+    return [allItems[0], allItems[4], allItems[5]]; // Ocean, Streak Shield, XP Boost
+  }
+  return allItems.slice(0, 3);
+}
+
+function checkWishlistAffordable() {
+  var wl = state.wishlist || [];
+  var gems = state.gems || 0;
+  var affordable = wl.filter(function(w) { return w.cost > 0 && gems >= w.cost; });
+  if(affordable.length > 0 && !sessionStorage.getItem('wishlistNotified_' + gems)) {
+    sessionStorage.setItem('wishlistNotified_' + gems, '1');
+    var item = affordable[0];
+    showRewardToast('💫 You can now afford ' + item.name + '! Check Gem Store!');
+    // Add pulse to gem store button
+    var gsBtn = document.querySelector('.gem-store-btn');
+    if(gsBtn) { gsBtn.style.animation = 'pulse 1s infinite'; setTimeout(function(){ gsBtn.style.animation=''; }, 5000); }
+  }
+}
+function showPurchaseEffect() {
+  var colors = ['#FFD700','#FF6B35','#4ECDC4','#FF4081','#7C4DFF','#00E5FF','#FFEB3B','#E040FB'];
+  var container = document.createElement('div');
+  container.className = 'purchase-celebrate';
+  for(var i = 0; i < 30; i++) {
+    var p = document.createElement('div');
+    p.className = 'purchase-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = Math.random() * 0.5 + 's';
+    p.style.width = (6 + Math.random() * 10) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+  document.body.appendChild(container);
+  var sparkle = document.createElement('div');
+  sparkle.className = 'purchase-sparkle';
+  sparkle.textContent = '✨';
+  document.body.appendChild(sparkle);
+  setTimeout(function() { container.remove(); sparkle.remove(); }, 2000);
+}
+function confirmPurchase(itemName, cost, icon, onConfirm, previewHtml) {
+  var currentGems = state.gems || 0;
+  var remaining = currentGems - cost;
+  var previewSection = previewHtml ? '<div class="purchase-modal-preview">' + previewHtml + '</div>' : '';
+  var overlay = document.createElement('div');
+  overlay.className = 'purchase-modal-overlay';
+  overlay.innerHTML = '<div class="purchase-modal">'
+    + '<div class="purchase-modal-icon">' + (icon || '🛒') + '</div>'
+    + '<div class="purchase-modal-title">Confirm Purchase</div>'
+    + '<div class="purchase-modal-desc">' + itemName + '</div>'
+    + previewSection
+    + '<div class="purchase-modal-cost">💎 ' + cost + '</div>'
+    + '<div class="purchase-modal-balance">Balance: 💎 ' + currentGems + ' → 💎 ' + remaining + ' after purchase</div>'
+    + '<div class="purchase-modal-btns">'
+    + '<button class="purchase-modal-cancel" id="pm-cancel">Cancel</button>'
+    + '<button class="purchase-modal-confirm" id="pm-confirm">Buy Now</button>'
+    + '</div></div>';
+  document.body.appendChild(overlay);
+  overlay.querySelector('#pm-cancel').onclick = function() { overlay.remove(); };
+  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+  overlay.querySelector('#pm-confirm').onclick = function() { overlay.remove(); onConfirm(); showPurchaseEffect(); };
+}
+function checkSettingsBadge() {
+  var badge = document.getElementById('settings-badge');
+  if(!badge) return;
+  var show = false;
+  // Check unclaimed level rewards
+  var levels = [{level:'Explorer',xp:100},{level:'Scholar',xp:300},{level:'Disciple',xp:600},{level:'Teacher',xp:1000},{level:'Apostle',xp:2000},{level:'Prophet',xp:3500},{level:'Evangelist',xp:5000}];
+  var claimed = state.levelRewardsClaimed || [];
+  var userXP = state.xp || 0;
+  for(var i=0;i<levels.length;i++) { if(userXP >= levels[i].xp && !claimed.includes(levels[i].level)) { show = true; break; } }
+  // Check unclaimed season pass tiers
+  var progress = state.seasonPassProgress || 0;
+  var spClaimed = state.seasonPassClaimed || [];
+  var tiers = [3,6,10,15,20,25,30,40,50,60];
+  for(var j=0;j<tiers.length;j++) { if(progress >= tiers[j] && !spClaimed.includes(tiers[j])) { show = true; break; } }
+  badge.style.display = show ? 'block' : 'none';
+}
+// Check badge on load and after state changes
+setTimeout(checkSettingsBadge, 500);
+setTimeout(function() {
+  var badge = document.getElementById('gem-store-badge');
+  if(!badge) return;
+  var storeOpened = localStorage.getItem('gemStoreLastOpened') || '0';
+  badge.style.display = (storeOpened < '89') ? 'block' : 'none';
+}, 600);
+function redeemCode() {
+  var input = document.getElementById('secret-code-input');
+  var result = document.getElementById('code-result');
+  var code = (input.value || '').trim().toUpperCase();
+  if(!code) { result.innerHTML = '<span style="color:#FF6B6B;">Please enter a code</span>'; return; }
+  var usedCodes = JSON.parse(localStorage.getItem('usedCodes') || '[]');
+  if(usedCodes.includes(code)) { result.innerHTML = '<span style="color:#FF6B6B;">This code has already been used!</span>'; input.value=''; return; }
+  // Code definitions
+  var codes = {
+    'REFUND2026': { gems: 50, msg: '50 Gems refunded! 💎' },
+    'WELCOME': { gems: 20, msg: 'Welcome bonus: +20 Gems! 🎉' },
+    'TEENZ2026': { gems: 30, msg: 'Special bonus: +30 Gems! ⭐' }
+  };
+  if(codes[code]) {
+    var reward = codes[code];
+    state.gems = (state.gems || 0) + reward.gems;
+    save();
+    usedCodes.push(code);
+    localStorage.setItem('usedCodes', JSON.stringify(usedCodes));
+    result.innerHTML = '<span style="color:#4ade80;">' + reward.msg + '</span>';
+    input.value = '';
+    showRewardToast(reward.msg); checkSettingsBadge();
+    // Update gems display
+    var gemsEl = document.querySelector('[onclick*="openGemStore"]');
+    if(gemsEl) { var numEl = gemsEl.querySelector('.stat-num'); if(numEl) numEl.textContent = state.gems; }
+  } else {
+    result.innerHTML = '<span style="color:#FF6B6B;">Invalid code. Try again!</span>';
+  }
 }
 function showRewardToast(msg) {
   const existing = document.querySelector('.reward-toast');
@@ -8854,14 +9085,16 @@ function claimSeasonPassReward(tier) {
 // === END v89 FUNCTIONS ===
 
 function openGemStore() {
+  localStorage.setItem('gemStoreLastOpened', '89');
+  var gsb = document.getElementById('gem-store-badge'); if(gsb) gsb.style.display='none';
   const gems = state.gems || 0;
   const unlockedThemes = state.unlockedThemes || ['default'];
   const activeTheme = state.activeTheme || 'default';
   
   const themes = [
     {id:'default',name:'Default',cost:0,bg:'linear-gradient(135deg,#1a2848,#0e1830)',icon:'🌙'},
-    {id:'ocean',name:'Ocean Wave',cost:20,bg:'linear-gradient(135deg,#0c3547,#1a6b7a)',icon:'🌊'},
-    {id:'sunset',name:'Sunset Glow',cost:20,bg:'linear-gradient(135deg,#4a1942,#c84b31)',icon:'🌅'},
+    {id:'ocean',name:'Ocean Wave',cost:20,bg:'linear-gradient(135deg,#0c3547,#1a6b7a)',icon:'🌊',tag:'🔥 Popular'},
+    {id:'sunset',name:'Sunset Glow',cost:20,bg:'linear-gradient(135deg,#4a1942,#c84b31)',icon:'🌅',tag:'⭐ Recommended'},
     {id:'forest',name:'Forest Green',cost:20,bg:'linear-gradient(135deg,#1a3c2a,#2d6a4f)',icon:'🌲'},
     {id:'galaxy',name:'Galaxy Purple',cost:50,bg:'linear-gradient(135deg,#1a1a4e,#4a1a6b)',icon:'🌌'},
     {id:'gold',name:'Royal Gold',cost:100,bg:'linear-gradient(135deg,#3d2e0a,#8b6914)',icon:'👑'}
@@ -8872,6 +9105,58 @@ function openGemStore() {
   h += '<div class="store-title">💎 Gem Store</div>';
   h += '<div style="text-align:center;margin-bottom:16px"><span class="gem-balance">💎 ' + gems + ' Gems</span></div>';
   
+  // Wishlist section
+  var wl = state.wishlist || [];
+  if(wl.length > 0) {
+    h += '<div class="store-section" style="border:1px solid rgba(255,215,0,0.2);background:rgba(255,215,0,0.05)">';
+    h += '<div class="store-section-title">⭐ My Wishlist <span style="font-size:11px;color:#8899bb">(' + wl.length + ' items)</span></div>';
+    wl.forEach(function(w) {
+      h += '<div class="store-item" style="border-bottom:1px solid rgba(255,255,255,0.05)">';
+      h += '<div class="store-item-info"><div style="flex:1"><div class="store-item-name">' + w.name + '</div>';
+      h += '<div class="store-item-desc" style="font-size:10px;color:#6880a8">' + (w.cost ? '💎 ' + w.cost + ' · ' : '') + 'Added ' + new Date(w.addedAt).toLocaleDateString() + '</div></div></div>';
+      var wAffordable = (state.gems||0) >= (w.cost||0) && w.cost > 0;
+      h += wAffordable ? '<button class="store-buy-btn affordable" style="animation:pulse 1.5s infinite" onclick="toggleWishlist(\'' + w.id + '\',\'' + w.name + '\','+w.cost+')">🎉 Buy Now!</button>' : '<button class="store-buy-btn wishlisted" onclick="toggleWishlist(\'' + w.id + '\',\'' + w.name + '\','+w.cost+')">Remove</button>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  
+
+  // Most Popular section (dynamic based on purchase history)
+  var popularItems = getPopularItems();
+  h += '<div class="store-section" style="border:1px solid rgba(255,107,53,0.3);background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,64,129,0.05))">';
+  h += '<div class="store-section-title" style="color:#FF6B35">🏆 Most Popular <span style="font-size:10px;color:#8899bb;font-family:Comic Neue,cursive">based on purchases</span></div>';
+  popularItems.forEach(function(p) {
+    var canBuy = gems >= p.cost;
+    var purchaseCount = (state.purchaseHistory||[]).filter(function(ph){return ph.id===p.id}).length;
+    h += '<div class="store-item" style="border:1px solid rgba(255,107,53,0.15)">';
+    h += '<div class="store-item-info"><div class="store-item-preview" style="background:linear-gradient(135deg,rgba(255,107,53,0.2),rgba(255,64,129,0.2))">'+p.icon+'</div>';
+    h += '<div><div class="store-item-name">'+p.name+' <span style="font-size:9px;background:linear-gradient(135deg,#FF6B35,#FF4081);color:#fff;padding:2px 6px;border-radius:8px;margin-left:4px">HOT</span></div>';
+    h += '<div class="store-item-desc">'+p.desc+' · 💎 '+p.cost+(purchaseCount>0?' · Bought '+purchaseCount+'x':'')+'</div></div></div>';
+    h += '<button class="store-buy-btn '+(canBuy?'affordable':'locked')+'" onclick="'+p.action+'">'+(canBuy?'Buy':'💎 '+p.cost)+'</button>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // New Arrivals section
+  var newArrivals = [
+    {icon:'🎭', name:'Drama Queen', desc:'Leaderboard Title', cost:40, action:"buyTitle('drama_queen')", isNew:true, addedDate:'2026-05-01'},
+    {icon:'🌈', name:'Rainbow Burst', desc:'Chapter Complete Effect', cost:35, action:"buyEffect('rainbow')", isNew:true, addedDate:'2026-05-01'},
+    {icon:'🦋', name:'Butterfly', desc:'Reaction Emoji', cost:15, action:"buyReaction('butterfly')", isNew:true, addedDate:'2026-04-28'}
+  ];
+  h += '<div class="store-section" style="border:1px solid rgba(0,229,255,0.3);background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(124,77,255,0.05))">';
+  h += '<div class="store-section-title" style="color:#00E5FF">✨ New Arrivals <span style="font-size:10px;color:#8899bb;font-family:Comic Neue,cursive">just added!</span></div>';
+  newArrivals.forEach(function(item) {
+    var canBuy = gems >= item.cost;
+    h += '<div class="store-item" style="border:1px solid rgba(0,229,255,0.15)">';
+    h += '<div class="store-item-info"><div class="store-item-preview" style="background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(124,77,255,0.15))">'+item.icon+'</div>';
+    h += '<div><div class="store-item-name">'+item.name+' <span style="font-size:9px;background:linear-gradient(135deg,#00E5FF,#7C4DFF);color:#fff;padding:2px 6px;border-radius:8px;margin-left:4px">NEW</span></div>';
+    h += '<div class="store-item-desc">'+item.desc+' · 💎 '+item.cost+'</div></div></div>';
+    h += '<button class="store-buy-btn '+(canBuy?'affordable':'locked')+'" onclick="'+item.action+'">'+(canBuy?'Buy':'💎 '+item.cost)+'</button>';
+    h += '</div>';
+  });
+  h += '</div>';
+
   // Profile Themes
   h += '<div class="store-section"><div class="store-section-title">🎨 Profile Themes</div>';
   themes.forEach(t => {
@@ -8881,7 +9166,7 @@ function openGemStore() {
     h += '<div class="store-item">';
     h += '<div class="store-item-info">';
     h += '<div class="store-item-preview" style="background:'+t.bg+'">'+t.icon+'</div>';
-    h += '<div><div class="store-item-name">'+t.name+'</div>';
+    h += '<div><div class="store-item-name">'+t.name+(t.tag?' <span class="store-tag">'+t.tag+'</span>':'')+'</div>';
     h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):'💎 '+t.cost+' gems')+'</div></div></div>';
     if(isActive) {
       h += '<button class="store-buy-btn owned">Active</button>';
@@ -8890,7 +9175,7 @@ function openGemStore() {
     } else if(canBuy) {
       h += '<button class="store-buy-btn affordable" onclick="buyTheme(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
-      h += '<button class="store-buy-btn locked">💎 '+t.cost+'</button>';
+      h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.name+'\','+t.cost+');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>';
     }
     h += '</div>';
   });
@@ -9056,7 +9341,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     } else if(canBuy) {
       h += '<button class="store-buy-btn affordable" style="background:linear-gradient(135deg,#f59e0b,#d97706);animation:pulse 2s infinite" onclick="buyReaderBg(\''+b.id+'\','+b.cost+');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>';
     } else {
-      h += '<button class="store-buy-btn locked">💎 '+b.cost+'</button>';
+      h += '<button class="store-buy-btn '+(isInWishlist(b.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+b.id+'\',\''+b.name+'\','+b.cost+');event.stopPropagation()">'+(isInWishlist(b.id)?'💫 Saved':'💎 '+b.cost)+'</button>';
     }
     h += '</div>';
   });
@@ -9138,7 +9423,7 @@ if(!state.giftsReceived) state.giftsReceived = 0;
   h += '<div class="store-section"><div class="store-section-title">⚡ Power-ups & Utilities</div>';
   h += '<div class="store-item">';
   h += '<div class="store-item-info"><div class="store-item-preview" style="background:rgba(34,211,238,0.15)">❄️</div>';
-  h += '<div><div class="store-item-name">Streak Freeze</div><div class="store-item-desc">Protect your streak for 1 missed day (Have: '+(state.streakFreezes||0)+')</div></div></div>';
+  h += '<div><div class="store-item-name">Streak Freeze <span class="store-tag">🔥 Popular</span></div><div class="store-item-desc">Protect your streak for 1 missed day (Have: '+(state.streakFreezes||0)+')</div></div></div>';
   h += '<button class="store-buy-btn '+(gems>=15?'affordable':'locked')+'" onclick="buyStreakFreeze();document.querySelector(\'.store-overlay\').remove();openGemStore()">💎 15</button>';
   h += '</div>';
   h += '<div class="store-item">';
@@ -9171,12 +9456,12 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     var isActive = (state.activeTitle||'') === t.id;
     h += '<div class="store-item">';
     h += '<div class="store-item-info"><div class="store-item-preview" style="background:rgba(139,92,246,0.15);font-size:14px;display:flex;align-items:center;justify-content:center">'+t.nameEn.split(' ')[0]+'</div>';
-    h += '<div><div class="store-item-name">'+t.nameEn+'</div>';
+    h += '<div><div class="store-item-name">'+t.nameEn+(t.tag?' <span class="store-tag">'+t.tag+'</span>':'')+'</div>';
     h += '<div class="store-item-desc">'+(owned?(isActive?'Currently equipped':'Owned - tap to equip'):t.desc+' · 💎 '+t.cost)+'</div></div></div>';
     if(isActive) { h += '<button class="store-buy-btn owned">Equipped</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipTitle(\''+t.id+'\');\">Equip</button>'; }
     else if(gems >= t.cost) { h += '<button class="store-buy-btn affordable" onclick="buyTitle(\''+t.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>'; }
-    else { h += '<button class="store-buy-btn locked">💎 '+t.cost+'</button>'; }
+    else { h += '<button class="store-buy-btn '+(isInWishlist(t.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+t.id+'\',\''+t.nameEn+'\','+t.cost+');event.stopPropagation()">'+(isInWishlist(t.id)?'💫 Saved':'💎 '+t.cost)+'</button>'; }
     h += '</div>';
   });
   h += '</div>';
@@ -9189,12 +9474,12 @@ if(!state.giftsReceived) state.giftsReceived = 0;
     var isActive = (state.activeEffect||'default') === e.id;
     h += '<div class="store-item">';
     h += '<div class="store-item-info"><div class="completion-effect-preview" style="background:rgba(250,204,21,0.1)">'+e.preview+'</div>';
-    h += '<div><div class="store-item-name">'+e.name+'</div>';
+    h += '<div><div class="store-item-name">'+e.name+(e.tag?' <span class="store-tag">'+e.tag+'</span>':'')+'</div>';
     h += '<div class="store-item-desc">'+(owned?(isActive?'Currently active':'Owned - tap to use'):e.desc+' · 💎 '+e.cost)+'</div></div></div>';
     if(isActive) { h += '<button class="store-buy-btn owned">Active</button>'; }
     else if(owned) { h += '<button class="store-buy-btn affordable" onclick="equipEffect(\''+e.id+'\')">Use</button>'; }
     else if(gems >= e.cost) { h += '<button class="store-buy-btn affordable" onclick="buyEffect(\''+e.id+'\');document.querySelector(\'.store-overlay\').remove();openGemStore()">Buy</button>'; }
-    else { h += '<button class="store-buy-btn locked">💎 '+e.cost+'</button>'; }
+    else { h += '<button class="store-buy-btn '+(isInWishlist(e.id)?'wishlisted':'locked')+'" onclick="toggleWishlist(\''+e.id+'\',\''+e.name+'\','+e.cost+');event.stopPropagation()">'+(isInWishlist(e.id)?'💫 Saved':'💎 '+e.cost)+'</button>'; }
     h += '</div>';
   });
   h += '</div>';
