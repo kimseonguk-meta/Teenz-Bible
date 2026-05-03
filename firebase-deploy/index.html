@@ -4757,7 +4757,7 @@ function answerQuiz(btn, correctIdx, book, chNum) {
     state.quizCorrect = (state.quizCorrect || 0) + 1;
     state.gems = (state.gems || 0) + 3;
     btn.classList.add('correct');
-    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">\u2705 NICE! +10 XP +3 💎 Gems</div><button class="quiz-share-btn" style="margin-top:6px;font-size:12px;padding:5px 12px" onclick="event.stopPropagation();showQuizShareOverlay();">'+(readerLang==='ko'?'📤 결과 공유':'📤 Share')+'</button>';
+    document.getElementById('quiz-feedback').innerHTML = '<div class="quiz-result" style="color:#4ECDC4">✅ NICE! +10 XP +3 💎 Gems</div><button class="quiz-share-btn" style="margin-top:6px;font-size:12px;padding:5px 12px" onclick="event.stopPropagation();showQuizShareOverlay();">'+(readerLang==='ko'?'📤 결과 공유':'📤 Share')+'</button>';
     state.xp = (state.xp || 0) + 10;
     save();
     if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
@@ -4816,7 +4816,7 @@ function showFocusInlineQuiz(book, chNum, qd, options, correctIdx) {
         state.quizCorrect = (state.quizCorrect || 0) + 1;
         state.gems = (state.gems || 0) + 3;
         this.classList.add('fq-correct');
-        quizDiv.querySelector('.fq-feedback').innerHTML = '<span style="color:#4ECDC4">\u2705 NICE! +10 XP +3 \ud83d\udc8e</span>';
+        quizDiv.querySelector('.fq-feedback').innerHTML = '<span style="color:#4ECDC4">✅ NICE! +10 XP +3 \ud83d\udc8e</span>';
         state.xp = (state.xp || 0) + 10;
         save();
         if(typeof showXpFloat === 'function') showXpFloat(10, window.innerWidth/2 - 50, window.innerHeight/2);
@@ -5706,7 +5706,7 @@ function toggleNotif() {
         t.classList.add('on');
         localStorage.setItem('notifEnabled', 'true');
         scheduleNotification();
-        document.getElementById('notif-status').textContent = '\u2705 Notifications enabled';
+        document.getElementById('notif-status').textContent = '✅ Notifications enabled';
         showToast('\ud83d\udd14 Daily reminders ON!');
       } else {
         showToast('\u274c Please allow notifications in your browser settings');
@@ -5797,7 +5797,7 @@ function sendDailyNotification() {
   if(savedTime && timeInput) timeInput.value = savedTime;
   if(enabled && Notification.permission === 'granted') {
     toggle.classList.add('on');
-    document.getElementById('notif-status').textContent = '\u2705 Notifications enabled';
+    document.getElementById('notif-status').textContent = '✅ Notifications enabled';
     scheduleNotification();
   }
 })();
@@ -6688,7 +6688,7 @@ function enableNotifFromPrompt() {
       var toggle = document.getElementById('toggle-notif');
       if(toggle) toggle.classList.add('on');
       var status = document.getElementById('notif-status');
-      if(status) status.textContent = '\u2705 Notifications enabled';
+      if(status) status.textContent = '✅ Notifications enabled';
       if(typeof scheduleNotification === 'function') scheduleNotification();
       if(typeof showToast === 'function') showToast('🔔 ' + (typeof isKoreanBrowser !== 'undefined' && isKoreanBrowser ? '알림이 설정되었어요!' : 'Notifications enabled!'));
     } else {
@@ -8596,7 +8596,7 @@ function buyTheme(themeId) {
   if(!theme || theme.unlocked) return;
   const gems = state.gems || 0;
   if(gems < theme.cost) {
-    alert('Not enough gems! You need ' + theme.cost + ' gems.');
+    showNotEnoughGems(theme.cost);
     return;
   }
   var preview = '<div style="width:100%;height:60px;border-radius:10px;background:'+theme.bg+';display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 15px rgba(0,0,0,0.3)">'+(theme.icon||'🎨')+' <span style="color:#fff;margin-left:8px;font-size:13px;font-family:Comic Neue,cursive">'+theme.name+'</span></div>';
@@ -8614,7 +8614,7 @@ if(!state.unlockedThemes) state.unlockedThemes = ['default'];
 
 function buyFrame(frameId, cost) {
   const gems = state.gems || 0;
-  if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
+  if(gems < cost) { showNotEnoughGems(cost); return; }
   confirmPurchase('Profile Frame', cost, '🖼️', function() {
     state.gems -= cost;
     if(!state.unlockedFrames) state.unlockedFrames = ['none'];
@@ -8629,7 +8629,7 @@ function buyFrame(frameId, cost) {
 
 function buyReaderBg(bgId, cost) {
   const gems = state.gems || 0;
-  if(gems < cost) { alert('Not enough gems! You need ' + cost + ' gems.'); return; }
+  if(gems < cost) { showNotEnoughGems(cost); return; }
   var bgData = [{id:'default',name:'Classic Dark',bg:'#0e1830',textColor:'#e2e8f0'},{id:'parchment',name:'Parchment',bg:'#f5e6c8',textColor:'#3d2b1f'},{id:'sepia',name:'Warm Sepia',bg:'#2c1810',textColor:'#d4a574'},{id:'midnight',name:'Midnight Blue',bg:'#0a1628',textColor:'#7dd3fc'},{id:'nature',name:'Forest Calm',bg:'#0d2818',textColor:'#86efac'},{id:'lavender',name:'Lavender Dream',bg:'#1a1028',textColor:'#d8b4fe'},{id:'matrix',name:'Matrix Code',bg:'#001a00',textColor:'#00ff41'}];
   var bgInfo = bgData.find(function(b){return b.id===bgId}) || {name:bgId,bg:'#0e1830',textColor:'#e2e8f0'};
   var preview = '<div style="width:100%;height:60px;border-radius:10px;background:'+bgInfo.bg+';display:flex;align-items:center;justify-content:center;padding:8px 16px;box-shadow:0 4px 15px rgba(0,0,0,0.3)"><span style="color:'+bgInfo.textColor+';font-size:12px;font-family:Comic Neue,cursive">In the beginning was the Word...</span></div>';
@@ -8646,7 +8646,7 @@ function buyReaderBg(bgId, cost) {
 
 function buyStreakFreeze() {
   const gems = state.gems || 0;
-  if(gems < 15) { alert('Not enough gems! You need 15 gems.'); return; }
+  if(gems < 15) { showNotEnoughGems(15); return; }
   confirmPurchase('Streak Shield', 15, '🛡️', function() {
     state.gems -= 15;
     state.streakFreezes = (state.streakFreezes || 0) + 1;
@@ -8755,7 +8755,7 @@ function renderStreakCard() {
 function buyTitle(titleId) {
   const title = STORE_TITLES.find(t => t.id === titleId);
   if(!title) return;
-  if((state.gems||0) < title.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < title.cost) { showNotEnoughGems(title.cost); return; }
   var titlePreview = '<div style="text-align:center;padding:10px;background:rgba(0,0,0,0.2);border-radius:10px;font-size:16px;font-weight:700;font-family:Comic Neue,cursive;color:#ffd700">' + title.nameEn + '</div>';
   confirmPurchase(title.nameEn, title.cost, '🏷️', function() {
     state.gems -= title.cost;
@@ -8775,7 +8775,7 @@ function equipTitle(titleId) {
 function buyEffect(effectId) {
   const effect = COMPLETION_EFFECTS.find(e => e.id === effectId);
   if(!effect) return;
-  if((state.gems||0) < effect.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < effect.cost) { showNotEnoughGems(effect.cost); return; }
   var effectPreview = '<div style="text-align:center;padding:12px;font-size:40px;animation:sparkleIn 0.8s ease-out infinite">' + (effect.preview||'✨') + '</div>';
   confirmPurchase(effect.name, effect.cost, '✨', function() {
     state.gems -= effect.cost;
@@ -8795,7 +8795,7 @@ function equipEffect(effectId) {
 function buyReaction(reactionId) {
   const reaction = EXTRA_REACTIONS.find(r => r.id === reactionId);
   if(!reaction) return;
-  if((state.gems||0) < reaction.cost) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < reaction.cost) { showNotEnoughGems(reaction.cost); return; }
   confirmPurchase(reaction.emoji + ' Reaction', reaction.cost, reaction.emoji, function() {
     state.gems -= reaction.cost;
     if(!state.unlockedReactions) state.unlockedReactions = ['fire','mind_blown','laugh','strong','pray'];
@@ -8805,7 +8805,7 @@ function buyReaction(reactionId) {
   });
 }
 function buyQuizHints() {
-  if((state.gems||0) < 10) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < 10) { showNotEnoughGems(10); return; }
   confirmPurchase('3 Quiz Hints', 10, '💡', function() {
     state.gems -= 10;
     state.quizHints = (state.quizHints || 0) + 3;
@@ -8814,7 +8814,7 @@ function buyQuizHints() {
   });
 }
 function buyAIQuestions() {
-  if((state.gems||0) < 15) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < 15) { showNotEnoughGems(15); return; }
   confirmPurchase('5 AI Questions', 15, '🤖', function() {
     state.gems -= 15;
     state.aiQuestions = (state.aiQuestions || 5) + 5;
@@ -8823,7 +8823,7 @@ function buyAIQuestions() {
   });
 }
 function buyMissionReroll() {
-  if((state.gems||0) < 20) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < 20) { showNotEnoughGems(20); return; }
   confirmPurchase('Mission Reroll', 20, '🎲', function() {
     state.gems -= 20;
     // Generate new mission
@@ -8919,6 +8919,31 @@ function showPurchaseEffect() {
   document.body.appendChild(sparkle);
   setTimeout(function() { container.remove(); sparkle.remove(); }, 2000);
 }
+function showNotEnoughGems(needed) {
+  var currentGems = state.gems || 0;
+  var deficit = needed - currentGems;
+  var overlay = document.createElement('div');
+  overlay.className = 'purchase-modal-overlay';
+  overlay.innerHTML = '<div class="purchase-modal" style="text-align:center">'
+    + '<div class="purchase-modal-icon" style="font-size:48px">😢</div>'
+    + '<div class="purchase-modal-title" style="color:#ff6b6b">Not Enough Gems!</div>'
+    + '<div style="color:#aab;font-size:13px;margin:8px 0">You need <b style=\"color:#ffd700\">' + needed + ' 💎</b> but only have <b style=\"color:#ffd700\">' + currentGems + ' 💎</b></div>'
+    + '<div style="color:#8af;font-size:12px;margin:8px 0">You need <b>' + deficit + '</b> more gems</div>'
+    + '<div style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:10px;padding:10px;margin:12px 0;text-align:left">'
+    + '<div style="color:#ffd700;font-size:11px;font-weight:700;margin-bottom:6px">💡 How to Earn Gems:</div>'
+    + '<div style="color:#aab;font-size:11px;line-height:1.8">'
+    + '📖 Read chapters — +2 gems each<br>'
+    + '📚 Complete a book — +15 gems<br>'
+    + '✅ Quiz correct answer — +3 gems<br>'
+    + '🎁 Daily login — +3~20 gems<br>'
+    + '🔥 Streak bonuses — +5~50 gems'
+    + '</div></div>'
+    + '<div class="purchase-modal-btns">'
+    + '<button class="purchase-modal-confirm" onclick="this.closest(\'.purchase-modal-overlay\').remove()" style="width:100%">Got it! 💪</button>'
+    + '</div></div>';
+  document.body.appendChild(overlay);
+  overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
+}
 function confirmPurchase(itemName, cost, icon, onConfirm, previewHtml) {
   var currentGems = state.gems || 0;
   var remaining = currentGems - cost;
@@ -8939,7 +8964,7 @@ function confirmPurchase(itemName, cost, icon, onConfirm, previewHtml) {
   document.body.appendChild(overlay);
   overlay.querySelector('#pm-cancel').onclick = function() { overlay.remove(); };
   overlay.onclick = function(e) { if(e.target === overlay) overlay.remove(); };
-  overlay.querySelector('#pm-confirm').onclick = function() { overlay.remove(); onConfirm(); showPurchaseEffect(); };
+  overlay.querySelector('#pm-confirm').onclick = function() { overlay.remove(); onConfirm(); showPurchaseEffect(); setTimeout(function(){ document.querySelector('.store-overlay')?.remove(); openGemStore(); }, 600); };
 }
 function checkSettingsBadge() {
   var badge = document.getElementById('settings-badge');
@@ -9060,7 +9085,7 @@ function useQuizHint(correctIdx) {
   return true;
 }
 function sendGift(amount) {
-  if((state.gems||0) < amount) { showRewardToast('Not enough gems! 💎'); return; }
+  if((state.gems||0) < amount) { showNotEnoughGems(amount); return; }
   state.gems -= amount;
   state.giftsSent = (state.giftsSent || 0) + amount;
   save();
@@ -9707,7 +9732,7 @@ function showSeasonCompletePopup(season, seasonLabel) {
 
 function activateXPBoost() {
   const gems = state.gems || 0;
-  if(gems < 25) { alert('Not enough gems!'); return; }
+  if(gems < 25) { showNotEnoughGems(25); return; }
   state.gems -= 25;
   state.xpBoostUntil = Date.now() + 3600000; // 1 hour
   save();
