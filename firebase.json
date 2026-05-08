@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/update",
+        "destination": "/update.html"
+      },
+      {
         "source": "/ipad",
         "destination": "/ipad/index.html"
       },
@@ -52,6 +56,19 @@
           {
             "key": "Expires",
             "value": "0"
+          }
+        ]
+      },
+      {
+        "source": "/sw.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          },
+          {
+            "key": "Service-Worker-Allowed",
+            "value": "/"
           }
         ]
       }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teenz Bible - Updating...</title>
+<style>
+body { background: #0a1628; color: white; font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; text-align: center; }
+.container { padding: 20px; }
+h1 { color: #ffd700; }
+p { color: #94a3b8; margin: 10px 0; }
+.spinner { width: 50px; height: 50px; border: 5px solid #1e293b; border-top: 5px solid #ffd700; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.done { display: none; color: #22c55e; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Updating Teenz Bible</h1>
+<div class="spinner" id="spinner"></div>
+<p id="status">Clearing old cache...</p>
+<p class="done" id="done">Update complete! Redirecting...</p>
+</div>
+<script>
+async function update() {
+  var status = document.getElementById('status');
+  
+  // Step 1: Unregister all service workers
+  status.textContent = 'Removing old service worker...';
+  if('serviceWorker' in navigator) {
+    var regs = await navigator.serviceWorker.getRegistrations();
+    for(var i = 0; i < regs.length; i++) {
+      await regs[i].unregister();
+    }
+  }
+  
+  // Step 2: Clear all caches
+  status.textContent = 'Clearing cache...';
+  if(window.caches) {
+    var keys = await caches.keys();
+    for(var i = 0; i < keys.length; i++) {
+      await caches.delete(keys[i]);
+    }
+  }
+  
+  // Step 3: Update localStorage version
+  localStorage.removeItem('app_version');
+  localStorage.setItem('app_version', 'v46');
+  
+  // Step 4: Show success and redirect
+  document.getElementById('spinner').style.display = 'none';
+  document.getElementById('done').style.display = 'block';
+  status.style.display = 'none';
+  
+  setTimeout(function() {
+    window.location.href = '/teens-bible.html?updated=' + Date.now();
+  }, 1500);
+}
+
+update();
+</script>
+</body>
+</html>
