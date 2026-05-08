@@ -1237,6 +1237,18 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .notes-btn { background:rgba(255,214,0,0.15); border:1px solid rgba(255,214,0,0.3); color:#FFD700; padding:8px 16px; border-radius:10px; font-family:'Comic Neue',cursive; font-weight:700; font-size:13px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; width:100%; justify-content:center; margin-top:8px; }
 .notes-btn:hover { background:rgba(255,214,0,0.25); }
 .notes-btn.has-note { border-color:#4ECDC4; color:#4ECDC4; background:rgba(78,205,196,0.1); }
+.report-btn { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color:#ef4444; padding:8px 16px; border-radius:10px; font-family:'Comic Neue',cursive; font-weight:700; font-size:12px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; width:100%; justify-content:center; margin-top:6px; }
+.report-btn:hover { background:rgba(239,68,68,0.2); }
+.report-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:10006; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s; }
+.report-card { background:#0f1d35; border-radius:20px; padding:24px; width:90%; max-width:380px; border:1px solid rgba(239,68,68,0.3); }
+.report-card-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#ef4444; margin-bottom:12px; }
+.report-option { display:block; width:100%; padding:12px 16px; margin-bottom:8px; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:10px; color:#d8dce8; font-family:'Comic Neue',cursive; font-size:14px; cursor:pointer; text-align:left; transition:all 0.2s; }
+.report-option:hover { background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.5); }
+.report-textarea { width:100%; height:80px; background:rgba(10,20,40,0.6); border:1px solid rgba(239,68,68,0.3); border-radius:12px; color:#d8dce8; font-family:'Comic Neue',cursive; font-size:14px; padding:12px; resize:none; outline:none; margin-top:8px; }
+.report-textarea:focus { border-color:#ef4444; }
+.report-submit { background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border:none; padding:12px 24px; border-radius:10px; font-family:'Bangers',cursive; font-size:16px; cursor:pointer; width:100%; margin-top:12px; transition:all 0.2s; }
+.report-submit:hover { transform:scale(1.02); box-shadow:0 0 15px rgba(239,68,68,0.4); }
+.report-cancel { background:transparent; border:1px solid rgba(100,120,150,0.3); color:#6880a8; padding:10px 24px; border-radius:10px; font-family:'Comic Neue',cursive; font-size:14px; cursor:pointer; width:100%; margin-top:8px; }
 .note-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:10005; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s; }
 .note-card { background:#0f1d35; border-radius:20px; padding:24px; width:90%; max-width:380px; border:1px solid rgba(65,110,160,0.3); }
 .note-card-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#FFD700; margin-bottom:4px; }
@@ -1273,6 +1285,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .focus-mode-active .reactions-bar,
 .focus-mode-active .ask-ai-btn,
 .focus-mode-active .notes-btn,
+.focus-mode-active .report-btn,
 .focus-mode-active .reader-actions,
 .focus-mode-active .cliffhanger-box,
 .focus-mode-active h3 {
@@ -2865,6 +2878,63 @@ function deleteNote(book, chNum) {
   showXpToast('🗑️ Note deleted');
 }
 
+// === REPORT CONTENT FEATURE ===
+function openReportDialog(book, chNum) {
+  const ov = document.createElement('div');
+  ov.className = 'report-overlay';
+  ov.onclick = function(e) { if(e.target === ov) ov.remove(); };
+  
+  let html = '<div class="report-card">';
+  html += '<div class="report-card-title">\ud83d\udea8 Report an Issue</div>';
+  html += '<div style="color:#6880a8;font-size:12px;margin-bottom:12px;font-family:Comic Neue,cursive">'+book+' Chapter '+chNum+'</div>';
+  html += '<button class="report-option" onclick="selectReportReason(this, \'Inappropriate or offensive language\')">\ud83d\udeab Inappropriate / offensive language</button>';
+  html += '<button class="report-option" onclick="selectReportReason(this, \'AI-generated meta text (not Bible content)\')">\ud83e\udd16 AI-generated text (not Bible content)</button>';
+  html += '<button class="report-option" onclick="selectReportReason(this, \'Inaccurate translation or content\')">\u274c Inaccurate translation</button>';
+  html += '<button class="report-option" onclick="selectReportReason(this, \'Other issue\')">\ud83d\udcac Other issue</button>';
+  html += '<textarea class="report-textarea" id="report-detail" placeholder="Optional: describe the issue in more detail..."></textarea>';
+  html += '<button class="report-submit" onclick="submitReport(\''+book.replace(/'/g,"\\\'")+'\',' +chNum+')">Submit Report</button>';
+  html += '<button class="report-cancel" onclick="this.closest(\'.report-overlay\').remove()">Cancel</button>';
+  html += '</div>';
+  
+  ov.innerHTML = html;
+  document.body.appendChild(ov);
+}
+
+let selectedReportReason = '';
+function selectReportReason(btn, reason) {
+  selectedReportReason = reason;
+  document.querySelectorAll('.report-option').forEach(b => b.style.borderColor = 'rgba(239,68,68,0.2)');
+  btn.style.borderColor = '#ef4444';
+  btn.style.background = 'rgba(239,68,68,0.2)';
+}
+
+function submitReport(book, chNum) {
+  const detail = document.getElementById('report-detail')?.value || '';
+  if(!selectedReportReason) {
+    showXpToast('\u26a0\ufe0f Please select a reason');
+    return;
+  }
+  
+  // Save report to localStorage
+  const reports = JSON.parse(localStorage.getItem('teensBibleReports') || '[]');
+  reports.push({
+    book: book,
+    chapter: chNum,
+    reason: selectedReportReason,
+    detail: detail,
+    date: new Date().toISOString(),
+    status: 'pending'
+  });
+  localStorage.setItem('teensBibleReports', JSON.stringify(reports));
+  
+  // Close dialog
+  const ov = document.querySelector('.report-overlay');
+  if(ov) ov.remove();
+  selectedReportReason = '';
+  
+  showXpToast('\u2705 Report submitted! Thank you for helping improve the content.');
+}
+
 function renderRecentNotes() {
   const container = document.getElementById('recent-notes-section');
   if(!container) return;
@@ -3084,6 +3154,9 @@ function showChapter(book, idx) {
   const hasNote = state.notes && state.notes[book+'_'+ch.num];
   html += '<button class="notes-btn'+(hasNote?' has-note':'')+'" id="notes-toggle-btn" onclick="openNoteEditor(\''+book.replace(/'/g,"\\\'")+'\',' +ch.num+')">'+(hasNote?'\ud83d\udcdd VIEW / EDIT NOTES':'\ud83d\udcdd ADD NOTES')+'</button>';
   
+  // Report content button
+  html += '<button class="report-btn" onclick="openReportDialog(\''+book.replace(/'/g,"\\\'")+'\',' +ch.num+')">\ud83d\udea8 Report Issue</button>';
+
   // Actions
   html += '<div class="reader-actions">';
   if(!isRead) {
