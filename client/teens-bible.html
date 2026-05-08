@@ -1249,6 +1249,44 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 .report-submit { background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border:none; padding:12px 24px; border-radius:10px; font-family:'Bangers',cursive; font-size:16px; cursor:pointer; width:100%; margin-top:12px; transition:all 0.2s; }
 .report-submit:hover { transform:scale(1.02); box-shadow:0 0 15px rgba(239,68,68,0.4); }
 .report-cancel { background:transparent; border:1px solid rgba(100,120,150,0.3); color:#6880a8; padding:10px 24px; border-radius:10px; font-family:'Comic Neue',cursive; font-size:14px; cursor:pointer; width:100%; margin-top:8px; }
+
+/* Admin Panel Styles */
+.admin-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(5,10,20,0.95); z-index:10010; overflow-y:auto; animation:fadeIn 0.2s; padding:20px; }
+.admin-panel { max-width:500px; margin:0 auto; }
+.admin-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(100,120,150,0.2); }
+.admin-stats { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.admin-stat-card { background:rgba(15,29,53,0.8); border:1px solid rgba(65,110,160,0.2); border-radius:12px; padding:12px 16px; flex:1; min-width:80px; text-align:center; }
+.admin-stat-num { font-family:'Bangers',cursive; font-size:24px; color:#FFD700; }
+.admin-stat-label { font-size:10px; color:#6880a8; font-family:'Comic Neue',cursive; text-transform:uppercase; letter-spacing:0.5px; }
+.admin-filter-row { display:flex; gap:8px; margin-bottom:16px; }
+.admin-filter-btn { background:rgba(15,29,53,0.6); border:1px solid rgba(65,110,160,0.2); color:#6880a8; padding:8px 16px; border-radius:20px; font-family:'Comic Neue',cursive; font-size:13px; cursor:pointer; transition:all 0.2s; }
+.admin-filter-btn.active { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.4); color:#ef4444; }
+.admin-list { display:flex; flex-direction:column; gap:10px; }
+.admin-report-card { background:rgba(15,29,53,0.6); border:1px solid rgba(65,110,160,0.2); border-radius:14px; padding:14px; transition:all 0.2s; }
+.admin-report-card:hover { border-color:rgba(65,110,160,0.4); }
+.admin-report-card.resolved { opacity:0.6; }
+.admin-report-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.admin-report-book { font-family:'Bangers',cursive; font-size:15px; color:#FF6B6B; }
+.admin-report-date { font-size:11px; color:#6880a8; font-family:'Comic Neue',cursive; }
+.admin-report-reason { font-size:13px; color:#d8dce8; font-family:'Comic Neue',cursive; margin-bottom:6px; padding:6px 10px; background:rgba(239,68,68,0.08); border-radius:8px; }
+.admin-report-detail { font-size:12px; color:#8899bb; font-family:'Comic Neue',cursive; font-style:italic; margin-bottom:8px; }
+.admin-report-actions { display:flex; gap:8px; }
+.admin-action-btn { padding:6px 14px; border-radius:8px; font-size:12px; font-family:'Comic Neue',cursive; font-weight:700; cursor:pointer; border:none; transition:all 0.2s; }
+.admin-action-btn.resolve { background:rgba(34,197,94,0.15); color:#22c55e; border:1px solid rgba(34,197,94,0.3); }
+.admin-action-btn.resolve:hover { background:rgba(34,197,94,0.3); }
+.admin-action-btn.dismiss { background:rgba(100,120,150,0.1); color:#6880a8; border:1px solid rgba(100,120,150,0.2); }
+.admin-action-btn.dismiss:hover { background:rgba(100,120,150,0.2); }
+.admin-action-btn.goto { background:rgba(59,130,246,0.15); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+.admin-action-btn.goto:hover { background:rgba(59,130,246,0.3); }
+.admin-flag-card { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:14px; padding:14px; }
+.admin-flag-card .flag-title { font-family:'Bangers',cursive; font-size:15px; color:#f59e0b; margin-bottom:4px; }
+.admin-flag-card .flag-info { font-size:12px; color:#8899bb; font-family:'Comic Neue',cursive; }
+.admin-notif-card { background:rgba(15,29,53,0.6); border:1px solid rgba(65,110,160,0.2); border-radius:12px; padding:12px; }
+.admin-notif-card.unread { border-color:rgba(59,130,246,0.4); background:rgba(59,130,246,0.05); }
+.admin-notif-card .notif-title { font-family:'Comic Neue',cursive; font-weight:700; font-size:14px; color:#d8dce8; margin-bottom:4px; }
+.admin-notif-card .notif-body { font-size:12px; color:#6880a8; font-family:'Comic Neue',cursive; }
+.admin-notif-card .notif-date { font-size:10px; color:#4a5568; font-family:'Comic Neue',cursive; margin-top:4px; }
+.admin-empty { text-align:center; padding:40px 20px; color:#6880a8; font-family:'Comic Neue',cursive; font-size:14px; }
 .note-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:10005; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s; }
 .note-card { background:#0f1d35; border-radius:20px; padding:24px; width:90%; max-width:380px; border:1px solid rgba(65,110,160,0.3); }
 .note-card-title { font-family:'Luckiest Guy',cursive; font-size:18px; color:#FFD700; margin-bottom:4px; }
@@ -2170,6 +2208,7 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 
   <div class="screen" id="screen-settings">
     <h2 style="font-family:'Luckiest Guy',cursive;font-size:24px;color:#FF6B6B;margin-bottom:16px;text-shadow:0 0 8px rgba(255,107,107,0.5)">⚙️ SETTINGS</h2>
+    <div style="position:absolute;top:0;left:0;right:0;height:40px;z-index:1;" onclick="handleSettingsTitleTap()"></div>
     
     <!-- Reading Settings Group -->
     <div class="settings-group">
@@ -2233,6 +2272,62 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
           🗑️ Reset All Progress
         </button>
       </div>
+    </div>
+  
+    <!-- Admin Panel Group -->
+    <div class="settings-group" id="admin-panel-group" style="display:none;">
+      <div class="settings-group-title" onclick="handleSettingsTitleTap()">&#x1F6E1;&#xFE0F; Admin Panel</div>
+      <div class="setting-row" style="cursor:pointer" onclick="openAdminReports()">
+        <div><div class="setting-label">&#x1F4CB; Report Management</div><div class="setting-sub" id="admin-report-count">View and manage user reports</div></div>
+        <span style="color:#ef4444;font-size:20px">&#x2192;</span>
+      </div>
+      <div class="setting-row" style="cursor:pointer" onclick="openFlaggedChapters()">
+        <div><div class="setting-label">&#x26A0;&#xFE0F; Flagged Chapters</div><div class="setting-sub" id="admin-flag-count">Auto-flagged content (3+ reports)</div></div>
+        <span style="color:#f59e0b;font-size:20px">&#x2192;</span>
+      </div>
+      <div class="setting-row" style="cursor:pointer" onclick="openNotificationLog()">
+        <div><div class="setting-label">&#x1F514; Notification Log</div><div class="setting-sub">View all system notifications</div></div>
+        <span style="color:#3b82f6;font-size:20px">&#x2192;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Reports Overlay -->
+  <div id="admin-reports-overlay" class="admin-overlay" style="display:none;">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <h3 style="font-family:'Luckiest Guy',cursive;color:#ef4444;font-size:20px;">&#x1F4CB; Report Management</h3>
+        <button onclick="closeAdminOverlay('admin-reports-overlay')" style="background:none;border:none;color:#6880a8;font-size:24px;cursor:pointer;">&#x2715;</button>
+      </div>
+      <div class="admin-stats" id="admin-stats-bar"></div>
+      <div class="admin-filter-row">
+        <button class="admin-filter-btn active" onclick="filterReports('all',this)">All</button>
+        <button class="admin-filter-btn" onclick="filterReports('pending',this)">Pending</button>
+        <button class="admin-filter-btn" onclick="filterReports('resolved',this)">Resolved</button>
+      </div>
+      <div id="admin-reports-list" class="admin-list"></div>
+    </div>
+  </div>
+
+  <!-- Flagged Chapters Overlay -->
+  <div id="admin-flagged-overlay" class="admin-overlay" style="display:none;">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <h3 style="font-family:'Luckiest Guy',cursive;color:#f59e0b;font-size:20px;">&#x26A0;&#xFE0F; Flagged Chapters</h3>
+        <button onclick="closeAdminOverlay('admin-flagged-overlay')" style="background:none;border:none;color:#6880a8;font-size:24px;cursor:pointer;">&#x2715;</button>
+      </div>
+      <div id="admin-flagged-list" class="admin-list"></div>
+    </div>
+  </div>
+
+  <!-- Notification Log Overlay -->
+  <div id="admin-notif-overlay" class="admin-overlay" style="display:none;">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <h3 style="font-family:'Luckiest Guy',cursive;color:#3b82f6;font-size:20px;">&#x1F514; Notifications</h3>
+        <button onclick="closeAdminOverlay('admin-notif-overlay')" style="background:none;border:none;color:#6880a8;font-size:24px;cursor:pointer;">&#x2715;</button>
+      </div>
+      <div id="admin-notif-list" class="admin-list"></div>
     </div>
   </div>
 
@@ -2946,6 +3041,15 @@ function submitReport(book, chNum) {
   if(typeof fbDb !== 'undefined') {
     fbDb.ref('reports').push(reportData).then(function() {
       console.log('Report saved to Firebase');
+      // Auto-flag: check if 3+ reports for same chapter
+      checkAutoFlag(book, chNum);
+      // Add notification for admin
+      fbDb.ref('notifications').push({
+        title: 'New Report: ' + book + ' Ch.' + chNum,
+        body: selectedReportReason + (detail ? ' - ' + detail.substring(0,50) : ''),
+        date: new Date().toISOString(),
+        read: false
+      });
     }).catch(function(err) {
       console.error('Firebase write error:', err);
       // Fallback to localStorage if Firebase fails
@@ -2959,6 +3063,22 @@ function submitReport(book, chNum) {
     reports.push(reportData);
     localStorage.setItem('teensBibleReports', JSON.stringify(reports));
   }
+
+  function checkAutoFlag(bk, ch) {
+    fbDb.ref('reports').orderByChild('book').equalTo(bk).once('value', function(snap) {
+      const data = snap.val() || {};
+      const chapterReports = Object.values(data).filter(r => r.chapter === ch && r.status === 'pending');
+      if(chapterReports.length >= 3) {
+        const flagKey = bk.replace(/\s/g, '_') + '_' + ch;
+        fbDb.ref('flaggedChapters/' + flagKey).set({
+          book: bk,
+          chapter: ch,
+          reportCount: chapterReports.length,
+          flaggedAt: new Date().toISOString()
+        });
+      }
+    });
+  }
   
   // Close dialog
   const ov = document.querySelector('.report-overlay');
@@ -2967,6 +3087,201 @@ function submitReport(book, chNum) {
   
   showXpToast('\u2705 Report submitted! Thank you for helping improve the content.');
 }
+
+
+// === ADMIN PANEL FUNCTIONS ===
+const ADMIN_CODE = 'teenz2024admin';
+let isAdmin = localStorage.getItem('teensBibleAdmin') === 'true';
+let allReports = [];
+let currentFilter = 'all';
+
+function checkAdminAccess() {
+  if(isAdmin) {
+    document.getElementById('admin-panel-group').style.display = 'block';
+    loadAdminData();
+  }
+}
+
+let settingsTapCount = 0;
+let settingsTapTimer = null;
+function handleSettingsTitleTap() {
+  settingsTapCount++;
+  if(settingsTapTimer) clearTimeout(settingsTapTimer);
+  settingsTapTimer = setTimeout(() => { settingsTapCount = 0; }, 800);
+  if(settingsTapCount >= 5) {
+    settingsTapCount = 0;
+    if(isAdmin) { showXpToast('Admin mode already active'); return; }
+    const code = prompt('Enter admin code:');
+    if(code === ADMIN_CODE) {
+      isAdmin = true;
+      localStorage.setItem('teensBibleAdmin', 'true');
+      document.getElementById('admin-panel-group').style.display = 'block';
+      loadAdminData();
+      showXpToast('Admin mode activated!');
+    } else { showXpToast('Invalid code'); }
+  }
+}
+
+function loadAdminData() {
+  if(typeof fbDb === 'undefined') return;
+  fbDb.ref('reports').orderByChild('date').on('value', function(snap) {
+    const data = snap.val() || {};
+    allReports = Object.entries(data).map(([id, r]) => ({id, ...r})).reverse();
+    updateAdminCounts();
+  });
+  fbDb.ref('flaggedChapters').on('value', function(snap) {
+    const data = snap.val() || {};
+    const count = Object.keys(data).length;
+    const el = document.getElementById('admin-flag-count');
+    if(el) el.textContent = count > 0 ? count + ' chapters flagged' : 'No flagged chapters';
+  });
+}
+
+function updateAdminCounts() {
+  const pending = allReports.filter(r => r.status === 'pending').length;
+  const el = document.getElementById('admin-report-count');
+  if(el) el.textContent = pending > 0 ? pending + ' pending reports' : 'No pending reports';
+}
+
+function openAdminReports() {
+  document.getElementById('admin-reports-overlay').style.display = 'block';
+  renderAdminStats();
+  renderReportsList('all');
+}
+
+function openFlaggedChapters() {
+  document.getElementById('admin-flagged-overlay').style.display = 'block';
+  if(typeof fbDb === 'undefined') return;
+  fbDb.ref('flaggedChapters').once('value', function(snap) {
+    const data = snap.val() || {};
+    const list = document.getElementById('admin-flagged-list');
+    if(Object.keys(data).length === 0) {
+      list.innerHTML = '<div class="admin-empty">No flagged chapters. All content looks good.</div>';
+      return;
+    }
+    let html = '';
+    Object.entries(data).forEach(([key, f]) => {
+      html += '<div class="admin-flag-card">';
+      html += '<div class="flag-title">' + f.book + ' Chapter ' + f.chapter + '</div>';
+      html += '<div class="flag-info">' + f.reportCount + ' reports | Flagged: ' + new Date(f.flaggedAt).toLocaleDateString() + '</div>';
+      html += '<div style="margin-top:8px;display:flex;gap:8px;">';
+      html += '<button class="admin-action-btn goto" onclick="closeAdminOverlay(\'admin-flagged-overlay\');goToChapter(\'' + f.book + '\',' + f.chapter + ')">View Chapter</button>';
+      html += '<button class="admin-action-btn resolve" onclick="unflagChapter(\'' + key + '\')">Unflag</button>';
+      html += '</div></div>';
+    });
+    list.innerHTML = html;
+  });
+}
+
+function openNotificationLog() {
+  document.getElementById('admin-notif-overlay').style.display = 'block';
+  if(typeof fbDb === 'undefined') return;
+  fbDb.ref('notifications').orderByChild('date').limitToLast(50).once('value', function(snap) {
+    const data = snap.val() || {};
+    const list = document.getElementById('admin-notif-list');
+    const notifs = Object.entries(data).map(([id, n]) => ({id, ...n})).reverse();
+    if(notifs.length === 0) {
+      list.innerHTML = '<div class="admin-empty">No notifications yet.</div>';
+      return;
+    }
+    let html = '';
+    notifs.forEach(n => {
+      html += '<div class="admin-notif-card' + (n.read ? '' : ' unread') + '">';
+      html += '<div class="notif-title">' + n.title + '</div>';
+      html += '<div class="notif-body">' + n.body + '</div>';
+      html += '<div class="notif-date">' + new Date(n.date).toLocaleString() + '</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+    notifs.filter(n => !n.read).forEach(n => {
+      fbDb.ref('notifications/' + n.id + '/read').set(true);
+    });
+  });
+}
+
+function closeAdminOverlay(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function renderAdminStats() {
+  const total = allReports.length;
+  const pending = allReports.filter(r => r.status === 'pending').length;
+  const resolved = allReports.filter(r => r.status === 'resolved').length;
+  const bar = document.getElementById('admin-stats-bar');
+  bar.innerHTML = '<div class="admin-stat-card"><div class="admin-stat-num">' + total + '</div><div class="admin-stat-label">Total</div></div>' +
+    '<div class="admin-stat-card"><div class="admin-stat-num" style="color:#ef4444">' + pending + '</div><div class="admin-stat-label">Pending</div></div>' +
+    '<div class="admin-stat-card"><div class="admin-stat-num" style="color:#22c55e">' + resolved + '</div><div class="admin-stat-label">Resolved</div></div>';
+}
+
+function filterReports(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderReportsList(filter);
+}
+
+function renderReportsList(filter) {
+  const list = document.getElementById('admin-reports-list');
+  let reports = allReports;
+  if(filter === 'pending') reports = reports.filter(r => r.status === 'pending');
+  if(filter === 'resolved') reports = reports.filter(r => r.status === 'resolved');
+  if(reports.length === 0) {
+    list.innerHTML = '<div class="admin-empty">' + (filter === 'pending' ? 'No pending reports!' : 'No reports found.') + '</div>';
+    return;
+  }
+  let html = '';
+  reports.forEach(r => {
+    html += '<div class="admin-report-card' + (r.status === 'resolved' ? ' resolved' : '') + '">';
+    html += '<div class="admin-report-meta"><span class="admin-report-book">' + r.book + ' Ch.' + r.chapter + '</span><span class="admin-report-date">' + new Date(r.date).toLocaleDateString() + '</span></div>';
+    html += '<div class="admin-report-reason">' + r.reason + '</div>';
+    if(r.detail) html += '<div class="admin-report-detail">"' + r.detail + '"</div>';
+    html += '<div class="admin-report-actions">';
+    if(r.status !== 'resolved') {
+      html += '<button class="admin-action-btn resolve" onclick="resolveReport(\'' + r.id + '\')">Resolve</button>';
+    }
+    html += '<button class="admin-action-btn goto" onclick="closeAdminOverlay(\'admin-reports-overlay\');goToChapter(\'' + r.book.replace(/'/g, "\\'") + '\',' + r.chapter + ')">View</button>';
+    html += '<button class="admin-action-btn dismiss" onclick="dismissReport(\'' + r.id + '\')">Delete</button>';
+    html += '</div></div>';
+  });
+  list.innerHTML = html;
+}
+
+function resolveReport(reportId) {
+  if(typeof fbDb === 'undefined') return;
+  fbDb.ref('reports/' + reportId + '/status').set('resolved');
+  showXpToast('Report resolved');
+}
+
+function dismissReport(reportId) {
+  if(!confirm('Delete this report permanently?')) return;
+  if(typeof fbDb === 'undefined') return;
+  fbDb.ref('reports/' + reportId).remove();
+  showXpToast('Report deleted');
+}
+
+function unflagChapter(key) {
+  if(typeof fbDb === 'undefined') return;
+  fbDb.ref('flaggedChapters/' + key).remove();
+  showXpToast('Chapter unflagged');
+  openFlaggedChapters();
+}
+
+function goToChapter(book, chNum) {
+  showScreen('bible');
+  setTimeout(() => {
+    if(typeof gospelData !== 'undefined' && gospelData[book]) {
+      const idx = gospelData[book].findIndex(c => c.num === chNum);
+      if(idx >= 0) showChapter(book, idx);
+    }
+  }, 300);
+}
+
+document.addEventListener('click', function(e) {
+  if(e.target && e.target.closest && e.target.closest('[onclick*="settings"]')) {
+    setTimeout(checkAdminAccess, 100);
+  }
+});
+if(isAdmin) setTimeout(checkAdminAccess, 500);
 
 function renderRecentNotes() {
   const container = document.getElementById('recent-notes-section');

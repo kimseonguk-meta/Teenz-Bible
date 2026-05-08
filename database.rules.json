@@ -27,9 +27,22 @@
       ".write": "auth != null"
     },
     "reports": {
-      ".read": "auth != null",
+      ".read": true,
       ".write": true,
       ".indexOn": ["date", "book", "status"]
+    },
+    "flaggedChapters": {
+      ".read": true,
+      ".write": true
+    },
+    "notifications": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["date"]
+    },
+    "adminTokens": {
+      ".read": true,
+      ".write": true
     }
   }
 }
