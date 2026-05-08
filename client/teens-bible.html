@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v43';
+      const CACHE = 'teens-bible-v44';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -2408,9 +2408,41 @@ let state = JSON.parse(localStorage.getItem('teensBible')||'null') || {
 // Migrate old state
 if(!state.readingHistory) state.readingHistory = {};
 if(!state.notes) state.notes = {};
+if(!state.watchedVideos) state.watchedVideos = [];
 function save() { localStorage.setItem('teensBible', JSON.stringify(state)); }
 
 // === NAVIGATION ===
+// === YouTube Video Features ===
+function toggleYouTube() {
+  const wrap = document.getElementById('yt-video-wrap');
+  const icon = document.getElementById('yt-toggle-icon');
+  if(!wrap) return;
+  if(wrap.style.maxHeight === '0px' || wrap.style.maxHeight === '0') {
+    wrap.style.maxHeight = '300px';
+    wrap.style.opacity = '1';
+    icon.textContent = '▼';
+  } else {
+    wrap.style.maxHeight = '0px';
+    wrap.style.opacity = '0';
+    icon.textContent = '▶';
+  }
+}
+
+function markVideoWatched(bookName) {
+  if(!state.watchedVideos) state.watchedVideos = [];
+  if(!state.watchedVideos.includes(bookName)) {
+    state.watchedVideos.push(bookName);
+    save();
+  }
+  // Update the button to show confirmed
+  const btn = event.target;
+  btn.textContent = '✓ Watched!';
+  btn.style.borderColor = '#4ADE80';
+  btn.style.color = '#4ADE80';
+  btn.style.background = 'rgba(74,222,128,0.15)';
+  btn.disabled = true;
+}
+
 function showScreen(id) {
   if(typeof cloudTtsStop === 'function') cloudTtsStop();
   if(typeof stopSpeech === 'function') stopSpeech();
@@ -3368,15 +3400,29 @@ function showBook(name) {
   const ytId = ytVideos[name];
   const detail = document.getElementById('book-detail');
   
-  let html = '<h2 style="font-family:\'Luckiest Guy\',cursive;font-size:24px;color:#FF6B6B;text-shadow:0 0 8px rgba(255,107,107,0.5)">'+m.icon+' '+name+'</h2>';
+  const watchBadge = (state.watchedVideos && state.watchedVideos.includes(name)) ? ' <span style="font-size:14px;vertical-align:middle" title="Video watched">🎬</span>' : '';
+  let html = '<h2 style="font-family:\'Luckiest Guy\',cursive;font-size:24px;color:#FF6B6B;text-shadow:0 0 8px rgba(255,107,107,0.5)">'+m.icon+' '+name+watchBadge+'</h2>';
   html += '<p style="color:#7888a8;margin:4px 0 12px">'+m.desc+' · '+chapters.length+' chapters</p>';
   
-  // YouTube video
-  html += '<div class="section-title" onclick="toggleYouTube()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between"><span>🎬 Introduction Video</span><span id="yt-toggle-icon" style="font-size:12px;color:#60A5FA;transition:transform 0.3s">▼</span></div>';
-  html += '<div id="yt-video-wrap" style="overflow:hidden;max-height:300px;transition:max-height 0.4s ease,opacity 0.3s;opacity:1">';
-  html += '<div class="video-container"><iframe src="https://www.youtube.com/embed/'+ytId+'?rel=0&modestbranding=1&playsinline=1" ' +
-    'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
-    'allowfullscreen></iframe></div></div>';
+  // YouTube video with auto-play, watch badge, offline fallback
+  const hasWatched = state.watchedVideos && state.watchedVideos.includes(name);
+  const isFirstVisit = !hasWatched;
+  const collapsed = hasWatched ? 'max-height:0;opacity:0' : 'max-height:300px;opacity:1';
+  const toggleIcon = hasWatched ? '▶' : '▼';
+  
+  html += '<div class="section-title" onclick="toggleYouTube()" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between"><span>🎬 Introduction Video' + (hasWatched ? ' <span style=\'color:#4ADE80;font-size:11px;margin-left:6px\'>✓ Watched</span>' : '') + '</span><span id="yt-toggle-icon" style="font-size:12px;color:#60A5FA;transition:transform 0.3s">' + toggleIcon + '</span></div>';
+  html += '<div id="yt-video-wrap" style="overflow:hidden;'+collapsed+';transition:max-height 0.4s ease,opacity 0.3s">';
+  
+  if(navigator.onLine) {
+    const autoplay = isFirstVisit ? '&autoplay=1' : '';
+    html += '<div class="video-container"><iframe id="yt-player" src="https://www.youtube.com/embed/'+ytId+'?rel=0&modestbranding=1&playsinline=1&enablejsapi=1'+autoplay+'" ' +
+      'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+      'allowfullscreen></iframe></div>';
+    html += '<div style="text-align:center;margin-top:8px"><button onclick="markVideoWatched(\''+name+'\');" style="background:transparent;border:1px solid #4ADE80;color:#4ADE80;padding:6px 16px;border-radius:20px;font-size:12px;cursor:pointer;transition:all 0.3s" onmouseover="this.style.background=\'rgba(74,222,128,0.15)\'" onmouseout="this.style.background=\'transparent\'">✓ Mark as Watched</button></div>';
+  } else {
+    html += '<div style="text-align:center;padding:30px 20px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px dashed #3a4a6a"><p style="color:#7888a8;margin:0;font-size:14px">📡 You\'re offline right now</p><p style="color:#5a6a8a;margin:6px 0 0;font-size:12px">Connect to the internet to watch the intro video</p></div>';
+  }
+  html += '</div>';
   
   // Chapter list
   html += '<div class="section-title">📖 Chapters</div><div class="chapter-list">';
