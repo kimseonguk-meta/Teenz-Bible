@@ -23,7 +23,7 @@ if('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Create inline service worker
     const swCode = `
-      const CACHE = 'teens-bible-v42';
+      const CACHE = 'teens-bible-v43';
       const PRECACHE_URLS = ['./', './index.html', './teens-bible.html'];
       
       self.addEventListener('install', e => {
@@ -1582,6 +1582,23 @@ mark.user-highlight.hl-red { background:rgba(248,113,113,0.3); color:inherit; }
 </style>
 
 <!-- FIX 3 CSS -->
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJ5qm_sCzkUfFGC8WcTGbjfviBz_SyNAg",
+    authDomain: "teens-bible-94271.firebaseapp.com",
+    databaseURL: "https://teens-bible-94271-default-rtdb.firebaseio.com",
+    projectId: "teens-bible-94271",
+    storageBucket: "teens-bible-94271.firebasestorage.app",
+    messagingSenderId: "226355097233",
+    appId: "1:226355097233:web:838afede878c9915225930"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const fbDb = firebase.database();
+</script>
 </head>
 <body>
 <script>
@@ -2915,17 +2932,33 @@ function submitReport(book, chNum) {
     return;
   }
   
-  // Save report to localStorage
-  const reports = JSON.parse(localStorage.getItem('teensBibleReports') || '[]');
-  reports.push({
+  const reportData = {
     book: book,
     chapter: chNum,
     reason: selectedReportReason,
     detail: detail,
     date: new Date().toISOString(),
-    status: 'pending'
-  });
-  localStorage.setItem('teensBibleReports', JSON.stringify(reports));
+    status: 'pending',
+    userAgent: navigator.userAgent
+  };
+  
+  // Save to Firebase Realtime Database
+  if(typeof fbDb !== 'undefined') {
+    fbDb.ref('reports').push(reportData).then(function() {
+      console.log('Report saved to Firebase');
+    }).catch(function(err) {
+      console.error('Firebase write error:', err);
+      // Fallback to localStorage if Firebase fails
+      const reports = JSON.parse(localStorage.getItem('teensBibleReports') || '[]');
+      reports.push(reportData);
+      localStorage.setItem('teensBibleReports', JSON.stringify(reports));
+    });
+  } else {
+    // Fallback to localStorage
+    const reports = JSON.parse(localStorage.getItem('teensBibleReports') || '[]');
+    reports.push(reportData);
+    localStorage.setItem('teensBibleReports', JSON.stringify(reports));
+  }
   
   // Close dialog
   const ov = document.querySelector('.report-overlay');

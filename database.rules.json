@@ -25,6 +25,11 @@
     "classConfig": {
       ".read": true,
       ".write": "auth != null"
+    },
+    "reports": {
+      ".read": "auth != null",
+      ".write": true,
+      ".indexOn": ["date", "book", "status"]
     }
   }
 }
