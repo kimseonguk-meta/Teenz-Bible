@@ -29,7 +29,11 @@
     "reports": {
       ".read": true,
       ".write": true,
-      ".indexOn": ["date", "book", "status"]
+      ".indexOn": [
+        "date",
+        "book",
+        "status"
+      ]
     },
     "flaggedChapters": {
       ".read": true,
@@ -38,9 +42,19 @@
     "notifications": {
       ".read": true,
       ".write": true,
-      ".indexOn": ["date"]
+      ".indexOn": [
+        "date"
+      ]
     },
     "adminTokens": {
+      ".read": true,
+      ".write": true
+    },
+    "memeReactions": {
+      ".read": true,
+      ".write": true
+    },
+    "memeSubmissions": {
       ".read": true,
       ".write": true
     }
