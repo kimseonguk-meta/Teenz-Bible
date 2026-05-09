@@ -177,7 +177,7 @@ function showOnboarding() {
 }
 
 function showOnboardStep1() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   
   // Remove existing overlay if any
   var existing = document.getElementById('onboarding-overlay');
@@ -194,20 +194,20 @@ function showOnboardStep1() {
     <div style="font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;">👋</div>
     <div style="color:#475569;font-size:12px;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">STEP 1 / 3</div>
     <h2 style="font-family:'Luckiest Guy',cursive;color:#FF6B6B;font-size:26px;margin-bottom:8px;">
-      ${isKo ? '이름이 뭐야?' : "What's your name?"}
+      ${"What's your name?"}
     </h2>
     <p style="color:#8899bb;font-size:14px;margin-bottom:28px;line-height:1.5;">
-      ${isKo ? '리더보드에 표시될 이름을 적어줘!' : 'This will show on the leaderboard!'}
+      ${'This will show on the leaderboard!'}
     </p>
     <div style="margin-bottom:28px;">
-      <input id="onboard-nickname" type="text" maxlength="12" placeholder="${isKo ? '이름 입력 (한국어/영어 OK!)' : 'Type your name here...'}" 
+      <input id="onboard-nickname" type="text" maxlength="12" placeholder="${'Type your name here...'}" 
         style="width:100%;padding:16px 20px;border-radius:14px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.07);color:#fff;font-size:18px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s;"
         onfocus="this.style.borderColor='#FF6B6B';this.style.boxShadow='0 0 20px rgba(255,107,107,0.2)'" 
         onblur="this.style.borderColor='rgba(100,140,200,0.3)';this.style.boxShadow='none'"
         onkeypress="if(event.key==='Enter')goToStep2()">
     </div>
     <button onclick="goToStep2()" style="width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:17px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;letter-spacing:1px;box-shadow:0 4px 20px rgba(255,107,107,0.3);transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
-      ${isKo ? '다음 →' : 'NEXT →'}
+      ${'NEXT →'}
     </button>
   `;
   
@@ -334,7 +334,7 @@ function saveClassConfig(callback) {
 }
 
 function buildClassDropdownHtml(isKo) {
-  var html = '<option value="" style="background:#1a2848;color:#8899bb;">' + (isKo ? '-- 반 선택 --' : '-- Select Class --') + '</option>';
+  var html = '<option value="" style="background:#1a2848;color:#8899bb;">' + '-- Select Class --' + '</option>';
   _classConfig.forEach(function(group) {
     html += '<optgroup label="' + group.label + '" style="background:#1a2848;color:#8899bb;">';
     group.classes.forEach(function(cls) {
@@ -346,7 +346,7 @@ function buildClassDropdownHtml(isKo) {
 }
 
 function showOnboardStep2() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   
   // Remove existing overlay
   var existing = document.getElementById('onboarding-overlay');
@@ -464,7 +464,7 @@ function showWelcomeCelebration(name) {
       particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       particle.style.cssText = 'position:absolute;top:-30px;left:' + left + '%;font-size:' + size + 'px;opacity:0;animation:confettiFall ' + duration + 's ease-out ' + delay + 's forwards;';
     } else {
-      particle.style.cssText = 'position:absolute;top:-20px;left:' + left + '%;width:' + size + 'px;height:' + size + 'px;background:' + color + ';border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';opacity:0;animation:confettiFall ' + duration + 's ease-out ' + delay + 's forwards;';
+      particle.style.cssText = 'position:absolute;top:-20px;left:' + left + '%;width:' + size + 'px;height:' + size + 'px;background:' + color + ';border-radius:' + (Math.random() > 0.5 ? '50%' : '2px(') + ');opacity:0;animation:confettiFall ' + duration + 's ease-out ' + delay + 's forwards;';
     }
     particle.style.setProperty('--drift', drift + 'px');
     particle.style.setProperty('--rotation', rotation + 'deg');
@@ -614,7 +614,7 @@ function showLeaderboard() {
     return;
   }
   
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const groupCode = userProfile.groupCode || 'GLOBAL';
   
   // Create overlay
@@ -629,33 +629,33 @@ function showLeaderboard() {
   // Header
   container.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h2 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:28px;margin:0;">🏆 ${isKo ? '리더보드' : 'LEADERBOARD'}</h2>
+      <h2 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:28px;margin:0;">🏆 ${'LEADERBOARD'}</h2>
       <button onclick="document.getElementById('leaderboard-overlay').remove()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
     </div>
     <div style="background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.2);border-radius:16px;padding:16px;margin-bottom:16px;">
       <div style="display:flex;gap:8px;margin-bottom:12px;" id="lb-tabs">
         <button class="lb-tab active" onclick="switchLbTab('xp')" id="lb-tab-xp" style="flex:1;padding:10px;border-radius:10px;border:none;background:#FF6B6B;color:#fff;font-size:13px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">⚡ XP</button>
-        <button class="lb-tab" onclick="switchLbTab('streak')" id="lb-tab-streak" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🔥 ${isKo ? '스트릭' : 'Streak'}</button>
-        <button class="lb-tab" onclick="switchLbTab('chapters')" id="lb-tab-chapters" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">📖 ${isKo ? '챕터' : 'Chapters'}</button>
-        <button class="lb-tab" onclick="switchLbTab('quiz')" id="lb-tab-quiz" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🧠 ${isKo ? '퀴즈' : 'Quiz'}</button>
+        <button class="lb-tab" onclick="switchLbTab('streak')" id="lb-tab-streak" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🔥 ${'Streak'}</button>
+        <button class="lb-tab" onclick="switchLbTab('chapters')" id="lb-tab-chapters" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">📖 ${'Chapters'}</button>
+        <button class="lb-tab" onclick="switchLbTab('quiz')" id="lb-tab-quiz" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;font-family:'Comic Neue',sans-serif;">🧠 ${'Quiz'}</button>
       </div>
       <div style="display:flex;gap:4px;margin-bottom:8px;" id="lb-time-tabs">
         <button onclick="switchLbTime('all')" id="lb-time-all" style="flex:1;padding:6px;border-radius:8px;border:none;background:#a78bfa;color:#fff;font-size:11px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-          ${isKo ? '전체' : 'All Time'}
+          ${'All Time'}
         </button>
         <button onclick="switchLbTime('week')" id="lb-time-week" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:11px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-          ${isKo ? '이번 주' : 'This Week'}
+          ${'This Week'}
         </button>
         <button onclick="switchLbTime('month')" id="lb-time-month" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:11px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-          ${isKo ? '이번 달' : 'This Month'}
+          ${'This Month'}
         </button>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px;" id="lb-scope-tabs">
         <button onclick="switchLbScope('myclass')" id="lb-scope-myclass" style="flex:1;padding:8px;border-radius:8px;border:none;background:#4ECDC4;color:#fff;font-size:12px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-          ${isKo ? '🏫 내 반' : '🏫 My Class'} (${groupCode})
+          ${'🏫 My Class'} (${groupCode})
         </button>
         <button onclick="switchLbScope('all')" id="lb-scope-all" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:12px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-          ${isKo ? '🌍 전체' : '🌍 All Classes'}
+          ${'🌍 All Classes'}
         </button>
       </div>
       <div id="lb-list" style="min-height:200px;">
@@ -664,7 +664,7 @@ function showLeaderboard() {
     </div>
     <div style="text-align:center;">
       <button onclick="showInviteCard()" style="padding:12px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,#4ECDC4,#3dbdb5);color:#fff;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-        ${isKo ? '📨 친구 초대하기' : '📨 Invite Friends'}
+        ${'📨 Invite Friends'}
       </button>
     </div>
   `;
@@ -746,7 +746,7 @@ function loadLeaderboard(sortBy) {
   if (!fbDb || !userProfile) return;
   
   const groupCode = userProfile.groupCode || 'GLOBAL';
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const listEl = document.getElementById('lb-list');
   if (!listEl) return;
   
@@ -758,7 +758,7 @@ function loadLeaderboard(sortBy) {
       const allGroups = snapshot.val();
       if (!allGroups) {
         listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">' + 
-          (isKo ? '아직 멤버가 없어요.' : 'No members yet.') + '</div>';
+          'No members yet.' + '</div>';
         return;
       }
       let members = [];
@@ -782,7 +782,7 @@ function loadLeaderboard(sortBy) {
     const data = snapshot.val();
     if (!data) {
       listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">' + 
-        (isKo ? '아직 멤버가 없어요. 친구를 초대해보세요!' : 'No members yet. Invite your friends!') + '</div>';
+        'No members yet. Invite your friends!' + '</div>';
       return;
     }
     
@@ -849,7 +849,7 @@ function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
     
     if (members.length === 0) {
       listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">' + 
-        (isKo ? '해당 기간에 활동한 멤버가 없어요.' : 'No active members in this period.') + '</div>';
+        'No active members in this period.' + '</div>';
       return;
     }
     
@@ -883,8 +883,8 @@ function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
         let valueText = '';
         switch(sortBy) {
           case 'xp': valueText = (m.xp||0).toLocaleString() + ' XP'; break;
-          case 'streak': valueText = (m.streak||0) + (isKo ? '일' : ' days'); break;
-          case 'chapters': valueText = (m.chaptersRead||0) + (isKo ? '장' : ' ch'); break;
+          case 'streak': valueText = (m.streak||0) + ' days'; break;
+          case 'chapters': valueText = (m.chaptersRead||0) + ' ch'; break;
           case 'quiz': 
             const rate = (m.quizTotal||0) > 0 ? Math.round((m.quizCorrect||0)/(m.quizTotal||1)*100) : 0;
             valueText = rate + '% (' + (m.quizCorrect||0) + '/' + (m.quizTotal||0) + ')';
@@ -895,12 +895,12 @@ function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
         
         html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:6px;' +
           'background:' + (isMe ? 'rgba(255,107,107,0.15)' : 'rgba(255,255,255,0.03)') + ';' +
-          'border:' + (isMe ? '1px solid rgba(255,107,107,0.3)' : '1px solid transparent') + ';">' +
+          'border:' + (isMe ? '1px solid rgba(255,107,107,0.3)' : '1px solid transparent(') + ');">' +
           '<div style="' + rankStyle + 'min-width:32px;text-align:center;">' + rank + '</div>' +
           '<div style="font-size:28px;">' + (m.avatar||'😎') + '</div>' +
           '<div style="flex:1;min-width:0;">' +
-            '<div style="font-size:14px;font-weight:bold;color:' + (isMe ? '#FF6B6B' : '#dde4f0') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-              (m.nickname||'Anonymous') + (isMe ? (isKo ? ' (나)' : ' (You)') : '') + rankDelta + classTag +
+            '<div style="font-size:14px;font-weight:bold;color:' + (isMe ? '#FF6B6B' : '#dde4f0(') + ');white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+              (m.nickname||'Anonymous') + (isMe ? ' (You)' : '') + rankDelta + classTag +
             '</div>' +
             '<div style="font-size:11px;color:#6880a8;">' + valueText + '</div>' +
           '</div>' +
@@ -917,7 +917,7 @@ function renderLeaderboardList(members, sortBy, isKo, listEl, showClass) {
 
 // === INVITE / CHALLENGE ===
 function showInviteCard() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const groupCode = userProfile ? userProfile.groupCode : 'GLOBAL';
   const nickname = userProfile ? userProfile.nickname : '';
   
@@ -936,25 +936,25 @@ function showInviteCard() {
   card.innerHTML = `
     <div style="font-size:48px;margin-bottom:12px;">📨</div>
     <h3 style="font-family:'Luckiest Guy',cursive;color:#4ECDC4;font-size:20px;margin-bottom:16px;">
-      ${isKo ? '친구 초대하기' : 'Invite Friends'}
+      ${'Invite Friends'}
     </h3>
     <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:16px;margin-bottom:16px;text-align:left;">
       <div style="color:#dde4f0;font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-word;">${inviteMsg}</div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:12px;">
       <button onclick="copyInvite()" id="copy-invite-btn" style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#4ECDC4,#3dbdb5);color:#fff;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-        📋 ${isKo ? '복사' : 'Copy'}
+        📋 ${'Copy'}
       </button>
       ${navigator.share ? `<button onclick="shareInvite()" style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-        📤 ${isKo ? '공유' : 'Share'}
+        📤 ${'Share'}
       </button>` : ''}
     </div>
     <div style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:12px;margin-bottom:12px;">
-      <div style="color:#FFD700;font-size:12px;font-weight:bold;margin-bottom:4px;">${isKo ? '나섬틴즈부 반' : 'Nasam Teens Class'}</div>
+      <div style="color:#FFD700;font-size:12px;font-weight:bold;margin-bottom:4px;">${'Nasam Teens Class'}</div>
       <div style="color:#fff;font-size:24px;font-family:'Luckiest Guy',cursive;letter-spacing:3px;">${groupCode}</div>
     </div>
     <button onclick="document.getElementById('invite-overlay').remove()" style="padding:10px 24px;border-radius:10px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:13px;cursor:pointer;">
-      ${isKo ? '닫기' : 'Close'}
+      ${'Close'}
     </button>
   `;
   
@@ -963,7 +963,7 @@ function showInviteCard() {
 }
 
 function copyInvite() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const groupCode = userProfile ? userProfile.groupCode : 'GLOBAL';
   const nickname = userProfile ? userProfile.nickname : '';
   
@@ -974,14 +974,14 @@ function copyInvite() {
   navigator.clipboard.writeText(msg).then(() => {
     const btn = document.getElementById('copy-invite-btn');
     if (btn) {
-      btn.textContent = isKo ? '✅ 복사됨!' : '✅ Copied!';
-      setTimeout(() => btn.textContent = isKo ? '📋 복사' : '📋 Copy', 2000);
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
     }
   });
 }
 
 function shareInvite() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const groupCode = userProfile ? userProfile.groupCode : 'GLOBAL';
   const nickname = userProfile ? userProfile.nickname : '';
   
@@ -999,8 +999,8 @@ function shareInvite() {
 // === ENHANCED SHARE CARD ===
 function generateEnhancedShareCard() {
   const s = typeof state !== 'undefined' ? state : {};
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
-  const nickname = userProfile ? userProfile.nickname : (isKo ? '나' : 'Me');
+  const isKo = false; // UI always English
+  const nickname = userProfile ? userProfile.nickname : 'Me';
   const avatar = userProfile ? userProfile.avatar : '😎';
   
   const canvas = document.createElement('canvas');
@@ -1037,14 +1037,14 @@ function generateEnhancedShareCard() {
   // Title
   ctx.font = 'bold 28px "Luckiest Guy", cursive, sans-serif';
   ctx.fillStyle = '#FFD700';
-  ctx.fillText(isKo ? '📖 나의 성경읽기 기록' : '📖 My Bible Journey', 300, 210);
+  ctx.fillText('📖 My Bible Journey', 300, 210);
   
   // Stats cards
   const stats = [
-    { icon: '🔥', label: isKo ? '연속 읽기' : 'Day Streak', value: (s.streak||0) + (isKo ? '일' : ' days'), color: '#FF6B6B' },
-    { icon: '📖', label: isKo ? '읽은 챕터' : 'Chapters Read', value: String(s.chaptersRead||0), color: '#4ECDC4' },
-    { icon: '⚡', label: isKo ? '총 XP' : 'Total XP', value: (s.xp||0).toLocaleString(), color: '#FFD700' },
-    { icon: '🧠', label: isKo ? '퀴즈 정답률' : 'Quiz Score', value: ((s.quizTotal||0) > 0 ? Math.round((s.quizCorrect||0)/(s.quizTotal||1)*100) + '%' : 'N/A'), color: '#a78bfa' }
+    { icon: '🔥', label: 'Day Streak', value: (s.streak||0) + ' days', color: '#FF6B6B' },
+    { icon: '📖', label: 'Chapters Read', value: String(s.chaptersRead||0), color: '#4ECDC4' },
+    { icon: '⚡', label: 'Total XP', value: (s.xp||0).toLocaleString(), color: '#FFD700' },
+    { icon: '🧠', label: 'Quiz Score', value: ((s.quizTotal||0) > 0 ? Math.round((s.quizCorrect||0)/(s.quizTotal||1)*100) + '%' : 'N/A'), color: '#a78bfa' }
   ];
   
   const cardY = 250;
@@ -1085,7 +1085,7 @@ function generateEnhancedShareCard() {
     ctx.textAlign = 'center';
     ctx.font = 'bold 18px "Comic Neue", sans-serif';
     ctx.fillStyle = '#FFD700';
-    ctx.fillText('🏆 ' + (isKo ? '획득한 뱃지' : 'Earned Badges') + ' (' + badges.length + ')', 300, 560);
+    ctx.fillText('🏆 ' + 'Earned Badges' + ' (' + badges.length + ')', 300, 560);
     
     // Show badge icons (max 8)
     const badgeIcons = typeof BADGES !== 'undefined' ? BADGES.filter(b => badges.includes(b.id)).slice(0, 8) : [];
@@ -1100,14 +1100,14 @@ function generateEnhancedShareCard() {
   ctx.textAlign = 'center';
   ctx.font = 'bold 20px "Comic Neue", sans-serif';
   ctx.fillStyle = '#4ECDC4';
-  const challengeText = isKo ? '같이 성경 읽자! 🚀' : 'Join my Bible challenge! 🚀';
+  const challengeText = 'Join my Bible challenge! 🚀';
   ctx.fillText(challengeText, 300, 670);
   
   // Group code
   if (userProfile && userProfile.groupCode && userProfile.groupCode !== 'GLOBAL') {
     ctx.font = '14px "Comic Neue", sans-serif';
     ctx.fillStyle = '#6880a8';
-    ctx.fillText((isKo ? '반: ' : 'Class: ') + userProfile.groupCode, 300, 700);
+    ctx.fillText('Class: ' + userProfile.groupCode, 300, 700);
   }
   
   // Footer
@@ -1180,7 +1180,7 @@ function updateSocialUI() {
 
 // === PROFILE EDIT ===
 function showProfileEdit() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   
   const overlay = document.createElement('div');
   overlay.id = 'profile-edit-overlay';
@@ -1195,7 +1195,7 @@ function showProfileEdit() {
   
   card.innerHTML = `
     <h3 style="font-family:'Luckiest Guy',cursive;color:#FF6B6B;font-size:20px;text-align:center;margin-bottom:20px;">
-      ${isKo ? '프로필 수정' : 'Edit Profile'}
+      ${'Edit Profile'}
     </h3>
     <div style="text-align:center;margin-bottom:16px;">
       <div id="selected-avatar" style="font-size:56px;">${currentAvatar}</div>
@@ -1207,13 +1207,13 @@ function showProfileEdit() {
       style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;margin-bottom:12px;box-sizing:border-box;">
     <input id="edit-group" type="text" maxlength="20" value="${userProfile?userProfile.groupCode:''}" 
       style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;margin-bottom:20px;box-sizing:border-box;"
-      placeholder="${isKo ? '나섬틴즈부 반' : 'Nasam Teens Class'}">
+      placeholder="${'Nasam Teens Class'}">
     <div style="display:flex;gap:8px;">
       <button onclick="document.getElementById('profile-edit-overlay').remove()" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:14px;cursor:pointer;">
-        ${isKo ? '취소' : 'Cancel'}
+        ${'Cancel'}
       </button>
       <button onclick="saveProfileEdit()" style="flex:2;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Luckiest Guy',cursive;">
-        ${isKo ? '저장' : 'SAVE'}
+        ${'SAVE'}
       </button>
     </div>
   `;
@@ -1253,14 +1253,14 @@ function saveProfileEdit() {
   if (overlay) overlay.remove();
   
   if (typeof showXpToast === 'function') {
-    const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
-    showXpToast(isKo ? '✅ 프로필 저장됨!' : '✅ Profile saved!');
+    const isKo = false; // UI always English
+    showXpToast('✅ Profile saved!');
   }
 }
 
 // === CHALLENGE LINK ===
 function createChallenge(type) {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const nickname = userProfile ? userProfile.nickname : '';
   const groupCode = userProfile ? userProfile.groupCode : 'GLOBAL';
   
@@ -1291,7 +1291,7 @@ function createChallenge(type) {
     }).catch(() => {});
   } else {
     navigator.clipboard.writeText(challengeText).then(() => {
-      if (typeof showXpToast === 'function') showXpToast(isKo ? '✅ 복사됨!' : '✅ Copied!');
+      if (typeof showXpToast === 'function') showXpToast('✅ Copied!');
     });
   }
 }
@@ -1304,13 +1304,13 @@ function addSocialSettings() {
   // Check if already added
   if (document.getElementById('social-settings-section')) return;
   
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const section = document.createElement('div');
   section.id = 'social-settings-section';
   section.style.cssText = 'margin-top:20px;';
   section.innerHTML = `
     <div style="font-family:'Luckiest Guy',cursive;font-size:18px;color:#4ECDC4;margin-bottom:12px;">
-      👥 ${isKo ? '소셜 설정' : 'Social Settings'}
+      👥 ${'Social Settings'}
     </div>
     <div onclick="showProfileEdit()" style="background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(100,140,200,0.2);border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px;">
       <div style="font-size:28px;">${userProfile?userProfile.avatar:'😎'}</div>
@@ -1362,7 +1362,7 @@ const _origShowQuizShare = typeof showQuizShareOverlay === 'function' ? showQuiz
 showQuizShareOverlay = function() {
   const canvas = generateEnhancedShareCard();
   if(!canvas) { if(_origShowQuizShare) _origShowQuizShare(); return; }
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   
   const ov = document.createElement('div');
   ov.className = 'quiz-share-overlay';
@@ -1382,7 +1382,7 @@ showQuizShareOverlay = function() {
   
   const saveBtn = document.createElement('button');
   saveBtn.className = 'qsa-save';
-  saveBtn.textContent = isKo ? '💾 저장' : '💾 Save';
+  saveBtn.textContent = '💾 Save';
   saveBtn.onclick = function() {
     const link = document.createElement('a');
     link.download = 'teenz-bible-stats.png';
@@ -1394,7 +1394,7 @@ showQuizShareOverlay = function() {
   if(navigator.share && navigator.canShare) {
     const shareBtn = document.createElement('button');
     shareBtn.className = 'qsa-share';
-    shareBtn.textContent = isKo ? '📤 공유' : '📤 Share';
+    shareBtn.textContent = '📤 Share';
     shareBtn.onclick = async function() {
       try {
         canvas.toBlob(async function(blob) {
@@ -1402,7 +1402,7 @@ showQuizShareOverlay = function() {
           if(navigator.canShare({files: [file]})) {
             await navigator.share({
               title: 'Teenz Bible Stats',
-              text: isKo ? '나의 Teenz Bible 성경읽기 기록!' : 'My Teenz Bible Journey!',
+              text: 'My Teenz Bible Journey!',
               files: [file]
             });
           }
@@ -1414,7 +1414,7 @@ showQuizShareOverlay = function() {
   
   const closeBtn = document.createElement('button');
   closeBtn.className = 'qsa-close';
-  closeBtn.textContent = isKo ? '닫기' : 'Close';
+  closeBtn.textContent = 'Close';
   closeBtn.onclick = function() { ov.remove(); };
   actions.appendChild(closeBtn);
   
@@ -1427,7 +1427,7 @@ showQuizShareOverlay = function() {
 const ADMIN_PIN = '7777';
 
 function showAdminLogin() {
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   const overlay = document.createElement('div');
   overlay.id = 'admin-login-overlay';
   overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);';
@@ -1438,26 +1438,26 @@ function showAdminLogin() {
   card.innerHTML = `
     <div style="font-size:48px;margin-bottom:12px;">🔐</div>
     <h3 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:22px;margin-bottom:8px;">
-      ${isKo ? '선생님 대시보드' : 'Teacher Dashboard'}
+      ${'Teacher Dashboard'}
     </h3>
     <p style="color:#6880a8;font-size:13px;margin-bottom:20px;">
-      ${isKo ? 'PIN을 입력해주세요' : 'Enter your PIN to access'}
+      ${'Enter your PIN to access'}
     </p>
     <input id="admin-pin-input" type="password" maxlength="4" placeholder="PIN" 
       style="width:120px;padding:14px;border-radius:12px;border:2px solid rgba(100,140,200,0.3);background:rgba(255,255,255,0.05);color:#fff;font-size:24px;text-align:center;outline:none;font-family:'Comic Neue',sans-serif;letter-spacing:8px;box-sizing:border-box;"
       onfocus="this.style.borderColor='#FFD700'" onblur="this.style.borderColor='rgba(100,140,200,0.3)'"
       onkeyup="if(event.key==='Enter')verifyAdminPin()">
     <div id="admin-pin-error" style="color:#f87171;font-size:12px;margin-top:8px;display:none;">
-      ${isKo ? '잘못된 PIN입니다' : 'Incorrect PIN'}
+      ${'Incorrect PIN'}
     </div>
     <div style="display:flex;gap:8px;margin-top:16px;">
       <button onclick="document.getElementById('admin-login-overlay').remove()" 
         style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(100,140,200,0.3);background:transparent;color:#6880a8;font-size:14px;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-        ${isKo ? '취소' : 'Cancel'}
+        ${'Cancel'}
       </button>
       <button onclick="verifyAdminPin()" 
         style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a2848;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
-        ${isKo ? '확인' : 'Enter'}
+        ${'Enter'}
       </button>
     </div>
   `;
@@ -1483,7 +1483,7 @@ function verifyAdminPin() {
 
 function showAdminDashboard() {
   if (!fbDb) return;
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   
   const overlay = document.createElement('div');
   overlay.id = 'admin-dashboard-overlay';
@@ -1493,7 +1493,7 @@ function showAdminDashboard() {
     <div style="max-width:600px;margin:0 auto;padding:20px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
         <h2 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:24px;margin:0;">
-          📊 ${isKo ? '선생님 대시보드' : 'Teacher Dashboard'}
+          📊 ${'Teacher Dashboard'}
         </h2>
         <button onclick="document.getElementById('admin-dashboard-overlay').remove()" 
           style="background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
@@ -1506,7 +1506,7 @@ function showAdminDashboard() {
       <!-- Class Management Section -->
       <div style="margin-top:24px;background:linear-gradient(160deg,#1a2848,#0e1830);border:1px solid rgba(255,215,0,0.2);border-radius:16px;padding:20px;">
         <h3 style="font-family:'Luckiest Guy',cursive;color:#FFD700;font-size:18px;margin-bottom:16px;">
-          ⚙️ ${isKo ? '반 관리' : 'Class Management'}
+          ⚙️ ${'Class Management'}
         </h3>
         <div id="admin-class-manager">
           <div style="text-align:center;padding:20px;color:#6880a8;">Loading classes...</div>
@@ -1523,14 +1523,14 @@ function showAdminDashboard() {
 function renderClassManager() {
   var el = document.getElementById('admin-class-manager');
   if (!el) return;
-  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  var isKo = false; // UI always English
   
   var html = '';
   _classConfig.forEach(function(group, gi) {
     html += '<div style="margin-bottom:16px;background:rgba(0,0,0,0.2);border-radius:12px;padding:14px;">';
     html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
     html += '<input type="text" value="' + group.label + '" onchange="_classConfig[' + gi + '].label=this.value" style="background:transparent;border:1px solid rgba(100,140,200,0.3);border-radius:8px;padding:6px 10px;color:#FFD700;font-size:14px;font-weight:bold;font-family:Comic Neue,sans-serif;width:120px;outline:none;" />';
-    html += '<button onclick="removeClassGroup(' + gi + ')" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:8px;padding:4px 10px;color:#f87171;font-size:12px;cursor:pointer;">' + (isKo ? '삭제' : 'Remove') + '</button>';
+    html += '<button onclick="removeClassGroup(' + gi + ')" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.3);border-radius:8px;padding:4px 10px;color:#f87171;font-size:12px;cursor:pointer;">' + 'Remove' + '</button>';
     html += '</div>';
     html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">';
     group.classes.forEach(function(cls, ci) {
@@ -1541,15 +1541,15 @@ function renderClassManager() {
     });
     html += '</div>';
     html += '<div style="display:flex;gap:6px;">';
-    html += '<input type="text" id="new-class-' + gi + '" placeholder="' + (isKo ? '새 반 (e.g. 10E)' : 'New class (e.g. 10E)') + '" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(100,140,200,0.3);border-radius:8px;padding:6px 10px;color:#fff;font-size:13px;outline:none;font-family:Comic Neue,sans-serif;" onkeyup="if(event.key===\'Enter\')addClassToGroup(' + gi + ')" />';
-    html += '<button onclick="addClassToGroup(' + gi + ')" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);border-radius:8px;padding:6px 12px;color:#4ECDC4;font-size:12px;cursor:pointer;white-space:nowrap;">+ ' + (isKo ? '추가' : 'Add') + '</button>';
+    html += '<input type="text" id="new-class-' + gi + '" placeholder="' + 'New class (e.g. 10E)' + '" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(100,140,200,0.3);border-radius:8px;padding:6px 10px;color:#fff;font-size:13px;outline:none;font-family:Comic Neue,sans-serif;" onkeyup="if(event.key===\'Enter\')addClassToGroup(' + gi + ')" />';
+    html += '<button onclick="addClassToGroup(' + gi + ')" style="background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.3);border-radius:8px;padding:6px 12px;color:#4ECDC4;font-size:12px;cursor:pointer;white-space:nowrap;">+ ' + 'Add' + '</button>';
     html += '</div>';
     html += '</div>';
   });
   
   html += '<div style="display:flex;gap:8px;margin-top:12px;">';
-  html += '<button onclick="addClassGroup()" style="flex:1;padding:10px;border-radius:12px;border:1px dashed rgba(255,215,0,0.3);background:transparent;color:#FFD700;font-size:13px;cursor:pointer;font-family:Comic Neue,sans-serif;">+ ' + (isKo ? '새 그룹 추가' : 'Add New Group') + '</button>';
-  html += '<button onclick="saveClassConfigAndRefresh()" style="flex:1;padding:10px;border-radius:12px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a2848;font-size:13px;font-weight:bold;cursor:pointer;font-family:Comic Neue,sans-serif;">' + (isKo ? '💾 저장' : '💾 Save Changes') + '</button>';
+  html += '<button onclick="addClassGroup()" style="flex:1;padding:10px;border-radius:12px;border:1px dashed rgba(255,215,0,0.3);background:transparent;color:#FFD700;font-size:13px;cursor:pointer;font-family:Comic Neue,sans-serif;">+ ' + 'Add New Group' + '</button>';
+  html += '<button onclick="saveClassConfigAndRefresh()" style="flex:1;padding:10px;border-radius:12px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1a2848;font-size:13px;font-weight:bold;cursor:pointer;font-family:Comic Neue,sans-serif;">' + '💾 Save Changes' + '</button>';
   html += '</div>';
   
   el.innerHTML = html;
@@ -1571,31 +1571,31 @@ function removeClassFromGroup(gi, ci) {
 }
 
 function removeClassGroup(gi) {
-  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
-  if (!confirm(isKo ? '이 그룹을 삭제하시겠습니까?' : 'Remove this group?')) return;
+  var isKo = false; // UI always English
+  if (!confirm('Remove this group?')) return;
   _classConfig.splice(gi, 1);
   renderClassManager();
 }
 
 function addClassGroup() {
-  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
-  var label = prompt(isKo ? '그룹 이름 (e.g. 2014년생):' : 'Group label (e.g. Grade 9):');
+  var isKo = false; // UI always English
+  var label = prompt('Group label (e.g. Grade 9):');
   if (!label) return;
   _classConfig.push({ label: label, classes: [] });
   renderClassManager();
 }
 
 function saveClassConfigAndRefresh() {
-  var isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  var isKo = false; // UI always English
   saveClassConfig(function() {
     _classConfigLoaded = false; // Force reload next time
-    if (typeof showXpToast === 'function') showXpToast(isKo ? '✅ 반 목록이 저장되었습니다!' : '✅ Class list saved!');
+    if (typeof showXpToast === 'function') showXpToast('✅ Class list saved!');
   });
 }
 
 function loadAdminData() {
   if (!fbDb) return;
-  const isKo = (typeof readerLang !== 'undefined' && readerLang === 'ko');
+  const isKo = false; // UI always English
   
   fbDb.ref('groups').once('value').then(function(snapshot) {
     const allGroups = snapshot.val();
@@ -1633,19 +1633,19 @@ function loadAdminData() {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div style="background:linear-gradient(135deg,#4ECDC4,#3dbdb5);border-radius:14px;padding:16px;text-align:center;">
           <div style="font-size:28px;font-weight:bold;color:#fff;font-family:'Luckiest Guy',cursive;">${totalStudents}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${isKo ? '전체 학생' : 'Total Students'}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${'Total Students'}</div>
         </div>
         <div style="background:linear-gradient(135deg,#FF6B6B,#ee5a5a);border-radius:14px;padding:16px;text-align:center;">
           <div style="font-size:28px;font-weight:bold;color:#fff;font-family:'Luckiest Guy',cursive;">${activeToday}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${isKo ? '오늘 활동' : 'Active Today'}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${'Active Today'}</div>
         </div>
         <div style="background:linear-gradient(135deg,#FFD700,#FFA500);border-radius:14px;padding:16px;text-align:center;">
           <div style="font-size:28px;font-weight:bold;color:#1a2848;font-family:'Luckiest Guy',cursive;">${totalChapters}</div>
-          <div style="font-size:12px;color:rgba(26,40,72,0.8);">${isKo ? '총 읽은 챕터' : 'Chapters Read'}</div>
+          <div style="font-size:12px;color:rgba(26,40,72,0.8);">${'Chapters Read'}</div>
         </div>
         <div style="background:linear-gradient(135deg,#a78bfa,#8b5cf6);border-radius:14px;padding:16px;text-align:center;">
           <div style="font-size:28px;font-weight:bold;color:#fff;font-family:'Luckiest Guy',cursive;">${totalQuizzes}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${isKo ? '총 퀴즈 수' : 'Quizzes Taken'}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">${'Quizzes Taken'}</div>
         </div>
       </div>
     `;
@@ -1697,7 +1697,7 @@ function loadAdminData() {
           <div onclick="toggleClassDetail('class-detail-${gCode}')" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;">
             <div>
               <span style="font-family:'Luckiest Guy',cursive;color:#4ECDC4;font-size:20px;">${gCode}</span>
-              <span style="color:#6880a8;font-size:13px;margin-left:8px;">${members.length} ${isKo ? '명' : 'students'}</span>
+              <span style="color:#6880a8;font-size:13px;margin-left:8px;">${members.length} ${'students'}</span>
             </div>
             <div style="display:flex;gap:12px;align-items:center;">
               <span style="color:#FFD700;font-size:12px;">⚡${avgXp} avg</span>
@@ -1708,14 +1708,14 @@ function loadAdminData() {
           <div id="class-detail-${gCode}" style="display:none;margin-top:12px;border-top:1px solid rgba(100,140,200,0.15);padding-top:12px;">
             <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
               <div style="background:rgba(78,205,196,0.1);border-radius:8px;padding:6px 10px;font-size:11px;color:#4ECDC4;">
-                ${isKo ? '활동중' : 'Active'}: ${activeCount}/${members.length}
+                ${'Active'}: ${activeCount}/${members.length}
               </div>
             </div>
             
             <!-- READING PROGRESS CHART -->
             <div style="background:rgba(0,0,0,0.2);border-radius:12px;padding:14px;margin-bottom:14px;">
               <div style="font-size:12px;font-weight:bold;color:#dde4f0;margin-bottom:10px;">
-                📊 ${isKo ? '학생별 읽기 진행률' : 'Reading Progress by Student'}
+                📊 ${'Reading Progress by Student'}
               </div>
               ${members.map(m => {
                 const bp = m.booksProgress || {};
@@ -1743,7 +1743,7 @@ function loadAdminData() {
               
               <!-- Per-book breakdown -->
               <div style="margin-top:12px;border-top:1px solid rgba(100,140,200,0.1);padding-top:10px;">
-                <div style="font-size:11px;color:#6880a8;margin-bottom:8px;">${isKo ? '책별 진행률 (반 평균)' : 'Per-Book Progress (Class Avg)'}</div>
+                <div style="font-size:11px;color:#6880a8;margin-bottom:8px;">${'Per-Book Progress (Class Avg)'}</div>
                 ${Object.entries(bookChapterCounts).filter(([book]) => {
                   // Only show books that at least one student has started
                   return members.some(m => m.booksProgress && m.booksProgress[book] && m.booksProgress[book].length > 0);
@@ -1767,7 +1767,7 @@ function loadAdminData() {
             </div>
             
             <div style="font-size:11px;color:#6880a8;margin-bottom:6px;display:grid;grid-template-columns:36px 28px 1fr 60px 50px 50px 50px;gap:4px;padding:0 4px;">
-              <div>#</div><div></div><div>${isKo ? '이름' : 'Name'}</div><div style="text-align:right;">XP</div><div style="text-align:right;">📖</div><div style="text-align:right;">🔥</div><div style="text-align:right;">🧠</div>
+              <div>#</div><div></div><div>${'Name'}</div><div style="text-align:right;">XP</div><div style="text-align:right;">📖</div><div style="text-align:right;">🔥</div><div style="text-align:right;">🧠</div>
             </div>`;
       
       members.forEach((m, i) => {

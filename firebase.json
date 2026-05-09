@@ -55,7 +55,8 @@
           }
         ]
       }
-    ]
+    ],
+    "site": "teens-bible-94271"
   },
   "database": {
     "rules": "database.rules.json"
