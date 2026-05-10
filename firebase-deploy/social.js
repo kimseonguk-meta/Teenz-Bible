@@ -665,6 +665,9 @@ function showLeaderboard() {
       <div id="lb-list" style="min-height:200px;">
         <div style="text-align:center;padding:40px;color:#6880a8;">Loading...</div>
       </div>
+      <div id="lb-class-filter" style="display:none;margin-bottom:10px;">
+        <div style="display:flex;flex-wrap:wrap;gap:4px;" id="lb-class-chips"></div>
+      </div>
     </div>
     <div style="text-align:center;">
       <button onclick="showInviteCard()" style="padding:12px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,#4ECDC4,#3dbdb5);color:#fff;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Comic Neue',sans-serif;">
@@ -727,8 +730,59 @@ function switchLbScope(scope) {
       myBtn.style.border = '1px solid rgba(100,140,200,0.3)';
     }
   }
+  // Show/hide class filter chips
+  const classFilter = document.getElementById('lb-class-filter');
+  if (classFilter) {
+    if (scope === 'all') {
+      classFilter.style.display = 'block';
+      currentLbClassFilter = 'all';
+      loadClassChips();
+    } else {
+      classFilter.style.display = 'none';
+      currentLbClassFilter = 'all';
+    }
+  }
   loadLeaderboard(currentLbTab);
 }
+
+let currentLbClassFilter = 'all';
+let availableClasses = [];
+
+function loadClassChips() {
+  if (!fbDb) return;
+  const chipsEl = document.getElementById('lb-class-chips');
+  if (!chipsEl) return;
+  
+  fbDb.ref('groups').once('value').then(function(snapshot) {
+    const allGroups = snapshot.val();
+    if (!allGroups) return;
+    availableClasses = Object.keys(allGroups).sort();
+    renderClassChips(chipsEl);
+  });
+}
+
+function renderClassChips(chipsEl) {
+  let html = '<button onclick="filterByClass(\u0027all\u0027)" style="padding:5px 12px;border-radius:16px;border:none;font-size:11px;font-weight:bold;cursor:pointer;font-family:Comic Neue,sans-serif;' +
+    (currentLbClassFilter === 'all' ? 'background:#FF6B6B;color:#fff;' : 'background:rgba(255,255,255,0.08);color:#6880a8;') +
+    '">All</button>';
+  
+  availableClasses.forEach(function(cls) {
+    const isActive = currentLbClassFilter === cls;
+    html += '<button onclick="filterByClass(\u0027'+cls+'\u0027)" style="padding:5px 12px;border-radius:16px;border:none;font-size:11px;font-weight:bold;cursor:pointer;font-family:Comic Neue,sans-serif;' +
+      (isActive ? 'background:#FF6B6B;color:#fff;' : 'background:rgba(255,255,255,0.08);color:#6880a8;') +
+      '">' + cls + '</button>';
+  });
+  
+  chipsEl.innerHTML = html;
+}
+
+function filterByClass(classCode) {
+  currentLbClassFilter = classCode;
+  const chipsEl = document.getElementById('lb-class-chips');
+  if (chipsEl) renderClassChips(chipsEl);
+  loadLeaderboard(currentLbTab);
+}
+
 function switchLbTab(tab) {
   currentLbTab = tab;
   // Update tab styles
@@ -757,6 +811,23 @@ function loadLeaderboard(sortBy) {
   listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">Loading...</div>';
   
   if (currentLbScope === 'all') {
+    // Check if filtering by specific class
+    if (currentLbClassFilter && currentLbClassFilter !== 'all') {
+      fbDb.ref('groups/' + currentLbClassFilter + '/members').once('value').then(function(snapshot) {
+        const data = snapshot.val();
+        if (!data) {
+          listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6880a8;">' + 
+            'No members in ' + currentLbClassFilter + '</div>';
+          return;
+        }
+        let members = Object.entries(data).map(([uid, d]) => ({uid, groupCode: currentLbClassFilter, ...d}));
+        renderLeaderboardList(members, sortBy, isKo, listEl, true);
+      }).catch(function(err) {
+        console.log('Leaderboard error:', err);
+        listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#f87171;">Error loading data</div>';
+      });
+      return;
+    }
     // Load ALL groups
     fbDb.ref('groups').once('value').then(function(snapshot) {
       const allGroups = snapshot.val();
