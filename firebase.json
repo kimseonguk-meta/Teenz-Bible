@@ -54,6 +54,15 @@
             "value": "/"
           }
         ]
+      },
+      {
+        "source": "memes/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, must-revalidate"
+          }
+        ]
       }
     ],
     "site": "teens-bible-94271"
