@@ -286,6 +286,8 @@ function completeOnboardingAsIndividual() {
   };
   
   localStorage.setItem('teensBibleProfile', JSON.stringify(userProfile));
+  localStorage.setItem('playerName', _onboardNickname);
+  if (typeof setPlayerName === 'function') setPlayerName(_onboardNickname);
   syncUserData();
   
   const overlay = document.getElementById('onboarding-overlay');
@@ -420,6 +422,8 @@ function completeOnboarding() {
   };
   
   localStorage.setItem('teensBibleProfile', JSON.stringify(userProfile));
+  localStorage.setItem('playerName', _onboardNickname);
+  if (typeof setPlayerName === 'function') setPlayerName(_onboardNickname);
   
   // Save to Firebase
   syncUserData();
