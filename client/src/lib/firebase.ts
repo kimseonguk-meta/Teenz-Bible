@@ -30,6 +30,7 @@ export interface LeaderboardMember {
   quizTotal: number;
   quizCorrect: number;
   lastActive: number;
+  joinedAt?: number;
 }
 
 export type SortBy = "xp" | "streak" | "chapters" | "quiz";
@@ -147,6 +148,8 @@ export async function syncUserToFirebase(uid: string) {
     chaptersRead,
     quizTotal: teensBible.quizTotal || 0,
     quizCorrect: teensBible.quizCorrect || 0,
+    joinedAt: userProfile.joinedAt || Date.now(),
+    isNasumMember: userProfile.isNasumMember || false,
     lastActive: serverTimestamp(),
     updatedAt: serverTimestamp()
   };

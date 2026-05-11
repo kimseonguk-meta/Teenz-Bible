@@ -158,8 +158,10 @@ export default function Leaderboard() {
       ) : error ? (
         <div className="text-center py-12 text-red-400">{error}</div>
       ) : members.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
-          No active members in this period.
+        <div className="flex flex-col items-center justify-center py-12 gap-2">
+          <span className="text-4xl">🏆</span>
+          <p className="text-gray-400 text-sm">No active members in this period.</p>
+          <p className="text-gray-500 text-xs">Start reading to appear on the leaderboard!</p>
         </div>
       ) : (
         <>
@@ -243,7 +245,9 @@ export default function Leaderboard() {
                         {member.nickname || "Anonymous"}
                         {isMe && " (You)"}
                       </p>
-                      <span className="text-[9px] text-gray-500">NEW</span>
+                      {member.joinedAt && (Date.now() - member.joinedAt < 7 * 24 * 60 * 60 * 1000) && (
+                        <span className="text-[9px] text-gray-500">NEW</span>
+                      )}
                       {scope === "all" && member.groupCode && (
                         <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0">
                           {member.groupCode}

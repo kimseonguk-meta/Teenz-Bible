@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
+import { toast } from "sonner";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 // Standard chapter counts for each Bible book
@@ -135,6 +136,21 @@ export default function Home() {
 
   const memeUrl = getDailyMemeUrl();
 
+  // Meme reactions state
+  const [memeLoaded, setMemeLoaded] = useState(false);
+  const [reactions, setReactions] = useState<Record<string, number>>(() => {
+    try { return JSON.parse(localStorage.getItem("memeReactions") || "{}"); } catch { return {}; }
+  });
+  const [userReaction, setUserReaction] = useState<string | null>(() => localStorage.getItem("memeUserReaction_" + new Date().toISOString().split("T")[0]));
+  const handleReaction = (emoji: string) => {
+    const today = new Date().toISOString().split("T")[0];
+    const newReactions = { ...reactions };
+    if (userReaction) { newReactions[userReaction] = Math.max(0, (newReactions[userReaction] || 1) - 1); }
+    if (userReaction === emoji) { setUserReaction(null); localStorage.removeItem("memeUserReaction_" + today); }
+    else { newReactions[emoji] = (newReactions[emoji] || 0) + 1; setUserReaction(emoji); localStorage.setItem("memeUserReaction_" + today, emoji); }
+    setReactions(newReactions); localStorage.setItem("memeReactions", JSON.stringify(newReactions));
+  };
+
   const greeting = playerName ? `Hey ${playerName}!` : "Hey there!";
   const equipped = getEquipped();
   const equippedPet = PETS.find(p => p.id === equipped.pet);
@@ -146,7 +162,7 @@ export default function Home() {
       <div className="flex items-center gap-4">
         <div className="relative">
           <div className={`w-16 h-16 rounded-full overflow-hidden bg-purple-900/50 flex items-center justify-center ${equippedFrame?.frameClass || 'border-[3px] border-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]'}`}>
-            <span className="text-3xl">👦</span>
+            <span className="text-3xl">{(() => { try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return p.avatar || "👦"; } catch { return "👦"; } })()}</span>
           </div>
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
           {equippedPet && <div className="absolute -top-1 -left-1 text-lg">{equippedPet.petEmoji}</div>}
@@ -195,7 +211,7 @@ export default function Home() {
 
       {/* Bible AI - Prominent Card */}
       <button
-        onClick={() => setLocation("/chat")}
+        onClick={() => toast.info("Bible AI is coming soon! 🤖")}
         className="w-full neon-card p-5 flex items-center gap-4 hover:border-purple-400/60 transition-all active:scale-[0.98] cursor-pointer group"
       >
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 border border-purple-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all">
@@ -237,31 +253,27 @@ export default function Home() {
 
 
       {/* Bible Meme of the Day */}
-      <div className="neon-card p-4 cursor-pointer active:scale-[0.98] transition-transform">
+      <div className="neon-card p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-white font-bold text-sm">😂 BIBLE MEME OF THE DAY</span>
         </div>
-        <div className="rounded-xl overflow-hidden border border-purple-500/20">
+        <div className="rounded-xl overflow-hidden border border-purple-500/20 relative">
+          {!memeLoaded && <div className="w-full h-64 bg-purple-900/30 animate-pulse rounded-xl" />}
           <img
             src={memeUrl}
             alt="Bible Meme of the Day"
-            className="w-full h-auto rounded-xl"
+            className={`w-full h-auto rounded-xl ${memeLoaded ? '' : 'absolute opacity-0'}`}
             loading="lazy"
+            onLoad={() => setMemeLoaded(true)}
           />
         </div>
         <div className="flex justify-center gap-3 mt-3">
-          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
-            <span>😂</span>
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
-            <span>🔥</span>
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
-            <span>💀</span>
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
-            <span>🙏</span>
-          </button>
+          {["😂", "🔥", "💀", "🙏"].map(emoji => (
+            <button key={emoji} onClick={() => handleReaction(emoji)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm active:scale-95 transition-all ${userReaction === emoji ? 'bg-purple-600/60 border-purple-400 scale-110' : 'bg-purple-900/40 border-purple-500/30'}`}>
+              <span>{emoji}</span>
+              {(reactions[emoji] || 0) > 0 && <span className="text-xs text-gray-300">{reactions[emoji]}</span>}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -276,7 +288,7 @@ export default function Home() {
         <button onClick={() => setLocation("/bible")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">📖</span><div className="text-sm font-medium text-white mt-1">Start Reading</div>
         </button>
-        <button onClick={() => setLocation("/map")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+        <button onClick={() => toast.info("Bible Map is coming soon! 🗺️")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">🗺️</span><div className="text-sm font-medium text-white mt-1">Bible Map</div>
         </button>
       </div>

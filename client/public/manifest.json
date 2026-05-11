@@ -1,0 +1,18 @@
+{
+  "name": "Teenz Bible",
+  "short_name": "Teenz Bible",
+  "description": "A gamified Bible reading app for teens",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0015",
+  "theme_color": "#0a0015",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon-fixed-512_207732cf.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

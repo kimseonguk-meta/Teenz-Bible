@@ -7,11 +7,6 @@ export interface GameState {
   className: string;
   totalXP: number;
   gems: number;
-  dayStreak: number;
-  lastLoginDate: string;
-  loginDay: number;
-  loginRewardClaimed: boolean;
-  dailyMissionDone: boolean;
   ownedPets: string[];
   equippedPet: string;
   ownedThemes: string[];
@@ -30,9 +25,6 @@ interface GameContextType extends GameState {
   addXP: (amount: number) => void;
   addGems: (amount: number) => void;
   spendGems: (amount: number) => boolean;
-  claimLoginReward: () => void;
-  completeDailyMission: () => void;
-  incrementStreak: () => void;
   setPlayerName: (name: string) => void;
   setClassName: (name: string) => void;
   buyItem: (type: "pet" | "theme" | "frame", id: string, price: number) => boolean;
@@ -56,33 +48,24 @@ const GameContext = createContext<GameContextType | null>(null);
 
 // ─── localStorage helpers ────────────────────────────────────
 function loadState(): GameState {
-  const today = new Date().toISOString().split("T")[0];
   let teensBible: any = {};
   try {
     const raw = localStorage.getItem("teensBible");
     if (raw) teensBible = JSON.parse(raw);
   } catch {}
 
-  const lastLogin = localStorage.getItem("lastLoginDate") || "";
-  const isNewDay = lastLogin !== today;
-
   return {
     playerName: localStorage.getItem("playerName") || "",
     className: localStorage.getItem("className") || "",
     totalXP: parseInt(localStorage.getItem("totalXP") || "0"),
     gems: teensBible.gems || 0,
-    dayStreak: parseInt(localStorage.getItem("dayStreak") || "0"),
-    lastLoginDate: lastLogin,
-    loginDay: parseInt(localStorage.getItem("loginDay") || "1"),
-    loginRewardClaimed: isNewDay ? false : localStorage.getItem("loginRewardClaimed") === "true",
-    dailyMissionDone: isNewDay ? false : localStorage.getItem("dailyMissionDone") === "true",
     ownedPets: JSON.parse(localStorage.getItem("ownedPets") || '["Faithy Cat"]'),
     equippedPet: localStorage.getItem("equippedPet") || "Faithy Cat",
     ownedThemes: JSON.parse(localStorage.getItem("ownedThemes") || '["Twilight Glow"]'),
     equippedTheme: localStorage.getItem("equippedTheme") || "Twilight Glow",
     ownedFrames: JSON.parse(localStorage.getItem("ownedFrames") || '["Basic"]'),
     equippedFrame: localStorage.getItem("equippedFrame") || "Basic",
-    badges: JSON.parse(localStorage.getItem("badges") || '["첫 시작"]'),
+    badges: JSON.parse(localStorage.getItem("badges") || '["First Step"]'),
     watchedVideos: JSON.parse(localStorage.getItem("watchedVideos") || '[]'),
     settingsOpen: false,
     editNameOpen: false,
@@ -118,47 +101,9 @@ function calcLevel(xp: number) {
   return { ...LEVELS[0], prev: 0 };
 }
 
-// ─── Login reward amounts ────────────────────────────────────
-const LOGIN_REWARDS = [3, 3, 5, 5, 8, 10, 20];
-
 // ─── Provider ────────────────────────────────────────────────
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(loadState);
-
-  // Check for new day on mount
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    if (state.lastLoginDate && state.lastLoginDate !== today) {
-      // New day - check streak
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayStr = yesterday.toISOString().split("T")[0];
-
-      setState(prev => {
-        const streakContinues = prev.lastLoginDate === yesterdayStr;
-        const newStreak = streakContinues ? prev.dayStreak : 0;
-        const newLoginDay = streakContinues ? Math.min(prev.loginDay + 1, 7) : 1;
-
-        localStorage.setItem("dayStreak", String(newStreak));
-        localStorage.setItem("loginDay", String(newLoginDay));
-        localStorage.setItem("lastLoginDate", today);
-        localStorage.setItem("loginRewardClaimed", "false");
-        localStorage.setItem("dailyMissionDone", "false");
-
-        return {
-          ...prev,
-          dayStreak: newStreak,
-          loginDay: newLoginDay,
-          lastLoginDate: today,
-          loginRewardClaimed: false,
-          dailyMissionDone: false,
-        };
-      });
-    } else if (!state.lastLoginDate) {
-      localStorage.setItem("lastLoginDate", today);
-      setState(prev => ({ ...prev, lastLoginDate: today }));
-    }
-  }, []);
 
   const addXP = useCallback((amount: number) => {
     setState(prev => {
@@ -194,53 +139,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
       return { ...prev, gems: newGems };
     });
     return success;
-  }, []);
-
-  const claimLoginReward = useCallback(() => {
-    setState(prev => {
-      if (prev.loginRewardClaimed) {
-        toast.info("You've already claimed today's reward!");
-        return prev;
-      }
-      const rewardIdx = Math.min(prev.loginDay - 1, LOGIN_REWARDS.length - 1);
-      const reward = LOGIN_REWARDS[rewardIdx];
-      const newGems = prev.gems + reward;
-      saveGems(newGems);
-
-      const today = new Date().toISOString().split("T")[0];
-      const newStreak = prev.dayStreak + 1;
-      localStorage.setItem("dayStreak", String(newStreak));
-      localStorage.setItem("lastLoginDate", today);
-      localStorage.setItem("loginRewardClaimed", "true");
-
-      toast.success(`🎁 +${reward} Gems earned! (Day ${prev.loginDay})`);
-      return {
-        ...prev,
-        gems: newGems,
-        dayStreak: newStreak,
-        lastLoginDate: today,
-        loginRewardClaimed: true,
-      };
-    });
-  }, []);
-
-  const completeDailyMission = useCallback(() => {
-    setState(prev => {
-      if (prev.dailyMissionDone) return prev;
-      const newXP = prev.totalXP + 50;
-      localStorage.setItem("totalXP", String(newXP));
-      localStorage.setItem("dailyMissionDone", "true");
-      toast.success("🎯 Daily mission complete! +50 XP");
-      return { ...prev, totalXP: newXP, dailyMissionDone: true };
-    });
-  }, []);
-
-  const incrementStreak = useCallback(() => {
-    setState(prev => {
-      const newStreak = prev.dayStreak + 1;
-      localStorage.setItem("dayStreak", String(newStreak));
-      return { ...prev, dayStreak: newStreak };
-    });
   }, []);
 
   const setPlayerNameFn = useCallback((name: string) => {
@@ -298,34 +196,30 @@ export function GameProvider({ children }: { children: ReactNode }) {
       read.push(chapterNum);
       localStorage.setItem(`chaptersRead_${book}`, JSON.stringify(read));
 
-      // Add XP for reading
+      // Add XP and Gems for reading
       addXP(10);
+      addGems(5);
 
-      // Check daily mission
+      // Check badges
       setState(prev => {
-        if (!prev.dailyMissionDone) {
-          const newXP = prev.totalXP + 50;
-          localStorage.setItem("totalXP", String(newXP));
-          localStorage.setItem("dailyMissionDone", "true");
-          toast.success("🎯 Daily mission complete! +50 XP");
-
-          // Check badge
-          const totalRead = getTotalChaptersReadInternal();
-          const newBadges = [...prev.badges];
-          if (totalRead >= 1 && !newBadges.includes("첫 시작")) {
-            newBadges.push("첫 시작");
-            localStorage.setItem("badges", JSON.stringify(newBadges));
-            toast.success("🏆 Achievement unlocked: First Step!");
-          }
-          if (totalRead >= 100 && !newBadges.includes("백 장 독파")) {
-            newBadges.push("백 장 독파");
-            localStorage.setItem("badges", JSON.stringify(newBadges));
-            toast.success("🏆 Achievement unlocked: 100 Chapters!");
-          }
-
-          return { ...prev, totalXP: newXP, dailyMissionDone: true, badges: newBadges };
+        const totalRead = getTotalChaptersReadInternal();
+        const newBadges = [...prev.badges];
+        if (totalRead >= 1 && !newBadges.includes("First Step")) {
+          newBadges.push("First Step");
+          localStorage.setItem("badges", JSON.stringify(newBadges));
+          toast.success("🏆 Achievement unlocked: First Step!");
         }
-        return prev;
+        if (totalRead >= 100 && !newBadges.includes("100 Chapters")) {
+          newBadges.push("100 Chapters");
+          localStorage.setItem("badges", JSON.stringify(newBadges));
+          toast.success("🏆 Achievement unlocked: 100 Chapters!");
+        }
+        if (totalRead >= 500 && !newBadges.includes("500 Chapters")) {
+          newBadges.push("500 Chapters");
+          localStorage.setItem("badges", JSON.stringify(newBadges));
+          toast.success("🏆 Achievement unlocked: 500 Chapters!");
+        }
+        return { ...prev, badges: newBadges };
       });
     }
   }, []);
@@ -358,7 +252,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const newWatched = [...prev.watchedVideos, book];
       localStorage.setItem("watchedVideos", JSON.stringify(newWatched));
       addXP(15);
-      toast.success(`🎬 Video watched! +15 XP`);
+      addGems(5);
+      toast.success(`🎬 Video watched! +15 XP, +5 💎`);
       return { ...prev, watchedVideos: newWatched };
     });
   }, []);
@@ -378,9 +273,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     addXP,
     addGems,
     spendGems,
-    claimLoginReward,
-    completeDailyMission,
-    incrementStreak,
     setPlayerName: setPlayerNameFn,
     setClassName: setClassNameFn,
     buyItem,

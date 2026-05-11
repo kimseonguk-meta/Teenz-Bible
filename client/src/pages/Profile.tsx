@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { getEquipped, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
+import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { useLocation } from "wouter";
 
 function getPlayerName() {
@@ -53,7 +53,7 @@ function getChaptersRead() {
 }
 
 function getLanguagePref(): "en" | "ko" {
-  return (localStorage.getItem("bibleLanguage") as "en" | "ko") || "en";
+  return (localStorage.getItem("readerLang") as "en" | "ko") || "en";
 }
 
 function getFontSize(): number {
@@ -66,7 +66,7 @@ const badges = [
   { name: "50 Chapters", desc: "Read 50 chapters", icon: "🏆", condition: (ch: number) => ch >= 50 },
   { name: "100 Chapters", desc: "Read 100 chapters", icon: "💯", condition: (ch: number) => ch >= 100 },
   { name: "Scholar", desc: "Reach Level 6", icon: "👑", condition: (_ch: number, xp: number) => xp >= 2000 },
-  { name: "Collector", desc: "Own 5+ items", icon: "💎", condition: () => false },
+  { name: "Collector", desc: "Own 5+ items", icon: "💎", condition: () => getInventory().ownedItems.length >= 5 },
 ];
 
 export default function Profile() {
@@ -97,7 +97,7 @@ export default function Profile() {
   const handleLanguageToggle = useCallback(() => {
     const next = language === "en" ? "ko" : "en";
     setLanguage(next);
-    localStorage.setItem("bibleLanguage", next);
+    localStorage.setItem("readerLang", next);
   }, [language]);
 
   const handleFontSizeChange = useCallback((delta: number) => {
@@ -360,7 +360,7 @@ export default function Profile() {
 
           {/* Leaderboard */}
           <div
-            onClick={() => setLocation("/ranking")}
+            onClick={() => setLocation("/leaderboard")}
             className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-xl">🏆</div>
