@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { gospelData } from "@/data/gospelData";
 import { gospelDataKo } from "@/data/gospelDataKo";
 import { useGame } from "@/contexts/GameContext";
+import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 
 const bookMeta: Record<string, { emoji: string; category: string; desc: string }> = {
@@ -34,26 +35,6 @@ const bookMeta: Record<string, { emoji: string; category: string; desc: string }
   "Revelation": { emoji: "🌟", category: "Prophecy", desc: "The epic finale" },
 };
 
-// Simple quiz questions per book/chapter
-const quizBank: Record<string, Record<number, { q: string; options: string[]; answer: number }[]>> = {
-  "Matthew": {
-    1: [
-      { q: "마태복음 1장에서 예수님의 족보는 누구부터 시작하나요?", options: ["아브라함", "모세", "다윗", "아담"], answer: 0 },
-      { q: "예수님의 어머니 이름은?", options: ["마르다", "마리아", "룻", "에스더"], answer: 1 },
-    ],
-    2: [
-      { q: "동방박사들이 아기 예수께 드린 선물이 아닌 것은?", options: ["황금", "유향", "몰약", "보석"], answer: 3 },
-    ],
-    3: [
-      { q: "세례 요한이 사람들에게 외친 메시지는?", options: ["회개하라", "기뻐하라", "쉬어라", "먹어라"], answer: 0 },
-    ],
-    5: [
-      { q: "산상수훈에서 '심령이 가난한 자'에게 약속된 것은?", options: ["천국", "땅", "위로", "기쁨"], answer: 0 },
-      { q: "예수님이 제자들을 무엇이라 부르셨나요?", options: ["세상의 빛", "세상의 소금", "둘 다", "없음"], answer: 2 },
-    ],
-  },
-};
-
 type ViewState =
   | { type: "list" }
   | { type: "chapters"; book: string }
@@ -81,16 +62,16 @@ export default function Bible() {
       <QuizView
         book={view.book}
         chapterNum={view.chapterNum}
-        onFinish={(score, total) => {
-          const xpReward = score * 15;
-          if (xpReward > 0) {
+        lang={lang}
+        onFinish={(correct) => {
+          const xpReward = correct ? 10 : 0;
+          const gemReward = correct ? 3 : 0;
+          if (correct) {
             game.addXP(xpReward);
-            if (score === total) {
-              game.addGems(5);
-              toast.success(`🎉 Perfect score! +${xpReward} XP, +5 Gems!`);
-            } else {
-              toast.success(`📝 Quiz complete! +${xpReward} XP (${score}/${total})`);
-            }
+            game.addGems(gemReward);
+            toast.success(`🎉 Correct! +${xpReward} XP, +${gemReward} Gems!`);
+          } else {
+            toast.error("Not quite! The correct answer was highlighted.");
           }
           setView({ type: "chapters", book: view.book });
         }}
@@ -110,9 +91,7 @@ export default function Bible() {
         onBack={() => setView({ type: "chapters", book: view.book })}
         onNavigate={(idx) => { setView({ type: "reading", book: view.book, chapterIdx: idx }); window.scrollTo(0, 0); }}
         onFinishChapter={(chapterNum) => {
-          // Check if quiz exists for this chapter
-          const quizzes = quizBank[view.book]?.[chapterNum];
-          if (quizzes && quizzes.length > 0) {
+          if (hasQuiz(view.book, chapterNum)) {
             setView({ type: "quiz", book: view.book, chapterNum });
           }
         }}
@@ -138,13 +117,13 @@ export default function Bible() {
           <p className="text-purple-300 text-xs mt-1">{readChapters.length}/{chapters.length} chapters read</p>
           <div className="mt-2 h-2 bg-gray-800/80 rounded-full overflow-hidden max-w-[200px] mx-auto">
             <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400"
-              style={{ width: `${(readChapters.length / chapters.length) * 100}%` }} />
+              style={{ width: `${chapters.length > 0 ? (readChapters.length / chapters.length) * 100 : 0}%` }} />
           </div>
         </div>
         <div className="grid grid-cols-4 gap-2">
           {chapters.map((ch, idx) => {
             const isRead = readChapters.includes(ch.num);
-            const hasQuiz = !!(quizBank[view.book]?.[ch.num]);
+            const quizAvailable = hasQuiz(view.book, ch.num);
             return (
               <button
                 key={ch.num}
@@ -157,7 +136,7 @@ export default function Bible() {
               >
                 <div className="text-lg font-bold">{ch.num}</div>
                 {isRead && <div className="text-[8px] text-green-400 mt-0.5">✓ Read</div>}
-                {hasQuiz && <div className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full" />}
+                {quizAvailable && <div className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full" title="Quiz available" />}
               </button>
             );
           })}
@@ -272,6 +251,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     if (koChapter) paragraphs = koChapter.paragraphs;
   }
 
+  const quizAvailable = hasQuiz(book, chapter.num);
+
   return (
     <div className="px-4 pt-4 pb-8">
       {/* Reader Header */}
@@ -308,14 +289,14 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       </div>
 
       {/* Quiz prompt */}
-      {quizBank[book]?.[chapter.num] && (
+      {quizAvailable && (
         <div className="mt-6 neon-card-gold p-4 text-center">
-          <span className="text-2xl">📝</span>
-          <h3 className="text-white font-bold text-sm mt-1">Quiz available for this chapter!</h3>
-          <p className="text-gray-400 text-xs mt-1">Take the quiz to earn bonus XP</p>
+          <span className="text-2xl">🧠</span>
+          <h3 className="text-white font-bold text-sm mt-1">DID YOU CATCH THIS?</h3>
+          <p className="text-gray-400 text-xs mt-1">Take the quiz to earn bonus XP & Gems</p>
           <button onClick={() => onFinishChapter(chapter.num)}
             className="mt-3 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-xl text-white text-sm font-bold active:scale-95 transition-transform">
-            🎯 Take Quiz (+15 XP per question)
+            🎯 Take Quiz (+10 XP, +3 💎)
           </button>
         </div>
       )}
@@ -340,87 +321,69 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   );
 }
 
-// ─── Quiz Component ──────────────────────────────────────────
-function QuizView({ book, chapterNum, onFinish, onSkip }: {
+// ─── Quiz Component (uses extracted 260 quiz entries) ────────
+function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
   book: string;
   chapterNum: number;
-  onFinish: (score: number, total: number) => void;
+  lang: "en" | "ko";
+  onFinish: (correct: boolean) => void;
   onSkip: () => void;
 }) {
-  const questions = quizBank[book]?.[chapterNum] || [];
-  const [currentQ, setCurrentQ] = useState(0);
-  const [score, setScore] = useState(0);
+  const quiz = getQuiz(book, chapterNum, lang);
+  const shuffled = useMemo(() => quiz ? getShuffledOptions(quiz) : null, [book, chapterNum, lang]);
   const [selected, setSelected] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
 
-  if (questions.length === 0) {
+  if (!quiz || !shuffled) {
     onSkip();
     return null;
   }
 
-  const q = questions[currentQ];
-
   const handleSelect = (idx: number) => {
-    if (selected !== null) return; // already answered
+    if (selected !== null) return;
     setSelected(idx);
     setShowResult(true);
-    if (idx === q.answer) {
-      setScore(s => s + 1);
-    }
-    // Auto advance after 1.5s
+    const isCorrect = idx === shuffled.correctIndex;
+
     setTimeout(() => {
-      if (currentQ < questions.length - 1) {
-        setCurrentQ(c => c + 1);
-        setSelected(null);
-        setShowResult(false);
-      } else {
-        const finalScore = idx === q.answer ? score + 1 : score;
-        onFinish(finalScore, questions.length);
-      }
-    }, 1500);
+      onFinish(isCorrect);
+    }, 2000);
   };
 
   return (
     <div className="px-4 pt-6 space-y-5">
       <div className="flex items-center justify-between">
         <button onClick={onSkip} className="text-purple-300 text-sm active:scale-95 transition-transform">← Skip</button>
-        <span className="text-gray-400 text-xs">{currentQ + 1} / {questions.length}</span>
+        <span className="text-gray-400 text-xs">{book} Ch.{chapterNum}</span>
       </div>
 
       <div className="text-center">
-        <span className="text-4xl">📝</span>
-        <h1 className="text-lg font-bold text-white font-display mt-2">{book} Ch.{chapterNum} Quiz</h1>
-      </div>
-
-      {/* Progress bar */}
-      <div className="h-2 bg-gray-800/80 rounded-full overflow-hidden">
-        <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-300"
-          style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }} />
+        <span className="text-4xl">🧠</span>
+        <h1 className="text-lg font-bold text-white font-display mt-2">DID YOU CATCH THIS?</h1>
+        <p className="text-purple-300 text-xs mt-1">{book} Chapter {chapterNum}</p>
       </div>
 
       {/* Question */}
       <div className="neon-card p-5">
-        <p className="text-white font-bold text-base">{q.q}</p>
+        <p className="text-white font-bold text-base leading-relaxed">{quiz.q}</p>
       </div>
 
       {/* Options */}
       <div className="space-y-3">
-        {q.options.map((opt, idx) => {
-          let btnClass = "neon-card p-4 text-left active:scale-[0.98] transition-all cursor-pointer";
+        {shuffled.options.map((opt, idx) => {
+          let btnClass = "w-full neon-card p-4 text-left active:scale-[0.98] transition-all cursor-pointer";
           if (showResult) {
-            if (idx === q.answer) {
-              btnClass += " border-green-500/60 bg-green-900/20";
-            } else if (idx === selected && idx !== q.answer) {
-              btnClass += " border-red-500/60 bg-red-900/20";
+            if (idx === shuffled.correctIndex) {
+              btnClass += " !border-green-500/60 bg-green-900/20";
+            } else if (idx === selected && idx !== shuffled.correctIndex) {
+              btnClass += " !border-red-500/60 bg-red-900/20";
             }
-          } else if (selected === idx) {
-            btnClass += " border-purple-400";
           }
           return (
             <button key={idx} onClick={() => handleSelect(idx)} className={btnClass} disabled={selected !== null}>
               <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                  showResult && idx === q.answer ? 'bg-green-500 text-white' :
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
+                  showResult && idx === shuffled.correctIndex ? 'bg-green-500 text-white' :
                   showResult && idx === selected ? 'bg-red-500 text-white' :
                   'bg-purple-900/50 border border-purple-500/30 text-purple-200'
                 }`}>
@@ -433,10 +396,19 @@ function QuizView({ book, chapterNum, onFinish, onSkip }: {
         })}
       </div>
 
-      {/* Score */}
-      <div className="text-center text-gray-400 text-xs">
-        Score: {score}/{currentQ + (showResult ? 1 : 0)}
-      </div>
+      {/* Feedback */}
+      {showResult && (
+        <div className={`text-center p-3 rounded-xl ${
+          selected === shuffled.correctIndex
+            ? 'bg-green-900/20 border border-green-500/30'
+            : 'bg-red-900/20 border border-red-500/30'
+        }`}>
+          <span className="text-lg">{selected === shuffled.correctIndex ? '✅' : '❌'}</span>
+          <p className={`text-sm font-bold mt-1 ${selected === shuffled.correctIndex ? 'text-green-400' : 'text-red-400'}`}>
+            {selected === shuffled.correctIndex ? 'NICE! +10 XP +3 💎' : 'Not quite! The correct answer is highlighted.'}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
