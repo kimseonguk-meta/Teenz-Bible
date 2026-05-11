@@ -10,6 +10,8 @@ import Bible from "./pages/Bible";
 import Leaderboard from "./pages/Leaderboard";
 import Store from "./pages/Store";
 import Profile from "./pages/Profile";
+import AIChat from "./pages/AIChat";
+import BibleMap from "./pages/BibleMap";
 
 function Router() {
   return (
@@ -20,6 +22,8 @@ function Router() {
         <Route path="/leaderboard" component={Leaderboard} />
         <Route path="/store" component={Store} />
         <Route path="/profile" component={Profile} />
+        <Route path="/chat" component={AIChat} />
+        <Route path="/map" component={BibleMap} />
         <Route component={Home} />
       </Switch>
     </AppLayout>

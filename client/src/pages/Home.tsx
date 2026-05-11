@@ -253,15 +253,21 @@ export default function Home() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-3 pb-4">
+      <div className="grid grid-cols-2 gap-3">
         <button onClick={() => setLocation("/bible")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">📖</span><div className="text-sm font-medium text-white mt-1">Start Reading</div>
         </button>
+        <button onClick={() => setLocation("/chat")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+          <span className="text-2xl">🤖</span><div className="text-sm font-medium text-white mt-1">Bible AI Chat</div>
+        </button>
+        <button onClick={() => setLocation("/map")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+          <span className="text-2xl">🗺️</span><div className="text-sm font-medium text-white mt-1">Bible Map</div>
+        </button>
         <button onClick={() => setLocation("/store")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">🏪</span><div className="text-sm font-medium text-white mt-1">Gem Store</div>
-          <span className="text-[9px] bg-red-500 text-white px-1.5 py-0.5 rounded-full ml-1">NEW</span>
         </button>
       </div>
+      <div className="h-4" />
     </div>
   );
 }
