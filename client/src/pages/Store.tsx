@@ -24,6 +24,7 @@ const tabs = [
   { id: "frames", icon: "🖼️", label: "Frames" },
   { id: "pets", icon: "🐾", label: "Pets" },
   { id: "mystery", icon: "🎁", label: "Mystery" },
+  { id: "earn", icon: "💰", label: "Earn" },
 ];
 
 function getGems(): number {
@@ -43,6 +44,7 @@ export default function Store() {
   const [inventory, setInventory] = useState(getInventory);
   const [mysteryResult, setMysteryResult] = useState<{ emoji: string; message: string } | null>(null);
   const [isOpening, setIsOpening] = useState(false);
+  const [previewingTheme, setPreviewingTheme] = useState<string | null>(null);
 
   // Listen for gems changes
   useEffect(() => {
@@ -204,8 +206,82 @@ export default function Store() {
         <div>
           <h2 className="text-lg font-bold text-purple-300 font-display mb-3">🎨 App Themes</h2>
           <p className="text-gray-400 text-xs mb-3">Change the entire app color scheme!</p>
+          {previewingTheme && (
+            <div className="mb-3 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-between">
+              <span className="text-yellow-300 text-xs font-medium">👁️ Previewing theme...</span>
+              <button
+                onClick={() => {
+                  setPreviewingTheme(null);
+                  applyTheme(equipped.theme || undefined);
+                }}
+                className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-200 hover:bg-gray-600"
+              >
+                End Preview
+              </button>
+            </div>
+          )}
           <div className="grid grid-cols-3 gap-3">
-            {THEMES.map(renderItemCard)}
+            {THEMES.map((item) => {
+              const owned = isOwned(item.id);
+              const active = isEquipped(item.id, item.category);
+              const previewing = previewingTheme === item.id;
+
+              return (
+                <div
+                  key={item.id}
+                  className={`p-3 rounded-xl text-center relative transition-all ${
+                    active
+                      ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+                      : previewing
+                      ? "bg-yellow-600/10 border-2 border-yellow-500/40"
+                      : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
+                  }`}
+                >
+                  {active && (
+                    <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
+                  )}
+                  <div className="text-3xl my-2">{item.emoji}</div>
+                  <p className="text-white text-xs font-medium truncate">{item.name}</p>
+                  <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
+
+                  <div className="mt-2 space-y-1">
+                    {!owned && item.price > 0 ? (
+                      <>
+                        <button
+                          onClick={() => handlePurchase(item)}
+                          className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+                        >
+                          {item.price} 💎
+                        </button>
+                        <button
+                          onClick={() => {
+                            setPreviewingTheme(item.id);
+                            applyTheme(item.id);
+                          }}
+                          className="w-full py-1 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-[10px] hover:bg-white/10 transition-all"
+                        >
+                          👁️ Preview
+                        </button>
+                      </>
+                    ) : owned && !active ? (
+                      <button
+                        onClick={() => {
+                          handleEquip(item);
+                          setPreviewingTheme(null);
+                        }}
+                        className="w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+                      >
+                        Equip
+                      </button>
+                    ) : (
+                      <div className="py-1.5 text-teal-400 text-[11px] font-bold">
+                        {item.price === 0 ? "Default" : "Equipped ✓"}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -366,6 +442,97 @@ export default function Store() {
             <p className="text-gray-500 text-xs">
               Items owned: {inventory.ownedItems.length} / {THEMES.length + READER_BACKGROUNDS.length + PROFILE_FRAMES.length + PETS.length}
             </p>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "earn" && (
+        <div className="space-y-4">
+          <h2 className="text-lg font-bold text-purple-300 font-display mb-3">💰 How to Earn Gems</h2>
+          <p className="text-gray-400 text-xs mb-4">Complete activities to earn gems and unlock awesome items!</p>
+
+          {/* Earn methods list */}
+          <div className="space-y-3">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-xl">📖</div>
+                <div className="flex-1">
+                  <p className="text-white text-sm font-medium">Read a Chapter</p>
+                  <p className="text-gray-500 text-xs">Complete reading any Bible chapter</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                  <span className="text-cyan-300 text-xs font-bold">+5</span>
+                  <span className="text-xs">💎</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">✅</div>
+                <div className="flex-1">
+                  <p className="text-white text-sm font-medium">Quiz Correct Answer</p>
+                  <p className="text-gray-500 text-xs">Answer a quiz question correctly</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                  <span className="text-cyan-300 text-xs font-bold">+3</span>
+                  <span className="text-xs">💎</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-xl">🎬</div>
+                <div className="flex-1">
+                  <p className="text-white text-sm font-medium">Watch Intro Video</p>
+                  <p className="text-gray-500 text-xs">Watch a book introduction video</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                  <span className="text-cyan-300 text-xs font-bold">+5</span>
+                  <span className="text-xs">💎</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-xl">📚</div>
+                <div className="flex-1">
+                  <p className="text-white text-sm font-medium">Finish a Book</p>
+                  <p className="text-gray-500 text-xs">Read all chapters in one book</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                  <span className="text-cyan-300 text-xs font-bold">+20</span>
+                  <span className="text-xs">💎</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-xl">🤖</div>
+                <div className="flex-1">
+                  <p className="text-white text-sm font-medium">Ask Bible AI</p>
+                  <p className="text-gray-500 text-xs">Have a conversation with Bible AI</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                  <span className="text-cyan-300 text-xs font-bold">+2</span>
+                  <span className="text-xs">💎</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tips */}
+          <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-cyan-500/10 border border-purple-500/20">
+            <p className="text-purple-300 text-sm font-bold mb-2">💡 Pro Tips</p>
+            <ul className="text-gray-400 text-xs space-y-1.5">
+              <li>• Read consistently every day to maximize gem earnings</li>
+              <li>• Quizzes are available after reading each chapter</li>
+              <li>• Each book has an intro video — watch them all for bonus gems!</li>
+              <li>• Mystery Box can give you items worth more than 15💎</li>
+            </ul>
           </div>
         </div>
       )}
