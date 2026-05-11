@@ -16,6 +16,11 @@ import BibleMap from "./pages/BibleMap";
 import MemeGallery from "./pages/MemeOfDay";
 import Challenges from "./pages/Challenges";
 import Onboarding from "./components/Onboarding";
+import { runMigration } from "./lib/migration";
+
+// Run migration BEFORE React renders - this ensures old user data
+// is available when GameContext initializes from localStorage
+runMigration();
 
 function Router() {
   return (
