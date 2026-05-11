@@ -1,38 +1,79 @@
 import { useState, useEffect, useMemo } from "react";
-import { gospelData } from "@/data/gospelData";
+import { allBibleData, otBooks, ntBooks, otCategories, ntCategories } from "@/data/allBibleData";
 import { gospelDataKo } from "@/data/gospelDataKo";
 import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 
-const bookMeta: Record<string, { emoji: string; category: string; desc: string }> = {
-  "Matthew": { emoji: "✝️", category: "Gospels", desc: "Jesus as the promised King" },
-  "Mark": { emoji: "🦁", category: "Gospels", desc: "Jesus the servant in action" },
-  "Luke": { emoji: "📜", category: "Gospels", desc: "Jesus for all people" },
-  "John": { emoji: "🕊️", category: "Gospels", desc: "Jesus the Son of God" },
-  "Acts": { emoji: "🔥", category: "History", desc: "The Church's explosive beginning" },
-  "Romans": { emoji: "⚖️", category: "Paul's Letters", desc: "The ultimate theology deep-dive" },
-  "1 Corinthians": { emoji: "💌", category: "Paul's Letters", desc: "Fixing a messy church" },
-  "2 Corinthians": { emoji: "💪", category: "Paul's Letters", desc: "Strength through weakness" },
-  "Galatians": { emoji: "🔓", category: "Paul's Letters", desc: "Freedom in Christ" },
-  "Ephesians": { emoji: "🛡️", category: "Paul's Letters", desc: "The armor of God" },
-  "Philippians": { emoji: "😊", category: "Paul's Letters", desc: "Joy no matter what" },
-  "Colossians": { emoji: "👑", category: "Paul's Letters", desc: "Jesus above everything" },
-  "1 Thessalonians": { emoji: "⌛", category: "Paul's Letters", desc: "Hope for the future" },
-  "2 Thessalonians": { emoji: "⚡", category: "Paul's Letters", desc: "Stand firm till the end" },
-  "1 Timothy": { emoji: "📋", category: "Paul's Letters", desc: "Leadership 101" },
-  "2 Timothy": { emoji: "🏃", category: "Paul's Letters", desc: "Finish the race strong" },
-  "Titus": { emoji: "🏝️", category: "Paul's Letters", desc: "Good works that matter" },
-  "Philemon": { emoji: "🤝", category: "Paul's Letters", desc: "Forgiveness in action" },
-  "Hebrews": { emoji: "🏛️", category: "General Letters", desc: "Jesus is better than everything" },
-  "James": { emoji: "🔨", category: "General Letters", desc: "Faith that works" },
-  "1 Peter": { emoji: "🪨", category: "General Letters", desc: "Hope through suffering" },
-  "2 Peter": { emoji: "🔭", category: "General Letters", desc: "Watch out for fakes" },
-  "1 John": { emoji: "❤️", category: "General Letters", desc: "God is love" },
-  "2 John": { emoji: "📝", category: "General Letters", desc: "Walk in truth and love" },
-  "3 John": { emoji: "🤗", category: "General Letters", desc: "Support the truth-tellers" },
-  "Jude": { emoji: "⚔️", category: "General Letters", desc: "Fight for the faith" },
-  "Revelation": { emoji: "🌟", category: "Prophecy", desc: "The epic finale" },
+const bookMeta: Record<string, { emoji: string; desc: string }> = {
+  // NT
+  "Matthew": { emoji: "✝️", desc: "Jesus as the promised King" },
+  "Mark": { emoji: "🦁", desc: "Jesus the servant in action" },
+  "Luke": { emoji: "📜", desc: "Jesus for all people" },
+  "John": { emoji: "🕊️", desc: "Jesus the Son of God" },
+  "Acts": { emoji: "🔥", desc: "The Church's explosive beginning" },
+  "Romans": { emoji: "⚖️", desc: "The ultimate theology deep-dive" },
+  "1 Corinthians": { emoji: "💌", desc: "Fixing a messy church" },
+  "2 Corinthians": { emoji: "💪", desc: "Strength through weakness" },
+  "Galatians": { emoji: "🔓", desc: "Freedom in Christ" },
+  "Ephesians": { emoji: "🛡️", desc: "The armor of God" },
+  "Philippians": { emoji: "😊", desc: "Joy no matter what" },
+  "Colossians": { emoji: "👑", desc: "Jesus above everything" },
+  "1 Thessalonians": { emoji: "⌛", desc: "Hope for the future" },
+  "2 Thessalonians": { emoji: "⚡", desc: "Stand firm till the end" },
+  "1 Timothy": { emoji: "📋", desc: "Leadership 101" },
+  "2 Timothy": { emoji: "🏃", desc: "Finish the race strong" },
+  "Titus": { emoji: "🏝️", desc: "Good works that matter" },
+  "Philemon": { emoji: "🤝", desc: "Forgiveness in action" },
+  "Hebrews": { emoji: "🏛️", desc: "Jesus is better than everything" },
+  "James": { emoji: "🔨", desc: "Faith that works" },
+  "1 Peter": { emoji: "🪨", desc: "Hope through suffering" },
+  "2 Peter": { emoji: "🔭", desc: "Watch out for fakes" },
+  "1 John": { emoji: "❤️", desc: "God is love" },
+  "2 John": { emoji: "📝", desc: "Walk in truth and love" },
+  "3 John": { emoji: "🤗", desc: "Support the truth-tellers" },
+  "Jude": { emoji: "⚔️", desc: "Fight for the faith" },
+  "Revelation": { emoji: "🌟", desc: "The epic finale" },
+  // OT
+  "Genesis": { emoji: "🌍", desc: "The beginning of everything" },
+  "Exodus": { emoji: "🔥", desc: "The epic escape from Egypt" },
+  "Leviticus": { emoji: "📜", desc: "God's rulebook for holy living" },
+  "Numbers": { emoji: "🏜️", desc: "Wilderness wandering and counting" },
+  "Deuteronomy": { emoji: "📖", desc: "Moses' final speech" },
+  "Joshua": { emoji: "⚔️", desc: "Conquering the Promised Land" },
+  "Judges": { emoji: "🛡️", desc: "Israel's cycle of chaos and heroes" },
+  "Ruth": { emoji: "💕", desc: "A love story of loyalty" },
+  "1 Samuel": { emoji: "👑", desc: "From judges to Israel's first kings" },
+  "2 Samuel": { emoji: "👑", desc: "King David's rise and struggles" },
+  "1 Kings": { emoji: "🏛️", desc: "Solomon's glory and the kingdom splits" },
+  "2 Kings": { emoji: "🏛️", desc: "The fall of both kingdoms" },
+  "1 Chronicles": { emoji: "📋", desc: "Israel's history from David's view" },
+  "2 Chronicles": { emoji: "📋", desc: "The temple, kings, and exile" },
+  "Ezra": { emoji: "🏗️", desc: "Rebuilding the temple after exile" },
+  "Nehemiah": { emoji: "🧱", desc: "Rebuilding Jerusalem's walls" },
+  "Esther": { emoji: "👸", desc: "A queen saves her people" },
+  "Job": { emoji: "💔", desc: "Why do good people suffer?" },
+  "Psalms": { emoji: "🎵", desc: "The ultimate playlist of prayers" },
+  "Proverbs": { emoji: "🧠", desc: "Life hacks from the wisest king" },
+  "Ecclesiastes": { emoji: "🤔", desc: "Is anything actually meaningful?" },
+  "Song of Solomon": { emoji: "❤️", desc: "The most romantic love poem" },
+  "Isaiah": { emoji: "🕊️", desc: "Warnings, hope, and the Messiah" },
+  "Jeremiah": { emoji: "😢", desc: "The weeping prophet's warnings" },
+  "Lamentations": { emoji: "😭", desc: "Crying over Jerusalem's destruction" },
+  "Ezekiel": { emoji: "👁️", desc: "Wild visions and hope" },
+  "Daniel": { emoji: "🦁", desc: "Faith under fire in a foreign empire" },
+  "Hosea": { emoji: "💍", desc: "God's unfailing love despite betrayal" },
+  "Joel": { emoji: "🦗", desc: "The day of the Lord is coming" },
+  "Amos": { emoji: "⚖️", desc: "Justice for the poor" },
+  "Obadiah": { emoji: "⛰️", desc: "Edom's downfall" },
+  "Jonah": { emoji: "🐋", desc: "The prophet who ran from God" },
+  "Micah": { emoji: "🌾", desc: "What does God really want?" },
+  "Nahum": { emoji: "🌊", desc: "Nineveh's final judgment" },
+  "Habakkuk": { emoji: "❓", desc: "Questioning God and finding faith" },
+  "Zephaniah": { emoji: "🌅", desc: "Judgment day and restoration" },
+  "Haggai": { emoji: "🏠", desc: "Get back to building God's house" },
+  "Zechariah": { emoji: "🌟", desc: "Visions of hope and the King" },
+  "Malachi": { emoji: "📬", desc: "God's final message before silence" },
 };
 
 type ViewState =
@@ -44,17 +85,36 @@ type ViewState =
 export default function Bible() {
   const [view, setView] = useState<ViewState>({ type: "list" });
   const [search, setSearch] = useState("");
+  const [testament, setTestament] = useState<"ot" | "nt">(
+    (localStorage.getItem("bibleTestament") as "ot" | "nt") || "nt"
+  );
   const [lang, setLang] = useState<"en" | "ko">(
     (localStorage.getItem("readerLang") as "en" | "ko") || "en"
   );
+  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set());
   const game = useGame();
 
-  const books = Object.keys(gospelData);
-  const categories = ["Gospels", "History", "Paul's Letters", "General Letters", "Prophecy"];
+  const currentBooks = testament === "nt" ? ntBooks : otBooks;
+  const currentCategories = testament === "nt" ? ntCategories : otCategories;
+  const totalChapters = currentBooks.reduce((sum, b) => sum + (allBibleData[b]?.length || 0), 0);
+  const totalRead = currentBooks.reduce((sum, b) => sum + game.getChaptersRead(b).length, 0);
 
   useEffect(() => {
     localStorage.setItem("readerLang", lang);
   }, [lang]);
+
+  useEffect(() => {
+    localStorage.setItem("bibleTestament", testament);
+  }, [testament]);
+
+  const toggleCategory = (cat: string) => {
+    setCollapsedCats(prev => {
+      const next = new Set(prev);
+      if (next.has(cat)) next.delete(cat);
+      else next.add(cat);
+      return next;
+    });
+  };
 
   // Quiz view
   if (view.type === "quiz") {
@@ -64,12 +124,10 @@ export default function Bible() {
         chapterNum={view.chapterNum}
         lang={lang}
         onFinish={(correct) => {
-          const xpReward = correct ? 10 : 0;
-          const gemReward = correct ? 3 : 0;
           if (correct) {
-            game.addXP(xpReward);
-            game.addGems(gemReward);
-            toast.success(`🎉 Correct! +${xpReward} XP, +${gemReward} Gems!`);
+            game.addXP(10);
+            game.addGems(3);
+            toast.success(`🎉 Correct! +10 XP, +3 Gems!`);
           } else {
             toast.error("Not quite! The correct answer was highlighted.");
           }
@@ -102,7 +160,7 @@ export default function Bible() {
 
   // Chapters view
   if (view.type === "chapters") {
-    const chapters = gospelData[view.book] || [];
+    const chapters = allBibleData[view.book] || [];
     const meta = bookMeta[view.book];
     const readChapters = game.getChaptersRead(view.book);
     return (
@@ -120,7 +178,7 @@ export default function Bible() {
               style={{ width: `${chapters.length > 0 ? (readChapters.length / chapters.length) * 100 : 0}%` }} />
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-5 gap-2">
           {chapters.map((ch, idx) => {
             const isRead = readChapters.includes(ch.num);
             const quizAvailable = hasQuiz(view.book, ch.num);
@@ -128,15 +186,15 @@ export default function Bible() {
               <button
                 key={ch.num}
                 onClick={() => setView({ type: "reading", book: view.book, chapterIdx: idx })}
-                className={`p-3 rounded-xl text-center transition-all active:scale-95 relative ${
+                className={`p-2 rounded-xl text-center transition-all active:scale-95 relative ${
                   isRead
                     ? "bg-purple-600/30 border border-purple-500/50 text-purple-200"
                     : "bg-gray-800/40 border border-gray-700/30 text-gray-300 hover:border-purple-500/30"
                 }`}
               >
-                <div className="text-lg font-bold">{ch.num}</div>
-                {isRead && <div className="text-[8px] text-green-400 mt-0.5">✓ Read</div>}
-                {quizAvailable && <div className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full" title="Quiz available" />}
+                <div className="text-sm font-bold">{ch.num}</div>
+                {isRead && <div className="text-[7px] text-green-400">✓</div>}
+                {quizAvailable && <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full" />}
               </button>
             );
           })}
@@ -148,15 +206,17 @@ export default function Bible() {
 
   // Book list view
   const filteredBooks = search
-    ? books.filter(b => b.toLowerCase().includes(search.toLowerCase()))
-    : books;
+    ? currentBooks.filter(b => b.toLowerCase().includes(search.toLowerCase()))
+    : currentBooks;
 
   return (
-    <div className="px-4 pt-6 space-y-5">
+    <div className="px-4 pt-6 space-y-4">
+      {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white font-display neon-text-purple">📖 NEW TESTAMENT</h1>
+        <h1 className="text-2xl font-bold text-white font-display neon-text-purple">📖 BIBLE</h1>
       </div>
 
+      {/* Search */}
       <div className="relative">
         <input
           type="text"
@@ -167,42 +227,93 @@ export default function Bible() {
         />
       </div>
 
-      {categories.map((cat) => {
-        const catBooks = filteredBooks.filter(b => bookMeta[b]?.category === cat);
+      {/* OT/NT Toggle */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => setTestament("ot")}
+          className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${
+            testament === "ot"
+              ? "bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-500/20"
+              : "bg-gray-800/50 border border-gray-700/30 text-gray-400"
+          }`}
+        >
+          📜 OLD TESTAMENT
+        </button>
+        <button
+          onClick={() => setTestament("nt")}
+          className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${
+            testament === "nt"
+              ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/20"
+              : "bg-gray-800/50 border border-gray-700/30 text-gray-400"
+          }`}
+        >
+          ✨ NEW TESTAMENT
+        </button>
+      </div>
+
+      {/* Progress Summary */}
+      <div className="neon-card p-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-300">📖 {testament === "ot" ? "Old Testament" : "New Testament"}</span>
+          <span className="text-purple-300">{totalRead} / {totalChapters} chapters ({totalChapters > 0 ? Math.round((totalRead / totalChapters) * 100) : 0}%)</span>
+        </div>
+        <div className="mt-2 h-2 bg-gray-800/80 rounded-full overflow-hidden">
+          <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all"
+            style={{ width: `${totalChapters > 0 ? (totalRead / totalChapters) * 100 : 0}%` }} />
+        </div>
+      </div>
+
+      {/* Books by Category */}
+      {Object.entries(currentCategories).map(([cat, catBookNames]) => {
+        const catBooks = catBookNames.filter(b => filteredBooks.includes(b));
         if (catBooks.length === 0) return null;
+        const isCollapsed = collapsedCats.has(cat);
+        const catIcon = cat === "Law" ? "📜" : cat === "History" ? "⚔️" : cat === "Poetry" ? "🎵" :
+          cat === "Major Prophets" ? "🔥" : cat === "Minor Prophets" ? "📣" :
+          cat === "Gospels" ? "✨" : cat === "Paul's Letters" ? "💌" :
+          cat === "General Letters" ? "📜" : "🌟";
+
         return (
           <div key={cat}>
-            <h2 className="text-lg font-bold text-purple-300 mb-3 font-display">
-              {cat === "Gospels" && "✨ "}{cat === "History" && "🔥 "}{cat === "Paul's Letters" && "💌 "}{cat === "General Letters" && "📜 "}{cat === "Prophecy" && "🌟 "}
-              {cat.toUpperCase()}
-            </h2>
-            <div className="space-y-3">
-              {catBooks.map((bookName) => {
-                const meta = bookMeta[bookName];
-                const chapters = gospelData[bookName] || [];
-                const read = game.getChaptersRead(bookName);
-                const progress = chapters.length > 0 ? Math.round((read.length / chapters.length) * 100) : 0;
-                return (
-                  <div
-                    key={bookName}
-                    onClick={() => setView({ type: "chapters", book: bookName })}
-                    className="neon-card p-4 flex items-center gap-4 active:scale-[0.98] transition-transform cursor-pointer"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-purple-900/50 border border-purple-500/30 flex items-center justify-center text-2xl">
-                      {meta?.emoji}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-bold text-sm">{bookName}</h3>
-                      <p className="text-gray-400 text-xs mt-0.5">{chapters.length} chapters · {meta?.desc}</p>
-                      <div className="mt-2 h-1.5 bg-gray-800/80 rounded-full overflow-hidden">
-                        <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400" style={{ width: `${progress}%` }} />
+            <button
+              onClick={() => toggleCategory(cat)}
+              className="w-full flex items-center justify-between py-2 active:scale-[0.99] transition-transform"
+            >
+              <h2 className="text-base font-bold text-purple-300 font-display">
+                {catIcon} {cat.toUpperCase()}
+              </h2>
+              <span className="text-gray-500 text-xs">{catBooks.length} books {isCollapsed ? "▶" : "▼"}</span>
+            </button>
+
+            {!isCollapsed && (
+              <div className="space-y-2 mt-1">
+                {catBooks.map((bookName) => {
+                  const meta = bookMeta[bookName];
+                  const chapters = allBibleData[bookName] || [];
+                  const read = game.getChaptersRead(bookName);
+                  const progress = chapters.length > 0 ? Math.round((read.length / chapters.length) * 100) : 0;
+                  return (
+                    <div
+                      key={bookName}
+                      onClick={() => setView({ type: "chapters", book: bookName })}
+                      className="neon-card p-3 flex items-center gap-3 active:scale-[0.98] transition-transform cursor-pointer"
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-purple-900/50 border border-purple-500/30 flex items-center justify-center text-xl shrink-0">
+                        {meta?.emoji}
                       </div>
-                      <p className="text-gray-500 text-[10px] mt-1">{read.length}/{chapters.length} read ({progress}%)</p>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-white font-bold text-sm">{bookName}</h3>
+                        <p className="text-gray-400 text-[11px] mt-0.5">{chapters.length} chapters · {meta?.desc}</p>
+                        <div className="mt-1.5 h-1 bg-gray-800/80 rounded-full overflow-hidden">
+                          <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400" style={{ width: `${progress}%` }} />
+                        </div>
+                        <p className="text-gray-500 text-[9px] mt-0.5">{read.length}/{chapters.length} read ({progress}%)</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
@@ -222,7 +333,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   onFinishChapter: (chapterNum: number) => void;
   game: ReturnType<typeof useGame>;
 }) {
-  const chapters = gospelData[book] || [];
+  const chapters = allBibleData[book] || [];
   const chapter = chapters[chapterIdx];
   const meta = bookMeta[book];
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
@@ -321,7 +432,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   );
 }
 
-// ─── Quiz Component (uses extracted 260 quiz entries) ────────
+// ─── Quiz Component ────────────────────────────────
 function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
   book: string;
   chapterNum: number;
@@ -344,10 +455,7 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
     setSelected(idx);
     setShowResult(true);
     const isCorrect = idx === shuffled.correctIndex;
-
-    setTimeout(() => {
-      onFinish(isCorrect);
-    }, 2000);
+    setTimeout(() => { onFinish(isCorrect); }, 2000);
   };
 
   return (
@@ -363,21 +471,16 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
         <p className="text-purple-300 text-xs mt-1">{book} Chapter {chapterNum}</p>
       </div>
 
-      {/* Question */}
       <div className="neon-card p-5">
         <p className="text-white font-bold text-base leading-relaxed">{quiz.q}</p>
       </div>
 
-      {/* Options */}
       <div className="space-y-3">
         {shuffled.options.map((opt, idx) => {
           let btnClass = "w-full neon-card p-4 text-left active:scale-[0.98] transition-all cursor-pointer";
           if (showResult) {
-            if (idx === shuffled.correctIndex) {
-              btnClass += " !border-green-500/60 bg-green-900/20";
-            } else if (idx === selected && idx !== shuffled.correctIndex) {
-              btnClass += " !border-red-500/60 bg-red-900/20";
-            }
+            if (idx === shuffled.correctIndex) btnClass += " !border-green-500/60 bg-green-900/20";
+            else if (idx === selected && idx !== shuffled.correctIndex) btnClass += " !border-red-500/60 bg-red-900/20";
           }
           return (
             <button key={idx} onClick={() => handleSelect(idx)} className={btnClass} disabled={selected !== null}>
@@ -396,7 +499,6 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
         })}
       </div>
 
-      {/* Feedback */}
       {showResult && (
         <div className={`text-center p-3 rounded-xl ${
           selected === shuffled.correctIndex

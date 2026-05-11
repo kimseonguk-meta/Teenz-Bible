@@ -1,6 +1,6 @@
 import { useGame } from "@/contexts/GameContext";
 import { useLocation } from "wouter";
-import { gospelData } from "@/data/gospelData";
+import { allBibleData } from "@/data/allBibleData";
 import { MemeHomeCard } from "@/pages/MemeOfDay";
 
 function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: number; size?: number; strokeWidth?: number }) {
@@ -42,8 +42,8 @@ export default function Home() {
   let currentBook = "Matthew";
   let currentChapter = 1;
   let bookProgress = 0;
-  for (const bookName of Object.keys(gospelData)) {
-    const chapters = gospelData[bookName];
+  for (const bookName of Object.keys(allBibleData)) {
+    const chapters = allBibleData[bookName];
     const read = game.getChaptersRead(bookName);
     if (read.length < chapters.length) {
       currentBook = bookName;
@@ -87,7 +87,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-white font-display">{currentBook}</h2>
             <h3 className="text-xl font-bold text-white font-display">Chapter {currentChapter}</h3>
             <p className="text-gray-400 text-sm mt-1">
-              {gospelData[currentBook]?.[currentChapter - 1]?.title || "Continue your journey"}
+              {allBibleData[currentBook]?.[currentChapter - 1]?.title || "Continue your journey"}
             </p>
             <button onClick={() => setLocation("/bible")}
               className="mt-3 px-4 py-2 bg-purple-600/30 border border-purple-500/50 rounded-xl text-purple-200 text-sm font-medium flex items-center gap-2 hover:bg-purple-600/50 transition-all active:scale-95">
@@ -269,6 +269,12 @@ export default function Home() {
         </button>
         <button onClick={() => setLocation("/store")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">🏪</span><div className="text-sm font-medium text-white mt-1">Gem Store</div>
+        </button>
+        <button onClick={() => setLocation("/challenges")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+          <span className="text-2xl">🏆</span><div className="text-sm font-medium text-white mt-1">Challenges</div>
+        </button>
+        <button onClick={() => setLocation("/memes")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+          <span className="text-2xl">😂</span><div className="text-sm font-medium text-white mt-1">Meme Gallery</div>
         </button>
       </div>
       <div className="h-4" />

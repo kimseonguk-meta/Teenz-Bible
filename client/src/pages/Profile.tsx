@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGame } from "@/contexts/GameContext";
 import { toast } from "sonner";
+import { useLocation } from "wouter";
 
 const ALL_BADGES = [
   { id: "첫 시작", name: "First Step", desc: "Started reading the Bible", emoji: "📖" },
@@ -18,6 +19,7 @@ export default function Profile() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [newName, setNewName] = useState(game.playerName);
   const [newClass, setNewClass] = useState(game.className);
+  const [, navigate] = useLocation();
 
   const handleSaveName = () => {
     if (newName.trim()) {
@@ -135,6 +137,26 @@ export default function Profile() {
           </div>
           <span className="text-purple-300 text-sm font-bold">{Math.round((matthewRead / matthewTotal) * 100)}%</span>
         </div>
+      </div>
+
+      {/* Quick Links */}
+      <div className="grid grid-cols-2 gap-3">
+        <button onClick={() => navigate("/challenges")}
+          className="neon-card p-3 flex items-center gap-2 active:scale-95 transition-transform">
+          <span className="text-xl">🏆</span>
+          <div className="text-left">
+            <p className="text-white text-xs font-bold">Challenges</p>
+            <p className="text-gray-500 text-[9px]">Weekly missions</p>
+          </div>
+        </button>
+        <button onClick={() => navigate("/challenges")}
+          className="neon-card p-3 flex items-center gap-2 active:scale-95 transition-transform">
+          <span className="text-xl">👥</span>
+          <div className="text-left">
+            <p className="text-white text-xs font-bold">Invite Friends</p>
+            <p className="text-gray-500 text-[9px]">Earn 50 gems</p>
+          </div>
+        </button>
       </div>
 
       {/* Equipped Items */}
