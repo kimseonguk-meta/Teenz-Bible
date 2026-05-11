@@ -31,12 +31,12 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 relative z-10 pb-20 overflow-y-auto">
+      <main className={`flex-1 relative z-10 overflow-y-auto ${location === "/bible-ai" ? "" : "pb-20"}`}>
         {children}
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 bg-[rgba(10,0,30,0.95)] backdrop-blur-xl border-t border-purple-500/30 shadow-[0_-4px_20px_rgba(139,92,246,0.2)]">
+      {location !== "/bible-ai" && <nav className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 bg-[rgba(10,0,30,0.95)] backdrop-blur-xl border-t border-purple-500/30 shadow-[0_-4px_20px_rgba(139,92,246,0.2)]">
         <div className="flex justify-around items-center py-2 px-2">
           {navItems.map((item) => {
             const isActive = location === item.path;
@@ -59,7 +59,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             );
           })}
         </div>
-      </nav>
+      </nav>}
     </div>
   );
 }

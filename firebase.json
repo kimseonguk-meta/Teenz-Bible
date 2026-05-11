@@ -1,27 +1,16 @@
 {
   "hosting": {
-    "public": "firebase-deploy",
+    "public": "dist/public",
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "**/__manus__/**"
     ],
     "rewrites": [
       {
-        "source": "/update",
-        "destination": "/update.html"
-      },
-      {
-        "source": "/ipad",
-        "destination": "/ipad/index.html"
-      },
-      {
-        "source": "/ipad/**",
-        "destination": "/ipad/index.html"
-      },
-      {
         "source": "**",
-        "destination": "/teens-bible.html"
+        "destination": "/index.html"
       }
     ],
     "headers": [
@@ -43,15 +32,11 @@
         ]
       },
       {
-        "source": "/sw.js",
+        "source": "/assets/**",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
-          },
-          {
-            "key": "Service-Worker-Allowed",
-            "value": "/"
+            "value": "public, max-age=31536000, immutable"
           }
         ]
       },
@@ -63,15 +48,20 @@
             "value": "no-cache, must-revalidate"
           }
         ]
+      },
+      {
+        "source": "manifest.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
       }
     ],
     "site": "teens-bible-94271"
   },
   "database": {
     "rules": "database.rules.json"
-  },
-  "functions": {
-    "source": "functions",
-    "runtime": "nodejs18"
   }
 }

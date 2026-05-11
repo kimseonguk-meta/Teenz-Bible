@@ -17,6 +17,7 @@ const Bible = lazy(() => import("./pages/Bible"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const Store = lazy(() => import("./pages/Store"));
 const Profile = lazy(() => import("./pages/Profile"));
+const BibleAI = lazy(() => import("./pages/BibleAI"));
 
 function LoadingFallback() {
   return (
@@ -39,6 +40,7 @@ function Router() {
           <Route path="/leaderboard" component={Leaderboard} />
           <Route path="/store" component={Store} />
           <Route path="/profile" component={Profile} />
+          <Route path="/bible-ai" component={BibleAI} />
           <Route component={Home} />
         </Switch>
       </Suspense>

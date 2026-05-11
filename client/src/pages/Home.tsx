@@ -211,7 +211,7 @@ export default function Home() {
 
       {/* Bible AI - Prominent Card */}
       <button
-        onClick={() => toast.info("Bible AI is coming soon! 🤖")}
+        onClick={() => setLocation("/bible-ai")}
         className="w-full neon-card p-5 flex items-center gap-4 hover:border-purple-400/60 transition-all active:scale-[0.98] cursor-pointer group"
       >
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 border border-purple-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all">
