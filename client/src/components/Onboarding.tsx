@@ -76,6 +76,9 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       await update(ref(db, `users/${uid}`), userData);
       await update(ref(db, `groups/${groupCode}/members/${uid}`), userData);
 
+      // Trigger full data backup to userData/{uid}
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+
       setStep(4); // Show celebration
     } catch (err) {
       console.error("Save profile error:", err);
@@ -89,6 +92,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       };
       localStorage.setItem("teensBibleProfile", JSON.stringify(profile));
       localStorage.setItem("playerName", nickname);
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
       setStep(4);
     } finally {
       setSaving(false);

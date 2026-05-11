@@ -66,6 +66,7 @@ export default function Store() {
       toast.success(`Purchased ${item.name}! 🎉`);
       setGems(getGems());
       setInventory(getInventory());
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     } else {
       toast.error(result.message);
     }
@@ -79,12 +80,14 @@ export default function Store() {
     }
     setEquipped(getEquipped());
     toast.success(`Equipped ${item.name}! ✨`);
+    window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
   }, []);
 
   const handleUnequipPet = useCallback(() => {
     unequipPet();
     setEquipped(getEquipped());
     toast.info("Pet unequipped");
+    window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
   }, []);
 
   const handleMysteryBox = useCallback(() => {
@@ -103,6 +106,7 @@ export default function Store() {
       setGems(getGems());
       setInventory(getInventory());
       setIsOpening(false);
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     }, 1500);
   }, []);
 

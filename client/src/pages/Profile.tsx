@@ -98,12 +98,14 @@ export default function Profile() {
     const next = language === "en" ? "ko" : "en";
     setLanguage(next);
     localStorage.setItem("readerLang", next);
+    window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
   }, [language]);
 
   const handleFontSizeChange = useCallback((delta: number) => {
     setFontSize(prev => {
       const next = Math.max(12, Math.min(24, prev + delta));
       localStorage.setItem("readerFontSize", String(next));
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
       return next;
     });
   }, []);
@@ -161,6 +163,7 @@ export default function Profile() {
       redeemed.push(code);
       localStorage.setItem("redeemedCodes", JSON.stringify(redeemed));
       setRedeemResult({ msg: reward.msg, success: true });
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     } else {
       setRedeemResult({ msg: "Invalid code. Try again!", success: false });
     }

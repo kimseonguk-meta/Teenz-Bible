@@ -1,6 +1,11 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { toast } from "sonner";
 
+// Dispatch sync event after data changes
+function dispatchSyncEvent() {
+  window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+}
+
 // ─── Types ───────────────────────────────────────────────────
 export interface GameState {
   playerName: string;
@@ -114,6 +119,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (newLevel.level > oldLevel.level) {
         toast.success(`🎉 Level Up! Lv.${newLevel.level} ${newLevel.name}`);
       }
+      dispatchSyncEvent();
       return { ...prev, totalXP: newXP };
     });
   }, []);
@@ -122,6 +128,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setState(prev => {
       const newGems = prev.gems + amount;
       saveGems(newGems);
+      dispatchSyncEvent();
       return { ...prev, gems: newGems };
     });
   }, []);
@@ -195,6 +202,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     if (!read.includes(chapterNum)) {
       read.push(chapterNum);
       localStorage.setItem(`chaptersRead_${book}`, JSON.stringify(read));
+      dispatchSyncEvent();
 
       // Add XP and Gems for reading
       addXP(10);
@@ -254,6 +262,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       addXP(15);
       addGems(5);
       toast.success(`🎬 Video watched! +15 XP, +5 💎`);
+      dispatchSyncEvent();
       return { ...prev, watchedVideos: newWatched };
     });
   }, []);

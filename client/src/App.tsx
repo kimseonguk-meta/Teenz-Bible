@@ -9,6 +9,8 @@ import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
 import Onboarding from "./components/Onboarding";
 import { initTheme } from "./data/storeItems";
+import { auth, signInAnonymously, onAuthStateChanged } from "./lib/firebase";
+import { initializeSync, scheduleSyncToFirebase } from "./lib/firebaseSync";
 
 // Lazy load heavy pages for code splitting
 const Bible = lazy(() => import("./pages/Bible"));
@@ -46,18 +48,67 @@ function Router() {
 
 function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
+    // Apply saved theme on app load
+    initTheme();
+
+    // Check if onboarding needed
     const profile = localStorage.getItem("teensBibleProfile");
     if (!profile) {
       setShowOnboarding(true);
     }
-    // Apply saved theme on app load
-    initTheme();
+
+    // Firebase anonymous auth + data sync
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Sign in anonymously
+        try {
+          await signInAnonymously(auth);
+        } catch (err) {
+          console.log("[Auth] Anonymous sign-in failed:", err);
+          setAuthReady(true);
+        }
+      } else {
+        // User is authenticated, initialize sync
+        try {
+          const { restored } = await initializeSync();
+          if (restored) {
+            console.log("[Sync] Data restored from Firebase!");
+            // Re-apply theme after restore
+            initTheme();
+            // If profile was restored, hide onboarding
+            const profile = localStorage.getItem("teensBibleProfile");
+            if (profile) {
+              setShowOnboarding(false);
+            }
+          }
+        } catch (err) {
+          console.log("[Sync] Init sync error:", err);
+        }
+        setAuthReady(true);
+      }
+    });
+
+    // Listen for localStorage changes to trigger sync
+    const handleStorageSync = () => {
+      scheduleSyncToFirebase();
+    };
+
+    // Custom event for triggering sync from other components
+    window.addEventListener("teensBibleDataChanged", handleStorageSync);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener("teensBibleDataChanged", handleStorageSync);
+    };
   }, []);
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
+    // Sync new profile to Firebase immediately
+    scheduleSyncToFirebase();
   };
 
   return (
