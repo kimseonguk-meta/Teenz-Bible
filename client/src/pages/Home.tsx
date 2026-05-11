@@ -26,20 +26,62 @@ function getLevel(xp: number) {
   return { name: "Newbie", level: 1, next: 100 };
 }
 
-// Meme data for Bible Meme of the Day
-const MEMES = [
-  { id: 1, text: "When you finally finish reading Leviticus", emoji: "😅", reaction: "LOL" },
-  { id: 2, text: "Noah building the ark while everyone laughs", emoji: "🚢", reaction: "Fire" },
-  { id: 3, text: "When someone says 'I'll pray for you' during an argument", emoji: "🙏", reaction: "Dead" },
-  { id: 4, text: "Moses parting the Red Sea like a boss", emoji: "🌊", reaction: "Fire" },
-  { id: 5, text: "When David pulled up with just a sling", emoji: "💪", reaction: "LOL" },
-  { id: 6, text: "Jonah trying to run from God... in a boat", emoji: "🐋", reaction: "Dead" },
-  { id: 7, text: "Peter walking on water then looking down", emoji: "😱", reaction: "LOL" },
+// Real meme images hosted on Firebase (same as old app)
+const MEME_BASE_URL = "https://teens-bible-94271.web.app/memes/";
+const memeUrls = [
+  "meme_001.jpg","meme_002.webp","meme_003.webp","meme_004.webp","meme_005.webp",
+  "meme_006.webp","meme_007.webp","meme_008.jpg","meme_009.jpg","meme_010.jpg",
+  "meme_011.jpg","meme_012.jpg","meme_013.webp","meme_014.jpg","meme_015.webp",
+  "meme_016.jpg","meme_017.jpg","meme_018.jpg","meme_019.jpg","meme_020.jpg",
+  "meme_021.jpg","meme_022.jpeg","meme_023.jpg","meme_024.webp","meme_025.jpg",
+  "meme_026.jpg","meme_027.webp","meme_028.jpeg","meme_029.webp","meme_030.jpg",
+  "meme_031.jpg","meme_032.jpg","meme_033.jpg","meme_034.jpg","meme_035.png",
+  "meme_036.jpg","meme_037.jpg","meme_038.jpg","meme_039.jpeg","meme_040.jpg",
+  "meme_041.png","meme_042.jpg","meme_043.jpg","meme_044.jpg","meme_045.jpg",
+  "meme_046.jpg","meme_047.jpg","meme_048.jpg","meme_049.jpg","meme_050.png",
+  "meme_051.jpg","meme_052.jpg","meme_053.jpg","meme_054.jpg","meme_055.jpg",
+  "meme_056.jpg","meme_057.jpg","meme_058.jpg","meme_059.jpg","meme_060.jpg",
+  "meme_061.jpg","meme_062.jpg","meme_063.jpg","meme_064.jpg","meme_065.gif",
+  "meme_066.jpg","meme_067.jpg","meme_068.jpg","meme_069.jpg","meme_070.jpg",
+  "meme_071.jpg","meme_072.jpg","meme_073.jpg","meme_074.jpg","meme_075.jpg",
+  "meme_076.jpg","meme_077.jpg","meme_078.jpg","meme_079.jpg","meme_080.jpg",
+  "meme_081.png","meme_082.png","meme_083.jpg","meme_084.jpg","meme_085.jpg",
+  "meme_086.jpg","meme_087.jpg","meme_088.jpg","meme_089.jpg","meme_090.jpg",
+  "meme_091.jpg","meme_092.jpg","meme_093.jpg","meme_094.jpg","meme_095.jpg",
+  "meme_096.jpg","meme_097.jpg","meme_098.jpg","meme_099.jpg","meme_100.jpg",
 ];
 
-function getDailyMeme() {
+// Seasonal memes
+const seasonalMemes: Record<string, string[]> = {
+  christmas: ["christmas_001.jpg","christmas_002.jpg","christmas_003.png","christmas_004.jpg","christmas_005.jpg","christmas_006.jpg"],
+  easter: ["easter_001.jpg","easter_002.jpg","easter_003.jpg","easter_004.jpg","easter_005.jpg","easter_006.jpg","easter_007.jpg"],
+  thanksgiving: ["thanksgiving_001.jpg","thanksgiving_002.jpg","thanksgiving_003.jpg","thanksgiving_004.jpg","thanksgiving_005.jpg","thanksgiving_006.jpg"],
+  lent: ["lent_001.jpg","lent_002.jpg"],
+  backtoschool: ["school_001.jpg","school_002.jpg","school_003.jpg","school_004.jpg","school_005.jpg"],
+};
+
+function getActiveSeason(): string | null {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  if (month === 12 || (month === 1 && day <= 6)) return "christmas";
+  if ((month === 3 && day >= 15) || month === 4) return "easter";
+  if ((month === 2 && day >= 15) || (month === 3 && day < 15)) return "lent";
+  if (month === 11) return "thanksgiving";
+  if ((month === 8 && day >= 15) || (month === 9 && day <= 15)) return "backtoschool";
+  if (month === 2 && day >= 20 && day <= 28) return "backtoschool";
+  return null;
+}
+
+function getDailyMemeUrl(): string {
+  let allMemes = [...memeUrls];
+  const season = getActiveSeason();
+  if (season && seasonalMemes[season]) {
+    allMemes = allMemes.concat(seasonalMemes[season]);
+  }
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
-  return MEMES[dayOfYear % MEMES.length];
+  const idx = dayOfYear % allMemes.length;
+  return MEME_BASE_URL + allMemes[idx];
 }
 
 function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: number; size?: number; strokeWidth?: number }) {
@@ -66,7 +108,7 @@ export default function Home() {
   const level = getLevel(totalXP);
   const xpProgress = Math.min(100, (totalXP / level.next) * 100);
 
-  const meme = getDailyMeme();
+  const memeUrl = getDailyMemeUrl();
 
   const greeting = playerName ? `Hey ${playerName}!` : "Hey there!";
 
@@ -158,16 +200,31 @@ export default function Home() {
 
 
       {/* Bible Meme of the Day */}
-      <div className="neon-card p-4 cursor-pointer active:scale-[0.98] transition-transform" onClick={() => setLocation("/memes")}>
+      <div className="neon-card p-4 cursor-pointer active:scale-[0.98] transition-transform">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-white font-bold text-sm">😂 MEME OF THE DAY</span>
-          <span className="text-purple-300 text-[10px]">Tap to see more</span>
+          <span className="text-white font-bold text-sm">😂 BIBLE MEME OF THE DAY</span>
         </div>
-        <div className="bg-purple-900/30 rounded-xl p-4 border border-purple-500/20">
-          <div className="text-center">
-            <span className="text-4xl">{meme.emoji}</span>
-            <p className="text-white text-sm font-medium mt-2 leading-relaxed">{meme.text}</p>
-          </div>
+        <div className="rounded-xl overflow-hidden border border-purple-500/20">
+          <img
+            src={memeUrl}
+            alt="Bible Meme of the Day"
+            className="w-full h-auto rounded-xl"
+            loading="lazy"
+          />
+        </div>
+        <div className="flex justify-center gap-3 mt-3">
+          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
+            <span>😂</span>
+          </button>
+          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
+            <span>🔥</span>
+          </button>
+          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
+            <span>💀</span>
+          </button>
+          <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-purple-900/40 border border-purple-500/30 text-sm active:scale-95 transition-transform">
+            <span>🙏</span>
+          </button>
         </div>
       </div>
 
