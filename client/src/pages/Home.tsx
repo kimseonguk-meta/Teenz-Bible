@@ -116,25 +116,25 @@ export default function Home() {
         </div>
       </div>
 
-      {/* AI Bible Chat - Prominent Card */}
+      {/* Bible AI - Prominent Card */}
       <button
         onClick={() => setLocation("/chat")}
         className="w-full neon-card p-5 flex items-center gap-4 hover:border-purple-400/60 transition-all active:scale-[0.98] cursor-pointer group"
       >
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 border border-purple-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" fill="url(#sparkle-grad)" />
-            <path d="M12 6L13.09 9.26L16 9.77L13.78 12.22L14.45 15.5L12 14.1L9.55 15.5L10.22 12.22L8 9.77L10.91 9.26L12 6Z" fill="rgba(255,255,255,0.9)" />
-            <defs>
-              <linearGradient id="sparkle-grad" x1="4" y1="2" x2="20" y2="20">
-                <stop offset="0%" stopColor="#c084fc" />
-                <stop offset="100%" stopColor="#818cf8" />
-              </linearGradient>
-            </defs>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Rounded square outline */}
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="white" strokeWidth="1.8" fill="none" />
+            {/* Large 4-point star (bottom-left) */}
+            <path d="M8 17 L8.8 14.5 L11 13.7 L8.8 12.9 L8 10.4 L7.2 12.9 L5 13.7 L7.2 14.5 Z" fill="white" />
+            {/* Medium 4-point star (top-right) */}
+            <path d="M16 11 L16.7 9 L18.5 8.3 L16.7 7.6 L16 5.6 L15.3 7.6 L13.5 8.3 L15.3 9 Z" fill="white" />
+            {/* Small 4-point star (top-left area) */}
+            <path d="M9 7.5 L9.4 6.3 L10.5 5.9 L9.4 5.5 L9 4.3 L8.6 5.5 L7.5 5.9 L8.6 6.3 Z" fill="white" />
           </svg>
         </div>
         <div className="flex-1 text-left">
-          <h3 className="text-white font-bold text-base">Bible AI Chat</h3>
+          <h3 className="text-white font-bold text-base">Bible AI</h3>
           <p className="text-gray-400 text-sm mt-0.5">Ask anything about the Bible — get instant answers</p>
         </div>
         <div className="text-purple-400 text-lg">→</div>
