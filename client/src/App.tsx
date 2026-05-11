@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { GameProvider } from "./contexts/GameContext";
 import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
+import Onboarding from "./components/Onboarding";
 
 // Lazy load heavy pages for code splitting
 const Bible = lazy(() => import("./pages/Bible"));
@@ -43,12 +44,26 @@ function Router() {
 }
 
 function App() {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const profile = localStorage.getItem("teensBibleProfile");
+    if (!profile) {
+      setShowOnboarding(true);
+    }
+  }, []);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           <GameProvider>
+            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
             <Router />
           </GameProvider>
         </TooltipProvider>
