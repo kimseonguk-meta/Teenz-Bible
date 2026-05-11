@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useGame } from "@/contexts/GameContext";
+import { toast } from "sonner";
 
 const tabs = [
   { id: "featured", icon: "⭐", label: "Featured" },
@@ -8,29 +10,88 @@ const tabs = [
   { id: "earn", icon: "💰", label: "Earn" },
 ];
 
-const pets = [
-  { name: "Faithy Cat", price: 60, emoji: "🐱" },
-  { name: "Hope Puppy", price: 60, emoji: "🐶" },
-  { name: "Joy Lamb", price: 60, emoji: "🐑" },
+const allPets = [
+  { id: "Faithy Cat", name: "Faithy Cat", price: 60, emoji: "🐱" },
+  { id: "Hope Puppy", name: "Hope Puppy", price: 60, emoji: "🐶" },
+  { id: "Joy Lamb", name: "Joy Lamb", price: 60, emoji: "🐑" },
+  { id: "Grace Bunny", name: "Grace Bunny", price: 80, emoji: "🐰" },
+  { id: "Peace Dove", name: "Peace Dove", price: 100, emoji: "🕊️" },
+  { id: "Love Bear", name: "Love Bear", price: 120, emoji: "🐻" },
 ];
 
-const themes = [
-  { name: "Twilight Glow", colors: ["#4c1d95", "#6d28d9", "#7c3aed", "#60a5fa"], equipped: true },
-  { name: "Sea Breeze", colors: ["#0e7490", "#06b6d4", "#22d3ee", "#67e8f9"], equipped: false },
-  { name: "Forest Calm", colors: ["#166534", "#16a34a", "#4ade80", "#86efac"], equipped: false },
+const allThemes = [
+  { id: "Twilight Glow", name: "Twilight Glow", colors: ["#4c1d95", "#6d28d9", "#7c3aed", "#60a5fa"], price: 0 },
+  { id: "Sea Breeze", name: "Sea Breeze", colors: ["#0e7490", "#06b6d4", "#22d3ee", "#67e8f9"], price: 50 },
+  { id: "Forest Calm", name: "Forest Calm", colors: ["#166534", "#16a34a", "#4ade80", "#86efac"], price: 50 },
+  { id: "Sunset Blaze", name: "Sunset Blaze", colors: ["#9a3412", "#ea580c", "#fb923c", "#fed7aa"], price: 80 },
+  { id: "Cherry Blossom", name: "Cherry Blossom", colors: ["#831843", "#db2777", "#f472b6", "#fce7f3"], price: 80 },
 ];
 
-function getGems() {
-  try {
-    const raw = localStorage.getItem("teensBible");
-    const data = raw ? JSON.parse(raw) : {};
-    return data.gems || 0;
-  } catch { return 0; }
-}
+const allFrames = [
+  { id: "Basic", name: "Basic", price: 0, emoji: "⬜" },
+  { id: "Gold Crown", name: "Gold Crown", price: 100, emoji: "👑" },
+  { id: "Diamond", name: "Diamond", price: 150, emoji: "💎" },
+  { id: "Fire Ring", name: "Fire Ring", price: 80, emoji: "🔥" },
+];
+
+const powerUps = [
+  { id: "2x_xp", name: "2X XP Boost", desc: "다음 5챕터 동안 XP 2배!", price: 30, emoji: "⚡", duration: "5 chapters" },
+  { id: "streak_shield", name: "Streak Shield", desc: "하루 빠져도 스트릭 유지!", price: 50, emoji: "🛡️", duration: "1 use" },
+  { id: "hint_pack", name: "Hint Pack", desc: "퀴즈 힌트 3개!", price: 20, emoji: "💡", duration: "3 hints" },
+];
 
 export default function Store() {
   const [activeTab, setActiveTab] = useState("featured");
-  const [gems] = useState(getGems);
+  const game = useGame();
+
+  const handleBuyPet = (pet: typeof allPets[0]) => {
+    if (game.ownedPets.includes(pet.id)) {
+      game.equipItem("pet", pet.id);
+    } else {
+      game.buyItem("pet", pet.id, pet.price);
+    }
+  };
+
+  const handleBuyTheme = (theme: typeof allThemes[0]) => {
+    if (game.ownedThemes.includes(theme.id)) {
+      game.equipItem("theme", theme.id);
+    } else {
+      game.buyItem("theme", theme.id, theme.price);
+    }
+  };
+
+  const handleBuyFrame = (frame: typeof allFrames[0]) => {
+    if (game.ownedFrames.includes(frame.id)) {
+      game.equipItem("frame", frame.id);
+    } else {
+      game.buyItem("frame", frame.id, frame.price);
+    }
+  };
+
+  const handleBuyPowerUp = (pu: typeof powerUps[0]) => {
+    if (game.gems < pu.price) {
+      toast.error("💎 젬이 부족합니다!");
+      return;
+    }
+    game.spendGems(pu.price);
+    toast.success(`⚡ ${pu.name} 구매 완료!`);
+  };
+
+  const handleMysteryBox = () => {
+    if (game.gems < 15) {
+      toast.error("💎 젬이 부족합니다!");
+      return;
+    }
+    game.spendGems(15);
+    const rewards = ["10 XP", "20 XP", "5 Gems", "Hint Pack", "Streak Shield"];
+    const reward = rewards[Math.floor(Math.random() * rewards.length)];
+    if (reward.includes("XP")) {
+      game.addXP(parseInt(reward));
+    } else if (reward.includes("Gems")) {
+      game.addGems(parseInt(reward));
+    }
+    toast.success(`🎁 미스터리 박스에서 ${reward}을(를) 획득했습니다!`);
+  };
 
   return (
     <div className="px-4 pt-6 space-y-5">
@@ -39,8 +100,9 @@ export default function Store() {
         <h1 className="text-2xl font-bold text-white font-display neon-text-purple">Gem Store</h1>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-900/50 border border-purple-500/30">
           <span className="text-sm">💎</span>
-          <span className="text-white font-bold text-sm">{gems}</span>
-          <button className="w-5 h-5 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">+</button>
+          <span className="text-white font-bold text-sm">{game.gems}</span>
+          <button onClick={() => toast.info("💎 젬은 성경 읽기와 퀴즈로 획득할 수 있습니다!")}
+            className="w-5 h-5 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">+</button>
         </div>
       </div>
 
@@ -62,91 +124,244 @@ export default function Store() {
         ))}
       </div>
 
-      {/* Featured Banner */}
-      <div className="neon-card-gold p-5 relative overflow-hidden">
-        <div className="absolute top-2 left-3 px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/40 rounded-full text-[10px] text-yellow-300">
-          ⏰ LIMITED TIME
-        </div>
-        <div className="mt-5">
-          <h3 className="text-lg font-bold text-white">Starter Blessing Pack</h3>
-          <p className="text-gray-400 text-xs mt-1">말씀 여정에 도움이 되는 특별 패키지!</p>
-          <div className="flex items-center gap-3 mt-2 text-xs text-gray-300">
-            <span>💎 200</span>
-            <span>⚡ 5</span>
-            <span>❤️ 3</span>
-          </div>
-          <button className="mt-3 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-white text-sm font-bold shadow-[0_0_12px_rgba(16,185,129,0.4)]">
-            ₩3,900
-          </button>
-        </div>
-      </div>
-
-      {/* Pets Section */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold text-purple-300 font-display">🐾 Pets</h2>
-          <button className="text-gray-400 text-xs">See All &gt;</button>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {pets.map((pet) => (
-            <div key={pet.name} className="neon-card p-3 text-center relative">
-              <button className="absolute top-2 right-2 text-pink-400 text-sm">♡</button>
-              <div className="text-4xl my-2">{pet.emoji}</div>
-              <p className="text-white text-xs font-medium">{pet.name}</p>
-              <div className="mt-2 flex items-center justify-center gap-1">
-                <span className="text-[10px] text-cyan-300">{pet.price}</span>
-                <span className="text-[10px]">💎</span>
+      {/* Featured Tab */}
+      {activeTab === "featured" && (
+        <>
+          {/* Featured Banner */}
+          <div className="neon-card-gold p-5 relative overflow-hidden">
+            <div className="absolute top-2 left-3 px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/40 rounded-full text-[10px] text-yellow-300">
+              ⏰ LIMITED TIME
+            </div>
+            <div className="mt-5">
+              <h3 className="text-lg font-bold text-white">Starter Blessing Pack</h3>
+              <p className="text-gray-400 text-xs mt-1">말씀 여정에 도움이 되는 특별 패키지!</p>
+              <div className="flex items-center gap-3 mt-2 text-xs text-gray-300">
+                <span>💎 200</span><span>⚡ 5</span><span>❤️ 3</span>
               </div>
+              <button onClick={() => toast.info("인앱 결제는 앱스토어 출시 후 지원됩니다!")}
+                className="mt-3 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-white text-sm font-bold shadow-[0_0_12px_rgba(16,185,129,0.4)] active:scale-95 transition-transform">
+                ₩3,900
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Pets */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-bold text-purple-300 font-display">🐾 Pets</h2>
+              <button onClick={() => setActiveTab("pets")} className="text-gray-400 text-xs">See All &gt;</button>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {allPets.slice(0, 3).map((pet) => {
+                const owned = game.ownedPets.includes(pet.id);
+                const equipped = game.equippedPet === pet.id;
+                return (
+                  <div key={pet.id} className="neon-card p-3 text-center relative">
+                    <button onClick={() => handleBuyPet(pet)} className="absolute top-2 right-2 text-pink-400 text-sm">
+                      {owned ? '❤️' : '♡'}
+                    </button>
+                    <div className="text-4xl my-2">{pet.emoji}</div>
+                    <p className="text-white text-xs font-medium">{pet.name}</p>
+                    {equipped ? (
+                      <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                    ) : owned ? (
+                      <button onClick={() => handleBuyPet(pet)} className="mt-2 text-[10px] text-purple-300 font-bold">장착하기</button>
+                    ) : (
+                      <button onClick={() => handleBuyPet(pet)} className="mt-2 flex items-center justify-center gap-1">
+                        <span className="text-[10px] text-cyan-300">{pet.price}</span>
+                        <span className="text-[10px]">💎</span>
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Themes */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-bold text-purple-300 font-display">🎨 Themes</h2>
+              <button onClick={() => setActiveTab("themes")} className="text-gray-400 text-xs">See All &gt;</button>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {allThemes.slice(0, 3).map((theme) => {
+                const owned = game.ownedThemes.includes(theme.id);
+                const equipped = game.equippedTheme === theme.id;
+                return (
+                  <div key={theme.id} className="neon-card p-3 text-center relative cursor-pointer" onClick={() => handleBuyTheme(theme)}>
+                    {equipped && (
+                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-cyan-500 text-white text-[10px] flex items-center justify-center">✓</div>
+                    )}
+                    <div className="w-12 h-12 mx-auto rounded-full" style={{ background: `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[2]})` }} />
+                    <p className="text-white text-xs font-medium mt-2">{theme.name}</p>
+                    {!owned && theme.price > 0 && (
+                      <div className="flex gap-1 justify-center mt-1">
+                        <span className="text-[10px] text-cyan-300">{theme.price} 💎</span>
+                      </div>
+                    )}
+                    {owned && !equipped && <p className="text-[10px] text-purple-300 mt-1">장착하기</p>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Mystery Box & Reader Skins */}
+          <div className="grid grid-cols-2 gap-3 pb-4">
+            <button onClick={handleMysteryBox} className="neon-card p-4 text-center border-pink-500/40 active:scale-95 transition-transform">
+              <h3 className="text-white font-bold text-sm">Mystery Box</h3>
+              <p className="text-gray-400 text-[10px] mt-1">어떤 보상이 기다릴까요?</p>
+              <div className="text-3xl my-2">🎁</div>
+              <div className="flex items-center justify-center gap-1">
+                <span className="text-xs text-cyan-300">15</span>
+                <span className="text-xs">💎</span>
+              </div>
+            </button>
+            <button onClick={() => setActiveTab("powerups")} className="neon-card p-4 text-center border-green-500/40 active:scale-95 transition-transform">
+              <h3 className="text-white font-bold text-sm">Power-ups</h3>
+              <p className="text-gray-400 text-[10px] mt-1">능력을 강화하세요!</p>
+              <div className="text-3xl my-2">⚡</div>
+              <div className="text-[10px] text-purple-300">Browse →</div>
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* Pets Tab */}
+      {activeTab === "pets" && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold text-purple-300 font-display">🐾 ALL PETS</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {allPets.map((pet) => {
+              const owned = game.ownedPets.includes(pet.id);
+              const equipped = game.equippedPet === pet.id;
+              return (
+                <button key={pet.id} onClick={() => handleBuyPet(pet)}
+                  className={`neon-card p-3 text-center relative active:scale-95 transition-transform ${equipped ? 'border-cyan-400/60' : ''}`}>
+                  {equipped && <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-cyan-500 text-white text-[10px] flex items-center justify-center">✓</div>}
+                  <div className="text-4xl my-2">{pet.emoji}</div>
+                  <p className="text-white text-xs font-medium">{pet.name}</p>
+                  {equipped ? (
+                    <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                  ) : owned ? (
+                    <div className="mt-2 text-[10px] text-purple-300 font-bold">장착하기</div>
+                  ) : (
+                    <div className="mt-2 flex items-center justify-center gap-1">
+                      <span className="text-[10px] text-cyan-300">{pet.price}</span>
+                      <span className="text-[10px]">💎</span>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Themes Tab */}
+      {activeTab === "themes" && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold text-purple-300 font-display">🎨 ALL THEMES</h2>
+          <div className="grid grid-cols-2 gap-3">
+            {allThemes.map((theme) => {
+              const owned = game.ownedThemes.includes(theme.id);
+              const equipped = game.equippedTheme === theme.id;
+              return (
+                <button key={theme.id} onClick={() => handleBuyTheme(theme)}
+                  className={`neon-card p-4 text-center relative active:scale-95 transition-transform ${equipped ? 'border-cyan-400/60' : ''}`}>
+                  {equipped && <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-cyan-500 text-white text-[10px] flex items-center justify-center">✓</div>}
+                  <div className="w-16 h-16 mx-auto rounded-full" style={{ background: `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[2]})` }} />
+                  <p className="text-white text-sm font-medium mt-2">{theme.name}</p>
+                  <div className="flex gap-1 justify-center mt-1">
+                    {theme.colors.map((c, i) => <div key={i} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />)}
+                  </div>
+                  {equipped ? (
+                    <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                  ) : owned ? (
+                    <div className="mt-2 text-[10px] text-purple-300 font-bold">장착하기</div>
+                  ) : theme.price > 0 ? (
+                    <div className="mt-2 text-[10px] text-cyan-300">{theme.price} 💎</div>
+                  ) : (
+                    <div className="mt-2 text-[10px] text-green-300">무료</div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Power-ups Tab */}
+      {activeTab === "powerups" && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold text-purple-300 font-display">⚡ POWER-UPS</h2>
+          {powerUps.map((pu) => (
+            <div key={pu.id} className="neon-card p-4 flex items-center gap-4">
+              <div className="text-3xl">{pu.emoji}</div>
+              <div className="flex-1">
+                <h3 className="text-white font-bold text-sm">{pu.name}</h3>
+                <p className="text-gray-400 text-xs mt-0.5">{pu.desc}</p>
+                <p className="text-gray-500 text-[10px] mt-0.5">⏱ {pu.duration}</p>
+              </div>
+              <button onClick={() => handleBuyPowerUp(pu)}
+                className="px-3 py-1.5 bg-purple-600/30 border border-purple-500/50 rounded-xl text-purple-200 text-xs font-bold active:scale-95 transition-transform">
+                {pu.price} 💎
+              </button>
+            </div>
+          ))}
+
+          {/* Frames */}
+          <h2 className="text-lg font-bold text-purple-300 font-display mt-4">🖼️ FRAMES</h2>
+          <div className="grid grid-cols-2 gap-3">
+            {allFrames.map((frame) => {
+              const owned = game.ownedFrames.includes(frame.id);
+              const equipped = game.equippedFrame === frame.id;
+              return (
+                <button key={frame.id} onClick={() => handleBuyFrame(frame)}
+                  className={`neon-card p-4 text-center active:scale-95 transition-transform ${equipped ? 'border-cyan-400/60' : ''}`}>
+                  <div className="text-3xl my-1">{frame.emoji}</div>
+                  <p className="text-white text-xs font-medium">{frame.name}</p>
+                  {equipped ? (
+                    <div className="mt-1 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                  ) : owned ? (
+                    <div className="mt-1 text-[10px] text-purple-300 font-bold">장착하기</div>
+                  ) : frame.price > 0 ? (
+                    <div className="mt-1 text-[10px] text-cyan-300">{frame.price} 💎</div>
+                  ) : (
+                    <div className="mt-1 text-[10px] text-green-300">무료</div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Earn Tab */}
+      {activeTab === "earn" && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold text-purple-300 font-display">💰 EARN GEMS</h2>
+          {[
+            { icon: "📖", task: "Read a chapter", reward: "10 XP + chance for gems", action: "성경 읽기로 이동" },
+            { icon: "🎯", task: "Complete daily mission", reward: "50 XP", action: "홈으로 이동" },
+            { icon: "📅", task: "Daily login reward", reward: "3~20 Gems", action: "매일 접속하세요!" },
+            { icon: "🔥", task: "Maintain streak", reward: "Bonus XP", action: "연속 읽기 도전!" },
+            { icon: "📝", task: "Complete quizzes", reward: "15~30 XP", action: "챕터 읽기 후 퀴즈" },
+          ].map((item, i) => (
+            <div key={i} className="neon-card p-4 flex items-center gap-4">
+              <div className="text-2xl">{item.icon}</div>
+              <div className="flex-1">
+                <h3 className="text-white font-bold text-sm">{item.task}</h3>
+                <p className="text-cyan-300 text-xs mt-0.5">{item.reward}</p>
+              </div>
+              <span className="text-gray-400 text-[10px]">{item.action}</span>
             </div>
           ))}
         </div>
-      </div>
+      )}
 
-      {/* Themes Section */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold text-purple-300 font-display">🎨 Themes</h2>
-          <button className="text-gray-400 text-xs">See All &gt;</button>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {themes.map((theme) => (
-            <div key={theme.name} className="neon-card p-3 text-center relative">
-              {theme.equipped && (
-                <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-cyan-500 text-white text-[10px] flex items-center justify-center">✓</div>
-              )}
-              <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br" style={{ background: `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[2]})` }} />
-              <p className="text-white text-xs font-medium mt-2">{theme.name}</p>
-              <div className="flex gap-1 justify-center mt-1">
-                {theme.colors.map((c, i) => (
-                  <div key={i} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mystery Box & Reader Skins */}
-      <div className="grid grid-cols-2 gap-3 pb-4">
-        <div className="neon-card p-4 text-center border-pink-500/40">
-          <h3 className="text-white font-bold text-sm">Mystery Box</h3>
-          <p className="text-gray-400 text-[10px] mt-1">어떤 보상이 기다릴까요?</p>
-          <div className="text-3xl my-2">🎁</div>
-          <div className="flex items-center justify-center gap-1">
-            <span className="text-xs text-cyan-300">15</span>
-            <span className="text-xs">💎</span>
-          </div>
-        </div>
-        <div className="neon-card p-4 text-center border-green-500/40">
-          <h3 className="text-white font-bold text-sm">Reader Skins</h3>
-          <p className="text-gray-400 text-[10px] mt-1">말씀 읽기를 더 특별하게!</p>
-          <div className="text-3xl my-2">📚</div>
-          <div className="flex items-center justify-center gap-1">
-            <span className="text-xs text-cyan-300">30</span>
-            <span className="text-xs">💎</span>
-          </div>
-        </div>
-      </div>
+      <div className="h-4" />
     </div>
   );
 }

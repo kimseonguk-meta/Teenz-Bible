@@ -1,31 +1,6 @@
-import { useState } from "react";
+import { useGame } from "@/contexts/GameContext";
 import { useLocation } from "wouter";
-
-function getPlayerName() { return localStorage.getItem("playerName") || "Daniel"; }
-function getTotalXP() { return parseInt(localStorage.getItem("totalXP") || "0"); }
-function getDayStreak() { return parseInt(localStorage.getItem("dayStreak") || "0"); }
-function getGems() {
-  try { const raw = localStorage.getItem("teensBible"); return raw ? JSON.parse(raw).gems || 0 : 0; } catch { return 0; }
-}
-function getChaptersRead() {
-  let total = 0;
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key?.startsWith("chaptersRead_")) {
-      try { const arr = JSON.parse(localStorage.getItem(key) || "[]"); total += arr.length; } catch {}
-    }
-  }
-  return total;
-}
-function getLevel(xp: number) {
-  if (xp >= 5000) return { name: "Master", level: 10, next: 999999 };
-  if (xp >= 3000) return { name: "Champion", level: 8, next: 5000 };
-  if (xp >= 2000) return { name: "Scholar", level: 6, next: 3000 };
-  if (xp >= 1000) return { name: "Explorer", level: 5, next: 2000 };
-  if (xp >= 500) return { name: "Reader", level: 3, next: 1000 };
-  if (xp >= 100) return { name: "Beginner", level: 2, next: 500 };
-  return { name: "Newbie", level: 1, next: 100 };
-}
+import { gospelData } from "@/data/gospelData";
 
 function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: number; size?: number; strokeWidth?: number }) {
   const radius = (size - strokeWidth) / 2;
@@ -41,17 +16,49 @@ function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: numb
   );
 }
 
+const LOGIN_REWARDS = [3, 3, 5, 5, 8, 10, 20];
+const VERSES = [
+  { text: "Do not be anxious about anything, but in everything, by prayer, present your requests to God.", ref: "Philippians 4:6" },
+  { text: "For I know the plans I have for you, declares the Lord, plans to prosper you.", ref: "Jeremiah 29:11" },
+  { text: "I can do all things through Christ who strengthens me.", ref: "Philippians 4:13" },
+  { text: "The Lord is my shepherd; I shall not want.", ref: "Psalm 23:1" },
+  { text: "Trust in the Lord with all your heart and lean not on your own understanding.", ref: "Proverbs 3:5" },
+  { text: "Be strong and courageous. Do not be afraid; do not be discouraged.", ref: "Joshua 1:9" },
+  { text: "But those who hope in the Lord will renew their strength.", ref: "Isaiah 40:31" },
+];
+
 export default function Home() {
   const [, setLocation] = useLocation();
-  const playerName = getPlayerName();
-  const totalXP = getTotalXP();
-  const dayStreak = getDayStreak();
-  const chaptersRead = getChaptersRead();
-  const gems = getGems();
-  const level = getLevel(totalXP);
-  const xpProgress = Math.min(100, (totalXP / level.next) * 100);
+  const game = useGame();
+  const level = game.getLevel();
+  const xpProgress = Math.min(100, ((game.totalXP - level.prev) / (level.next - level.prev)) * 100);
+  const chaptersRead = game.getTotalChaptersRead();
   const days = ["S","M","T","W","T","F","S"];
   const today = new Date().getDay();
+  const verseOfDay = VERSES[new Date().getDay() % VERSES.length];
+
+  // Calculate today's reading progress (find the first unfinished book)
+  let currentBook = "Matthew";
+  let currentChapter = 1;
+  let bookProgress = 0;
+  for (const bookName of Object.keys(gospelData)) {
+    const chapters = gospelData[bookName];
+    const read = game.getChaptersRead(bookName);
+    if (read.length < chapters.length) {
+      currentBook = bookName;
+      currentChapter = read.length > 0 ? Math.max(...read) + 1 : 1;
+      bookProgress = Math.round((read.length / chapters.length) * 100);
+      break;
+    }
+    bookProgress = 100;
+  }
+
+  // Daily mission: read at least 1 chapter today
+  const todayChaptersRead = game.dailyMissionDone ? 1 : 0;
+
+  // Weekly challenge progress
+  const weeklyChapters = chaptersRead; // simplified
+  const streakDays = game.dayStreak;
 
   return (
     <div className="px-4 pt-6 space-y-4">
@@ -64,9 +71,9 @@ export default function Home() {
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white font-display">Hey {playerName}! 🔥</h1>
+          <h1 className="text-xl font-bold text-white font-display">Hey {game.playerName}! 🔥</h1>
           <div className="flex items-center gap-3 text-sm text-gray-300">
-            <span>🔥 {dayStreak} Day Streak</span>
+            <span>🔥 {game.dayStreak} Day Streak</span>
             <span>💎 Lv. {level.level}</span>
           </div>
         </div>
@@ -79,18 +86,20 @@ export default function Home() {
             <div className="flex items-center gap-2 mb-2">
               <span className="text-purple-300 text-sm font-semibold">📖 TODAY'S READING</span>
             </div>
-            <h2 className="text-2xl font-bold text-white font-display">Matthew</h2>
-            <h3 className="text-xl font-bold text-white font-display">Chapter 5</h3>
-            <p className="text-gray-400 text-sm mt-1">The Sermon on the Mount</p>
+            <h2 className="text-2xl font-bold text-white font-display">{currentBook}</h2>
+            <h3 className="text-xl font-bold text-white font-display">Chapter {currentChapter}</h3>
+            <p className="text-gray-400 text-sm mt-1">
+              {gospelData[currentBook]?.[currentChapter - 1]?.title || "Continue your journey"}
+            </p>
             <button onClick={() => setLocation("/bible")}
               className="mt-3 px-4 py-2 bg-purple-600/30 border border-purple-500/50 rounded-xl text-purple-200 text-sm font-medium flex items-center gap-2 hover:bg-purple-600/50 transition-all active:scale-95">
               📖 Continue Reading
             </button>
           </div>
           <div className="relative flex items-center justify-center">
-            <ProgressRing progress={75} />
+            <ProgressRing progress={bookProgress} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold text-white">75<span className="text-sm">%</span></span>
+              <span className="text-2xl font-bold text-white">{bookProgress}<span className="text-sm">%</span></span>
               <span className="text-[10px] text-purple-300">Progress</span>
             </div>
           </div>
@@ -104,7 +113,7 @@ export default function Home() {
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-white font-bold">{totalXP.toLocaleString()}</span>
+            <span className="text-white font-bold">{game.totalXP.toLocaleString()}</span>
             <span className="text-gray-400 text-xs">/ {level.next.toLocaleString()} XP</span>
           </div>
           <div className="h-2.5 bg-gray-800/80 rounded-full overflow-hidden">
@@ -121,10 +130,21 @@ export default function Home() {
             <span className="text-yellow-300 text-sm font-semibold">🎯 DAILY MISSION</span>
             <h3 className="text-lg font-bold text-white mt-1">Read 1 chapter today</h3>
             <p className="text-gray-400 text-sm mt-1">Stay consistent in God's Word!</p>
-            <div className="flex items-center gap-1 mt-2"><span className="text-cyan-400">💎</span><span className="text-cyan-300 font-bold text-sm">+50 XP</span></div>
+            <div className="flex items-center gap-1 mt-2">
+              <span className="text-cyan-400">💎</span>
+              <span className="text-cyan-300 font-bold text-sm">+50 XP</span>
+            </div>
+            {game.dailyMissionDone && (
+              <div className="mt-2 px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-lg inline-block">
+                <span className="text-green-400 text-xs font-bold">✓ 완료!</span>
+              </div>
+            )}
           </div>
-          <div className="w-16 h-16 rounded-full border-[3px] border-yellow-500/60 bg-gray-900/80 flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.3)]">
-            <div className="text-center"><span className="text-2xl">📖</span><div className="text-[10px] text-gray-300">0 / 1</div></div>
+          <div className={`w-16 h-16 rounded-full border-[3px] ${game.dailyMissionDone ? 'border-green-500/60' : 'border-yellow-500/60'} bg-gray-900/80 flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.3)]`}>
+            <div className="text-center">
+              <span className="text-2xl">{game.dailyMissionDone ? '✅' : '📖'}</span>
+              <div className="text-[10px] text-gray-300">{todayChaptersRead} / 1</div>
+            </div>
           </div>
         </div>
       </div>
@@ -133,18 +153,19 @@ export default function Home() {
       <div className="neon-card p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-white font-bold text-sm">🔥 Streak Calendar</span>
-          <span className="text-purple-300 text-xs">{dayStreak} days</span>
+          <span className="text-purple-300 text-xs">{game.dayStreak} days</span>
         </div>
         <div className="grid grid-cols-7 gap-2">
           {days.map((d, i) => (
             <div key={i} className={`flex flex-col items-center gap-1 py-2 rounded-lg ${i === today ? 'bg-purple-600/30 border border-purple-500/40' : ''}`}>
               <span className="text-gray-400 text-[10px]">{d}</span>
               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                i < today ? 'bg-green-500/20 border border-green-500/40 text-green-400' :
+                i < today && game.dayStreak > 0 ? 'bg-green-500/20 border border-green-500/40 text-green-400' :
+                i === today && game.loginRewardClaimed ? 'bg-green-500/30 border border-green-400 text-green-300' :
                 i === today ? 'bg-purple-500/30 border border-purple-400 text-purple-300' :
                 'bg-gray-800/50 border border-gray-700/30 text-gray-600'
               }`}>
-                {i < today ? '✓' : i === today ? '•' : ''}
+                {(i < today && game.dayStreak > 0) || (i === today && game.loginRewardClaimed) ? '✓' : i === today ? '•' : ''}
               </div>
             </div>
           ))}
@@ -153,59 +174,84 @@ export default function Home() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="neon-card p-3 text-center"><span className="text-2xl">🔥</span><div className="text-xl font-bold text-white mt-1">{dayStreak}</div><div className="text-[10px] text-gray-400">Day Streak</div></div>
+        <div className="neon-card p-3 text-center"><span className="text-2xl">🔥</span><div className="text-xl font-bold text-white mt-1">{game.dayStreak}</div><div className="text-[10px] text-gray-400">Day Streak</div></div>
         <div className="neon-card p-3 text-center"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1">{chaptersRead}</div><div className="text-[10px] text-gray-400">Chapters</div></div>
-        <div className="neon-card p-3 text-center"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1">{gems}</div><div className="text-[10px] text-gray-400">Gems</div></div>
+        <div className="neon-card p-3 text-center"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1">{game.gems}</div><div className="text-[10px] text-gray-400">Gems</div></div>
       </div>
 
       {/* Daily Login Rewards */}
       <div className="neon-card p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-white font-bold text-sm">📅 Daily Login Rewards</span>
-          <span className="text-orange-400 text-xs">🔥 Day 1</span>
+          <span className="text-orange-400 text-xs">🔥 Day {game.loginDay}</span>
         </div>
         <div className="grid grid-cols-7 gap-1.5">
-          {[3,3,5,5,8,10,20].map((reward, i) => (
-            <div key={i} className={`flex flex-col items-center py-2 rounded-lg text-center ${i === 0 ? 'bg-purple-600/20 border border-purple-500/40' : 'bg-gray-800/30 border border-gray-700/20'}`}>
-              <span className="text-[8px] text-gray-400">Day {i+1}</span>
-              <span className="text-sm mt-0.5">💎</span>
-              <span className="text-[10px] text-cyan-300 font-bold">+{reward}</span>
-            </div>
-          ))}
+          {LOGIN_REWARDS.map((reward, i) => {
+            const isPast = i < game.loginDay - 1;
+            const isCurrent = i === game.loginDay - 1;
+            return (
+              <div key={i} className={`flex flex-col items-center py-2 rounded-lg text-center ${
+                isPast ? 'bg-green-900/20 border border-green-500/30' :
+                isCurrent ? 'bg-purple-600/20 border border-purple-500/40' :
+                'bg-gray-800/30 border border-gray-700/20'
+              }`}>
+                <span className="text-[8px] text-gray-400">Day {i+1}</span>
+                <span className="text-sm mt-0.5">{isPast ? '✅' : '💎'}</span>
+                <span className="text-[10px] text-cyan-300 font-bold">+{reward}</span>
+              </div>
+            );
+          })}
         </div>
-        <button className="w-full mt-3 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl text-white text-sm font-bold shadow-[0_0_12px_rgba(139,92,246,0.3)] active:scale-95 transition-transform">
-          🎁 Claim Today's Reward: +3 Gems!
+        <button
+          onClick={() => game.claimLoginReward()}
+          disabled={game.loginRewardClaimed}
+          className={`w-full mt-3 py-2.5 rounded-xl text-white text-sm font-bold transition-transform active:scale-95 ${
+            game.loginRewardClaimed
+              ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-700 shadow-[0_0_12px_rgba(139,92,246,0.3)]'
+          }`}
+        >
+          {game.loginRewardClaimed
+            ? '✅ 오늘의 보상 수령 완료!'
+            : `🎁 Claim Today's Reward: +${LOGIN_REWARDS[Math.min(game.loginDay - 1, 6)]} Gems!`
+          }
         </button>
       </div>
 
       {/* Verse of the Day */}
       <div className="neon-card p-5 border-purple-400/40">
         <span className="text-purple-300 text-sm font-semibold">✨ VERSE OF THE DAY</span>
-        <p className="text-gray-200 italic text-sm leading-relaxed mt-2">"Do not be anxious about anything, but in everything, by prayer, present your requests to God."</p>
-        <p className="text-purple-400 text-xs mt-2 font-semibold">— Philippians 4:6</p>
+        <p className="text-gray-200 italic text-sm leading-relaxed mt-2">"{verseOfDay.text}"</p>
+        <p className="text-purple-400 text-xs mt-2 font-semibold">— {verseOfDay.ref}</p>
       </div>
 
       {/* Weekly Challenges */}
       <div className="neon-card p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-white font-bold text-sm">🎯 WEEKLY CHALLENGES</span>
-          <span className="text-gray-400 text-xs">6 days left</span>
+          <span className="text-gray-400 text-xs">{7 - today} days left</span>
         </div>
         <div className="space-y-2.5">
           {[
-            { icon: "📖", task: "Read 5 Chapters", progress: "0/5", reward: 15 },
-            { icon: "📚", task: "Read 10 Chapters", progress: "0/10", reward: 30 },
-            { icon: "🔥", task: "3-Day Streak", progress: "0/3", reward: 20 },
-          ].map((c, i) => (
-            <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-purple-900/20">
-              <span className="text-lg">{c.icon}</span>
-              <div className="flex-1">
-                <p className="text-white text-xs font-medium">{c.task}</p>
-                <p className="text-gray-500 text-[10px]">{c.progress}</p>
+            { icon: "📖", task: "Read 5 Chapters", current: Math.min(weeklyChapters, 5), target: 5, reward: 15 },
+            { icon: "📚", task: "Read 10 Chapters", current: Math.min(weeklyChapters, 10), target: 10, reward: 30 },
+            { icon: "🔥", task: "3-Day Streak", current: Math.min(streakDays, 3), target: 3, reward: 20 },
+          ].map((c, i) => {
+            const done = c.current >= c.target;
+            return (
+              <div key={i} className={`flex items-center gap-3 p-2 rounded-lg ${done ? 'bg-green-900/20' : 'bg-purple-900/20'}`}>
+                <span className="text-lg">{done ? '✅' : c.icon}</span>
+                <div className="flex-1">
+                  <p className="text-white text-xs font-medium">{c.task}</p>
+                  <p className="text-gray-500 text-[10px]">{c.current}/{c.target}</p>
+                  <div className="mt-1 h-1 bg-gray-800/80 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400" style={{ width: `${(c.current / c.target) * 100}%` }} />
+                  </div>
+                </div>
+                <span className="text-cyan-300 text-xs font-bold">+{c.reward} 💎</span>
               </div>
-              <span className="text-cyan-300 text-xs font-bold">+{c.reward} 💎</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
