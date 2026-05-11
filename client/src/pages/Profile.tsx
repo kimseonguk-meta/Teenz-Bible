@@ -3,11 +3,11 @@ import { useGame } from "@/contexts/GameContext";
 import { toast } from "sonner";
 
 const ALL_BADGES = [
-  { id: "첫 시작", name: "첫 시작", desc: "성경 읽기 시작", emoji: "📖" },
-  { id: "7일 독서", name: "7일 독서", desc: "7일 연속 달성", emoji: "🏆" },
-  { id: "백 장 독파", name: "백 장 독파", desc: "100장 읽기", emoji: "💯" },
-  { id: "복음 전도자", name: "복음 전도자", desc: "친구 3명 초대", emoji: "⭐" },
-  { id: "마태복음 완독", name: "마태복음 완독", desc: "마태복음 전체 읽기", emoji: "📕" },
+  { id: "첫 시작", name: "First Step", desc: "Started reading the Bible", emoji: "📖" },
+  { id: "7일 독서", name: "7-Day Reader", desc: "7-day streak achieved", emoji: "🏆" },
+  { id: "백 장 독파", name: "100 Chapters", desc: "Read 100 chapters", emoji: "💯" },
+  { id: "복음 전도자", name: "Evangelist", desc: "Invited 3 friends", emoji: "⭐" },
+  { id: "마태복음 완독", name: "Matthew Complete", desc: "Finished all of Matthew", emoji: "📕" },
 ];
 
 export default function Profile() {
@@ -24,6 +24,7 @@ export default function Profile() {
       game.setPlayerName(newName.trim());
       game.setClassName(newClass.trim());
       setShowEditName(false);
+      toast.success("Profile updated!");
     }
   };
 
@@ -70,7 +71,7 @@ export default function Profile() {
         <div className="neon-card p-3 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-xs bg-purple-600 text-white px-1.5 py-0.5 rounded font-bold">XP</span>
-            <span className="text-gray-400 text-xs">총 XP</span>
+            <span className="text-gray-400 text-xs">Total XP</span>
           </div>
           <div className="text-2xl font-bold text-white">{game.totalXP}</div>
           <div className="text-[10px] text-gray-500">XP</div>
@@ -78,7 +79,7 @@ export default function Profile() {
         <div className="neon-card p-3 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">💎</span>
-            <span className="text-gray-400 text-xs">보유 젬</span>
+            <span className="text-gray-400 text-xs">Gems</span>
           </div>
           <div className="text-2xl font-bold text-white">{game.gems}</div>
           <div className="text-[10px] text-gray-500">Gems</div>
@@ -86,18 +87,18 @@ export default function Profile() {
         <div className="neon-card p-3 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">🔥</span>
-            <span className="text-gray-400 text-xs">연속 읽기</span>
+            <span className="text-gray-400 text-xs">Streak</span>
           </div>
           <div className="text-2xl font-bold text-white">{game.dayStreak}</div>
-          <div className="text-[10px] text-gray-500">일</div>
+          <div className="text-[10px] text-gray-500">Days</div>
         </div>
       </div>
 
       {/* Badges */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-white font-bold text-sm">🏆 업적</h3>
-          <span className="text-gray-400 text-xs">더보기 &gt;</span>
+          <h3 className="text-white font-bold text-sm">🏆 Achievements</h3>
+          <span className="text-gray-400 text-xs">See All &gt;</span>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
           {ALL_BADGES.map((badge) => {
@@ -105,7 +106,7 @@ export default function Profile() {
             return (
               <div key={badge.id}
                 className={`flex-shrink-0 w-20 flex flex-col items-center text-center cursor-pointer ${!earned ? 'opacity-40' : ''}`}
-                onClick={() => earned ? toast.success(`🏆 ${badge.name}: ${badge.desc}`) : toast.info("아직 달성하지 못한 업적입니다")}>
+                onClick={() => earned ? toast.success(`🏆 ${badge.name}: ${badge.desc}`) : toast.info("Achievement not yet unlocked")}>
                 <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl ${
                   earned ? 'bg-purple-600/30 border-2 border-purple-500 shadow-[0_0_10px_rgba(139,92,246,0.4)]' : 'bg-gray-800/50 border border-gray-700/30'
                 }`}>
@@ -121,11 +122,11 @@ export default function Profile() {
 
       {/* Reading Progress */}
       <div className="neon-card p-4">
-        <h3 className="text-white font-bold text-sm mb-3">📖 읽기 진행도</h3>
+        <h3 className="text-white font-bold text-sm mb-3">📖 Reading Progress</h3>
         <div className="flex items-center gap-3">
           <div className="text-3xl">📕</div>
           <div className="flex-1">
-            <p className="text-white text-sm font-medium">Matthew (마태복음)</p>
+            <p className="text-white text-sm font-medium">Matthew</p>
             <p className="text-gray-400 text-xs">{matthewRead} / {matthewTotal} chapters</p>
             <div className="mt-1.5 h-2 bg-gray-800/80 rounded-full overflow-hidden">
               <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-500"
@@ -138,7 +139,7 @@ export default function Profile() {
 
       {/* Equipped Items */}
       <div>
-        <h3 className="text-white font-bold text-sm mb-3">✨ 장착 아이템</h3>
+        <h3 className="text-white font-bold text-sm mb-3">✨ Equipped Items</h3>
         <div className="grid grid-cols-3 gap-3">
           <div className="neon-card p-3 text-center">
             <div className="text-2xl mb-1">
@@ -184,43 +185,43 @@ export default function Profile() {
           <div className="w-full max-w-[480px] bg-[#0a0020] border-t border-purple-500/30 rounded-t-3xl p-6 space-y-4"
             onClick={(e) => e.stopPropagation()}>
             <div className="w-10 h-1 bg-gray-600 rounded-full mx-auto mb-2" />
-            <h2 className="text-xl font-bold text-white font-display">⚙️ 설정</h2>
+            <h2 className="text-xl font-bold text-white font-display">⚙️ Settings</h2>
 
             <button onClick={() => { setShowSettings(false); setNewName(game.playerName); setNewClass(game.className); setShowEditName(true); }}
               className="w-full p-3 neon-card flex items-center gap-3 active:scale-[0.98] transition-transform">
               <span className="text-lg">✏️</span>
-              <span className="text-white text-sm">이름/반 변경</span>
+              <span className="text-white text-sm">Edit Name / Class</span>
               <span className="ml-auto text-gray-500">→</span>
             </button>
 
-            <button onClick={() => toast.info("🔔 알림 설정은 앱 출시 후 지원됩니다")}
+            <button onClick={() => toast.info("🔔 Notification settings will be available after app launch")}
               className="w-full p-3 neon-card flex items-center gap-3 active:scale-[0.98] transition-transform">
               <span className="text-lg">🔔</span>
-              <span className="text-white text-sm">알림 설정</span>
+              <span className="text-white text-sm">Notifications</span>
               <span className="ml-auto text-gray-500">→</span>
             </button>
 
-            <button onClick={() => toast.info("🌐 언어 설정: 현재 한국어/영어 지원")}
+            <button onClick={() => toast.info("🌐 Language: Korean / English supported")}
               className="w-full p-3 neon-card flex items-center gap-3 active:scale-[0.98] transition-transform">
               <span className="text-lg">🌐</span>
-              <span className="text-white text-sm">언어 설정</span>
+              <span className="text-white text-sm">Language</span>
               <span className="ml-auto text-gray-500">→</span>
             </button>
 
             <button onClick={() => {
-              if (confirm("정말 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+              if (confirm("Are you sure you want to reset all data? This cannot be undone.")) {
                 localStorage.clear();
                 window.location.reload();
               }
             }}
               className="w-full p-3 neon-card flex items-center gap-3 border-red-500/30 active:scale-[0.98] transition-transform">
               <span className="text-lg">🗑️</span>
-              <span className="text-red-400 text-sm">데이터 초기화</span>
+              <span className="text-red-400 text-sm">Reset Data</span>
             </button>
 
             <button onClick={() => setShowSettings(false)}
               className="w-full py-3 bg-purple-600/30 border border-purple-500/40 rounded-xl text-purple-200 text-sm font-bold">
-              닫기
+              Close
             </button>
           </div>
         </div>
@@ -231,30 +232,30 @@ export default function Profile() {
         <div className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center px-6" onClick={() => setShowEditName(false)}>
           <div className="w-full max-w-[400px] bg-[#0a0020] border border-purple-500/30 rounded-2xl p-6 space-y-4"
             onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-lg font-bold text-white font-display">✏️ 프로필 수정</h2>
+            <h2 className="text-lg font-bold text-white font-display">✏️ Edit Profile</h2>
 
             <div>
-              <label className="text-gray-400 text-xs mb-1 block">이름</label>
+              <label className="text-gray-400 text-xs mb-1 block">Name</label>
               <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)}
                 className="w-full bg-gray-900/50 border border-purple-500/30 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-400"
-                placeholder="이름을 입력하세요" />
+                placeholder="Enter your name" />
             </div>
 
             <div>
-              <label className="text-gray-400 text-xs mb-1 block">반</label>
+              <label className="text-gray-400 text-xs mb-1 block">Class</label>
               <input type="text" value={newClass} onChange={(e) => setNewClass(e.target.value)}
                 className="w-full bg-gray-900/50 border border-purple-500/30 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-400"
-                placeholder="반을 입력하세요" />
+                placeholder="Enter your class" />
             </div>
 
             <div className="flex gap-3">
               <button onClick={() => setShowEditName(false)}
                 className="flex-1 py-2.5 bg-gray-800/50 border border-gray-700/30 rounded-xl text-gray-300 text-sm">
-                취소
+                Cancel
               </button>
               <button onClick={handleSaveName}
                 className="flex-1 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl text-white text-sm font-bold active:scale-95 transition-transform">
-                저장
+                Save
               </button>
             </div>
           </div>
@@ -267,35 +268,35 @@ export default function Profile() {
           <div className="w-full max-w-[480px] bg-[#0a0020] border-t border-purple-500/30 rounded-t-3xl p-6 space-y-3"
             onClick={(e) => e.stopPropagation()}>
             <div className="w-10 h-1 bg-gray-600 rounded-full mx-auto mb-2" />
-            <h2 className="text-xl font-bold text-white font-display">🔔 알림</h2>
+            <h2 className="text-xl font-bold text-white font-display">🔔 Notifications</h2>
 
             <div className="neon-card p-3 flex items-center gap-3">
               <span className="text-lg">📖</span>
               <div className="flex-1">
-                <p className="text-white text-sm">오늘의 성경 읽기를 시작하세요!</p>
-                <p className="text-gray-500 text-xs">방금</p>
+                <p className="text-white text-sm">Start today's Bible reading!</p>
+                <p className="text-gray-500 text-xs">Just now</p>
               </div>
             </div>
 
             <div className="neon-card p-3 flex items-center gap-3">
               <span className="text-lg">🎁</span>
               <div className="flex-1">
-                <p className="text-white text-sm">일일 보상을 받아가세요!</p>
-                <p className="text-gray-500 text-xs">오늘</p>
+                <p className="text-white text-sm">Claim your daily reward!</p>
+                <p className="text-gray-500 text-xs">Today</p>
               </div>
             </div>
 
             <div className="neon-card p-3 flex items-center gap-3">
               <span className="text-lg">🔥</span>
               <div className="flex-1">
-                <p className="text-white text-sm">스트릭을 유지하세요! 연속 {game.dayStreak}일째</p>
-                <p className="text-gray-500 text-xs">오늘</p>
+                <p className="text-white text-sm">Keep your streak going! Day {game.dayStreak}</p>
+                <p className="text-gray-500 text-xs">Today</p>
               </div>
             </div>
 
             <button onClick={() => setShowNotifications(false)}
               className="w-full py-3 bg-purple-600/30 border border-purple-500/40 rounded-xl text-purple-200 text-sm font-bold">
-              닫기
+              Close
             </button>
           </div>
         </div>

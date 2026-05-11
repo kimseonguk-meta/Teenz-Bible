@@ -87,9 +87,9 @@ export default function Bible() {
             game.addXP(xpReward);
             if (score === total) {
               game.addGems(5);
-              toast.success(`🎉 만점! +${xpReward} XP, +5 Gems!`);
+              toast.success(`🎉 Perfect score! +${xpReward} XP, +5 Gems!`);
             } else {
-              toast.success(`📝 퀴즈 완료! +${xpReward} XP (${score}/${total})`);
+              toast.success(`📝 Quiz complete! +${xpReward} XP (${score}/${total})`);
             }
           }
           setView({ type: "chapters", book: view.book });
@@ -311,11 +311,11 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       {quizBank[book]?.[chapter.num] && (
         <div className="mt-6 neon-card-gold p-4 text-center">
           <span className="text-2xl">📝</span>
-          <h3 className="text-white font-bold text-sm mt-1">이 챕터의 퀴즈가 있습니다!</h3>
-          <p className="text-gray-400 text-xs mt-1">퀴즈를 풀고 추가 XP를 획득하세요</p>
+          <h3 className="text-white font-bold text-sm mt-1">Quiz available for this chapter!</h3>
+          <p className="text-gray-400 text-xs mt-1">Take the quiz to earn bonus XP</p>
           <button onClick={() => onFinishChapter(chapter.num)}
             className="mt-3 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-xl text-white text-sm font-bold active:scale-95 transition-transform">
-            🎯 퀴즈 풀기 (+15 XP per question)
+            🎯 Take Quiz (+15 XP per question)
           </button>
         </div>
       )}
@@ -383,13 +383,13 @@ function QuizView({ book, chapterNum, onFinish, onSkip }: {
   return (
     <div className="px-4 pt-6 space-y-5">
       <div className="flex items-center justify-between">
-        <button onClick={onSkip} className="text-purple-300 text-sm active:scale-95 transition-transform">← 건너뛰기</button>
+        <button onClick={onSkip} className="text-purple-300 text-sm active:scale-95 transition-transform">← Skip</button>
         <span className="text-gray-400 text-xs">{currentQ + 1} / {questions.length}</span>
       </div>
 
       <div className="text-center">
         <span className="text-4xl">📝</span>
-        <h1 className="text-lg font-bold text-white font-display mt-2">{book} {chapterNum}장 퀴즈</h1>
+        <h1 className="text-lg font-bold text-white font-display mt-2">{book} Ch.{chapterNum} Quiz</h1>
       </div>
 
       {/* Progress bar */}
@@ -435,7 +435,7 @@ function QuizView({ book, chapterNum, onFinish, onSkip }: {
 
       {/* Score */}
       <div className="text-center text-gray-400 text-xs">
-        현재 점수: {score}/{currentQ + (showResult ? 1 : 0)}
+        Score: {score}/{currentQ + (showResult ? 1 : 0)}
       </div>
     </div>
   );

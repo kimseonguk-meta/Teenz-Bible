@@ -2,14 +2,14 @@ import { useState, useMemo } from "react";
 import { useGame } from "@/contexts/GameContext";
 
 const allPlayers = [
-  { name: "다니엘", streak: 21, xp: 2450, avatar: "👦", className: "중등1반" },
-  { name: "에스더", streak: 14, xp: 2100, avatar: "👧", className: "중등1반" },
-  { name: "요셉", streak: 10, xp: 1890, avatar: "🧑", className: "중등2반" },
-  { name: "모세", streak: 7, xp: 1650, avatar: "👦", className: "중등2반" },
-  { name: "룻", streak: 6, xp: 1420, avatar: "👧", className: "중등1반" },
-  { name: "사무엘", streak: 5, xp: 1250, avatar: "🧑", className: "중등2반" },
-  { name: "한나", streak: 4, xp: 1110, avatar: "👧", className: "중등1반" },
-  { name: "바울", streak: 3, xp: 980, avatar: "👦", className: "중등2반" },
+  { name: "Daniel", streak: 21, xp: 2450, avatar: "👦", className: "Class 1" },
+  { name: "Esther", streak: 14, xp: 2100, avatar: "👧", className: "Class 1" },
+  { name: "Joseph", streak: 10, xp: 1890, avatar: "🧑", className: "Class 2" },
+  { name: "Moses", streak: 7, xp: 1650, avatar: "👦", className: "Class 2" },
+  { name: "Ruth", streak: 6, xp: 1420, avatar: "👧", className: "Class 1" },
+  { name: "Samuel", streak: 5, xp: 1250, avatar: "🧑", className: "Class 2" },
+  { name: "Hannah", streak: 4, xp: 1110, avatar: "👧", className: "Class 1" },
+  { name: "Paul", streak: 3, xp: 980, avatar: "👦", className: "Class 2" },
 ];
 
 export default function Leaderboard() {
@@ -19,7 +19,7 @@ export default function Leaderboard() {
   // Merge current user into leaderboard
   const mergedPlayers = useMemo(() => {
     const players = allPlayers.map(p => {
-      if (p.name === game.playerName || p.name === "다니엘") {
+      if (p.name === game.playerName || p.name === "Daniel") {
         return { ...p, name: game.playerName, xp: Math.max(p.xp, game.totalXP), streak: Math.max(p.streak, game.dayStreak), className: game.className };
       }
       return p;
@@ -40,7 +40,7 @@ export default function Leaderboard() {
       <div className="text-center">
         <h1 className="text-3xl font-bold text-white font-display neon-text-purple">🏆 Leaderboard</h1>
         <p className="text-purple-300 text-sm mt-1">
-          {tab === "all" ? "👥 전체 틴즈부 랭킹" : `👥 ${game.className} 랭킹`}
+          {tab === "all" ? "👥 All Teens Ranking" : `👥 ${game.className} Ranking`}
         </p>
       </div>
 
@@ -64,11 +64,11 @@ export default function Leaderboard() {
               : "bg-transparent border border-purple-500/30 text-gray-400"
           }`}
         >
-          우리 반
+          My Class
         </button>
       </div>
 
-      <p className="text-center text-gray-400 text-xs">📅 매주 업데이트 · 다음 업데이트 3일 후</p>
+      <p className="text-center text-gray-400 text-xs">📅 Updated weekly · Next update in 3 days</p>
 
       {/* Top 3 Podium */}
       {top3.length >= 3 ? (
@@ -82,7 +82,7 @@ export default function Leaderboard() {
               </div>
             </div>
             <p className="text-white text-xs font-bold mt-2">{top3[1]?.name}</p>
-            <p className="text-orange-400 text-[10px]">🔥 {top3[1]?.streak}일 연속</p>
+            <p className="text-orange-400 text-[10px]">🔥 {top3[1]?.streak}-day streak</p>
             <p className="text-purple-300 font-bold text-sm">{top3[1]?.xp.toLocaleString()} XP</p>
           </div>
 
@@ -96,7 +96,7 @@ export default function Leaderboard() {
               </div>
             </div>
             <p className="text-white text-sm font-bold mt-2">{top3[0]?.name} {top3[0]?.rank === 1 ? '👑' : ''}</p>
-            <p className="text-orange-400 text-[10px]">🔥 {top3[0]?.streak}일 연속</p>
+            <p className="text-orange-400 text-[10px]">🔥 {top3[0]?.streak}-day streak</p>
             <p className="text-yellow-300 font-bold text-base">{top3[0]?.xp.toLocaleString()} XP</p>
           </div>
 
@@ -109,13 +109,13 @@ export default function Leaderboard() {
               </div>
             </div>
             <p className="text-white text-xs font-bold mt-2">{top3[2]?.name}</p>
-            <p className="text-orange-400 text-[10px]">🔥 {top3[2]?.streak}일 연속</p>
+            <p className="text-orange-400 text-[10px]">🔥 {top3[2]?.streak}-day streak</p>
             <p className="text-amber-400 font-bold text-sm">{top3[2]?.xp.toLocaleString()} XP</p>
           </div>
         </div>
       ) : (
         <div className="text-center text-gray-400 py-8">
-          <p className="text-lg">아직 랭킹 데이터가 부족합니다</p>
+          <p className="text-lg">Not enough ranking data yet</p>
         </div>
       )}
 
@@ -128,8 +128,8 @@ export default function Leaderboard() {
               {player.avatar}
             </div>
             <div className="flex-1">
-              <p className="text-white font-medium text-sm">{player.name} {player.name === game.playerName ? '(나)' : ''}</p>
-              <p className="text-orange-400 text-[10px]">🔥 {player.streak}일 연속</p>
+              <p className="text-white font-medium text-sm">{player.name} {player.name === game.playerName ? '(You)' : ''}</p>
+              <p className="text-orange-400 text-[10px]">🔥 {player.streak}-day streak</p>
             </div>
             <span className="text-purple-300 font-bold text-sm">{player.xp.toLocaleString()} XP</span>
           </div>

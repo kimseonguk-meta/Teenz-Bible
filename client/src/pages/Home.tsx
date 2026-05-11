@@ -37,7 +37,7 @@ export default function Home() {
   const today = new Date().getDay();
   const verseOfDay = VERSES[new Date().getDay() % VERSES.length];
 
-  // Calculate today's reading progress (find the first unfinished book)
+  // Calculate today's reading progress
   let currentBook = "Matthew";
   let currentChapter = 1;
   let bookProgress = 0;
@@ -53,11 +53,8 @@ export default function Home() {
     bookProgress = 100;
   }
 
-  // Daily mission: read at least 1 chapter today
   const todayChaptersRead = game.dailyMissionDone ? 1 : 0;
-
-  // Weekly challenge progress
-  const weeklyChapters = chaptersRead; // simplified
+  const weeklyChapters = chaptersRead;
   const streakDays = game.dayStreak;
 
   return (
@@ -128,7 +125,7 @@ export default function Home() {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <span className="text-yellow-300 text-sm font-semibold">🎯 DAILY MISSION</span>
-            <h3 className="text-lg font-bold text-white mt-1">Read 1 chapter today</h3>
+            <h3 className="text-lg font-bold text-white mt-1">Read 1 Chapter Today</h3>
             <p className="text-gray-400 text-sm mt-1">Stay consistent in God's Word!</p>
             <div className="flex items-center gap-1 mt-2">
               <span className="text-cyan-400">💎</span>
@@ -136,7 +133,7 @@ export default function Home() {
             </div>
             {game.dailyMissionDone && (
               <div className="mt-2 px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-lg inline-block">
-                <span className="text-green-400 text-xs font-bold">✓ 완료!</span>
+                <span className="text-green-400 text-xs font-bold">✓ Completed!</span>
               </div>
             )}
           </div>
@@ -212,7 +209,7 @@ export default function Home() {
           }`}
         >
           {game.loginRewardClaimed
-            ? '✅ 오늘의 보상 수령 완료!'
+            ? "✅ Today's Reward Claimed!"
             : `🎁 Claim Today's Reward: +${LOGIN_REWARDS[Math.min(game.loginDay - 1, 6)]} Gems!`
           }
         </button>

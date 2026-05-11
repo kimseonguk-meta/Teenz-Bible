@@ -35,9 +35,9 @@ const allFrames = [
 ];
 
 const powerUps = [
-  { id: "2x_xp", name: "2X XP Boost", desc: "다음 5챕터 동안 XP 2배!", price: 30, emoji: "⚡", duration: "5 chapters" },
-  { id: "streak_shield", name: "Streak Shield", desc: "하루 빠져도 스트릭 유지!", price: 50, emoji: "🛡️", duration: "1 use" },
-  { id: "hint_pack", name: "Hint Pack", desc: "퀴즈 힌트 3개!", price: 20, emoji: "💡", duration: "3 hints" },
+  { id: "2x_xp", name: "2X XP Boost", desc: "Double XP for next 5 chapters!", price: 30, emoji: "⚡", duration: "5 chapters" },
+  { id: "streak_shield", name: "Streak Shield", desc: "Keep your streak even if you miss a day!", price: 50, emoji: "🛡️", duration: "1 use" },
+  { id: "hint_pack", name: "Hint Pack", desc: "3 quiz hints!", price: 20, emoji: "💡", duration: "3 hints" },
 ];
 
 export default function Store() {
@@ -70,16 +70,16 @@ export default function Store() {
 
   const handleBuyPowerUp = (pu: typeof powerUps[0]) => {
     if (game.gems < pu.price) {
-      toast.error("💎 젬이 부족합니다!");
+      toast.error("💎 Not enough gems!");
       return;
     }
     game.spendGems(pu.price);
-    toast.success(`⚡ ${pu.name} 구매 완료!`);
+    toast.success(`⚡ ${pu.name} purchased!`);
   };
 
   const handleMysteryBox = () => {
     if (game.gems < 15) {
-      toast.error("💎 젬이 부족합니다!");
+      toast.error("💎 Not enough gems!");
       return;
     }
     game.spendGems(15);
@@ -90,7 +90,7 @@ export default function Store() {
     } else if (reward.includes("Gems")) {
       game.addGems(parseInt(reward));
     }
-    toast.success(`🎁 미스터리 박스에서 ${reward}을(를) 획득했습니다!`);
+    toast.success(`🎁 You got ${reward} from the Mystery Box!`);
   };
 
   return (
@@ -101,7 +101,7 @@ export default function Store() {
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-900/50 border border-purple-500/30">
           <span className="text-sm">💎</span>
           <span className="text-white font-bold text-sm">{game.gems}</span>
-          <button onClick={() => toast.info("💎 젬은 성경 읽기와 퀴즈로 획득할 수 있습니다!")}
+          <button onClick={() => toast.info("💎 Earn gems by reading the Bible and completing quizzes!")}
             className="w-5 h-5 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">+</button>
         </div>
       </div>
@@ -134,11 +134,11 @@ export default function Store() {
             </div>
             <div className="mt-5">
               <h3 className="text-lg font-bold text-white">Starter Blessing Pack</h3>
-              <p className="text-gray-400 text-xs mt-1">말씀 여정에 도움이 되는 특별 패키지!</p>
+              <p className="text-gray-400 text-xs mt-1">A special pack to help your Bible journey!</p>
               <div className="flex items-center gap-3 mt-2 text-xs text-gray-300">
                 <span>💎 200</span><span>⚡ 5</span><span>❤️ 3</span>
               </div>
-              <button onClick={() => toast.info("인앱 결제는 앱스토어 출시 후 지원됩니다!")}
+              <button onClick={() => toast.info("In-app purchases will be available after app store launch!")}
                 className="mt-3 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-white text-sm font-bold shadow-[0_0_12px_rgba(16,185,129,0.4)] active:scale-95 transition-transform">
                 ₩3,900
               </button>
@@ -163,9 +163,9 @@ export default function Store() {
                     <div className="text-4xl my-2">{pet.emoji}</div>
                     <p className="text-white text-xs font-medium">{pet.name}</p>
                     {equipped ? (
-                      <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                      <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ Equipped</div>
                     ) : owned ? (
-                      <button onClick={() => handleBuyPet(pet)} className="mt-2 text-[10px] text-purple-300 font-bold">장착하기</button>
+                      <button onClick={() => handleBuyPet(pet)} className="mt-2 text-[10px] text-purple-300 font-bold">Equip</button>
                     ) : (
                       <button onClick={() => handleBuyPet(pet)} className="mt-2 flex items-center justify-center gap-1">
                         <span className="text-[10px] text-cyan-300">{pet.price}</span>
@@ -200,7 +200,7 @@ export default function Store() {
                         <span className="text-[10px] text-cyan-300">{theme.price} 💎</span>
                       </div>
                     )}
-                    {owned && !equipped && <p className="text-[10px] text-purple-300 mt-1">장착하기</p>}
+                    {owned && !equipped && <p className="text-[10px] text-purple-300 mt-1">Equip</p>}
                   </div>
                 );
               })}
@@ -211,7 +211,7 @@ export default function Store() {
           <div className="grid grid-cols-2 gap-3 pb-4">
             <button onClick={handleMysteryBox} className="neon-card p-4 text-center border-pink-500/40 active:scale-95 transition-transform">
               <h3 className="text-white font-bold text-sm">Mystery Box</h3>
-              <p className="text-gray-400 text-[10px] mt-1">어떤 보상이 기다릴까요?</p>
+              <p className="text-gray-400 text-[10px] mt-1">What reward awaits?</p>
               <div className="text-3xl my-2">🎁</div>
               <div className="flex items-center justify-center gap-1">
                 <span className="text-xs text-cyan-300">15</span>
@@ -220,7 +220,7 @@ export default function Store() {
             </button>
             <button onClick={() => setActiveTab("powerups")} className="neon-card p-4 text-center border-green-500/40 active:scale-95 transition-transform">
               <h3 className="text-white font-bold text-sm">Power-ups</h3>
-              <p className="text-gray-400 text-[10px] mt-1">능력을 강화하세요!</p>
+              <p className="text-gray-400 text-[10px] mt-1">Boost your abilities!</p>
               <div className="text-3xl my-2">⚡</div>
               <div className="text-[10px] text-purple-300">Browse →</div>
             </button>
@@ -243,9 +243,9 @@ export default function Store() {
                   <div className="text-4xl my-2">{pet.emoji}</div>
                   <p className="text-white text-xs font-medium">{pet.name}</p>
                   {equipped ? (
-                    <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                    <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ Equipped</div>
                   ) : owned ? (
-                    <div className="mt-2 text-[10px] text-purple-300 font-bold">장착하기</div>
+                    <div className="mt-2 text-[10px] text-purple-300 font-bold">Equip</div>
                   ) : (
                     <div className="mt-2 flex items-center justify-center gap-1">
                       <span className="text-[10px] text-cyan-300">{pet.price}</span>
@@ -277,13 +277,13 @@ export default function Store() {
                     {theme.colors.map((c, i) => <div key={i} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />)}
                   </div>
                   {equipped ? (
-                    <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                    <div className="mt-2 text-[10px] text-cyan-300 font-bold">✓ Equipped</div>
                   ) : owned ? (
-                    <div className="mt-2 text-[10px] text-purple-300 font-bold">장착하기</div>
+                    <div className="mt-2 text-[10px] text-purple-300 font-bold">Equip</div>
                   ) : theme.price > 0 ? (
                     <div className="mt-2 text-[10px] text-cyan-300">{theme.price} 💎</div>
                   ) : (
-                    <div className="mt-2 text-[10px] text-green-300">무료</div>
+                    <div className="mt-2 text-[10px] text-green-300">Free</div>
                   )}
                 </button>
               );
@@ -323,13 +323,13 @@ export default function Store() {
                   <div className="text-3xl my-1">{frame.emoji}</div>
                   <p className="text-white text-xs font-medium">{frame.name}</p>
                   {equipped ? (
-                    <div className="mt-1 text-[10px] text-cyan-300 font-bold">✓ 장착중</div>
+                    <div className="mt-1 text-[10px] text-cyan-300 font-bold">✓ Equipped</div>
                   ) : owned ? (
-                    <div className="mt-1 text-[10px] text-purple-300 font-bold">장착하기</div>
+                    <div className="mt-1 text-[10px] text-purple-300 font-bold">Equip</div>
                   ) : frame.price > 0 ? (
                     <div className="mt-1 text-[10px] text-cyan-300">{frame.price} 💎</div>
                   ) : (
-                    <div className="mt-1 text-[10px] text-green-300">무료</div>
+                    <div className="mt-1 text-[10px] text-green-300">Free</div>
                   )}
                 </button>
               );
@@ -343,11 +343,11 @@ export default function Store() {
         <div className="space-y-3">
           <h2 className="text-lg font-bold text-purple-300 font-display">💰 EARN GEMS</h2>
           {[
-            { icon: "📖", task: "Read a chapter", reward: "10 XP + chance for gems", action: "성경 읽기로 이동" },
-            { icon: "🎯", task: "Complete daily mission", reward: "50 XP", action: "홈으로 이동" },
-            { icon: "📅", task: "Daily login reward", reward: "3~20 Gems", action: "매일 접속하세요!" },
-            { icon: "🔥", task: "Maintain streak", reward: "Bonus XP", action: "연속 읽기 도전!" },
-            { icon: "📝", task: "Complete quizzes", reward: "15~30 XP", action: "챕터 읽기 후 퀴즈" },
+            { icon: "📖", task: "Read a chapter", reward: "10 XP + chance for gems", action: "Go to Bible" },
+            { icon: "🎯", task: "Complete daily mission", reward: "50 XP", action: "Go to Home" },
+            { icon: "📅", task: "Daily login reward", reward: "3~20 Gems", action: "Log in daily!" },
+            { icon: "🔥", task: "Maintain streak", reward: "Bonus XP", action: "Keep your streak!" },
+            { icon: "📝", task: "Complete quizzes", reward: "15~30 XP", action: "Quiz after reading" },
           ].map((item, i) => (
             <div key={i} className="neon-card p-4 flex items-center gap-4">
               <div className="text-2xl">{item.icon}</div>

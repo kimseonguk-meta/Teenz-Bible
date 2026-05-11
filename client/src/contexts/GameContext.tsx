@@ -64,8 +64,8 @@ function loadState(): GameState {
   const isNewDay = lastLogin !== today;
 
   return {
-    playerName: localStorage.getItem("playerName") || "다니엘",
-    className: localStorage.getItem("className") || "중등1반",
+    playerName: localStorage.getItem("playerName") || "Daniel",
+    className: localStorage.getItem("className") || "Class 1",
     totalXP: parseInt(localStorage.getItem("totalXP") || "0"),
     gems: teensBible.gems || 0,
     dayStreak: parseInt(localStorage.getItem("dayStreak") || "0"),
@@ -181,7 +181,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     let success = false;
     setState(prev => {
       if (prev.gems < amount) {
-        toast.error("💎 젬이 부족합니다!");
+        toast.error("💎 Not enough gems!");
         return prev;
       }
       const newGems = prev.gems - amount;
@@ -195,7 +195,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const claimLoginReward = useCallback(() => {
     setState(prev => {
       if (prev.loginRewardClaimed) {
-        toast.info("오늘의 보상은 이미 받았습니다!");
+        toast.info("You've already claimed today's reward!");
         return prev;
       }
       const rewardIdx = Math.min(prev.loginDay - 1, LOGIN_REWARDS.length - 1);
@@ -209,7 +209,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("lastLoginDate", today);
       localStorage.setItem("loginRewardClaimed", "true");
 
-      toast.success(`🎁 +${reward} 젬 획득! (Day ${prev.loginDay})`);
+      toast.success(`🎁 +${reward} Gems earned! (Day ${prev.loginDay})`);
       return {
         ...prev,
         gems: newGems,
@@ -226,7 +226,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const newXP = prev.totalXP + 50;
       localStorage.setItem("totalXP", String(newXP));
       localStorage.setItem("dailyMissionDone", "true");
-      toast.success("🎯 데일리 미션 완료! +50 XP");
+      toast.success("🎯 Daily mission complete! +50 XP");
       return { ...prev, totalXP: newXP, dailyMissionDone: true };
     });
   }, []);
@@ -242,7 +242,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const setPlayerNameFn = useCallback((name: string) => {
     localStorage.setItem("playerName", name);
     setState(prev => ({ ...prev, playerName: name }));
-    toast.success("이름이 변경되었습니다!");
+    toast.success("Name updated!");
   }, []);
 
   const setClassNameFn = useCallback((name: string) => {
@@ -256,11 +256,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const ownedKey = type === "pet" ? "ownedPets" : type === "theme" ? "ownedThemes" : "ownedFrames";
       const owned = prev[ownedKey] as string[];
       if (owned.includes(id)) {
-        toast.info("이미 보유한 아이템입니다!");
+        toast.info("You already own this item!");
         return prev;
       }
       if (prev.gems < price) {
-        toast.error("💎 젬이 부족합니다!");
+        toast.error("💎 Not enough gems!");
         return prev;
       }
       const newGems = prev.gems - price;
@@ -268,7 +268,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       saveGems(newGems);
       localStorage.setItem(ownedKey, JSON.stringify(newOwned));
       success = true;
-      toast.success(`🎉 ${id} 구매 완료!`);
+      toast.success(`🎉 ${id} purchased!`);
       return { ...prev, gems: newGems, [ownedKey]: newOwned };
     });
     return success;
@@ -278,7 +278,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const equippedKey = type === "pet" ? "equippedPet" : type === "theme" ? "equippedTheme" : "equippedFrame";
     localStorage.setItem(equippedKey, id);
     setState(prev => ({ ...prev, [equippedKey]: id }));
-    toast.success(`✨ ${id} 장착 완료!`);
+    toast.success(`✨ ${id} equipped!`);
   }, []);
 
   const getChaptersRead = useCallback((book: string): number[] => {
@@ -303,7 +303,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
           const newXP = prev.totalXP + 50;
           localStorage.setItem("totalXP", String(newXP));
           localStorage.setItem("dailyMissionDone", "true");
-          toast.success("🎯 데일리 미션 완료! +50 XP");
+          toast.success("🎯 Daily mission complete! +50 XP");
 
           // Check badge
           const totalRead = getTotalChaptersReadInternal();
@@ -311,12 +311,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
           if (totalRead >= 1 && !newBadges.includes("첫 시작")) {
             newBadges.push("첫 시작");
             localStorage.setItem("badges", JSON.stringify(newBadges));
-            toast.success("🏆 업적 달성: 첫 시작!");
+            toast.success("🏆 Achievement unlocked: First Step!");
           }
           if (totalRead >= 100 && !newBadges.includes("백 장 독파")) {
             newBadges.push("백 장 독파");
             localStorage.setItem("badges", JSON.stringify(newBadges));
-            toast.success("🏆 업적 달성: 백 장 독파!");
+            toast.success("🏆 Achievement unlocked: 100 Chapters!");
           }
 
           return { ...prev, totalXP: newXP, dailyMissionDone: true, badges: newBadges };
