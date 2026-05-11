@@ -69,7 +69,7 @@ export default function Home() {
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white font-display">Hey {game.playerName}! 🔥</h1>
+          <h1 className="text-xl font-bold text-white font-display">Hey {game.playerName || "there"}! 🔥</h1>
           <div className="flex items-center gap-3 text-sm text-gray-300">
             <span>🔥 {game.dayStreak} Day Streak</span>
             <span>💎 Lv. {level.level}</span>

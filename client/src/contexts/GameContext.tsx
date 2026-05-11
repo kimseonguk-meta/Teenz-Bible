@@ -64,8 +64,8 @@ function loadState(): GameState {
   const isNewDay = lastLogin !== today;
 
   return {
-    playerName: localStorage.getItem("playerName") || "Daniel",
-    className: localStorage.getItem("className") || "Class 1",
+    playerName: localStorage.getItem("playerName") || "",
+    className: localStorage.getItem("className") || "",
     totalXP: parseInt(localStorage.getItem("totalXP") || "0"),
     gems: teensBible.gems || 0,
     dayStreak: parseInt(localStorage.getItem("dayStreak") || "0"),

@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useGame } from "@/contexts/GameContext";
 
 const allPlayers = [
-  { name: "Daniel", streak: 21, xp: 2450, avatar: "👦", className: "Class 1" },
+  { name: "__CURRENT_USER__", streak: 21, xp: 2450, avatar: "👦", className: "Class 1" },
   { name: "Esther", streak: 14, xp: 2100, avatar: "👧", className: "Class 1" },
   { name: "Joseph", streak: 10, xp: 1890, avatar: "🧑", className: "Class 2" },
   { name: "Moses", streak: 7, xp: 1650, avatar: "👦", className: "Class 2" },
@@ -19,7 +19,7 @@ export default function Leaderboard() {
   // Merge current user into leaderboard
   const mergedPlayers = useMemo(() => {
     const players = allPlayers.map(p => {
-      if (p.name === game.playerName || p.name === "Daniel") {
+      if (p.name === game.playerName || p.name === "__CURRENT_USER__") {
         return { ...p, name: game.playerName, xp: Math.max(p.xp, game.totalXP), streak: Math.max(p.streak, game.dayStreak), className: game.className };
       }
       return p;
