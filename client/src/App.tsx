@@ -12,6 +12,7 @@ import Store from "./pages/Store";
 import Profile from "./pages/Profile";
 import AIChat from "./pages/AIChat";
 import BibleMap from "./pages/BibleMap";
+import MemeGallery from "./pages/MemeOfDay";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/profile" component={Profile} />
         <Route path="/chat" component={AIChat} />
         <Route path="/map" component={BibleMap} />
+        <Route path="/memes" component={MemeGallery} />
         <Route component={Home} />
       </Switch>
     </AppLayout>

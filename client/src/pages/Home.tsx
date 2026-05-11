@@ -1,6 +1,7 @@
 import { useGame } from "@/contexts/GameContext";
 import { useLocation } from "wouter";
 import { gospelData } from "@/data/gospelData";
+import { MemeHomeCard } from "@/pages/MemeOfDay";
 
 function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: number; size?: number; strokeWidth?: number }) {
   const radius = (size - strokeWidth) / 2;
@@ -168,6 +169,9 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* Bible Meme of the Day */}
+      <MemeHomeCard />
 
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-3">
