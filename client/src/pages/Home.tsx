@@ -3,7 +3,6 @@ import { useLocation } from "wouter";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 function getTotalXP() { return parseInt(localStorage.getItem("totalXP") || "0"); }
-function getDayStreak() { return parseInt(localStorage.getItem("dayStreak") || "0"); }
 function getGems() {
   try { const raw = localStorage.getItem("teensBible"); return raw ? JSON.parse(raw).gems || 0 : 0; } catch { return 0; }
 }
@@ -61,13 +60,12 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const playerName = getPlayerName();
   const totalXP = getTotalXP();
-  const dayStreak = getDayStreak();
+
   const chaptersRead = getChaptersRead();
   const gems = getGems();
   const level = getLevel(totalXP);
   const xpProgress = Math.min(100, (totalXP / level.next) * 100);
-  const days = ["S","M","T","W","T","F","S"];
-  const today = new Date().getDay();
+
   const meme = getDailyMeme();
 
   const greeting = playerName ? `Hey ${playerName}!` : "Hey there!";
@@ -83,9 +81,9 @@ export default function Home() {
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white font-display">{greeting} 🔥</h1>
+          <h1 className="text-xl font-bold text-white font-display">{greeting}</h1>
           <div className="flex items-center gap-3 text-sm text-gray-300">
-            <span>🔥 {dayStreak} Day Streak</span>
+            <span>📖 {chaptersRead} Chapters Read</span>
             <span>💎 Lv. {level.level}</span>
           </div>
         </div>
@@ -157,27 +155,7 @@ export default function Home() {
         <div className="w-8 h-8 rounded-full bg-yellow-600/20 border border-yellow-500/40 flex items-center justify-center"><span className="text-sm">🏆</span></div>
       </div>
 
-      {/* Streak Calendar */}
-      <div className="neon-card p-4">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-white font-bold text-sm">🔥 Streak Calendar</span>
-          <span className="text-purple-300 text-xs">{dayStreak} days</span>
-        </div>
-        <div className="grid grid-cols-7 gap-2">
-          {days.map((d, i) => (
-            <div key={i} className={`flex flex-col items-center gap-1 py-2 rounded-lg ${i === today ? 'bg-purple-600/30 border border-purple-500/40' : ''}`}>
-              <span className="text-gray-400 text-[10px]">{d}</span>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                i < today ? 'bg-green-500/20 border border-green-500/40 text-green-400' :
-                i === today ? 'bg-purple-500/30 border border-purple-400 text-purple-300' :
-                'bg-gray-800/50 border border-gray-700/30 text-gray-600'
-              }`}>
-                {i < today ? '✓' : i === today ? '•' : ''}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+
 
       {/* Bible Meme of the Day */}
       <div className="neon-card p-4 cursor-pointer active:scale-[0.98] transition-transform" onClick={() => setLocation("/memes")}>
@@ -194,9 +172,8 @@ export default function Home() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="neon-card p-3 text-center"><span className="text-2xl">🔥</span><div className="text-xl font-bold text-white mt-1">{dayStreak}</div><div className="text-[10px] text-gray-400">Day Streak</div></div>
-        <div className="neon-card p-3 text-center"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1">{chaptersRead}</div><div className="text-[10px] text-gray-400">Chapters</div></div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="neon-card p-3 text-center"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1">{chaptersRead}</div><div className="text-[10px] text-gray-400">Chapters Read</div></div>
         <div className="neon-card p-3 text-center"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1">{gems}</div><div className="text-[10px] text-gray-400">Gems</div></div>
       </div>
 
