@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 // Standard chapter counts for each Bible book
@@ -135,16 +136,20 @@ export default function Home() {
   const memeUrl = getDailyMemeUrl();
 
   const greeting = playerName ? `Hey ${playerName}!` : "Hey there!";
+  const equipped = getEquipped();
+  const equippedPet = PETS.find(p => p.id === equipped.pet);
+  const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
 
   return (
     <div className="px-4 pt-6 space-y-4">
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="relative">
-          <div className="w-16 h-16 rounded-full border-[3px] border-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)] overflow-hidden bg-purple-900/50 flex items-center justify-center">
+          <div className={`w-16 h-16 rounded-full overflow-hidden bg-purple-900/50 flex items-center justify-center ${equippedFrame?.frameClass || 'border-[3px] border-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]'}`}>
             <span className="text-3xl">👦</span>
           </div>
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
+          {equippedPet && <div className="absolute -top-1 -left-1 text-lg">{equippedPet.petEmoji}</div>}
         </div>
         <div>
           <h1 className="text-xl font-bold text-white font-display">{greeting}</h1>

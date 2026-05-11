@@ -397,6 +397,25 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
   const [marked, setMarked] = useState(false);
 
+  // Reader background from Store
+  const readerBgStyle = (() => {
+    try {
+      const raw = localStorage.getItem("teensBibleEquipped");
+      if (raw) {
+        const eq = JSON.parse(raw);
+        const READER_BGS: Record<string, { bg: string; text: string }> = {
+          reader_dark: { bg: "#0a0a1a", text: "#e2e8f0" },
+          reader_parchment: { bg: "#f5e6c8", text: "#3d2b1f" },
+          reader_nightsky: { bg: "#0f172a", text: "#cbd5e1" },
+          reader_cream: { bg: "#fffbeb", text: "#451a03" },
+          reader_mint: { bg: "#ecfdf5", text: "#064e3b" },
+        };
+        return READER_BGS[eq.readerBg] || null;
+      }
+    } catch {}
+    return null;
+  })();
+
   // Compute paragraphs early so TTS can use them
   let paragraphs = chapter ? chapter.paragraphs : [];
   if (lang === "ko" && gospelDataKo[book]) {
@@ -510,12 +529,12 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       </div>
 
       {/* Chapter Content */}
-      <div className="space-y-4" style={{ fontSize: `${fontSize}px` }}>
+      <div className="space-y-4 p-4 rounded-xl transition-colors" style={{ fontSize: `${fontSize}px`, backgroundColor: readerBgStyle?.bg || 'transparent' }}>
         {paragraphs.map((para: string, i: number) => {
           if (para.startsWith("§")) {
-            return <h3 key={i} className="text-purple-300 font-bold text-base mt-4 mb-2">{para.slice(1)}</h3>;
+            return <h3 key={i} className="font-bold text-base mt-4 mb-2" style={{ color: readerBgStyle ? readerBgStyle.text : undefined, opacity: 0.8 }}>{para.slice(1)}</h3>;
           }
-          return <p key={i} className="text-gray-200 leading-relaxed">{para}</p>;
+          return <p key={i} className="leading-relaxed" style={{ color: readerBgStyle?.text || '#e2e8f0' }}>{para}</p>;
         })}
       </div>
 

@@ -1,51 +1,183 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import {
+  THEMES,
+  READER_BACKGROUNDS,
+  PROFILE_FRAMES,
+  PETS,
+  MYSTERY_BOX,
+  getInventory,
+  getEquipped,
+  purchaseItem,
+  equipItem,
+  unequipPet,
+  ownsItem,
+  openMysteryBox,
+  type StoreItem,
+  type ItemCategory,
+} from "@/data/storeItems";
+import { toast } from "sonner";
 
 const tabs = [
-  { id: "featured", icon: "⭐", label: "Featured" },
   { id: "themes", icon: "🎨", label: "Themes" },
-  { id: "powerups", icon: "⚡", label: "Power-ups" },
+  { id: "readerBg", icon: "📖", label: "Reader" },
+  { id: "frames", icon: "🖼️", label: "Frames" },
   { id: "pets", icon: "🐾", label: "Pets" },
-  { id: "earn", icon: "💰", label: "Earn" },
+  { id: "mystery", icon: "🎁", label: "Mystery" },
 ];
 
-const pets = [
-  { name: "Faithy Cat", price: 60, emoji: "🐱" },
-  { name: "Hope Puppy", price: 60, emoji: "🐶" },
-  { name: "Joy Lamb", price: 60, emoji: "🐑" },
-];
-
-const themes = [
-  { name: "Twilight Glow", colors: ["#4c1d95", "#6d28d9", "#7c3aed", "#60a5fa"], equipped: true },
-  { name: "Sea Breeze", colors: ["#0e7490", "#06b6d4", "#22d3ee", "#67e8f9"], equipped: false },
-  { name: "Forest Calm", colors: ["#166534", "#16a34a", "#4ade80", "#86efac"], equipped: false },
-];
-
-function getGems() {
+function getGems(): number {
   try {
     const raw = localStorage.getItem("teensBible");
     const data = raw ? JSON.parse(raw) : {};
     return data.gems || 0;
-  } catch { return 0; }
+  } catch {
+    return 0;
+  }
 }
 
 export default function Store() {
-  const [activeTab, setActiveTab] = useState("featured");
-  const [gems] = useState(getGems);
+  const [activeTab, setActiveTab] = useState("themes");
+  const [gems, setGems] = useState(getGems);
+  const [equipped, setEquipped] = useState(getEquipped);
+  const [inventory, setInventory] = useState(getInventory);
+  const [mysteryResult, setMysteryResult] = useState<{ emoji: string; message: string } | null>(null);
+  const [isOpening, setIsOpening] = useState(false);
+
+  // Listen for gems changes
+  useEffect(() => {
+    const handler = () => {
+      setGems(getGems());
+      setInventory(getInventory());
+    };
+    window.addEventListener("gems-changed", handler);
+    window.addEventListener("equipped-changed", () => setEquipped(getEquipped()));
+    return () => {
+      window.removeEventListener("gems-changed", handler);
+      window.removeEventListener("equipped-changed", () => setEquipped(getEquipped()));
+    };
+  }, []);
+
+  const handlePurchase = useCallback((item: StoreItem) => {
+    const result = purchaseItem(item.id, item.price);
+    if (result.success) {
+      toast.success(`Purchased ${item.name}! 🎉`);
+      setGems(getGems());
+      setInventory(getInventory());
+    } else {
+      toast.error(result.message);
+    }
+  }, []);
+
+  const handleEquip = useCallback((item: StoreItem) => {
+    equipItem(item.id, item.category);
+    setEquipped(getEquipped());
+    toast.success(`Equipped ${item.name}! ✨`);
+  }, []);
+
+  const handleUnequipPet = useCallback(() => {
+    unequipPet();
+    setEquipped(getEquipped());
+    toast.info("Pet unequipped");
+  }, []);
+
+  const handleMysteryBox = useCallback(() => {
+    setIsOpening(true);
+    setMysteryResult(null);
+    
+    setTimeout(() => {
+      const result = openMysteryBox();
+      if (result.success && result.reward) {
+        const emoji = "type" in result.reward ? "💎" : result.reward.emoji;
+        setMysteryResult({ emoji, message: result.message });
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
+      setGems(getGems());
+      setInventory(getInventory());
+      setIsOpening(false);
+    }, 1500);
+  }, []);
+
+  const isOwned = (id: string) => inventory.ownedItems.includes(id);
+  const isEquipped = (id: string, category: ItemCategory) => {
+    switch (category) {
+      case "themes": return equipped.theme === id;
+      case "readerBg": return equipped.readerBg === id;
+      case "frames": return equipped.frame === id;
+      case "pets": return equipped.pet === id;
+      default: return false;
+    }
+  };
+
+  const renderItemCard = (item: StoreItem) => {
+    const owned = isOwned(item.id);
+    const active = isEquipped(item.id, item.category);
+
+    return (
+      <div
+        key={item.id}
+        className={`p-3 rounded-xl text-center relative transition-all ${
+          active
+            ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+            : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
+        }`}
+      >
+        {active && (
+          <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">
+            ✓
+          </div>
+        )}
+        <div className="text-3xl my-2">{item.emoji}</div>
+        <p className="text-white text-xs font-medium truncate">{item.name}</p>
+        <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
+
+        {/* Action button */}
+        <div className="mt-2">
+          {!owned && item.price > 0 ? (
+            <button
+              onClick={() => handlePurchase(item)}
+              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+            >
+              {item.price} 💎
+            </button>
+          ) : owned && !active ? (
+            <button
+              onClick={() => handleEquip(item)}
+              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+            >
+              Equip
+            </button>
+          ) : active && item.category === "pets" ? (
+            <button
+              onClick={handleUnequipPet}
+              className="w-full py-1.5 rounded-lg bg-gray-700 text-gray-300 text-[11px] font-bold"
+            >
+              Unequip
+            </button>
+          ) : (
+            <div className="py-1.5 text-teal-400 text-[11px] font-bold">
+              {item.price === 0 ? "Default" : "Equipped ✓"}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="px-4 pt-6 space-y-5">
+    <div className="px-4 pt-6 space-y-5 pb-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white font-display neon-text-purple">Gem Store</h1>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-900/50 border border-purple-500/30">
           <span className="text-sm">💎</span>
           <span className="text-white font-bold text-sm">{gems}</span>
-          <button className="w-5 h-5 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">+</button>
         </div>
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-1 overflow-x-auto pb-2 -mx-4 px-4">
+      <div className="flex gap-1 overflow-x-auto pb-1 -mx-4 px-4">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -53,7 +185,7 @@ export default function Store() {
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs whitespace-nowrap transition-all ${
               activeTab === tab.id
                 ? "bg-purple-600/30 border border-purple-500/50 text-purple-200"
-                : "text-gray-400"
+                : "text-gray-400 hover:text-gray-200"
             }`}
           >
             <span className="text-lg">{tab.icon}</span>
@@ -62,91 +194,176 @@ export default function Store() {
         ))}
       </div>
 
-      {/* Featured Banner */}
-      <div className="neon-card-gold p-5 relative overflow-hidden">
-        <div className="absolute top-2 left-3 px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/40 rounded-full text-[10px] text-yellow-300">
-          ⏰ LIMITED TIME
-        </div>
-        <div className="mt-5">
-          <h3 className="text-lg font-bold text-white">Starter Blessing Pack</h3>
-          <p className="text-gray-400 text-xs mt-1">말씀 여정에 도움이 되는 특별 패키지!</p>
-          <div className="flex items-center gap-3 mt-2 text-xs text-gray-300">
-            <span>💎 200</span>
-            <span>⚡ 5</span>
-            <span>❤️ 3</span>
+      {/* Content */}
+      {activeTab === "themes" && (
+        <div>
+          <h2 className="text-lg font-bold text-purple-300 font-display mb-3">🎨 App Themes</h2>
+          <p className="text-gray-400 text-xs mb-3">Change the entire app color scheme!</p>
+          <div className="grid grid-cols-3 gap-3">
+            {THEMES.map(renderItemCard)}
           </div>
-          <button className="mt-3 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl text-white text-sm font-bold shadow-[0_0_12px_rgba(16,185,129,0.4)]">
-            ₩3,900
+        </div>
+      )}
+
+      {activeTab === "readerBg" && (
+        <div>
+          <h2 className="text-lg font-bold text-purple-300 font-display mb-3">📖 Reader Backgrounds</h2>
+          <p className="text-gray-400 text-xs mb-3">Customize your Bible reading experience!</p>
+          <div className="grid grid-cols-3 gap-3">
+            {READER_BACKGROUNDS.map((item) => (
+              <div
+                key={item.id}
+                className={`p-3 rounded-xl text-center relative transition-all ${
+                  isEquipped(item.id, "readerBg")
+                    ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+                    : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
+                }`}
+              >
+                {isEquipped(item.id, "readerBg") && (
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
+                )}
+                {/* Preview swatch */}
+                <div
+                  className="w-full h-10 rounded-lg my-2 border border-white/10 flex items-center justify-center text-[10px]"
+                  style={{ backgroundColor: item.readerStyle?.bg, color: item.readerStyle?.text }}
+                >
+                  Abc 가나다
+                </div>
+                <p className="text-white text-xs font-medium">{item.name}</p>
+                <div className="mt-2">
+                  {!isOwned(item.id) && item.price > 0 ? (
+                    <button
+                      onClick={() => handlePurchase(item)}
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold"
+                    >
+                      {item.price} 💎
+                    </button>
+                  ) : isOwned(item.id) && !isEquipped(item.id, "readerBg") ? (
+                    <button
+                      onClick={() => handleEquip(item)}
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white text-[11px] font-bold"
+                    >
+                      Equip
+                    </button>
+                  ) : (
+                    <div className="py-1.5 text-teal-400 text-[11px] font-bold">
+                      {item.price === 0 ? "Default" : "Equipped ✓"}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "frames" && (
+        <div>
+          <h2 className="text-lg font-bold text-purple-300 font-display mb-3">🖼️ Profile Frames</h2>
+          <p className="text-gray-400 text-xs mb-3">Stand out on the leaderboard!</p>
+          <div className="grid grid-cols-3 gap-3">
+            {PROFILE_FRAMES.map((item) => (
+              <div
+                key={item.id}
+                className={`p-3 rounded-xl text-center relative transition-all ${
+                  isEquipped(item.id, "frames")
+                    ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
+                    : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
+                }`}
+              >
+                {isEquipped(item.id, "frames") && (
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
+                )}
+                {/* Frame preview */}
+                <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl bg-purple-900/50 my-2 ${item.frameClass}`}>
+                  😎
+                </div>
+                <p className="text-white text-xs font-medium">{item.name}</p>
+                <div className="mt-2">
+                  {!isOwned(item.id) && item.price > 0 ? (
+                    <button
+                      onClick={() => handlePurchase(item)}
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold"
+                    >
+                      {item.price} 💎
+                    </button>
+                  ) : isOwned(item.id) && !isEquipped(item.id, "frames") ? (
+                    <button
+                      onClick={() => handleEquip(item)}
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white text-[11px] font-bold"
+                    >
+                      Equip
+                    </button>
+                  ) : (
+                    <div className="py-1.5 text-teal-400 text-[11px] font-bold">
+                      {item.price === 0 ? "Default" : "Equipped ✓"}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "pets" && (
+        <div>
+          <h2 className="text-lg font-bold text-purple-300 font-display mb-3">🐾 Pets</h2>
+          <p className="text-gray-400 text-xs mb-3">A companion for your Bible journey!</p>
+          <div className="grid grid-cols-3 gap-3">
+            {PETS.map(renderItemCard)}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "mystery" && (
+        <div className="flex flex-col items-center pt-6">
+          <h2 className="text-lg font-bold text-purple-300 font-display mb-2">🎁 Mystery Box</h2>
+          <p className="text-gray-400 text-sm mb-6 text-center">
+            Open for a random item or bonus gems!<br />
+            <span className="text-xs text-gray-500">70% chance of item, 30% chance of gems</span>
+          </p>
+
+          {/* Mystery Box Visual */}
+          <div
+            className={`w-32 h-32 rounded-2xl bg-gradient-to-br from-pink-500/20 to-purple-600/20 border-2 border-pink-500/40 flex items-center justify-center text-6xl mb-4 transition-all cursor-pointer hover:scale-105 ${
+              isOpening ? "animate-bounce" : ""
+            }`}
+            onClick={!isOpening ? handleMysteryBox : undefined}
+          >
+            {isOpening ? "✨" : "🎁"}
+          </div>
+
+          <div className="flex items-center gap-1 mb-4">
+            <span className="text-white font-bold">{MYSTERY_BOX.price}</span>
+            <span>💎</span>
+            <span className="text-gray-400 text-sm">per box</span>
+          </div>
+
+          <button
+            onClick={handleMysteryBox}
+            disabled={isOpening || gems < MYSTERY_BOX.price}
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold shadow-[0_0_15px_rgba(236,72,153,0.4)] disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+          >
+            {isOpening ? "Opening..." : "Open Box! 🎁"}
           </button>
-        </div>
-      </div>
 
-      {/* Pets Section */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold text-purple-300 font-display">🐾 Pets</h2>
-          <button className="text-gray-400 text-xs">See All &gt;</button>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {pets.map((pet) => (
-            <div key={pet.name} className="neon-card p-3 text-center relative">
-              <button className="absolute top-2 right-2 text-pink-400 text-sm">♡</button>
-              <div className="text-4xl my-2">{pet.emoji}</div>
-              <p className="text-white text-xs font-medium">{pet.name}</p>
-              <div className="mt-2 flex items-center justify-center gap-1">
-                <span className="text-[10px] text-cyan-300">{pet.price}</span>
-                <span className="text-[10px]">💎</span>
-              </div>
+          {/* Result */}
+          {mysteryResult && (
+            <div className="mt-6 p-5 rounded-xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 text-center animate-in zoom-in-95 duration-300">
+              <div className="text-5xl mb-2">{mysteryResult.emoji}</div>
+              <p className="text-white font-bold">{mysteryResult.message}</p>
             </div>
-          ))}
-        </div>
-      </div>
+          )}
 
-      {/* Themes Section */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold text-purple-300 font-display">🎨 Themes</h2>
-          <button className="text-gray-400 text-xs">See All &gt;</button>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {themes.map((theme) => (
-            <div key={theme.name} className="neon-card p-3 text-center relative">
-              {theme.equipped && (
-                <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-cyan-500 text-white text-[10px] flex items-center justify-center">✓</div>
-              )}
-              <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br" style={{ background: `linear-gradient(135deg, ${theme.colors[0]}, ${theme.colors[2]})` }} />
-              <p className="text-white text-xs font-medium mt-2">{theme.name}</p>
-              <div className="flex gap-1 justify-center mt-1">
-                {theme.colors.map((c, i) => (
-                  <div key={i} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mystery Box & Reader Skins */}
-      <div className="grid grid-cols-2 gap-3 pb-4">
-        <div className="neon-card p-4 text-center border-pink-500/40">
-          <h3 className="text-white font-bold text-sm">Mystery Box</h3>
-          <p className="text-gray-400 text-[10px] mt-1">어떤 보상이 기다릴까요?</p>
-          <div className="text-3xl my-2">🎁</div>
-          <div className="flex items-center justify-center gap-1">
-            <span className="text-xs text-cyan-300">15</span>
-            <span className="text-xs">💎</span>
+          {/* Recent items owned count */}
+          <div className="mt-8 text-center">
+            <p className="text-gray-500 text-xs">
+              Items owned: {inventory.ownedItems.length} / {THEMES.length + READER_BACKGROUNDS.length + PROFILE_FRAMES.length + PETS.length}
+            </p>
           </div>
         </div>
-        <div className="neon-card p-4 text-center border-green-500/40">
-          <h3 className="text-white font-bold text-sm">Reader Skins</h3>
-          <p className="text-gray-400 text-[10px] mt-1">말씀 읽기를 더 특별하게!</p>
-          <div className="text-3xl my-2">📚</div>
-          <div className="flex items-center justify-center gap-1">
-            <span className="text-xs text-cyan-300">30</span>
-            <span className="text-xs">💎</span>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
