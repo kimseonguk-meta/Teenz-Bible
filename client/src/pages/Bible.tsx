@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { allBibleData, otBooks, ntBooks, otCategories, ntCategories } from "@/data/allBibleData";
 import { gospelDataKo } from "@/data/gospelDataKo";
 import { useGame } from "@/contexts/GameContext";
@@ -339,6 +339,44 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
   const [marked, setMarked] = useState(false);
 
+  // Compute paragraphs early so TTS can use them
+  let paragraphs = chapter ? chapter.paragraphs : [];
+  if (lang === "ko" && gospelDataKo[book]) {
+    const koChapter = gospelDataKo[book].find((c: any) => c.num === chapter?.num);
+    if (koChapter) paragraphs = koChapter.paragraphs;
+  }
+
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speechRate, setSpeechRate] = useState(parseFloat(localStorage.getItem("ttsRate") || "1"));
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const stopSpeech = useCallback(() => {
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  }, []);
+
+  const startSpeech = useCallback(() => {
+    stopSpeech();
+    const text = paragraphs.filter((p: string) => !p.startsWith("§")).join(". ");
+    if (!text) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang === "ko" ? "ko-KR" : "en-US";
+    utterance.rate = speechRate;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    utteranceRef.current = utterance;
+    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
+  }, [lang, speechRate, book, chapterIdx]);
+
+  useEffect(() => {
+    return () => { window.speechSynthesis.cancel(); };
+  }, [book, chapterIdx]);
+
+  useEffect(() => {
+    localStorage.setItem("ttsRate", String(speechRate));
+  }, [speechRate]);
+
   useEffect(() => {
     if (chapter && !marked) {
       game.markChapterRead(book, chapter.num);
@@ -356,12 +394,6 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
   if (!chapter) return <div className="p-4 text-white">Chapter not found</div>;
 
-  let paragraphs = chapter.paragraphs;
-  if (lang === "ko" && gospelDataKo[book]) {
-    const koChapter = gospelDataKo[book].find((c: any) => c.num === chapter.num);
-    if (koChapter) paragraphs = koChapter.paragraphs;
-  }
-
   const quizAvailable = hasQuiz(book, chapter.num);
 
   return (
@@ -376,8 +408,32 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
           <button onClick={() => setFontSize(f => Math.max(12, f - 2))} className="w-7 h-7 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-white active:scale-95">A-</button>
           <button onClick={() => setFontSize(f => Math.min(24, f + 2))} className="w-7 h-7 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-white active:scale-95">A+</button>
+          <button onClick={isSpeaking ? stopSpeech : startSpeech}
+            className={`w-7 h-7 rounded-lg border text-xs active:scale-95 transition-all ${
+              isSpeaking ? 'bg-purple-600 border-purple-400 text-white animate-pulse' : 'bg-purple-900/50 border-purple-500/30 text-white'
+            }`}>
+            {isSpeaking ? '⏹' : '🔊'}
+          </button>
         </div>
       </div>
+
+      {/* TTS Controls */}
+      {isSpeaking && (
+        <div className="flex items-center justify-center gap-3 mb-3 p-2 rounded-xl bg-purple-900/30 border border-purple-500/20">
+          <span className="text-purple-300 text-xs">Speed:</span>
+          {[0.75, 1, 1.25, 1.5].map(rate => (
+            <button key={rate} onClick={() => { setSpeechRate(rate); if (isSpeaking) { stopSpeech(); setTimeout(() => startSpeech(), 100); } }}
+              className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${
+                speechRate === rate ? 'bg-purple-600 text-white' : 'text-gray-400'
+              }`}>
+              {rate}x
+            </button>
+          ))}
+          <button onClick={stopSpeech} className="ml-2 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold">
+            Stop
+          </button>
+        </div>
+      )}
 
       {/* Chapter Title */}
       <div className="text-center mb-6">

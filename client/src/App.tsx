@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
@@ -14,6 +15,7 @@ import AIChat from "./pages/AIChat";
 import BibleMap from "./pages/BibleMap";
 import MemeGallery from "./pages/MemeOfDay";
 import Challenges from "./pages/Challenges";
+import Onboarding from "./components/Onboarding";
 
 function Router() {
   return (
@@ -35,12 +37,19 @@ function Router() {
 }
 
 function App() {
+  const [showOnboarding, setShowOnboarding] = useState(
+    () => !localStorage.getItem("onboardingComplete")
+  );
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           <GameProvider>
+            {showOnboarding && (
+              <Onboarding onComplete={() => setShowOnboarding(false)} />
+            )}
             <Router />
           </GameProvider>
         </TooltipProvider>
