@@ -440,6 +440,12 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       game.markChapterRead(book, chapter.num);
       setMarked(true);
     }
+    // Track last read position for Today's Reading on Home
+    if (chapter) {
+      localStorage.setItem("lastReadBook", book);
+      localStorage.setItem("lastReadChapter", String(chapter.num));
+      localStorage.setItem("lastReadChapterIdx", String(chapterIdx));
+    }
   }, [book, chapterIdx]);
 
   useEffect(() => {
