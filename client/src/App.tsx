@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { GameProvider } from "./contexts/GameContext";
 import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
 import Bible from "./pages/Bible";
@@ -31,7 +32,9 @@ function App() {
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <GameProvider>
+            <Router />
+          </GameProvider>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
