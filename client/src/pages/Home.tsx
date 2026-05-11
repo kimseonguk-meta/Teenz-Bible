@@ -55,35 +55,36 @@ function getLevel(xp: number) {
 // Real meme images hosted on Firebase (same as old app)
 const MEME_BASE_URL = "https://teens-bible-94271.web.app/memes/";
 const memeUrls = [
-  "meme_001.jpg","meme_002.webp","meme_003.webp","meme_004.webp","meme_005.webp",
-  "meme_006.webp","meme_007.webp","meme_008.jpg","meme_009.jpg","meme_010.jpg",
-  "meme_011.jpg","meme_012.jpg","meme_013.webp","meme_014.jpg","meme_015.webp",
-  "meme_016.jpg","meme_017.jpg","meme_018.jpg","meme_019.jpg","meme_020.jpg",
-  "meme_021.jpg","meme_022.jpeg","meme_023.jpg","meme_024.webp","meme_025.jpg",
-  "meme_026.jpg","meme_027.webp","meme_028.jpeg","meme_029.webp","meme_030.jpg",
-  "meme_031.jpg","meme_032.jpg","meme_033.jpg","meme_034.jpg","meme_035.png",
-  "meme_036.jpg","meme_037.jpg","meme_038.jpg","meme_039.jpeg","meme_040.jpg",
-  "meme_041.png","meme_042.jpg","meme_043.jpg","meme_044.jpg","meme_045.jpg",
-  "meme_046.jpg","meme_047.jpg","meme_048.jpg","meme_049.jpg","meme_050.png",
-  "meme_051.jpg","meme_052.jpg","meme_053.jpg","meme_054.jpg","meme_055.jpg",
+  "meme_001.jpg","meme_002.jpg","meme_003.jpg","meme_004.jpg","meme_005.jpg",
+  "meme_006.jpg","meme_007.jpg","meme_008.jpg","meme_009.jpg","meme_010.jpg",
+  "meme_011.webp","meme_012.jpg","meme_013.webp","meme_014.jpg","meme_015.jpg",
+  "meme_016.jpg","meme_017.webp","meme_018.jpg","meme_019.webp","meme_020.jpg",
+  "meme_021.jpg","meme_022.jpg","meme_023.jpg","meme_024.jpg","meme_025.jpg",
+  "meme_026.jpg","meme_027.jpeg","meme_028.jpg","meme_029.jpg","meme_030.jpg",
+  "meme_031.jpg","meme_032.jpeg","meme_033.jpg","meme_034.webp","meme_035.jpeg",
+  "meme_036.webp","meme_037.jpg","meme_038.jpg","meme_039.jpg","meme_040.jpg",
+  "meme_041.webp","meme_042.jpg","meme_043.jpg","meme_044.jpg","meme_045.jpg",
+  "meme_046.jpeg","meme_047.jpeg","meme_048.png","meme_049.jpg","meme_050.jpg",
+  "meme_051.webp","meme_052.jpg","meme_053.jpeg","meme_054.jpg","meme_055.jpg",
   "meme_056.jpg","meme_057.jpg","meme_058.jpg","meme_059.jpg","meme_060.jpg",
-  "meme_061.jpg","meme_062.jpg","meme_063.jpg","meme_064.jpg","meme_065.gif",
+  "meme_061.jpg","meme_062.png","meme_063.webp","meme_064.jpg","meme_065.webp",
   "meme_066.jpg","meme_067.jpg","meme_068.jpg","meme_069.jpg","meme_070.jpg",
   "meme_071.jpg","meme_072.jpg","meme_073.jpg","meme_074.jpg","meme_075.jpg",
   "meme_076.jpg","meme_077.jpg","meme_078.jpg","meme_079.jpg","meme_080.jpg",
-  "meme_081.png","meme_082.png","meme_083.jpg","meme_084.jpg","meme_085.jpg",
+  "meme_081.jpeg","meme_082.jpg","meme_083.jpg","meme_084.jpg","meme_085.jpg",
   "meme_086.jpg","meme_087.jpg","meme_088.jpg","meme_089.jpg","meme_090.jpg",
-  "meme_091.jpg","meme_092.jpg","meme_093.jpg","meme_094.jpg","meme_095.jpg",
+  "meme_091.jpg","meme_092.webp","meme_093.jpg","meme_094.jpg","meme_095.jpg",
   "meme_096.jpg","meme_097.jpg","meme_098.jpg","meme_099.jpg","meme_100.jpg",
+  "meme_101.jpeg","meme_102.jpeg",
 ];
 
-// Seasonal memes
+// Seasonal memes (disabled - no seasonal files currently)
 const seasonalMemes: Record<string, string[]> = {
-  christmas: ["christmas_001.jpg","christmas_002.jpg","christmas_003.png","christmas_004.jpg","christmas_005.jpg","christmas_006.jpg"],
-  easter: ["easter_001.jpg","easter_002.jpg","easter_003.jpg","easter_004.jpg","easter_005.jpg","easter_006.jpg","easter_007.jpg"],
-  thanksgiving: ["thanksgiving_001.jpg","thanksgiving_002.jpg","thanksgiving_003.jpg","thanksgiving_004.jpg","thanksgiving_005.jpg","thanksgiving_006.jpg"],
-  lent: ["lent_001.jpg","lent_002.jpg"],
-  backtoschool: ["school_001.jpg","school_002.jpg","school_003.jpg","school_004.jpg","school_005.jpg"],
+  // christmas: [],
+  // easter: [],
+  // thanksgiving: [],
+  // lent: [],
+  // backtoschool: [],
 };
 
 function getActiveSeason(): string | null {
