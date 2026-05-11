@@ -19,6 +19,7 @@ export interface GameState {
   ownedFrames: string[];
   equippedFrame: string;
   badges: string[];
+  watchedVideos: string[];
   settingsOpen: boolean;
   editNameOpen: boolean;
   notificationsOpen: boolean;
@@ -39,6 +40,8 @@ interface GameContextType extends GameState {
   getChaptersRead: (book: string) => number[];
   markChapterRead: (book: string, chapterNum: number) => void;
   getTotalChaptersRead: () => number;
+  markVideoWatched: (book: string) => void;
+  getWatchedVideos: () => string[];
   getLevel: () => { name: string; level: number; next: number; prev: number };
   openSettings: () => void;
   closeSettings: () => void;
@@ -80,6 +83,7 @@ function loadState(): GameState {
     ownedFrames: JSON.parse(localStorage.getItem("ownedFrames") || '["Basic"]'),
     equippedFrame: localStorage.getItem("equippedFrame") || "Basic",
     badges: JSON.parse(localStorage.getItem("badges") || '["첫 시작"]'),
+    watchedVideos: JSON.parse(localStorage.getItem("watchedVideos") || '[]'),
     settingsOpen: false,
     editNameOpen: false,
     notificationsOpen: false,
@@ -348,6 +352,23 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const openNotifications = useCallback(() => setState(prev => ({ ...prev, notificationsOpen: true })), []);
   const closeNotifications = useCallback(() => setState(prev => ({ ...prev, notificationsOpen: false })), []);
 
+  const markVideoWatched = useCallback((book: string) => {
+    setState(prev => {
+      if (prev.watchedVideos.includes(book)) return prev;
+      const newWatched = [...prev.watchedVideos, book];
+      localStorage.setItem("watchedVideos", JSON.stringify(newWatched));
+      addXP(15);
+      toast.success(`🎬 Video watched! +15 XP`);
+      return { ...prev, watchedVideos: newWatched };
+    });
+  }, []);
+
+  const getWatchedVideos = useCallback((): string[] => {
+    try {
+      return JSON.parse(localStorage.getItem("watchedVideos") || '[]');
+    } catch { return []; }
+  }, []);
+
   const refreshState = useCallback(() => {
     setState(loadState());
   }, []);
@@ -367,6 +388,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     getChaptersRead,
     markChapterRead,
     getTotalChaptersRead,
+    markVideoWatched,
+    getWatchedVideos,
     getLevel,
     openSettings,
     closeSettings,

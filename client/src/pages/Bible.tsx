@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { allBibleData, otBooks, ntBooks, otCategories, ntCategories } from "@/data/allBibleData";
 import { gospelDataKo } from "@/data/gospelDataKo";
+import { ytVideos } from "@/data/ytVideos";
 import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
@@ -160,48 +161,7 @@ export default function Bible() {
 
   // Chapters view
   if (view.type === "chapters") {
-    const chapters = allBibleData[view.book] || [];
-    const meta = bookMeta[view.book];
-    const readChapters = game.getChaptersRead(view.book);
-    return (
-      <div className="px-4 pt-6 space-y-4">
-        <button onClick={() => setView({ type: "list" })} className="text-purple-300 text-sm flex items-center gap-1 mb-2 active:scale-95 transition-transform">
-          ← Back to Books
-        </button>
-        <div className="text-center mb-4">
-          <span className="text-4xl">{meta?.emoji}</span>
-          <h1 className="text-2xl font-bold text-white font-display mt-2">{view.book}</h1>
-          <p className="text-gray-400 text-sm">{meta?.desc}</p>
-          <p className="text-purple-300 text-xs mt-1">{readChapters.length}/{chapters.length} chapters read</p>
-          <div className="mt-2 h-2 bg-gray-800/80 rounded-full overflow-hidden max-w-[200px] mx-auto">
-            <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400"
-              style={{ width: `${chapters.length > 0 ? (readChapters.length / chapters.length) * 100 : 0}%` }} />
-          </div>
-        </div>
-        <div className="grid grid-cols-5 gap-2">
-          {chapters.map((ch, idx) => {
-            const isRead = readChapters.includes(ch.num);
-            const quizAvailable = hasQuiz(view.book, ch.num);
-            return (
-              <button
-                key={ch.num}
-                onClick={() => setView({ type: "reading", book: view.book, chapterIdx: idx })}
-                className={`p-2 rounded-xl text-center transition-all active:scale-95 relative ${
-                  isRead
-                    ? "bg-purple-600/30 border border-purple-500/50 text-purple-200"
-                    : "bg-gray-800/40 border border-gray-700/30 text-gray-300 hover:border-purple-500/30"
-                }`}
-              >
-                <div className="text-sm font-bold">{ch.num}</div>
-                {isRead && <div className="text-[7px] text-green-400">✓</div>}
-                {quizAvailable && <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full" />}
-              </button>
-            );
-          })}
-        </div>
-        <div className="h-4" />
-      </div>
-    );
+    return <BookDetailView book={view.book} game={game} onBack={() => setView({ type: "list" })} onReadChapter={(idx) => setView({ type: "reading", book: view.book, chapterIdx: idx })} />;
   }
 
   // Book list view
@@ -302,7 +262,7 @@ export default function Bible() {
                         {meta?.emoji}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-bold text-sm">{bookName}</h3>
+                        <h3 className="text-white font-bold text-sm">{bookName}{game.watchedVideos.includes(bookName) && <span className="ml-1 text-xs" title="Video watched">🎬</span>}</h3>
                         <p className="text-gray-400 text-[11px] mt-0.5">{chapters.length} chapters · {meta?.desc}</p>
                         <div className="mt-1.5 h-1 bg-gray-800/80 rounded-full overflow-hidden">
                           <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400" style={{ width: `${progress}%` }} />
@@ -322,7 +282,105 @@ export default function Bible() {
   );
 }
 
-// ─── Chapter Reader Component ────────────────────────────────
+// ─── Book Detail View (chapters + YouTube video) ──────────────────
+function BookDetailView({ book, game, onBack, onReadChapter }: {
+  book: string;
+  game: ReturnType<typeof useGame>;
+  onBack: () => void;
+  onReadChapter: (idx: number) => void;
+}) {
+  const [videoOpen, setVideoOpen] = useState(false);
+  const chapters = allBibleData[book] || [];
+  const meta = bookMeta[book];
+  const readChapters = game.getChaptersRead(book);
+  const ytId = ytVideos[book];
+  const hasWatched = game.watchedVideos.includes(book);
+
+  const handleVideoPlay = () => {
+    if (!hasWatched) {
+      game.markVideoWatched(book);
+    }
+  };
+
+  return (
+    <div className="px-4 pt-6 space-y-4">
+      <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 mb-2 active:scale-95 transition-transform">
+        ← Back to Books
+      </button>
+      <div className="text-center mb-4">
+        <span className="text-4xl">{meta?.emoji}</span>
+        <h1 className="text-2xl font-bold text-white font-display mt-2">
+          {book} {hasWatched && <span className="text-sm" title="Video watched">🎬</span>}
+        </h1>
+        <p className="text-gray-400 text-sm">{meta?.desc}</p>
+        <p className="text-purple-300 text-xs mt-1">{readChapters.length}/{chapters.length} chapters read</p>
+        <div className="mt-2 h-2 bg-gray-800/80 rounded-full overflow-hidden max-w-[200px] mx-auto">
+          <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400"
+            style={{ width: `${chapters.length > 0 ? (readChapters.length / chapters.length) * 100 : 0}%` }} />
+        </div>
+      </div>
+
+      {/* YouTube Introduction Video */}
+      {ytId && (
+        <div className="neon-card overflow-hidden">
+          <button
+            onClick={() => setVideoOpen(!videoOpen)}
+            className="w-full p-3 flex items-center justify-between active:scale-[0.99] transition-transform"
+          >
+            <span className="text-white text-sm font-bold flex items-center gap-2">
+              🎬 Introduction Video
+              {hasWatched && <span className="text-green-400 text-[11px] font-normal">✓ Watched</span>}
+            </span>
+            <span className={`text-purple-400 text-xs transition-transform duration-300 ${videoOpen ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </button>
+          {videoOpen && (
+            <div className="px-3 pb-3">
+              <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full rounded-xl"
+                  src={`https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1&playsinline=1`}
+                  title={`${book} Introduction Video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  onLoad={handleVideoPlay}
+                />
+              </div>
+              <p className="text-gray-400 text-[10px] mt-2 text-center">BibleProject Overview · +15 XP for watching</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Chapter Grid */}
+      <div className="grid grid-cols-5 gap-2">
+        {chapters.map((ch, idx) => {
+          const isRead = readChapters.includes(ch.num);
+          const quizAvailable = hasQuiz(book, ch.num);
+          return (
+            <button
+              key={ch.num}
+              onClick={() => onReadChapter(idx)}
+              className={`p-2 rounded-xl text-center transition-all active:scale-95 relative ${
+                isRead
+                  ? "bg-purple-600/30 border border-purple-500/50 text-purple-200"
+                  : "bg-gray-800/40 border border-gray-700/30 text-gray-300 hover:border-purple-500/30"
+              }`}
+            >
+              <div className="text-sm font-bold">{ch.num}</div>
+              {isRead && <div className="text-[7px] text-green-400">✓</div>}
+              {quizAvailable && <div className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full" />}
+            </button>
+          );
+        })}
+      </div>
+      <div className="h-4" />
+    </div>
+  );
+}
+
+// ─── Chapter Reader Component ────────────────────────────────────────
 function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, onFinishChapter, game }: {
   book: string;
   chapterIdx: number;

@@ -130,7 +130,21 @@ export function runMigration() {
       migrated = true;
     }
 
-    // 6. Preserve important old keys by copying them (don't delete originals)
+    // 6. Migrate watchedVideos from old app state
+    if (teensBibleRaw) {
+      try {
+        const state = JSON.parse(teensBibleRaw);
+        if (state.watchedVideos && state.watchedVideos.length > 0 && !localStorage.getItem("watchedVideos")) {
+          localStorage.setItem("watchedVideos", JSON.stringify(state.watchedVideos));
+          console.log("[Migration] Migrated watchedVideos:", state.watchedVideos.length);
+          migrated = true;
+        }
+      } catch (e) {
+        console.warn("[Migration] Failed to migrate watchedVideos:", e);
+      }
+    }
+
+    // 7. Preserve important old keys by copying them (don't delete originals)
     // These keys are preserved as-is for future feature implementation:
     // - bibleBookmarks
     // - bibleHighlights
@@ -139,7 +153,7 @@ export function runMigration() {
     // - weeklyReadLog
     // No action needed - they stay in localStorage
 
-    // 7. Migrate onboarding state: if old app was used, skip onboarding
+    // 8. Migrate onboarding state: if old app was used, skip onboarding
     const oldOnboarding = localStorage.getItem("onboardingDone") || 
                           localStorage.getItem("enjoyGuideDone") ||
                           localStorage.getItem("postInstallTourDone");
