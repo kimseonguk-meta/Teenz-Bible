@@ -22,6 +22,7 @@ export interface StoreItem {
 }
 
 // ============ THEMES ============
+// Each theme defines full OKLCH CSS variables that override :root
 export const THEMES: StoreItem[] = [
   {
     id: "theme_twilight",
@@ -31,11 +32,16 @@ export const THEMES: StoreItem[] = [
     emoji: "🌙",
     description: "Default dark purple theme",
     cssVars: {
-      "--accent-primary": "#a855f7",
-      "--accent-secondary": "#6366f1",
-      "--bg-card": "rgba(88, 28, 135, 0.15)",
-      "--border-glow": "rgba(168, 85, 247, 0.4)",
-      "--neon-color": "#a855f7",
+      "--primary": "oklch(0.55 0.25 285)",
+      "--accent": "oklch(0.55 0.25 285)",
+      "--ring": "oklch(0.6 0.25 285)",
+      "--border": "oklch(0.3 0.08 285)",
+      "--input": "oklch(0.18 0.05 285)",
+      "--card": "oklch(0.13 0.04 285)",
+      "--secondary": "oklch(0.18 0.04 285)",
+      "--muted": "oklch(0.2 0.03 285)",
+      "--neon-hue": "285",
+      "--neon-rgb": "139, 92, 246",
     },
   },
   {
@@ -46,11 +52,16 @@ export const THEMES: StoreItem[] = [
     emoji: "🌊",
     description: "Calm ocean vibes",
     cssVars: {
-      "--accent-primary": "#06b6d4",
-      "--accent-secondary": "#0891b2",
-      "--bg-card": "rgba(6, 182, 212, 0.1)",
-      "--border-glow": "rgba(6, 182, 212, 0.4)",
-      "--neon-color": "#06b6d4",
+      "--primary": "oklch(0.6 0.15 195)",
+      "--accent": "oklch(0.6 0.15 195)",
+      "--ring": "oklch(0.65 0.15 195)",
+      "--border": "oklch(0.3 0.06 195)",
+      "--input": "oklch(0.18 0.04 195)",
+      "--card": "oklch(0.13 0.03 195)",
+      "--secondary": "oklch(0.18 0.03 195)",
+      "--muted": "oklch(0.2 0.02 195)",
+      "--neon-hue": "195",
+      "--neon-rgb": "6, 182, 212",
     },
   },
   {
@@ -61,11 +72,16 @@ export const THEMES: StoreItem[] = [
     emoji: "🌲",
     description: "Peaceful forest atmosphere",
     cssVars: {
-      "--accent-primary": "#22c55e",
-      "--accent-secondary": "#16a34a",
-      "--bg-card": "rgba(34, 197, 94, 0.1)",
-      "--border-glow": "rgba(34, 197, 94, 0.4)",
-      "--neon-color": "#22c55e",
+      "--primary": "oklch(0.6 0.2 145)",
+      "--accent": "oklch(0.6 0.2 145)",
+      "--ring": "oklch(0.65 0.2 145)",
+      "--border": "oklch(0.3 0.06 145)",
+      "--input": "oklch(0.18 0.04 145)",
+      "--card": "oklch(0.13 0.03 145)",
+      "--secondary": "oklch(0.18 0.03 145)",
+      "--muted": "oklch(0.2 0.02 145)",
+      "--neon-hue": "145",
+      "--neon-rgb": "34, 197, 94",
     },
   },
   {
@@ -76,11 +92,16 @@ export const THEMES: StoreItem[] = [
     emoji: "🌅",
     description: "Warm sunset glow",
     cssVars: {
-      "--accent-primary": "#f97316",
-      "--accent-secondary": "#ea580c",
-      "--bg-card": "rgba(249, 115, 22, 0.1)",
-      "--border-glow": "rgba(249, 115, 22, 0.4)",
-      "--neon-color": "#f97316",
+      "--primary": "oklch(0.65 0.2 45)",
+      "--accent": "oklch(0.65 0.2 45)",
+      "--ring": "oklch(0.7 0.2 45)",
+      "--border": "oklch(0.3 0.06 45)",
+      "--input": "oklch(0.18 0.04 45)",
+      "--card": "oklch(0.13 0.03 45)",
+      "--secondary": "oklch(0.18 0.03 45)",
+      "--muted": "oklch(0.2 0.02 45)",
+      "--neon-hue": "45",
+      "--neon-rgb": "249, 115, 22",
     },
   },
   {
@@ -91,11 +112,16 @@ export const THEMES: StoreItem[] = [
     emoji: "🌌",
     description: "Cosmic pink energy",
     cssVars: {
-      "--accent-primary": "#ec4899",
-      "--accent-secondary": "#db2777",
-      "--bg-card": "rgba(236, 72, 153, 0.1)",
-      "--border-glow": "rgba(236, 72, 153, 0.4)",
-      "--neon-color": "#ec4899",
+      "--primary": "oklch(0.6 0.22 330)",
+      "--accent": "oklch(0.6 0.22 330)",
+      "--ring": "oklch(0.65 0.22 330)",
+      "--border": "oklch(0.3 0.07 330)",
+      "--input": "oklch(0.18 0.04 330)",
+      "--card": "oklch(0.13 0.03 330)",
+      "--secondary": "oklch(0.18 0.03 330)",
+      "--muted": "oklch(0.2 0.02 330)",
+      "--neon-hue": "330",
+      "--neon-rgb": "236, 72, 153",
     },
   },
 ];
@@ -319,6 +345,8 @@ export function getEquipped(): Equipped {
 
 export function saveEquipped(eq: Equipped) {
   localStorage.setItem(EQUIPPED_KEY, JSON.stringify(eq));
+  // Apply theme immediately when equipped theme changes
+  applyTheme(eq.theme);
   // Dispatch custom event so other components can react
   window.dispatchEvent(new CustomEvent("equipped-changed", { detail: eq }));
 }
@@ -409,6 +437,34 @@ export function openMysteryBox(): { success: boolean; reward?: StoreItem | { typ
   saveInventory(inv);
 
   return { success: true, reward: randomItem, message: `You won ${randomItem.name}!` };
+}
+
+// ============ THEME APPLICATION ============
+export function applyTheme(themeId?: string) {
+  const equipped = getEquipped();
+  const activeThemeId = themeId || equipped.theme;
+  const theme = THEMES.find(t => t.id === activeThemeId);
+  if (!theme?.cssVars) return;
+
+  const root = document.documentElement;
+  
+  // Apply CSS variables from theme
+  Object.entries(theme.cssVars).forEach(([key, value]) => {
+    root.style.setProperty(key, value);
+  });
+
+  // Update neon-card and cosmic-bg colors dynamically
+  const neonRgb = theme.cssVars["--neon-rgb"] || "139, 92, 246";
+  root.style.setProperty("--neon-rgb", neonRgb);
+
+  // Store the active theme for persistence
+  localStorage.setItem("teensBibleActiveTheme", activeThemeId);
+}
+
+// Initialize theme on app load
+export function initTheme() {
+  const equipped = getEquipped();
+  applyTheme(equipped.theme);
 }
 
 // Gems helpers

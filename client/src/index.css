@@ -51,6 +51,7 @@
 
 :root {
   --radius: 0.75rem;
+  --neon-rgb: 139, 92, 246;
   --primary: oklch(0.55 0.25 285);
   --primary-foreground: oklch(0.95 0.01 285);
   --background: oklch(0.08 0.03 285);
@@ -137,13 +138,13 @@
   }
 }
 
-/* Neon Cosmic Custom Utilities */
+/* Neon Cosmic Custom Utilities - uses --neon-rgb CSS variable for theme support */
 .neon-card {
   background: rgba(15, 5, 40, 0.75);
   backdrop-filter: blur(12px);
-  border: 2px solid rgba(139, 92, 246, 0.6);
+  border: 2px solid rgba(var(--neon-rgb, 139, 92, 246), 0.6);
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1), inset 0 1px 0 rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 20px rgba(var(--neon-rgb, 139, 92, 246), 0.3), 0 0 40px rgba(var(--neon-rgb, 139, 92, 246), 0.1), inset 0 1px 0 rgba(var(--neon-rgb, 139, 92, 246), 0.15);
 }
 
 .neon-card-gold {
@@ -155,7 +156,7 @@
 }
 
 .neon-glow-purple {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 15px rgba(var(--neon-rgb, 139, 92, 246), 0.4), 0 0 30px rgba(var(--neon-rgb, 139, 92, 246), 0.15);
 }
 
 .neon-glow-gold {
@@ -163,7 +164,7 @@
 }
 
 .neon-text-purple {
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.2);
+  text-shadow: 0 0 10px rgba(var(--neon-rgb, 139, 92, 246), 0.5), 0 0 20px rgba(var(--neon-rgb, 139, 92, 246), 0.2);
 }
 
 .cosmic-bg {
@@ -177,14 +178,14 @@
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   background-image:
-    radial-gradient(2px 2px at 10% 15%, rgba(139,92,246,0.5), transparent),
-    radial-gradient(2px 2px at 25% 45%, rgba(168,85,247,0.3), transparent),
-    radial-gradient(3px 3px at 45% 8%, rgba(192,132,252,0.4), transparent),
-    radial-gradient(2px 2px at 65% 55%, rgba(139,92,246,0.25), transparent),
-    radial-gradient(2px 2px at 85% 25%, rgba(168,85,247,0.4), transparent),
-    radial-gradient(3px 3px at 15% 75%, rgba(192,132,252,0.3), transparent),
-    radial-gradient(2px 2px at 55% 85%, rgba(139,92,246,0.2), transparent),
-    radial-gradient(2px 2px at 75% 65%, rgba(168,85,247,0.3), transparent);
+    radial-gradient(2px 2px at 10% 15%, rgba(var(--neon-rgb, 139, 92, 246), 0.5), transparent),
+    radial-gradient(2px 2px at 25% 45%, rgba(var(--neon-rgb, 139, 92, 246), 0.3), transparent),
+    radial-gradient(3px 3px at 45% 8%, rgba(var(--neon-rgb, 139, 92, 246), 0.4), transparent),
+    radial-gradient(2px 2px at 65% 55%, rgba(var(--neon-rgb, 139, 92, 246), 0.25), transparent),
+    radial-gradient(2px 2px at 85% 25%, rgba(var(--neon-rgb, 139, 92, 246), 0.4), transparent),
+    radial-gradient(3px 3px at 15% 75%, rgba(var(--neon-rgb, 139, 92, 246), 0.3), transparent),
+    radial-gradient(2px 2px at 55% 85%, rgba(var(--neon-rgb, 139, 92, 246), 0.2), transparent),
+    radial-gradient(2px 2px at 75% 65%, rgba(var(--neon-rgb, 139, 92, 246), 0.3), transparent);
   pointer-events: none;
   z-index: 0;
   animation: floatStars 30s linear infinite alternate;
@@ -223,7 +224,7 @@
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(var(--neon-rgb, 139, 92, 246), 0.4); border-radius: 2px; }
 
 /* Mobile app feel */
 @media (max-width: 480px) {

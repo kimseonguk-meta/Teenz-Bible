@@ -12,6 +12,7 @@ import {
   unequipPet,
   ownsItem,
   openMysteryBox,
+  applyTheme,
   type StoreItem,
   type ItemCategory,
 } from "@/data/storeItems";
@@ -70,6 +71,10 @@ export default function Store() {
 
   const handleEquip = useCallback((item: StoreItem) => {
     equipItem(item.id, item.category);
+    // If it's a theme, apply it immediately to the whole app
+    if (item.category === "themes") {
+      applyTheme(item.id);
+    }
     setEquipped(getEquipped());
     toast.success(`Equipped ${item.name}! ✨`);
   }, []);

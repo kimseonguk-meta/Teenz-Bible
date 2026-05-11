@@ -8,6 +8,7 @@ import { GameProvider } from "./contexts/GameContext";
 import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
 import Onboarding from "./components/Onboarding";
+import { initTheme } from "./data/storeItems";
 
 // Lazy load heavy pages for code splitting
 const Bible = lazy(() => import("./pages/Bible"));
@@ -51,6 +52,8 @@ function App() {
     if (!profile) {
       setShowOnboarding(true);
     }
+    // Apply saved theme on app load
+    initTheme();
   }, []);
 
   const handleOnboardingComplete = () => {
