@@ -432,10 +432,55 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [isPaused, setIsPaused] = useState(false);
   const [speechRate, setSpeechRate] = useState(parseFloat(localStorage.getItem("ttsRate") || "1"));
   const [ttsStatus, setTtsStatus] = useState<string>('');
+  const [ttsProgress, setTtsProgress] = useState(0); // 0-100 progress
+  const [ttsChunkInfo, setTtsChunkInfo] = useState(''); // e.g. "2 / 5"
+  const [autoAdvance, setAutoAdvance] = useState(localStorage.getItem('ttsAutoAdvance') !== 'false');
   const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
   const ttsPlayingRef = useRef(false);
   const ttsGenerationRef = useRef(0);
   const ttsAbortRef = useRef<(() => void) | null>(null);
+  const wakeLockRef = useRef<any>(null);
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Wake Lock API - keep screen on during audio playback
+  const requestWakeLock = async () => {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
+        console.log('[TTS] Wake Lock acquired');
+      }
+    } catch (e) { console.log('[TTS] Wake Lock failed:', e); }
+  };
+  const releaseWakeLock = () => {
+    if (wakeLockRef.current) {
+      wakeLockRef.current.release().catch(() => {});
+      wakeLockRef.current = null;
+      console.log('[TTS] Wake Lock released');
+    }
+  };
+
+  // Track audio progress via timeupdate
+  const startProgressTracking = (audio: HTMLAudioElement, chunkIdx: number, totalChunks: number) => {
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    setTtsChunkInfo(`${chunkIdx + 1} / ${totalChunks}`);
+    progressIntervalRef.current = setInterval(() => {
+      if (audio.duration && audio.duration > 0) {
+        const chunkProgress = audio.currentTime / audio.duration;
+        const overallProgress = ((chunkIdx + chunkProgress) / totalChunks) * 100;
+        setTtsProgress(Math.min(100, overallProgress));
+      }
+    }, 200);
+  };
+  const stopProgressTracking = () => {
+    if (progressIntervalRef.current) { clearInterval(progressIntervalRef.current); progressIntervalRef.current = null; }
+    setTtsProgress(0);
+    setTtsChunkInfo('');
+  };
+
+  // Persist auto-advance setting
+  useEffect(() => {
+    localStorage.setItem('ttsAutoAdvance', String(autoAdvance));
+  }, [autoAdvance]);
 
   // Split text into chunks for Cloud TTS (max 4500 chars per request)
   const splitTextToChunks = (text: string, maxLen: number) => {
@@ -476,7 +521,11 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     ttsPlayingRef.current = true;
     setIsSpeaking(true);
     setIsPaused(false);
+    setTtsProgress(0);
     setTtsStatus('⏳ Loading HD voice...');
+
+    // Acquire Wake Lock to keep screen on
+    await requestWakeLock();
 
     // Unlock audio on mobile
     try { const ctx = new (window.AudioContext || (window as any).webkitAudioContext)(); ctx.resume().then(() => ctx.close()); } catch(e) {}
@@ -500,7 +549,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
         const audio = new Audio('data:audio/mp3;base64,' + data.audioContent);
         audio.playbackRate = speechRate;
         ttsAudioRef.current = audio;
-        setTtsStatus('▶ HD Playing...');
+        setTtsStatus(`▶ HD Playing... (${i + 1}/${chunks.length})`);
+        startProgressTracking(audio, i, chunks.length);
 
         await new Promise<void>((resolve, reject) => {
           ttsAbortRef.current = () => { ttsAbortRef.current = null; resolve(); };
@@ -519,11 +569,26 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     if (ttsGenerationRef.current === myGen) {
       ttsPlayingRef.current = false;
       ttsAudioRef.current = null;
+      stopProgressTracking();
+      releaseWakeLock();
       setIsSpeaking(false);
       setIsPaused(false);
+      setTtsProgress(100);
       setTtsStatus('');
+
+      // Auto-advance to next chapter
+      if (autoAdvance && chapterIdx < chapters.length - 1) {
+        setTtsStatus('⏭ Next chapter in 3s...');
+        setIsSpeaking(true); // keep UI visible briefly
+        setTimeout(() => {
+          setIsSpeaking(false);
+          setTtsProgress(0);
+          setTtsStatus('');
+          onNavigate(chapterIdx + 1);
+        }, 3000);
+      }
     }
-  }, [lang, speechRate, paragraphs]);
+  }, [lang, speechRate, paragraphs, autoAdvance, chapterIdx, chapters.length]);
 
   const pauseSpeech = useCallback(() => {
     if (ttsAudioRef.current) {
@@ -558,8 +623,11 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       ttsAudioRef.current = null;
     }
     if (window.speechSynthesis) window.speechSynthesis.cancel();
+    stopProgressTracking();
+    releaseWakeLock();
     setIsSpeaking(false);
     setTtsStatus('');
+    setTtsProgress(0);
   }, []);
 
   // Speed change without restarting - just update playbackRate on current audio
@@ -572,7 +640,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
   // Stop TTS when chapter changes
   useEffect(() => {
-    return () => { stopSpeech(); };
+    return () => {
+      stopSpeech();
+      releaseWakeLock();
+    };
   }, [book, chapterIdx]);
 
   // Persist speed setting
@@ -629,23 +700,47 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
       {/* TTS Controls */}
       {isSpeaking && (
-        <div className="flex items-center justify-between mb-3 p-2.5 rounded-xl bg-purple-900/40 border border-purple-500/20">
-          <div className="flex items-center gap-1">
-            <span className="text-cyan-400 text-[10px] font-medium">{ttsStatus || '🔊 HD Voice'}</span>
+        <div className="mb-3 rounded-xl bg-purple-900/40 border border-purple-500/20 overflow-hidden">
+          {/* Progress Bar */}
+          <div className="w-full h-1.5 bg-purple-950/60">
+            <div
+              className="h-full bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-300 ease-linear"
+              style={{ width: `${ttsProgress}%` }}
+            />
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-purple-300 text-[10px]">Speed:</span>
-            {[0.75, 1, 1.25, 1.5].map(rate => (
-              <button key={rate} onClick={() => handleSpeedChange(rate)}
-                className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all ${
-                  speechRate === rate ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'
+          <div className="p-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <span className="text-cyan-400 text-[10px] font-medium">{ttsStatus || '🔊 HD Voice'}</span>
+                {ttsChunkInfo && <span className="text-purple-400 text-[9px]">({ttsChunkInfo})</span>}
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-purple-300 text-[10px]">Speed:</span>
+                {[0.75, 1, 1.25, 1.5].map(rate => (
+                  <button key={rate} onClick={() => handleSpeedChange(rate)}
+                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all ${
+                      speechRate === rate ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'
+                    }`}>
+                    {rate}x
+                  </button>
+                ))}
+                <button onClick={stopSpeech} className="ml-1 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50">
+                  ⏹
+                </button>
+              </div>
+            </div>
+            {/* Auto-advance toggle */}
+            <div className="flex items-center justify-between mt-1.5 pt-1.5 border-t border-purple-500/10">
+              <span className="text-purple-300 text-[10px]">⏭ Auto next chapter</span>
+              <button onClick={() => setAutoAdvance(!autoAdvance)}
+                className={`w-8 h-4 rounded-full transition-all relative ${
+                  autoAdvance ? 'bg-cyan-500' : 'bg-gray-600'
                 }`}>
-                {rate}x
+                <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${
+                  autoAdvance ? 'left-4' : 'left-0.5'
+                }`} />
               </button>
-            ))}
-            <button onClick={stopSpeech} className="ml-1 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50">
-              ⏹ Stop
-            </button>
+            </div>
           </div>
         </div>
       )}
