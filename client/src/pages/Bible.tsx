@@ -423,33 +423,159 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     if (koChapter) paragraphs = koChapter.paragraphs;
   }
 
+  // === HD Cloud TTS via Cloudflare Workers Proxy ===
+  const TTS_PROXY_URL = 'https://teens-bible-tts.kimseonguk777.workers.dev';
+  const TTS_VOICE_EN = 'en-US-Neural2-J'; // Deep natural male voice
+  const TTS_VOICE_KO = 'ko-KR-Neural2-C'; // Korean male voice
+
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [speechRate, setSpeechRate] = useState(parseFloat(localStorage.getItem("ttsRate") || "1"));
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const [ttsStatus, setTtsStatus] = useState<string>('');
+  const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
+  const ttsPlayingRef = useRef(false);
+  const ttsGenerationRef = useRef(0);
+  const ttsAbortRef = useRef<(() => void) | null>(null);
 
-  const stopSpeech = useCallback(() => {
-    window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-  }, []);
+  // Split text into chunks for Cloud TTS (max 4500 chars per request)
+  const splitTextToChunks = (text: string, maxLen: number) => {
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+    const chunks: string[] = [];
+    let current = '';
+    for (const s of sentences) {
+      if ((current + s).length > maxLen) {
+        if (current) chunks.push(current.trim());
+        current = s;
+      } else {
+        current += s;
+      }
+    }
+    if (current.trim()) chunks.push(current.trim());
+    return chunks;
+  };
 
-  const startSpeech = useCallback(() => {
+  // Fallback to browser Web Speech API if cloud TTS fails
+  const fallbackWebSpeech = (text: string) => {
+    if (!window.speechSynthesis) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = speechRate;
+    u.lang = lang === 'ko' ? 'ko-KR' : 'en-US';
+    u.onend = () => { setIsSpeaking(false); setTtsStatus(''); };
+    u.onerror = () => { setIsSpeaking(false); setTtsStatus(''); };
+    window.speechSynthesis.speak(u);
+    setTtsStatus('▶ Playing (basic voice)');
+  };
+
+  const startSpeech = useCallback(async () => {
     stopSpeech();
     const text = paragraphs.filter((p: string) => !p.startsWith("§")).join(". ");
     if (!text) return;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === "ko" ? "ko-KR" : "en-US";
-    utterance.rate = speechRate;
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-    utteranceRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
-  }, [lang, speechRate, book, chapterIdx]);
 
+    ttsGenerationRef.current++;
+    const myGen = ttsGenerationRef.current;
+    ttsPlayingRef.current = true;
+    setIsSpeaking(true);
+    setIsPaused(false);
+    setTtsStatus('⏳ Loading HD voice...');
+
+    // Unlock audio on mobile
+    try { const ctx = new (window.AudioContext || (window as any).webkitAudioContext)(); ctx.resume().then(() => ctx.close()); } catch(e) {}
+
+    const chunks = splitTextToChunks(text, 4500);
+    const voice = lang === 'ko' ? TTS_VOICE_KO : TTS_VOICE_EN;
+
+    for (let i = 0; i < chunks.length; i++) {
+      if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
+      try {
+        const resp = await fetch(TTS_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: chunks[i], voice, speed: speechRate, pitch: -1.0 })
+        });
+        if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
+        if (!resp.ok) { fallbackWebSpeech(text); return; }
+        const data = await resp.json();
+        if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
+
+        const audio = new Audio('data:audio/mp3;base64,' + data.audioContent);
+        audio.playbackRate = speechRate;
+        ttsAudioRef.current = audio;
+        setTtsStatus('▶ HD Playing...');
+
+        await new Promise<void>((resolve, reject) => {
+          ttsAbortRef.current = () => { ttsAbortRef.current = null; resolve(); };
+          audio.onended = () => { ttsAbortRef.current = null; resolve(); };
+          audio.onerror = (e) => { ttsAbortRef.current = null; reject(e); };
+          audio.play().catch(reject);
+        });
+      } catch (e) {
+        console.error('TTS chunk error:', e);
+        if (ttsGenerationRef.current !== myGen) break;
+        if (i === 0) { fallbackWebSpeech(text); return; }
+        break;
+      }
+    }
+
+    if (ttsGenerationRef.current === myGen) {
+      ttsPlayingRef.current = false;
+      ttsAudioRef.current = null;
+      setIsSpeaking(false);
+      setIsPaused(false);
+      setTtsStatus('');
+    }
+  }, [lang, speechRate, paragraphs]);
+
+  const pauseSpeech = useCallback(() => {
+    if (ttsAudioRef.current) {
+      if (isPaused) {
+        ttsAudioRef.current.play();
+        setIsPaused(false);
+        setTtsStatus('▶ HD Playing...');
+      } else {
+        ttsAudioRef.current.pause();
+        setIsPaused(true);
+        setTtsStatus('⏸ Paused');
+      }
+    } else if (window.speechSynthesis) {
+      // Fallback Web Speech pause/resume
+      if (isPaused) {
+        window.speechSynthesis.resume();
+        setIsPaused(false);
+      } else {
+        window.speechSynthesis.pause();
+        setIsPaused(true);
+      }
+    }
+  }, [isPaused]);
+
+  const stopSpeech = useCallback(() => {
+    ttsPlayingRef.current = false;
+    setIsPaused(false);
+    if (ttsAbortRef.current) { ttsAbortRef.current(); ttsAbortRef.current = null; }
+    if (ttsAudioRef.current) {
+      ttsAudioRef.current.pause();
+      ttsAudioRef.current.currentTime = 0;
+      ttsAudioRef.current = null;
+    }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+    setTtsStatus('');
+  }, []);
+
+  // Speed change without restarting - just update playbackRate on current audio
+  const handleSpeedChange = useCallback((rate: number) => {
+    setSpeechRate(rate);
+    if (ttsAudioRef.current) {
+      ttsAudioRef.current.playbackRate = rate;
+    }
+  }, []);
+
+  // Stop TTS when chapter changes
   useEffect(() => {
-    return () => { window.speechSynthesis.cancel(); };
+    return () => { stopSpeech(); };
   }, [book, chapterIdx]);
 
+  // Persist speed setting
   useEffect(() => {
     localStorage.setItem("ttsRate", String(speechRate));
   }, [speechRate]);
@@ -491,30 +617,36 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
           <button onClick={() => setFontSize(f => Math.max(12, f - 2))} className="w-7 h-7 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-white active:scale-95">A-</button>
           <button onClick={() => setFontSize(f => Math.min(24, f + 2))} className="w-7 h-7 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-white active:scale-95">A+</button>
-          <button onClick={isSpeaking ? stopSpeech : startSpeech}
-            className={`w-7 h-7 rounded-lg border text-xs active:scale-95 transition-all ${
-              isSpeaking ? 'bg-purple-600 border-purple-400 text-white animate-pulse' : 'bg-purple-900/50 border-purple-500/30 text-white'
+          <button onClick={isSpeaking ? (isPaused ? pauseSpeech : pauseSpeech) : startSpeech}
+            className={`px-2.5 h-7 rounded-lg border text-xs font-medium active:scale-95 transition-all flex items-center gap-1 ${
+              isSpeaking ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-400 text-white' : 'bg-purple-900/50 border-purple-500/30 text-purple-200 hover:bg-purple-800/50'
             }`}>
-            {isSpeaking ? '⏹' : '🔊'}
+            {isSpeaking ? (isPaused ? '▶' : '⏸') : '🎧'}
+            <span className="text-[10px]">{isSpeaking ? (isPaused ? 'Resume' : 'Pause') : 'Listen'}</span>
           </button>
         </div>
       </div>
 
       {/* TTS Controls */}
       {isSpeaking && (
-        <div className="flex items-center justify-center gap-3 mb-3 p-2 rounded-xl bg-purple-900/30 border border-purple-500/20">
-          <span className="text-purple-300 text-xs">Speed:</span>
-          {[0.75, 1, 1.25, 1.5].map(rate => (
-            <button key={rate} onClick={() => { setSpeechRate(rate); if (isSpeaking) { stopSpeech(); setTimeout(() => startSpeech(), 100); } }}
-              className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${
-                speechRate === rate ? 'bg-purple-600 text-white' : 'text-gray-400'
-              }`}>
-              {rate}x
+        <div className="flex items-center justify-between mb-3 p-2.5 rounded-xl bg-purple-900/40 border border-purple-500/20">
+          <div className="flex items-center gap-1">
+            <span className="text-cyan-400 text-[10px] font-medium">{ttsStatus || '🔊 HD Voice'}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-purple-300 text-[10px]">Speed:</span>
+            {[0.75, 1, 1.25, 1.5].map(rate => (
+              <button key={rate} onClick={() => handleSpeedChange(rate)}
+                className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all ${
+                  speechRate === rate ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'
+                }`}>
+                {rate}x
+              </button>
+            ))}
+            <button onClick={stopSpeech} className="ml-1 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50">
+              ⏹ Stop
             </button>
-          ))}
-          <button onClick={stopSpeech} className="ml-2 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold">
-            Stop
-          </button>
+          </div>
         </div>
       )}
 
