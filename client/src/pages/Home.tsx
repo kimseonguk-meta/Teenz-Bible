@@ -137,6 +137,9 @@ export default function Home() {
 
   const memeUrl = getDailyMemeUrl();
 
+  // Meme fullscreen viewer state
+  const [memeFullscreen, setMemeFullscreen] = useState(false);
+
   // Meme reactions state
   const [memeLoaded, setMemeLoaded] = useState(false);
   const [reactions, setReactions] = useState<Record<string, number>>(() => {
@@ -258,7 +261,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-2">
           <span className="text-white font-bold text-sm">😂 BIBLE MEME OF THE DAY</span>
         </div>
-        <div className="rounded-xl overflow-hidden border border-purple-500/20 relative">
+        <div className="rounded-xl overflow-hidden border border-purple-500/20 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
           {!memeLoaded && <div className="w-full h-64 bg-purple-900/30 animate-pulse rounded-xl" />}
           <img
             src={memeUrl}
@@ -267,6 +270,7 @@ export default function Home() {
             loading="lazy"
             onLoad={() => setMemeLoaded(true)}
           />
+          {memeLoaded && <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 text-[10px] text-gray-300 pointer-events-none"><span>🔍</span> Tap to view</div>}
         </div>
         <div className="flex justify-center gap-3 mt-3">
           {["😂", "🔥", "💀", "🙏"].map(emoji => (
@@ -277,6 +281,70 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* Meme Fullscreen Viewer */}
+      {memeFullscreen && (
+        <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center" onClick={() => setMemeFullscreen(false)}>
+          {/* Close button */}
+          <button onClick={() => setMemeFullscreen(false)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white text-xl hover:bg-white/20 transition-all">
+            ✕
+          </button>
+          {/* Meme image */}
+          <div className="flex-1 flex items-center justify-center w-full px-4 py-16" onClick={(e) => e.stopPropagation()}>
+            <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-full object-contain rounded-lg" />
+          </div>
+          {/* Action buttons */}
+          <div className="absolute bottom-0 left-0 right-0 pb-8 pt-4 bg-gradient-to-t from-black/80 to-transparent" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-center gap-4 px-6">
+              <button
+                onClick={async () => {
+                  try {
+                    if (navigator.share) {
+                      const response = await fetch(memeUrl);
+                      const blob = await response.blob();
+                      const file = new File([blob], 'bible-meme.jpg', { type: blob.type });
+                      await navigator.share({ title: '😂 Bible Meme of the Day', text: 'Check out this Bible meme from Teenz Bible!', files: [file] });
+                      toast.success('Shared successfully!');
+                    } else {
+                      await navigator.clipboard.writeText(memeUrl);
+                      toast.success('Link copied to clipboard!');
+                    }
+                  } catch (err: any) {
+                    if (err?.name !== 'AbortError') {
+                      try { await navigator.clipboard.writeText(memeUrl); toast.success('Link copied to clipboard!'); } catch { toast.error('Could not share'); }
+                    }
+                  }
+                }}
+                className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition-all active:scale-95"
+              >
+                <span>📤</span> Share
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const response = await fetch(memeUrl);
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `bible-meme-${new Date().toISOString().split('T')[0]}.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    toast.success('Meme saved! 📥');
+                  } catch {
+                    toast.error('Could not save meme');
+                  }
+                }}
+                className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold text-sm border border-white/20 transition-all active:scale-95"
+              >
+                <span>💾</span> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-3">
