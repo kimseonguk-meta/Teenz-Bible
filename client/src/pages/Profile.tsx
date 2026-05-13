@@ -195,7 +195,7 @@ export default function Profile() {
             ⭐ Lv. {level.level} {level.name}
           </span>
           <span className="px-2 py-1 rounded-full bg-teal-600/20 border border-teal-500/30 text-teal-300 text-xs font-medium">
-            {groupCode}
+            {groupCode === "INDIVIDUAL" || groupCode === "GLOBAL" ? "Independent" : groupCode}
           </span>
         </div>
       </div>

@@ -79,6 +79,7 @@
     "autoprefixer": "^10.4.20",
     "esbuild": "^0.25.0",
     "firebase-admin": "^13.8.0",
+    "firebase-tools": "^15.17.0",
     "pnpm": "^10.15.1",
     "postcss": "^8.4.47",
     "prettier": "^3.6.2",

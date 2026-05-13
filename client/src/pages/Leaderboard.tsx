@@ -39,6 +39,7 @@ export default function Leaderboard() {
   const [error, setError] = useState<string | null>(null);
   const [currentUid, setCurrentUid] = useState<string | null>(null);
   const groupCode = getCurrentGroupCode();
+  const isNasumMember = groupCode !== "INDIVIDUAL" && groupCode !== "GLOBAL";
 
   // Auth setup
   useEffect(() => {
@@ -52,6 +53,13 @@ export default function Leaderboard() {
     });
     return () => unsub();
   }, []);
+
+  // If not a Nasum member, force scope to "all"
+  useEffect(() => {
+    if (!isNasumMember && scope === "myclass") {
+      setScope("all");
+    }
+  }, [isNasumMember, scope]);
 
   // Load data
   const loadData = useCallback(async () => {
@@ -81,6 +89,25 @@ export default function Leaderboard() {
 
   const top3 = members.slice(0, 3);
   const rest = members.slice(3);
+
+  // Helper to display group badge - hide "INDIVIDUAL" and show friendly label
+  const renderGroupBadge = (code: string | undefined) => {
+    if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
+    return (
+      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400 mt-0.5">
+        {code}
+      </span>
+    );
+  };
+
+  const renderGroupBadgeInline = (code: string | undefined) => {
+    if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
+    return (
+      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0">
+        {code}
+      </span>
+    );
+  };
 
   return (
     <div className="px-4 pt-6 space-y-4 pb-4">
@@ -123,18 +150,20 @@ export default function Leaderboard() {
         ))}
       </div>
 
-      {/* Scope Filter */}
+      {/* Scope Filter - only show My Class for Nasum members */}
       <div className="flex gap-2 justify-center">
-        <button
-          onClick={() => setScope("myclass")}
-          className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-            scope === "myclass"
-              ? "bg-teal-500 text-white shadow-[0_0_10px_rgba(78,205,196,0.4)]"
-              : "bg-transparent border border-purple-500/30 text-gray-400"
-          }`}
-        >
-          My Class ({groupCode})
-        </button>
+        {isNasumMember && (
+          <button
+            onClick={() => setScope("myclass")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+              scope === "myclass"
+                ? "bg-teal-500 text-white shadow-[0_0_10px_rgba(78,205,196,0.4)]"
+                : "bg-transparent border border-purple-500/30 text-gray-400"
+            }`}
+          >
+            My Class ({groupCode})
+          </button>
+        )}
         <button
           onClick={() => setScope("all")}
           className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
@@ -143,7 +172,7 @@ export default function Leaderboard() {
               : "bg-transparent border border-purple-500/30 text-gray-400"
           }`}
         >
-          All Classes
+          Everyone
         </button>
       </div>
 
@@ -182,7 +211,7 @@ export default function Leaderboard() {
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[1]?.nickname}</p>
-                {top3[1]?.groupCode && <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400 mt-0.5">{top3[1].groupCode}</span>}
+                {renderGroupBadge(top3[1]?.groupCode)}
                 <p className="text-purple-300 font-bold text-xs mt-0.5">{getDisplayValue(top3[1], sortBy)}</p>
                 <span className="text-yellow-400 text-xs">★</span>
               </div>
@@ -200,7 +229,7 @@ export default function Leaderboard() {
                   {top3[0]?.nickname}
                   {top3[0]?.uid === currentUid && <span className="text-red-400 text-xs ml-1">(You)</span>}
                 </p>
-                {top3[0]?.groupCode && <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400 mt-0.5">{top3[0].groupCode}</span>}
+                {renderGroupBadge(top3[0]?.groupCode)}
                 <p className="text-yellow-300 font-bold text-sm mt-0.5">{getDisplayValue(top3[0], sortBy)}</p>
                 <span className="text-yellow-400 text-xs">★</span>
               </div>
@@ -214,7 +243,7 @@ export default function Leaderboard() {
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[2]?.nickname}</p>
-                {top3[2]?.groupCode && <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400 mt-0.5">{top3[2].groupCode}</span>}
+                {renderGroupBadge(top3[2]?.groupCode)}
                 <p className="text-amber-400 font-bold text-xs mt-0.5">{getDisplayValue(top3[2], sortBy)}</p>
                 <span className="text-yellow-400 text-xs">★</span>
               </div>
@@ -248,11 +277,7 @@ export default function Leaderboard() {
                       {member.joinedAt && (Date.now() - member.joinedAt < 7 * 24 * 60 * 60 * 1000) && (
                         <span className="text-[9px] text-gray-500">NEW</span>
                       )}
-                      {scope === "all" && member.groupCode && (
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0">
-                          {member.groupCode}
-                        </span>
-                      )}
+                      {scope === "all" && renderGroupBadgeInline(member.groupCode)}
                     </div>
                     <p className="text-gray-400 text-xs">{getDisplayValue(member, sortBy)}</p>
                   </div>

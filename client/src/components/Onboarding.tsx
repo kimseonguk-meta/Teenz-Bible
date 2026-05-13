@@ -5,10 +5,10 @@ import { get } from "firebase/database";
 const AVATARS = ['😎','🦊','🐱','🐶','🦁','🐻','🐼','🐨','🐯','🦄','🐸','🐵','🦋','🐝','🌟','⭐','🔥','💎','🎮','🎯','🏀','⚽','🎸','🎨','🌈','🍕','🍩','🧁','🎂','🍦'];
 
 const DEFAULT_CLASS_CONFIG = [
-  { label: '2010년생', classes: ['10A','10B','10C','10D'] },
-  { label: '2011년생', classes: ['11A','11B','11C','11D','11E'] },
-  { label: '2012년생', classes: ['12A','12B','12C','12D','12E','12G'] },
-  { label: '2013년생', classes: ['13A','13B','13C','13D','13E','13G'] },
+  { label: 'Year 2010', classes: ['10A','10B','10C','10D'] },
+  { label: 'Year 2011', classes: ['11A','11B','11C','11D','11E'] },
+  { label: 'Year 2012', classes: ['12A','12B','12C','12D','12E','12G'] },
+  { label: 'Year 2013', classes: ['13A','13B','13C','13D','13E','13G'] },
 ];
 
 interface OnboardingProps {
@@ -108,7 +108,7 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
     saveProfile(selectedClass, true);
   };
 
-  // Step 1: Nickname
+  // Step 1: Nickname + Avatar
   if (step === 1) {
     return (
       <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
@@ -117,15 +117,18 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
             {avatar}
           </div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 1 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">What's your name?</h2>
-          <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-            Tap the emoji above to randomize your avatar!
+          <h2 className="font-display text-purple-400 text-2xl mb-2">Choose a Nickname</h2>
+          <p className="text-gray-400 text-sm mb-1 leading-relaxed">
+            This will be shown on the leaderboard.
+          </p>
+          <p className="text-gray-500 text-xs mb-5 leading-relaxed">
+            Tap the emoji above to change your avatar!
           </p>
           <input
             type="text"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            placeholder="Enter your nickname..."
+            placeholder="e.g. BibleNinja, Grace99..."
             maxLength={20}
             className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-center text-lg placeholder:text-gray-500 focus:outline-none focus:border-purple-400/50 mb-4"
             autoFocus
@@ -168,11 +171,14 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
             <button
               onClick={handleIndividual}
               disabled={saving}
-              className="flex-1 py-4 px-4 rounded-xl border-none bg-gradient-to-r from-red-500 to-red-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(255,107,107,0.3)] transition-transform active:scale-[0.97] disabled:opacity-60"
+              className="flex-1 py-4 px-4 rounded-xl border-none bg-gradient-to-r from-gray-600 to-gray-700 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(100,100,100,0.3)] transition-transform active:scale-[0.97] disabled:opacity-60"
             >
-              {saving ? "..." : "NOPE"}
+              {saving ? "..." : "NO"}
             </button>
           </div>
+          <p className="text-gray-500 text-xs mb-4 leading-relaxed">
+            Not a member? No worries! You can still read, earn XP, and enjoy all features. You'll appear on the global leaderboard.
+          </p>
           <button
             onClick={() => setStep(1)}
             className="py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
