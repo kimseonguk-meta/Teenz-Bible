@@ -62,6 +62,13 @@ interface UserDataSnapshot {
   };
   // Meme reactions
   memeReactions: Record<string, string>;
+  // Daily streak
+  dailyStreak?: {
+    currentStreak: number;
+    lastClaimDate: string;
+    totalDaysClaimed: number;
+    longestStreak: number;
+  };
   // Metadata
   lastSyncedAt: number;
   version: number;
@@ -156,6 +163,13 @@ function collectLocalData(): UserDataSnapshot {
     }
   }
 
+  // Daily streak
+  let dailyStreak = { currentStreak: 0, lastClaimDate: "", totalDaysClaimed: 0, longestStreak: 0 };
+  try {
+    const raw = localStorage.getItem("teensBibleDailyStreak");
+    if (raw) dailyStreak = JSON.parse(raw);
+  } catch {}
+
   return {
     profile,
     stats,
@@ -166,6 +180,7 @@ function collectLocalData(): UserDataSnapshot {
     equipped,
     settings,
     memeReactions,
+    dailyStreak,
     lastSyncedAt: Date.now(),
     version: SYNC_VERSION,
   };
@@ -240,6 +255,18 @@ function applyDataToLocal(data: UserDataSnapshot) {
       localStorage.setItem(`memeUserReaction_${memeId}`, reaction);
     });
   }
+
+  // Daily streak
+  if (data.dailyStreak) {
+    localStorage.setItem("teensBibleDailyStreak", JSON.stringify(data.dailyStreak));
+    // Also update teensBible.streak for leaderboard
+    try {
+      const raw = localStorage.getItem("teensBible");
+      const teensBible = raw ? JSON.parse(raw) : {};
+      teensBible.streak = data.dailyStreak.currentStreak;
+      localStorage.setItem("teensBible", JSON.stringify(teensBible));
+    } catch {}
+  }
 }
 
 // ─── Upload: Push localStorage → Firebase ───────────────────────
@@ -263,7 +290,7 @@ export async function syncToFirebase(): Promise<boolean> {
       avatar: data.profile.avatar,
       groupCode,
       xp: data.stats.totalXP,
-      streak: 0,
+      streak: data.dailyStreak?.currentStreak || 0,
       chaptersRead: Object.values(data.chaptersRead).reduce((sum, arr) => sum + arr.length, 0),
       quizTotal: data.stats.quizTotal,
       quizCorrect: data.stats.quizCorrect,
@@ -276,15 +303,15 @@ export async function syncToFirebase(): Promise<boolean> {
     await update(ref(db, `users/${uid}`), leaderboardData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
 
-    console.log("[Sync] ✅ Data uploaded to Firebase");
+    console.log("[Sync] \u2705 Data uploaded to Firebase");
     return true;
   } catch (err) {
-    console.error("[Sync] ❌ Upload failed:", err);
+    console.error("[Sync] \u274c Upload failed:", err);
     return false;
   }
 }
 
-// ─── Download: Pull Firebase → localStorage ─────────────────────
+// \u2500\u2500\u2500 Download: Pull Firebase \u2192 localStorage───────────────
 export async function syncFromFirebase(): Promise<boolean> {
   const uid = auth.currentUser?.uid;
   if (!uid) {
@@ -469,7 +496,7 @@ async function smartSyncToFirebase(): Promise<boolean> {
       avatar: localData.profile.avatar,
       groupCode,
       xp: localData.stats.totalXP,
-      streak: 0,
+      streak: localData.dailyStreak?.currentStreak || 0,
       chaptersRead: Object.values(localData.chaptersRead).reduce((sum, arr) => sum + arr.length, 0),
       quizTotal: localData.stats.quizTotal,
       quizCorrect: localData.stats.quizCorrect,
@@ -482,8 +509,7 @@ async function smartSyncToFirebase(): Promise<boolean> {
     await update(ref(db, `users/${uid}`), leaderboardData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
 
-    console.log("[Sync] ✅ Smart sync uploaded to Firebase");
-    return true;
+    console.log("[Sync] \u2705 Smart sync uploaded to Firebase");   return true;
   } catch (err) {
     console.error("[Sync] ❌ Smart sync failed, falling back to regular sync:", err);
     return syncToFirebase();

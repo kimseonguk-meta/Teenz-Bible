@@ -3,6 +3,14 @@
 // ============================================================
 
 export type ItemCategory = "themes" | "readerBg" | "frames" | "pets" | "mystery";
+export type Rarity = "common" | "rare" | "epic" | "legendary";
+
+export const RARITY_CONFIG: Record<Rarity, { label: string; color: string; bgColor: string; borderColor: string; glow: string }> = {
+  common: { label: "Common", color: "text-gray-300", bgColor: "bg-gray-700/60", borderColor: "border-gray-500/40", glow: "" },
+  rare: { label: "Rare", color: "text-blue-400", bgColor: "bg-blue-900/60", borderColor: "border-blue-500/40", glow: "shadow-[0_0_8px_rgba(59,130,246,0.3)]" },
+  epic: { label: "Epic", color: "text-purple-400", bgColor: "bg-purple-900/60", borderColor: "border-purple-500/40", glow: "shadow-[0_0_12px_rgba(168,85,247,0.4)]" },
+  legendary: { label: "Legendary", color: "text-yellow-400", bgColor: "bg-yellow-900/60", borderColor: "border-yellow-500/40", glow: "shadow-[0_0_16px_rgba(234,179,8,0.5)]" },
+};
 
 export interface StoreItem {
   id: string;
@@ -11,6 +19,7 @@ export interface StoreItem {
   price: number;
   emoji: string;
   description: string;
+  rarity: Rarity;
   // Theme-specific
   cssVars?: Record<string, string>;
   // Reader background specific
@@ -31,6 +40,7 @@ export const THEMES: StoreItem[] = [
     price: 0,
     emoji: "🌙",
     description: "Default dark purple theme",
+    rarity: "common",
     cssVars: {
       "--primary": "oklch(0.55 0.25 285)",
       "--accent": "oklch(0.55 0.25 285)",
@@ -56,6 +66,7 @@ export const THEMES: StoreItem[] = [
     price: 180,
     emoji: "🌊",
     description: "Calm ocean vibes",
+    rarity: "rare",
     cssVars: {
       "--primary": "oklch(0.6 0.15 195)",
       "--accent": "oklch(0.6 0.15 195)",
@@ -81,6 +92,7 @@ export const THEMES: StoreItem[] = [
     price: 180,
     emoji: "🌲",
     description: "Peaceful forest atmosphere",
+    rarity: "rare",
     cssVars: {
       "--primary": "oklch(0.6 0.2 145)",
       "--accent": "oklch(0.6 0.2 145)",
@@ -106,6 +118,7 @@ export const THEMES: StoreItem[] = [
     price: 190,
     emoji: "🌅",
     description: "Warm sunset glow",
+    rarity: "rare",
     cssVars: {
       "--primary": "oklch(0.65 0.2 45)",
       "--accent": "oklch(0.65 0.2 45)",
@@ -131,6 +144,7 @@ export const THEMES: StoreItem[] = [
     price: 210,
     emoji: "🌌",
     description: "Cosmic pink energy",
+    rarity: "epic",
     cssVars: {
       "--primary": "oklch(0.6 0.22 330)",
       "--accent": "oklch(0.6 0.22 330)",
@@ -156,6 +170,7 @@ export const THEMES: StoreItem[] = [
     price: 190,
     emoji: "❤️‍🔥",
     description: "Bold and passionate",
+    rarity: "rare",
     cssVars: {
       "--primary": "oklch(0.55 0.22 25)",
       "--accent": "oklch(0.55 0.22 25)",
@@ -181,6 +196,7 @@ export const THEMES: StoreItem[] = [
     price: 200,
     emoji: "🧊",
     description: "Cool icy blue tones",
+    rarity: "epic",
     cssVars: {
       "--primary": "oklch(0.7 0.12 220)",
       "--accent": "oklch(0.7 0.12 220)",
@@ -206,6 +222,7 @@ export const THEMES: StoreItem[] = [
     price: 190,
     emoji: "💜",
     description: "Soft lavender serenity",
+    rarity: "rare",
     cssVars: {
       "--primary": "oklch(0.65 0.18 300)",
       "--accent": "oklch(0.65 0.18 300)",
@@ -231,6 +248,7 @@ export const THEMES: StoreItem[] = [
     price: 220,
     emoji: "🖤",
     description: "Sleek and mysterious",
+    rarity: "epic",
     cssVars: {
       "--primary": "oklch(0.5 0.02 260)",
       "--accent": "oklch(0.5 0.02 260)",
@@ -256,6 +274,7 @@ export const THEMES: StoreItem[] = [
     price: 240,
     emoji: "👑",
     description: "Fit for a king",
+    rarity: "legendary",
     cssVars: {
       "--primary": "oklch(0.7 0.16 85)",
       "--accent": "oklch(0.7 0.16 85)",
@@ -281,6 +300,7 @@ export const THEMES: StoreItem[] = [
     price: 200,
     emoji: "🌹",
     description: "Elegant rose tones",
+    rarity: "epic",
     cssVars: {
       "--primary": "oklch(0.6 0.18 350)",
       "--accent": "oklch(0.6 0.18 350)",
@@ -306,6 +326,7 @@ export const THEMES: StoreItem[] = [
     price: 210,
     emoji: "🔥",
     description: "Warm burning embers",
+    rarity: "epic",
     cssVars: {
       "--primary": "oklch(0.6 0.2 35)",
       "--accent": "oklch(0.6 0.2 35)",
@@ -331,6 +352,7 @@ export const THEMES: StoreItem[] = [
     price: 250,
     emoji: "🌠",
     description: "Northern lights magic",
+    rarity: "legendary",
     cssVars: {
       "--primary": "oklch(0.65 0.2 165)",
       "--accent": "oklch(0.65 0.2 165)",
@@ -360,6 +382,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 0,
     emoji: "🌑",
     description: "Default dark reading mode",
+    rarity: "common",
     readerStyle: { bg: "#0a0a1a", text: "#e2e8f0", label: "Dark" },
   },
   {
@@ -369,6 +392,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 130,
     emoji: "📜",
     description: "Classic parchment feel",
+    rarity: "common",
     readerStyle: { bg: "#f5e6c8", text: "#3d2b1f", label: "Parchment" },
   },
   {
@@ -378,6 +402,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 140,
     emoji: "✨",
     description: "Deep navy with stars",
+    rarity: "rare",
     readerStyle: { bg: "#0f172a", text: "#cbd5e1", label: "Night Sky" },
   },
   {
@@ -387,6 +412,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 130,
     emoji: "☀️",
     description: "Easy on the eyes",
+    rarity: "common",
     readerStyle: { bg: "#fffbeb", text: "#451a03", label: "Cream" },
   },
   {
@@ -396,6 +422,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 140,
     emoji: "🍃",
     description: "Fresh mint background",
+    rarity: "rare",
     readerStyle: { bg: "#ecfdf5", text: "#064e3b", label: "Mint" },
   },
   {
@@ -405,6 +432,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 140,
     emoji: "💜",
     description: "Gentle purple haze",
+    rarity: "rare",
     readerStyle: { bg: "#f5f3ff", text: "#3b0764", label: "Lavender" },
   },
   {
@@ -414,6 +442,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 160,
     emoji: "🌊",
     description: "Deep sea reading",
+    rarity: "epic",
     readerStyle: { bg: "#0c1929", text: "#7dd3fc", label: "Ocean" },
   },
   {
@@ -423,6 +452,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 140,
     emoji: "🌹",
     description: "Soft pink warmth",
+    rarity: "rare",
     readerStyle: { bg: "#fff1f2", text: "#4c0519", label: "Rose" },
   },
   {
@@ -432,6 +462,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 160,
     emoji: "🌲",
     description: "Deep woodland green",
+    rarity: "epic",
     readerStyle: { bg: "#052e16", text: "#86efac", label: "Forest" },
   },
   {
@@ -441,6 +472,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 130,
     emoji: "🏜️",
     description: "Warm sandy tones",
+    rarity: "common",
     readerStyle: { bg: "#fef3c7", text: "#78350f", label: "Sand" },
   },
   {
@@ -450,6 +482,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 150,
     emoji: "🪨",
     description: "Neutral and focused",
+    rarity: "rare",
     readerStyle: { bg: "#1e293b", text: "#cbd5e1", label: "Slate" },
   },
   {
@@ -459,6 +492,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 150,
     emoji: "🍑",
     description: "Warm peachy comfort",
+    rarity: "rare",
     readerStyle: { bg: "#fff7ed", text: "#7c2d12", label: "Peach" },
   },
   {
@@ -468,6 +502,7 @@ export const READER_BACKGROUNDS: StoreItem[] = [
     price: 170,
     emoji: "🌃",
     description: "Deep midnight reading",
+    rarity: "epic",
     readerStyle: { bg: "#0f0f2e", text: "#a5b4fc", label: "Midnight" },
   },
 ];
@@ -481,6 +516,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 0,
     emoji: "⭕",
     description: "Default - no frame",
+    rarity: "common",
     frameClass: "border-2 border-purple-500/30",
   },
   {
@@ -490,6 +526,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 70,
     emoji: "👑",
     description: "Royal gold border",
+    rarity: "common",
     frameClass: "border-[4px] border-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.6),0_0_40px_rgba(250,204,21,0.25),inset_0_0_10px_rgba(250,204,21,0.15)] ring-2 ring-yellow-300/30",
   },
   {
@@ -499,6 +536,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 75,
     emoji: "🔥",
     description: "Blazing fire effect",
+    rarity: "rare",
     frameClass: "border-[4px] border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.6),0_0_40px_rgba(239,68,68,0.3),inset_0_0_10px_rgba(249,115,22,0.15)] ring-2 ring-red-500/30",
   },
   {
@@ -508,6 +546,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 85,
     emoji: "🌈",
     description: "Colorful rainbow aura",
+    rarity: "rare",
     frameClass: "border-[4px] border-pink-400 shadow-[0_0_18px_rgba(236,72,153,0.5),0_0_35px_rgba(168,85,247,0.35),0_0_50px_rgba(59,130,246,0.2)] ring-2 ring-purple-400/40",
   },
   {
@@ -517,6 +556,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 90,
     emoji: "💎",
     description: "Sparkling diamond edge",
+    rarity: "epic",
     frameClass: "border-[4px] border-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.6),0_0_50px_rgba(34,211,238,0.25),inset_0_0_12px_rgba(34,211,238,0.15)] ring-2 ring-cyan-200/40",
   },
   {
@@ -526,6 +566,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 90,
     emoji: "😇",
     description: "Heavenly angel frame",
+    rarity: "epic",
     frameClass: "border-[4px] border-white/80 shadow-[0_0_25px_rgba(255,255,255,0.5),0_0_50px_rgba(255,255,255,0.2),inset_0_0_12px_rgba(255,255,255,0.15)] ring-2 ring-white/30",
   },
   {
@@ -535,6 +576,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 65,
     emoji: "💚",
     description: "Rich emerald border",
+    rarity: "common",
     frameClass: "border-[4px] border-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.6),0_0_40px_rgba(16,185,129,0.25)] ring-2 ring-emerald-300/30",
   },
   {
@@ -544,6 +586,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 75,
     emoji: "⚡",
     description: "Electric energy frame",
+    rarity: "rare",
     frameClass: "border-[4px] border-yellow-300 shadow-[0_0_22px_rgba(253,224,71,0.7),0_0_45px_rgba(234,179,8,0.3)] ring-2 ring-yellow-200/40",
   },
   {
@@ -553,6 +596,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 65,
     emoji: "🌊",
     description: "Deep blue sea border",
+    rarity: "common",
     frameClass: "border-[4px] border-blue-400 shadow-[0_0_20px_rgba(96,165,250,0.6),0_0_40px_rgba(59,130,246,0.25)] ring-2 ring-blue-300/30",
   },
   {
@@ -562,6 +606,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 75,
     emoji: "🌅",
     description: "Warm sunset glow",
+    rarity: "rare",
     frameClass: "border-[4px] border-orange-400 shadow-[0_0_22px_rgba(251,146,60,0.6),0_0_45px_rgba(245,158,11,0.25)] ring-2 ring-amber-300/30",
   },
   {
@@ -571,6 +616,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 95,
     emoji: "🌌",
     description: "Cosmic galaxy border",
+    rarity: "epic",
     frameClass: "border-[4px] border-indigo-400 shadow-[0_0_25px_rgba(129,140,248,0.5),0_0_50px_rgba(168,85,247,0.35),0_0_70px_rgba(99,102,241,0.15)] ring-2 ring-purple-400/40",
   },
   {
@@ -580,6 +626,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 70,
     emoji: "🌸",
     description: "Delicate pink petals",
+    rarity: "common",
     frameClass: "border-[4px] border-pink-300 shadow-[0_0_20px_rgba(249,168,212,0.6),0_0_40px_rgba(236,72,153,0.25)] ring-2 ring-pink-200/30",
   },
   {
@@ -589,6 +636,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 80,
     emoji: "💫",
     description: "Vibrant neon glow",
+    rarity: "rare",
     frameClass: "border-[4px] border-green-400 shadow-[0_0_25px_rgba(74,222,128,0.6),0_0_50px_rgba(34,197,94,0.35),0_0_70px_rgba(22,163,74,0.15)] ring-2 ring-green-300/40",
   },
   {
@@ -598,6 +646,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
     price: 75,
     emoji: "❄️",
     description: "Icy crystal border",
+    rarity: "rare",
     frameClass: "border-[4px] border-sky-200 shadow-[0_0_22px_rgba(186,230,253,0.7),0_0_45px_rgba(125,211,252,0.3)] ring-2 ring-sky-100/40",
   },
 ];
@@ -611,6 +660,7 @@ export const PETS: StoreItem[] = [
     price: 220,
     emoji: "🐱",
     description: "A faithful companion",
+    rarity: "rare",
     petEmoji: "🐱",
   },
   {
@@ -620,6 +670,7 @@ export const PETS: StoreItem[] = [
     price: 220,
     emoji: "🐶",
     description: "Always hopeful and loyal",
+    rarity: "rare",
     petEmoji: "🐶",
   },
   {
@@ -629,6 +680,7 @@ export const PETS: StoreItem[] = [
     price: 230,
     emoji: "🐑",
     description: "Gentle and joyful",
+    rarity: "rare",
     petEmoji: "🐑",
   },
   {
@@ -638,6 +690,7 @@ export const PETS: StoreItem[] = [
     price: 260,
     emoji: "🦁",
     description: "Courageous like Daniel",
+    rarity: "epic",
     petEmoji: "🦁",
   },
   {
@@ -647,6 +700,7 @@ export const PETS: StoreItem[] = [
     price: 250,
     emoji: "🦉",
     description: "Wisdom of Solomon",
+    rarity: "epic",
     petEmoji: "🦉",
   },
   {
@@ -656,6 +710,7 @@ export const PETS: StoreItem[] = [
     price: 270,
     emoji: "🕊️",
     description: "Symbol of the Holy Spirit",
+    rarity: "epic",
     petEmoji: "🕊️",
   },
   {
@@ -665,6 +720,7 @@ export const PETS: StoreItem[] = [
     price: 260,
     emoji: "🦅",
     description: "Mount up with wings (Isaiah 40:31)",
+    rarity: "epic",
     petEmoji: "🦅",
   },
   {
@@ -674,6 +730,7 @@ export const PETS: StoreItem[] = [
     price: 240,
     emoji: "🦊",
     description: "Clever and quick",
+    rarity: "rare",
     petEmoji: "🦊",
   },
   {
@@ -683,6 +740,7 @@ export const PETS: StoreItem[] = [
     price: 260,
     emoji: "🐻",
     description: "Strong like Samson",
+    rarity: "epic",
     petEmoji: "🐻",
   },
   {
@@ -692,6 +750,7 @@ export const PETS: StoreItem[] = [
     price: 230,
     emoji: "🐰",
     description: "Meek and gentle spirit",
+    rarity: "rare",
     petEmoji: "🐰",
   },
   {
@@ -701,6 +760,7 @@ export const PETS: StoreItem[] = [
     price: 280,
     emoji: "🐳",
     description: "A big adventure awaits",
+    rarity: "legendary",
     petEmoji: "🐳",
   },
   {
@@ -710,6 +770,7 @@ export const PETS: StoreItem[] = [
     price: 240,
     emoji: "🦋",
     description: "Transformed and beautiful",
+    rarity: "rare",
     petEmoji: "🦋",
   },
   {
@@ -719,6 +780,7 @@ export const PETS: StoreItem[] = [
     price: 300,
     emoji: "🐉",
     description: "Legendary and fierce",
+    rarity: "legendary",
     petEmoji: "🐉",
   },
   {
@@ -728,6 +790,7 @@ export const PETS: StoreItem[] = [
     price: 290,
     emoji: "🦄",
     description: "Pure and majestic",
+    rarity: "legendary",
     petEmoji: "🦄",
   },
 ];
@@ -740,6 +803,7 @@ export const MYSTERY_BOX: StoreItem = {
   price: 50,
   emoji: "🎁",
   description: "Open for a random reward!",
+  rarity: "epic",
 };
 
 // ============ INVENTORY SYSTEM ============

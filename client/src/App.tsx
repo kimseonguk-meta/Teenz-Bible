@@ -9,6 +9,7 @@ import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
 import Onboarding from "./components/Onboarding";
 import { initTheme } from "./data/storeItems";
+import DailyBonus from "./components/DailyBonus";
 import { auth, signInAnonymously, onAuthStateChanged } from "./lib/firebase";
 import { initializeSync, scheduleSyncToFirebase, immediateSyncToFirebase } from "./lib/firebaseSync";
 
@@ -130,6 +131,7 @@ function App() {
           <Toaster />
           <GameProvider>
             {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
+            {authReady && !showOnboarding && <DailyBonus />}
             <Router />
           </GameProvider>
         </TooltipProvider>

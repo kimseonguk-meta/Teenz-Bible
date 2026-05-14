@@ -5,6 +5,7 @@ import {
   PROFILE_FRAMES,
   PETS,
   MYSTERY_BOX,
+  RARITY_CONFIG,
   getInventory,
   getEquipped,
   purchaseItem,
@@ -13,8 +14,10 @@ import {
   ownsItem,
   openMysteryBox,
   applyTheme,
+  getPetMoodEmoji,
   type StoreItem,
   type ItemCategory,
+  type Rarity,
 } from "@/data/storeItems";
 import { toast } from "sonner";
 
@@ -45,6 +48,7 @@ export default function Store() {
   const [mysteryResult, setMysteryResult] = useState<{ emoji: string; message: string } | null>(null);
   const [isOpening, setIsOpening] = useState(false);
   const [previewingTheme, setPreviewingTheme] = useState<string | null>(null);
+  const [previewItem, setPreviewItem] = useState<StoreItem | null>(null);
 
   // Listen for gems changes and sync updates
   useEffect(() => {
@@ -135,14 +139,24 @@ export default function Store() {
     }
   };
 
+  const RarityBadge = ({ rarity }: { rarity: Rarity }) => {
+    const config = RARITY_CONFIG[rarity];
+    return (
+      <span className={`inline-block px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${config.color} ${config.bgColor} border ${config.borderColor}`}>
+        {config.label}
+      </span>
+    );
+  };
+
   const renderItemCard = (item: StoreItem) => {
     const owned = isOwned(item.id);
     const active = isEquipped(item.id, item.category);
+    const rarityConfig = RARITY_CONFIG[item.rarity];
 
     return (
       <div
         key={item.id}
-        className={`p-3 rounded-xl text-center relative transition-all ${
+        className={`p-3 rounded-xl text-center relative transition-all ${rarityConfig.glow} ${
           active
             ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
             : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
@@ -153,8 +167,11 @@ export default function Store() {
             ✓
           </div>
         )}
-        <div className="text-3xl my-2">{item.emoji}</div>
-        <p className="text-white text-xs font-medium truncate">{item.name}</p>
+        <div className="absolute top-1.5 left-1.5">
+          <RarityBadge rarity={item.rarity} />
+        </div>
+        <div className="text-3xl my-2 mt-5 cursor-pointer hover:scale-110 transition-transform" onClick={() => setPreviewItem(item)}>{item.emoji}</div>
+        <p className="text-white text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
         <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
 
         {/* Action button */}
@@ -243,11 +260,12 @@ export default function Store() {
               const owned = isOwned(item.id);
               const active = isEquipped(item.id, item.category);
               const previewing = previewingTheme === item.id;
+              const rarityConf = RARITY_CONFIG[item.rarity];
 
               return (
                 <div
                   key={item.id}
-                  className={`p-3 rounded-xl text-center relative transition-all ${
+                  className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                     active
                       ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
                       : previewing
@@ -258,8 +276,11 @@ export default function Store() {
                   {active && (
                     <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
                   )}
-                  <div className="text-3xl my-2">{item.emoji}</div>
-                  <p className="text-white text-xs font-medium truncate">{item.name}</p>
+                  <div className="absolute top-1.5 left-1.5">
+                    <RarityBadge rarity={item.rarity} />
+                  </div>
+                  <div className="text-3xl my-2 mt-5 cursor-pointer hover:scale-110 transition-transform" onClick={() => setPreviewItem(item)}>{item.emoji}</div>
+                  <p className="text-white text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                   <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
 
                   <div className="mt-2 space-y-1">
@@ -309,10 +330,12 @@ export default function Store() {
           <h2 className="text-lg font-bold text-purple-300 font-display mb-3">📖 Reader Backgrounds</h2>
           <p className="text-gray-400 text-xs mb-3">Customize your Bible reading experience!</p>
           <div className="grid grid-cols-3 gap-3">
-            {READER_BACKGROUNDS.map((item) => (
+            {READER_BACKGROUNDS.map((item) => {
+              const rarityConf = RARITY_CONFIG[item.rarity];
+              return (
               <div
                 key={item.id}
-                className={`p-3 rounded-xl text-center relative transition-all ${
+                className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                   isEquipped(item.id, "readerBg")
                     ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
                     : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
@@ -321,14 +344,18 @@ export default function Store() {
                 {isEquipped(item.id, "readerBg") && (
                   <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
                 )}
+                <div className="absolute top-1.5 left-1.5">
+                  <RarityBadge rarity={item.rarity} />
+                </div>
                 {/* Preview swatch */}
                 <div
-                  className="w-full h-10 rounded-lg my-2 border border-white/10 flex items-center justify-center text-[10px]"
+                  className="w-full h-10 rounded-lg my-2 mt-5 border border-white/10 flex items-center justify-center text-[10px] cursor-pointer hover:scale-105 transition-transform"
                   style={{ backgroundColor: item.readerStyle?.bg, color: item.readerStyle?.text }}
+                  onClick={() => setPreviewItem(item)}
                 >
                   Abc 가나다
                 </div>
-                <p className="text-white text-xs font-medium">{item.name}</p>
+                <p className="text-white text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                 <div className="mt-2">
                   {!isOwned(item.id) && item.price > 0 ? (
                     <button
@@ -351,7 +378,8 @@ export default function Store() {
                   )}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -361,10 +389,12 @@ export default function Store() {
           <h2 className="text-lg font-bold text-purple-300 font-display mb-3">🖼️ Profile Frames</h2>
           <p className="text-gray-400 text-xs mb-3">Stand out on the leaderboard!</p>
           <div className="grid grid-cols-3 gap-3">
-            {PROFILE_FRAMES.map((item) => (
+            {PROFILE_FRAMES.map((item) => {
+              const rarityConf = RARITY_CONFIG[item.rarity];
+              return (
               <div
                 key={item.id}
-                className={`p-3 rounded-xl text-center relative transition-all ${
+                className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                   isEquipped(item.id, "frames")
                     ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
                     : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
@@ -373,11 +403,14 @@ export default function Store() {
                 {isEquipped(item.id, "frames") && (
                   <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
                 )}
+                <div className="absolute top-1.5 left-1.5">
+                  <RarityBadge rarity={item.rarity} />
+                </div>
                 {/* Frame preview */}
-                <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl bg-purple-900/50 my-2 ${item.frameClass}`}>
+                <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl bg-purple-900/50 my-2 mt-5 cursor-pointer hover:scale-110 transition-transform ${item.frameClass}`} onClick={() => setPreviewItem(item)}>
                   😎
                 </div>
-                <p className="text-white text-xs font-medium">{item.name}</p>
+                <p className="text-white text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                 <div className="mt-2">
                   {!isOwned(item.id) && item.price > 0 ? (
                     <button
@@ -400,7 +433,8 @@ export default function Store() {
                   )}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -471,6 +505,20 @@ export default function Store() {
 
           {/* Earn methods list */}
           <div className="space-y-3">
+            <div className="p-3 rounded-xl bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/30">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-xl">🔥</div>
+                <div className="flex-1">
+                  <p className="text-white text-sm font-medium">Daily Login Streak</p>
+                  <p className="text-gray-500 text-xs">Open app daily! Milestones: Day 3/7/14/30</p>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/30">
+                  <span className="text-orange-300 text-xs font-bold">+2~50</span>
+                  <span className="text-xs">💎</span>
+                </div>
+              </div>
+            </div>
+
             <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-xl">📖</div>
@@ -552,6 +600,209 @@ export default function Store() {
               <li>• Mystery Box can give you items worth more than 15💎</li>
             </ul>
           </div>
+        </div>
+      )}
+      {/* ─── Fullscreen Preview Modal ─── */}
+      {previewItem && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center p-6"
+          onClick={() => setPreviewItem(null)}
+        >
+          {/* Close button */}
+          <button
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white text-xl hover:bg-white/20 transition-colors"
+            onClick={() => setPreviewItem(null)}
+          >
+            ✕
+          </button>
+
+          {/* Rarity badge */}
+          <div className="mb-4">
+            <RarityBadge rarity={previewItem.rarity} />
+          </div>
+
+          {/* Preview content based on category */}
+          {previewItem.category === "themes" && previewItem.cssVars && (
+            <div className="w-72 rounded-2xl overflow-hidden border border-white/10" onClick={(e) => e.stopPropagation()}>
+              {/* Mock app screen with theme */}
+              <div
+                className="p-4 space-y-3"
+                style={{
+                  background: `linear-gradient(135deg, ${previewItem.cssVars["--cosmic-bg-1"]}, ${previewItem.cssVars["--cosmic-bg-2"]})`,
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="text-2xl">{previewItem.emoji}</div>
+                    <div>
+                      <p className="text-white text-sm font-bold">{previewItem.name}</p>
+                      <p className="text-gray-400 text-[10px]">{previewItem.description}</p>
+                    </div>
+                  </div>
+                </div>
+                {/* Mock nav bar */}
+                <div
+                  className="flex justify-around py-2 rounded-xl border"
+                  style={{
+                    backgroundColor: previewItem.cssVars["--neon-card-bg"],
+                    borderColor: `rgba(${previewItem.cssVars["--neon-rgb"]}, 0.3)`,
+                  }}
+                >
+                  {["🏠", "📖", "🏆", "💎", "👤"].map((icon, i) => (
+                    <span key={i} className="text-lg opacity-70">{icon}</span>
+                  ))}
+                </div>
+                {/* Mock content cards */}
+                <div className="space-y-2">
+                  <div
+                    className="p-3 rounded-xl border"
+                    style={{
+                      backgroundColor: previewItem.cssVars["--neon-card-bg"],
+                      borderColor: `rgba(${previewItem.cssVars["--neon-rgb"]}, 0.2)`,
+                    }}
+                  >
+                    <p className="text-white text-xs font-medium">Matthew Ch. 5</p>
+                    <p className="text-gray-400 text-[10px]">The Sermon on the Mount</p>
+                  </div>
+                  <div
+                    className="p-3 rounded-xl border"
+                    style={{
+                      backgroundColor: previewItem.cssVars["--neon-card-bg"],
+                      borderColor: `rgba(${previewItem.cssVars["--neon-rgb"]}, 0.2)`,
+                    }}
+                  >
+                    <p className="text-white text-xs font-medium">Daily Streak: 7 Days 🔥</p>
+                    <div className="w-full h-1.5 rounded-full bg-white/10 mt-1">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: "60%", backgroundColor: `rgb(${previewItem.cssVars["--neon-rgb"]})` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {previewItem.category === "readerBg" && previewItem.readerStyle && (
+            <div className="w-72 rounded-2xl overflow-hidden border border-white/10" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="p-5 space-y-3"
+                style={{ backgroundColor: previewItem.readerStyle.bg, color: previewItem.readerStyle.text }}
+              >
+                <p className="text-center text-xs font-bold opacity-60">Matthew 5:14-16</p>
+                <p className="text-sm leading-relaxed">
+                  "You are the light of the world. A city set on a hill cannot be hidden. Nor do people light a lamp and put it under a basket, but on a stand, and it gives light to all in the house."
+                </p>
+                <p className="text-sm leading-relaxed">
+                  "In the same way, let your light shine before others, so that they may see your good works and give glory to your Father who is in heaven."
+                </p>
+                <div className="flex items-center justify-center gap-2 pt-2 opacity-50">
+                  <span className="text-xs">◀ Ch.4</span>
+                  <span className="text-xs font-bold">Chapter 5</span>
+                  <span className="text-xs">Ch.6 ▶</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {previewItem.category === "frames" && (
+            <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+              <div className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl bg-purple-900/50 ${previewItem.frameClass}`}>
+                😎
+              </div>
+              <div className="text-center">
+                <p className="text-white text-sm">Your avatar with</p>
+                <p className="text-white text-lg font-bold">{previewItem.name}</p>
+              </div>
+              {/* Show on leaderboard mock */}
+              <div className="w-64 p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg bg-purple-900/50 ${previewItem.frameClass}`}>
+                    😎
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-white text-xs font-bold">You</p>
+                    <p className="text-gray-400 text-[10px]">Level 5 • 1,250 XP</p>
+                  </div>
+                  <div className="text-yellow-400 text-sm font-bold">#1</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {previewItem.category === "pets" && (
+            <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+              <div className="text-7xl">{previewItem.petEmoji}</div>
+              <div className="text-center">
+                <p className="text-white text-xl font-bold">{previewItem.name}</p>
+                <p className="text-gray-400 text-sm mt-1">{previewItem.description}</p>
+              </div>
+              {/* Pet mood preview */}
+              <div className="w-64 p-4 rounded-xl bg-white/[0.03] border border-purple-500/20 text-center space-y-2">
+                <p className="text-gray-400 text-xs">Pet Moods</p>
+                <div className="flex justify-around">
+                  <div className="text-center">
+                    <p className="text-2xl">😊</p>
+                    <p className="text-green-400 text-[10px]">Happy</p>
+                    <p className="text-gray-500 text-[9px]">Read today</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl">😐</p>
+                    <p className="text-yellow-400 text-[10px]">Hungry</p>
+                    <p className="text-gray-500 text-[9px]">1 day gap</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl">😢</p>
+                    <p className="text-red-400 text-[10px]">Sad</p>
+                    <p className="text-gray-500 text-[9px]">2+ days</p>
+                  </div>
+                </div>
+              </div>
+              {/* Bible companion mock */}
+              <div className="w-64 p-3 rounded-xl bg-purple-900/30 border border-purple-500/20">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{previewItem.petEmoji}</span>
+                  <div>
+                    <p className="text-white text-xs font-medium">{previewItem.name} is happy! 🎉</p>
+                    <p className="text-gray-400 text-[10px]">Your reading companion</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Item info */}
+          <div className="mt-6 text-center">
+            <p className="text-white text-lg font-bold">{previewItem.emoji} {previewItem.name}</p>
+            <p className="text-gray-400 text-sm mt-1">{previewItem.description}</p>
+            {previewItem.price > 0 && !isOwned(previewItem.id) && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePurchase(previewItem);
+                  setPreviewItem(null);
+                }}
+                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold text-sm hover:opacity-90 transition-opacity"
+              >
+                Buy for {previewItem.price} 💎
+              </button>
+            )}
+            {isOwned(previewItem.id) && !isEquipped(previewItem.id, previewItem.category) && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEquip(previewItem);
+                  setPreviewItem(null);
+                }}
+                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold text-sm hover:opacity-90 transition-opacity"
+              >
+                Equip
+              </button>
+            )}
+          </div>
+
+          <p className="absolute bottom-6 text-gray-600 text-xs">Tap anywhere to close</p>
         </div>
       )}
     </div>
