@@ -6,19 +6,15 @@ import {
   getPetState,
   getPetMoodEmoji,
   feedPet,
-  type PetMood,
 } from "@/data/storeItems";
 import { getPetDialogue, getRandomMessage } from "@/data/petDialogues";
 
 // ─── Floating Pet Companion ─────────────────────────────────
-// Features:
-// - Unique personality dialogues per pet
-// - Bouncing idle animation
-// - Mood indicator
-// - Page-change reactions
-// - Tap to chat / double-tap for mini-game
-// - Mini-game: feed, play, pet interactions
-// - Draggable
+// The pet WANDERS around the screen autonomously!
+// - Floats to random positions every few seconds
+// - Sometimes comes to the CENTER to "interrupt" cutely
+// - Bounces, wiggles, does little dances
+// - Tappable for dialogue, double-tap for mini-game
 
 type MiniGameAction = "feed" | "play" | "pet";
 
@@ -36,14 +32,19 @@ export default function FloatingPet() {
   const [showBubble, setShowBubble] = useState(false);
   const [bubbleText, setBubbleText] = useState("");
   const [reaction, setReaction] = useState<string | null>(null);
-  const [position, setPosition] = useState({ x: 16, y: -140 });
+  // Position as absolute x, y from top-left
+  const [pos, setPos] = useState({ x: window.innerWidth - 70, y: window.innerHeight - 180 });
+  const [targetPos, setTargetPos] = useState({ x: window.innerWidth - 70, y: window.innerHeight - 180 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isWandering, setIsWandering] = useState(true);
   const [bounceClass, setBounceClass] = useState("animate-bounce-gentle");
   const [showMiniGame, setShowMiniGame] = useState(false);
   const [hearts, setHearts] = useState<HeartParticle[]>([]);
-  const [happiness, setHappiness] = useState(50); // 0-100 happiness meter
+  const [happiness, setHappiness] = useState(50);
   const [playCount, setPlayCount] = useState(0);
   const [isDoingAction, setIsDoingAction] = useState(false);
+  const [isInterrupting, setIsInterrupting] = useState(false);
+  const [wiggle, setWiggle] = useState(false);
 
   const dragRef = useRef<{ startX: number; startY: number; startPosX: number; startPosY: number } | null>(null);
   const petRef = useRef<HTMLDivElement>(null);
@@ -52,26 +53,142 @@ export default function FloatingPet() {
   const tapCountRef = useRef(0);
   const tapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const heartIdRef = useRef(0);
+  const wanderTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const animFrameRef = useRef<number>(0);
+  const pauseWanderRef = useRef(false);
 
   const pet = equipped.pet ? PETS.find(p => p.id === equipped.pet) : null;
   const dialogue = pet ? getPetDialogue(pet.id) : null;
 
-  // Calculate happiness from mood
+  // Safe zone: avoid nav bar (bottom 70px) and top 40px
+  const getSafeArea = () => ({
+    minX: 10,
+    maxX: Math.min(window.innerWidth - 70, 420), // max-width of app is 480
+    minY: 60,
+    maxY: window.innerHeight - 140,
+  });
+
+  const getRandomPosition = useCallback(() => {
+    const safe = getSafeArea();
+    return {
+      x: safe.minX + Math.random() * (safe.maxX - safe.minX),
+      y: safe.minY + Math.random() * (safe.maxY - safe.minY),
+    };
+  }, []);
+
+  const getCenterPosition = useCallback(() => {
+    return {
+      x: Math.min(window.innerWidth - 70, 420) / 2 - 28,
+      y: window.innerHeight / 2 - 60,
+    };
+  }, []);
+
+  // ─── Smooth movement animation ───────────────────────────
+  useEffect(() => {
+    let lastTime = performance.now();
+
+    const animate = (time: number) => {
+      const dt = Math.min((time - lastTime) / 1000, 0.1); // delta in seconds, cap at 100ms
+      lastTime = time;
+
+      if (!isDragging && !pauseWanderRef.current) {
+        setPos(prev => {
+          const dx = targetPos.x - prev.x;
+          const dy = targetPos.y - prev.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 1) return prev; // close enough
+
+          // Smooth easing - move 2-3% of remaining distance per frame
+          const speed = Math.max(1.5, dist * 0.03) * 60 * dt;
+          const ratio = Math.min(speed / dist, 1);
+
+          return {
+            x: prev.x + dx * ratio,
+            y: prev.y + dy * ratio,
+          };
+        });
+      }
+
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animFrameRef.current);
+  }, [targetPos, isDragging]);
+
+  // ─── Autonomous wandering ────────────────────────────────
+  useEffect(() => {
+    if (!pet || !isWandering) return;
+
+    const wander = () => {
+      if (pauseWanderRef.current || isDragging || showMiniGame) return;
+
+      // 15% chance to "interrupt" by coming to center
+      if (Math.random() < 0.15 && !isInterrupting) {
+        doInterrupt();
+      } else {
+        setTargetPos(getRandomPosition());
+      }
+    };
+
+    // Wander every 3-6 seconds
+    wanderTimerRef.current = setInterval(wander, 3000 + Math.random() * 3000);
+
+    // Initial position
+    setTimeout(() => setTargetPos(getRandomPosition()), 500);
+
+    return () => {
+      if (wanderTimerRef.current) clearInterval(wanderTimerRef.current);
+    };
+  }, [pet, isWandering, isDragging, showMiniGame, isInterrupting]);
+
+  // ─── Cute interrupt behavior ─────────────────────────────
+  const doInterrupt = useCallback(() => {
+    if (!dialogue) return;
+    setIsInterrupting(true);
+    setTargetPos(getCenterPosition());
+    setWiggle(true);
+
+    // Show a cheeky message
+    const interruptMessages = [
+      "Hey! Look at me! 👋",
+      "Whatcha doing~? 😏",
+      "Pay attention to ME! 🙈",
+      "Boop! 👉😊",
+      "I'm bored~ Play with me! 🎮",
+      "Don't ignore me~! 🥺",
+      "*blocks your view* Hehe! 😝",
+      "Notice me!! ✨",
+      "*dances in front of you* 💃",
+      "HI HI HI! 👀",
+    ];
+    const msg = interruptMessages[Math.floor(Math.random() * interruptMessages.length)];
+    setReaction(msg);
+
+    // After 2.5 seconds, move away
+    setTimeout(() => {
+      setWiggle(false);
+      setIsInterrupting(false);
+      setReaction(null);
+      setTargetPos(getRandomPosition());
+    }, 2500);
+  }, [dialogue, getCenterPosition, getRandomPosition]);
+
+  // ─── Happiness from mood ─────────────────────────────────
   useEffect(() => {
     if (petState.mood === "happy") setHappiness(85 + Math.random() * 15);
     else if (petState.mood === "hungry") setHappiness(40 + Math.random() * 20);
     else setHappiness(10 + Math.random() * 20);
   }, [petState.mood]);
 
-  // Load play count from localStorage
+  // Load play count
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     const stored = localStorage.getItem("petPlayCount");
     if (stored) {
       const data = JSON.parse(stored);
-      if (data.date === today) {
-        setPlayCount(data.count);
-      }
+      if (data.date === today) setPlayCount(data.count);
     }
   }, []);
 
@@ -86,7 +203,7 @@ export default function FloatingPet() {
     };
   }, []);
 
-  // Listen for pet state changes (feeding from elsewhere)
+  // Listen for pet state changes
   useEffect(() => {
     const handler = () => {
       setPetState(getPetState());
@@ -96,13 +213,15 @@ export default function FloatingPet() {
     return () => window.removeEventListener("pet-state-changed", handler);
   }, [dialogue]);
 
-  // React to page changes with pet-specific dialogue
+  // React to page changes
   useEffect(() => {
     if (location !== prevLocationRef.current && pet && dialogue) {
       prevLocationRef.current = location;
       const reactions = dialogue.pageReactions[location] || ["Let's explore! 🗺️"];
       triggerReaction(getRandomMessage(reactions));
       setBounceClass("animate-bounce-excited");
+      // Rush to a new position on page change
+      setTargetPos(getRandomPosition());
       setTimeout(() => setBounceClass("animate-bounce-gentle"), 1500);
     }
   }, [location, pet, dialogue]);
@@ -113,14 +232,19 @@ export default function FloatingPet() {
       if (pet && dialogue) {
         triggerReaction(getRandomMessage(dialogue.reading));
         setBounceClass("animate-bounce-excited");
-        setTimeout(() => setBounceClass("animate-bounce-gentle"), 2000);
+        // Come celebrate near center!
+        setTargetPos(getCenterPosition());
+        setTimeout(() => {
+          setBounceClass("animate-bounce-gentle");
+          setTargetPos(getRandomPosition());
+        }, 2500);
       }
     };
     window.addEventListener("teensBibleDataChanged", handler);
     return () => window.removeEventListener("teensBibleDataChanged", handler);
   }, [pet, dialogue]);
 
-  // Periodic idle messages (every 25-50 seconds)
+  // Periodic idle messages
   useEffect(() => {
     if (!pet || !dialogue) return;
     const interval = setInterval(() => {
@@ -128,11 +252,11 @@ export default function FloatingPet() {
         const idleMessages = dialogue.idle[petState.mood];
         triggerReaction(getRandomMessage(idleMessages));
       }
-    }, 25000 + Math.random() * 25000);
+    }, 20000 + Math.random() * 20000);
     return () => clearInterval(interval);
   }, [pet, dialogue, petState.mood, showBubble, reaction, showMiniGame]);
 
-  // Show greeting on first render
+  // Greeting on first render
   useEffect(() => {
     if (pet && dialogue) {
       const timer = setTimeout(() => {
@@ -183,10 +307,8 @@ export default function FloatingPet() {
         const newCount = playCount + 1;
         setPlayCount(newCount);
         localStorage.setItem("petPlayCount", JSON.stringify({ date: today, count: newCount }));
-
         const playEmojis = ["⚽", "🎾", "🧸", "🎮", "🪀"];
         spawnHearts(playEmojis[Math.floor(Math.random() * playEmojis.length)], 3);
-
         const playReactions = [
           "*jumps excitedly* SO FUN! 🎉",
           "Again! Again! 🎮",
@@ -225,13 +347,16 @@ export default function FloatingPet() {
     if (isDragging || !dialogue) return;
 
     tapCountRef.current += 1;
-
     if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
 
     tapTimerRef.current = setTimeout(() => {
       if (tapCountRef.current >= 2) {
-        // Double tap → toggle mini-game
-        setShowMiniGame(prev => !prev);
+        // Double tap → toggle mini-game, pause wandering
+        setShowMiniGame(prev => {
+          const next = !prev;
+          pauseWanderRef.current = next;
+          return next;
+        });
       } else {
         // Single tap → show dialogue
         const messages = dialogue.tap[petState.mood];
@@ -246,29 +371,31 @@ export default function FloatingPet() {
     }, 300);
   }, [petState.mood, isDragging, dialogue]);
 
-  // Drag handlers
+  // Drag handlers - user can grab and toss the pet
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
     setIsDragging(false);
+    pauseWanderRef.current = true;
     dragRef.current = {
       startX: e.clientX,
       startY: e.clientY,
-      startPosX: position.x,
-      startPosY: position.y,
+      startPosX: pos.x,
+      startPosY: pos.y,
     };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  }, [position]);
+  }, [pos]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragRef.current) return;
-    const dx = dragRef.current.startX - e.clientX;
-    const dy = dragRef.current.startY - e.clientY;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
     if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
       setIsDragging(true);
     }
     const newX = Math.max(0, Math.min(window.innerWidth - 60, dragRef.current.startPosX + dx));
-    const newY = Math.max(-window.innerHeight + 120, Math.min(-80, dragRef.current.startPosY + dy));
-    setPosition({ x: newX, y: newY });
+    const newY = Math.max(40, Math.min(window.innerHeight - 120, dragRef.current.startPosY + dy));
+    setPos({ x: newX, y: newY });
+    setTargetPos({ x: newX, y: newY });
   }, []);
 
   const handlePointerUp = useCallback(() => {
@@ -276,7 +403,11 @@ export default function FloatingPet() {
       handlePetTap();
     }
     dragRef.current = null;
-    setTimeout(() => setIsDragging(false), 100);
+    // Resume wandering after 3 seconds
+    setTimeout(() => {
+      pauseWanderRef.current = false;
+      setIsDragging(false);
+    }, 3000);
   }, [isDragging, handlePetTap]);
 
   // Don't render if no pet equipped or on bible-ai page
@@ -290,10 +421,11 @@ export default function FloatingPet() {
   return (
     <div
       ref={petRef}
-      className="fixed z-[100] select-none touch-none"
+      className="fixed z-[100] select-none touch-none pointer-events-none"
       style={{
-        right: `${position.x}px`,
-        bottom: `${-position.y}px`,
+        left: `${pos.x}px`,
+        top: `${pos.y}px`,
+        transition: isDragging ? "none" : undefined,
       }}
     >
       {/* Heart particles */}
@@ -313,18 +445,16 @@ export default function FloatingPet() {
 
       {/* Mini-game panel */}
       {showMiniGame && (
-        <div className="absolute bottom-full right-0 mb-2 animate-fade-in">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 animate-fade-in pointer-events-auto">
           <div className="bg-[#1a1040]/95 backdrop-blur-md border border-purple-500/30 rounded-2xl p-3 shadow-xl min-w-[180px]">
-            {/* Header */}
             <div className="flex items-center justify-between mb-2">
               <span className="text-white text-xs font-bold">{pet.name}</span>
               <button
-                onClick={(e) => { e.stopPropagation(); setShowMiniGame(false); }}
+                onClick={(e) => { e.stopPropagation(); setShowMiniGame(false); pauseWanderRef.current = false; }}
                 className="text-gray-400 text-xs hover:text-white"
               >✕</button>
             </div>
 
-            {/* Happiness bar */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] text-gray-400">Happiness</span>
@@ -338,7 +468,6 @@ export default function FloatingPet() {
               </div>
             </div>
 
-            {/* Action buttons */}
             <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={(e) => { e.stopPropagation(); handleMiniGameAction("feed"); }}
@@ -371,7 +500,6 @@ export default function FloatingPet() {
               </button>
             </div>
 
-            {/* Status */}
             <div className="mt-2 flex items-center gap-2 justify-center">
               <span className="text-[10px] text-gray-500">Mood: {moodEmoji}</span>
               <span className="text-[10px] text-gray-500">•</span>
@@ -380,7 +508,6 @@ export default function FloatingPet() {
               </span>
             </div>
 
-            {/* Tip */}
             <p className="text-[9px] text-gray-600 text-center mt-2">
               💡 Read chapters to keep {pet.name} happy!
             </p>
@@ -388,25 +515,25 @@ export default function FloatingPet() {
         </div>
       )}
 
-      {/* Speech bubble / Reaction (only show if mini-game is closed) */}
+      {/* Speech bubble / Reaction */}
       {!showMiniGame && (showBubble || reaction) && (
-        <div className="absolute bottom-full right-0 mb-2 min-w-[140px] max-w-[200px] animate-fade-in">
-          <div className="bg-white/95 text-gray-800 text-xs font-medium px-3 py-2 rounded-xl rounded-br-sm shadow-lg relative">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 min-w-[130px] max-w-[190px] animate-fade-in pointer-events-none">
+          <div className="bg-white/95 text-gray-800 text-[11px] font-medium px-3 py-2 rounded-xl shadow-lg relative text-center">
             {reaction || bubbleText}
-            <div className="absolute -bottom-1.5 right-3 w-3 h-3 bg-white/95 rotate-45" />
+            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white/95 rotate-45" />
           </div>
         </div>
       )}
 
-      {/* Pet body */}
+      {/* Pet body - this is the interactive part */}
       <div
-        className={`relative cursor-grab active:cursor-grabbing ${bounceClass}`}
+        className={`relative cursor-grab active:cursor-grabbing pointer-events-auto ${bounceClass} ${wiggle ? "animate-wiggle" : ""}`}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
       >
         {/* Glow ring */}
-        <div className={`w-14 h-14 rounded-full flex items-center justify-center border-2 ${moodBorderColor} ${moodGlow} bg-[#0f0f2e]/80 backdrop-blur-sm`}>
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center border-2 ${moodBorderColor} ${moodGlow} bg-[#0f0f2e]/80 backdrop-blur-sm transition-all`}>
           <span className="text-3xl">{pet.petEmoji}</span>
         </div>
 
@@ -415,7 +542,7 @@ export default function FloatingPet() {
           {moodEmoji}
         </div>
 
-        {/* Mini-game indicator (double-tap hint) */}
+        {/* Mini-game indicator */}
         {!showMiniGame && (
           <div className="absolute -top-1 -left-1 w-4 h-4 rounded-full bg-purple-600/80 flex items-center justify-center">
             <span className="text-[8px]">🎮</span>
