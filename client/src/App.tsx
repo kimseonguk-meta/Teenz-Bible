@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Onboarding from "./components/Onboarding";
 import { initTheme } from "./data/storeItems";
 import DailyBonus from "./components/DailyBonus";
+import FloatingPet from "./components/FloatingPet";
 import { auth, signInAnonymously, onAuthStateChanged } from "./lib/firebase";
 import { initializeSync, scheduleSyncToFirebase, immediateSyncToFirebase } from "./lib/firebaseSync";
 
@@ -132,6 +133,7 @@ function App() {
           <GameProvider>
             {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
             {authReady && !showOnboarding && <DailyBonus />}
+            {authReady && !showOnboarding && <FloatingPet />}
             <Router />
           </GameProvider>
         </TooltipProvider>
