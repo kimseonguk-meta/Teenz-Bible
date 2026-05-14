@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { useLocation } from "wouter";
+import { auth } from "@/lib/firebase";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -179,6 +180,7 @@ export default function Profile() {
 
   return (
     <div className="px-4 pt-6 space-y-5 pb-8">
+
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative">

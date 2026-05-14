@@ -497,14 +497,14 @@ export function scheduleSyncToFirebase() {
   // Debounce: wait 2 seconds after last change before syncing
   if (syncTimeout) clearTimeout(syncTimeout);
   syncTimeout = setTimeout(() => {
-    syncToFirebase();
+    smartSyncToFirebase();
   }, 2000);
 }
 
 // Immediate sync for critical operations (purchases, equips)
 export function immediateSyncToFirebase() {
   if (syncTimeout) clearTimeout(syncTimeout);
-  syncToFirebase();
+  smartSyncToFirebase();
 }
 
 // Sync on page unload to prevent data loss
@@ -513,7 +513,7 @@ if (typeof window !== "undefined") {
     // Use sendBeacon-style sync or at least attempt sync
     if (syncTimeout) {
       clearTimeout(syncTimeout);
-      syncToFirebase();
+      smartSyncToFirebase();
     }
   });
 
@@ -521,7 +521,7 @@ if (typeof window !== "undefined") {
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden" && syncTimeout) {
       clearTimeout(syncTimeout);
-      syncToFirebase();
+      smartSyncToFirebase();
     }
   });
 }
