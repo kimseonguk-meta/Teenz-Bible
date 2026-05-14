@@ -4,6 +4,7 @@ export interface Chapter {
   num: number;
   title: string;
   paragraphs: string[];
+  verseRanges?: (string | null)[];
 }
 
 export type BibleData = Record<string, Chapter[]>;

@@ -397,6 +397,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
   const [marked, setMarked] = useState(false);
   const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
+  const [showVerses, setShowVerses] = useState(() => localStorage.getItem("showVerseNumbers") === "true");
 
   // Auto-dismiss the font size tip after 5 seconds
   useEffect(() => {
@@ -430,9 +431,13 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
   // Compute paragraphs early so TTS can use them
   let paragraphs = chapter ? chapter.paragraphs : [];
+  let verseRanges: (string | null)[] = chapter?.verseRanges || [];
   if (lang === "ko" && gospelDataKo[book]) {
     const koChapter = gospelDataKo[book].find((c: any) => c.num === chapter?.num);
-    if (koChapter) paragraphs = koChapter.paragraphs;
+    if (koChapter) {
+      paragraphs = koChapter.paragraphs;
+      if (koChapter.verseRanges) verseRanges = koChapter.verseRanges;
+    }
   }
 
   // === HD Cloud TTS via Cloudflare Workers Proxy ===
@@ -705,7 +710,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
               className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20">A+</button>
             {showFontTip && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
-                👆 글자 크기 조절 가능!
+                👆 Adjust font size here!
                 <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-600 rotate-45" />
               </div>
             )}
@@ -716,6 +721,12 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
             }`}>
             {isSpeaking ? (isPaused ? '▶' : '⏸') : '🎧'}
             <span className="text-[11px]">{isSpeaking ? (isPaused ? 'Resume' : 'Pause') : 'Listen'}</span>
+          </button>
+          <button onClick={() => { const next = !showVerses; setShowVerses(next); localStorage.setItem("showVerseNumbers", String(next)); }}
+            className={`w-8 h-8 rounded-lg border-2 text-[10px] font-bold active:scale-90 transition-all shadow-lg ${
+              showVerses ? 'bg-gradient-to-r from-cyan-600 to-cyan-800 border-cyan-400 text-white shadow-cyan-500/20' : 'bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-purple-300 shadow-purple-500/20'
+            }`} title="Toggle verse numbers">
+            v.
           </button>
         </div>
       </div>
@@ -780,10 +791,18 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       {/* Chapter Content */}
       <div className="space-y-4 p-4 rounded-xl transition-colors" style={{ fontSize: `${fontSize}px`, backgroundColor: readerBgStyle?.bg || 'transparent' }}>
         {paragraphs.map((para: string, i: number) => {
+          const vr = verseRanges[i] || null;
           if (para.startsWith("§")) {
             return <h3 key={i} className="font-bold text-base mt-4 mb-2" style={{ color: readerBgStyle ? readerBgStyle.text : undefined, opacity: 0.8 }}>{para.slice(1)}</h3>;
           }
-          return <p key={i} className="leading-relaxed" style={{ color: readerBgStyle?.text || '#e2e8f0' }}>{para}</p>;
+          return (
+            <p key={i} className="leading-relaxed" style={{ color: readerBgStyle?.text || '#e2e8f0' }}>
+              {showVerses && vr && (
+                <span className="inline-block mr-1.5 text-[0.7em] font-bold align-super opacity-60" style={{ color: '#a78bfa' }}>{vr}</span>
+              )}
+              {para}
+            </p>
+          );
         })}
       </div>
 
