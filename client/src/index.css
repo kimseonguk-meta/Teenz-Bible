@@ -140,7 +140,7 @@
 
 /* Neon Cosmic Custom Utilities - uses --neon-rgb CSS variable for theme support */
 .neon-card {
-  background: rgba(15, 5, 40, 0.75);
+  background: var(--neon-card-bg, rgba(15, 5, 40, 0.75));
   backdrop-filter: blur(12px);
   border: 2px solid rgba(var(--neon-rgb, 139, 92, 246), 0.6);
   border-radius: 20px;
@@ -148,7 +148,7 @@
 }
 
 .neon-card-gold {
-  background: rgba(20, 10, 5, 0.75);
+  background: var(--neon-card-gold-bg, rgba(20, 10, 5, 0.75));
   backdrop-filter: blur(12px);
   border: 2px solid rgba(255, 215, 0, 0.6);
   border-radius: 20px;
@@ -168,7 +168,13 @@
 }
 
 .cosmic-bg {
-  background: linear-gradient(180deg, #0a0015 0%, #1a0033 40%, #0d001a 70%, #050010 100%);
+  background: linear-gradient(
+    180deg,
+    var(--cosmic-bg-1, #0a0015) 0%,
+    var(--cosmic-bg-2, #1a0033) 40%,
+    var(--cosmic-bg-3, #0d001a) 70%,
+    var(--cosmic-bg-4, #050010) 100%
+  );
   min-height: 100vh;
   position: relative;
 }

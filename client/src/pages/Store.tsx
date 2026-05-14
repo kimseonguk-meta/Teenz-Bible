@@ -46,17 +46,29 @@ export default function Store() {
   const [isOpening, setIsOpening] = useState(false);
   const [previewingTheme, setPreviewingTheme] = useState<string | null>(null);
 
-  // Listen for gems changes
+  // Listen for gems changes and sync updates
   useEffect(() => {
     const handler = () => {
       setGems(getGems());
       setInventory(getInventory());
     };
+    const eqHandler = () => setEquipped(getEquipped());
     window.addEventListener("gems-changed", handler);
-    window.addEventListener("equipped-changed", () => setEquipped(getEquipped()));
+    window.addEventListener("sync-restored", handler);
+    window.addEventListener("equipped-changed", eqHandler);
+
+    // Re-read after short delay to catch sync that fired before mount
+    const syncTimer = setTimeout(() => {
+      setGems(getGems());
+      setInventory(getInventory());
+      setEquipped(getEquipped());
+    }, 1500);
+
     return () => {
       window.removeEventListener("gems-changed", handler);
-      window.removeEventListener("equipped-changed", () => setEquipped(getEquipped()));
+      window.removeEventListener("sync-restored", handler);
+      window.removeEventListener("equipped-changed", eqHandler);
+      clearTimeout(syncTimer);
     };
   }, []);
 

@@ -111,6 +111,36 @@ function calcLevel(xp: number) {
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(loadState);
 
+  // Listen for external sync events (e.g., Firebase merge updated localStorage)
+  useEffect(() => {
+    const refreshFromLocalStorage = () => {
+      setState(prev => {
+        const fresh = loadState();
+        // Only update if something actually changed
+        if (fresh.gems !== prev.gems || fresh.playerName !== prev.playerName || fresh.totalXP !== prev.totalXP) {
+          return { ...prev, ...fresh, settingsOpen: prev.settingsOpen, editNameOpen: prev.editNameOpen, notificationsOpen: prev.notificationsOpen };
+        }
+        return prev;
+      });
+    };
+
+    const handleGemsChanged = () => refreshFromLocalStorage();
+    const handleSyncRestored = () => refreshFromLocalStorage();
+
+    window.addEventListener("gems-changed", handleGemsChanged);
+    window.addEventListener("sync-restored", handleSyncRestored);
+
+    // Also re-read localStorage after a short delay to catch async sync updates
+    // that may have fired before this component mounted
+    const syncCheckTimer = setTimeout(refreshFromLocalStorage, 1500);
+
+    return () => {
+      window.removeEventListener("gems-changed", handleGemsChanged);
+      window.removeEventListener("sync-restored", handleSyncRestored);
+      clearTimeout(syncCheckTimer);
+    };
+  }, []);
+
   const addXP = useCallback((amount: number) => {
     setState(prev => {
       const newXP = prev.totalXP + amount;

@@ -311,28 +311,90 @@ export async function syncFromFirebase(): Promise<boolean> {
       localStorage.setItem("lastSyncedAt", String(remoteSyncTime));
       return true; // Data was restored
     } else {
-      // Even if local is newer, merge inventory items from remote
-      // This ensures admin-granted items are always picked up
+      // Even if local is newer, merge critical data from remote
+      // This ensures admin-granted items and gems are always picked up
+      let anyMerged = false;
+
+      // Merge inventory items
       if (remoteData.inventory?.ownedItems) {
         try {
           const localInvRaw = localStorage.getItem("teensBibleInventory");
           const localInv = localInvRaw ? JSON.parse(localInvRaw) : { ownedItems: ["theme_twilight", "reader_dark", "frame_none"] };
           const localOwned = new Set(localInv.ownedItems || []);
           const remoteOwned = remoteData.inventory.ownedItems || [];
-          let merged = false;
           for (const item of remoteOwned) {
             if (!localOwned.has(item)) {
               localInv.ownedItems.push(item);
-              merged = true;
+              anyMerged = true;
               console.log(`[Sync] Merged missing item from remote: ${item}`);
             }
           }
-          if (merged) {
+          if (anyMerged) {
             localStorage.setItem("teensBibleInventory", JSON.stringify(localInv));
           }
         } catch {}
       }
-      console.log("[Sync] Local data is newer or same, no full restore needed");
+
+      // Merge gems: always take the higher value (admin grants increase remote)
+      if (remoteData.stats?.gems !== undefined) {
+        try {
+          const localRaw = localStorage.getItem("teensBible");
+          const localData = localRaw ? JSON.parse(localRaw) : {};
+          const localGems = localData.gems || 0;
+          const remoteGems = remoteData.stats.gems || 0;
+          if (remoteGems > localGems) {
+            localData.gems = remoteGems;
+            localStorage.setItem("teensBible", JSON.stringify(localData));
+            anyMerged = true;
+            console.log(`[Sync] Merged gems from remote: ${localGems} → ${remoteGems}`);
+            // Dispatch event so UI updates
+            window.dispatchEvent(new CustomEvent("gems-changed", { detail: remoteGems }));
+          }
+        } catch {}
+      }
+
+      // Merge equipped state from remote (in case admin changed it)
+      if (remoteData.equipped) {
+        try {
+          const localEqRaw = localStorage.getItem("teensBibleEquipped");
+          const localEq = localEqRaw ? JSON.parse(localEqRaw) : { theme: "theme_twilight", readerBg: "reader_dark", frame: "frame_none", pet: null };
+          // Only apply remote equipped if it references items the user owns
+          const localInvRaw = localStorage.getItem("teensBibleInventory");
+          const localInv = localInvRaw ? JSON.parse(localInvRaw) : { ownedItems: [] };
+          const owned = new Set(localInv.ownedItems || []);
+          let eqChanged = false;
+          if (remoteData.equipped.readerBg && remoteData.equipped.readerBg !== localEq.readerBg && owned.has(remoteData.equipped.readerBg)) {
+            localEq.readerBg = remoteData.equipped.readerBg;
+            eqChanged = true;
+          }
+          if (remoteData.equipped.theme && remoteData.equipped.theme !== localEq.theme && owned.has(remoteData.equipped.theme)) {
+            localEq.theme = remoteData.equipped.theme;
+            eqChanged = true;
+          }
+          if (remoteData.equipped.frame && remoteData.equipped.frame !== localEq.frame && owned.has(remoteData.equipped.frame)) {
+            localEq.frame = remoteData.equipped.frame;
+            eqChanged = true;
+          }
+          if (remoteData.equipped.pet !== undefined && remoteData.equipped.pet !== localEq.pet) {
+            if (remoteData.equipped.pet === null || owned.has(remoteData.equipped.pet)) {
+              localEq.pet = remoteData.equipped.pet;
+              eqChanged = true;
+            }
+          }
+          if (eqChanged) {
+            localStorage.setItem("teensBibleEquipped", JSON.stringify(localEq));
+            anyMerged = true;
+            console.log(`[Sync] Merged equipped state from remote`);
+            window.dispatchEvent(new CustomEvent("equipped-changed", { detail: localEq }));
+          }
+        } catch {}
+      }
+
+      if (anyMerged) {
+        console.log("[Sync] Merged remote data into local (local was newer)");
+      } else {
+        console.log("[Sync] Local data is newer or same, no merge needed");
+      }
       return false;
     }
   } catch (err) {
@@ -349,11 +411,83 @@ export async function fullSync(): Promise<{ restored: boolean }> {
   // Step 1: Check if remote has newer data (e.g., user cleared browser or switched device)
   const restored = await syncFromFirebase();
 
-  // Step 2: Always upload current state to keep Firebase up to date
-  // Even after restore, upload to ensure merged data is saved back
-  await syncToFirebase();
+  // Step 2: Upload current state, but use smart merge to not overwrite admin-granted data
+  await smartSyncToFirebase();
 
   return { restored };
+}
+
+// Smart sync: reads remote first, merges admin-granted values, then uploads
+async function smartSyncToFirebase(): Promise<boolean> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) return false;
+
+  try {
+    // Read current remote state
+    const snapshot = await get(ref(db, `userData/${uid}`));
+    const remoteData = snapshot.val() as UserDataSnapshot | null;
+    
+    const localData = collectLocalData();
+
+    // If remote has higher gems (admin grant), preserve the higher value
+    if (remoteData?.stats?.gems !== undefined) {
+      const remoteGems = remoteData.stats.gems || 0;
+      if (remoteGems > localData.stats.gems) {
+        localData.stats.gems = remoteGems;
+        // Also update localStorage so UI stays in sync
+        let teensBible: any = {};
+        try {
+          const raw = localStorage.getItem("teensBible");
+          if (raw) teensBible = JSON.parse(raw);
+        } catch {}
+        teensBible.gems = remoteGems;
+        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+        console.log(`[Sync] Preserved higher remote gems: ${remoteGems}`);
+        // Notify UI
+        window.dispatchEvent(new CustomEvent("gems-changed", { detail: remoteGems }));
+      }
+    }
+
+    // If remote has inventory items we don't have, merge them
+    if (remoteData?.inventory?.ownedItems) {
+      const localOwned = new Set(localData.inventory.ownedItems);
+      for (const item of remoteData.inventory.ownedItems) {
+        if (!localOwned.has(item)) {
+          localData.inventory.ownedItems.push(item);
+          console.log(`[Sync] Preserved remote inventory item: ${item}`);
+        }
+      }
+    }
+
+    // Now upload the merged data
+    await set(ref(db, `userData/${uid}`), localData);
+
+    // Also update leaderboard-facing data
+    const groupCode = localData.profile.groupCode || "GLOBAL";
+    const leaderboardData = {
+      nickname: localData.profile.nickname,
+      avatar: localData.profile.avatar,
+      groupCode,
+      xp: localData.stats.totalXP,
+      streak: 0,
+      chaptersRead: Object.values(localData.chaptersRead).reduce((sum, arr) => sum + arr.length, 0),
+      quizTotal: localData.stats.quizTotal,
+      quizCorrect: localData.stats.quizCorrect,
+      joinedAt: localData.profile.joinedAt,
+      isNasumMember: localData.profile.isNasumMember,
+      lastActive: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    await update(ref(db, `users/${uid}`), leaderboardData);
+    await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
+
+    console.log("[Sync] ✅ Smart sync uploaded to Firebase");
+    return true;
+  } catch (err) {
+    console.error("[Sync] ❌ Smart sync failed, falling back to regular sync:", err);
+    return syncToFirebase();
+  }
 }
 
 // ─── Auto-sync: Call after any significant data change ──────────

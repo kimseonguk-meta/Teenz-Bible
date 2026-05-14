@@ -80,6 +80,9 @@ function App() {
             console.log("[Sync] Data restored from Firebase!");
             // Re-apply theme after restore
             initTheme();
+            // Notify all components that data was restored
+            window.dispatchEvent(new CustomEvent("sync-restored"));
+            window.dispatchEvent(new CustomEvent("gems-changed"));
             // If profile was restored, hide onboarding
             const profile = localStorage.getItem("teensBibleProfile");
             if (profile) {

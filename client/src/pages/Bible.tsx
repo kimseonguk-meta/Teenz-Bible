@@ -5,7 +5,7 @@ import { ytVideos } from "@/data/ytVideos";
 import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
-import { getEquipped, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
+import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -446,6 +446,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
        return bgItem?.readerStyle ? { bg: bgItem.readerStyle.bg, text: bgItem.readerStyle.text } : null;
      } catch { return null; }
    });
+   const [showReaderPicker, setShowReaderPicker] = useState(false);
+   const ownedReaderBgs = READER_BACKGROUNDS.filter(bg => getInventory().ownedItems.includes(bg.id));
 
    // Listen for equipped changes to update reader background reactively
    useEffect(() => {
@@ -763,8 +765,47 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
             }`} title="Toggle verse numbers">
             v.
           </button>
+          <button onClick={() => setShowReaderPicker(!showReaderPicker)}
+            className="w-8 h-8 rounded-lg border-2 text-sm active:scale-90 transition-all shadow-lg bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-white shadow-purple-500/20"
+            title="Change reader skin">
+            🎨
+          </button>
         </div>
       </div>
+
+      {/* Reader BG Picker */}
+      {showReaderPicker && (
+        <div className="mb-4 p-3 rounded-xl neon-card">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-white text-xs font-bold">📖 Reader Skin</span>
+            <button onClick={() => setShowReaderPicker(false)} className="text-purple-300 text-xs">✕</button>
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {ownedReaderBgs.map(bg => {
+              const isActive = getEquipped().readerBg === bg.id;
+              return (
+                <button key={bg.id}
+                  onClick={() => {
+                    equipItem(bg.id, 'readerBg');
+                    const bgItem = READER_BACKGROUNDS.find(b => b.id === bg.id);
+                    setReaderBgStyle(bgItem?.readerStyle ? { bg: bgItem.readerStyle.bg, text: bgItem.readerStyle.text } : null);
+                    toast.success(`${bg.emoji} ${bg.name} applied!`);
+                  }}
+                  className={`flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-all active:scale-95 ${
+                    isActive ? 'border-cyan-400 bg-cyan-500/20' : 'border-purple-500/30 bg-purple-900/30 hover:border-purple-400/50'
+                  }`}>
+                  <div className="w-8 h-8 rounded-md border border-white/20" style={{ backgroundColor: bg.readerStyle?.bg || '#0a0a1a' }} />
+                  <span className="text-[9px] text-white/80 leading-tight text-center">{bg.readerStyle?.label || bg.name}</span>
+                  {isActive && <span className="text-[8px] text-cyan-400">✓</span>}
+                </button>
+              );
+            })}
+          </div>
+          {ownedReaderBgs.length < READER_BACKGROUNDS.length && (
+            <p className="text-[10px] text-purple-400 mt-2 text-center">🛒 Get more skins from the Store!</p>
+          )}
+        </div>
+      )}
 
       {/* TTS Controls */}
       {isSpeaking && (
