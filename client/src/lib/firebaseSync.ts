@@ -311,7 +311,28 @@ export async function syncFromFirebase(): Promise<boolean> {
       localStorage.setItem("lastSyncedAt", String(remoteSyncTime));
       return true; // Data was restored
     } else {
-      console.log("[Sync] Local data is newer or same, no restore needed");
+      // Even if local is newer, merge inventory items from remote
+      // This ensures admin-granted items are always picked up
+      if (remoteData.inventory?.ownedItems) {
+        try {
+          const localInvRaw = localStorage.getItem("teensBibleInventory");
+          const localInv = localInvRaw ? JSON.parse(localInvRaw) : { ownedItems: ["theme_twilight", "reader_dark", "frame_none"] };
+          const localOwned = new Set(localInv.ownedItems || []);
+          const remoteOwned = remoteData.inventory.ownedItems || [];
+          let merged = false;
+          for (const item of remoteOwned) {
+            if (!localOwned.has(item)) {
+              localInv.ownedItems.push(item);
+              merged = true;
+              console.log(`[Sync] Merged missing item from remote: ${item}`);
+            }
+          }
+          if (merged) {
+            localStorage.setItem("teensBibleInventory", JSON.stringify(localInv));
+          }
+        } catch {}
+      }
+      console.log("[Sync] Local data is newer or same, no full restore needed");
       return false;
     }
   } catch (err) {
