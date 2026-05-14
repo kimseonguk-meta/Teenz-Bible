@@ -5,6 +5,7 @@ import { ytVideos } from "@/data/ytVideos";
 import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
+import { getEquipped, PETS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -398,6 +399,28 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [marked, setMarked] = useState(false);
   const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
   const [showVerses, setShowVerses] = useState(() => localStorage.getItem("showVerseNumbers") === "true");
+
+  // Pet state for reading companion
+  const [petReaction, setPetReaction] = useState<string | null>(null);
+  const equippedData = getEquipped();
+  const equippedPet = equippedData.pet ? PETS.find(p => p.id === equippedData.pet) : null;
+  const petState = getPetState();
+
+  // Listen for pet state changes
+  useEffect(() => {
+    const handler = () => setPetReaction(null);
+    window.addEventListener("pet-state-changed", handler);
+    return () => window.removeEventListener("pet-state-changed", handler);
+  }, []);
+
+  // Show pet reaction when chapter is completed
+  useEffect(() => {
+    if (marked && equippedPet) {
+      setPetReaction(`${equippedPet.petEmoji} Yay! +10 XP!`);
+      const timer = setTimeout(() => setPetReaction(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [marked]);
 
   // Auto-dismiss the font size tip after 5 seconds
   useEffect(() => {
@@ -805,6 +828,25 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           );
         })}
       </div>
+
+      {/* Pet Companion Widget */}
+      {equippedPet && (
+        <div className="mt-6 flex items-center gap-3 p-3 rounded-xl bg-purple-900/20 border border-purple-500/20">
+          <div className="text-3xl relative">
+            {equippedPet.petEmoji}
+            <span className="absolute -top-1 -right-1 text-xs">{getPetMoodEmoji(petState.mood)}</span>
+          </div>
+          <div className="flex-1">
+            <p className="text-white text-sm font-bold">{equippedPet.name}</p>
+            <p className="text-gray-400 text-xs">{getPetMoodMessage(petState.mood, equippedPet.name)}</p>
+          </div>
+          {petReaction && (
+            <div className="px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-lg animate-bounce">
+              <span className="text-green-300 text-xs font-bold">{petReaction}</span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Quiz prompt */}
       {quizAvailable && (

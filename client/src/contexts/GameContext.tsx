@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { toast } from "sonner";
+import { feedPet, getEquipped, getPetState, PETS } from "@/data/storeItems";
 
 // Dispatch sync event after data changes
 function dispatchSyncEvent() {
@@ -207,6 +208,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
       // Add XP and Gems for reading
       addXP(10);
       addGems(5);
+
+      // Feed pet when reading a chapter
+      const equipped = getEquipped();
+      if (equipped.pet) {
+        feedPet();
+        const pet = PETS.find(p => p.id === equipped.pet);
+        if (pet) {
+          toast.success(`${pet.petEmoji} ${pet.name} is happy! Fed successfully!`);
+        }
+      }
 
       // Check badges
       setState(prev => {

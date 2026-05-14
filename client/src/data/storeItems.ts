@@ -237,7 +237,7 @@ export const PROFILE_FRAMES: StoreItem[] = [
 export const PETS: StoreItem[] = [
   {
     id: "pet_cat",
-    name: "Faithy Cat",
+    name: "Faithy Pet",
     category: "pets",
     price: 50,
     emoji: "🐱",
@@ -486,4 +486,70 @@ function setGems(amount: number) {
     localStorage.setItem("teensBible", JSON.stringify(data));
     window.dispatchEvent(new CustomEvent("gems-changed", { detail: amount }));
   } catch {}
+}
+
+// ============ PET MOOD SYSTEM ============
+const PET_STATE_KEY = "teensBiblePetState";
+
+export type PetMood = "happy" | "hungry" | "sad";
+
+export interface PetState {
+  lastFedDate: string; // ISO date string (YYYY-MM-DD)
+  mood: PetMood;
+}
+
+function getToday(): string {
+  return new Date().toISOString().split("T")[0];
+}
+
+function daysSince(dateStr: string): number {
+  const then = new Date(dateStr);
+  const now = new Date();
+  const diff = now.getTime() - then.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+export function getPetState(): PetState {
+  try {
+    const raw = localStorage.getItem(PET_STATE_KEY);
+    if (raw) {
+      const state: PetState = JSON.parse(raw);
+      // Recalculate mood based on days since last fed
+      const days = daysSince(state.lastFedDate);
+      if (days === 0) state.mood = "happy";
+      else if (days === 1) state.mood = "hungry";
+      else state.mood = "sad";
+      return state;
+    }
+  } catch {}
+  // Default: never fed, sad
+  return { lastFedDate: "2000-01-01", mood: "sad" };
+}
+
+export function savePetState(state: PetState) {
+  localStorage.setItem(PET_STATE_KEY, JSON.stringify(state));
+  window.dispatchEvent(new CustomEvent("pet-state-changed", { detail: state }));
+}
+
+export function feedPet() {
+  const state = getPetState();
+  state.lastFedDate = getToday();
+  state.mood = "happy";
+  savePetState(state);
+}
+
+export function getPetMoodEmoji(mood: PetMood): string {
+  switch (mood) {
+    case "happy": return "😊";
+    case "hungry": return "😐";
+    case "sad": return "😢";
+  }
+}
+
+export function getPetMoodMessage(mood: PetMood, petName: string): string {
+  switch (mood) {
+    case "happy": return `${petName} is happy! 🎉`;
+    case "hungry": return `${petName} is hungry! Read a chapter to feed me! 📖`;
+    case "sad": return `${petName} misses you... Come back and read! 💤`;
+  }
 }
