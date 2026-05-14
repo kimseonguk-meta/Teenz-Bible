@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { useLocation } from "wouter";
 import { auth } from "@/lib/firebase";
-import { ProfilePhotoUploader, getProfilePhotoUrl } from "@/components/ProfilePhotoPrompt";
+import { getProfilePhotoUrl, setProfilePhoto, removeProfilePhoto } from "@/components/ProfilePhotoPrompt";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -93,6 +93,9 @@ export default function Profile() {
   const [language, setLanguage] = useState<"en" | "ko">(getLanguagePref);
   const [fontSize, setFontSize] = useState(getFontSize);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [showPhotoMenu, setShowPhotoMenu] = useState(false);
+  const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const [redeemCode, setRedeemCode] = useState("");
   const [redeemResult, setRedeemResult] = useState<{ msg: string; success: boolean } | null>(null);
 
@@ -185,20 +188,69 @@ export default function Profile() {
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative">
-          <div className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}>
-            {getProfilePhotoUrl() ? (
-              <img src={getProfilePhotoUrl()!} alt="Profile" className="w-full h-full object-cover" />
+          <div
+            onClick={() => setShowPhotoMenu(prev => !prev)}
+            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
+          >
+            {profilePhoto ? (
+              <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <span className="text-5xl">{avatar}</span>
             )}
+            {/* Camera overlay hint */}
+            <div className="absolute inset-0 rounded-full bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+              <span className="text-white text-2xl">📷</span>
+            </div>
           </div>
           {equippedPet && (
             <div className="absolute -top-1 -left-2 text-2xl">{equippedPet.petEmoji}</div>
           )}
         </div>
-        <div className="mt-3">
-          <ProfilePhotoUploader />
-        </div>
+
+        {/* Photo menu popup */}
+        {showPhotoMenu && (
+          <div className="mt-2 flex gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+            <button
+              onClick={() => { photoInputRef.current?.click(); setShowPhotoMenu(false); }}
+              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
+            >
+              📷 {profilePhoto ? "Change Photo" : "Upload Photo"}
+            </button>
+            {profilePhoto && (
+              <button
+                onClick={() => { removeProfilePhoto(); setProfilePhotoState(null); setShowPhotoMenu(false); }}
+                className="px-3 py-1.5 rounded-lg bg-red-600/20 border border-red-500/30 text-red-300 text-xs font-medium transition-all active:scale-95"
+              >
+                🗑 Remove
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Hidden file input */}
+        <input
+          ref={photoInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (!file || !file.type.startsWith("image/")) return;
+            const canvas = document.createElement("canvas");
+            const img = new Image();
+            img.onload = () => {
+              const size = Math.min(img.width, img.height);
+              const sx = (img.width - size) / 2;
+              const sy = (img.height - size) / 2;
+              canvas.width = 200; canvas.height = 200;
+              canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 200, 200);
+              const base64 = canvas.toDataURL("image/jpeg", 0.8);
+              setProfilePhoto(base64);
+              setProfilePhotoState(base64);
+            };
+            img.src = URL.createObjectURL(file);
+          }}
+        />
         <h2 className="text-2xl font-bold text-white mt-3 font-display">{playerName}</h2>
         <div className="flex items-center gap-2 mt-1">
           <span className="px-3 py-1 rounded-full bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium">

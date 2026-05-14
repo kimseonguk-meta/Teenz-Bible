@@ -1,0 +1,35 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [],
+  "dev_command": "pnpm run dev",
+  "env_vars": {},
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663322885440/eyf7JgudwZUosztoRMCJZY",
+    "access_key_id": "ASIAZV3A2ECZHFFC2UDM",
+    "secret_access_key": "ppGEj8x4uGs5BS3RX4WW10GH9gZyo501E4eV0O2Y",
+    "session_token": "IQoJb3JpZ2luX2VjEJb//////////wEaCXVzLWVhc3QtMSJHMEUCIA/+wBEt5klOLCROmC56m8OxIeEtDu/fm+0wyjs3fZRbAiEAjI1Hvrg52oYAwLsuQQusH6cyS7xYXuMGARy2G/y5uNsq9gMIXhAEGgw2NjUzODYwOTg4NjYiDPlCMRqvFAHkOa+WBirTA4DHiAJ+2nDsqKlqItRJeQyNFRGnr4Fo+wb8O/ocThs6kRfkzXVs1vzAgO0rUX4Yh0PdUjxnLjUEkApJo5M79NHGnh1Bpwo9dINsZhRzy4CHWKhuLI2Qgof11Fq9a3G86lo9gDmx1JillWAtnTjtlQs3s+3xMlcSp85vMZcyQH+CAC4tcFOvwFGg41iEy4JDhAsfO2xrOBzJmDTJHuKjS3Sp/qvTVPK/jD3CPwy+ZKG7hX87oQjJQAaVmcrFFTlcr3reSE2o4ACmXM0OXBtiljjRaOWEVb0XNEE5mzP02OLP1JDayZJ0CLlZ53KlYF0n1F2W15WVIWUYAruzMZs5uykZhYQQ7xchV/KgtUttJ2H+Vnf9tZIrLRVa0BnniizGhEyHOdtMABYCXJnXMaAwpzhil7EGeOEApLakpPoKPtT3JMjaKPZmrr7k0UD2KBTgkx9jlpf5tjzjUktPah5rwwcZ0xxSbCwFczwgFAT0q1+/TNigh3qsemSNgfQ9J6/jl7HJZKfmxWIEKCGfkSBySAsZAcKlipyGxqs8vHphdhnRIp0noFXU2DjVRfIifdDDkVgJQJ0/2GUtFN5g5JjtBWmmoFicr9zSOkpC2KejUXNyMcUqMIyYl9AGOp0BZDpXq8xH8ucILlO/vjBQO2wEOL9QmkkvdTC/NZnxa2i1XrEBfhY2NCR4fX86CLfWLr4bgFXB8DGFRsvsLm0fG8oJERGKAsDBdkUFRib0RxKovKZbZVd1C3RtKyLXKymIIE3umbO+bwA6pNM4q5v0HFT2n1AwUOwAMU8uPnttwKkBtKGhono+2TC0xC0NXuQ64FyaFnzcGbb5wvTAhw==",
+    "expiration": "2026-05-15T01:20:12.000Z"
+  },
+  "name": "teens-bible-app",
+  "path": "/home/ubuntu/teens-bible-app",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "hVW5miJaNkNp8YsD3NUfcU",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "Qq6PnhW24fwbEvUsznwBsD",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Seonguk Kim",
+    "OWNER_OPEN_ID": "NgMUME39QmdWqy2gXGBu9k",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "d359a9bf-95e1-4609-8e4e-884d23787f49",
+    "VITE_APP_ID": "eyf7JgudwZUosztoRMCJZY",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310519663322885440/XUwqhyvqxBABydPq.png",
+    "VITE_APP_TITLE": "Teens Bible",
+    "VITE_FRONTEND_FORGE_API_KEY": "Vu4Lc4wYhxbgFWACE5YMN8",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}

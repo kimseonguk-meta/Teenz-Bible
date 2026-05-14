@@ -218,26 +218,7 @@ export function ProfilePhotoUploader() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div
-        onClick={() => fileInputRef.current?.click()}
-        className="relative cursor-pointer group"
-      >
-        <div className="w-20 h-20 rounded-full overflow-hidden border-3 border-purple-500/60 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
-          {photo ? (
-            <img src={photo} alt="Profile" className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full bg-purple-900/40 flex items-center justify-center">
-              <span className="text-3xl">{(() => { try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return p.avatar || "👦"; } catch { return "👦"; } })()}</span>
-            </div>
-          )}
-        </div>
-        {/* Camera overlay */}
-        <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity">
-          <span className="text-white text-lg">📷</span>
-        </div>
-      </div>
-
+    <div className="flex flex-col items-center gap-1">
       <input
         ref={fileInputRef}
         type="file"
@@ -246,17 +227,17 @@ export function ProfilePhotoUploader() {
         className="hidden"
       />
 
-      <div className="flex gap-2">
+      <div className="flex gap-3 items-center">
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="text-purple-300 text-[10px] underline"
+          className="text-purple-300 text-xs underline"
         >
-          {photo ? "Change" : "Upload Photo"}
+          {photo ? "📷 Change Photo" : "📷 Upload Photo"}
         </button>
         {photo && (
           <button
             onClick={handleRemove}
-            className="text-red-400 text-[10px] underline"
+            className="text-red-400 text-xs underline"
           >
             Remove
           </button>
