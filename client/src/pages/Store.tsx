@@ -66,7 +66,8 @@ export default function Store() {
       toast.success(`Purchased ${item.name}! 🎉`);
       setGems(getGems());
       setInventory(getInventory());
-      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+      // Critical sync: purchases must be saved immediately to prevent data loss
+      window.dispatchEvent(new CustomEvent("teensBibleCriticalSync"));
     } else {
       toast.error(result.message);
     }
@@ -80,7 +81,8 @@ export default function Store() {
     }
     setEquipped(getEquipped());
     toast.success(`Equipped ${item.name}! ✨`);
-    window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+    // Critical sync: equip changes must be saved immediately
+    window.dispatchEvent(new CustomEvent("teensBibleCriticalSync"));
   }, []);
 
   const handleUnequipPet = useCallback(() => {

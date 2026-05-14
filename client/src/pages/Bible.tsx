@@ -5,7 +5,7 @@ import { ytVideos } from "@/data/ytVideos";
 import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
-import { getEquipped, PETS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
+import { getEquipped, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -402,15 +402,20 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
   // Pet state for reading companion
   const [petReaction, setPetReaction] = useState<string | null>(null);
-  const equippedData = getEquipped();
+  const [equippedData, setEquippedData] = useState(getEquipped);
   const equippedPet = equippedData.pet ? PETS.find(p => p.id === equippedData.pet) : null;
   const petState = getPetState();
 
-  // Listen for pet state changes
+  // Listen for pet state and equipped changes
   useEffect(() => {
-    const handler = () => setPetReaction(null);
-    window.addEventListener("pet-state-changed", handler);
-    return () => window.removeEventListener("pet-state-changed", handler);
+    const handlePetChange = () => setPetReaction(null);
+    const handleEquipChange = () => setEquippedData(getEquipped());
+    window.addEventListener("pet-state-changed", handlePetChange);
+    window.addEventListener("equipped-changed", handleEquipChange);
+    return () => {
+      window.removeEventListener("pet-state-changed", handlePetChange);
+      window.removeEventListener("equipped-changed", handleEquipChange);
+    };
   }, []);
 
   // Show pet reaction when chapter is completed
@@ -433,24 +438,31 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     }
   }, [showFontTip]);
 
-  // Reader background from Store
-  const readerBgStyle = (() => {
-    try {
-      const raw = localStorage.getItem("teensBibleEquipped");
-      if (raw) {
-        const eq = JSON.parse(raw);
-        const READER_BGS: Record<string, { bg: string; text: string }> = {
-          reader_dark: { bg: "#0a0a1a", text: "#e2e8f0" },
-          reader_parchment: { bg: "#f5e6c8", text: "#3d2b1f" },
-          reader_nightsky: { bg: "#0f172a", text: "#cbd5e1" },
-          reader_cream: { bg: "#fffbeb", text: "#451a03" },
-          reader_mint: { bg: "#ecfdf5", text: "#064e3b" },
-        };
-        return READER_BGS[eq.readerBg] || null;
-      }
-    } catch {}
-    return null;
-  })();
+  // Reader background from Store - dynamically looks up from all available backgrounds
+   const [readerBgStyle, setReaderBgStyle] = useState<{ bg: string; text: string } | null>(() => {
+     try {
+       const eq = getEquipped();
+       const bgItem = READER_BACKGROUNDS.find(b => b.id === eq.readerBg);
+       return bgItem?.readerStyle ? { bg: bgItem.readerStyle.bg, text: bgItem.readerStyle.text } : null;
+     } catch { return null; }
+   });
+
+   // Listen for equipped changes to update reader background reactively
+   useEffect(() => {
+     const handleEquippedChange = () => {
+       try {
+         const eq = getEquipped();
+         const bgItem = READER_BACKGROUNDS.find(b => b.id === eq.readerBg);
+         setReaderBgStyle(bgItem?.readerStyle ? { bg: bgItem.readerStyle.bg, text: bgItem.readerStyle.text } : null);
+       } catch {}
+     };
+     window.addEventListener("equipped-changed", handleEquippedChange);
+     window.addEventListener("storage", handleEquippedChange);
+     return () => {
+       window.removeEventListener("equipped-changed", handleEquippedChange);
+       window.removeEventListener("storage", handleEquippedChange);
+     };
+   }, []);
 
   // Compute paragraphs early so TTS can use them
   let paragraphs = chapter ? chapter.paragraphs : [];

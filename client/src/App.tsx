@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import Onboarding from "./components/Onboarding";
 import { initTheme } from "./data/storeItems";
 import { auth, signInAnonymously, onAuthStateChanged } from "./lib/firebase";
-import { initializeSync, scheduleSyncToFirebase } from "./lib/firebaseSync";
+import { initializeSync, scheduleSyncToFirebase, immediateSyncToFirebase } from "./lib/firebaseSync";
 
 // Lazy load heavy pages for code splitting
 const Bible = lazy(() => import("./pages/Bible"));
@@ -98,12 +98,19 @@ function App() {
       scheduleSyncToFirebase();
     };
 
+    // Critical sync for purchases/equips (no debounce)
+    const handleCriticalSync = () => {
+      immediateSyncToFirebase();
+    };
+
     // Custom event for triggering sync from other components
     window.addEventListener("teensBibleDataChanged", handleStorageSync);
+    window.addEventListener("teensBibleCriticalSync", handleCriticalSync);
 
     return () => {
       unsubscribe();
       window.removeEventListener("teensBibleDataChanged", handleStorageSync);
+      window.removeEventListener("teensBibleCriticalSync", handleCriticalSync);
     };
   }, []);
 

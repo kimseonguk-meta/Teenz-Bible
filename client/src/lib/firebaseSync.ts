@@ -350,9 +350,8 @@ export async function fullSync(): Promise<{ restored: boolean }> {
   const restored = await syncFromFirebase();
 
   // Step 2: Always upload current state to keep Firebase up to date
-  if (!restored) {
-    await syncToFirebase();
-  }
+  // Even after restore, upload to ensure merged data is saved back
+  await syncToFirebase();
 
   return { restored };
 }
@@ -361,11 +360,36 @@ export async function fullSync(): Promise<{ restored: boolean }> {
 let syncTimeout: ReturnType<typeof setTimeout> | null = null;
 
 export function scheduleSyncToFirebase() {
-  // Debounce: wait 3 seconds after last change before syncing
+  // Debounce: wait 2 seconds after last change before syncing
   if (syncTimeout) clearTimeout(syncTimeout);
   syncTimeout = setTimeout(() => {
     syncToFirebase();
-  }, 3000);
+  }, 2000);
+}
+
+// Immediate sync for critical operations (purchases, equips)
+export function immediateSyncToFirebase() {
+  if (syncTimeout) clearTimeout(syncTimeout);
+  syncToFirebase();
+}
+
+// Sync on page unload to prevent data loss
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
+    // Use sendBeacon-style sync or at least attempt sync
+    if (syncTimeout) {
+      clearTimeout(syncTimeout);
+      syncToFirebase();
+    }
+  });
+
+  // Also sync on visibility change (user switches tabs/minimizes)
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden" && syncTimeout) {
+      clearTimeout(syncTimeout);
+      syncToFirebase();
+    }
+  });
 }
 
 // ─── Initialize sync on app load ────────────────────────────────
