@@ -396,6 +396,18 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const meta = bookMeta[book];
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
   const [marked, setMarked] = useState(false);
+  const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
+
+  // Auto-dismiss the font size tip after 5 seconds
+  useEffect(() => {
+    if (showFontTip) {
+      const timer = setTimeout(() => {
+        setShowFontTip(false);
+        localStorage.setItem("fontTipShown", "1");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showFontTip]);
 
   // Reader background from Store
   const readerBgStyle = (() => {
@@ -686,14 +698,24 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
             className="px-2 py-1 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-purple-200 active:scale-95 transition-transform">
             {lang === "en" ? "🇰🇷 한국어" : "🇺🇸 English"}
           </button>
-          <button onClick={() => setFontSize(f => Math.max(12, f - 2))} className="w-7 h-7 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-white active:scale-95">A-</button>
-          <button onClick={() => setFontSize(f => Math.min(24, f + 2))} className="w-7 h-7 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-white active:scale-95">A+</button>
+          <div className="relative flex items-center gap-1.5">
+            <button onClick={() => { setFontSize(f => Math.max(12, f - 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
+              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20">A-</button>
+            <button onClick={() => { setFontSize(f => Math.min(28, f + 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
+              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20">A+</button>
+            {showFontTip && (
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
+                👆 글자 크기 조절 가능!
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-600 rotate-45" />
+              </div>
+            )}
+          </div>
           <button onClick={isSpeaking ? (isPaused ? pauseSpeech : pauseSpeech) : startSpeech}
-            className={`px-2.5 h-7 rounded-lg border text-xs font-medium active:scale-95 transition-all flex items-center gap-1 ${
-              isSpeaking ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-400 text-white' : 'bg-purple-900/50 border-purple-500/30 text-purple-200 hover:bg-purple-800/50'
+            className={`px-3 h-8 rounded-lg border-2 text-xs font-bold active:scale-90 transition-all flex items-center gap-1.5 shadow-lg ${
+              isSpeaking ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-400 text-white shadow-pink-500/20' : 'bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-white shadow-purple-500/20 hover:border-purple-300'
             }`}>
             {isSpeaking ? (isPaused ? '▶' : '⏸') : '🎧'}
-            <span className="text-[10px]">{isSpeaking ? (isPaused ? 'Resume' : 'Pause') : 'Listen'}</span>
+            <span className="text-[11px]">{isSpeaking ? (isPaused ? 'Resume' : 'Pause') : 'Listen'}</span>
           </button>
         </div>
       </div>
