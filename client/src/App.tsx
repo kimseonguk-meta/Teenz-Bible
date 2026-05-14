@@ -11,6 +11,7 @@ import Onboarding from "./components/Onboarding";
 import { initTheme } from "./data/storeItems";
 import DailyBonus from "./components/DailyBonus";
 import FloatingPet from "./components/FloatingPet";
+import ProfilePhotoPrompt from "./components/ProfilePhotoPrompt";
 import { auth, signInAnonymously, onAuthStateChanged } from "./lib/firebase";
 import { initializeSync, scheduleSyncToFirebase, immediateSyncToFirebase } from "./lib/firebaseSync";
 
@@ -133,6 +134,7 @@ function App() {
           <GameProvider>
             {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
             {authReady && !showOnboarding && <DailyBonus />}
+            {authReady && !showOnboarding && <ProfilePhotoPrompt />}
             {authReady && !showOnboarding && <FloatingPet />}
             <Router />
           </GameProvider>

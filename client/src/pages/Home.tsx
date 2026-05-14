@@ -166,7 +166,7 @@ export default function Home() {
       <div className="flex items-center gap-4">
         <div className="relative">
           <div className={`w-16 h-16 rounded-full overflow-hidden bg-purple-900/50 flex items-center justify-center ${equippedFrame?.frameClass || 'border-[3px] border-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]'}`}>
-            <span className="text-3xl">{(() => { try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return p.avatar || "👦"; } catch { return "👦"; } })()}</span>
+            {(() => { const photo = localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-3xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-3xl">👦</span>; } })()}
           </div>
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
           {equippedPet && <div className="absolute -top-1 -left-1 text-lg">{equippedPet.petEmoji}</div>}

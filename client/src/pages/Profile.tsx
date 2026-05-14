@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { useLocation } from "wouter";
 import { auth } from "@/lib/firebase";
+import { ProfilePhotoUploader, getProfilePhotoUrl } from "@/components/ProfilePhotoPrompt";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -184,12 +185,19 @@ export default function Profile() {
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative">
-          <div className={`w-28 h-28 rounded-full flex items-center justify-center bg-purple-900/30 ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}>
-            <span className="text-5xl">{avatar}</span>
+          <div className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}>
+            {getProfilePhotoUrl() ? (
+              <img src={getProfilePhotoUrl()!} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-5xl">{avatar}</span>
+            )}
           </div>
           {equippedPet && (
             <div className="absolute -top-1 -left-2 text-2xl">{equippedPet.petEmoji}</div>
           )}
+        </div>
+        <div className="mt-3">
+          <ProfilePhotoUploader />
         </div>
         <h2 className="text-2xl font-bold text-white mt-3 font-display">{playerName}</h2>
         <div className="flex items-center gap-2 mt-1">
