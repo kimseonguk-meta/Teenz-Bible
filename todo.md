@@ -9,3 +9,7 @@
 - [x] Add "Link Account" UI to Profile page (Account & Sync section)
 - [x] Handle cross-device login and data restoration (credential conflict + data migration)
 - [x] Test login flow (30 tests passing)
+
+## Home Banner + Firebase Deploy
+- [x] Add Google linking banner to Home page for unlinked users
+- [x] Build and deploy to Firebase Hosting
