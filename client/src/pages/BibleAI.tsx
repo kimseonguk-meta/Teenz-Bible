@@ -10,7 +10,7 @@ You know the entire Bible (66 books) especially well, including the Old Testamen
 Note: The Bible text in this app is a modern retelling for teens (MZ translation style), not a traditional summary.
 If the user writes in Korean, respond in casual Korean (반말) suitable for middle school teens. Keep the same friendly, engaging tone.`;
 
-const GEMINI_API_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
+// API key moved to server-side proxy at /api/bible-ai
 
 const SUGGESTED_QUESTIONS = [
   { text: "Who is Jesus?", isKo: false },
@@ -192,52 +192,37 @@ export default function BibleAI() {
 
     chatHistoryRef.current.push({ role: "user", parts: [{ text: q }] });
 
-    const reqBody = JSON.stringify({
-      system_instruction: { parts: [{ text: BIBLE_SYSTEM_PROMPT }] },
-      contents: chatHistoryRef.current,
-      generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
-      safetySettings: [
-        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
-      ],
-    });
+    try {
+      const resp = await fetch("/api/bible-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: chatHistoryRef.current,
+          systemPrompt: BIBLE_SYSTEM_PROMPT,
+        }),
+      });
+      const result = await resp.json();
 
-    const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"];
-    let data: any = null;
-    let lastError = "";
-
-    for (const model of models) {
-      try {
-        const resp = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
-          { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
-        );
-        data = await resp.json();
-        if (data.candidates && data.candidates[0]) break;
-        lastError = data.error ? data.error.message : "No candidates returned";
-      } catch (e: any) {
-        lastError = e.message;
+      let answer = "";
+      if (result.data?.candidates?.[0]?.content) {
+        answer = result.data.candidates[0].content.parts[0].text;
+        chatHistoryRef.current.push({ role: "model", parts: [{ text: answer }] });
+        if (chatHistoryRef.current.length > 20) {
+          chatHistoryRef.current = chatHistoryRef.current.slice(-16);
+        }
+      } else {
+        answer = "⚠️ Error: " + (result.error || "Unknown error. Please try again.");
       }
+
+      // Save Gemini history
+      saveGeminiHistory(chatHistoryRef.current);
+
+      const newBotMsg: ChatMessage = { role: "bot", text: answer };
+      setMessages((prev) => [...prev, newBotMsg]);
+    } catch (e: any) {
+      const errorMsg: ChatMessage = { role: "bot", text: "⚠️ Error: " + e.message };
+      setMessages((prev) => [...prev, errorMsg]);
     }
-
-    let answer = "";
-    if (data?.candidates?.[0]?.content) {
-      answer = data.candidates[0].content.parts[0].text;
-      chatHistoryRef.current.push({ role: "model", parts: [{ text: answer }] });
-      if (chatHistoryRef.current.length > 20) {
-        chatHistoryRef.current = chatHistoryRef.current.slice(-16);
-      }
-    } else {
-      answer = "⚠️ Error: " + (lastError || "Unknown error. Please try again.");
-    }
-
-    // Save Gemini history
-    saveGeminiHistory(chatHistoryRef.current);
-
-    const newBotMsg: ChatMessage = { role: "bot", text: answer };
-    setMessages((prev) => [...prev, newBotMsg]);
     setIsLoading(false);
   };
 

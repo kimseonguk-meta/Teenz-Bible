@@ -37,21 +37,39 @@ export type SortBy = "xp" | "streak" | "chapters" | "quiz";
 export type TimeFilter = "all" | "week" | "month";
 export type ScopeFilter = "myclass" | "all";
 
-// Fetch all members across all groups
+// Test account patterns to filter out
+const TEST_PATTERNS = /^(test|admin|debug|demo|bot|fake|tmp)/i;
+
+// Fetch all members across all groups (with dedup + cleanup)
 export async function fetchAllMembers(): Promise<LeaderboardMember[]> {
   const snapshot = await get(ref(db, "groups"));
   const allGroups = snapshot.val();
   if (!allGroups) return [];
   
-  const members: LeaderboardMember[] = [];
+  // Deduplicate by uid: keep the entry with higher XP if same uid in multiple groups
+  const memberMap = new Map<string, LeaderboardMember>();
   Object.entries(allGroups).forEach(([gCode, gData]: [string, any]) => {
     if (gData && gData.members) {
       Object.entries(gData.members).forEach(([uid, d]: [string, any]) => {
-        members.push({ uid, groupCode: gCode, ...d });
+        const member: LeaderboardMember = { uid, groupCode: gCode, ...d };
+        const existing = memberMap.get(uid);
+        if (!existing || (member.xp || 0) > (existing.xp || 0)) {
+          memberMap.set(uid, member);
+        }
       });
     }
   });
-  return members;
+  
+  // Filter out test accounts, unnamed users, and 0-activity users
+  return Array.from(memberMap.values()).filter(m => {
+    // Remove users with no nickname or empty nickname
+    if (!m.nickname || m.nickname.trim() === "" || m.nickname === "Anonymous") return false;
+    // Remove test/debug accounts
+    if (TEST_PATTERNS.test(m.nickname)) return false;
+    // Remove users with zero chapters AND zero XP (never actually used the app)
+    if ((m.chaptersRead || 0) === 0 && (m.xp || 0) === 0) return false;
+    return true;
+  });
 }
 
 // Fetch members from a specific class/group

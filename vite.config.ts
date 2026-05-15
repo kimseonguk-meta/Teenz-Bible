@@ -150,6 +150,68 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
+function vitePluginBibleAIProxy(): Plugin {
+  return {
+    name: "bible-ai-proxy",
+    configureServer(server: ViteDevServer) {
+      // Parse JSON body for POST requests to /api/bible-ai
+      server.middlewares.use("/api/bible-ai", async (req, res) => {
+        if (req.method !== "POST") {
+          res.writeHead(405, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+          res.writeHead(500, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Gemini API key not configured" }));
+          return;
+        }
+        // Read request body
+        let body = "";
+        req.on("data", (chunk: Buffer) => { body += chunk.toString(); });
+        req.on("end", async () => {
+          try {
+            const { messages, systemPrompt } = JSON.parse(body);
+            const reqBody = JSON.stringify({
+              system_instruction: { parts: [{ text: systemPrompt }] },
+              contents: messages,
+              generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+              safetySettings: [
+                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+              ],
+            });
+            const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"];
+            let data: any = null;
+            let lastError = "";
+            for (const model of models) {
+              try {
+                const resp = await fetch(
+                  `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+                  { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
+                );
+                data = await resp.json();
+                if (data.candidates && data.candidates[0]) break;
+                lastError = data.error ? data.error.message : "No candidates returned";
+              } catch (e: any) {
+                lastError = e.message;
+              }
+            }
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ data, error: data?.candidates?.[0] ? null : lastError }));
+          } catch (e: any) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: e.message }));
+          }
+        });
+      });
+    },
+  };
+}
+
 function vitePluginStorageProxy(): Plugin {
   return {
     name: "manus-storage-proxy",
@@ -196,7 +258,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginBibleAIProxy(), vitePluginStorageProxy()];
 
 export default defineConfig({
   plugins,

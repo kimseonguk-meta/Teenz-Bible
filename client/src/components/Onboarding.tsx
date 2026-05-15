@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { auth, db, ref, update, signInAnonymously, onAuthStateChanged, serverTimestamp } from "@/lib/firebase";
 import { get } from "firebase/database";
+import { getInventory, saveInventory, getEquipped, saveEquipped } from "@/data/storeItems";
 
 const AVATARS = ['😎','🦊','🐱','🐶','🦁','🐻','🐼','🐨','🐯','🦄','🐸','🐵','🦋','🐝','🌟','⭐','🔥','💎','🎮','🎯','🏀','⚽','🎸','🎨','🌈','🍕','🍩','🧁','🎂','🍦'];
 
@@ -76,6 +77,28 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       await update(ref(db, `users/${uid}`), userData);
       await update(ref(db, `groups/${groupCode}/members/${uid}`), userData);
 
+      // ─── Welcome Bonus: 50 gems + free starter pet ───
+      try {
+        const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
+        teensBible.gems = (teensBible.gems || 0) + 50;
+        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+        window.dispatchEvent(new CustomEvent("gems-changed", { detail: teensBible.gems }));
+        // Give free starter pet (Faithy Pet - pet_cat)
+        const inv = getInventory();
+        if (!inv.ownedItems.includes("pet_cat")) {
+          inv.ownedItems.push("pet_cat");
+          saveInventory(inv);
+        }
+        // Auto-equip the starter pet
+        const eq = getEquipped();
+        if (!eq.pet) {
+          eq.pet = "pet_cat";
+          saveEquipped(eq);
+        }
+      } catch (e) {
+        console.error("Welcome bonus error:", e);
+      }
+
       // Trigger full data backup to userData/{uid}
       window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
 
@@ -92,6 +115,23 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
       };
       localStorage.setItem("teensBibleProfile", JSON.stringify(profile));
       localStorage.setItem("playerName", nickname);
+      // Welcome bonus even on error
+      try {
+        const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
+        teensBible.gems = (teensBible.gems || 0) + 50;
+        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+        window.dispatchEvent(new CustomEvent("gems-changed", { detail: teensBible.gems }));
+        const inv = getInventory();
+        if (!inv.ownedItems.includes("pet_cat")) {
+          inv.ownedItems.push("pet_cat");
+          saveInventory(inv);
+        }
+        const eq = getEquipped();
+        if (!eq.pet) {
+          eq.pet = "pet_cat";
+          saveEquipped(eq);
+        }
+      } catch (e) { console.error("Welcome bonus error:", e); }
       window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
       setStep(4);
     } finally {
@@ -275,9 +315,13 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
           WELCOME!
         </h2>
         <p className="text-teal-400 text-lg font-bold mb-1">{nickname}</p>
-        <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+        <p className="text-gray-400 text-sm mb-2 leading-relaxed">
           Your adventure begins now!<br />Read, earn XP, and level up! 🚀
         </p>
+        <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-purple-500/30">
+          <p className="text-yellow-300 text-sm font-bold mb-1">🎁 Welcome Gift!</p>
+          <p className="text-purple-200 text-xs">💎 50 Gems + 🐱 Faithy Pet</p>
+        </div>
         <button
           onClick={onComplete}
           className="py-4 px-10 rounded-xl border-none bg-gradient-to-r from-yellow-400 to-orange-500 text-[#1a2848] text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(255,215,0,0.3)] transition-transform active:scale-[0.97]"

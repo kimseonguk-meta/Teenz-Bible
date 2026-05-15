@@ -1,15 +1,22 @@
 {
   "build_command": "pnpm run build",
-  "capabilities": [],
+  "capabilities": [
+    "db",
+    "server",
+    "user"
+  ],
   "dev_command": "pnpm run dev",
-  "env_vars": {},
+  "env_vars": {
+    "DATABASE_URL": "mysql://53cKab61FDkoZ94.1c5517a80c11:tn266ef2zws3MZA9YQUq@gateway05.us-east-1.prod.aws.tidbcloud.com:4000/eyf7JgudwZUosztoRMCJZY?ssl={\"rejectUnauthorized\":true}",
+    "DRIZZLE_DATABASE_URL": "mysql://53cKab61FDkoZ94.1c5517a80c11:tn266ef2zws3MZA9YQUq@gateway05.us-east-1.prod.aws.tidbcloud.com:4000/eyf7JgudwZUosztoRMCJZY?ssl={\"rejectUnauthorized\":true}"
+  },
   "experiments": null,
   "git_remote": {
     "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663322885440/eyf7JgudwZUosztoRMCJZY",
-    "access_key_id": "ASIAZV3A2ECZHFFC2UDM",
-    "secret_access_key": "ppGEj8x4uGs5BS3RX4WW10GH9gZyo501E4eV0O2Y",
-    "session_token": "IQoJb3JpZ2luX2VjEJb//////////wEaCXVzLWVhc3QtMSJHMEUCIA/+wBEt5klOLCROmC56m8OxIeEtDu/fm+0wyjs3fZRbAiEAjI1Hvrg52oYAwLsuQQusH6cyS7xYXuMGARy2G/y5uNsq9gMIXhAEGgw2NjUzODYwOTg4NjYiDPlCMRqvFAHkOa+WBirTA4DHiAJ+2nDsqKlqItRJeQyNFRGnr4Fo+wb8O/ocThs6kRfkzXVs1vzAgO0rUX4Yh0PdUjxnLjUEkApJo5M79NHGnh1Bpwo9dINsZhRzy4CHWKhuLI2Qgof11Fq9a3G86lo9gDmx1JillWAtnTjtlQs3s+3xMlcSp85vMZcyQH+CAC4tcFOvwFGg41iEy4JDhAsfO2xrOBzJmDTJHuKjS3Sp/qvTVPK/jD3CPwy+ZKG7hX87oQjJQAaVmcrFFTlcr3reSE2o4ACmXM0OXBtiljjRaOWEVb0XNEE5mzP02OLP1JDayZJ0CLlZ53KlYF0n1F2W15WVIWUYAruzMZs5uykZhYQQ7xchV/KgtUttJ2H+Vnf9tZIrLRVa0BnniizGhEyHOdtMABYCXJnXMaAwpzhil7EGeOEApLakpPoKPtT3JMjaKPZmrr7k0UD2KBTgkx9jlpf5tjzjUktPah5rwwcZ0xxSbCwFczwgFAT0q1+/TNigh3qsemSNgfQ9J6/jl7HJZKfmxWIEKCGfkSBySAsZAcKlipyGxqs8vHphdhnRIp0noFXU2DjVRfIifdDDkVgJQJ0/2GUtFN5g5JjtBWmmoFicr9zSOkpC2KejUXNyMcUqMIyYl9AGOp0BZDpXq8xH8ucILlO/vjBQO2wEOL9QmkkvdTC/NZnxa2i1XrEBfhY2NCR4fX86CLfWLr4bgFXB8DGFRsvsLm0fG8oJERGKAsDBdkUFRib0RxKovKZbZVd1C3RtKyLXKymIIE3umbO+bwA6pNM4q5v0HFT2n1AwUOwAMU8uPnttwKkBtKGhono+2TC0xC0NXuQ64FyaFnzcGbb5wvTAhw==",
-    "expiration": "2026-05-15T01:20:12.000Z"
+    "access_key_id": "ASIAZV3A2ECZAFBAX5Q3",
+    "secret_access_key": "GCVLZ6ii0dXoH+FjUacSPBOxCeCPAXJ8hUt0frQ4",
+    "session_token": "IQoJb3JpZ2luX2VjEK///////////wEaCXVzLWVhc3QtMSJGMEQCIEN45Inq9Z4XRGrzwYFk3JshQtYCy/MvRH7ig0PHF3iiAiAsy1OEvP0f5lG8BjskUTFV6qFelX2vqXo0w64KS3iPNir2Awh3EAQaDDY2NTM4NjA5ODg2NiIMKig8edFUBieDm6XlKtMDC/myvjOysybUjWUBhwqcxsa24MeA7ho5+eh16Xz8iWXwGvV+VeFs6uJjXqBWFCa/D/Tie6dGVJ3lGaUy6LiYmu8uN30Azv6BBwgk9OahM4ryv/o3ncXN7UxNe++RnumQIioCCYpe35uPc6ozqj1Ft3n9SjvqIWQADwdTNfla2JivUIPl9pmWVZ2zJA/4X2Tmb6nlvIJu7csqRSSrQyYQAlXr9qiXKXRFgSFTS7vYAQvsaLb86F3awnADC1fIf9bZ2IohACWBDIMUqwWIMfLWYLKUGI83o3FJHQMI9ZymTHJC14/JMxk1/D7ndUE7vdVs6H/A97QJsUNZRRFY04y6VqQxEjom5ohTvfQjT9SmXS5d21N09yw1wrgZzvAhFUPEtzvGYDukmbTfkAhYSiwXLfBeBJmyl6L2ZOOe1JowhDn5p2UrZRE1naxeBG9asWWf8JIWvLThL1pNMYr4G7pb3CCm/GOoXuaEPPCwXY6xWOpI6cIT/IvRifXLgVpYyXudSua5Jt/YNxiMLRiMjJqkP7wrLRzXciE8P0oLhBEBOMAp/CA/lCkEk+3pYAinpqlNlVQA0kSo+70OUyJnWBKt2rTt6DX/RATQ/TQnuulxsfo1T/gwpdCc0AY6ngGakLjH27lcXxLkU1dy6HAb0KGvlzqhqbncEHw99/3QoXOnx/1xXE1jbmf5xvcPuGv7r9quxODw4oDzNY5flz+itFsuxBOPzsNk6E60k9aWsWYzkV1YNl1j/+Q6Hdzyol//BvrtSFcmmU5NE9GsDWuvOt1gfJP/fj9mc6vyQwiSBY5zHxOi9TXDffUyI7FDrhJT1lQAHNJXt7E/jABfgQ==",
+    "expiration": "2026-05-16T02:05:25.000Z"
   },
   "name": "teens-bible-app",
   "path": "/home/ubuntu/teens-bible-app",
@@ -17,6 +24,7 @@
   "secrets": {
     "BUILT_IN_FORGE_API_KEY": "hVW5miJaNkNp8YsD3NUfcU",
     "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "GEMINI_API_KEY": "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE",
     "JWT_SECRET": "Qq6PnhW24fwbEvUsznwBsD",
     "OAUTH_SERVER_URL": "https://api.manus.im",
     "OWNER_NAME": "Seonguk Kim",

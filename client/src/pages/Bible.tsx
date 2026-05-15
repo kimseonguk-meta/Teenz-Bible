@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useParams, useLocation } from "wouter";
 import { allBibleData, otBooks, ntBooks, otCategories, ntCategories } from "@/data/allBibleData";
 import { gospelDataKo } from "@/data/gospelDataKo";
 import { ytVideos } from "@/data/ytVideos";
@@ -84,8 +85,40 @@ type ViewState =
   | { type: "reading"; book: string; chapterIdx: number }
   | { type: "quiz"; book: string; chapterNum: number };
 
+// Helper to decode book name from URL (e.g., "1-corinthians" -> "1 Corinthians")
+const allBookNames = [...otBooks, ...ntBooks];
+function bookFromSlug(slug: string): string | null {
+  const decoded = decodeURIComponent(slug).replace(/-/g, " ");
+  return allBookNames.find(b => b.toLowerCase() === decoded.toLowerCase()) || null;
+}
+function bookToSlug(book: string): string {
+  return book.toLowerCase().replace(/\s+/g, "-");
+}
+
 export default function Bible() {
-  const [view, setView] = useState<ViewState>({ type: "list" });
+  const params = useParams<{ book?: string; chapter?: string }>();
+  const [, navigate] = useLocation();
+
+  // Derive initial view from URL params
+  const getInitialView = (): ViewState => {
+    if (params.book) {
+      const bookName = bookFromSlug(params.book);
+      if (bookName && allBibleData[bookName]) {
+        if (params.chapter) {
+          const chapterNum = parseInt(params.chapter);
+          const chapters = allBibleData[bookName];
+          const chapterIdx = chapters.findIndex((c: any) => c.num === chapterNum);
+          if (chapterIdx >= 0) {
+            return { type: "reading", book: bookName, chapterIdx };
+          }
+        }
+        return { type: "chapters", book: bookName };
+      }
+    }
+    return { type: "list" };
+  };
+
+  const [view, setViewInternal] = useState<ViewState>(getInitialView);
   const [search, setSearch] = useState("");
   const [testament, setTestament] = useState<"ot" | "nt">(
     (localStorage.getItem("bibleTestament") as "ot" | "nt") || "nt"
@@ -95,6 +128,28 @@ export default function Bible() {
   );
   const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set());
   const game = useGame();
+
+  // Sync URL when view changes
+  const setView = useCallback((newView: ViewState) => {
+    setViewInternal(newView);
+    switch (newView.type) {
+      case "list":
+        navigate("/bible", { replace: true });
+        break;
+      case "chapters":
+        navigate(`/bible/${bookToSlug(newView.book)}`, { replace: true });
+        break;
+      case "reading": {
+        const chapters = allBibleData[newView.book] || [];
+        const chapterNum = chapters[newView.chapterIdx]?.num;
+        navigate(`/bible/${bookToSlug(newView.book)}/${chapterNum}`, { replace: true });
+        break;
+      }
+      case "quiz":
+        // Keep current URL during quiz
+        break;
+    }
+  }, [navigate]);
 
   const currentBooks = testament === "nt" ? ntBooks : otBooks;
   const currentCategories = testament === "nt" ? ntCategories : otCategories;
@@ -397,6 +452,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const meta = bookMeta[book];
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
   const [marked, setMarked] = useState(false);
+  const [reachedBottom, setReachedBottom] = useState(false);
+  const contentEndRef = useRef<HTMLDivElement>(null);
   const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
   const [showVerses, setShowVerses] = useState(() => localStorage.getItem("showVerseNumbers") === "true");
 
@@ -705,12 +762,31 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     localStorage.setItem("ttsRate", String(speechRate));
   }, [speechRate]);
 
+  // Detect when user scrolls to bottom of chapter content
   useEffect(() => {
-    if (chapter && !marked) {
+    if (!contentEndRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !reachedBottom) {
+          setReachedBottom(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(contentEndRef.current);
+    return () => observer.disconnect();
+  }, [reachedBottom, book, chapterIdx]);
+
+  // Mark chapter as read only after reaching bottom
+  useEffect(() => {
+    if (reachedBottom && chapter && !marked) {
       game.markChapterRead(book, chapter.num);
       setMarked(true);
     }
-    // Track last read position for Today's Reading on Home
+  }, [reachedBottom, marked, chapter, book]);
+
+  // Track last read position for Today's Reading on Home
+  useEffect(() => {
     if (chapter) {
       localStorage.setItem("lastReadBook", book);
       localStorage.setItem("lastReadChapter", String(chapter.num));
@@ -718,8 +794,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     }
   }, [book, chapterIdx]);
 
+  // Reset state when chapter changes
   useEffect(() => {
     setMarked(false);
+    setReachedBottom(false);
   }, [book, chapterIdx]);
 
   useEffect(() => {
@@ -859,9 +937,15 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
         <span className="text-3xl">{meta?.emoji}</span>
         <h1 className="text-xl font-bold text-white font-display mt-2">{book} {chapter.num}</h1>
         <h2 className="text-purple-300 text-sm mt-1">{chapter.title}</h2>
-        <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full">
-          <span className="text-green-400 text-[10px]">+10 XP earned</span>
-        </div>
+        {marked ? (
+          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full">
+            <span className="text-green-400 text-[10px]">✅ +10 XP earned</span>
+          </div>
+        ) : (
+          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 border border-purple-500/30 rounded-full">
+            <span className="text-purple-300 text-[10px]">📖 Read to earn +10 XP</span>
+          </div>
+        )}
       </div>
 
       {/* Chapter Content */}
@@ -880,7 +964,18 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
             </p>
           );
         })}
+        {/* Scroll sentinel for completion detection */}
+        <div ref={contentEndRef} className="h-1" />
       </div>
+
+      {/* Reading completion indicator */}
+      {reachedBottom && marked && (
+        <div className="mt-4 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
+            <span className="text-green-400 text-sm font-bold">🎉 Chapter Complete! +10 XP, +5 💎</span>
+          </div>
+        </div>
+      )}
 
       {/* Pet Companion Widget */}
       {equippedPet && (

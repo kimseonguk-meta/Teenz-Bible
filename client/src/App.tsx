@@ -40,6 +40,8 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/bible" component={Bible} />
+          <Route path="/bible/:book" component={Bible} />
+          <Route path="/bible/:book/:chapter" component={Bible} />
           <Route path="/leaderboard" component={Leaderboard} />
           <Route path="/store" component={Store} />
           <Route path="/profile" component={Profile} />
