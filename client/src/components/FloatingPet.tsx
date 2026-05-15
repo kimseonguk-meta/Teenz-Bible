@@ -532,26 +532,32 @@ export default function FloatingPet() {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
       >
-        {/* Glow ring */}
-        <div className={`w-14 h-14 rounded-full flex items-center justify-center border-2 ${moodBorderColor} ${moodGlow} bg-[#0f0f2e]/80 backdrop-blur-sm transition-all`}>
-          <span className="text-3xl">{pet.petEmoji}</span>
+        {/* Lifelike animated pet - no circle frame */}
+        <div className="pet-alive-container relative">
+          <span className="text-5xl pet-creature" style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
+            {pet.petEmoji}
+          </span>
+          {/* Subtle sparkle particles around the pet */}
+          <div className="pet-sparkle pet-sparkle-1">✦</div>
+          <div className="pet-sparkle pet-sparkle-2">✧</div>
+          <div className="pet-sparkle pet-sparkle-3">✦</div>
         </div>
 
-        {/* Mood indicator */}
-        <div className="absolute -top-1 -right-1 text-sm">
+        {/* Mood indicator - floating above */}
+        <div className="absolute -top-3 right-0 text-sm animate-pulse">
           {moodEmoji}
         </div>
 
         {/* Mini-game indicator */}
         {!showMiniGame && (
-          <div className="absolute -top-1 -left-1 w-4 h-4 rounded-full bg-purple-600/80 flex items-center justify-center">
-            <span className="text-[8px]">🎮</span>
+          <div className="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-purple-600/80 flex items-center justify-center animate-pulse">
+            <span className="text-[9px]">🎮</span>
           </div>
         )}
 
         {/* Name tag */}
-        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap">
-          <span className="text-[9px] font-bold text-white/70 bg-black/40 px-1.5 py-0.5 rounded-full">
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap">
+          <span className="text-[9px] font-bold text-white/90 bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm">
             {pet.name}
           </span>
         </div>
