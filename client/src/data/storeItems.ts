@@ -657,7 +657,7 @@ export const PETS: StoreItem[] = [
     id: "pet_cat",
     name: "Faithy Pet",
     category: "pets",
-    price: 220,
+    price: 120,
     emoji: "🐱",
     description: "A faithful companion",
     rarity: "rare",
@@ -667,7 +667,7 @@ export const PETS: StoreItem[] = [
     id: "pet_puppy",
     name: "Hope Puppy",
     category: "pets",
-    price: 220,
+    price: 120,
     emoji: "🐶",
     description: "Always hopeful and loyal",
     rarity: "rare",
@@ -677,7 +677,7 @@ export const PETS: StoreItem[] = [
     id: "pet_lamb",
     name: "Joy Lamb",
     category: "pets",
-    price: 230,
+    price: 150,
     emoji: "🐑",
     description: "Gentle and joyful",
     rarity: "rare",
@@ -687,7 +687,7 @@ export const PETS: StoreItem[] = [
     id: "pet_lion",
     name: "Brave Lion",
     category: "pets",
-    price: 260,
+    price: 180,
     emoji: "🦁",
     description: "Courageous like Daniel",
     rarity: "epic",
@@ -697,7 +697,7 @@ export const PETS: StoreItem[] = [
     id: "pet_owl",
     name: "Wise Owl",
     category: "pets",
-    price: 250,
+    price: 170,
     emoji: "🦉",
     description: "Wisdom of Solomon",
     rarity: "epic",
@@ -707,7 +707,7 @@ export const PETS: StoreItem[] = [
     id: "pet_dove",
     name: "Peace Dove",
     category: "pets",
-    price: 270,
+    price: 190,
     emoji: "🕊️",
     description: "Symbol of the Holy Spirit",
     rarity: "epic",
@@ -717,7 +717,7 @@ export const PETS: StoreItem[] = [
     id: "pet_eagle",
     name: "Soaring Eagle",
     category: "pets",
-    price: 260,
+    price: 180,
     emoji: "🦅",
     description: "Mount up with wings (Isaiah 40:31)",
     rarity: "epic",
@@ -727,7 +727,7 @@ export const PETS: StoreItem[] = [
     id: "pet_fox",
     name: "Swift Fox",
     category: "pets",
-    price: 240,
+    price: 160,
     emoji: "🦊",
     description: "Clever and quick",
     rarity: "rare",
@@ -737,7 +737,7 @@ export const PETS: StoreItem[] = [
     id: "pet_bear",
     name: "Mighty Bear",
     category: "pets",
-    price: 260,
+    price: 180,
     emoji: "🐻",
     description: "Strong like Samson",
     rarity: "epic",
@@ -747,7 +747,7 @@ export const PETS: StoreItem[] = [
     id: "pet_bunny",
     name: "Gentle Bunny",
     category: "pets",
-    price: 230,
+    price: 150,
     emoji: "🐰",
     description: "Meek and gentle spirit",
     rarity: "rare",
@@ -757,7 +757,7 @@ export const PETS: StoreItem[] = [
     id: "pet_whale",
     name: "Jonah's Whale",
     category: "pets",
-    price: 280,
+    price: 200,
     emoji: "🐳",
     description: "A big adventure awaits",
     rarity: "legendary",
@@ -767,7 +767,7 @@ export const PETS: StoreItem[] = [
     id: "pet_butterfly",
     name: "New Life Butterfly",
     category: "pets",
-    price: 240,
+    price: 160,
     emoji: "🦋",
     description: "Transformed and beautiful",
     rarity: "rare",
@@ -777,7 +777,7 @@ export const PETS: StoreItem[] = [
     id: "pet_dragon",
     name: "Fire Dragon",
     category: "pets",
-    price: 300,
+    price: 220,
     emoji: "🐉",
     description: "Legendary and fierce",
     rarity: "legendary",
@@ -787,7 +787,7 @@ export const PETS: StoreItem[] = [
     id: "pet_unicorn",
     name: "Holy Unicorn",
     category: "pets",
-    price: 290,
+    price: 210,
     emoji: "🦄",
     description: "Pure and majestic",
     rarity: "legendary",
@@ -919,7 +919,7 @@ export function openMysteryBox(): { success: boolean; reward?: StoreItem | { typ
 
   // 30% chance of bonus gems
   if (Math.random() < 0.3) {
-    const bonusGems = [5, 10, 15, 20, 25, 50][Math.floor(Math.random() * 6)];
+    const bonusGems = [15, 25, 35, 50, 65, 80][Math.floor(Math.random() * 6)];
     setGems(getGems() + bonusGems);
     return { success: true, reward: { type: "gems", amount: bonusGems }, message: `You won ${bonusGems} gems!` };
   }
@@ -931,7 +931,7 @@ export function openMysteryBox(): { success: boolean; reward?: StoreItem | { typ
 
   if (allItems.length === 0) {
     // All items owned, give gems instead
-    const bonusGems = 30;
+    const bonusGems = 50;
     setGems(getGems() + bonusGems);
     return { success: true, reward: { type: "gems", amount: bonusGems }, message: `You own everything! Here's ${bonusGems} gems!` };
   }

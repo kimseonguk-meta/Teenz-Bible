@@ -453,6 +453,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
   const [marked, setMarked] = useState(false);
   const [reachedBottom, setReachedBottom] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [confettiPieces, setConfettiPieces] = useState<Array<{id: number; x: number; delay: number; color: string; size: number; duration: number}>>([]);
   const contentEndRef = useRef<HTMLDivElement>(null);
   const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
   const [showVerses, setShowVerses] = useState(() => localStorage.getItem("showVerseNumbers") === "true");
@@ -782,6 +784,20 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     if (reachedBottom && chapter && !marked) {
       game.markChapterRead(book, chapter.num);
       setMarked(true);
+      // Trigger celebration animation
+      setShowCelebration(true);
+      const colors = ['#a78bfa', '#f59e0b', '#10b981', '#ec4899', '#06b6d4', '#f97316'];
+      const pieces = Array.from({length: 40}, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        delay: Math.random() * 0.5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: Math.random() * 8 + 4,
+        duration: Math.random() * 1.5 + 1.5,
+      }));
+      setConfettiPieces(pieces);
+      const timer = setTimeout(() => setShowCelebration(false), 4000);
+      return () => clearTimeout(timer);
     }
   }, [reachedBottom, marked, chapter, book]);
 
@@ -798,6 +814,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   useEffect(() => {
     setMarked(false);
     setReachedBottom(false);
+    setShowCelebration(false);
+    setConfettiPieces([]);
   }, [book, chapterIdx]);
 
   useEffect(() => {
@@ -968,14 +986,60 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
         <div ref={contentEndRef} className="h-1" />
       </div>
 
-      {/* Reading completion indicator */}
-      {reachedBottom && marked && (
-        <div className="mt-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
-            <span className="text-green-400 text-sm font-bold">🎉 Chapter Complete! +10 XP, +5 💎</span>
+      {/* Reading completion celebration */}
+      {showCelebration && (
+        <div className="fixed inset-0 pointer-events-none z-50">
+          {confettiPieces.map(p => (
+            <div
+              key={p.id}
+              className="absolute"
+              style={{
+                left: `${p.x}%`,
+                top: '-10px',
+                width: `${p.size}px`,
+                height: `${p.size}px`,
+                backgroundColor: p.color,
+                borderRadius: p.size > 8 ? '50%' : '2px',
+                animation: `confettiFall ${p.duration}s ${p.delay}s ease-in forwards`,
+                opacity: 0,
+              }}
+            />
+          ))}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center" style={{animation: 'celebrationPop 0.5s 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards', opacity: 0, transform: 'scale(0.5)'}}>
+              <div className="text-6xl mb-3" style={{animation: 'celebrationBounce 1s 0.4s ease-in-out infinite'}}>🎉</div>
+              <div className="bg-gradient-to-r from-purple-600/90 to-cyan-600/90 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20 shadow-2xl">
+                <div className="text-white font-bold text-lg">Chapter Complete!</div>
+                <div className="flex items-center justify-center gap-3 mt-1">
+                  <span className="text-yellow-300 font-bold">+10 XP</span>
+                  <span className="text-cyan-300 font-bold">+5 💎</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
+      {reachedBottom && marked && !showCelebration && (
+        <div className="mt-4 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
+            <span className="text-green-400 text-sm font-bold">✅ Chapter Complete! +10 XP, +5 💎</span>
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes confettiFall {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        @keyframes celebrationPop {
+          0% { opacity: 0; transform: scale(0.5); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes celebrationBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
 
       {/* Pet Companion Widget */}
       {equippedPet && (
