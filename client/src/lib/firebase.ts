@@ -1,6 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, child, onValue, set, update, serverTimestamp } from "firebase/database";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential, EmailAuthProvider } from "firebase/auth";
+import type { AuthCredential, User } from "firebase/auth";
+
+export const googleProvider = new GoogleAuthProvider();
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ5qm_sCzkUfFGC8WcTGbjfviBz_SyNAg",
@@ -16,7 +19,8 @@ const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 export const auth = getAuth(app);
 
-export { ref, get, child, onValue, set, update, serverTimestamp, signInAnonymously, onAuthStateChanged };
+export { ref, get, child, onValue, set, update, serverTimestamp, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential };
+export type { AuthCredential, User };
 
 // Types
 export interface LeaderboardMember {
