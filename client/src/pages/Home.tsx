@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { toast } from "sonner";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
+import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 // Standard chapter counts for each Bible book
@@ -160,19 +161,20 @@ export default function Home() {
   const equipped = getEquipped();
   const equippedPet = PETS.find(p => p.id === equipped.pet);
   const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
-  const [googleLinked, setGoogleLinked] = useState(() => isLinkedToGoogle());
+  const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
   const [bannerDismissed, setBannerDismissed] = useState(() => {
-    const dismissed = localStorage.getItem("googleBannerDismissed");
+    const dismissed = localStorage.getItem("syncBannerDismissed");
     if (!dismissed) return false;
     return Date.now() - parseInt(dismissed) < 3 * 24 * 60 * 60 * 1000;
   });
   const [linkingGoogle, setLinkingGoogle] = useState(false);
-  const handleBannerLink = async () => {
+  const [linkingApple, setLinkingApple] = useState(false);
+  const handleBannerLinkGoogle = async () => {
     setLinkingGoogle(true);
     try {
       const result = await linkOrSignInWithGoogle();
       if (result.success) {
-        setGoogleLinked(true);
+        setAccountLinked(true);
         toast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Google!");
       } else {
         toast.error(result.message || "Failed to link account");
@@ -183,30 +185,56 @@ export default function Home() {
       setLinkingGoogle(false);
     }
   };
+  const handleBannerLinkApple = async () => {
+    setLinkingApple(true);
+    try {
+      const result = await linkOrSignInWithApple();
+      if (result.success) {
+        setAccountLinked(true);
+        toast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Apple!");
+      } else {
+        toast.error(result.message || "Failed to link account");
+      }
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setLinkingApple(false);
+    }
+  };
   const handleDismissBanner = () => {
     setBannerDismissed(true);
-    localStorage.setItem("googleBannerDismissed", String(Date.now()));
+    localStorage.setItem("syncBannerDismissed", String(Date.now()));
   };
 
   return (
     <div className="px-4 pt-6 space-y-4">
-      {/* Google Account Linking Banner */}
-      {!googleLinked && !bannerDismissed && (
+      {/* Account Linking Banner */}
+      {!accountLinked && !bannerDismissed && (
         <div className="relative rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-900/30 to-orange-900/20 p-4">
           <button onClick={handleDismissBanner} className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 text-lg leading-none p-1">✕</button>
           <div className="flex items-start gap-3">
             <div className="text-2xl mt-0.5">⚠️</div>
             <div className="flex-1 pr-4">
               <h3 className="text-amber-200 font-bold text-sm">Your data is not protected!</h3>
-              <p className="text-gray-400 text-xs mt-1">If you switch phones or clear cache, all your progress will be lost. Link Google to keep it safe.</p>
-              <button
-                onClick={handleBannerLink}
-                disabled={linkingGoogle}
-                className="mt-3 flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-gray-800 text-sm font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50"
-              >
-                <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-                {linkingGoogle ? "Connecting..." : "Protect with Google"}
-              </button>
+              <p className="text-gray-400 text-xs mt-1">If you switch phones or clear cache, all your progress will be lost. Link an account to keep it safe.</p>
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={handleBannerLinkGoogle}
+                  disabled={linkingGoogle || linkingApple}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-800 text-xs font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                  {linkingGoogle ? "..." : "Google"}
+                </button>
+                <button
+                  onClick={handleBannerLinkApple}
+                  disabled={linkingGoogle || linkingApple}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-black text-white text-xs font-semibold border border-gray-600/50 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                  {linkingApple ? "..." : "Apple"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

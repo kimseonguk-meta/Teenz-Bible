@@ -18,3 +18,9 @@
 - [x] Gem economy balance: increase Mystery Box gem rewards (5~50 → 15~80), lower pet prices (220~300 → 120~220)
 - [x] Chapter completion celebration animation: 40-piece confetti + popup with bounce
 - [x] Bible AI chat history: already implemented (localStorage bibleAI_chatHistory + geminiHistory)
+
+## Apple App Store Rejection Fix
+- [ ] Enable Apple Auth provider in Firebase console
+- [ ] Add Sign in with Apple button alongside Google login
+- [ ] Draft Apple Review response for Guideline 2.1(b) business model
+- [ ] Build and deploy to Firebase
