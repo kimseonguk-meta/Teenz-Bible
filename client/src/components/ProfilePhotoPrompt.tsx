@@ -67,6 +67,7 @@ export default function ProfilePhotoPrompt() {
   const [preview, setPreview] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Show prompt after 3 seconds if no profile photo
@@ -142,17 +143,34 @@ export default function ProfilePhotoPrompt() {
                 </button>
               </div>
             ) : (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="w-24 h-24 mx-auto rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
-              >
-                <span className="text-2xl mb-1">📷</span>
-                <span className="text-[10px] text-gray-500">Tap to upload</span>
+              <div className="flex gap-3 justify-center">
+                <div
+                  onClick={() => cameraInputRef.current?.click()}
+                  className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
+                >
+                  <span className="text-2xl mb-1">📸</span>
+                  <span className="text-[10px] text-gray-500">Take Photo</span>
+                </div>
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
+                >
+                  <span className="text-2xl mb-1">🖼️</span>
+                  <span className="text-[10px] text-gray-500">Gallery</span>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Hidden file input */}
+          {/* Hidden file inputs */}
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="user"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
           <input
             ref={fileInputRef}
             type="file"
