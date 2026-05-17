@@ -34,3 +34,8 @@
 - [x] Add verse text preview popup after quiz answer
 - [x] Build quiz statistics tracking (localStorage-based with Firebase sync)
 - [x] Build quiz statistics dashboard UI (accuracy rate, streaks, per-book breakdown, history)
+
+## Profile Photo Improvements
+- [x] Profile photo S3 upload and Firebase sync (cross-device)
+- [x] Photo crop and filter UI before saving
+- [x] Display profile photos on leaderboard

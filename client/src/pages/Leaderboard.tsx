@@ -17,6 +17,23 @@ import {
   type ScopeFilter,
 } from "@/lib/firebase";
 
+// Helper to render member avatar - shows photo if available, emoji otherwise
+function MemberAvatar({ member, size = "md" }: { member: LeaderboardMember | undefined; size?: "sm" | "md" | "lg" }) {
+  const sizeClasses = size === "lg" ? "w-[72px] h-[72px]" : size === "md" ? "w-14 h-14" : "w-10 h-10";
+  const textSize = size === "lg" ? "text-3xl" : size === "md" ? "text-2xl" : "text-xl";
+  
+  if (member?.profilePhotoUrl) {
+    return (
+      <img
+        src={member.profilePhotoUrl}
+        alt={member.nickname || ""}
+        className={`${sizeClasses} rounded-xl object-cover`}
+      />
+    );
+  }
+  return <span className={textSize}>{member?.avatar || "😎"}</span>;
+}
+
 const SORT_TABS: { key: SortBy; icon: string; label: string }[] = [
   { key: "xp", icon: "⚡", label: "XP" },
   { key: "streak", icon: "🔥", label: "Streak" },
@@ -206,8 +223,8 @@ export default function Leaderboard() {
               <div className="flex flex-col items-center">
                 <div className="relative">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-gray-400 text-white text-xs font-bold flex items-center justify-center border-2 border-gray-300">2</div>
-                  <div className="w-14 h-14 rounded-xl border-2 border-blue-400/50 bg-[rgba(15,5,40,0.8)] flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(96,165,250,0.3)]">
-                    {top3[1]?.avatar || "😎"}
+                  <div className="w-14 h-14 rounded-xl border-2 border-blue-400/50 bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(96,165,250,0.3)]">
+                    <MemberAvatar member={top3[1]} size="md" />
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[1]?.nickname}</p>
@@ -221,8 +238,8 @@ export default function Leaderboard() {
                 <div className="text-2xl mb-1">👑</div>
                 <div className="relative">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-yellow-500 text-white text-xs font-bold flex items-center justify-center border-2 border-yellow-300 shadow-[0_0_10px_rgba(234,179,8,0.5)]">1</div>
-                  <div className="w-18 h-18 rounded-xl border-2 border-yellow-500/70 bg-[rgba(15,5,40,0.8)] flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(234,179,8,0.3)]" style={{width: '72px', height: '72px'}}>
-                    {top3[0]?.avatar || "😎"}
+                  <div className="w-18 h-18 rounded-xl border-2 border-yellow-500/70 bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(234,179,8,0.3)]" style={{width: '72px', height: '72px'}}>
+                    <MemberAvatar member={top3[0]} size="lg" />
                   </div>
                 </div>
                 <p className="text-white text-sm font-bold mt-2 max-w-[80px] truncate">
@@ -238,8 +255,8 @@ export default function Leaderboard() {
               <div className="flex flex-col items-center">
                 <div className="relative">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-amber-700 text-white text-xs font-bold flex items-center justify-center border-2 border-amber-600">3</div>
-                  <div className="w-14 h-14 rounded-xl border-2 border-amber-600/50 bg-[rgba(15,5,40,0.8)] flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(180,83,9,0.3)]">
-                    {top3[2]?.avatar || "😎"}
+                  <div className="w-14 h-14 rounded-xl border-2 border-amber-600/50 bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(180,83,9,0.3)]">
+                    <MemberAvatar member={top3[2]} size="md" />
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[2]?.nickname}</p>
@@ -265,8 +282,8 @@ export default function Leaderboard() {
                   }`}
                 >
                   <span className="text-base font-bold text-gray-400 w-7 text-center">{rank}</span>
-                  <div className="w-10 h-10 rounded-full bg-purple-900/50 border border-purple-500/30 flex items-center justify-center text-xl">
-                    {member.avatar || "😎"}
+                  <div className="w-10 h-10 rounded-full bg-purple-900/50 border border-purple-500/30 flex items-center justify-center overflow-hidden">
+                    <MemberAvatar member={member} size="sm" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">

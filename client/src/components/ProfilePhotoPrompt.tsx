@@ -1,21 +1,33 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { auth, storage, storageRef, uploadBytes, getDownloadURL } from "@/lib/firebase";
 
 // ─── Profile Photo Upload Prompt ────────────────────────────
-// Shows on app load if user hasn't uploaded a profile photo yet.
-// Stores photo as base64 in localStorage under "profilePhoto".
+// Uploads photo to Firebase Storage, stores URL in localStorage.
+// Falls back to base64 in localStorage if upload fails.
 // Dispatches "profile-photo-changed" event when photo is set.
 
+// Filters available for photos
+const FILTERS = [
+  { name: "None", class: "", style: {} },
+  { name: "B&W", class: "grayscale", style: { filter: "grayscale(100%)" } },
+  { name: "Warm", class: "", style: { filter: "sepia(40%) saturate(130%) brightness(105%)" } },
+  { name: "Cool", class: "", style: { filter: "saturate(80%) brightness(105%) hue-rotate(15deg)" } },
+  { name: "Vivid", class: "", style: { filter: "saturate(160%) contrast(110%)" } },
+  { name: "Fade", class: "", style: { filter: "brightness(110%) contrast(90%) saturate(80%)" } },
+];
+
 function getProfilePhoto(): string | null {
-  return localStorage.getItem("profilePhoto");
+  // Prefer Firebase URL, fall back to base64
+  return localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto");
 }
 
 export function hasProfilePhoto(): boolean {
-  return !!localStorage.getItem("profilePhoto");
+  return !!(localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"));
 }
 
 export function getProfilePhotoUrl(): string | null {
-  return localStorage.getItem("profilePhoto");
+  return localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto");
 }
 
 export function setProfilePhoto(base64: string) {
@@ -24,22 +36,96 @@ export function setProfilePhoto(base64: string) {
   window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
 }
 
-export function removeProfilePhoto() {
-  localStorage.removeItem("profilePhoto");
+export function setProfilePhotoUrl(url: string) {
+  localStorage.setItem("profilePhotoUrl", url);
   window.dispatchEvent(new CustomEvent("profile-photo-changed"));
   window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
 }
 
-// Resize and compress image to a reasonable size for localStorage
-function resizeImage(file: File, maxSize = 200): Promise<string> {
+export function removeProfilePhoto() {
+  localStorage.removeItem("profilePhoto");
+  localStorage.removeItem("profilePhotoUrl");
+  window.dispatchEvent(new CustomEvent("profile-photo-changed"));
+  window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+}
+
+// Upload photo to Firebase Storage and return download URL
+async function uploadPhotoToFirebase(base64: string): Promise<string | null> {
+  try {
+    const uid = auth.currentUser?.uid;
+    if (!uid) return null;
+
+    // Convert base64 to blob
+    const response = await fetch(base64);
+    const blob = await response.blob();
+
+    const photoRef = storageRef(storage, `profilePhotos/${uid}.jpg`);
+    await uploadBytes(photoRef, blob, { contentType: "image/jpeg" });
+    const url = await getDownloadURL(photoRef);
+    return url;
+  } catch (err) {
+    console.error("Firebase Storage upload error:", err);
+    return null;
+  }
+}
+
+// Apply filter to canvas and return base64
+function applyFilterToCanvas(
+  img: HTMLImageElement,
+  maxSize: number,
+  cropArea: { x: number; y: number; size: number },
+  filterStyle: Record<string, string>
+): string {
+  const canvas = document.createElement("canvas");
+  canvas.width = maxSize;
+  canvas.height = maxSize;
+  const ctx = canvas.getContext("2d")!;
+
+  // Apply filter
+  if (filterStyle.filter) {
+    ctx.filter = filterStyle.filter;
+  }
+
+  ctx.drawImage(
+    img,
+    cropArea.x,
+    cropArea.y,
+    cropArea.size,
+    cropArea.size,
+    0,
+    0,
+    maxSize,
+    maxSize
+  );
+
+  return canvas.toDataURL("image/jpeg", 0.85);
+}
+
+// Load image from file
+function loadImageFromFile(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Resize and compress image to a reasonable size
+function resizeImage(file: File, maxSize = 300): Promise<{ base64: string; img: HTMLImageElement }> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        let w = img.width;
-        let h = img.height;
+        const w = img.width;
+        const h = img.height;
 
         // Crop to square (center crop)
         const size = Math.min(w, h);
@@ -51,8 +137,8 @@ function resizeImage(file: File, maxSize = 200): Promise<string> {
         const ctx = canvas.getContext("2d")!;
         ctx.drawImage(img, sx, sy, size, size, 0, 0, maxSize, maxSize);
 
-        const base64 = canvas.toDataURL("image/jpeg", 0.8);
-        resolve(base64);
+        const base64 = canvas.toDataURL("image/jpeg", 0.85);
+        resolve({ base64, img });
       };
       img.onerror = reject;
       img.src = e.target?.result as string;
@@ -65,12 +151,14 @@ function resizeImage(file: File, maxSize = 200): Promise<string> {
 export default function ProfilePhotoPrompt() {
   const [showModal, setShowModal] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [rawImg, setRawImg] = useState<HTMLImageElement | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Show prompt after 3 seconds if no profile photo
     const timer = setTimeout(() => {
       const photo = getProfilePhoto();
       const dismissed = localStorage.getItem("photoPromptDismissed");
@@ -81,31 +169,62 @@ export default function ProfilePhotoPrompt() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Re-apply filter when filter selection changes
+  useEffect(() => {
+    if (!rawImg) return;
+    const w = rawImg.width;
+    const h = rawImg.height;
+    const size = Math.min(w, h);
+    const sx = (w - size) / 2;
+    const sy = (h - size) / 2;
+
+    const filtered = applyFilterToCanvas(
+      rawImg,
+      300,
+      { x: sx, y: sy, size },
+      FILTERS[selectedFilter].style
+    );
+    setPreview(filtered);
+  }, [selectedFilter, rawImg]);
+
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      return;
-    }
+    if (!file.type.startsWith("image/")) return;
 
     try {
-      const base64 = await resizeImage(file, 200);
+      const { base64, img } = await resizeImage(file, 300);
+      setRawImg(img);
+      setSelectedFilter(0);
       setPreview(base64);
     } catch (err) {
       console.error("Image resize error:", err);
     }
   }, []);
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     if (!preview) return;
     setSaving(true);
+    setUploadProgress("Saving locally...");
+
+    // Save base64 locally first (instant)
     setProfilePhoto(preview);
+
+    // Try uploading to Firebase Storage
+    setUploadProgress("Uploading to cloud...");
+    const url = await uploadPhotoToFirebase(preview);
+    if (url) {
+      setProfilePhotoUrl(url);
+      setUploadProgress("Synced! ✨");
+    } else {
+      setUploadProgress("Saved locally ✓");
+    }
+
     setTimeout(() => {
       setSaving(false);
+      setUploadProgress("");
       setShowModal(false);
-    }, 500);
+    }, 800);
   }, [preview]);
 
   const handleSkip = useCallback(() => {
@@ -119,7 +238,7 @@ export default function ProfilePhotoPrompt() {
 
   return (
     <Dialog open={showModal} onOpenChange={(open) => { if (!open) handleLater(); }}>
-      <DialogContent className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 rounded-2xl p-0 max-w-[340px] w-[90%] shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+      <DialogContent className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 rounded-2xl p-0 max-w-[380px] w-[92%] shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
         <div className="p-6 text-center">
           {/* Header */}
           <div className="text-5xl mb-3">📸</div>
@@ -129,14 +248,14 @@ export default function ProfilePhotoPrompt() {
           </p>
 
           {/* Preview / Upload area */}
-          <div className="mb-5">
+          <div className="mb-4">
             {preview ? (
               <div className="flex flex-col items-center gap-3">
-                <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-purple-500 shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+                <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-purple-500 shadow-[0_0_20px_rgba(139,92,246,0.4)]">
                   <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                 </div>
                 <button
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => { fileInputRef.current?.click(); }}
                   className="text-purple-300 text-xs underline"
                 >
                   Choose different photo
@@ -161,6 +280,44 @@ export default function ProfilePhotoPrompt() {
               </div>
             )}
           </div>
+
+          {/* Filter selection - only show when image is selected */}
+          {preview && rawImg && (
+            <div className="mb-4">
+              <p className="text-gray-500 text-[10px] mb-2 uppercase tracking-wider">Choose a filter</p>
+              <div className="flex gap-2 justify-center flex-wrap">
+                {FILTERS.map((f, idx) => (
+                  <button
+                    key={f.name}
+                    onClick={() => setSelectedFilter(idx)}
+                    className={`flex flex-col items-center gap-1 transition-all ${
+                      selectedFilter === idx
+                        ? "scale-105"
+                        : "opacity-60 hover:opacity-90"
+                    }`}
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 ${
+                        selectedFilter === idx ? "border-purple-400" : "border-transparent"
+                      }`}
+                    >
+                      <img
+                        src={preview}
+                        alt={f.name}
+                        className="w-full h-full object-cover"
+                        style={idx === selectedFilter ? {} : f.style}
+                      />
+                    </div>
+                    <span className={`text-[9px] ${
+                      selectedFilter === idx ? "text-purple-300 font-bold" : "text-gray-500"
+                    }`}>
+                      {f.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Hidden file inputs */}
           <input
@@ -187,7 +344,7 @@ export default function ProfilePhotoPrompt() {
                 disabled={saving}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold text-sm shadow-[0_4px_20px_rgba(168,85,247,0.3)] transition-transform active:scale-[0.97] disabled:opacity-60"
               >
-                {saving ? "Saving..." : "Save Photo! ✨"}
+                {saving ? uploadProgress || "Saving..." : "Save Photo! ✨"}
               </button>
             )}
             <button
@@ -211,6 +368,7 @@ export default function ProfilePhotoPrompt() {
 export function ProfilePhotoUploader() {
   const [photo, setPhoto] = useState<string | null>(getProfilePhoto);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const handler = () => setPhoto(getProfilePhoto());
@@ -222,11 +380,21 @@ export function ProfilePhotoUploader() {
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith("image/")) return;
     try {
-      const base64 = await resizeImage(file, 200);
+      setUploading(true);
+      const { base64 } = await resizeImage(file, 300);
       setProfilePhoto(base64);
       setPhoto(base64);
+
+      // Upload to Firebase Storage
+      const url = await uploadPhotoToFirebase(base64);
+      if (url) {
+        setProfilePhotoUrl(url);
+        setPhoto(url);
+      }
+      setUploading(false);
     } catch (err) {
       console.error("Image resize error:", err);
+      setUploading(false);
     }
   }, []);
 
@@ -248,9 +416,10 @@ export function ProfilePhotoUploader() {
       <div className="flex gap-3 items-center">
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="text-purple-300 text-xs underline"
+          disabled={uploading}
+          className="text-purple-300 text-xs underline disabled:opacity-50"
         >
-          {photo ? "📷 Change Photo" : "📷 Upload Photo"}
+          {uploading ? "Uploading..." : photo ? "📷 Change Photo" : "📷 Upload Photo"}
         </button>
         {photo && (
           <button

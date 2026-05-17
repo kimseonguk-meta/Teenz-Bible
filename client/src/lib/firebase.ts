@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, child, onValue, set, update, serverTimestamp } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, OAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential, EmailAuthProvider } from "firebase/auth";
 import type { AuthCredential, User } from "firebase/auth";
 
@@ -21,8 +22,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 
 export { ref, get, child, onValue, set, update, serverTimestamp, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, OAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential };
+export { storageRef, uploadBytes, getDownloadURL };
 export type { AuthCredential, User };
 
 // Types
@@ -30,6 +33,7 @@ export interface LeaderboardMember {
   uid: string;
   nickname: string;
   avatar: string;
+  profilePhotoUrl?: string;
   groupCode: string;
   xp: number;
   streak: number;
@@ -164,7 +168,10 @@ export async function syncUserToFirebase(uid: string) {
   
   const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
   
-  const userData = {
+  // Include profile photo URL if available
+  const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
+  
+  const userData: Record<string, any> = {
     nickname: userProfile.nickname || "Anonymous",
     avatar: userProfile.avatar || "😎",
     groupCode,
@@ -178,6 +185,10 @@ export async function syncUserToFirebase(uid: string) {
     lastActive: serverTimestamp(),
     updatedAt: serverTimestamp()
   };
+  
+  if (profilePhotoUrl) {
+    userData.profilePhotoUrl = profilePhotoUrl;
+  }
   
   try {
     await update(ref(db, `users/${uid}`), userData);
