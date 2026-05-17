@@ -24,3 +24,7 @@
 - [ ] Add Sign in with Apple button alongside Google login
 - [ ] Draft Apple Review response for Guideline 2.1(b) business model
 - [ ] Build and deploy to Firebase
+
+## Old Testament Quizzes + Verse References
+- [x] Generate Old Testament quizzes for all 929 chapters (English + Korean)
+- [x] Add verse reference explanations to all quizzes (shown after answering)

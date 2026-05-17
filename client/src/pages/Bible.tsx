@@ -1170,6 +1170,11 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
           <p className={`text-sm font-bold mt-1 ${selected === shuffled.correctIndex ? 'text-green-400' : 'text-red-400'}`}>
             {selected === shuffled.correctIndex ? 'NICE! +10 XP +3 💎' : 'Not quite! The correct answer is highlighted.'}
           </p>
+          {quiz.ref && (
+            <p className="text-purple-300 text-xs mt-2 flex items-center justify-center gap-1">
+              <span>📖</span> {quiz.ref}
+            </p>
+          )}
         </div>
       )}
     </div>

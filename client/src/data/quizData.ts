@@ -1,5 +1,5 @@
-// Auto-extracted from original app - 260 quiz entries covering all 27 NT books
-// Format: { "BookName_ChapterNum": { q: question, a: correct answer, w: [3 wrong answers] } }
+// Bible quiz data covering all 66 books (1189 chapters total)
+// Format: { "BookName_ChapterNum": { q: question, a: correct answer, w: [3 wrong answers], ref: verse reference } }
 
 import quizzesEn from "./chapterQuizzes.json";
 import quizzesKo from "./chapterQuizzesKo.json";
@@ -8,6 +8,7 @@ export interface QuizEntry {
   q: string;
   a: string;
   w: string[];
+  ref?: string;
 }
 
 export const chapterQuizzes: Record<string, QuizEntry> = quizzesEn as Record<string, QuizEntry>;
