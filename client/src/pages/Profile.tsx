@@ -510,48 +510,6 @@ export default function Profile() {
       <div className="pt-4 border-t border-gray-800/60">
         <h3 className="text-lg font-bold text-purple-300 font-display mb-4">⚙️ Settings</h3>
 
-        {/* Reading Settings */}
-        <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">📖 Reading</p>
-
-          {/* Language */}
-          <div className="neon-card p-3 flex items-center justify-between">
-            <div>
-              <p className="text-white text-sm font-medium">Language</p>
-              <p className="text-gray-500 text-[10px]">Bible text language</p>
-            </div>
-            <button
-              onClick={handleLanguageToggle}
-              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-bold transition-all active:scale-95"
-            >
-              {language === "en" ? "🇺🇸 English" : "🇰🇷 한국어"}
-            </button>
-          </div>
-
-          {/* Font Size */}
-          <div className="neon-card p-3 flex items-center justify-between">
-            <div>
-              <p className="text-white text-sm font-medium">Font Size</p>
-              <p className="text-gray-500 text-[10px]">Reader text size</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleFontSizeChange(-2)}
-                className="w-8 h-8 rounded-lg bg-gray-800/80 border border-gray-700/50 text-white text-sm font-bold flex items-center justify-center active:scale-90"
-              >
-                −
-              </button>
-              <span className="text-white text-sm font-bold w-8 text-center">{fontSize}</span>
-              <button
-                onClick={() => handleFontSizeChange(2)}
-                className="w-8 h-8 rounded-lg bg-gray-800/80 border border-gray-700/50 text-white text-sm font-bold flex items-center justify-center active:scale-90"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Social Settings */}
         <div className="space-y-3 mb-5">
           <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">👥 Social</p>
@@ -565,19 +523,6 @@ export default function Profile() {
             <div className="flex-1">
               <p className="text-white text-sm font-medium">Edit Profile</p>
               <p className="text-gray-500 text-[10px]">Change name, avatar, class</p>
-            </div>
-            <span className="text-gray-600">▶</span>
-          </div>
-
-          {/* Leaderboard */}
-          <div
-            onClick={() => setLocation("/leaderboard")}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
-          >
-            <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-xl">🏆</div>
-            <div className="flex-1">
-              <p className="text-white text-sm font-medium">Leaderboard</p>
-              <p className="text-gray-500 text-[10px]">Compare rankings with friends</p>
             </div>
             <span className="text-gray-600">▶</span>
           </div>

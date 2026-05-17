@@ -54,3 +54,8 @@
 
 ## UX Improvements
 - [x] Add loading spinner during profile photo upload (camera/gallery)
+
+## Profile Page Cleanup
+- [x] Remove Language setting from Profile (already in Bible Reader)
+- [x] Remove Font Size setting from Profile (already in Bible Reader)
+- [x] Remove duplicate Leaderboard button from Profile (already in bottom nav as Ranking)
