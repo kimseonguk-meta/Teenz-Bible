@@ -9,7 +9,7 @@ import { auth, storage, storageRef, uploadBytes, getDownloadURL } from "@/lib/fi
 
 // Filters available for photos
 const FILTERS = [
-  { name: "None", class: "", style: {} },
+  { name: "None", class: "", style: { filter: "" } },
   { name: "B&W", class: "grayscale", style: { filter: "grayscale(100%)" } },
   { name: "Warm", class: "", style: { filter: "sepia(40%) saturate(130%) brightness(105%)" } },
   { name: "Cool", class: "", style: { filter: "saturate(80%) brightness(105%) hue-rotate(15deg)" } },
