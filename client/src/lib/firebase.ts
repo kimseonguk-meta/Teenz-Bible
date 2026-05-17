@@ -34,6 +34,7 @@ export interface LeaderboardMember {
   nickname: string;
   avatar: string;
   profilePhotoUrl?: string;
+  equippedFrame?: string;
   groupCode: string;
   xp: number;
   streak: number;
@@ -189,6 +190,14 @@ export async function syncUserToFirebase(uid: string) {
   if (profilePhotoUrl) {
     userData.profilePhotoUrl = profilePhotoUrl;
   }
+  
+  // Include equipped frame if available
+  try {
+    const equipped = JSON.parse(localStorage.getItem("teensBibleEquipped") || "{}");
+    if (equipped.frame) {
+      userData.equippedFrame = equipped.frame;
+    }
+  } catch {}
   
   try {
     await update(ref(db, `users/${uid}`), userData);

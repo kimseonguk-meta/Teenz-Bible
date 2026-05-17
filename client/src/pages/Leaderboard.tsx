@@ -16,22 +16,149 @@ import {
   type TimeFilter,
   type ScopeFilter,
 } from "@/lib/firebase";
+import { PROFILE_FRAMES } from "@/data/storeItems";
 
-// Helper to render member avatar - shows photo if available, emoji otherwise
-function MemberAvatar({ member, size = "md" }: { member: LeaderboardMember | undefined; size?: "sm" | "md" | "lg" }) {
+// Get frame class by ID
+function getFrameClass(frameId?: string): string {
+  if (!frameId || frameId === "frame_none") return "";
+  const frame = PROFILE_FRAMES.find((f) => f.id === frameId);
+  return frame?.frameClass || "";
+}
+
+// Helper to render member avatar with optional frame
+function MemberAvatar({
+  member,
+  size = "md",
+  showFrame = false,
+}: {
+  member: LeaderboardMember | undefined;
+  size?: "sm" | "md" | "lg";
+  showFrame?: boolean;
+}) {
   const sizeClasses = size === "lg" ? "w-[72px] h-[72px]" : size === "md" ? "w-14 h-14" : "w-10 h-10";
   const textSize = size === "lg" ? "text-3xl" : size === "md" ? "text-2xl" : "text-xl";
-  
-  if (member?.profilePhotoUrl) {
+  const frameClass = showFrame ? getFrameClass(member?.equippedFrame) : "";
+
+  const inner = member?.profilePhotoUrl ? (
+    <img
+      src={member.profilePhotoUrl}
+      alt={member.nickname || ""}
+      className={`${sizeClasses} object-cover`}
+      style={{ borderRadius: "inherit" }}
+    />
+  ) : (
+    <span className={textSize}>{member?.avatar || "😎"}</span>
+  );
+
+  if (frameClass) {
     return (
-      <img
-        src={member.profilePhotoUrl}
-        alt={member.nickname || ""}
-        className={`${sizeClasses} rounded-xl object-cover`}
-      />
+      <div className={`${sizeClasses} rounded-full flex items-center justify-center overflow-hidden ${frameClass}`}>
+        {inner}
+      </div>
     );
   }
-  return <span className={textSize}>{member?.avatar || "😎"}</span>;
+  return <>{inner}</>;
+}
+
+// Mini Profile Card Popup
+function MiniProfileCard({
+  member,
+  rank,
+  onClose,
+}: {
+  member: LeaderboardMember;
+  rank: number;
+  onClose: () => void;
+}) {
+  const frameClass = getFrameClass(member.equippedFrame);
+  const quizAccuracy = member.quizTotal > 0 ? Math.round((member.quizCorrect / member.quizTotal) * 100) : 0;
+  const joinedDate = member.joinedAt ? new Date(member.joinedAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "—";
+
+  const rankLabel =
+    rank === 1 ? "🥇 1st" : rank === 2 ? "🥈 2nd" : rank === 3 ? "🥉 3rd" : `#${rank}`;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6" onClick={onClose}>
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+      {/* Card */}
+      <div
+        className="relative w-full max-w-[280px] rounded-2xl bg-[rgba(15,5,40,0.95)] border border-purple-500/30 shadow-[0_0_30px_rgba(139,92,246,0.2)] overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        style={{ animation: "popIn 200ms cubic-bezier(0.23,1,0.32,1)" }}
+      >
+        {/* Top gradient bar */}
+        <div className="h-16 bg-gradient-to-r from-purple-600/40 via-pink-500/30 to-blue-500/40" />
+
+        {/* Avatar */}
+        <div className="flex flex-col items-center -mt-10">
+          <div
+            className={`w-20 h-20 rounded-full bg-[rgba(15,5,40,0.9)] flex items-center justify-center overflow-hidden border-4 border-[rgba(15,5,40,0.95)] ${frameClass}`}
+          >
+            {member.profilePhotoUrl ? (
+              <img
+                src={member.profilePhotoUrl}
+                alt={member.nickname}
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <span className="text-4xl">{member.avatar || "😎"}</span>
+            )}
+          </div>
+
+          {/* Name & Rank */}
+          <h3 className="text-white font-bold text-lg mt-2">{member.nickname || "Anonymous"}</h3>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="text-sm font-bold text-yellow-400">{rankLabel}</span>
+            {member.groupCode && member.groupCode !== "INDIVIDUAL" && member.groupCode !== "GLOBAL" && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400">
+                {member.groupCode}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 gap-2 p-4 pt-3">
+          <div className="bg-white/[0.04] rounded-xl p-2.5 text-center">
+            <p className="text-yellow-400 font-bold text-lg">{member.xp.toLocaleString()}</p>
+            <p className="text-gray-400 text-[10px]">⚡ XP</p>
+          </div>
+          <div className="bg-white/[0.04] rounded-xl p-2.5 text-center">
+            <p className="text-orange-400 font-bold text-lg">{member.streak}</p>
+            <p className="text-gray-400 text-[10px]">🔥 Streak</p>
+          </div>
+          <div className="bg-white/[0.04] rounded-xl p-2.5 text-center">
+            <p className="text-blue-400 font-bold text-lg">{member.chaptersRead}</p>
+            <p className="text-gray-400 text-[10px]">📖 Chapters</p>
+          </div>
+          <div className="bg-white/[0.04] rounded-xl p-2.5 text-center">
+            <p className="text-green-400 font-bold text-lg">{quizAccuracy}%</p>
+            <p className="text-gray-400 text-[10px]">🏆 Quiz ({member.quizTotal})</p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-4 pb-4 flex items-center justify-between">
+          <span className="text-gray-500 text-[10px]">Joined {joinedDate}</span>
+          <button
+            onClick={onClose}
+            className="text-xs text-purple-400 hover:text-purple-300 font-medium"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes popIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
+    </div>
+  );
 }
 
 const SORT_TABS: { key: SortBy; icon: string; label: string }[] = [
@@ -55,6 +182,7 @@ export default function Leaderboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUid, setCurrentUid] = useState<string | null>(null);
+  const [selectedMember, setSelectedMember] = useState<{ member: LeaderboardMember; rank: number } | null>(null);
   const groupCode = getCurrentGroupCode();
   const isNasumMember = groupCode !== "INDIVIDUAL" && groupCode !== "GLOBAL";
 
@@ -107,7 +235,11 @@ export default function Leaderboard() {
   const top3 = members.slice(0, 3);
   const rest = members.slice(3);
 
-  // Helper to display group badge - hide "INDIVIDUAL" and show friendly label
+  const handleMemberTap = (member: LeaderboardMember, rank: number) => {
+    setSelectedMember({ member, rank });
+  };
+
+  // Helper to display group badge
   const renderGroupBadge = (code: string | undefined) => {
     if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
     return (
@@ -128,6 +260,15 @@ export default function Leaderboard() {
 
   return (
     <div className="px-4 pt-6 space-y-4 pb-4">
+      {/* Mini Profile Card */}
+      {selectedMember && (
+        <MiniProfileCard
+          member={selectedMember.member}
+          rank={selectedMember.rank}
+          onClose={() => setSelectedMember(null)}
+        />
+      )}
+
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-white font-display neon-text-purple">🏆 LEADERBOARD</h1>
@@ -167,7 +308,7 @@ export default function Leaderboard() {
         ))}
       </div>
 
-      {/* Scope Filter - only show My Class for Nasum members */}
+      {/* Scope Filter */}
       <div className="flex gap-2 justify-center">
         {isNasumMember && (
           <button
@@ -220,11 +361,14 @@ export default function Leaderboard() {
           {top3.length >= 3 && (
             <div className="flex items-end justify-center gap-3 pt-4 pb-2">
               {/* 2nd place */}
-              <div className="flex flex-col items-center">
+              <div
+                className="flex flex-col items-center cursor-pointer active:scale-95 transition-transform"
+                onClick={() => handleMemberTap(top3[1], 2)}
+              >
                 <div className="relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-gray-400 text-white text-xs font-bold flex items-center justify-center border-2 border-gray-300">2</div>
-                  <div className="w-14 h-14 rounded-xl border-2 border-blue-400/50 bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(96,165,250,0.3)]">
-                    <MemberAvatar member={top3[1]} size="md" />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-gray-400 text-white text-xs font-bold flex items-center justify-center border-2 border-gray-300 z-10">2</div>
+                  <div className={`w-14 h-14 rounded-full bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(96,165,250,0.3)] ${!getFrameClass(top3[1]?.equippedFrame) ? "border-2 border-blue-400/50" : ""}`}>
+                    <MemberAvatar member={top3[1]} size="md" showFrame />
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[1]?.nickname}</p>
@@ -234,12 +378,15 @@ export default function Leaderboard() {
               </div>
 
               {/* 1st place */}
-              <div className="flex flex-col items-center -mt-4">
+              <div
+                className="flex flex-col items-center -mt-4 cursor-pointer active:scale-95 transition-transform"
+                onClick={() => handleMemberTap(top3[0], 1)}
+              >
                 <div className="text-2xl mb-1">👑</div>
                 <div className="relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-yellow-500 text-white text-xs font-bold flex items-center justify-center border-2 border-yellow-300 shadow-[0_0_10px_rgba(234,179,8,0.5)]">1</div>
-                  <div className="w-18 h-18 rounded-xl border-2 border-yellow-500/70 bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(234,179,8,0.3)]" style={{width: '72px', height: '72px'}}>
-                    <MemberAvatar member={top3[0]} size="lg" />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-yellow-500 text-white text-xs font-bold flex items-center justify-center border-2 border-yellow-300 shadow-[0_0_10px_rgba(234,179,8,0.5)] z-10">1</div>
+                  <div className={`flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(234,179,8,0.3)] ${!getFrameClass(top3[0]?.equippedFrame) ? "border-2 border-yellow-500/70" : ""}`} style={{width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(15,5,40,0.8)'}}>
+                    <MemberAvatar member={top3[0]} size="lg" showFrame />
                   </div>
                 </div>
                 <p className="text-white text-sm font-bold mt-2 max-w-[80px] truncate">
@@ -252,11 +399,14 @@ export default function Leaderboard() {
               </div>
 
               {/* 3rd place */}
-              <div className="flex flex-col items-center">
+              <div
+                className="flex flex-col items-center cursor-pointer active:scale-95 transition-transform"
+                onClick={() => handleMemberTap(top3[2], 3)}
+              >
                 <div className="relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-amber-700 text-white text-xs font-bold flex items-center justify-center border-2 border-amber-600">3</div>
-                  <div className="w-14 h-14 rounded-xl border-2 border-amber-600/50 bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(180,83,9,0.3)]">
-                    <MemberAvatar member={top3[2]} size="md" />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-amber-700 text-white text-xs font-bold flex items-center justify-center border-2 border-amber-600 z-10">3</div>
+                  <div className={`w-14 h-14 rounded-full bg-[rgba(15,5,40,0.8)] flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(180,83,9,0.3)] ${!getFrameClass(top3[2]?.equippedFrame) ? "border-2 border-amber-600/50" : ""}`}>
+                    <MemberAvatar member={top3[2]} size="md" showFrame />
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[2]?.nickname}</p>
@@ -272,18 +422,24 @@ export default function Leaderboard() {
             {rest.map((member, idx) => {
               const rank = idx + 4;
               const isMe = member.uid === currentUid;
+              const memberFrameClass = getFrameClass(member.equippedFrame);
               return (
                 <div
                   key={member.uid}
-                  className={`p-3 flex items-center gap-3 rounded-xl transition-all ${
+                  onClick={() => handleMemberTap(member, rank)}
+                  className={`p-3 flex items-center gap-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] ${
                     isMe
                       ? "bg-red-500/10 border border-red-500/30"
                       : "bg-white/[0.03] border border-transparent"
                   }`}
                 >
                   <span className="text-base font-bold text-gray-400 w-7 text-center">{rank}</span>
-                  <div className="w-10 h-10 rounded-full bg-purple-900/50 border border-purple-500/30 flex items-center justify-center overflow-hidden">
-                    <MemberAvatar member={member} size="sm" />
+                  <div className={`w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center overflow-hidden ${memberFrameClass || "border border-purple-500/30"}`}>
+                    {member.profilePhotoUrl ? (
+                      <img src={member.profilePhotoUrl} alt={member.nickname} className="w-10 h-10 rounded-full object-cover" />
+                    ) : (
+                      <span className="text-xl">{member.avatar || "😎"}</span>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">

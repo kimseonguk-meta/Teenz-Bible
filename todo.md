@@ -20,10 +20,10 @@
 - [x] Bible AI chat history: already implemented (localStorage bibleAI_chatHistory + geminiHistory)
 
 ## Apple App Store Rejection Fix
-- [ ] Enable Apple Auth provider in Firebase console
-- [ ] Add Sign in with Apple button alongside Google login
-- [ ] Draft Apple Review response for Guideline 2.1(b) business model
-- [ ] Build and deploy to Firebase
+- [x] Enable Apple Auth provider in Firebase console
+- [x] Add Sign in with Apple button alongside Google login
+- [x] Draft Apple Review response for Guideline 2.1(b) business model
+- [x] Build and deploy to Firebase
 
 ## Old Testament Quizzes + Verse References
 - [x] Generate Old Testament quizzes for all 929 chapters (English + Korean)
@@ -39,3 +39,7 @@
 - [x] Profile photo S3 upload and Firebase sync (cross-device)
 - [x] Photo crop and filter UI before saving
 - [x] Display profile photos on leaderboard
+
+## Leaderboard & Profile Frame Improvements
+- [x] Leaderboard mini profile card popup on member tap (photo, nickname, stats)
+- [x] Store frame/badge applied to profile photo (purchasable frames overlay on photo)
