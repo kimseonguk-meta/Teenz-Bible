@@ -28,3 +28,9 @@
 ## Old Testament Quizzes + Verse References
 - [x] Generate Old Testament quizzes for all 929 chapters (English + Korean)
 - [x] Add verse reference explanations to all quizzes (shown after answering)
+
+## Quiz Improvements Phase 2
+- [x] Verify OT quiz accuracy (sample key chapters)
+- [x] Add verse text preview popup after quiz answer
+- [x] Build quiz statistics tracking (localStorage-based with Firebase sync)
+- [x] Build quiz statistics dashboard UI (accuracy rate, streaks, per-book breakdown, history)

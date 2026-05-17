@@ -181,6 +181,25 @@ export default function Bible() {
         chapterNum={view.chapterNum}
         lang={lang}
         onFinish={(correct) => {
+          // Track quiz stats
+          const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
+          teensBible.quizTotal = (teensBible.quizTotal || 0) + 1;
+          if (correct) teensBible.quizCorrect = (teensBible.quizCorrect || 0) + 1;
+          localStorage.setItem("teensBible", JSON.stringify(teensBible));
+          
+          // Track per-chapter quiz history
+          const quizHistory = JSON.parse(localStorage.getItem("quizHistory") || "[]");
+          quizHistory.push({
+            book: view.book,
+            chapter: view.chapterNum,
+            correct,
+            timestamp: Date.now()
+          });
+          localStorage.setItem("quizHistory", JSON.stringify(quizHistory));
+          
+          // Dispatch sync event
+          window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+          
           if (correct) {
             game.addXP(10);
             game.addGems(3);
@@ -1105,18 +1124,74 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
   const shuffled = useMemo(() => quiz ? getShuffledOptions(quiz) : null, [book, chapterNum, lang]);
   const [selected, setSelected] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [showVerse, setShowVerse] = useState(false);
+  const [autoFinishTimer, setAutoFinishTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   if (!quiz || !shuffled) {
     onSkip();
     return null;
   }
 
+  // Get the verse text from Bible data
+  const getVerseText = (): string | null => {
+    if (!quiz.ref) return null;
+    const bookData = allBibleData[book];
+    if (!bookData) return null;
+    const chapter = bookData.find(ch => ch.num === chapterNum);
+    if (!chapter) return null;
+    
+    // Parse verse reference like "Genesis 1:3" or "Genesis 1:21-22"
+    const refMatch = quiz.ref.match(/(\d+):(\d+)(?:-(\d+))?$/);
+    if (!refMatch) return chapter.paragraphs.slice(0, 2).join(' ');
+    
+    const verseStart = parseInt(refMatch[2]);
+    const verseEnd = refMatch[3] ? parseInt(refMatch[3]) : verseStart;
+    
+    // Find paragraphs that contain the referenced verses
+    const matchedParagraphs: string[] = [];
+    if (chapter.verseRanges) {
+      for (let i = 0; i < chapter.verseRanges.length; i++) {
+        const range = chapter.verseRanges[i];
+        if (!range) continue;
+        // Parse range like "1-2" or "3"
+        const rangeParts = range.split('-');
+        const rangeStart = parseInt(rangeParts[0]);
+        const rangeEnd = rangeParts[1] ? parseInt(rangeParts[1]) : rangeStart;
+        // Check if this range overlaps with our target verses
+        if (rangeStart <= verseEnd && rangeEnd >= verseStart) {
+          matchedParagraphs.push(chapter.paragraphs[i]);
+        }
+      }
+    }
+    
+    if (matchedParagraphs.length > 0) {
+      return matchedParagraphs.join(' ');
+    }
+    // Fallback: return first paragraph
+    return chapter.paragraphs[0];
+  };
+
   const handleSelect = (idx: number) => {
     if (selected !== null) return;
     setSelected(idx);
     setShowResult(true);
     const isCorrect = idx === shuffled.correctIndex;
-    setTimeout(() => { onFinish(isCorrect); }, 2000);
+    const timer = setTimeout(() => { onFinish(isCorrect); }, 3500);
+    setAutoFinishTimer(timer);
+  };
+
+  const handleShowVerse = () => {
+    setShowVerse(true);
+    // Cancel auto-finish so user can read
+    if (autoFinishTimer) {
+      clearTimeout(autoFinishTimer);
+      setAutoFinishTimer(null);
+    }
+  };
+
+  const handleContinue = () => {
+    const isCorrect = selected === shuffled.correctIndex;
+    onFinish(isCorrect);
   };
 
   return (
@@ -1170,10 +1245,27 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
           <p className={`text-sm font-bold mt-1 ${selected === shuffled.correctIndex ? 'text-green-400' : 'text-red-400'}`}>
             {selected === shuffled.correctIndex ? 'NICE! +10 XP +3 💎' : 'Not quite! The correct answer is highlighted.'}
           </p>
-          {quiz.ref && (
-            <p className="text-purple-300 text-xs mt-2 flex items-center justify-center gap-1">
-              <span>📖</span> {quiz.ref}
-            </p>
+          {quiz.ref && !showVerse && (
+            <button 
+              onClick={handleShowVerse}
+              className="text-purple-300 text-xs mt-2 flex items-center justify-center gap-1 mx-auto hover:text-purple-200 active:scale-95 transition-all"
+            >
+              <span>📖</span> {quiz.ref} — Tap to see verse
+            </button>
+          )}
+          {showVerse && (
+            <div className="mt-3 text-left bg-purple-900/20 border border-purple-500/20 rounded-lg p-3">
+              <p className="text-purple-200 text-xs font-bold mb-1">📖 {quiz.ref}</p>
+              <p className="text-gray-300 text-xs leading-relaxed italic">
+                {getVerseText() || 'Verse text not available'}
+              </p>
+              <button 
+                onClick={handleContinue}
+                className="mt-3 w-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold py-2 px-4 rounded-lg active:scale-95 transition-all"
+              >
+                Continue →
+              </button>
+            </div>
           )}
         </div>
       )}

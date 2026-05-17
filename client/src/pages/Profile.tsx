@@ -364,6 +364,21 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Quiz Stats Link */}
+      <button 
+        onClick={() => setLocation("/quiz-stats")}
+        className="w-full neon-card p-4 flex items-center justify-between active:scale-[0.98] transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">📊</span>
+          <div className="text-left">
+            <p className="text-white font-bold text-sm">Quiz Statistics</p>
+            <p className="text-purple-300 text-xs">View your accuracy, streaks & history</p>
+          </div>
+        </div>
+        <span className="text-purple-300">→</span>
+      </button>
+
       {/* Badges */}
       <div>
         <div className="flex items-center justify-between mb-3">
