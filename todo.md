@@ -43,3 +43,7 @@
 ## Leaderboard & Profile Frame Improvements
 - [x] Leaderboard mini profile card popup on member tap (photo, nickname, stats)
 - [x] Store frame/badge applied to profile photo (purchasable frames overlay on photo)
+
+## Profile Photo UX Fix
+- [x] Remove the "Remove" button from profile photo section
+- [x] Implement proper "Take Photo" (camera) option when tapping Change Photo

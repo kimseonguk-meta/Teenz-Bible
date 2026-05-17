@@ -98,6 +98,7 @@ export default function Profile() {
   const [showPhotoMenu, setShowPhotoMenu] = useState(false);
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const [redeemCode, setRedeemCode] = useState("");
   const [redeemResult, setRedeemResult] = useState<{ msg: string; success: boolean } | null>(null);
   const [googleLinked, setGoogleLinked] = useState(false);
@@ -288,23 +289,45 @@ export default function Profile() {
         {showPhotoMenu && (
           <div className="mt-2 flex gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
             <button
+              onClick={() => { cameraInputRef.current?.click(); setShowPhotoMenu(false); }}
+              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
+            >
+              📸 Take Photo
+            </button>
+            <button
               onClick={() => { photoInputRef.current?.click(); setShowPhotoMenu(false); }}
               className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
             >
-              📷 {profilePhoto ? "Change Photo" : "Upload Photo"}
+              🖼️ Gallery
             </button>
-            {profilePhoto && (
-              <button
-                onClick={() => { removeProfilePhoto(); setProfilePhotoState(null); setShowPhotoMenu(false); }}
-                className="px-3 py-1.5 rounded-lg bg-red-600/20 border border-red-500/30 text-red-300 text-xs font-medium transition-all active:scale-95"
-              >
-                🗑 Remove
-              </button>
-            )}
           </div>
         )}
 
-        {/* Hidden file input */}
+        {/* Hidden file inputs */}
+        <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="user"
+          className="hidden"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (!file || !file.type.startsWith("image/")) return;
+            const canvas = document.createElement("canvas");
+            const img = new Image();
+            img.onload = () => {
+              const size = Math.min(img.width, img.height);
+              const sx = (img.width - size) / 2;
+              const sy = (img.height - size) / 2;
+              canvas.width = 300; canvas.height = 300;
+              canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
+              const base64 = canvas.toDataURL("image/jpeg", 0.85);
+              setProfilePhoto(base64);
+              setProfilePhotoState(base64);
+            };
+            img.src = URL.createObjectURL(file);
+          }}
+        />
         <input
           ref={photoInputRef}
           type="file"
@@ -319,9 +342,9 @@ export default function Profile() {
               const size = Math.min(img.width, img.height);
               const sx = (img.width - size) / 2;
               const sy = (img.height - size) / 2;
-              canvas.width = 200; canvas.height = 200;
-              canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 200, 200);
-              const base64 = canvas.toDataURL("image/jpeg", 0.8);
+              canvas.width = 300; canvas.height = 300;
+              canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
+              const base64 = canvas.toDataURL("image/jpeg", 0.85);
               setProfilePhoto(base64);
               setProfilePhotoState(base64);
             };
