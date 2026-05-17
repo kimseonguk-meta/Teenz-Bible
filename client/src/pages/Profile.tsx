@@ -97,6 +97,7 @@ export default function Profile() {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showPhotoMenu, setShowPhotoMenu] = useState(false);
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [redeemCode, setRedeemCode] = useState("");
@@ -275,10 +276,18 @@ export default function Profile() {
             ) : (
               <span className="text-5xl">{avatar}</span>
             )}
+            {/* Upload loading overlay */}
+            {isUploadingPhoto && (
+              <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center z-10">
+                <div className="w-8 h-8 border-3 border-purple-300 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
             {/* Camera overlay hint */}
-            <div className="absolute inset-0 rounded-full bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-              <span className="text-white text-2xl">📷</span>
-            </div>
+            {!isUploadingPhoto && (
+              <div className="absolute inset-0 rounded-full bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                <span className="text-white text-2xl">📷</span>
+              </div>
+            )}
           </div>
           {equippedPet && (
             <div className="absolute -top-1 -left-2 text-2xl">{equippedPet.petEmoji}</div>
@@ -324,11 +333,16 @@ export default function Profile() {
               const base64 = canvas.toDataURL("image/jpeg", 0.85);
               setProfilePhoto(base64);
               setProfilePhotoState(base64);
-              // Auto-upload to Firebase Storage
-              const url = await uploadPhotoToFirebase(base64);
-              if (url) {
-                setProfilePhotoUrl(url);
-                setProfilePhotoState(url);
+              // Auto-upload to Firebase Storage with loading indicator
+              setIsUploadingPhoto(true);
+              try {
+                const url = await uploadPhotoToFirebase(base64);
+                if (url) {
+                  setProfilePhotoUrl(url);
+                  setProfilePhotoState(url);
+                }
+              } finally {
+                setIsUploadingPhoto(false);
               }
             };
             img.src = URL.createObjectURL(file);
@@ -353,11 +367,16 @@ export default function Profile() {
               const base64 = canvas.toDataURL("image/jpeg", 0.85);
               setProfilePhoto(base64);
               setProfilePhotoState(base64);
-              // Auto-upload to Firebase Storage
-              const url = await uploadPhotoToFirebase(base64);
-              if (url) {
-                setProfilePhotoUrl(url);
-                setProfilePhotoState(url);
+              // Auto-upload to Firebase Storage with loading indicator
+              setIsUploadingPhoto(true);
+              try {
+                const url = await uploadPhotoToFirebase(base64);
+                if (url) {
+                  setProfilePhotoUrl(url);
+                  setProfilePhotoState(url);
+                }
+              } finally {
+                setIsUploadingPhoto(false);
               }
             };
             img.src = URL.createObjectURL(file);

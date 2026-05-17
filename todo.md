@@ -51,3 +51,6 @@
 ## Profile Photo Cloud Sync Improvements
 - [x] Take Photo auto-upload to Firebase Storage (same as Gallery flow)
 - [x] Profile photo auto-restore on new device login (Google/Apple sign-in downloads photo from Firebase Storage)
+
+## UX Improvements
+- [x] Add loading spinner during profile photo upload (camera/gallery)
