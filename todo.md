@@ -47,3 +47,7 @@
 ## Profile Photo UX Fix
 - [x] Remove the "Remove" button from profile photo section
 - [x] Implement proper "Take Photo" (camera) option when tapping Change Photo
+
+## Profile Photo Cloud Sync Improvements
+- [x] Take Photo auto-upload to Firebase Storage (same as Gallery flow)
+- [x] Profile photo auto-restore on new device login (Google/Apple sign-in downloads photo from Firebase Storage)

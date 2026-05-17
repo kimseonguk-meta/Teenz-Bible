@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { useLocation } from "wouter";
 import { auth } from "@/lib/firebase";
-import { getProfilePhotoUrl, setProfilePhoto, removeProfilePhoto } from "@/components/ProfilePhotoPrompt";
+import { getProfilePhotoUrl, setProfilePhoto, setProfilePhotoUrl, uploadPhotoToFirebase } from "@/components/ProfilePhotoPrompt";
 import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOutGoogle } from "@/lib/googleAuth";
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
 
@@ -315,7 +315,7 @@ export default function Profile() {
             if (!file || !file.type.startsWith("image/")) return;
             const canvas = document.createElement("canvas");
             const img = new Image();
-            img.onload = () => {
+            img.onload = async () => {
               const size = Math.min(img.width, img.height);
               const sx = (img.width - size) / 2;
               const sy = (img.height - size) / 2;
@@ -324,6 +324,12 @@ export default function Profile() {
               const base64 = canvas.toDataURL("image/jpeg", 0.85);
               setProfilePhoto(base64);
               setProfilePhotoState(base64);
+              // Auto-upload to Firebase Storage
+              const url = await uploadPhotoToFirebase(base64);
+              if (url) {
+                setProfilePhotoUrl(url);
+                setProfilePhotoState(url);
+              }
             };
             img.src = URL.createObjectURL(file);
           }}
@@ -338,7 +344,7 @@ export default function Profile() {
             if (!file || !file.type.startsWith("image/")) return;
             const canvas = document.createElement("canvas");
             const img = new Image();
-            img.onload = () => {
+            img.onload = async () => {
               const size = Math.min(img.width, img.height);
               const sx = (img.width - size) / 2;
               const sy = (img.height - size) / 2;
@@ -347,6 +353,12 @@ export default function Profile() {
               const base64 = canvas.toDataURL("image/jpeg", 0.85);
               setProfilePhoto(base64);
               setProfilePhotoState(base64);
+              // Auto-upload to Firebase Storage
+              const url = await uploadPhotoToFirebase(base64);
+              if (url) {
+                setProfilePhotoUrl(url);
+                setProfilePhotoState(url);
+              }
             };
             img.src = URL.createObjectURL(file);
           }}

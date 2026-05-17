@@ -17,7 +17,7 @@
  * - Meme reactions
  */
 
-import { db, ref, get, set, update, serverTimestamp, auth } from "./firebase";
+import { db, ref, get, set, update, serverTimestamp, auth, storage, storageRef, getDownloadURL } from "./firebase";
 
 // ─── Types ──────────────────────────────────────────────────────
 interface UserDataSnapshot {
@@ -336,6 +336,10 @@ export async function syncFromFirebase(): Promise<boolean> {
       console.log("[Sync] Remote data is newer, applying to local...");
       applyDataToLocal(remoteData);
       localStorage.setItem("lastSyncedAt", String(remoteSyncTime));
+      
+      // Restore profile photo from Firebase
+      await restoreProfilePhotoFromFirebase(uid);
+      
       return true; // Data was restored
     } else {
       // Even if local is newer, merge critical data from remote
@@ -427,6 +431,37 @@ export async function syncFromFirebase(): Promise<boolean> {
   } catch (err) {
     console.error("[Sync] ❌ Download failed:", err);
     return false;
+  }
+}
+
+// ─── Restore profile photo from Firebase Storage ──────────────────
+async function restoreProfilePhotoFromFirebase(uid: string): Promise<void> {
+  try {
+    // First check if there's a profilePhotoUrl in the leaderboard data
+    const userSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+    const photoUrl = userSnapshot.val();
+    
+    if (photoUrl && typeof photoUrl === "string") {
+      // We have a cloud URL - set it in localStorage
+      localStorage.setItem("profilePhotoUrl", photoUrl);
+      console.log("[Sync] ✅ Profile photo restored from Firebase");
+      window.dispatchEvent(new CustomEvent("profile-photo-changed"));
+      return;
+    }
+
+    // Fallback: try to get download URL directly from Storage
+    const photoRef = storageRef(storage, `profilePhotos/${uid}.jpg`);
+    const url = await getDownloadURL(photoRef);
+    if (url) {
+      localStorage.setItem("profilePhotoUrl", url);
+      console.log("[Sync] ✅ Profile photo restored from Firebase Storage");
+      window.dispatchEvent(new CustomEvent("profile-photo-changed"));
+    }
+  } catch (err: any) {
+    // Not an error if photo doesn't exist
+    if (err?.code !== "storage/object-not-found") {
+      console.log("[Sync] No profile photo to restore");
+    }
   }
 }
 

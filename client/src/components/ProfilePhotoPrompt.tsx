@@ -50,7 +50,7 @@ export function removeProfilePhoto() {
 }
 
 // Upload photo to Firebase Storage and return download URL
-async function uploadPhotoToFirebase(base64: string): Promise<string | null> {
+export async function uploadPhotoToFirebase(base64: string): Promise<string | null> {
   try {
     const uid = auth.currentUser?.uid;
     if (!uid) return null;
