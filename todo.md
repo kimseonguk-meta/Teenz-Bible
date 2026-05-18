@@ -59,3 +59,7 @@
 - [x] Remove Language setting from Profile (already in Bible Reader)
 - [x] Remove Font Size setting from Profile (already in Bible Reader)
 - [x] Remove duplicate Leaderboard button from Profile (already in bottom nav as Ranking)
+
+## Bible Reader Bug Fixes
+- [x] Stop auto-advancing to next chapter after completion (let user take quiz first)
+- [x] Add minimum reading time before marking chapter as read (prevent scroll-through cheating)

@@ -474,6 +474,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const [reachedBottom, setReachedBottom] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [confettiPieces, setConfettiPieces] = useState<Array<{id: number; x: number; delay: number; color: string; size: number; duration: number}>>([]);
+  const [showReadWarning, setShowReadWarning] = useState(false);
+  const readingStartTime = useRef(Date.now());
   const contentEndRef = useRef<HTMLDivElement>(null);
   const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
   const [showVerses, setShowVerses] = useState(() => localStorage.getItem("showVerseNumbers") === "true");
@@ -708,8 +710,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       setTtsProgress(100);
       setTtsStatus('');
 
-      // Auto-advance to next chapter
-      if (autoAdvance && chapterIdx < chapters.length - 1) {
+      // Auto-advance to next chapter (only if no quiz available)
+      const currentChapter = chapters[chapterIdx];
+      const quizExists = currentChapter && hasQuiz(book, currentChapter.num);
+      if (autoAdvance && chapterIdx < chapters.length - 1 && !quizExists) {
         setTtsStatus('⏭ Next chapter in 3s...');
         setIsSpeaking(true); // keep UI visible briefly
         setTimeout(() => {
@@ -717,6 +721,12 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           setTtsProgress(0);
           setTtsStatus('');
           onNavigate(chapterIdx + 1);
+        }, 3000);
+      } else if (autoAdvance && quizExists) {
+        setTtsStatus('🧠 Quiz available! Scroll down to take it.');
+        setTimeout(() => {
+          setIsSpeaking(false);
+          setTtsStatus('');
         }, 3000);
       }
     }
@@ -798,9 +808,20 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     return () => observer.disconnect();
   }, [reachedBottom, book, chapterIdx]);
 
-  // Mark chapter as read only after reaching bottom
+  // Minimum reading time: 30 seconds before marking as read
+  const MIN_READING_TIME_MS = 30_000;
+
+  // Mark chapter as read only after reaching bottom AND spending enough time
   useEffect(() => {
     if (reachedBottom && chapter && !marked) {
+      const elapsed = Date.now() - readingStartTime.current;
+      if (elapsed < MIN_READING_TIME_MS) {
+        // Too fast - show warning, reset scroll detection
+        setShowReadWarning(true);
+        setReachedBottom(false);
+        const timer = setTimeout(() => setShowReadWarning(false), 4000);
+        return () => clearTimeout(timer);
+      }
       game.markChapterRead(book, chapter.num);
       setMarked(true);
       // Trigger celebration animation
@@ -835,6 +856,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     setReachedBottom(false);
     setShowCelebration(false);
     setConfettiPieces([]);
+    setShowReadWarning(false);
+    readingStartTime.current = Date.now();
   }, [book, chapterIdx]);
 
   useEffect(() => {
@@ -1042,6 +1065,25 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
         <div className="mt-4 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
             <span className="text-green-400 text-sm font-bold">✅ Chapter Complete! +10 XP, +5 💎</span>
+          </div>
+        </div>
+      )}
+
+      {/* Too-fast reading warning popup */}
+      {showReadWarning && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-6" style={{backgroundColor: 'rgba(0,0,0,0.6)'}}>
+          <div className="bg-gradient-to-br from-purple-900 to-indigo-900 border-2 border-yellow-500/60 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl" style={{animation: 'celebrationPop 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards'}}>
+            <div className="text-5xl mb-3">📖</div>
+            <h3 className="text-white font-bold text-lg mb-2">Take your time!</h3>
+            <p className="text-purple-200 text-sm leading-relaxed mb-4">
+              It looks like you scrolled through pretty fast. Try reading more carefully to earn your XP & Gems! 😊
+            </p>
+            <button
+              onClick={() => { setShowReadWarning(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-yellow-500/30"
+            >
+              📖 Read Again
+            </button>
           </div>
         </div>
       )}
