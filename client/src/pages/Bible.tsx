@@ -871,14 +871,14 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   return (
     <div className="px-4 pt-4 pb-8">
       {/* Reader Header */}
-      <div className="flex items-center justify-between mb-4">
-        <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform">← Back</button>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between mb-2">
+        <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform shrink-0">← Back</button>
+        <div className="flex items-center gap-1.5 flex-wrap justify-end">
           <button onClick={() => setLang(lang === "en" ? "ko" : "en")}
-            className="px-2 py-1 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-purple-200 active:scale-95 transition-transform">
-            {lang === "en" ? "🇰🇷 한국어" : "🇺🇸 English"}
+            className="w-8 h-8 rounded-lg bg-purple-900/50 border border-purple-500/30 text-sm text-purple-200 active:scale-95 transition-transform flex items-center justify-center">
+            {lang === "en" ? "🇰🇷" : "🇬🇧"}
           </button>
-          <div className="relative flex items-center gap-1.5">
+          <div className="relative flex items-center gap-1">
             <button onClick={() => { setFontSize(f => Math.max(12, f - 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
               className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20">A-</button>
             <button onClick={() => { setFontSize(f => Math.min(28, f + 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
@@ -891,11 +891,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
             )}
           </div>
           <button onClick={isSpeaking ? (isPaused ? pauseSpeech : pauseSpeech) : startSpeech}
-            className={`px-3 h-8 rounded-lg border-2 text-xs font-bold active:scale-90 transition-all flex items-center gap-1.5 shadow-lg ${
+            className={`w-8 h-8 rounded-lg border-2 text-sm font-bold active:scale-90 transition-all flex items-center justify-center shadow-lg ${
               isSpeaking ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-400 text-white shadow-pink-500/20' : 'bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-white shadow-purple-500/20 hover:border-purple-300'
             }`}>
             {isSpeaking ? (isPaused ? '▶' : '⏸') : '🎧'}
-            <span className="text-[11px]">{isSpeaking ? (isPaused ? 'Resume' : 'Pause') : 'Listen'}</span>
           </button>
           <button onClick={() => { const next = !showVerses; setShowVerses(next); localStorage.setItem("showVerseNumbers", String(next)); }}
             className={`w-8 h-8 rounded-lg border-2 text-[10px] font-bold active:scale-90 transition-all shadow-lg ${
