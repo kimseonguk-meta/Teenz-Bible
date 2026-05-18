@@ -100,8 +100,7 @@ export default function Profile() {
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
-  const [redeemCode, setRedeemCode] = useState("");
-  const [redeemResult, setRedeemResult] = useState<{ msg: string; success: boolean } | null>(null);
+
   const [googleLinked, setGoogleLinked] = useState(false);
   const [googleEmail, setGoogleEmail] = useState<string | null>(null);
   const [linkingGoogle, setLinkingGoogle] = useState(false);
@@ -218,41 +217,7 @@ export default function Profile() {
     window.location.reload();
   }, []);
 
-  const handleRedeem = useCallback(() => {
-    const code = redeemCode.trim().toUpperCase();
-    if (!code) return;
-
-    // Check some predefined codes
-    const codes: Record<string, { gems: number; msg: string }> = {
-      "TEENZ2024": { gems: 50, msg: "Welcome bonus! +50 Gems" },
-      "BIBLELOVE": { gems: 30, msg: "Spread the love! +30 Gems" },
-      "NASUM": { gems: 20, msg: "Nasum family! +20 Gems" },
-    };
-
-    const redeemed = JSON.parse(localStorage.getItem("redeemedCodes") || "[]");
-    if (redeemed.includes(code)) {
-      setRedeemResult({ msg: "Code already redeemed!", success: false });
-      return;
-    }
-
-    const reward = codes[code];
-    if (reward) {
-      // Add gems
-      try {
-        const raw = localStorage.getItem("teensBible");
-        const data = raw ? JSON.parse(raw) : {};
-        data.gems = (data.gems || 0) + reward.gems;
-        localStorage.setItem("teensBible", JSON.stringify(data));
-      } catch { /* ignore */ }
-      redeemed.push(code);
-      localStorage.setItem("redeemedCodes", JSON.stringify(redeemed));
-      setRedeemResult({ msg: reward.msg, success: true });
-      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
-    } else {
-      setRedeemResult({ msg: "Invalid code. Try again!", success: false });
-    }
-    setRedeemCode("");
-  }, [redeemCode]);
+  // Redeem code feature removed for App Store compliance (Guideline 3.1.1)
 
   const handleEditProfile = useCallback(() => {
     // Clear profile to trigger onboarding again
@@ -681,33 +646,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Redeem Code */}
-          <div className="neon-card p-3">
-            <div className="mb-2">
-              <p className="text-white text-sm font-medium">🎁 Redeem Code</p>
-              <p className="text-gray-500 text-[10px]">Enter a special code to get rewards</p>
-            </div>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={redeemCode}
-                onChange={(e) => setRedeemCode(e.target.value)}
-                placeholder="Enter code..."
-                className="flex-1 bg-gray-900/80 border border-gray-700/50 text-white px-3 py-2 rounded-lg text-sm uppercase placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50"
-              />
-              <button
-                onClick={handleRedeem}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs font-bold active:scale-95 transition-all"
-              >
-                Redeem
-              </button>
-            </div>
-            {redeemResult && (
-              <p className={`text-xs mt-2 ${redeemResult.success ? 'text-green-400' : 'text-red-400'}`}>
-                {redeemResult.msg}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Danger Zone */}

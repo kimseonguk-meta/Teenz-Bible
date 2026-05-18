@@ -1,21 +1,31 @@
 /**
  * Apple Account Linking for Teenz Bible
  * 
- * Flow mirrors Google auth:
- * 1. User is currently anonymous → link anonymous account to Apple
- * 2. If linking fails (Apple account already used) → sign in with Apple directly
- *    and migrate data from anonymous account to the Apple account
+ * Uses signInWithRedirect for iOS compatibility (signInWithPopup causes blank screens on iOS Safari).
+ * 
+ * Flow:
+ * 1. User is currently anonymous → redirect to Apple sign-in
+ * 2. On redirect back → handle result, link/migrate data
  * 3. On new device → sign in with Apple → restore data from Firebase
  */
 
-import { auth, appleProvider, signInWithPopup, db, ref, get, set } from "./firebase";
-import { OAuthProvider } from "firebase/auth";
+import { auth, appleProvider, db, ref, get, set } from "./firebase";
+import { getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, OAuthProvider } from "firebase/auth";
 import { syncFromFirebase, immediateSyncToFirebase } from "./firebaseSync";
 
 export type LinkResult = 
   | { success: true; type: "linked"; message: string }
   | { success: true; type: "signed-in"; message: string; restored: boolean }
+  | { success: true; type: "redirecting"; message: string }
   | { success: false; message: string };
+
+/**
+ * Detect if running on iOS (Safari, PWA, or in-app browser)
+ */
+function isIOS(): boolean {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
 
 /**
  * Link current anonymous account with Apple, or sign in with Apple on new device
@@ -44,6 +54,14 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
   // User is signed in with Google but wants to also link Apple
   try {
     await immediateSyncToFirebase();
+    
+    if (isIOS()) {
+      // Save state before redirect
+      localStorage.setItem("appleAuthPending", "link-existing");
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
+    }
+    
     const result = await signInWithPopup(auth, appleProvider);
     await immediateSyncToFirebase();
     
@@ -60,7 +78,10 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
       return { success: false, message: "Sign-in cancelled" };
     }
     if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
+      // Fallback to redirect
+      localStorage.setItem("appleAuthPending", "link-existing");
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
     }
     return { success: false, message: `Error: ${error.message}` };
   }
@@ -77,6 +98,15 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
 
   try {
     await immediateSyncToFirebase();
+    
+    if (isIOS()) {
+      // Save state before redirect
+      localStorage.setItem("appleAuthPending", "link-anonymous");
+      localStorage.setItem("appleAuthOldUid", oldUid);
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
+    }
+    
     const appleResult = await signInWithPopup(auth, appleProvider);
     
     console.log("[AppleAuth] Successfully linked anonymous account to Apple");
@@ -102,7 +132,11 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
     }
 
     if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
+      // Fallback to redirect
+      localStorage.setItem("appleAuthPending", "link-anonymous");
+      localStorage.setItem("appleAuthOldUid", oldUid);
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
     }
     
     return { success: false, message: `Error: ${error.message}` };
@@ -122,7 +156,17 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     const anonDataSnapshot = await get(ref(db, `userData/${oldAnonymousUid}`));
     const anonData = anonDataSnapshot.val();
 
-    const { user: appleUser } = await signInWithPopup(auth, appleProvider);
+    let appleUser;
+    if (isIOS()) {
+      localStorage.setItem("appleAuthPending", "conflict");
+      localStorage.setItem("appleAuthOldUid", oldAnonymousUid);
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
+    } else {
+      const result = await signInWithPopup(auth, appleProvider);
+      appleUser = result.user;
+    }
+    
     const appleUid = appleUser.uid;
 
     console.log(`[AppleAuth] Signed in with Apple. Old UID: ${oldAnonymousUid}, New UID: ${appleUid}`);
@@ -176,6 +220,12 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
  */
 async function signInWithAppleDirect(): Promise<LinkResult> {
   try {
+    if (isIOS()) {
+      localStorage.setItem("appleAuthPending", "direct");
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
+    }
+    
     const result = await signInWithPopup(auth, appleProvider);
     
     const restored = await syncFromFirebase();
@@ -197,8 +247,110 @@ async function signInWithAppleDirect(): Promise<LinkResult> {
       return { success: false, message: "Sign-in cancelled" };
     }
     if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
+      // Fallback to redirect
+      localStorage.setItem("appleAuthPending", "direct");
+      signInWithRedirect(auth, appleProvider);
+      return { success: true, type: "redirecting", message: "Redirecting to Apple..." };
     }
+    return { success: false, message: `Error: ${error.message}` };
+  }
+}
+
+/**
+ * Handle redirect result after Apple sign-in redirect returns
+ * Call this on app initialization
+ */
+export async function handleAppleRedirectResult(): Promise<LinkResult | null> {
+  const pending = localStorage.getItem("appleAuthPending");
+  if (!pending) return null;
+  
+  try {
+    const result = await getRedirectResult(auth);
+    if (!result) {
+      // No redirect result yet, clear pending state
+      localStorage.removeItem("appleAuthPending");
+      return null;
+    }
+    
+    const user = result.user;
+    console.log("[AppleAuth] Redirect result received, type:", pending);
+    
+    // Clean up pending state
+    localStorage.removeItem("appleAuthPending");
+    
+    if (pending === "direct" || pending === "link-existing") {
+      const restored = await syncFromFirebase();
+      
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+      window.dispatchEvent(new CustomEvent("auth-changed"));
+      
+      localStorage.setItem("teensBibleLinkedApple", "true");
+      localStorage.setItem("teensBibleAppleEmail", user.email || "Apple Account");
+      
+      return {
+        success: true,
+        type: pending === "direct" ? "signed-in" : "linked",
+        message: pending === "direct" ? "Signed in with Apple!" : "Account linked to Apple!",
+        restored: !!restored
+      } as LinkResult;
+    }
+    
+    if (pending === "link-anonymous" || pending === "conflict") {
+      const oldUid = localStorage.getItem("appleAuthOldUid");
+      localStorage.removeItem("appleAuthOldUid");
+      
+      if (oldUid) {
+        // Migrate data from old anonymous account
+        const anonDataSnapshot = await get(ref(db, `userData/${oldUid}`));
+        const anonData = anonDataSnapshot.val();
+        
+        const appleUid = user.uid;
+        const appleDataSnapshot = await get(ref(db, `userData/${appleUid}`));
+        const appleData = appleDataSnapshot.val();
+        
+        if (anonData && (!appleData || !appleData.stats || (anonData.stats?.totalXP || 0) > (appleData.stats?.totalXP || 0))) {
+          console.log("[AppleAuth] Migrating anonymous data to Apple account after redirect");
+          await set(ref(db, `userData/${appleUid}`), anonData);
+          
+          const groupCode = anonData.profile?.groupCode || "GLOBAL";
+          const leaderboardData = {
+            nickname: anonData.profile?.nickname || "Anonymous",
+            avatar: anonData.profile?.avatar || "😎",
+            groupCode,
+            xp: anonData.stats?.totalXP || 0,
+            streak: anonData.dailyStreak?.currentStreak || 0,
+            chaptersRead: anonData.chaptersRead ? Object.values(anonData.chaptersRead as Record<string, number[]>).reduce((sum: number, arr: number[]) => sum + arr.length, 0) : 0,
+            quizTotal: anonData.stats?.quizTotal || 0,
+            quizCorrect: anonData.stats?.quizCorrect || 0,
+            joinedAt: anonData.profile?.joinedAt || Date.now(),
+            isNasumMember: anonData.profile?.isNasumMember || false,
+          };
+          await set(ref(db, `users/${appleUid}`), leaderboardData);
+          await set(ref(db, `groups/${groupCode}/members/${appleUid}`), leaderboardData);
+        }
+      }
+      
+      const restored = await syncFromFirebase();
+      
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+      window.dispatchEvent(new CustomEvent("auth-changed"));
+      
+      localStorage.setItem("teensBibleLinkedApple", "true");
+      localStorage.setItem("teensBibleAppleEmail", user.email || "Apple Account");
+      
+      return {
+        success: true,
+        type: "signed-in",
+        message: "Signed in with Apple!",
+        restored: !!restored
+      };
+    }
+    
+    return null;
+  } catch (error: any) {
+    console.error("[AppleAuth] Redirect result error:", error);
+    localStorage.removeItem("appleAuthPending");
+    localStorage.removeItem("appleAuthOldUid");
     return { success: false, message: `Error: ${error.message}` };
   }
 }

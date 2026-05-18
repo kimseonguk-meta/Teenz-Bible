@@ -14,6 +14,7 @@ import FloatingPet from "./components/FloatingPet";
 import ProfilePhotoPrompt from "./components/ProfilePhotoPrompt";
 import { auth, signInAnonymously, onAuthStateChanged } from "./lib/firebase";
 import { initializeSync, scheduleSyncToFirebase, immediateSyncToFirebase } from "./lib/firebaseSync";
+import { handleAppleRedirectResult } from "./lib/appleAuth";
 
 // Lazy load heavy pages for code splitting
 const Bible = lazy(() => import("./pages/Bible"));
@@ -82,6 +83,19 @@ function App() {
       } else {
         // User is authenticated, initialize sync
         try {
+          // Handle Apple redirect result if pending
+          const appleResult = await handleAppleRedirectResult();
+          if (appleResult && appleResult.success) {
+            console.log("[AppleAuth] Redirect handled:", appleResult.message);
+            if ('restored' in appleResult && appleResult.restored) {
+              initTheme();
+              window.dispatchEvent(new CustomEvent("sync-restored"));
+              window.dispatchEvent(new CustomEvent("gems-changed"));
+              const profile = localStorage.getItem("teensBibleProfile");
+              if (profile) setShowOnboarding(false);
+            }
+          }
+
           const { restored } = await initializeSync();
           if (restored) {
             console.log("[Sync] Data restored from Firebase!");

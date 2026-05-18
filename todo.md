@@ -63,3 +63,10 @@
 ## Bible Reader Bug Fixes
 - [x] Stop auto-advancing to next chapter after completion (let user take quiz first)
 - [x] Add minimum reading time before marking chapter as read (prevent scroll-through cheating)
+
+## Reading Progress Visualization
+- [ ] Add reading progress bar for each Bible book in the book list view
+
+## Apple Review Fix (May 2026)
+- [x] Fix Apple Sign-in blank screen bug (Guideline 2.1a)
+- [x] Remove redeem code feature from Store (Guideline 3.1.1 - IAP compliance)
