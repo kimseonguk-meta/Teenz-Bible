@@ -99,18 +99,46 @@ export default function Profile() {
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [showPhotoNudge, setShowPhotoNudge] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [rawPhoto, setRawPhoto] = useState<string | null>(null);
+  const [cropScale, setCropScale] = useState(1);
+  const [cropOffset, setCropOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [initialPinchDist, setInitialPinchDist] = useState<number | null>(null);
+  const [initialPinchScale, setInitialPinchScale] = useState(1);
+  const cropPreviewRef = useRef<HTMLCanvasElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
+  const getCroppedBase64 = (): string | null => {
+    if (!rawPhoto) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 300; canvas.height = 300;
+    const ctx = canvas.getContext("2d")!;
+    const img = new Image();
+    img.src = rawPhoto;
+    // Calculate crop area based on scale and offset
+    const imgSize = Math.min(img.naturalWidth, img.naturalHeight);
+    const viewSize = imgSize / cropScale;
+    const cx = (img.naturalWidth / 2) - (cropOffset.x / 100 * imgSize);
+    const cy = (img.naturalHeight / 2) - (cropOffset.y / 100 * imgSize);
+    const sx = Math.max(0, Math.min(cx - viewSize / 2, img.naturalWidth - viewSize));
+    const sy = Math.max(0, Math.min(cy - viewSize / 2, img.naturalHeight - viewSize));
+    ctx.drawImage(img, sx, sy, viewSize, viewSize, 0, 0, 300, 300);
+    return canvas.toDataURL("image/jpeg", 0.85);
+  };
+
   const handleConfirmPhoto = async () => {
-    if (!photoPreview) return;
-    setProfilePhoto(photoPreview);
-    setProfilePhotoState(photoPreview);
-    setPhotoPreview(null);
+    const base64 = getCroppedBase64();
+    if (!base64) return;
+    setProfilePhoto(base64);
+    setProfilePhotoState(base64);
+    setRawPhoto(null);
+    setCropScale(1);
+    setCropOffset({ x: 0, y: 0 });
     setIsUploadingPhoto(true);
     try {
-      const url = await uploadPhotoToFirebase(photoPreview);
+      const url = await uploadPhotoToFirebase(base64);
       if (url) {
         setProfilePhotoUrl(url);
         setProfilePhotoState(url);
@@ -349,18 +377,13 @@ export default function Profile() {
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            const canvas = document.createElement("canvas");
-            const img = new Image();
-            img.onload = () => {
-              const size = Math.min(img.width, img.height);
-              const sx = (img.width - size) / 2;
-              const sy = (img.height - size) / 2;
-              canvas.width = 300; canvas.height = 300;
-              canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
-              const base64 = canvas.toDataURL("image/jpeg", 0.85);
-              setPhotoPreview(base64);
+            const reader = new FileReader();
+            reader.onload = () => {
+              setRawPhoto(reader.result as string);
+              setCropScale(1);
+              setCropOffset({ x: 0, y: 0 });
             };
-            img.src = URL.createObjectURL(file);
+            reader.readAsDataURL(file);
             e.target.value = "";
           }}
         />
@@ -372,35 +395,103 @@ export default function Profile() {
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
-            const canvas = document.createElement("canvas");
-            const img = new Image();
-            img.onload = () => {
-              const size = Math.min(img.width, img.height);
-              const sx = (img.width - size) / 2;
-              const sy = (img.height - size) / 2;
-              canvas.width = 300; canvas.height = 300;
-              canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
-              const base64 = canvas.toDataURL("image/jpeg", 0.85);
-              setPhotoPreview(base64);
+            const reader = new FileReader();
+            reader.onload = () => {
+              setRawPhoto(reader.result as string);
+              setCropScale(1);
+              setCropOffset({ x: 0, y: 0 });
             };
-            img.src = URL.createObjectURL(file);
+            reader.readAsDataURL(file);
             e.target.value = "";
           }}
         />
 
-        {/* Photo Preview Modal */}
-        {photoPreview && (
+        {/* Photo Crop & Preview Modal */}
+        {rawPhoto && (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[320px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-200">
-              <p className="text-gray-400 text-sm mb-4">Preview</p>
-              <div className={`w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}>
-                <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+              <p className="text-gray-400 text-xs mb-1">Drag to move • Pinch to zoom</p>
+              <p className="text-gray-500 text-[10px] mb-3">Adjust your photo in the circle</p>
+              {/* Crop area */}
+              <div
+                className={`w-40 h-40 mx-auto rounded-full overflow-hidden mb-3 relative touch-none select-none ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
+                onMouseDown={(e) => {
+                  setIsDragging(true);
+                  setDragStart({ x: e.clientX, y: e.clientY });
+                }}
+                onMouseMove={(e) => {
+                  if (!isDragging) return;
+                  const dx = (e.clientX - dragStart.x) / 160 * 50;
+                  const dy = (e.clientY - dragStart.y) / 160 * 50;
+                  setCropOffset(prev => ({
+                    x: Math.max(-50, Math.min(50, prev.x + dx)),
+                    y: Math.max(-50, Math.min(50, prev.y + dy)),
+                  }));
+                  setDragStart({ x: e.clientX, y: e.clientY });
+                }}
+                onMouseUp={() => setIsDragging(false)}
+                onMouseLeave={() => setIsDragging(false)}
+                onTouchStart={(e) => {
+                  if (e.touches.length === 2) {
+                    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    setInitialPinchDist(dist);
+                    setInitialPinchScale(cropScale);
+                  } else if (e.touches.length === 1) {
+                    setIsDragging(true);
+                    setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+                  }
+                }}
+                onTouchMove={(e) => {
+                  if (e.touches.length === 2 && initialPinchDist) {
+                    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    const newScale = Math.max(1, Math.min(4, initialPinchScale * (dist / initialPinchDist)));
+                    setCropScale(newScale);
+                  } else if (e.touches.length === 1 && isDragging) {
+                    const dx = (e.touches[0].clientX - dragStart.x) / 160 * 50;
+                    const dy = (e.touches[0].clientY - dragStart.y) / 160 * 50;
+                    setCropOffset(prev => ({
+                      x: Math.max(-50, Math.min(50, prev.x + dx)),
+                      y: Math.max(-50, Math.min(50, prev.y + dy)),
+                    }));
+                    setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+                  }
+                }}
+                onTouchEnd={() => { setIsDragging(false); setInitialPinchDist(null); }}
+                onWheel={(e) => {
+                  e.preventDefault();
+                  setCropScale(prev => Math.max(1, Math.min(4, prev + (e.deltaY > 0 ? -0.1 : 0.1))));
+                }}
+              >
+                <img
+                  src={rawPhoto}
+                  alt="Crop"
+                  className="absolute w-full h-full object-cover pointer-events-none"
+                  style={{
+                    transform: `scale(${cropScale}) translate(${cropOffset.x}%, ${cropOffset.y}%)`,
+                    transformOrigin: 'center center',
+                  }}
+                  draggable={false}
+                />
               </div>
-              <p className="text-white font-bold text-base mb-1">{playerName}</p>
-              <p className="text-gray-500 text-xs mb-5">This is how you'll appear on the leaderboard</p>
+              {/* Zoom slider */}
+              <div className="flex items-center gap-2 px-4 mb-3">
+                <span className="text-gray-500 text-xs">🔍</span>
+                <input
+                  type="range"
+                  min="1"
+                  max="4"
+                  step="0.05"
+                  value={cropScale}
+                  onChange={(e) => setCropScale(parseFloat(e.target.value))}
+                  className="flex-1 h-1 accent-purple-500 cursor-pointer"
+                />
+                <span className="text-gray-500 text-xs">{Math.round(cropScale * 100)}%</span>
+              </div>
+              <p className="text-white font-bold text-sm mb-0.5">{playerName}</p>
+              <p className="text-gray-500 text-[10px] mb-4">This is how you'll appear on the leaderboard</p>
               <div className="flex gap-2">
                 <button
-                  onClick={() => setPhotoPreview(null)}
+                  onClick={() => { setRawPhoto(null); setCropScale(1); setCropOffset({ x: 0, y: 0 }); }}
                   className="flex-1 py-3 rounded-xl border border-gray-600 text-gray-300 text-sm font-medium active:scale-[0.97] transition-transform"
                 >
                   ← Retake
