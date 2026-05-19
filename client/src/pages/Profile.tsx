@@ -98,8 +98,20 @@ export default function Profile() {
   const [showPhotoMenu, setShowPhotoMenu] = useState(false);
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [showPhotoNudge, setShowPhotoNudge] = useState(false);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  // Show photo nudge popup if no profile photo set (once per session)
+  useEffect(() => {
+    if (!getProfilePhotoUrl()) {
+      const dismissed = sessionStorage.getItem("photoNudgeDismissed");
+      if (!dismissed) {
+        const timer = setTimeout(() => setShowPhotoNudge(true), 800);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   const [googleLinked, setGoogleLinked] = useState(false);
   const [googleEmail, setGoogleEmail] = useState<string | null>(null);
@@ -228,6 +240,38 @@ export default function Profile() {
 
   return (
     <div className="px-4 pt-6 space-y-5 pb-8">
+
+      {/* Photo Nudge Popup */}
+      {showPhotoNudge && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[300px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+            <div className="text-5xl mb-3">📸</div>
+            <h3 className="text-white font-bold text-lg mb-1">Add a Profile Photo!</h3>
+            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+              Show your friends who you are on the leaderboard~ ✨
+            </p>
+            <button
+              onClick={() => {
+                setShowPhotoNudge(false);
+                sessionStorage.setItem("photoNudgeDismissed", "1");
+                setShowPhotoMenu(true);
+              }}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-sm shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform mb-2"
+            >
+              Let's go! 📷
+            </button>
+            <button
+              onClick={() => {
+                setShowPhotoNudge(false);
+                sessionStorage.setItem("photoNudgeDismissed", "1");
+              }}
+              className="text-gray-500 text-xs hover:text-gray-300 transition-colors"
+            >
+              Maybe later
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
