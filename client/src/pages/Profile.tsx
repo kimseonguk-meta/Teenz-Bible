@@ -99,8 +99,26 @@ export default function Profile() {
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [showPhotoNudge, setShowPhotoNudge] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  const handleConfirmPhoto = async () => {
+    if (!photoPreview) return;
+    setProfilePhoto(photoPreview);
+    setProfilePhotoState(photoPreview);
+    setPhotoPreview(null);
+    setIsUploadingPhoto(true);
+    try {
+      const url = await uploadPhotoToFirebase(photoPreview);
+      if (url) {
+        setProfilePhotoUrl(url);
+        setProfilePhotoState(url);
+      }
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
 
   // Show photo nudge popup if no profile photo set (once per session)
   useEffect(() => {
@@ -328,33 +346,22 @@ export default function Profile() {
           accept="image/*"
           capture="user"
           className="hidden"
-          onChange={async (e) => {
+          onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
             const canvas = document.createElement("canvas");
             const img = new Image();
-            img.onload = async () => {
+            img.onload = () => {
               const size = Math.min(img.width, img.height);
               const sx = (img.width - size) / 2;
               const sy = (img.height - size) / 2;
               canvas.width = 300; canvas.height = 300;
               canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
               const base64 = canvas.toDataURL("image/jpeg", 0.85);
-              setProfilePhoto(base64);
-              setProfilePhotoState(base64);
-              // Auto-upload to Firebase Storage with loading indicator
-              setIsUploadingPhoto(true);
-              try {
-                const url = await uploadPhotoToFirebase(base64);
-                if (url) {
-                  setProfilePhotoUrl(url);
-                  setProfilePhotoState(url);
-                }
-              } finally {
-                setIsUploadingPhoto(false);
-              }
+              setPhotoPreview(base64);
             };
             img.src = URL.createObjectURL(file);
+            e.target.value = "";
           }}
         />
         <input
@@ -362,35 +369,52 @@ export default function Profile() {
           type="file"
           accept="image/*"
           className="hidden"
-          onChange={async (e) => {
+          onChange={(e) => {
             const file = e.target.files?.[0];
             if (!file || !file.type.startsWith("image/")) return;
             const canvas = document.createElement("canvas");
             const img = new Image();
-            img.onload = async () => {
+            img.onload = () => {
               const size = Math.min(img.width, img.height);
               const sx = (img.width - size) / 2;
               const sy = (img.height - size) / 2;
               canvas.width = 300; canvas.height = 300;
               canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
               const base64 = canvas.toDataURL("image/jpeg", 0.85);
-              setProfilePhoto(base64);
-              setProfilePhotoState(base64);
-              // Auto-upload to Firebase Storage with loading indicator
-              setIsUploadingPhoto(true);
-              try {
-                const url = await uploadPhotoToFirebase(base64);
-                if (url) {
-                  setProfilePhotoUrl(url);
-                  setProfilePhotoState(url);
-                }
-              } finally {
-                setIsUploadingPhoto(false);
-              }
+              setPhotoPreview(base64);
             };
             img.src = URL.createObjectURL(file);
+            e.target.value = "";
           }}
         />
+
+        {/* Photo Preview Modal */}
+        {photoPreview && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[320px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-200">
+              <p className="text-gray-400 text-sm mb-4">Preview</p>
+              <div className={`w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}>
+                <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+              </div>
+              <p className="text-white font-bold text-base mb-1">{playerName}</p>
+              <p className="text-gray-500 text-xs mb-5">This is how you'll appear on the leaderboard</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setPhotoPreview(null)}
+                  className="flex-1 py-3 rounded-xl border border-gray-600 text-gray-300 text-sm font-medium active:scale-[0.97] transition-transform"
+                >
+                  ← Retake
+                </button>
+                <button
+                  onClick={handleConfirmPhoto}
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform"
+                >
+                  Save ✨
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <h2 className="text-2xl font-bold text-white mt-3 font-display">{playerName}</h2>
         <div className="flex items-center gap-2 mt-1">
           <span className="px-3 py-1 rounded-full bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium">
