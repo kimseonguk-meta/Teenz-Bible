@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { auth, storage, storageRef, uploadBytes, getDownloadURL } from "@/lib/firebase";
+import { auth, db, ref, update } from "@/lib/firebase";
 
 // ─── Profile Photo Upload Prompt ────────────────────────────
 // Uploads photo to Firebase Storage, stores URL in localStorage.
@@ -49,24 +49,54 @@ export function removeProfilePhoto() {
   window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
 }
 
-// Upload photo to Firebase Storage and return download URL
+// Upload photo to Firebase Realtime DB as compressed base64
 export async function uploadPhotoToFirebase(base64: string): Promise<string | null> {
   try {
     const uid = auth.currentUser?.uid;
     if (!uid) return null;
 
-    // Convert base64 to blob
-    const response = await fetch(base64);
-    const blob = await response.blob();
-
-    const photoRef = storageRef(storage, `profilePhotos/${uid}.jpg`);
-    await uploadBytes(photoRef, blob, { contentType: "image/jpeg" });
-    const url = await getDownloadURL(photoRef);
-    return url;
+    // Compress to smaller size for DB storage (max ~30KB)
+    const compressed = await compressForDB(base64, 150, 0.6);
+    
+    // Store in Realtime DB under users/{uid} and groups
+    await update(ref(db, `users/${uid}`), { profilePhotoUrl: compressed });
+    
+    // Also update in the user's group
+    const profile = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}");
+    const groupCode = profile.groupCode || localStorage.getItem("teensBibleGroup");
+    if (groupCode) {
+      await update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: compressed });
+    }
+    
+    return compressed;
   } catch (err) {
-    console.error("Firebase Storage upload error:", err);
+    console.error("Firebase DB photo upload error:", err);
     return null;
   }
+}
+
+// Compress image to small base64 for DB storage
+async function compressForDB(base64: string, maxSize: number, quality: number): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const size = Math.min(img.width, img.height, maxSize);
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d")!;
+      
+      // Center crop
+      const sx = (img.width - Math.min(img.width, img.height)) / 2;
+      const sy = (img.height - Math.min(img.width, img.height)) / 2;
+      const sSize = Math.min(img.width, img.height);
+      ctx.drawImage(img, sx, sy, sSize, sSize, 0, 0, size, size);
+      
+      resolve(canvas.toDataURL("image/jpeg", quality));
+    };
+    img.onerror = () => resolve(base64); // fallback to original
+    img.src = base64;
+  });
 }
 
 // Apply filter to canvas and return base64

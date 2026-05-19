@@ -17,7 +17,7 @@
  * - Meme reactions
  */
 
-import { db, ref, get, set, update, serverTimestamp, auth, storage, storageRef, getDownloadURL } from "./firebase";
+import { db, ref, get, set, update, serverTimestamp, auth } from "./firebase";
 
 // ─── Types ──────────────────────────────────────────────────────
 interface UserDataSnapshot {
@@ -301,11 +301,11 @@ export async function syncToFirebase(): Promise<boolean> {
     };
 
     // Include profile photo URL if available locally
-    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
+    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto") || null;
     if (profilePhotoUrl) {
       leaderboardData.profilePhotoUrl = profilePhotoUrl;
     } else {
-      // Preserve existing photo URL from DB
+      // Preserve existing photo from DB
       try {
         const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
         const existingUrl = existingSnapshot.val();
@@ -458,34 +458,21 @@ export async function syncFromFirebase(): Promise<boolean> {
   }
 }
 
-// ─── Restore profile photo from Firebase Storage ──────────────────
+// ─── Restore profile photo from Firebase Realtime DB ──────────────────
 async function restoreProfilePhotoFromFirebase(uid: string): Promise<void> {
   try {
-    // First check if there's a profilePhotoUrl in the leaderboard data
+    // Check if there's a profilePhotoUrl in the DB (base64 or URL)
     const userSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
-    const photoUrl = userSnapshot.val();
+    const photoData = userSnapshot.val();
     
-    if (photoUrl && typeof photoUrl === "string") {
-      // We have a cloud URL - set it in localStorage
-      localStorage.setItem("profilePhotoUrl", photoUrl);
-      console.log("[Sync] ✅ Profile photo restored from Firebase");
-      window.dispatchEvent(new CustomEvent("profile-photo-changed"));
-      return;
-    }
-
-    // Fallback: try to get download URL directly from Storage
-    const photoRef = storageRef(storage, `profilePhotos/${uid}.jpg`);
-    const url = await getDownloadURL(photoRef);
-    if (url) {
-      localStorage.setItem("profilePhotoUrl", url);
-      console.log("[Sync] ✅ Profile photo restored from Firebase Storage");
+    if (photoData && typeof photoData === "string") {
+      // Restore to localStorage
+      localStorage.setItem("profilePhotoUrl", photoData);
+      console.log("[Sync] ✅ Profile photo restored from Firebase DB");
       window.dispatchEvent(new CustomEvent("profile-photo-changed"));
     }
   } catch (err: any) {
-    // Not an error if photo doesn't exist
-    if (err?.code !== "storage/object-not-found") {
-      console.log("[Sync] No profile photo to restore");
-    }
+    console.log("[Sync] No profile photo to restore");
   }
 }
 
@@ -566,11 +553,11 @@ async function smartSyncToFirebase(): Promise<boolean> {
     };
 
     // Include profile photo URL if available locally
-    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
+    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto") || null;
     if (profilePhotoUrl) {
       leaderboardData.profilePhotoUrl = profilePhotoUrl;
     } else {
-      // Preserve existing photo URL from DB
+      // Preserve existing photo from DB
       try {
         const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
         const existingUrl = existingSnapshot.val();

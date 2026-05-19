@@ -38,7 +38,36 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
     setAvatar(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
   };
 
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
+  const [pendingGroupCode, setPendingGroupCode] = useState<string | null>(null);
+  const [pendingIsNasum, setPendingIsNasum] = useState(false);
+
+  const checkDuplicateAndSave = async (groupCode: string, isNasumMember: boolean) => {
+    // Check if same nickname already exists in this group
+    try {
+      const membersSnap = await get(ref(db, `groups/${groupCode}/members`));
+      const members = membersSnap.val();
+      if (members) {
+        const currentUid = auth.currentUser?.uid;
+        const duplicate = Object.entries(members).find(
+          ([uid, m]: [string, any]) => 
+            m.nickname?.toLowerCase() === nickname.trim().toLowerCase() && uid !== currentUid
+        );
+        if (duplicate) {
+          setDuplicateWarning(`"${nickname}" is already in ${groupCode}. If this is you on another device, please log in with Google/Apple instead. Otherwise, choose a different nickname.`);
+          setPendingGroupCode(groupCode);
+          setPendingIsNasum(isNasumMember);
+          return;
+        }
+      }
+    } catch (e) {
+      // If check fails, proceed anyway
+    }
+    saveProfile(groupCode, isNasumMember);
+  };
+
   const saveProfile = async (groupCode: string, isNasumMember: boolean) => {
+    setDuplicateWarning(null);
     setSaving(true);
     try {
       // Ensure user is signed in
@@ -140,12 +169,12 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   };
 
   const handleIndividual = () => {
-    saveProfile("INDIVIDUAL", false);
+    checkDuplicateAndSave("INDIVIDUAL", false);
   };
 
   const handleClassSelect = () => {
     if (!selectedClass) return;
-    saveProfile(selectedClass, true);
+    checkDuplicateAndSave(selectedClass, true);
   };
 
   // Step 1: Nickname + Avatar
@@ -262,6 +291,25 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
               </optgroup>
             ))}
           </select>
+          {duplicateWarning && (
+            <div className="mb-4 p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-xs text-left leading-relaxed">
+              ⚠️ {duplicateWarning}
+              <div className="mt-2 flex gap-2">
+                <button
+                  onClick={() => { setDuplicateWarning(null); setStep(1); }}
+                  className="flex-1 py-2 rounded-lg bg-yellow-500/20 text-yellow-300 text-xs font-bold"
+                >
+                  Change Name
+                </button>
+                <button
+                  onClick={() => pendingGroupCode && saveProfile(pendingGroupCode, pendingIsNasum)}
+                  className="flex-1 py-2 rounded-lg bg-white/10 text-gray-300 text-xs"
+                >
+                  Continue Anyway
+                </button>
+              </div>
+            </div>
+          )}
           <button
             onClick={handleClassSelect}
             disabled={!selectedClass || saving}

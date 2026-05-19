@@ -169,8 +169,8 @@ export async function syncUserToFirebase(uid: string) {
   
   const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
   
-  // Include profile photo URL if available locally
-  const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
+  // Include profile photo (base64 or URL) if available locally
+  const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto") || null;
   
   const userData: Record<string, any> = {
     nickname: userProfile.nickname || "Anonymous",
