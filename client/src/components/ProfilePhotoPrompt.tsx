@@ -3,8 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { auth, db, ref, update } from "@/lib/firebase";
 
 // ─── Profile Photo Upload Prompt ────────────────────────────
-// Uploads photo to Firebase Storage, stores URL in localStorage.
-// Falls back to base64 in localStorage if upload fails.
+// Uploads photo to Firebase Realtime DB as compressed base64.
 // Dispatches "profile-photo-changed" event when photo is set.
 
 // Filters available for photos
@@ -18,7 +17,6 @@ const FILTERS = [
 ];
 
 function getProfilePhoto(): string | null {
-  // Prefer Firebase URL, fall back to base64
   return localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto");
 }
 
@@ -94,7 +92,7 @@ async function compressForDB(base64: string, maxSize: number, quality: number): 
       
       resolve(canvas.toDataURL("image/jpeg", quality));
     };
-    img.onerror = () => resolve(base64); // fallback to original
+    img.onerror = () => resolve(base64);
     img.src = base64;
   });
 }
@@ -111,27 +109,15 @@ function applyFilterToCanvas(
   canvas.height = maxSize;
   const ctx = canvas.getContext("2d")!;
 
-  // Apply filter
   if (filterStyle.filter) {
     ctx.filter = filterStyle.filter;
   }
 
-  ctx.drawImage(
-    img,
-    cropArea.x,
-    cropArea.y,
-    cropArea.size,
-    cropArea.size,
-    0,
-    0,
-    maxSize,
-    maxSize
-  );
-
+  ctx.drawImage(img, cropArea.x, cropArea.y, cropArea.size, cropArea.size, 0, 0, maxSize, maxSize);
   return canvas.toDataURL("image/jpeg", 0.85);
 }
 
-// Load image from file
+// Load image from file as HTMLImageElement
 function loadImageFromFile(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -146,47 +132,23 @@ function loadImageFromFile(file: File): Promise<HTMLImageElement> {
   });
 }
 
-// Resize and compress image to a reasonable size
-function resizeImage(file: File, maxSize = 300): Promise<{ base64: string; img: HTMLImageElement }> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const w = img.width;
-        const h = img.height;
-
-        // Crop to square (center crop)
-        const size = Math.min(w, h);
-        const sx = (w - size) / 2;
-        const sy = (h - size) / 2;
-
-        canvas.width = maxSize;
-        canvas.height = maxSize;
-        const ctx = canvas.getContext("2d")!;
-        ctx.drawImage(img, sx, sy, size, size, 0, 0, maxSize, maxSize);
-
-        const base64 = canvas.toDataURL("image/jpeg", 0.85);
-        resolve({ base64, img });
-      };
-      img.onerror = reject;
-      img.src = e.target?.result as string;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 export default function ProfilePhotoPrompt() {
   const [showModal, setShowModal] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
   const [rawImg, setRawImg] = useState<HTMLImageElement | null>(null);
+  const [rawSrc, setRawSrc] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState(0);
   const [saving, setSaving] = useState(false);
   const [uploadProgress, setUploadProgress] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  // Crop state
+  const [cropScale, setCropScale] = useState(1);
+  const [cropOffset, setCropOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [initialPinchDist, setInitialPinchDist] = useState<number | null>(null);
+  const [initialPinchScale, setInitialPinchScale] = useState(1);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -199,50 +161,57 @@ export default function ProfilePhotoPrompt() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Re-apply filter when filter selection changes
-  useEffect(() => {
-    if (!rawImg) return;
-    const w = rawImg.width;
-    const h = rawImg.height;
-    const size = Math.min(w, h);
-    const sx = (w - size) / 2;
-    const sy = (h - size) / 2;
-
-    const filtered = applyFilterToCanvas(
-      rawImg,
-      300,
-      { x: sx, y: sy, size },
-      FILTERS[selectedFilter].style
-    );
-    setPreview(filtered);
-  }, [selectedFilter, rawImg]);
-
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return;
 
     try {
-      const { base64, img } = await resizeImage(file, 300);
+      const img = await loadImageFromFile(file);
       setRawImg(img);
+      setRawSrc(img.src);
       setSelectedFilter(0);
-      setPreview(base64);
+      setCropScale(1);
+      setCropOffset({ x: 0, y: 0 });
     } catch (err) {
-      console.error("Image resize error:", err);
+      console.error("Image load error:", err);
     }
   }, []);
 
+  const getCroppedAndFilteredBase64 = (): string | null => {
+    if (!rawImg) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 300; canvas.height = 300;
+    const ctx = canvas.getContext("2d")!;
+
+    // Apply filter
+    const filter = FILTERS[selectedFilter];
+    if (filter.style.filter) {
+      ctx.filter = filter.style.filter;
+    }
+
+    // Calculate crop area
+    const imgSize = Math.min(rawImg.naturalWidth, rawImg.naturalHeight);
+    const viewSize = imgSize / cropScale;
+    const cx = (rawImg.naturalWidth / 2) - (cropOffset.x / 100 * imgSize);
+    const cy = (rawImg.naturalHeight / 2) - (cropOffset.y / 100 * imgSize);
+    const sx = Math.max(0, Math.min(cx - viewSize / 2, rawImg.naturalWidth - viewSize));
+    const sy = Math.max(0, Math.min(cy - viewSize / 2, rawImg.naturalHeight - viewSize));
+
+    ctx.drawImage(rawImg, sx, sy, viewSize, viewSize, 0, 0, 300, 300);
+    return canvas.toDataURL("image/jpeg", 0.85);
+  };
+
   const handleSave = useCallback(async () => {
-    if (!preview) return;
+    const base64 = getCroppedAndFilteredBase64();
+    if (!base64) return;
     setSaving(true);
     setUploadProgress("Saving locally...");
 
-    // Save base64 locally first (instant)
-    setProfilePhoto(preview);
+    setProfilePhoto(base64);
 
-    // Try uploading to Firebase Storage
     setUploadProgress("Uploading to cloud...");
-    const url = await uploadPhotoToFirebase(preview);
+    const url = await uploadPhotoToFirebase(base64);
     if (url) {
       setProfilePhotoUrl(url);
       setUploadProgress("Synced! ✨");
@@ -254,8 +223,10 @@ export default function ProfilePhotoPrompt() {
       setSaving(false);
       setUploadProgress("");
       setShowModal(false);
+      setRawImg(null);
+      setRawSrc(null);
     }, 800);
-  }, [preview]);
+  }, [rawImg, cropScale, cropOffset, selectedFilter]);
 
   const handleSkip = useCallback(() => {
     localStorage.setItem("photoPromptDismissed", "1");
@@ -279,10 +250,84 @@ export default function ProfilePhotoPrompt() {
 
           {/* Preview / Upload area */}
           <div className="mb-4">
-            {preview ? (
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-purple-500 shadow-[0_0_20px_rgba(139,92,246,0.4)]">
-                  <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+            {rawSrc ? (
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-gray-400 text-[10px] mb-1">Drag to move • Pinch to zoom</p>
+                {/* Crop circle */}
+                <div
+                  className="w-36 h-36 rounded-full overflow-hidden border-4 border-purple-500 shadow-[0_0_20px_rgba(139,92,246,0.4)] relative touch-none select-none mx-auto"
+                  onMouseDown={(e) => {
+                    setIsDragging(true);
+                    setDragStart({ x: e.clientX, y: e.clientY });
+                  }}
+                  onMouseMove={(e) => {
+                    if (!isDragging) return;
+                    const dx = (e.clientX - dragStart.x) / 144 * 50;
+                    const dy = (e.clientY - dragStart.y) / 144 * 50;
+                    setCropOffset(prev => ({
+                      x: Math.max(-50, Math.min(50, prev.x + dx)),
+                      y: Math.max(-50, Math.min(50, prev.y + dy)),
+                    }));
+                    setDragStart({ x: e.clientX, y: e.clientY });
+                  }}
+                  onMouseUp={() => setIsDragging(false)}
+                  onMouseLeave={() => setIsDragging(false)}
+                  onTouchStart={(e) => {
+                    if (e.touches.length === 2) {
+                      const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                      setInitialPinchDist(dist);
+                      setInitialPinchScale(cropScale);
+                    } else if (e.touches.length === 1) {
+                      setIsDragging(true);
+                      setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+                    }
+                  }}
+                  onTouchMove={(e) => {
+                    if (e.touches.length === 2 && initialPinchDist) {
+                      const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                      const newScale = Math.max(1, Math.min(4, initialPinchScale * (dist / initialPinchDist)));
+                      setCropScale(newScale);
+                    } else if (e.touches.length === 1 && isDragging) {
+                      const dx = (e.touches[0].clientX - dragStart.x) / 144 * 50;
+                      const dy = (e.touches[0].clientY - dragStart.y) / 144 * 50;
+                      setCropOffset(prev => ({
+                        x: Math.max(-50, Math.min(50, prev.x + dx)),
+                        y: Math.max(-50, Math.min(50, prev.y + dy)),
+                      }));
+                      setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+                    }
+                  }}
+                  onTouchEnd={() => { setIsDragging(false); setInitialPinchDist(null); }}
+                  onWheel={(e) => {
+                    e.preventDefault();
+                    setCropScale(prev => Math.max(1, Math.min(4, prev + (e.deltaY > 0 ? -0.1 : 0.1))));
+                  }}
+                >
+                  <img
+                    src={rawSrc}
+                    alt="Crop"
+                    className="absolute w-full h-full object-cover pointer-events-none"
+                    style={{
+                      transform: `scale(${cropScale}) translate(${cropOffset.x}%, ${cropOffset.y}%)`,
+                      transformOrigin: 'center center',
+                      filter: FILTERS[selectedFilter].style.filter || undefined,
+                    }}
+                    draggable={false}
+                  />
+                </div>
+                {/* Zoom slider */}
+                <div className="flex items-center gap-2 px-4 w-full mt-1">
+                  <span className="text-gray-500 text-xs">🔍</span>
+                  <input
+                    type="range"
+                    min="1"
+                    max="4"
+                    step="0.05"
+                    value={cropScale}
+                    onChange={(e) => setCropScale(parseFloat(e.target.value))}
+                    className="flex-1 h-1 accent-purple-500 cursor-pointer"
+                  />
+                  <span className="text-gray-500 text-xs">{Math.round(cropScale * 100)}%</span>
                 </div>
                 <button
                   onClick={() => { fileInputRef.current?.click(); }}
@@ -312,7 +357,7 @@ export default function ProfilePhotoPrompt() {
           </div>
 
           {/* Filter selection - only show when image is selected */}
-          {preview && rawImg && (
+          {rawSrc && rawImg && (
             <div className="mb-4">
               <p className="text-gray-500 text-[10px] mb-2 uppercase tracking-wider">Choose a filter</p>
               <div className="flex gap-2 justify-center flex-wrap">
@@ -332,10 +377,10 @@ export default function ProfilePhotoPrompt() {
                       }`}
                     >
                       <img
-                        src={preview}
+                        src={rawSrc}
                         alt={f.name}
                         className="w-full h-full object-cover"
-                        style={idx === selectedFilter ? {} : f.style}
+                        style={f.style}
                       />
                     </div>
                     <span className={`text-[9px] ${
@@ -368,7 +413,7 @@ export default function ProfilePhotoPrompt() {
 
           {/* Action buttons */}
           <div className="space-y-2">
-            {preview && (
+            {rawSrc && (
               <button
                 onClick={handleSave}
                 disabled={saving}
@@ -411,11 +456,18 @@ export function ProfilePhotoUploader() {
     if (!file || !file.type.startsWith("image/")) return;
     try {
       setUploading(true);
-      const { base64 } = await resizeImage(file, 300);
+      const img = await loadImageFromFile(file);
+      const canvas = document.createElement("canvas");
+      const size = Math.min(img.width, img.height);
+      const sx = (img.width - size) / 2;
+      const sy = (img.height - size) / 2;
+      canvas.width = 300; canvas.height = 300;
+      canvas.getContext("2d")!.drawImage(img, sx, sy, size, size, 0, 0, 300, 300);
+      const base64 = canvas.toDataURL("image/jpeg", 0.85);
+
       setProfilePhoto(base64);
       setPhoto(base64);
 
-      // Upload to Firebase Storage
       const url = await uploadPhotoToFirebase(base64);
       if (url) {
         setProfilePhotoUrl(url);

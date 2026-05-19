@@ -45,6 +45,8 @@ function MemberAvatar({
       alt={member.nickname || ""}
       className={`${sizeClasses} object-cover`}
       style={{ borderRadius: "inherit" }}
+      loading="lazy"
+      decoding="async"
     />
   ) : (
     <span className={textSize}>{member?.avatar || "😎"}</span>
@@ -101,6 +103,8 @@ function MiniProfileCard({
                 src={member.profilePhotoUrl}
                 alt={member.nickname}
                 className="w-full h-full object-cover rounded-full"
+                loading="lazy"
+                decoding="async"
               />
             ) : (
               <span className="text-4xl">{member.avatar || "😎"}</span>
@@ -436,7 +440,7 @@ export default function Leaderboard() {
                   <span className="text-base font-bold text-gray-400 w-7 text-center">{rank}</span>
                   <div className={`w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center overflow-hidden ${memberFrameClass || "border border-purple-500/30"}`}>
                     {member.profilePhotoUrl ? (
-                      <img src={member.profilePhotoUrl} alt={member.nickname} className="w-10 h-10 rounded-full object-cover" />
+                      <img src={member.profilePhotoUrl} alt={member.nickname} className="w-10 h-10 rounded-full object-cover" loading="lazy" decoding="async" />
                     ) : (
                       <span className="text-xl">{member.avatar || "😎"}</span>
                     )}
