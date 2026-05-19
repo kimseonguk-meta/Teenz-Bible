@@ -285,7 +285,7 @@ export async function syncToFirebase(): Promise<boolean> {
 
     // Also update the leaderboard-facing data (groups + users nodes)
     const groupCode = data.profile.groupCode || "GLOBAL";
-    const leaderboardData = {
+    const leaderboardData: Record<string, any> = {
       nickname: data.profile.nickname,
       avatar: data.profile.avatar,
       groupCode,
@@ -299,6 +299,30 @@ export async function syncToFirebase(): Promise<boolean> {
       lastActive: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
+
+    // Include profile photo URL if available locally
+    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
+    if (profilePhotoUrl) {
+      leaderboardData.profilePhotoUrl = profilePhotoUrl;
+    } else {
+      // Preserve existing photo URL from DB
+      try {
+        const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+        const existingUrl = existingSnapshot.val();
+        if (existingUrl) {
+          leaderboardData.profilePhotoUrl = existingUrl;
+          localStorage.setItem("profilePhotoUrl", existingUrl);
+        }
+      } catch {}
+    }
+
+    // Include equipped frame if available
+    try {
+      const equipped = JSON.parse(localStorage.getItem("teensBibleEquipped") || "{}");
+      if (equipped.frame) {
+        leaderboardData.equippedFrame = equipped.frame;
+      }
+    } catch {}
 
     await update(ref(db, `users/${uid}`), leaderboardData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
@@ -526,7 +550,7 @@ async function smartSyncToFirebase(): Promise<boolean> {
 
     // Also update leaderboard-facing data
     const groupCode = localData.profile.groupCode || "GLOBAL";
-    const leaderboardData = {
+    const leaderboardData: Record<string, any> = {
       nickname: localData.profile.nickname,
       avatar: localData.profile.avatar,
       groupCode,
@@ -540,6 +564,30 @@ async function smartSyncToFirebase(): Promise<boolean> {
       lastActive: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
+
+    // Include profile photo URL if available locally
+    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
+    if (profilePhotoUrl) {
+      leaderboardData.profilePhotoUrl = profilePhotoUrl;
+    } else {
+      // Preserve existing photo URL from DB
+      try {
+        const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+        const existingUrl = existingSnapshot.val();
+        if (existingUrl) {
+          leaderboardData.profilePhotoUrl = existingUrl;
+          localStorage.setItem("profilePhotoUrl", existingUrl);
+        }
+      } catch {}
+    }
+
+    // Include equipped frame if available
+    try {
+      const equipped = JSON.parse(localStorage.getItem("teensBibleEquipped") || "{}");
+      if (equipped.frame) {
+        leaderboardData.equippedFrame = equipped.frame;
+      }
+    } catch {}
 
     await update(ref(db, `users/${uid}`), leaderboardData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);

@@ -11,7 +11,7 @@ appleProvider.addScope('name');
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ5qm_sCzkUfFGC8WcTGbjfviBz_SyNAg",
-  authDomain: "teens-bible-94271.firebaseapp.com",
+  authDomain: "teens-bible-94271.web.app",
   databaseURL: "https://teens-bible-94271-default-rtdb.firebaseio.com",
   projectId: "teens-bible-94271",
   storageBucket: "teens-bible-94271.firebasestorage.app",
@@ -169,7 +169,7 @@ export async function syncUserToFirebase(uid: string) {
   
   const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
   
-  // Include profile photo URL if available
+  // Include profile photo URL if available locally
   const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || null;
   
   const userData: Record<string, any> = {
@@ -189,6 +189,17 @@ export async function syncUserToFirebase(uid: string) {
   
   if (profilePhotoUrl) {
     userData.profilePhotoUrl = profilePhotoUrl;
+  } else {
+    // Don't overwrite existing photo URL in DB - fetch and preserve it
+    try {
+      const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+      const existingUrl = existingSnapshot.val();
+      if (existingUrl) {
+        userData.profilePhotoUrl = existingUrl;
+        // Also restore to localStorage for this device
+        localStorage.setItem("profilePhotoUrl", existingUrl);
+      }
+    } catch {}
   }
   
   // Include equipped frame if available
