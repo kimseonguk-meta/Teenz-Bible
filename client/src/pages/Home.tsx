@@ -78,6 +78,7 @@ const memeUrls = [
   "meme_091.jpg","meme_092.webp","meme_093.jpg","meme_094.jpg","meme_095.jpg",
   "meme_096.jpg","meme_097.jpg","meme_098.jpg","meme_099.jpg","meme_100.jpg",
   "meme_101.jpeg","meme_102.jpeg",
+  "meme_103.webp","meme_104.jpg","meme_105.jpg","meme_106.webp",
 ];
 
 // Seasonal memes (disabled - no seasonal files currently)
@@ -431,7 +432,7 @@ export default function Home() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-3 pb-4">
+      <div className="grid grid-cols-2 gap-3 pb-24">
         <button onClick={() => setLocation("/bible")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">📖</span><div className="text-sm font-medium text-white mt-1">Start Reading</div>
         </button>

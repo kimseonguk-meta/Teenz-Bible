@@ -1,23 +1,56 @@
 /**
  * Apple Account Linking for Teenz Bible
  * 
- * Now uses signInWithPopup for all platforms since authDomain matches the hosting domain
- * (teens-bible-94271.web.app), which resolves the third-party cookie blocking issue on iOS Safari.
+ * Uses @capacitor-firebase/authentication for native iOS sign-in (fixes blank screen in WebView)
+ * Falls back to signInWithPopup for web browsers.
  * 
  * Flow:
- * 1. User is currently anonymous → popup Apple sign-in → link/migrate data
+ * 1. User is currently anonymous → native/popup Apple sign-in → link/migrate data
  * 2. On new device → sign in with Apple → restore data from Firebase
  */
 
 import { auth, appleProvider, db, ref, get, set } from "./firebase";
-import { signInWithPopup, OAuthProvider } from "firebase/auth";
+import { signInWithPopup, OAuthProvider, signInWithCredential } from "firebase/auth";
 import { syncFromFirebase, immediateSyncToFirebase } from "./firebaseSync";
+import { isNativePlatform } from "./platform";
 
 export type LinkResult = 
   | { success: true; type: "linked"; message: string }
   | { success: true; type: "signed-in"; message: string; restored: boolean }
   | { success: true; type: "redirecting"; message: string }
   | { success: false; message: string };
+
+/**
+ * Perform Apple sign-in using native plugin (iOS) or popup (web)
+ * Returns the Firebase UserCredential
+ */
+async function performAppleSignIn() {
+  if (isNativePlatform()) {
+    // Use native Capacitor plugin for iOS/Android
+    const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
+    const result = await FirebaseAuthentication.signInWithApple();
+    
+    // Get the credential to use with Firebase JS SDK for web layer auth
+    if (result.credential) {
+      const provider = new OAuthProvider('apple.com');
+      const oauthCredential = provider.credential({
+        idToken: result.credential.idToken || undefined,
+        accessToken: result.credential.accessToken || undefined,
+        rawNonce: result.credential.nonce || undefined,
+      });
+      // Sign in on the web layer too so Firebase JS SDK is authenticated
+      const userCredential = await signInWithCredential(auth, oauthCredential);
+      return userCredential;
+    }
+    
+    // If no credential returned but user exists, the native layer handled it
+    // We need to wait for auth state to sync
+    throw new Error("No credential returned from native Apple sign-in");
+  } else {
+    // Web: use popup
+    return await signInWithPopup(auth, appleProvider);
+  }
+}
 
 /**
  * Link current anonymous account with Apple, or sign in with Apple on new device
@@ -47,7 +80,7 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
   try {
     await immediateSyncToFirebase();
     
-    const result = await signInWithPopup(auth, appleProvider);
+    const result = await performAppleSignIn();
     await immediateSyncToFirebase();
     
     localStorage.setItem("teensBibleLinkedApple", "true");
@@ -59,13 +92,7 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
       message: `Account linked to Apple!` 
     };
   } catch (error: any) {
-    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
-      return { success: false, message: "Sign-in cancelled" };
-    }
-    if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
-    }
-    return { success: false, message: `Error: ${error.message}` };
+    return handleAppleError(error);
   }
 }
 
@@ -81,7 +108,7 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
   try {
     await immediateSyncToFirebase();
     
-    const appleResult = await signInWithPopup(auth, appleProvider);
+    const appleResult = await performAppleSignIn();
     
     console.log("[AppleAuth] Successfully linked anonymous account to Apple");
     await immediateSyncToFirebase();
@@ -101,15 +128,7 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
       return await handleCredentialConflict(error, oldUid);
     }
     
-    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
-      return { success: false, message: "Sign-in cancelled" };
-    }
-
-    if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
-    }
-    
-    return { success: false, message: `Error: ${error.message}` };
+    return handleAppleError(error);
   }
 }
 
@@ -126,7 +145,7 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     const anonDataSnapshot = await get(ref(db, `userData/${oldAnonymousUid}`));
     const anonData = anonDataSnapshot.val();
 
-    const result = await signInWithPopup(auth, appleProvider);
+    const result = await performAppleSignIn();
     const appleUser = result.user;
     const appleUid = appleUser.uid;
 
@@ -181,7 +200,7 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
  */
 async function signInWithAppleDirect(): Promise<LinkResult> {
   try {
-    const result = await signInWithPopup(auth, appleProvider);
+    const result = await performAppleSignIn();
     
     const restored = await syncFromFirebase();
     
@@ -198,14 +217,25 @@ async function signInWithAppleDirect(): Promise<LinkResult> {
       restored: !!restored
     };
   } catch (error: any) {
-    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
-      return { success: false, message: "Sign-in cancelled" };
-    }
-    if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
-    }
-    return { success: false, message: `Error: ${error.message}` };
+    return handleAppleError(error);
   }
+}
+
+/**
+ * Common error handler for Apple sign-in errors
+ */
+function handleAppleError(error: any): LinkResult {
+  if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
+    return { success: false, message: "Sign-in cancelled" };
+  }
+  if (error.code === "auth/popup-blocked") {
+    return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
+  }
+  // Native plugin cancellation
+  if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
+    return { success: false, message: "Sign-in cancelled" };
+  }
+  return { success: false, message: `Error: ${error.message}` };
 }
 
 /**

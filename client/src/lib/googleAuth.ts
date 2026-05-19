@@ -1,6 +1,9 @@
 /**
  * Google Account Linking for Teenz Bible
  * 
+ * Uses @capacitor-firebase/authentication for native iOS sign-in (fixes "access blocked" in WebView)
+ * Falls back to signInWithPopup for web browsers.
+ * 
  * Flow:
  * 1. User is currently anonymous → link anonymous account to Google
  * 2. If linking fails (Google account already used) → sign in with Google directly
@@ -8,14 +11,43 @@
  * 3. On new device → sign in with Google → restore data from Firebase
  */
 
-import { auth, googleProvider, signInWithPopup, linkWithCredential, db, ref, get, set } from "./firebase";
-import { GoogleAuthProvider } from "firebase/auth";
+import { auth, googleProvider, db, ref, get, set } from "./firebase";
+import { GoogleAuthProvider, signInWithPopup, signInWithCredential } from "firebase/auth";
 import { syncFromFirebase, immediateSyncToFirebase } from "./firebaseSync";
+import { isNativePlatform } from "./platform";
 
 export type LinkResult = 
   | { success: true; type: "linked"; message: string }
   | { success: true; type: "signed-in"; message: string; restored: boolean }
   | { success: false; message: string };
+
+/**
+ * Perform Google sign-in using native plugin (iOS) or popup (web)
+ * Returns the Firebase UserCredential
+ */
+async function performGoogleSignIn() {
+  if (isNativePlatform()) {
+    // Use native Capacitor plugin for iOS/Android
+    const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
+    const result = await FirebaseAuthentication.signInWithGoogle();
+    
+    // Get the credential to use with Firebase JS SDK for web layer auth
+    if (result.credential) {
+      const googleCredential = GoogleAuthProvider.credential(
+        result.credential.idToken || null,
+        result.credential.accessToken || null,
+      );
+      // Sign in on the web layer too so Firebase JS SDK is authenticated
+      const userCredential = await signInWithCredential(auth, googleCredential);
+      return userCredential;
+    }
+    
+    throw new Error("No credential returned from native Google sign-in");
+  } else {
+    // Web: use popup
+    return await signInWithPopup(auth, googleProvider);
+  }
+}
 
 /**
  * Link current anonymous account with Google, or sign in with Google on new device
@@ -56,7 +88,7 @@ async function linkAnonymousToGoogle(): Promise<LinkResult> {
     await immediateSyncToFirebase();
 
     // Try to link the anonymous account with Google
-    const googleResult = await signInWithPopup(auth, googleProvider);
+    const googleResult = await performGoogleSignIn();
     
     // If we get here, linking succeeded! The UID stays the same.
     console.log("[GoogleAuth] Successfully linked anonymous account to Google");
@@ -82,15 +114,7 @@ async function linkAnonymousToGoogle(): Promise<LinkResult> {
       return await handleCredentialConflict(error, oldUid);
     }
     
-    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
-      return { success: false, message: "Sign-in cancelled" };
-    }
-
-    if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
-    }
-    
-    return { success: false, message: `Error: ${error.message}` };
+    return handleGoogleError(error);
   }
 }
 
@@ -111,7 +135,7 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     const anonData = anonDataSnapshot.val();
 
     // Sign in with the Google credential (this switches to the Google-linked account)
-    const { user: googleUser } = await signInWithPopup(auth, googleProvider);
+    const { user: googleUser } = await performGoogleSignIn();
     const googleUid = googleUser.uid;
 
     console.log(`[GoogleAuth] Signed in with Google. Old UID: ${oldAnonymousUid}, New UID: ${googleUid}`);
@@ -171,7 +195,7 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
  */
 async function signInWithGoogleDirect(): Promise<LinkResult> {
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await performGoogleSignIn();
     
     // Restore data from Firebase
     const restored = await syncFromFirebase();
@@ -191,14 +215,25 @@ async function signInWithGoogleDirect(): Promise<LinkResult> {
       restored: !!restored
     };
   } catch (error: any) {
-    if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
-      return { success: false, message: "Sign-in cancelled" };
-    }
-    if (error.code === "auth/popup-blocked") {
-      return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
-    }
-    return { success: false, message: `Error: ${error.message}` };
+    return handleGoogleError(error);
   }
+}
+
+/**
+ * Common error handler for Google sign-in errors
+ */
+function handleGoogleError(error: any): LinkResult {
+  if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
+    return { success: false, message: "Sign-in cancelled" };
+  }
+  if (error.code === "auth/popup-blocked") {
+    return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
+  }
+  // Native plugin cancellation
+  if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
+    return { success: false, message: "Sign-in cancelled" };
+  }
+  return { success: false, message: `Error: ${error.message}` };
 }
 
 /**
@@ -216,8 +251,8 @@ export function isLinkedToGoogle(): boolean {
 export function getLinkedGoogleEmail(): string | null {
   const user = auth.currentUser;
   if (!user) return null;
-  const googleProvider = user.providerData.find(p => p.providerId === "google.com");
-  return googleProvider?.email || localStorage.getItem("teensBibleGoogleEmail");
+  const gProvider = user.providerData.find(p => p.providerId === "google.com");
+  return gProvider?.email || localStorage.getItem("teensBibleGoogleEmail");
 }
 
 /**
@@ -227,7 +262,17 @@ export async function signOutGoogle(): Promise<void> {
   // Sync data first
   await immediateSyncToFirebase();
   
-  // Sign out
+  // If native, also sign out from native layer
+  if (isNativePlatform()) {
+    try {
+      const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
+      await FirebaseAuthentication.signOut();
+    } catch (e) {
+      console.warn("[GoogleAuth] Native signOut failed:", e);
+    }
+  }
+  
+  // Sign out from web layer
   await auth.signOut();
   
   // Clear linked status
