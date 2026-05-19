@@ -560,7 +560,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   // === HD Cloud TTS via Cloudflare Workers Proxy ===
   const TTS_PROXY_URL = 'https://teens-bible-tts.kimseonguk777.workers.dev';
   const TTS_VOICE_EN = 'en-US-Neural2-J'; // Deep natural male voice
-  const TTS_VOICE_KO = 'ko-KR-Neural2-C'; // Korean male voice
+  const TTS_VOICE_KO = 'ko-KR-Chirp3-HD-Puck'; // Korean natural male voice (Chirp3 HD)
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
