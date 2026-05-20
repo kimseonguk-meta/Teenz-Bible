@@ -11,7 +11,7 @@ appleProvider.addScope('name');
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ5qm_sCzkUfFGC8WcTGbjfviBz_SyNAg",
-  authDomain: "teens-bible-94271.web.app",
+  authDomain: "teens-bible-94271.firebaseapp.com",
   databaseURL: "https://teens-bible-94271-default-rtdb.firebaseio.com",
   projectId: "teens-bible-94271",
   storageBucket: "teens-bible-94271.firebasestorage.app",
