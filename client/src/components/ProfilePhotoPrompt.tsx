@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { auth, db, ref, update } from "@/lib/firebase";
+import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 
 // ─── Profile Photo Upload Prompt ────────────────────────────
 // Uploads photo to Firebase Realtime DB as compressed base64.
@@ -339,14 +340,56 @@ export default function ProfilePhotoPrompt() {
             ) : (
               <div className="flex gap-3 justify-center">
                 <div
-                  onClick={() => cameraInputRef.current?.click()}
+                  onClick={async () => {
+                    try {
+                      const result = await takePhotoNative();
+                      if (result) {
+                        // Load as HTMLImageElement for crop
+                        const img = new Image();
+                        img.onload = () => {
+                          setRawImg(img);
+                          setRawSrc(img.src);
+                          setSelectedFilter(0);
+                          setCropScale(1);
+                          setCropOffset({ x: 0, y: 0 });
+                        };
+                        img.src = result.base64;
+                      } else {
+                        // Web fallback
+                        cameraInputRef.current?.click();
+                      }
+                    } catch (err) {
+                      console.error('Camera error:', err);
+                      cameraInputRef.current?.click();
+                    }
+                  }}
                   className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
                 >
                   <span className="text-2xl mb-1">📸</span>
                   <span className="text-[10px] text-gray-500">Take Photo</span>
                 </div>
                 <div
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={async () => {
+                    try {
+                      const result = await pickPhotoNative();
+                      if (result) {
+                        const img = new Image();
+                        img.onload = () => {
+                          setRawImg(img);
+                          setRawSrc(img.src);
+                          setSelectedFilter(0);
+                          setCropScale(1);
+                          setCropOffset({ x: 0, y: 0 });
+                        };
+                        img.src = result.base64;
+                      } else {
+                        fileInputRef.current?.click();
+                      }
+                    } catch (err) {
+                      console.error('Gallery error:', err);
+                      fileInputRef.current?.click();
+                    }
+                  }}
                   className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
                 >
                   <span className="text-2xl mb-1">🖼️</span>

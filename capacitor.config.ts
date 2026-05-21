@@ -11,6 +11,12 @@ const config: CapacitorConfig = {
       skipNativeAuth: false,
       providers: ["apple.com", "google.com"],
     },
+    Camera: {
+      presentationStyle: 'popover',
+    },
+  },
+  server: {
+    androidScheme: 'https',
   },
 };
 

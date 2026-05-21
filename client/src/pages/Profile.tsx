@@ -5,6 +5,7 @@ import { auth } from "@/lib/firebase";
 import { getProfilePhotoUrl, setProfilePhoto, setProfilePhotoUrl, uploadPhotoToFirebase } from "@/components/ProfilePhotoPrompt";
 import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOutGoogle } from "@/lib/googleAuth";
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
+import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -353,13 +354,46 @@ export default function Profile() {
         {showPhotoMenu && (
           <div className="mt-2 flex gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
             <button
-              onClick={() => { cameraInputRef.current?.click(); setShowPhotoMenu(false); }}
+              onClick={async () => {
+                setShowPhotoMenu(false);
+                try {
+                  const result = await takePhotoNative();
+                  if (result) {
+                    setRawPhoto(result.base64);
+                    setCropScale(1);
+                    setCropOffset({ x: 0, y: 0 });
+                  } else {
+                    // Web fallback: use file input
+                    cameraInputRef.current?.click();
+                  }
+                } catch (err) {
+                  console.error('Camera error:', err);
+                  // Fallback to file input on error
+                  cameraInputRef.current?.click();
+                }
+              }}
               className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
             >
               📸 Take Photo
             </button>
             <button
-              onClick={() => { photoInputRef.current?.click(); setShowPhotoMenu(false); }}
+              onClick={async () => {
+                setShowPhotoMenu(false);
+                try {
+                  const result = await pickPhotoNative();
+                  if (result) {
+                    setRawPhoto(result.base64);
+                    setCropScale(1);
+                    setCropOffset({ x: 0, y: 0 });
+                  } else {
+                    // Web fallback: use file input
+                    photoInputRef.current?.click();
+                  }
+                } catch (err) {
+                  console.error('Gallery error:', err);
+                  photoInputRef.current?.click();
+                }
+              }}
               className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
             >
               🖼️ Gallery

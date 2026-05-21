@@ -19,6 +19,9 @@ importers:
       '@capacitor-firebase/authentication':
         specifier: ^8.2.0
         version: 8.2.0(@capacitor/core@8.3.4)(firebase@12.13.0)
+      '@capacitor/camera':
+        specifier: ^8.2.0
+        version: 8.2.0(@capacitor/core@8.3.4)
       '@capacitor/cli':
         specifier: ^8.3.4
         version: 8.3.4
@@ -385,6 +388,11 @@ packages:
     peerDependenciesMeta:
       firebase:
         optional: true
+
+  '@capacitor/camera@8.2.0':
+    resolution: {integrity: sha512-hYfrT6xpL936qoEkIpJzSnb0fQCaTkOux1cXzGBfH8QLOGqr6gSLiWZlZz/fqMPmMKJMNRBqlTQkj5fuMhVZog==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
 
   '@capacitor/cli@8.3.4':
     resolution: {integrity: sha512-QEmyNdiDDVNYl0Mahm7YTVA/3t2tKcy7FWYDapeKGavS6HDNHZSjyTVwQpUXQbDZrrs/PS2Wau3Aii+LIFwm/A==}
@@ -6465,6 +6473,10 @@ snapshots:
       '@capacitor/core': 8.3.4
     optionalDependencies:
       firebase: 12.13.0
+
+  '@capacitor/camera@8.2.0(@capacitor/core@8.3.4)':
+    dependencies:
+      '@capacitor/core': 8.3.4
 
   '@capacitor/cli@8.3.4':
     dependencies:

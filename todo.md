@@ -70,3 +70,7 @@
 ## Apple Review Fix (May 2026)
 - [x] Fix Apple Sign-in blank screen bug (Guideline 2.1a)
 - [x] Remove redeem code feature from Store (Guideline 3.1.1 - IAP compliance)
+
+## Apple Review Fix Round 2 (May 21, 2026)
+- [x] Fix camera crash on iPad when taking profile photo (Guideline 2.1a - Performance)
+- [x] Fix Sign in with Apple error message (Guideline 2.1a - App Completeness)
