@@ -282,7 +282,9 @@ export default function Profile() {
     // Clear profile to trigger onboarding again
     localStorage.removeItem("teensBibleProfile");
     localStorage.removeItem("playerName");
-    window.location.reload();
+    // Dispatch custom event so App.tsx shows onboarding directly (no reload needed)
+    // This avoids WKWebView reload issues on iPad and prevents Firebase sync from restoring the profile
+    window.dispatchEvent(new CustomEvent("triggerEditProfile"));
   }, []);
 
   return (
