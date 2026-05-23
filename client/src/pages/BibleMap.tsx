@@ -89,16 +89,15 @@ export default function BibleMap() {
         attributionControl: false,
       });
 
-      // Use a dark-themed tile layer to match app aesthetics
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      // Use satellite/terrain hybrid tile layer for clear visibility
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
         maxZoom: 19,
-        subdomains: "abcd",
       }).addTo(map);
 
-      // Add small attribution
-      L.control.attribution({ position: "bottomright", prefix: false })
-        .addAttribution('© <a href="https://www.openstreetmap.org/copyright" style="color:#a855f7">OSM</a>')
-        .addTo(map);
+      // Add labels overlay on top of satellite
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 19,
+      }).addTo(map);
 
       mapInstanceRef.current = map;
 
