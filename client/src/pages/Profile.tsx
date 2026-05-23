@@ -214,7 +214,11 @@ export default function Profile() {
         setGoogleLinked(true);
         setGoogleEmail(getLinkedGoogleEmail());
         if (result.type === "signed-in" && result.restored) {
-          setTimeout(() => window.location.reload(), 1500);
+          // Refresh app state without reload (avoids WKWebView issues)
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+            window.dispatchEvent(new CustomEvent("auth-changed"));
+          }, 1500);
         }
       }
     } catch (err: any) {
@@ -246,7 +250,11 @@ export default function Profile() {
         setAppleLinked(true);
         setAppleEmail(getLinkedAppleEmail());
         if (result.type === "signed-in" && result.restored) {
-          setTimeout(() => window.location.reload(), 1500);
+          // Refresh app state without reload (avoids WKWebView issues)
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+            window.dispatchEvent(new CustomEvent("auth-changed"));
+          }, 1500);
         }
       }
     } catch (err: any) {
@@ -294,7 +302,8 @@ export default function Profile() {
     }
     keysToRemove.forEach(k => localStorage.removeItem(k));
     setShowResetConfirm(false);
-    window.location.reload();
+    // Use custom event to trigger onboarding instead of reload (avoids WKWebView issues)
+    window.dispatchEvent(new CustomEvent("triggerEditProfile"));
   }, []);
 
   // Redeem code feature removed for App Store compliance (Guideline 3.1.1)
