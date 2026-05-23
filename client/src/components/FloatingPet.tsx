@@ -46,6 +46,7 @@ export default function FloatingPet() {
   const [isInterrupting, setIsInterrupting] = useState(false);
   const [wiggle, setWiggle] = useState(false);
   const [isTamed, setIsTamed] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const tamedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const dragRef = useRef<{ startX: number; startY: number; startPosX: number; startPosY: number } | null>(null);
@@ -268,6 +269,21 @@ export default function FloatingPet() {
     }
   }, [pet?.id]);
 
+  // Show drag hint after 10 seconds if user hasn't seen it before
+  useEffect(() => {
+    if (!pet) return;
+    const hintSeen = localStorage.getItem("petDragHintSeen");
+    if (hintSeen) return;
+    const timer = setTimeout(() => {
+      setShowHint(true);
+      setTimeout(() => {
+        setShowHint(false);
+        localStorage.setItem("petDragHintSeen", "true");
+      }, 6000);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [pet]);
+
   const triggerReaction = useCallback((text: string) => {
     setReaction(text);
     if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
@@ -360,35 +376,14 @@ export default function FloatingPet() {
           return next;
         });
       } else {
-        // Single tap → tame the pet (go to corner and stay quiet)
-        if (!isTamed) {
-          setIsTamed(true);
-          pauseWanderRef.current = true;
-          setIsInterrupting(false);
-          setReaction(null);
-          setShowBubble(false);
-          // Move to bottom-right corner
-          const cornerPos = { x: window.innerWidth - 70, y: window.innerHeight - 160 };
-          setTargetPos(cornerPos);
-          setBounceClass("animate-bounce-gentle");
-          triggerReaction("*sits quietly* 😊");
-          // Resume wandering after 15 seconds
-          if (tamedTimerRef.current) clearTimeout(tamedTimerRef.current);
-          tamedTimerRef.current = setTimeout(() => {
-            setIsTamed(false);
-            pauseWanderRef.current = false;
-            triggerReaction("I'm back~! 🎉");
-          }, 15000);
-        } else {
-          // Already tamed - show dialogue
-          const messages = dialogue.tap[petState.mood];
-          setBubbleText(getRandomMessage(messages));
-          setShowBubble(true);
-          setBounceClass("animate-bounce-excited");
-          setTimeout(() => setBounceClass("animate-bounce-gentle"), 1000);
-          if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
-          bubbleTimerRef.current = setTimeout(() => setShowBubble(false), 3500);
-        }
+        // Single tap → show dialogue
+        const messages = dialogue.tap[petState.mood];
+        setBubbleText(getRandomMessage(messages));
+        setShowBubble(true);
+        setBounceClass("animate-bounce-excited");
+        setTimeout(() => setBounceClass("animate-bounce-gentle"), 1000);
+        if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
+        bubbleTimerRef.current = setTimeout(() => setShowBubble(false), 3500);
       }
       tapCountRef.current = 0;
     }, 300);
@@ -424,6 +419,34 @@ export default function FloatingPet() {
   const handlePointerUp = useCallback(() => {
     if (!isDragging && dragRef.current) {
       handlePetTap();
+    } else if (isDragging) {
+      // Check if dropped in bottom-right corner zone
+      const cornerThreshold = {
+        x: window.innerWidth - 120,
+        y: window.innerHeight - 200,
+      };
+      if (pos.x > cornerThreshold.x && pos.y > cornerThreshold.y) {
+        // Tame the pet - sit quietly for 15 seconds
+        setIsTamed(true);
+        pauseWanderRef.current = true;
+        setIsInterrupting(false);
+        setReaction(null);
+        setShowBubble(false);
+        const cornerPos = { x: window.innerWidth - 70, y: window.innerHeight - 160 };
+        setPos(cornerPos);
+        setTargetPos(cornerPos);
+        setBounceClass("animate-bounce-gentle");
+        triggerReaction("*sits quietly* 😊");
+        if (tamedTimerRef.current) clearTimeout(tamedTimerRef.current);
+        tamedTimerRef.current = setTimeout(() => {
+          setIsTamed(false);
+          pauseWanderRef.current = false;
+          triggerReaction("I'm back~! 🎉");
+        }, 15000);
+        dragRef.current = null;
+        setIsDragging(false);
+        return;
+      }
     }
     dragRef.current = null;
     // Resume wandering after 3 seconds
@@ -431,7 +454,7 @@ export default function FloatingPet() {
       pauseWanderRef.current = false;
       setIsDragging(false);
     }, 3000);
-  }, [isDragging, handlePetTap]);
+  }, [isDragging, handlePetTap, pos, triggerReaction]);
 
   // Don't render if no pet equipped or on bible-ai page
   if (!pet || location === "/bible-ai") return null;
@@ -585,6 +608,16 @@ export default function FloatingPet() {
           </span>
         </div>
       </div>
+
+      {/* Drag hint tooltip */}
+      {showHint && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[160px] animate-fade-in pointer-events-none">
+          <div className="bg-purple-900/95 text-white text-[10px] font-medium px-3 py-2 rounded-xl shadow-lg text-center border border-purple-500/40">
+            💡 Drag me to the bottom-right corner to make me sit still!
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-purple-900/95 rotate-45 border-l border-t border-purple-500/40" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
