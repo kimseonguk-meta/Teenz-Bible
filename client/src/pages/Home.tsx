@@ -384,7 +384,7 @@ export default function Home() {
             <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-full object-contain rounded-lg" />
           </div>
           {/* Action buttons */}
-          <div className="absolute bottom-0 left-0 right-0 pb-8 pt-4 bg-gradient-to-t from-black/80 to-transparent" onClick={(e) => e.stopPropagation()}>
+          <div className="absolute bottom-0 left-0 right-0 pb-24 pt-4 bg-gradient-to-t from-black/80 to-transparent" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-center gap-4 px-6">
               <button
                 onClick={async () => {
