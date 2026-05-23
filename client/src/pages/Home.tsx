@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { toast } from "sonner";
@@ -163,6 +163,17 @@ export default function Home() {
   const equippedPet = PETS.find(p => p.id === equipped.pet);
   const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
   const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
+  // Re-check linked status when Firebase auth state resolves (may be null on first render)
+  useEffect(() => {
+    const checkLinked = () => {
+      if (isLinkedToGoogle() || isLinkedToApple()) setAccountLinked(true);
+    };
+    // Check after short delay for Firebase auth to initialize
+    const t1 = setTimeout(checkLinked, 500);
+    const t2 = setTimeout(checkLinked, 1500);
+    const t3 = setTimeout(checkLinked, 3000);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
   const [bannerDismissed, setBannerDismissed] = useState(() => {
     const dismissed = localStorage.getItem("syncBannerDismissed");
     if (!dismissed) return false;

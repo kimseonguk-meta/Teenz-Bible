@@ -372,3 +372,13 @@
     max-width: 100%;
   }
 }
+
+/* Animated route polyline for Bible Map Paul's Journeys */
+.animated-route {
+  animation: dash-flow 2s linear infinite;
+}
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useLocation } from "wouter";
 import "leaflet/dist/leaflet.css";
 
 interface MapLocation {
@@ -57,6 +58,7 @@ export default function BibleMap() {
     (localStorage.getItem("readerLang") as "en" | "ko") || "en"
   );
   const [search, setSearch] = useState("");
+  const [, navigate] = useLocation();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
@@ -182,14 +184,24 @@ export default function BibleMap() {
         markersRef.current.push(marker);
       });
 
-      // Draw polyline for Paul's journeys
+      // Draw animated polyline for Paul's journeys
       if (activeTab === "paul") {
         const path = locs.map(loc => [loc.lat, loc.lng] as [number, number]);
+        
+        // Background trail (faint)
+        L.polyline(path, {
+          color: "#7c3aed",
+          weight: 2,
+          opacity: 0.3,
+        }).addTo(map);
+
+        // Animated dashed line on top
         polylineRef.current = L.polyline(path, {
-          color: "#a855f7",
+          color: "#c084fc",
           weight: 3,
-          opacity: 0.8,
-          dashArray: "8, 4",
+          opacity: 0.9,
+          dashArray: "12, 8",
+          className: "animated-route",
         }).addTo(map);
       }
     });
@@ -279,7 +291,22 @@ export default function BibleMap() {
           </p>
           <div className="flex flex-wrap gap-1.5">
             {selectedLoc.verses.map(v => (
-              <span key={v} className="px-2 py-0.5 bg-purple-900/50 border border-purple-500/30 rounded text-[10px] text-purple-300">{v}</span>
+              <button
+                key={v}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Parse verse reference like "Matthew 2" or "Acts 13:4-12"
+                  const match = v.match(/^(.+?)\s+(\d+)/);
+                  if (match) {
+                    const book = match[1].toLowerCase().replace(/\s+/g, "-");
+                    const chapter = match[2];
+                    navigate(`/bible/${book}/${chapter}`);
+                  }
+                }}
+                className="px-2 py-0.5 bg-purple-900/50 border border-purple-500/30 rounded text-[10px] text-purple-300 hover:bg-purple-700/50 hover:border-purple-400 active:scale-95 transition-all cursor-pointer"
+              >
+                📖 {v}
+              </button>
             ))}
           </div>
         </div>
@@ -304,7 +331,21 @@ export default function BibleMap() {
                 </p>
                 <div className="flex flex-wrap gap-1 mt-2">
                   {loc.verses.slice(0, 3).map(v => (
-                    <span key={v} className="px-1.5 py-0.5 bg-purple-900/40 border border-purple-500/20 rounded text-[9px] text-purple-300">{v}</span>
+                    <button
+                      key={v}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const match = v.match(/^(.+?)\s+(\d+)/);
+                        if (match) {
+                          const book = match[1].toLowerCase().replace(/\s+/g, "-");
+                          const chapter = match[2];
+                          navigate(`/bible/${book}/${chapter}`);
+                        }
+                      }}
+                      className="px-1.5 py-0.5 bg-purple-900/40 border border-purple-500/20 rounded text-[9px] text-purple-300 hover:bg-purple-700/40 active:scale-95 transition-all"
+                    >
+                      📖 {v}
+                    </button>
                   ))}
                 </div>
               </div>
