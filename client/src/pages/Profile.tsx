@@ -75,7 +75,26 @@ const badges = [
 ];
 
 export default function Profile() {
-  const [playerName] = useState(getPlayerName);
+  const [playerName, setPlayerName] = useState(getPlayerName);
+
+  // Refresh player name when returning from edit profile (onboarding complete)
+  useEffect(() => {
+    const handleVisibility = () => {
+      setPlayerName(getPlayerName());
+    };
+    window.addEventListener("focus", handleVisibility);
+    window.addEventListener("sync-restored", handleVisibility);
+    // Also listen for custom event when onboarding completes
+    const handleProfileUpdate = () => {
+      setPlayerName(getPlayerName());
+    };
+    window.addEventListener("teensBibleDataChanged", handleProfileUpdate);
+    return () => {
+      window.removeEventListener("focus", handleVisibility);
+      window.removeEventListener("sync-restored", handleVisibility);
+      window.removeEventListener("teensBibleDataChanged", handleProfileUpdate);
+    };
+  }, []);
   const [totalXP] = useState(getTotalXP);
   const [gems] = useState(getGems);
   const [chaptersRead] = useState(getChaptersRead);
@@ -689,16 +708,30 @@ export default function Profile() {
 
           {/* Invite Friends */}
           <div
-            onClick={() => {
-              if (navigator.share) {
-                navigator.share({
-                  title: "Teenz Bible",
-                  text: "Join me on Teenz Bible! Read the Bible together and compete on the leaderboard 🏆",
-                  url: window.location.origin,
-                });
-              } else {
-                navigator.clipboard.writeText(window.location.origin);
-                alert("Link copied to clipboard!");
+            onClick={async () => {
+              const shareText = "Join me on Teenz Bible! Read the Bible together and compete on the leaderboard 🏆";
+              const shareUrl = window.location.origin;
+              try {
+                if (navigator.share) {
+                  await navigator.share({
+                    title: "Teenz Bible",
+                    text: shareText,
+                    url: shareUrl,
+                  });
+                } else {
+                  await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+                  toast.success("Link copied to clipboard! 📋");
+                }
+              } catch (err: any) {
+                // User cancelled share or share failed - fallback to clipboard
+                if (err?.name !== "AbortError") {
+                  try {
+                    await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+                    toast.success("Link copied to clipboard! 📋");
+                  } catch {
+                    toast.info("Share: " + shareUrl);
+                  }
+                }
               }
             }}
             className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"

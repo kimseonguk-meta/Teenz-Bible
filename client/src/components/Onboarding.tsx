@@ -14,9 +14,10 @@ const DEFAULT_CLASS_CONFIG = [
 
 interface OnboardingProps {
   onComplete: () => void;
+  onCancel?: () => void;
 }
 
-export default function Onboarding({ onComplete }: OnboardingProps) {
+export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   const [step, setStep] = useState(1); // 1: nickname, 2: member check, 3: class select, 4: celebration
   const [nickname, setNickname] = useState("");
   const [avatar, setAvatar] = useState(() => AVATARS[Math.floor(Math.random() * AVATARS.length)]);
@@ -181,7 +182,16 @@ export default function Onboarding({ onComplete }: OnboardingProps) {
   if (step === 1) {
     return (
       <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
-        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
+        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400 relative">
+          {onCancel && (
+            <button
+              onClick={onCancel}
+              className="absolute top-3 right-3 text-gray-500 hover:text-white text-xl leading-none p-1 transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          )}
           <div className="text-6xl mb-4 cursor-pointer hover:scale-110 transition-transform" onClick={randomizeAvatar}>
             {avatar}
           </div>

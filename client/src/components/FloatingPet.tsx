@@ -45,6 +45,8 @@ export default function FloatingPet() {
   const [isDoingAction, setIsDoingAction] = useState(false);
   const [isInterrupting, setIsInterrupting] = useState(false);
   const [wiggle, setWiggle] = useState(false);
+  const [isTamed, setIsTamed] = useState(false);
+  const tamedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const dragRef = useRef<{ startX: number; startY: number; startPosX: number; startPosY: number } | null>(null);
   const petRef = useRef<HTMLDivElement>(null);
@@ -122,7 +124,7 @@ export default function FloatingPet() {
     if (!pet || !isWandering) return;
 
     const wander = () => {
-      if (pauseWanderRef.current || isDragging || showMiniGame) return;
+      if (pauseWanderRef.current || isDragging || showMiniGame || isTamed) return;
 
       // 15% chance to "interrupt" by coming to center
       if (Math.random() < 0.15 && !isInterrupting) {
@@ -358,18 +360,39 @@ export default function FloatingPet() {
           return next;
         });
       } else {
-        // Single tap → show dialogue
-        const messages = dialogue.tap[petState.mood];
-        setBubbleText(getRandomMessage(messages));
-        setShowBubble(true);
-        setBounceClass("animate-bounce-excited");
-        setTimeout(() => setBounceClass("animate-bounce-gentle"), 1000);
-        if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
-        bubbleTimerRef.current = setTimeout(() => setShowBubble(false), 3500);
+        // Single tap → tame the pet (go to corner and stay quiet)
+        if (!isTamed) {
+          setIsTamed(true);
+          pauseWanderRef.current = true;
+          setIsInterrupting(false);
+          setReaction(null);
+          setShowBubble(false);
+          // Move to bottom-right corner
+          const cornerPos = { x: window.innerWidth - 70, y: window.innerHeight - 160 };
+          setTargetPos(cornerPos);
+          setBounceClass("animate-bounce-gentle");
+          triggerReaction("*sits quietly* 😊");
+          // Resume wandering after 30 seconds
+          if (tamedTimerRef.current) clearTimeout(tamedTimerRef.current);
+          tamedTimerRef.current = setTimeout(() => {
+            setIsTamed(false);
+            pauseWanderRef.current = false;
+            triggerReaction("I'm back~! 🎉");
+          }, 30000);
+        } else {
+          // Already tamed - show dialogue
+          const messages = dialogue.tap[petState.mood];
+          setBubbleText(getRandomMessage(messages));
+          setShowBubble(true);
+          setBounceClass("animate-bounce-excited");
+          setTimeout(() => setBounceClass("animate-bounce-gentle"), 1000);
+          if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
+          bubbleTimerRef.current = setTimeout(() => setShowBubble(false), 3500);
+        }
       }
       tapCountRef.current = 0;
     }, 300);
-  }, [petState.mood, isDragging, dialogue]);
+  }, [petState.mood, isDragging, dialogue, isTamed, triggerReaction]);
 
   // Drag handlers - user can grab and toss the pet
   const handlePointerDown = useCallback((e: React.PointerEvent) => {

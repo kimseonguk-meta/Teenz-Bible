@@ -1077,12 +1077,20 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
             <p className="text-purple-200 text-sm leading-relaxed mb-4">
               It looks like you scrolled through pretty fast. Try reading more carefully to earn your XP & Gems! 😊
             </p>
-            <button
-              onClick={() => { setShowReadWarning(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-yellow-500/30"
-            >
-              📖 Read Again
-            </button>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => { setShowReadWarning(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-yellow-500/30"
+              >
+                📖 Read Again
+              </button>
+              <button
+                onClick={() => { setShowReadWarning(false); }}
+                className="px-5 py-2 text-purple-300 text-xs hover:text-white transition-colors"
+              >
+                Continue anyway →
+              </button>
+            </div>
           </div>
         </div>
       )}

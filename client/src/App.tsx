@@ -23,6 +23,7 @@ const Store = lazy(() => import("./pages/Store"));
 const Profile = lazy(() => import("./pages/Profile"));
 const BibleAI = lazy(() => import("./pages/BibleAI"));
 const QuizStats = lazy(() => import("./pages/QuizStats"));
+const BibleMap = lazy(() => import("./pages/BibleMap"));
 
 function LoadingFallback() {
   return (
@@ -49,6 +50,7 @@ function Router() {
           <Route path="/profile" component={Profile} />
           <Route path="/bible-ai" component={BibleAI} />
           <Route path="/quiz-stats" component={QuizStats} />
+          <Route path="/bible-map" component={BibleMap} />
           <Route component={Home} />
         </Switch>
       </Suspense>
@@ -162,7 +164,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <GameProvider>
-            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
+            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} onCancel={editProfileActiveRef.current ? () => { setShowOnboarding(false); editProfileActiveRef.current = false; } : undefined} />}
             {authReady && !showOnboarding && <DailyBonus />}
             {authReady && !showOnboarding && <ProfilePhotoPrompt />}
             {authReady && !showOnboarding && <FloatingPet />}

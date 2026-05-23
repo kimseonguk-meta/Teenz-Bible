@@ -216,8 +216,8 @@ export default function Home() {
           <div className="flex items-start gap-3">
             <div className="text-2xl mt-0.5">⚠️</div>
             <div className="flex-1 pr-4">
-              <h3 className="text-amber-200 font-bold text-sm">Your data is not protected!</h3>
-              <p className="text-gray-400 text-xs mt-1">If you switch phones or clear cache, all your progress will be lost. Link an account to keep it safe.</p>
+              <h3 className="text-amber-200 font-bold text-sm">Back up your progress</h3>
+              <p className="text-gray-400 text-xs mt-1">Link an account to save your progress across devices.</p>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={handleBannerLinkGoogle}
@@ -436,7 +436,7 @@ export default function Home() {
         <button onClick={() => setLocation("/bible")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">📖</span><div className="text-sm font-medium text-white mt-1">Start Reading</div>
         </button>
-        <button onClick={() => toast.info("Bible Map is coming soon! 🗺️")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+        <button onClick={() => setLocation("/bible-map")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
           <span className="text-2xl">🗺️</span><div className="text-sm font-medium text-white mt-1">Bible Map</div>
         </button>
       </div>

@@ -158,7 +158,7 @@ export default function ProfilePhotoPrompt() {
       if (!photo && !dismissed) {
         setShowModal(true);
       }
-    }, 3000);
+    }, 6000); // Delayed to avoid overlapping with DailyBonus popup
     return () => clearTimeout(timer);
   }, []);
 

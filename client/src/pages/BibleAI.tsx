@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
 
+declare const __GEMINI_API_KEY__: string;
+
 const BIBLE_SYSTEM_PROMPT = `You are Bible AI, a friendly and knowledgeable Bible teacher for teenage boys in middle school. 
 Your style: casual, engaging, like a cool youth pastor. Use simple English. 
 Always reference specific Bible verses when answering. Keep answers concise (2-3 paragraphs max) but ALWAYS complete your response fully - never stop mid-sentence.
@@ -9,8 +11,6 @@ If asked something not related to the Bible or Christianity, gently redirect to 
 You know the entire Bible (66 books) especially well, including the Old Testament and New Testament.
 Note: The Bible text in this app is a modern retelling for teens (MZ translation style), not a traditional summary.
 If the user writes in Korean, respond in casual Korean (반말) suitable for middle school teens. Keep the same friendly, engaging tone.`;
-
-// API key moved to server-side proxy at /api/bible-ai
 
 const SUGGESTED_QUESTIONS = [
   { text: "Who is Jesus?", isKo: false },
@@ -47,7 +47,6 @@ function loadChatHistory(): ChatMessage[] {
 
 function saveChatHistory(messages: ChatMessage[]) {
   try {
-    // Keep last 100 messages to avoid localStorage bloat
     const toSave = messages.slice(-100);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
   } catch {}
@@ -66,15 +65,55 @@ function loadGeminiHistory(): Array<{ role: string; parts: Array<{ text: string 
 
 function saveGeminiHistory(history: Array<{ role: string; parts: Array<{ text: string }> }>) {
   try {
-    // Keep last 20 turns for context
     const toSave = history.slice(-20);
     localStorage.setItem(GEMINI_HISTORY_KEY, JSON.stringify(toSave));
   } catch {}
 }
 
-// Check if Web Speech API is available
 function isSpeechRecognitionSupported(): boolean {
   return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
+}
+
+// Direct Gemini API call from client
+async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
+  const apiKey = __GEMINI_API_KEY__;
+  if (!apiKey) {
+    return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
+  }
+
+  const reqBody = JSON.stringify({
+    system_instruction: { parts: [{ text: systemPrompt }] },
+    contents: messages,
+    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+    safetySettings: [
+      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+      { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+      { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+    ],
+  });
+
+  const models = ["gemini-2.0-flash", "gemini-2.5-flash"];
+  let lastError = "";
+
+  for (const model of models) {
+    try {
+      const resp = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
+      );
+      const data = await resp.json();
+      if (data.candidates && data.candidates[0]?.content) {
+        const answer = data.candidates[0].content.parts[0].text;
+        return { answer };
+      }
+      lastError = data.error?.message || "No response generated";
+    } catch (e: any) {
+      lastError = e.message;
+    }
+  }
+
+  return { answer: "", error: `Oops! Something went wrong. ${lastError ? "Please try again." : ""} 🙏` };
 }
 
 export default function BibleAI() {
@@ -88,12 +127,10 @@ export default function BibleAI() {
   const recognitionRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Save chat history whenever messages change
   useEffect(() => {
     if (messages.length > 0) {
       saveChatHistory(messages);
@@ -109,14 +146,9 @@ export default function BibleAI() {
     recognition.continuous = false;
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
+    recognition.lang = "";
 
-    // Auto-detect language (supports both English and Korean)
-    recognition.lang = ""; // Empty = auto-detect
-
-    recognition.onstart = () => {
-      setIsListening(true);
-    };
-
+    recognition.onstart = () => setIsListening(true);
     recognition.onresult = (event: any) => {
       let transcript = "";
       for (let i = 0; i < event.results.length; i++) {
@@ -124,7 +156,6 @@ export default function BibleAI() {
       }
       setInput(transcript);
     };
-
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error:", event.error);
       setIsListening(false);
@@ -134,16 +165,10 @@ export default function BibleAI() {
         toast("No speech detected. Try again!", { icon: "🎤" });
       }
     };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
+    recognition.onend = () => setIsListening(false);
     recognitionRef.current = recognition;
 
-    return () => {
-      try { recognition.abort(); } catch {}
-    };
+    return () => { try { recognition.abort(); } catch {} };
   }, []);
 
   const toggleListening = useCallback(() => {
@@ -151,26 +176,15 @@ export default function BibleAI() {
       toast.error("Voice input is not supported in this browser.");
       return;
     }
-
     if (isListening) {
       recognitionRef.current.stop();
       setIsListening(false);
     } else {
-      // Detect if user has been typing Korean
       const lang = localStorage.getItem("teensBible_language");
-      if (lang === "ko") {
-        recognitionRef.current.lang = "ko-KR";
-      } else {
-        recognitionRef.current.lang = "en-US";
-      }
-      try {
-        recognitionRef.current.start();
-      } catch (e) {
-        // Already started
+      recognitionRef.current.lang = lang === "ko" ? "ko-KR" : "en-US";
+      try { recognitionRef.current.start(); } catch {
         recognitionRef.current.stop();
-        setTimeout(() => {
-          try { recognitionRef.current.start(); } catch {}
-        }, 100);
+        setTimeout(() => { try { recognitionRef.current.start(); } catch {} }, 100);
       }
     }
   }, [isListening]);
@@ -179,7 +193,6 @@ export default function BibleAI() {
     const q = (question || input).trim();
     if (!q || isLoading) return;
 
-    // Stop listening if active
     if (isListening && recognitionRef.current) {
       recognitionRef.current.stop();
       setIsListening(false);
@@ -193,35 +206,20 @@ export default function BibleAI() {
     chatHistoryRef.current.push({ role: "user", parts: [{ text: q }] });
 
     try {
-      const resp = await fetch("/api/bible-ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: chatHistoryRef.current,
-          systemPrompt: BIBLE_SYSTEM_PROMPT,
-        }),
-      });
-      const result = await resp.json();
+      const { answer, error } = await callGeminiAPI(chatHistoryRef.current, BIBLE_SYSTEM_PROMPT);
 
-      let answer = "";
-      if (result.data?.candidates?.[0]?.content) {
-        answer = result.data.candidates[0].content.parts[0].text;
+      if (answer) {
         chatHistoryRef.current.push({ role: "model", parts: [{ text: answer }] });
         if (chatHistoryRef.current.length > 20) {
           chatHistoryRef.current = chatHistoryRef.current.slice(-16);
         }
+        saveGeminiHistory(chatHistoryRef.current);
+        setMessages((prev) => [...prev, { role: "bot", text: answer }]);
       } else {
-        answer = "⚠️ Error: " + (result.error || "Unknown error. Please try again.");
+        setMessages((prev) => [...prev, { role: "bot", text: error || "Something went wrong. Please try again! 🙏" }]);
       }
-
-      // Save Gemini history
-      saveGeminiHistory(chatHistoryRef.current);
-
-      const newBotMsg: ChatMessage = { role: "bot", text: answer };
-      setMessages((prev) => [...prev, newBotMsg]);
     } catch (e: any) {
-      const errorMsg: ChatMessage = { role: "bot", text: "⚠️ Error: " + e.message };
-      setMessages((prev) => [...prev, errorMsg]);
+      setMessages((prev) => [...prev, { role: "bot", text: "Oops! Connection error. Please check your internet and try again. 🙏" }]);
     }
     setIsLoading(false);
   };
@@ -262,7 +260,6 @@ export default function BibleAI() {
             <p className="text-purple-300 text-xs">Ask anything about the Bible</p>
           </div>
         </div>
-        {/* Clear history button */}
         {hasHistory && (
           <button
             onClick={clearHistory}
@@ -274,7 +271,7 @@ export default function BibleAI() {
         )}
       </div>
 
-      {/* Suggested Questions - show when no real conversation yet */}
+      {/* Suggested Questions */}
       {!hasHistory && (
         <div className="px-4 py-3 flex flex-wrap gap-2">
           {SUGGESTED_QUESTIONS.map((q, i) => (
@@ -322,21 +319,14 @@ export default function BibleAI() {
 
       {/* Input */}
       <div className="px-4 py-3 border-t border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm">
-        {/* Voice input indicator */}
         {isListening && (
           <div className="flex items-center justify-center gap-2 mb-2 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
             <span className="text-red-300 text-xs font-medium">Listening... Speak now</span>
-            <button
-              onClick={toggleListening}
-              className="text-red-400 hover:text-red-300 text-xs ml-1"
-            >
-              ✕ Stop
-            </button>
+            <button onClick={toggleListening} className="text-red-400 hover:text-red-300 text-xs ml-1">✕ Stop</button>
           </div>
         )}
         <div className="flex gap-2">
-          {/* Microphone button */}
           {isSpeechRecognitionSupported() && (
             <button
               onClick={toggleListening}
