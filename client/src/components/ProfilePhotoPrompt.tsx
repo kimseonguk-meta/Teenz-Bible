@@ -442,7 +442,6 @@ export default function ProfilePhotoPrompt() {
             ref={cameraInputRef}
             type="file"
             accept="image/*"
-            capture="user"
             onChange={handleFileSelect}
             className="hidden"
           />

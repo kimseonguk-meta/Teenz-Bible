@@ -40,12 +40,9 @@ export async function takePhotoNative(): Promise<PhotoResult | null> {
     }
     return null;
   } catch (error: any) {
-    // User cancelled or camera not available
+    // Never throw - return null to signal caller should use web fallback
     console.log('[NativeCamera] Error:', error.message);
-    if (error.message?.includes('cancelled') || error.message?.includes('canceled') || error.message?.includes('User cancelled')) {
-      return null; // User cancelled, not an error
-    }
-    throw error;
+    return null;
   }
 }
 
@@ -75,10 +72,8 @@ export async function pickPhotoNative(): Promise<PhotoResult | null> {
     }
     return null;
   } catch (error: any) {
+    // Never throw - return null to signal caller should use web fallback
     console.log('[NativeCamera] Gallery error:', error.message);
-    if (error.message?.includes('cancelled') || error.message?.includes('canceled') || error.message?.includes('User cancelled')) {
-      return null;
-    }
-    throw error;
+    return null;
   }
 }

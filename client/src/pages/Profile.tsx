@@ -218,7 +218,8 @@ export default function Profile() {
         }
       }
     } catch (err: any) {
-      setLinkMessage({ text: err.message, success: false });
+      const msg = err.message?.includes('cancelled') || err.message?.includes('canceled') ? 'Sign-in cancelled' : 'Something went wrong. Please try again.';
+      setLinkMessage({ text: msg, success: false });
     } finally {
       setLinkingGoogle(false);
     }
@@ -231,7 +232,7 @@ export default function Profile() {
       setGoogleEmail(null);
       setLinkMessage({ text: "Signed out from Google", success: true });
     } catch (err: any) {
-      setLinkMessage({ text: err.message, success: false });
+      setLinkMessage({ text: 'Something went wrong. Please try again.', success: false });
     }
   }, []);
 
@@ -249,7 +250,8 @@ export default function Profile() {
         }
       }
     } catch (err: any) {
-      setLinkMessage({ text: err.message, success: false });
+      const msg = err.message?.includes('cancelled') || err.message?.includes('canceled') ? 'Sign-in cancelled' : 'Something went wrong. Please try again.';
+      setLinkMessage({ text: msg, success: false });
     } finally {
       setLinkingApple(false);
     }
@@ -427,7 +429,6 @@ export default function Profile() {
           ref={cameraInputRef}
           type="file"
           accept="image/*"
-          capture="user"
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];

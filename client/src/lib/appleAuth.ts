@@ -45,7 +45,8 @@ async function performAppleSignIn() {
     
     // If no credential returned but user exists, the native layer handled it
     // We need to wait for auth state to sync
-    throw new Error("No credential returned from native Apple sign-in");
+    // Return null credential case - caller will handle
+    return null as any;
   } else {
     // Web: use popup
     return await signInWithPopup(auth, appleProvider);
@@ -191,7 +192,8 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     };
   } catch (err: any) {
     console.error("[AppleAuth] Credential conflict handling failed:", err);
-    return { success: false, message: `Error: ${err.message}` };
+    console.error('[AppleAuth] Credential conflict error:', err);
+    return { success: false, message: 'Something went wrong. Please try again.' };
   }
 }
 
@@ -235,7 +237,9 @@ function handleAppleError(error: any): LinkResult {
   if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
     return { success: false, message: "Sign-in cancelled" };
   }
-  return { success: false, message: `Error: ${error.message}` };
+  // Never show raw error messages to user (Apple Review compliance)
+  console.error('[AppleAuth] Error:', error.code, error.message);
+  return { success: false, message: 'Something went wrong. Please try again.' };
 }
 
 /**

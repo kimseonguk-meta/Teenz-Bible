@@ -42,7 +42,8 @@ async function performGoogleSignIn() {
       return userCredential;
     }
     
-    throw new Error("No credential returned from native Google sign-in");
+    // Return null credential case - caller will handle
+    return null as any;
   } else {
     // Web: use popup
     return await signInWithPopup(auth, googleProvider);
@@ -186,7 +187,8 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     };
   } catch (err: any) {
     console.error("[GoogleAuth] Credential conflict handling failed:", err);
-    return { success: false, message: `Error: ${err.message}` };
+    console.error('[GoogleAuth] Credential conflict error:', err);
+    return { success: false, message: 'Something went wrong. Please try again.' };
   }
 }
 
@@ -233,7 +235,8 @@ function handleGoogleError(error: any): LinkResult {
   if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
     return { success: false, message: "Sign-in cancelled" };
   }
-  return { success: false, message: `Error: ${error.message}` };
+  console.error('[GoogleAuth] Error:', error.code, error.message);
+  return { success: false, message: 'Something went wrong. Please try again.' };
 }
 
 /**
