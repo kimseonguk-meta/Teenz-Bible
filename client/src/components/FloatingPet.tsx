@@ -372,13 +372,13 @@ export default function FloatingPet() {
           setTargetPos(cornerPos);
           setBounceClass("animate-bounce-gentle");
           triggerReaction("*sits quietly* 😊");
-          // Resume wandering after 30 seconds
+          // Resume wandering after 15 seconds
           if (tamedTimerRef.current) clearTimeout(tamedTimerRef.current);
           tamedTimerRef.current = setTimeout(() => {
             setIsTamed(false);
             pauseWanderRef.current = false;
             triggerReaction("I'm back~! 🎉");
-          }, 30000);
+          }, 15000);
         } else {
           // Already tamed - show dialogue
           const messages = dialogue.tap[petState.mood];
