@@ -717,7 +717,8 @@ export default function Profile() {
         <div className="space-y-3 mb-5">
           <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">👥 Social</p>
 
-          {/* Edit Profile */}
+          {/* Edit Profile - Admin only */}
+          {auth.currentUser?.email === 'kimseonguk777@gmail.com' && (
           <div
             onClick={handleEditProfile}
             className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
@@ -729,6 +730,7 @@ export default function Profile() {
             </div>
             <span className="text-gray-600">▶</span>
           </div>
+          )}
 
           {/* Invite Friends */}
           <div
