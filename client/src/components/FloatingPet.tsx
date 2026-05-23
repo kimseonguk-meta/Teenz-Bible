@@ -589,10 +589,18 @@ export default function FloatingPet() {
           <div className="pet-sparkle pet-sparkle-3">✦</div>
         </div>
 
-        {/* Mood indicator - floating above */}
-        <div className="absolute -top-3 right-0 text-sm animate-pulse">
-          {moodEmoji}
-        </div>
+        {/* Mood indicator or Zzz when tamed */}
+        {isTamed ? (
+          <div className="absolute -top-4 -right-1 pointer-events-none">
+            <span className="text-xs text-blue-300 font-bold animate-zzz-1">z</span>
+            <span className="text-[10px] text-blue-400/80 font-bold animate-zzz-2 ml-0.5">z</span>
+            <span className="text-[8px] text-blue-500/60 font-bold animate-zzz-3 ml-0.5">z</span>
+          </div>
+        ) : (
+          <div className="absolute -top-3 right-0 text-sm animate-pulse">
+            {moodEmoji}
+          </div>
+        )}
 
         {/* Mini-game indicator */}
         {!showMiniGame && (

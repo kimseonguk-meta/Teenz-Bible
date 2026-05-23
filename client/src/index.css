@@ -382,3 +382,24 @@
     stroke-dashoffset: -40;
   }
 }
+
+/* Pet sleeping Zzz animation */
+.animate-zzz-1 {
+  animation: zzz-float 2s ease-in-out infinite;
+}
+.animate-zzz-2 {
+  animation: zzz-float 2s ease-in-out infinite 0.4s;
+}
+.animate-zzz-3 {
+  animation: zzz-float 2s ease-in-out infinite 0.8s;
+}
+@keyframes zzz-float {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+}
