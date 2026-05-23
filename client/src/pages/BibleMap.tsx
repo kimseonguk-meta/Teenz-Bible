@@ -68,6 +68,18 @@ export default function BibleMap() {
   const locations = mapLocations[activeTab] || [];
   const currentTabInfo = TAB_INFO.find(t => t.key === activeTab)!;
 
+  // Haversine formula to calculate distance between two coordinates in km
+  const getDistanceKm = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c * 10) / 10; // Round to 1 decimal
+  };
+
   const filteredLocations = search
     ? locations.filter(l =>
         l.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -333,7 +345,14 @@ export default function BibleMap() {
             <div className="flex items-start gap-3">
               <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" loading="lazy" />
               <div className="flex-1 min-w-0">
-                <h3 className="text-white font-bold text-sm">{loc.icon} {lang === "en" ? loc.name : loc.nameKo}</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-white font-bold text-sm">{loc.icon} {lang === "en" ? loc.name : loc.nameKo}</h3>
+                  {selectedLoc && selectedLoc.name !== loc.name && (
+                    <span className="text-[10px] text-cyan-400 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                      📍 {getDistanceKm(selectedLoc.lat, selectedLoc.lng, loc.lat, loc.lng)} km
+                    </span>
+                  )}
+                </div>
                 <p className="text-gray-400 text-xs mt-1 line-clamp-2">
                   {lang === "en" ? loc.desc : loc.descKo}
                 </p>
