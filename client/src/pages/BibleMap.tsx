@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MapView } from "@/components/Map";
+import "leaflet/dist/leaflet.css";
 
 interface MapLocation {
   icon: string;
@@ -44,10 +44,10 @@ const mapLocations: Record<string, MapLocation[]> = {
   ],
 };
 
-const TAB_INFO: { key: string; label: string; emoji: string; center: { lat: number; lng: number }; zoom: number }[] = [
-  { key: "jerusalem", label: "Jerusalem", emoji: "🏛️", center: { lat: 31.7767, lng: 35.2345 }, zoom: 12 },
-  { key: "galilee", label: "Galilee", emoji: "🐟", center: { lat: 32.78, lng: 35.45 }, zoom: 10 },
-  { key: "paul", label: "Paul's Journeys", emoji: "🚀", center: { lat: 38.5, lng: 28.0 }, zoom: 5 },
+const TAB_INFO: { key: string; label: string; emoji: string; center: [number, number]; zoom: number }[] = [
+  { key: "jerusalem", label: "Jerusalem", emoji: "🏛️", center: [31.7767, 35.2345], zoom: 12 },
+  { key: "galilee", label: "Galilee", emoji: "🐟", center: [32.78, 35.45], zoom: 10 },
+  { key: "paul", label: "Paul's Journeys", emoji: "🚀", center: [38.5, 28.0], zoom: 5 },
 ];
 
 export default function BibleMap() {
@@ -57,11 +57,10 @@ export default function BibleMap() {
     (localStorage.getItem("readerLang") as "en" | "ko") || "en"
   );
   const [search, setSearch] = useState("");
-  const mapRef = useRef<google.maps.Map | null>(null);
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
-  const polylineRef = useRef<google.maps.Polyline | null>(null);
-  const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
-  const [mapReady, setMapReady] = useState(false);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markersRef = useRef<any[]>([]);
+  const polylineRef = useRef<any>(null);
 
   const locations = mapLocations[activeTab] || [];
   const currentTabInfo = TAB_INFO.find(t => t.key === activeTab)!;
@@ -73,113 +72,145 @@ export default function BibleMap() {
       )
     : locations;
 
-  // Clear markers and polyline
-  const clearMapOverlays = useCallback(() => {
-    markersRef.current.forEach(m => (m.map = null));
-    markersRef.current = [];
-    if (polylineRef.current) {
-      polylineRef.current.setMap(null);
-      polylineRef.current = null;
-    }
-    if (infoWindowRef.current) {
-      infoWindowRef.current.close();
-    }
-  }, []);
+  // Initialize Leaflet map
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+    
+    // Dynamic import of Leaflet to avoid SSR issues
+    import("leaflet").then((L) => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+      }
 
-  // Add markers for current tab
-  const addMarkers = useCallback(() => {
-    if (!mapRef.current || !window.google) return;
-    clearMapOverlays();
-
-    const map = mapRef.current;
-    const locs = mapLocations[activeTab] || [];
-
-    if (!infoWindowRef.current) {
-      infoWindowRef.current = new google.maps.InfoWindow();
-    }
-
-    locs.forEach((loc, idx) => {
-      // Create custom marker content with emoji
-      const markerContent = document.createElement("div");
-      markerContent.innerHTML = `<div style="
-        background: rgba(88, 28, 135, 0.9);
-        border: 2px solid rgba(168, 85, 247, 0.8);
-        border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);
-        cursor: pointer;
-      ">${loc.icon}</div>`;
-
-      const marker = new google.maps.marker.AdvancedMarkerElement({
-        map,
-        position: { lat: loc.lat, lng: loc.lng },
-        title: loc.name,
-        content: markerContent,
+      const map = L.map(mapContainerRef.current!, {
+        center: currentTabInfo.center,
+        zoom: currentTabInfo.zoom,
+        zoomControl: true,
+        attributionControl: false,
       });
 
-      marker.addListener("click", () => {
-        setSelectedLoc(loc);
-        const content = `
-          <div style="max-width: 220px; padding: 8px; font-family: sans-serif;">
-            <div style="font-size: 14px; font-weight: bold; margin-bottom: 4px;">
+      // Use a dark-themed tile layer to match app aesthetics
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+        subdomains: "abcd",
+      }).addTo(map);
+
+      // Add small attribution
+      L.control.attribution({ position: "bottomright", prefix: false })
+        .addAttribution('© <a href="https://www.openstreetmap.org/copyright" style="color:#a855f7">OSM</a>')
+        .addTo(map);
+
+      mapInstanceRef.current = map;
+
+      // Force a resize after mount (fixes grey tiles on mobile)
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
+    });
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []); // Only initialize once
+
+  // Update markers and view when tab changes
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    import("leaflet").then((L) => {
+      const map = mapInstanceRef.current;
+      if (!map) return;
+
+      // Clear existing markers
+      markersRef.current.forEach(m => map.removeLayer(m));
+      markersRef.current = [];
+      if (polylineRef.current) {
+        map.removeLayer(polylineRef.current);
+        polylineRef.current = null;
+      }
+
+      // Pan to tab center
+      map.setView(currentTabInfo.center, currentTabInfo.zoom, { animate: true });
+
+      const locs = mapLocations[activeTab] || [];
+
+      // Add markers
+      locs.forEach((loc) => {
+        const icon = L.divIcon({
+          className: "custom-emoji-marker",
+          html: `<div style="
+            background: rgba(88, 28, 135, 0.9);
+            border: 2px solid rgba(168, 85, 247, 0.8);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);
+            cursor: pointer;
+          ">${loc.icon}</div>`,
+          iconSize: [36, 36],
+          iconAnchor: [18, 18],
+        });
+
+        const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(map);
+        
+        // Popup on click
+        const popupContent = `
+          <div style="max-width: 200px; font-family: sans-serif;">
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 4px;">
               ${loc.icon} ${lang === "en" ? loc.name : loc.nameKo}
             </div>
-            <div style="font-size: 11px; color: #666; margin-bottom: 6px;">
-              ${lang === "en" ? loc.desc.slice(0, 100) : loc.descKo.slice(0, 80)}...
+            <div style="font-size: 11px; color: #666; margin-bottom: 4px;">
+              ${(lang === "en" ? loc.desc : loc.descKo).slice(0, 80)}...
             </div>
             <div style="font-size: 10px; color: #7c3aed;">
               ${loc.verses.slice(0, 2).join(", ")}
             </div>
           </div>
         `;
-        infoWindowRef.current!.setContent(content);
-        infoWindowRef.current!.open(map, marker);
+        marker.bindPopup(popupContent, { closeButton: true, maxWidth: 220 });
+        
+        marker.on("click", () => {
+          setSelectedLoc(loc);
+        });
+
+        markersRef.current.push(marker);
       });
 
-      markersRef.current.push(marker);
+      // Draw polyline for Paul's journeys
+      if (activeTab === "paul") {
+        const path = locs.map(loc => [loc.lat, loc.lng] as [number, number]);
+        polylineRef.current = L.polyline(path, {
+          color: "#a855f7",
+          weight: 3,
+          opacity: 0.8,
+          dashArray: "8, 4",
+        }).addTo(map);
+      }
     });
-
-    // Draw polyline for Paul's journeys
-    if (activeTab === "paul") {
-      const path = locs.map(loc => ({ lat: loc.lat, lng: loc.lng }));
-      polylineRef.current = new google.maps.Polyline({
-        path,
-        geodesic: true,
-        strokeColor: "#a855f7",
-        strokeOpacity: 0.8,
-        strokeWeight: 3,
-        map,
-      });
-    }
-  }, [activeTab, lang, clearMapOverlays]);
-
-  // Handle map ready
-  const handleMapReady = useCallback((map: google.maps.Map) => {
-    mapRef.current = map;
-    setMapReady(true);
-  }, []);
-
-  // Update markers when tab changes or map becomes ready
-  useEffect(() => {
-    if (mapReady && mapRef.current) {
-      addMarkers();
-      // Pan to the tab's center
-      mapRef.current.setCenter(currentTabInfo.center);
-      mapRef.current.setZoom(currentTabInfo.zoom);
-    }
-  }, [mapReady, activeTab, addMarkers, currentTabInfo]);
+  }, [activeTab, lang, currentTabInfo]);
 
   // Handle location click from list
   const handleLocClick = (loc: MapLocation) => {
     setSelectedLoc(selectedLoc?.name === loc.name ? null : loc);
-    if (mapRef.current && loc.lat && loc.lng) {
-      mapRef.current.panTo({ lat: loc.lat, lng: loc.lng });
-      mapRef.current.setZoom(activeTab === "paul" ? 7 : 14);
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setView(
+        [loc.lat, loc.lng],
+        activeTab === "paul" ? 7 : 14,
+        { animate: true }
+      );
+      // Open the marker popup
+      const marker = markersRef.current.find(m => {
+        const pos = m.getLatLng();
+        return Math.abs(pos.lat - loc.lat) < 0.001 && Math.abs(pos.lng - loc.lng) < 0.001;
+      });
+      if (marker) marker.openPopup();
     }
   };
 
@@ -213,13 +244,12 @@ export default function BibleMap() {
         ))}
       </div>
 
-      {/* Google Map */}
+      {/* Leaflet Map */}
       <div className="neon-card overflow-hidden rounded-xl">
-        <MapView
+        <div
+          ref={mapContainerRef}
           className="w-full h-[280px]"
-          initialCenter={currentTabInfo.center}
-          initialZoom={currentTabInfo.zoom}
-          onMapReady={handleMapReady}
+          style={{ background: "#1a1a2e" }}
         />
       </div>
 
@@ -249,68 +279,40 @@ export default function BibleMap() {
             {lang === "en" ? selectedLoc.desc : selectedLoc.descKo}
           </p>
           <div className="flex flex-wrap gap-1.5">
-            {selectedLoc.verses.map((v, i) => (
-              <span key={i} className="px-2 py-1 rounded-lg bg-purple-900/50 border border-purple-500/30 text-purple-200 text-xs">
-                📖 {v}
-              </span>
+            {selectedLoc.verses.map(v => (
+              <span key={v} className="px-2 py-0.5 bg-purple-900/50 border border-purple-500/30 rounded text-[10px] text-purple-300">{v}</span>
             ))}
           </div>
         </div>
       )}
 
-      {/* Locations List */}
+      {/* Location List */}
       <div className="space-y-3">
-        {filteredLocations.map((loc, idx) => (
+        {filteredLocations.map(loc => (
           <div
-            key={idx}
+            key={loc.name}
             onClick={() => handleLocClick(loc)}
             className={`neon-card p-4 active:scale-[0.98] transition-all cursor-pointer ${
-              selectedLoc?.name === loc.name ? "border-yellow-500/50" : ""
+              selectedLoc?.name === loc.name ? "border-purple-400/60 shadow-lg shadow-purple-500/20" : ""
             }`}
           >
             <div className="flex items-start gap-3">
-              {activeTab === "paul" && (
-                <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-purple-600/40 border border-purple-500/50 flex items-center justify-center text-xs font-bold text-purple-200">
-                    {idx + 1}
-                  </div>
-                  {idx < filteredLocations.length - 1 && (
-                    <div className="w-0.5 h-8 bg-purple-500/30 mt-1" />
-                  )}
-                </div>
-              )}
-              <div className="text-2xl">{loc.icon}</div>
+              <span className="text-2xl mt-0.5">{loc.icon}</span>
               <div className="flex-1 min-w-0">
-                <h3 className="text-white font-bold text-sm">
-                  {lang === "en" ? loc.name : loc.nameKo}
-                </h3>
-                <p className="text-gray-400 text-xs mt-0.5 line-clamp-2">
+                <h3 className="text-white font-bold text-sm">{lang === "en" ? loc.name : loc.nameKo}</h3>
+                <p className="text-gray-400 text-xs mt-1 line-clamp-2">
                   {lang === "en" ? loc.desc : loc.descKo}
                 </p>
                 <div className="flex flex-wrap gap-1 mt-2">
-                  {loc.verses.slice(0, 3).map((v, i) => (
-                    <span key={i} className="text-purple-300 text-[10px] bg-purple-900/30 px-1.5 py-0.5 rounded">
-                      {v}
-                    </span>
+                  {loc.verses.slice(0, 3).map(v => (
+                    <span key={v} className="px-1.5 py-0.5 bg-purple-900/40 border border-purple-500/20 rounded text-[9px] text-purple-300">{v}</span>
                   ))}
-                  {loc.verses.length > 3 && (
-                    <span className="text-gray-500 text-[10px]">+{loc.verses.length - 3} more</span>
-                  )}
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-
-      {filteredLocations.length === 0 && (
-        <div className="text-center py-8">
-          <span className="text-4xl">🔍</span>
-          <p className="text-gray-400 text-sm mt-2">No locations found</p>
-        </div>
-      )}
-
-      <div className="h-4" />
     </div>
   );
 }
