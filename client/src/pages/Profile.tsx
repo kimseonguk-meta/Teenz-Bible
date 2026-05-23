@@ -820,7 +820,7 @@ export default function Profile() {
                   <span className="text-xl">⚠️</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Data Not Protected</p>
+                  <p className="text-white text-sm font-medium">Back Up Your Progress</p>
                   <p className="text-yellow-400 text-[10px]">Sign in to save your progress</p>
                 </div>
               </div>
