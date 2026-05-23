@@ -277,6 +277,32 @@ export default function BibleMap() {
         />
       </div>
 
+      {/* Paul's Journey Total Distance */}
+      {activeTab === "paul" && (() => {
+        const paulLocs = mapLocations.paul;
+        let totalDist = 0;
+        for (let i = 0; i < paulLocs.length - 1; i++) {
+          totalDist += getDistanceKm(paulLocs[i].lat, paulLocs[i].lng, paulLocs[i + 1].lat, paulLocs[i + 1].lng);
+        }
+        return (
+          <div className="neon-card p-3 flex items-center gap-3 border-amber-500/30 bg-gradient-to-r from-amber-900/20 to-purple-900/20">
+            <span className="text-2xl">🚀</span>
+            <div className="flex-1">
+              <p className="text-amber-300 text-xs font-bold">
+                Paul's Total Journey
+              </p>
+              <p className="text-white text-lg font-bold">
+                {totalDist.toLocaleString()} km
+              </p>
+              <p className="text-gray-400 text-[10px]">
+                {`Across ${paulLocs.length} cities — from Antioch to Rome!`}
+              </p>
+            </div>
+            <span className="text-2xl">🏛️</span>
+          </div>
+        );
+      })()}
+
       {/* Search */}
       <input
         type="text"
