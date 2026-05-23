@@ -93,13 +93,9 @@ export default function BibleMap() {
       });
 
       // Use satellite/terrain hybrid tile layer for clear visibility
-      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
-      }).addTo(map);
-
-      // Add labels overlay on top of satellite
-      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
-        maxZoom: 19,
+        subdomains: "abcd",
       }).addTo(map);
 
       mapInstanceRef.current = map;

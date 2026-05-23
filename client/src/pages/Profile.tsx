@@ -744,16 +744,16 @@ export default function Profile() {
                   });
                 } else {
                   await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-                  toast.success("Link copied to clipboard! 📋");
+                  alert("Link copied to clipboard! 📋");
                 }
               } catch (err: any) {
                 // User cancelled share or share failed - fallback to clipboard
                 if (err?.name !== "AbortError") {
                   try {
                     await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-                    toast.success("Link copied to clipboard! 📋");
+                    alert("Link copied to clipboard! 📋");
                   } catch {
-                    toast.info("Share: " + shareUrl);
+                    alert("Share: " + shareUrl);
                   }
                 }
               }
