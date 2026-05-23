@@ -41,10 +41,10 @@ const mapLocations: Record<string, MapLocation[]> = {
   ],
 };
 
-const TAB_INFO: { key: string; label: string; emoji: string; mapImg: string }[] = [
-  { key: "jerusalem", label: "Jerusalem", emoji: "🏛️", mapImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Jerusalem_in_the_1st_century.svg/800px-Jerusalem_in_the_1st_century.svg.png" },
-  { key: "galilee", label: "Galilee", emoji: "🐟", mapImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/First_century_Galilee.gif/800px-First_century_Galilee.gif" },
-  { key: "paul", label: "Paul's Journeys", emoji: "🚀", mapImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Broad_overview_of_geography_relevant_to_paul_of_tarsus.png/800px-Broad_overview_of_geography_relevant_to_paul_of_tarsus.png" },
+const TAB_INFO: { key: string; label: string; emoji: string }[] = [
+  { key: "jerusalem", label: "Jerusalem", emoji: "🏛️" },
+  { key: "galilee", label: "Galilee", emoji: "🐟" },
+  { key: "paul", label: "Paul's Journeys", emoji: "🚀" },
 ];
 
 export default function BibleMap() {
@@ -125,17 +125,14 @@ export default function BibleMap() {
         className="w-full px-4 py-2.5 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-purple-400 transition-all"
       />
 
-      {/* Map Image */}
+      {/* Map Region Header */}
       {viewMode === "map" && (
         <div className="neon-card overflow-hidden">
-          <img
-            src={currentTabInfo.mapImg}
-            alt={`${currentTabInfo.label} map`}
-            className="w-full h-48 object-cover opacity-80"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-          />
-          <div className="p-3 text-center">
-            <p className="text-purple-300 text-xs">{currentTabInfo.emoji} {currentTabInfo.label} · {filteredLocations.length} locations</p>
+          <div className="p-4 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 text-center">
+            <span className="text-4xl">{currentTabInfo.emoji}</span>
+            <h2 className="text-white font-bold text-lg mt-2">{currentTabInfo.label}</h2>
+            <p className="text-purple-300 text-xs mt-1">{filteredLocations.length} {lang === "en" ? "biblical locations" : "성경 장소"}</p>
+            <p className="text-gray-400 text-[10px] mt-2">{lang === "en" ? "Tap a location below for details and Bible references" : "아래 장소를 탭하면 자세한 내용과 성경 구절을 볼 수 있어요"}</p>
           </div>
         </div>
       )}

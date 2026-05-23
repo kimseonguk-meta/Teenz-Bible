@@ -170,7 +170,28 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   };
 
   const handleIndividual = () => {
-    checkDuplicateAndSave("INDIVIDUAL", false);
+    setSaving(true);
+    // Safety timeout: if Firebase takes too long (>5s), save locally and proceed
+    const timeout = setTimeout(() => {
+      setSaving(false);
+      const profile = { nickname, groupCode: "INDIVIDUAL", joinedAt: Date.now(), avatar, isNasumMember: false };
+      localStorage.setItem("teensBibleProfile", JSON.stringify(profile));
+      localStorage.setItem("playerName", nickname);
+      // Welcome bonus
+      try {
+        const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
+        teensBible.gems = (teensBible.gems || 0) + 50;
+        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+        window.dispatchEvent(new CustomEvent("gems-changed", { detail: teensBible.gems }));
+        const inv = getInventory();
+        if (!inv.ownedItems.includes("pet_cat")) { inv.ownedItems.push("pet_cat"); saveInventory(inv); }
+        const eq = getEquipped();
+        if (!eq.pet) { eq.pet = "pet_cat"; saveEquipped(eq); }
+      } catch (e) { /* ignore */ }
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+      setStep(4);
+    }, 5000);
+    checkDuplicateAndSave("INDIVIDUAL", false).finally(() => clearTimeout(timeout));
   };
 
   const handleClassSelect = () => {

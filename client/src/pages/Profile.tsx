@@ -6,6 +6,7 @@ import { getProfilePhotoUrl, setProfilePhoto, setProfilePhotoUrl, uploadPhotoToF
 import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOutGoogle } from "@/lib/googleAuth";
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
+import { isNativePlatform } from "@/lib/platform";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -207,8 +208,14 @@ export default function Profile() {
   const handleLinkGoogle = useCallback(async () => {
     setLinkingGoogle(true);
     setLinkMessage(null);
+    // Safety timeout: force reset loading state after 30s (handles iOS cancel not triggering catch)
+    const timeout = setTimeout(() => {
+      setLinkingGoogle(false);
+      setLinkMessage({ text: 'Sign-in cancelled or timed out', success: false });
+    }, 30000);
     try {
       const result = await linkOrSignInWithGoogle();
+      clearTimeout(timeout);
       setLinkMessage({ text: result.message, success: result.success });
       if (result.success) {
         setGoogleLinked(true);
@@ -222,6 +229,7 @@ export default function Profile() {
         }
       }
     } catch (err: any) {
+      clearTimeout(timeout);
       const msg = err.message?.includes('cancelled') || err.message?.includes('canceled') ? 'Sign-in cancelled' : 'Something went wrong. Please try again.';
       setLinkMessage({ text: msg, success: false });
     } finally {
@@ -243,8 +251,14 @@ export default function Profile() {
   const handleLinkApple = useCallback(async () => {
     setLinkingApple(true);
     setLinkMessage(null);
+    // Safety timeout: force reset loading state after 30s (handles iOS cancel not triggering catch)
+    const timeout = setTimeout(() => {
+      setLinkingApple(false);
+      setLinkMessage({ text: 'Sign-in cancelled or timed out', success: false });
+    }, 30000);
     try {
       const result = await linkOrSignInWithApple();
+      clearTimeout(timeout);
       setLinkMessage({ text: result.message, success: result.success });
       if (result.success) {
         setAppleLinked(true);
@@ -258,6 +272,7 @@ export default function Profile() {
         }
       }
     } catch (err: any) {
+      clearTimeout(timeout);
       const msg = err.message?.includes('cancelled') || err.message?.includes('canceled') ? 'Sign-in cancelled' : 'Something went wrong. Please try again.';
       setLinkMessage({ text: msg, success: false });
     } finally {
@@ -394,14 +409,13 @@ export default function Profile() {
                     setRawPhoto(result.base64);
                     setCropScale(1);
                     setCropOffset({ x: 0, y: 0 });
-                  } else {
-                    // Web fallback: use file input
+                  } else if (!isNativePlatform()) {
+                    // Web fallback only - on native iOS, don't trigger HTML input (causes double picker)
                     cameraInputRef.current?.click();
                   }
                 } catch (err) {
                   console.error('Camera error:', err);
-                  // Fallback to file input on error
-                  cameraInputRef.current?.click();
+                  if (!isNativePlatform()) cameraInputRef.current?.click();
                 }
               }}
               className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
@@ -417,13 +431,13 @@ export default function Profile() {
                     setRawPhoto(result.base64);
                     setCropScale(1);
                     setCropOffset({ x: 0, y: 0 });
-                  } else {
-                    // Web fallback: use file input
+                  } else if (!isNativePlatform()) {
+                    // Web fallback only - on native iOS, don't trigger HTML input (causes double picker)
                     photoInputRef.current?.click();
                   }
                 } catch (err) {
                   console.error('Gallery error:', err);
-                  photoInputRef.current?.click();
+                  if (!isNativePlatform()) photoInputRef.current?.click();
                 }
               }}
               className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"

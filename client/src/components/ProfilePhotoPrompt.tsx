@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { auth, db, ref, update } from "@/lib/firebase";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
+import { isNativePlatform } from "@/lib/platform";
 
 // ─── Profile Photo Upload Prompt ────────────────────────────
 // Uploads photo to Firebase Realtime DB as compressed base64.
@@ -354,13 +355,13 @@ export default function ProfilePhotoPrompt() {
                           setCropOffset({ x: 0, y: 0 });
                         };
                         img.src = result.base64;
-                      } else {
-                        // Web fallback
+                      } else if (!isNativePlatform()) {
+                        // Web fallback only - on native iOS, don't trigger HTML input (causes double picker)
                         cameraInputRef.current?.click();
                       }
                     } catch (err) {
                       console.error('Camera error:', err);
-                      cameraInputRef.current?.click();
+                      if (!isNativePlatform()) cameraInputRef.current?.click();
                     }
                   }}
                   className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
@@ -382,12 +383,12 @@ export default function ProfilePhotoPrompt() {
                           setCropOffset({ x: 0, y: 0 });
                         };
                         img.src = result.base64;
-                      } else {
+                      } else if (!isNativePlatform()) {
                         fileInputRef.current?.click();
                       }
                     } catch (err) {
                       console.error('Gallery error:', err);
-                      fileInputRef.current?.click();
+                      if (!isNativePlatform()) fileInputRef.current?.click();
                     }
                   }}
                   className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
