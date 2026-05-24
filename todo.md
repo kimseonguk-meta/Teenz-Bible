@@ -81,4 +81,3 @@
 - [x] Move Gemini API calls to server-side endpoint (remove client-side API key exposure)
 - [x] Add privacy policy link in Profile page Settings section
 - [x] Add NSMicrophoneUsageDescription and NSSpeechRecognitionUsageDescription to Info.plist
-- [x] Remove voice input (microphone) feature from Bible AI + remove mic permissions from Info.plist
