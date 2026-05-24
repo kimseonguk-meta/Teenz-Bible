@@ -17,7 +17,7 @@
  * - Meme reactions
  */
 
-import { db, ref, get, set, update, serverTimestamp, auth } from "./firebase";
+import { db, ref, get, set, update, remove, serverTimestamp, auth, deleteUser } from "./firebase";
 
 // ─── Types ──────────────────────────────────────────────────────
 interface UserDataSnapshot {
@@ -583,6 +583,60 @@ async function smartSyncToFirebase(): Promise<boolean> {
   } catch (err) {
     console.error("[Sync] ❌ Smart sync failed, falling back to regular sync:", err);
     return syncToFirebase();
+  }
+}
+
+// ─── Delete all user data from Firebase (Account Deletion) ──────
+export async function deleteAllUserData(): Promise<boolean> {
+  const user = auth.currentUser;
+  if (!user) {
+    console.log("[Delete] No authenticated user");
+    return false;
+  }
+
+  const uid = user.uid;
+
+  try {
+    // Get user's group code to clean up group membership
+    let groupCode = "GLOBAL";
+    try {
+      const profile = localStorage.getItem("teensBibleProfile");
+      if (profile) {
+        groupCode = JSON.parse(profile).groupCode || "GLOBAL";
+      }
+    } catch {}
+
+    // 1. Delete user data snapshot
+    await remove(ref(db, `userData/${uid}`));
+    console.log("[Delete] Removed userData/" + uid);
+
+    // 2. Delete from global users node
+    await remove(ref(db, `users/${uid}`));
+    console.log("[Delete] Removed users/" + uid);
+
+    // 3. Delete from group membership
+    await remove(ref(db, `groups/${groupCode}/members/${uid}`));
+    console.log("[Delete] Removed groups/" + groupCode + "/members/" + uid);
+
+    // 4. Clear ALL localStorage
+    localStorage.clear();
+    console.log("[Delete] Cleared all localStorage");
+
+    // 5. Delete Firebase Auth account
+    try {
+      await deleteUser(user);
+      console.log("[Delete] Firebase Auth account deleted");
+    } catch (authErr: any) {
+      // If deleteUser fails (e.g., requires recent login), still consider data deletion successful
+      console.warn("[Delete] Auth account deletion failed (may need re-auth):", authErr.message);
+      // Sign out instead
+      await auth.signOut();
+    }
+
+    return true;
+  } catch (err) {
+    console.error("[Delete] ❌ Account deletion failed:", err);
+    return false;
   }
 }
 

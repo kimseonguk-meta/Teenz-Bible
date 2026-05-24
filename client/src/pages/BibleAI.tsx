@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
 
-declare const __GEMINI_API_KEY__: string;
 
 const BIBLE_SYSTEM_PROMPT = `You are Bible AI, a friendly and knowledgeable Bible teacher for teenage boys in middle school. 
 Your style: casual, engaging, like a cool youth pastor. Use simple English. 
@@ -74,46 +73,26 @@ function isSpeechRecognitionSupported(): boolean {
   return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
 }
 
-// Direct Gemini API call from client
+// Server-side Gemini API call (API key stays on server)
 async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
-  const apiKey = __GEMINI_API_KEY__;
-  if (!apiKey) {
+  try {
+    const resp = await fetch("/api/bible-ai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, systemPrompt }),
+    });
+    const result = await resp.json();
+    if (result.error) {
+      return { answer: "", error: `Oops! Something went wrong. Please try again. 🙏` };
+    }
+    if (result.data?.candidates?.[0]?.content) {
+      const answer = result.data.candidates[0].content.parts[0].text;
+      return { answer };
+    }
+    return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
+  } catch (e: any) {
     return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
   }
-
-  const reqBody = JSON.stringify({
-    system_instruction: { parts: [{ text: systemPrompt }] },
-    contents: messages,
-    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
-    safetySettings: [
-      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-      { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-      { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
-    ],
-  });
-
-  const models = ["gemini-2.0-flash", "gemini-2.5-flash"];
-  let lastError = "";
-
-  for (const model of models) {
-    try {
-      const resp = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-        { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
-      );
-      const data = await resp.json();
-      if (data.candidates && data.candidates[0]?.content) {
-        const answer = data.candidates[0].content.parts[0].text;
-        return { answer };
-      }
-      lastError = data.error?.message || "No response generated";
-    } catch (e: any) {
-      lastError = e.message;
-    }
-  }
-
-  return { answer: "", error: `Oops! Something went wrong. ${lastError ? "Please try again." : ""} 🙏` };
 }
 
 export default function BibleAI() {
@@ -233,7 +212,14 @@ export default function BibleAI() {
   };
 
   const formatMessage = (text: string) => {
-    return text
+    // Sanitize HTML first to prevent XSS from AI responses
+    const sanitized = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+    // Then apply safe markdown formatting
+    return sanitized
       .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
       .replace(/\*(.+?)\*/g, "<i>$1</i>")
       .replace(/\n/g, "<br>");

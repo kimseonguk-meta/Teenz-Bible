@@ -7,6 +7,7 @@ import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOut
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 import { isNativePlatform } from "@/lib/platform";
+import { deleteAllUserData } from "@/lib/firebaseSync";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -116,6 +117,8 @@ export default function Profile() {
   const [language, setLanguage] = useState<"en" | "ko">(getLanguagePref);
   const [fontSize, setFontSize] = useState(getFontSize);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [showPhotoMenu, setShowPhotoMenu] = useState(false);
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
@@ -319,6 +322,34 @@ export default function Profile() {
     setShowResetConfirm(false);
     // Use custom event to trigger onboarding instead of reload (avoids WKWebView issues)
     window.dispatchEvent(new CustomEvent("triggerEditProfile"));
+  }, []);
+
+  const handleDeleteAccount = useCallback(async () => {
+    setIsDeletingAccount(true);
+    try {
+      // If native, also sign out from native layer first
+      if (isNativePlatform()) {
+        try {
+          const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
+          await FirebaseAuthentication.signOut();
+        } catch (e) {
+          console.warn("[Delete] Native signOut failed:", e);
+        }
+      }
+      const success = await deleteAllUserData();
+      if (success) {
+        // Navigate to onboarding
+        window.dispatchEvent(new CustomEvent("triggerEditProfile"));
+      } else {
+        alert("Failed to delete account. Please try again.");
+      }
+    } catch (err) {
+      console.error("[Delete] Error:", err);
+      alert("Failed to delete account. Please try again.");
+    } finally {
+      setIsDeletingAccount(false);
+      setShowDeleteAccount(false);
+    }
   }, []);
 
   // Redeem code feature removed for App Store compliance (Guideline 3.1.1)
@@ -874,6 +905,22 @@ export default function Profile() {
 
         </div>
 
+        {/* Legal */}
+        <div className="space-y-3 mb-5">
+          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">📄 Legal</p>
+          <div
+            onClick={() => window.open('/privacy-policy.html', '_blank')}
+            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+          >
+            <div className="w-10 h-10 rounded-lg bg-gray-500/20 flex items-center justify-center text-xl">🔒</div>
+            <div className="flex-1">
+              <p className="text-white text-sm font-medium">Privacy Policy</p>
+              <p className="text-gray-500 text-[10px]">How we handle your data</p>
+            </div>
+            <span className="text-gray-600">▶</span>
+          </div>
+        </div>
+
         {/* Danger Zone */}
         <div className="space-y-3">
           <p className="text-xs font-bold text-red-400/80 uppercase tracking-wider">⚠️ Danger Zone</p>
@@ -899,6 +946,37 @@ export default function Profile() {
                 <button
                   onClick={() => setShowResetConfirm(false)}
                   className="flex-1 py-2 rounded-lg bg-gray-700 text-white text-xs font-bold active:scale-95"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Delete Account */}
+          {!showDeleteAccount ? (
+            <button
+              onClick={() => setShowDeleteAccount(true)}
+              className="w-full p-3 rounded-xl bg-red-900/20 border border-red-600/30 text-red-500 text-sm font-medium opacity-70 hover:opacity-100 transition-all"
+            >
+              🚫 Delete Account
+            </button>
+          ) : (
+            <div className="neon-card p-4 border-red-600/50">
+              <p className="text-red-300 text-sm font-bold mb-2">Delete your account?</p>
+              <p className="text-gray-400 text-xs mb-3">This will permanently delete your account and all associated data from our servers. This action cannot be undone.</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeletingAccount}
+                  className="flex-1 py-2 rounded-lg bg-red-700 text-white text-xs font-bold active:scale-95 disabled:opacity-50"
+                >
+                  {isDeletingAccount ? "Deleting..." : "Yes, Delete Account"}
+                </button>
+                <button
+                  onClick={() => setShowDeleteAccount(false)}
+                  disabled={isDeletingAccount}
+                  className="flex-1 py-2 rounded-lg bg-gray-700 text-white text-xs font-bold active:scale-95 disabled:opacity-50"
                 >
                   Cancel
                 </button>

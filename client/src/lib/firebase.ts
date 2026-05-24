@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, child, onValue, set, update, serverTimestamp } from "firebase/database";
+import { getDatabase, ref, get, child, onValue, set, update, remove, serverTimestamp } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, OAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential, EmailAuthProvider } from "firebase/auth";
+import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, OAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential, EmailAuthProvider, deleteUser } from "firebase/auth";
 import type { AuthCredential, User } from "firebase/auth";
 
 export const googleProvider = new GoogleAuthProvider();
@@ -24,7 +24,7 @@ export const db = getDatabase(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-export { ref, get, child, onValue, set, update, serverTimestamp, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, OAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential };
+export { ref, get, child, onValue, set, update, remove, serverTimestamp, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, OAuthProvider, signInWithPopup, linkWithCredential, signInWithCredential, deleteUser };
 export { storageRef, uploadBytes, getDownloadURL };
 export type { AuthCredential, User };
 

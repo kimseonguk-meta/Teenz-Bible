@@ -51,6 +51,34 @@
 	<string>Teenz Bible needs access to your photo library to set your profile photo.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Teenz Bible needs permission to save photos to your library.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Teenz Bible needs access to your microphone for voice input when asking Bible AI questions.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Teenz Bible uses speech recognition to convert your voice into text for Bible AI questions.</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+			<key>CFBundleIconName</key>
+			<string>AppIcon</string>
+		</dict>
+	</dict>
+	<key>CFBundleIcons~ipad</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+			<key>CFBundleIconName</key>
+			<string>AppIcon</string>
+		</dict>
+	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>

@@ -86,10 +86,10 @@ describe("Google Auth Module", () => {
     
     // Check UI elements
     expect(content).toContain("Account & Sync");
-    expect(content).toContain("Google Account Linked");
+    expect(content).toContain("Account Protected");
     expect(content).toContain("Sign in with Google");
-    expect(content).toContain("Data Not Protected");
-    expect(content).toContain("Sign Out from Google");
+    expect(content).toContain("Back Up Your Progress");
+    expect(content).toContain("Sign Out");
     
     // Check state management
     expect(content).toContain("googleLinked");

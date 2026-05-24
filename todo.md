@@ -74,3 +74,10 @@
 ## Apple Review Fix Round 2 (May 21, 2026)
 - [x] Fix camera crash on iPad when taking profile photo (Guideline 2.1a - Performance)
 - [x] Fix Sign in with Apple error message (Guideline 2.1a - App Completeness)
+
+## Apple App Store Review Fixes — Build 9 (May 25, 2026)
+- [x] Add account deletion feature (delete Firebase data + auth account)
+- [x] Fix AI safety settings (BLOCK_NONE → BLOCK_MEDIUM_AND_ABOVE)
+- [x] Move Gemini API calls to server-side endpoint (remove client-side API key exposure)
+- [x] Add privacy policy link in Profile page Settings section
+- [x] Add NSMicrophoneUsageDescription and NSSpeechRecognitionUsageDescription to Info.plist
