@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
 
@@ -69,9 +69,6 @@ function saveGeminiHistory(history: Array<{ role: string; parts: Array<{ text: s
   } catch {}
 }
 
-function isSpeechRecognitionSupported(): boolean {
-  return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
-}
 
 // Server-side Gemini API call (API key stays on server)
 async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
@@ -100,10 +97,10 @@ export default function BibleAI() {
   const [messages, setMessages] = useState<ChatMessage[]>(loadChatHistory);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isListening, setIsListening] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatHistoryRef = useRef<Array<{ role: string; parts: Array<{ text: string }> }>>(loadGeminiHistory());
-  const recognitionRef = useRef<any>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -116,66 +113,11 @@ export default function BibleAI() {
     }
   }, [messages]);
 
-  // Initialize speech recognition
-  useEffect(() => {
-    if (!isSpeechRecognitionSupported()) return;
 
-    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 1;
-    recognition.lang = "";
-
-    recognition.onstart = () => setIsListening(true);
-    recognition.onresult = (event: any) => {
-      let transcript = "";
-      for (let i = 0; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
-      }
-      setInput(transcript);
-    };
-    recognition.onerror = (event: any) => {
-      console.error("Speech recognition error:", event.error);
-      setIsListening(false);
-      if (event.error === "not-allowed") {
-        toast.error("Microphone access denied. Please allow microphone in browser settings.");
-      } else if (event.error === "no-speech") {
-        toast("No speech detected. Try again!", { icon: "🎤" });
-      }
-    };
-    recognition.onend = () => setIsListening(false);
-    recognitionRef.current = recognition;
-
-    return () => { try { recognition.abort(); } catch {} };
-  }, []);
-
-  const toggleListening = useCallback(() => {
-    if (!recognitionRef.current) {
-      toast.error("Voice input is not supported in this browser.");
-      return;
-    }
-    if (isListening) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
-      const lang = localStorage.getItem("teensBible_language");
-      recognitionRef.current.lang = lang === "ko" ? "ko-KR" : "en-US";
-      try { recognitionRef.current.start(); } catch {
-        recognitionRef.current.stop();
-        setTimeout(() => { try { recognitionRef.current.start(); } catch {} }, 100);
-      }
-    }
-  }, [isListening]);
 
   const sendChat = async (question?: string) => {
     const q = (question || input).trim();
     if (!q || isLoading) return;
-
-    if (isListening && recognitionRef.current) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    }
 
     setInput("");
     const newUserMsg: ChatMessage = { role: "user", text: q };
@@ -305,35 +247,16 @@ export default function BibleAI() {
 
       {/* Input */}
       <div className="px-4 py-3 border-t border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm">
-        {isListening && (
-          <div className="flex items-center justify-center gap-2 mb-2 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
-            <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-            <span className="text-red-300 text-xs font-medium">Listening... Speak now</span>
-            <button onClick={toggleListening} className="text-red-400 hover:text-red-300 text-xs ml-1">✕ Stop</button>
-          </div>
-        )}
+
         <div className="flex gap-2">
-          {isSpeechRecognitionSupported() && (
-            <button
-              onClick={toggleListening}
-              disabled={isLoading}
-              className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-95 ${
-                isListening
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#1a1a3a] border border-purple-500/30 text-purple-300 hover:border-purple-400 hover:text-white"
-              } disabled:opacity-50`}
-              title={isListening ? "Stop listening" : "Voice input"}
-            >
-              🎤
-            </button>
-          )}
+
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendChat()}
-            placeholder={isListening ? "Listening..." : "Ask anything..."}
+            placeholder="Ask anything..."
             className="flex-1 bg-[#1a1a3a] border border-purple-500/30 rounded-full px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-colors"
             disabled={isLoading}
           />
