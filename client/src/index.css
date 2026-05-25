@@ -403,3 +403,19 @@
     transform: translateY(-6px);
   }
 }
+
+/* Video Card Glow Animation for unwatched videos */
+@keyframes videoGlow {
+  0%, 100% { box-shadow: 0 0 12px rgba(236, 72, 153, 0.15), 0 0 4px rgba(147, 51, 234, 0.15); }
+  50% { box-shadow: 0 0 22px rgba(236, 72, 153, 0.35), 0 0 8px rgba(147, 51, 234, 0.35); }
+}
+@keyframes xpBadgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.video-card-glow {
+  animation: videoGlow 2.5s ease-in-out infinite;
+}
+.xp-badge-pulse {
+  animation: xpBadgePulse 2s ease-in-out infinite;
+}

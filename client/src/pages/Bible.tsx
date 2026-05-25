@@ -397,32 +397,99 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
 
       {/* YouTube Introduction Video */}
       {ytId && (
-        <div className="neon-card overflow-hidden">
-          <button
-            onClick={() => setVideoOpen(!videoOpen)}
-            className="w-full p-3 flex items-center justify-between active:scale-[0.99] transition-transform"
-          >
-            <span className="text-white text-sm font-bold flex items-center gap-2">
-              🎬 Introduction Video
-              {hasWatched && <span className="text-green-400 text-[11px] font-normal">✓ Watched</span>}
+        <div className={`rounded-2xl overflow-hidden relative ${
+          !hasWatched
+            ? 'video-card-glow border border-pink-500/40'
+            : 'border border-gray-700/30'
+        }`}>
+          {/* NEW badge for unwatched */}
+          {!hasWatched && (
+            <span className="absolute top-2 right-2 z-10 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md shadow-lg shadow-red-500/40">
+              NEW
             </span>
-            <span className={`text-purple-400 text-xs transition-transform duration-300 ${videoOpen ? 'rotate-180' : ''}`}>
-              ▼
-            </span>
-          </button>
-          {videoOpen && (
-            <div className="px-3 pb-3">
-              <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
-                <iframe
-                  className="absolute inset-0 w-full h-full rounded-xl"
-                  src={`https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1&playsinline=1`}
-                  title={`${book} Introduction Video`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  onLoad={handleVideoPlay}
+          )}
+
+          {/* Unwatched: show thumbnail preview */}
+          {!hasWatched && !videoOpen && (
+            <button
+              onClick={() => setVideoOpen(true)}
+              className="w-full block active:scale-[0.98] transition-transform"
+            >
+              {/* Thumbnail */}
+              <div className="relative w-full h-[100px] overflow-hidden">
+                <img
+                  src={`https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`}
+                  alt={`${book} Overview`}
+                  className="w-full h-[160px] object-cover object-center"
                 />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(10,5,32,0.85)] flex items-center justify-center">
+                  <div className="w-11 h-11 bg-purple-600/90 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/50">
+                    <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
               </div>
-              <p className="text-gray-400 text-[10px] mt-2 text-center">BibleProject Overview · +15 XP for watching</p>
+              {/* Info bar */}
+              <div className="px-3 py-2.5 bg-[rgba(15,8,40,0.95)] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🎬</span>
+                  <div className="text-left">
+                    <div className="text-[13px] font-bold text-white">Watch Introduction</div>
+                    <div className="text-[11px] text-gray-400">BibleProject · 9 min</div>
+                  </div>
+                </div>
+                <span className="xp-badge-pulse text-[11px] font-bold bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-pink-300 px-2.5 py-1 rounded-full">
+                  🎁 +15 XP
+                </span>
+              </div>
+            </button>
+          )}
+
+          {/* Watched: collapsed simple bar */}
+          {hasWatched && !videoOpen && (
+            <button
+              onClick={() => setVideoOpen(!videoOpen)}
+              className="w-full p-3 flex items-center justify-between active:scale-[0.99] transition-transform bg-[rgba(15,8,40,0.6)]"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-base">🎬</span>
+                <div className="text-left">
+                  <div className="text-[13px] font-semibold text-gray-200">Introduction Video</div>
+                  <div className="text-[11px] text-gray-500">BibleProject · 9 min</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] bg-green-500/15 text-green-300 px-2 py-0.5 rounded-full font-semibold">✓ Watched</span>
+                <span className="text-gray-500 text-xs">▼</span>
+              </div>
+            </button>
+          )}
+
+          {/* Expanded: iframe player */}
+          {videoOpen && (
+            <div>
+              <button
+                onClick={() => setVideoOpen(false)}
+                className="w-full px-3 py-2 flex items-center justify-between bg-[rgba(15,8,40,0.9)]"
+              >
+                <span className="text-white text-sm font-bold flex items-center gap-2">
+                  🎬 Introduction Video
+                  {hasWatched && <span className="text-green-400 text-[11px] font-normal">✓ Watched</span>}
+                </span>
+                <span className="text-purple-400 text-xs rotate-180">▼</span>
+              </button>
+              <div className="px-3 pb-3 pt-2 bg-[rgba(15,8,40,0.6)]">
+                <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+                  <iframe
+                    className="absolute inset-0 w-full h-full rounded-xl"
+                    src={`https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1&playsinline=1`}
+                    title={`${book} Introduction Video`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    onLoad={handleVideoPlay}
+                  />
+                </div>
+                <p className="text-gray-400 text-[10px] mt-2 text-center">BibleProject Overview · +15 XP for watching</p>
+              </div>
             </div>
           )}
         </div>

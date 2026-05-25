@@ -81,3 +81,6 @@
 - [x] Move Gemini API calls to server-side endpoint (remove client-side API key exposure)
 - [x] Add privacy policy link in Profile page Settings section
 - [x] Add NSMicrophoneUsageDescription and NSSpeechRecognitionUsageDescription to Info.plist
+
+## Bible Book Video Visibility Improvement
+- [x] Redesign introduction video section to be more prominent and naturally visible
