@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { auth, db, ref, update } from "@/lib/firebase";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 import { isNativePlatform } from "@/lib/platform";
@@ -242,6 +243,7 @@ export default function ProfilePhotoPrompt() {
   return (
     <Dialog open={showModal} onOpenChange={(open) => { if (!open) handleLater(); }}>
       <DialogContent className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 rounded-2xl p-0 max-w-[380px] w-[92%] shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+        <VisuallyHidden><DialogTitle>Add a Profile Photo</DialogTitle></VisuallyHidden>
         <div className="p-6 text-center">
           {/* Header */}
           <div className="text-5xl mb-3">📸</div>

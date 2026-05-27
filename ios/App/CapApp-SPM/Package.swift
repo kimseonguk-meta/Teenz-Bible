@@ -12,8 +12,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.3.4"),
-        .package(name: "CapacitorFirebaseAuthentication", path: "../../../node_modules/@capacitor-firebase/authentication"),
-        .package(name: "CapacitorCamera", path: "../../../node_modules/@capacitor/camera")
+        .package(name: "CapacitorFirebaseAuthentication", path: "../../../node_modules/.pnpm/@capacitor-firebase+authentication@8.2.0_@capacitor+core@8.3.4_firebase@12.13.0/node_modules/@capacitor-firebase/authentication"),
+        .package(name: "CapacitorCamera", path: "../../../node_modules/.pnpm/@capacitor+camera@8.2.0_@capacitor+core@8.3.4/node_modules/@capacitor/camera")
     ],
     targets: [
         .target(
