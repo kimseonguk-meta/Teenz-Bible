@@ -173,35 +173,40 @@ function vitePluginBibleAIProxy(): Plugin {
         req.on("end", async () => {
           try {
             const { messages, systemPrompt } = JSON.parse(body);
-            const reqBody = JSON.stringify({
-              system_instruction: { parts: [{ text: systemPrompt }] },
-              contents: messages,
-              generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
-              safetySettings: [
-                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-              ],
-            });
-            const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"];
+            const models = ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
             let data: any = null;
             let lastError = "";
             for (const model of models) {
               try {
+                const isThinkingModel = model.includes("2.5");
+                const reqBody = JSON.stringify({
+                  system_instruction: { parts: [{ text: systemPrompt }] },
+                  contents: messages,
+                  generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 8192,
+                    ...(isThinkingModel ? { thinkingConfig: { thinkingBudget: 1024 } } : {}),
+                  },
+                  safetySettings: [
+                    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                  ],
+                });
                 const resp = await fetch(
                   `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
                   { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
                 );
                 data = await resp.json();
-                if (data.candidates && data.candidates[0]) break;
-                lastError = data.error ? data.error.message : "No candidates returned";
+                if (data.candidates?.[0]?.content?.parts?.[0]?.text) break;
+                lastError = data.error ? data.error.message : "No valid response";
               } catch (e: any) {
                 lastError = e.message;
               }
             }
             res.writeHead(200, { "Content-Type": "application/json" });
-            res.end(JSON.stringify({ data, error: data?.candidates?.[0] ? null : lastError }));
+            res.end(JSON.stringify({ data, error: data?.candidates?.[0]?.content?.parts?.[0]?.text ? null : lastError }));
           } catch (e: any) {
             res.writeHead(400, { "Content-Type": "application/json" });
             res.end(JSON.stringify({ error: e.message }));

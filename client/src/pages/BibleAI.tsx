@@ -93,7 +93,7 @@ async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text
     if (result.error) {
       return { answer: "", error: `Oops! Something went wrong. Please try again. 🙏` };
     }
-    if (result.data?.candidates?.[0]?.content) {
+    if (result.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
       const answer = result.data.candidates[0].content.parts[0].text;
       return { answer };
     }
@@ -106,27 +106,35 @@ async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text
 // Direct Gemini API call for native platforms (iOS/Android)
 const GEMINI_NATIVE_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
 async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
-  const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"];
-  const reqBody = JSON.stringify({
-    system_instruction: { parts: [{ text: systemPrompt }] },
-    contents: messages,
-    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
-    safetySettings: [
-      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-      { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-      { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-    ],
-  });
+  const models = ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
   for (const model of models) {
     try {
+      // Use thinkingConfig for 2.5 models to limit thinking budget
+      const isThinkingModel = model.includes("2.5");
+      const reqBody = JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: messages,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 8192,
+          ...(isThinkingModel ? { thinkingConfig: { thinkingBudget: 1024 } } : {}),
+        },
+        safetySettings: [
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        ],
+      });
       const resp = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_NATIVE_KEY}`,
         { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
       );
       const data = await resp.json();
-      if (data.candidates && data.candidates[0]?.content) {
-        return { answer: data.candidates[0].content.parts[0].text };
+      // Null-safe check: thinking models can return content without parts
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) {
+        return { answer: text };
       }
       // If rate limited, wait briefly then try next model
       if (data.error?.code === 429) {
