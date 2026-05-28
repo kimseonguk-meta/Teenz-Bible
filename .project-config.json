@@ -13,10 +13,10 @@
   "experiments": null,
   "git_remote": {
     "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663322885440/eyf7JgudwZUosztoRMCJZY",
-    "access_key_id": "ASIAZV3A2ECZJ2WRVBKP",
-    "secret_access_key": "Ludq2mqt9JBwZijt9VtXmAsxVlDjJghNA8fKB3Q8",
-    "session_token": "IQoJb3JpZ2luX2VjEGQaCXVzLWVhc3QtMSJIMEYCIQDTzHs3GhuQM003lNv3u53j+xTX48Rkm/zyEnEsT3DGnwIhALYKd4VRx9Mvu+CeFv6Wt1+djJHiBV3z3l9diOk0SkN8KvYDCC0QBBoMNjY1Mzg2MDk4ODY2IgwL25d7HZ2Vev4fAjYq0wPuDndsHCImZ6OapSc5rSp7IM81v98MRpw1hMhIJStZfdZ2y90p0d01+ZRjn2MmR/izQqH/H/7kkqq/1+Qugak+qhCjrEWVAUK8qm3sLyj1zdCLiMw0aITbT4mlxdrnR9M7DoDPJpe3XRJBNtLK6vLalYkUelLF/AdxEL9NqQnnegy+JF0ngaSGVbpEUccgXmJkPN4Mk8n6HDpnKlb9l+/5zo6Nf2XnzHLvlze3hhWjviaalqeiJPyazkZhcsim3x//awn2vgeDdnPfSKvtf0sGPDXHJLoBfHk6sz8CpTWcBwLyv7vMuWyKcZVkehDhPnACj9TvE4mjwb5J7VvYqbJoWgNcfgddWi1nUBlOkvbyBhaNU53/XYcJ9MUlgqbkz7s3KkQyQES49ox2p/S6hFknO+m7pJE/nPbCaEZ+cqLdKXBevwPUL7PEe5s8V4bw+fBhb3wpMW7o0hKJOmq3srOlcKFdzFPFfmIzKnSdIKIlYBRW/HIdZI6fpD+JU2s5MxFkHz3u5gYGEC++rAeX31oFZvGVLJw7m9NPLTUVrFkZ3vc9SkP6G7QANbUR971m7w8Bbq0IhfbONur2dZAowwZcJPHeqFsrimoBIOQ9P9KXWXI6LDC4xcTQBjqcARAmeuPbR0BwoiPISNmsHu8Kd1vB4FegsGpY5+p/X5dwkKKkI6WVadPPlJ4XN0T4hSuQj7J/4IcY7GCdT8EhiVwW/G3P14uoWcava33BwSrWEG/YcSX9pUhJfBhWNolL5EDZuRwV5xAbuADmrQeit4B2dAiwo1OBMj2czSsGZQwabLwkIeN8u6z9u7Cwz1lHDH5899O3+2lyPFPM/w==",
-    "expiration": "2026-05-23T15:44:56.000Z"
+    "access_key_id": "ASIAZV3A2ECZH6CMBBA5",
+    "secret_access_key": "mj5KbZp8zjRseoB3Mdw3cCW+Ln8BS1z0kdQk163K",
+    "session_token": "IQoJb3JpZ2luX2VjENz//////////wEaCXVzLWVhc3QtMSJGMEQCIFSQL3WWpSJhffvzLDVMCn7UB25tM60eG5iYjV7gD2HcAiAaGwV+QnH6URwrjuOgCu+x3tKqhI3dCD6NB/0zc8ZWvSr/Awil//////////8BEAQaDDY2NTM4NjA5ODg2NiIMxqSTaP2w2bG1FXmwKtMDQFvwM53OyBaPTNC4DWKd7FF+J1VITiWiv93NASklx4PeWuunWb8tTKarjKlaL8T+zpbKedQDz60PSHBSY3Kw8Nxf2Jo8GAlsxBbLab4Vvb/K9XGAqYsYEupUZTTq8wsatmsc0TAjoK6hZQsAQdFZEMV08Tw7dqs74vnTX64L6P3phRa46P4Mna3s/injF1ckAlt7BvMcd03+QpCtLJHBPBXaqAZHJbBq0UPS+833b0nZfND9X+xKvXKligx4FnSUu8pui437YJCg+ShRYh4ULe9ywHaIHfOn6iS8U4lswfS52HucmyGOJWRjqDn8Pw/FkBT9E58hBP2QMf6zlGHnEdkURxh2e2MTXzWywVQiqu1PbMnVr2MJUdwsYAz28xWZYVgfBt1fpi0oc1Dhijg0iJYtim+Qcaytwu6JxSGp6MdIQP6h8xN+tsr6Eugh3XtFiQL+iQ2i4yFQQeNOYTvQEZ4TxHSIuqPMxXftHfNDNiUaJhVvLsFieBog8xFY4Ro6Dse/OkeeZ6KKUWJd0XDl3/vtbBydVe46KOak6tNtCC+Gs7UuuUa6hLll8UhJUrDwf1zoa+brvGycTyw2oJlDPguoREtfxLoFf4UEGIGro6DCTEUwn+ze0AY6ngFGKjKrgl6LInS6P2p9zgBaC572ZO7zy+aB20jw7yE9Mvdbj5qR4y6FW/QeUE9Hx6TAf1yM5kdir65OYpYDZlXLEel4uu8ANp465rU8eotUmZjVa+2eid21SQJxUis2OScpAWQSSHlPCEQfiwzn+VNVqAf4faCzXqbcLlXlJfGlIsSHnWg+LcB00Q/sHtR4mjqhgr1TrgqYPkcMmyCCWQ==",
+    "expiration": "2026-05-28T15:27:27.000Z"
   },
   "name": "teens-bible-app",
   "path": "/home/ubuntu/teens-bible-app",

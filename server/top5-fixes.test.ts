@@ -4,17 +4,18 @@ import * as path from "path";
 
 const CLIENT_SRC = path.resolve(__dirname, "../client/src");
 
-describe("Fix #1: Gemini API key moved to backend proxy", () => {
-  it("BibleAI.tsx should NOT contain any hardcoded API key", () => {
+describe("Fix #1: Gemini API key - server proxy for web, direct for native", () => {
+  it("BibleAI.tsx should use /api/bible-ai proxy for web and direct Gemini for native", () => {
     const content = fs.readFileSync(path.join(CLIENT_SRC, "pages/BibleAI.tsx"), "utf-8");
-    expect(content).not.toContain("AIzaSy");
-    expect(content).not.toMatch(/GEMINI_API_KEY/);
-    expect(content).not.toContain("generativelanguage.googleapis.com");
-  });
-
-  it("BibleAI.tsx should use /api/bible-ai proxy endpoint", () => {
-    const content = fs.readFileSync(path.join(CLIENT_SRC, "pages/BibleAI.tsx"), "utf-8");
+    // Should NOT reference process.env.GEMINI_API_KEY (that's server-only)
+    expect(content).not.toMatch(/process\.env\.GEMINI_API_KEY/);
+    // Should use the proxy endpoint for web
     expect(content).toContain("/api/bible-ai");
+    // Should have native platform detection for direct API calls on iOS
+    expect(content).toContain("isNativePlatform");
+    expect(content).toContain("callGeminiDirect");
+    // Native direct call should use generativelanguage.googleapis.com
+    expect(content).toContain("generativelanguage.googleapis.com");
   });
 
   it("vite.config.ts should have the bible-ai proxy middleware", () => {

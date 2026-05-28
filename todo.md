@@ -84,3 +84,9 @@
 
 ## Bible Book Video Visibility Improvement
 - [x] Redesign introduction video section to be more prominent and naturally visible
+
+## TestFlight Build 12 Bug Fixes (May 28, 2026)
+- [x] Bug Fix: TTS button clipped at top of screen on iOS (safe area padding)
+- [x] Bug Fix: YouTube error 153 - videos won't play in WKWebView iframe (must play in-app)
+- [x] Bug Fix: Bible AI "temporarily unavailable" error on iOS device
+- [x] Build 13: Rebuild, clean, and prepare iOS zip

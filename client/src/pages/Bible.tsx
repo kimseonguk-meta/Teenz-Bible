@@ -378,7 +378,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
   };
 
   return (
-    <div className="px-4 pt-6 space-y-4">
+    <div className="px-4 space-y-4" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top, 1.5rem))' }}>
       <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 mb-2 active:scale-95 transition-transform">
         ← Back to Books
       </button>
@@ -481,10 +481,11 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
                 <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
                   <iframe
                     className="absolute inset-0 w-full h-full rounded-xl"
-                    src={`https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1&playsinline=1`}
+                    src={`/youtube.html?v=${ytId}`}
                     title={`${book} Introduction Video`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
                     onLoad={handleVideoPlay}
                   />
                 </div>
@@ -936,7 +937,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const quizAvailable = hasQuiz(book, chapter.num);
 
   return (
-    <div className="px-4 pt-4 pb-8">
+    <div className="px-4 pb-8" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top, 1rem))' }}>
       {/* Reader Header */}
       <div className="flex items-center justify-between mb-2">
         <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform shrink-0">← Back</button>

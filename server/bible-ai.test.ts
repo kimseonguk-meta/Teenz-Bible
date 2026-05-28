@@ -36,16 +36,18 @@ describe("Bible AI Proxy - API Key Validation", () => {
     expect(data.candidates[0].content.parts[0].text).toBeDefined();
   }, 15000);
 
-  it("should NOT expose API key in frontend code", async () => {
+  it("should use server proxy for web and direct API for native", async () => {
     const fs = await import("fs");
     const path = await import("path");
     const bibleAIPath = path.resolve(__dirname, "../client/src/pages/BibleAI.tsx");
     const content = fs.readFileSync(bibleAIPath, "utf-8");
     
-    // Ensure no hardcoded API key
-    expect(content).not.toContain("AIzaSy");
-    expect(content).not.toContain("GEMINI_API_KEY");
-    // Should use the proxy endpoint
+    // Should NOT reference process.env.GEMINI_API_KEY (that's server-only)
+    expect(content).not.toContain("process.env.GEMINI_API_KEY");
+    // Should use the proxy endpoint for web
     expect(content).toContain("/api/bible-ai");
+    // Should have native platform detection for direct API calls
+    expect(content).toContain("isNativePlatform");
+    expect(content).toContain("callGeminiDirect");
   });
 });

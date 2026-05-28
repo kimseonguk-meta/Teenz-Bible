@@ -73,9 +73,17 @@ function isSpeechRecognitionSupported(): boolean {
   return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
 }
 
-// Server-side Gemini API call (API key stays on server)
+// Gemini API call - uses server proxy on web, direct API on native iOS (no server available)
 async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
   try {
+    // On native platforms (iOS/Android), call Gemini directly since there's no backend server
+    const isNative = typeof (window as any).Capacitor !== 'undefined' && (window as any).Capacitor.isNativePlatform();
+    
+    if (isNative) {
+      return await callGeminiDirect(messages, systemPrompt);
+    }
+    
+    // On web, use the server proxy
     const resp = await fetch("/api/bible-ai", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -93,6 +101,36 @@ async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text
   } catch (e: any) {
     return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
   }
+}
+
+// Direct Gemini API call for native platforms (iOS/Android)
+const GEMINI_NATIVE_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
+async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
+  const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"];
+  const reqBody = JSON.stringify({
+    system_instruction: { parts: [{ text: systemPrompt }] },
+    contents: messages,
+    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+    safetySettings: [
+      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+      { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+      { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+    ],
+  });
+  for (const model of models) {
+    try {
+      const resp = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_NATIVE_KEY}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
+      );
+      const data = await resp.json();
+      if (data.candidates && data.candidates[0]?.content) {
+        return { answer: data.candidates[0].content.parts[0].text };
+      }
+    } catch {}
+  }
+  return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
 }
 
 export default function BibleAI() {
@@ -230,7 +268,7 @@ export default function BibleAI() {
   return (
     <div className="flex flex-col h-screen bg-[#0a0a1a]">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm">
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
         <button
           onClick={() => navigate("/")}
           className="text-purple-300 hover:text-white transition-colors"

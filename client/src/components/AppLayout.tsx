@@ -31,7 +31,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main content */}
-      <main className={`flex-1 relative z-10 overflow-y-auto ${location === "/bible-ai" ? "" : "pb-20"}`}>
+      <main className={`flex-1 relative z-10 overflow-y-auto ${location === "/bible-ai" ? "" : "pb-20"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)' }}>
         {children}
       </main>
 
