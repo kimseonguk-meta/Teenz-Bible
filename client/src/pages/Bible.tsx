@@ -378,7 +378,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
   };
 
   return (
-    <div className="px-4 space-y-4" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top, 1.5rem))' }}>
+    <div className="px-4 space-y-4" style={{ paddingTop: '1.5rem' }}>
       <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 mb-2 active:scale-95 transition-transform">
         ← Back to Books
       </button>
@@ -937,7 +937,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const quizAvailable = hasQuiz(book, chapter.num);
 
   return (
-    <div className="px-4 pb-8" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top, 1rem))' }}>
+    <div className="px-4 pb-8" style={{ paddingTop: '1rem' }}>
       {/* Reader Header */}
       <div className="flex items-center justify-between mb-2">
         <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform shrink-0">← Back</button>

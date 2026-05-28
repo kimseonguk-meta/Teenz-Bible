@@ -41,7 +41,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         borderTop: '1px solid rgba(var(--neon-rgb, 139, 92, 246), 0.3)',
         boxShadow: '0 -4px 20px rgba(var(--neon-rgb, 139, 92, 246), 0.2)',
       }}>
-        <div className="flex justify-around items-center py-2 px-2">
+        <div className="flex justify-around items-center py-2 px-2" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           {navItems.map((item) => {
             const isActive = location === item.path;
             return (

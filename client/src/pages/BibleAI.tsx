@@ -128,9 +128,14 @@ async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ t
       if (data.candidates && data.candidates[0]?.content) {
         return { answer: data.candidates[0].content.parts[0].text };
       }
+      // If rate limited, wait briefly then try next model
+      if (data.error?.code === 429) {
+        await new Promise(r => setTimeout(r, 1500));
+        continue;
+      }
     } catch {}
   }
-  return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
+  return { answer: "", error: "Bible AI is temporarily unavailable. Please try again in a moment! 🙏" };
 }
 
 export default function BibleAI() {
