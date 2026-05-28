@@ -42,8 +42,8 @@ async function performGoogleSignIn() {
       return userCredential;
     }
     
-    // Return null credential case - caller will handle
-    return null as any;
+    // No credential returned - user likely cancelled
+    throw new Error("Sign-in cancelled or no credential returned");
   } else {
     // Web: use popup
     return await signInWithPopup(auth, googleProvider);

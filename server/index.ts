@@ -22,13 +22,13 @@ async function startServer() {
     }
     try {
       const { messages, systemPrompt } = req.body;
-      const models = ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+      const models = ["gemini-2.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-2.0-flash"];
       let data: any = null;
       let lastError = "";
       for (const model of models) {
         try {
-          // Use thinkingConfig for 2.5 models to limit thinking budget
-          const isThinkingModel = model.includes("2.5");
+          // Use thinkingConfig for 2.5 thinking models (not lite) to limit thinking budget
+          const isThinkingModel = model.includes("2.5") && !model.includes("lite");
           const reqBody = JSON.stringify({
             system_instruction: { parts: [{ text: systemPrompt }] },
             contents: messages,
@@ -49,9 +49,14 @@ async function startServer() {
             { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
           );
           data = await resp.json();
+          if (data.error) {
+            lastError = data.error.message;
+            if (data.error.code === 429) await new Promise(r => setTimeout(r, 1000));
+            continue;
+          }
           // Null-safe: thinking models can return content without parts
           if (data.candidates?.[0]?.content?.parts?.[0]?.text) break;
-          lastError = data.error ? data.error.message : "No valid response";
+          lastError = "No valid response";
         } catch (e: any) {
           lastError = e.message;
         }

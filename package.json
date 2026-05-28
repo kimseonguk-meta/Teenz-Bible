@@ -14,11 +14,11 @@
   "dependencies": {
     "@capacitor-firebase/authentication": "^8.2.0",
     "@capacitor/android": "^8.3.4",
+    "@capacitor/browser": "^8.0.0",
     "@capacitor/camera": "^8.2.0",
     "@capacitor/cli": "^8.3.4",
     "@capacitor/core": "^8.3.4",
     "@capacitor/ios": "^8.3.4",
-    "@capgo/capacitor-youtube-player": "^8.2.5",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",

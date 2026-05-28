@@ -7,7 +7,7 @@ import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
-import { YoutubePlayer } from '@capgo/capacitor-youtube-player';
+import { Browser } from '@capacitor/browser';
 import { isNativePlatform } from '@/lib/platform';
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
@@ -377,23 +377,13 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
     if (!hasWatched) {
       game.markVideoWatched(book);
     }
-    // On native: use fullscreen native YouTube player
+    // On native: open YouTube in In-App Browser (SFSafariViewController)
+    // This avoids error 152/153 that occurs with WKWebView iframe embeds
     if (isNativePlatform() && ytId) {
       try {
-        await YoutubePlayer.initialize({
-          playerId: `yt-${book.replace(/\s/g, '-')}`,
-          videoId: ytId,
-          playerSize: { width: 640, height: 360 },
-          fullscreen: true,
-          playerVars: {
-            autoplay: 1,
-            rel: 0,
-            modestbranding: 1,
-          },
-        });
+        await Browser.open({ url: `https://www.youtube.com/watch?v=${ytId}` });
       } catch (e) {
-        console.error('YouTube native player error:', e);
-        // Fallback: open in browser
+        console.error('In-App Browser error:', e);
         window.open(`https://www.youtube.com/watch?v=${ytId}`, '_blank');
       }
       return;
@@ -511,7 +501,6 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     referrerPolicy="strict-origin-when-cross-origin"
-                    onLoad={handleVideoPlay}
                   />
                 </div>
                 <p className="text-gray-400 text-[10px] mt-2 text-center">BibleProject Overview · +15 XP for watching</p>

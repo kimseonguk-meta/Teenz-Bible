@@ -106,11 +106,12 @@ async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text
 // Direct Gemini API call for native platforms (iOS/Android)
 const GEMINI_NATIVE_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
 async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
-  const models = ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+  // Use multiple models as fallback chain - newer lite/preview models have higher free tier quotas
+  const models = ["gemini-2.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-2.0-flash"];
   for (const model of models) {
     try {
-      // Use thinkingConfig for 2.5 models to limit thinking budget
-      const isThinkingModel = model.includes("2.5");
+      // Use thinkingConfig for 2.5 thinking models (not lite) to limit thinking budget
+      const isThinkingModel = model.includes("2.5") && !model.includes("lite");
       const reqBody = JSON.stringify({
         system_instruction: { parts: [{ text: systemPrompt }] },
         contents: messages,
@@ -131,17 +132,25 @@ async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ t
         { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
       );
       const data = await resp.json();
+      // Check for API errors first
+      if (data.error) {
+        console.warn(`Gemini ${model} error:`, data.error.code, data.error.message?.slice(0, 80));
+        if (data.error.code === 429) {
+          // Rate limited - wait briefly then try next model
+          await new Promise(r => setTimeout(r, 1000));
+        }
+        continue;
+      }
       // Null-safe check: thinking models can return content without parts
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
       if (text) {
         return { answer: text };
       }
-      // If rate limited, wait briefly then try next model
-      if (data.error?.code === 429) {
-        await new Promise(r => setTimeout(r, 1500));
-        continue;
-      }
-    } catch {}
+      // No text in response (blocked or empty) - try next model
+      continue;
+    } catch (e) {
+      console.warn(`Gemini ${model} fetch error:`, e);
+    }
   }
   return { answer: "", error: "Bible AI is temporarily unavailable. Please try again in a moment! 🙏" };
 }

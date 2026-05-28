@@ -22,6 +22,9 @@ importers:
       '@capacitor/android':
         specifier: ^8.3.4
         version: 8.3.4(@capacitor/core@8.3.4)
+      '@capacitor/browser':
+        specifier: ^8.0.0
+        version: 8.0.3(@capacitor/core@8.3.4)
       '@capacitor/camera':
         specifier: ^8.2.0
         version: 8.2.0(@capacitor/core@8.3.4)
@@ -34,9 +37,6 @@ importers:
       '@capacitor/ios':
         specifier: ^8.3.4
         version: 8.3.4(@capacitor/core@8.3.4)
-      '@capgo/capacitor-youtube-player':
-        specifier: ^8.2.5
-        version: 8.2.5(@capacitor/core@8.3.4)
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.64.0(react@19.2.1))
@@ -412,6 +412,11 @@ packages:
     peerDependencies:
       '@capacitor/core': ^8.3.0
 
+  '@capacitor/browser@8.0.3':
+    resolution: {integrity: sha512-WJWPHEPbweiFoHYmVlCbZf5yrqJ2Rchx2Xvbmd+3Lf+Zkpq3nXBThThY2CF69lYEg1NINGF9BcHThIOEU1gZlQ==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+
   '@capacitor/camera@8.2.0':
     resolution: {integrity: sha512-hYfrT6xpL936qoEkIpJzSnb0fQCaTkOux1cXzGBfH8QLOGqr6gSLiWZlZz/fqMPmMKJMNRBqlTQkj5fuMhVZog==}
     peerDependencies:
@@ -429,11 +434,6 @@ packages:
     resolution: {integrity: sha512-XvvnPFWWP/gwwO811ue7nEBKSZqDCIB8hxGgWV6iXA7DSVLqMOEmQdfHj94kkVxof2wL9XWHypu3ayDULo7U5w==}
     peerDependencies:
       '@capacitor/core': ^8.3.0
-
-  '@capgo/capacitor-youtube-player@8.2.5':
-    resolution: {integrity: sha512-Vv0shjnRpN5MFnyNg4+Fzq1QskUFmjT006xrIInPuZZEU3wvpTllt4/Z40dwa710osnMRzmWhvGD0xIdclzQfQ==}
-    peerDependencies:
-      '@capacitor/core': '>=8.0.0'
 
   '@chevrotain/cst-dts-gen@11.0.3':
     resolution: {integrity: sha512-BvIKpRLeS/8UbfxXxgC33xOumsacaeCKAjAeLyOn7Pcp95HiRbrpl14S+9vaZLolnbssPIUuiUd8IvgkRyt6NQ==}
@@ -6561,6 +6561,10 @@ snapshots:
     dependencies:
       '@capacitor/core': 8.3.4
 
+  '@capacitor/browser@8.0.3(@capacitor/core@8.3.4)':
+    dependencies:
+      '@capacitor/core': 8.3.4
+
   '@capacitor/camera@8.2.0(@capacitor/core@8.3.4)':
     dependencies:
       '@capacitor/core': 8.3.4
@@ -6592,10 +6596,6 @@ snapshots:
       tslib: 2.8.1
 
   '@capacitor/ios@8.3.4(@capacitor/core@8.3.4)':
-    dependencies:
-      '@capacitor/core': 8.3.4
-
-  '@capgo/capacitor-youtube-player@8.2.5(@capacitor/core@8.3.4)':
     dependencies:
       '@capacitor/core': 8.3.4
 

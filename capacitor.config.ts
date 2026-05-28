@@ -14,10 +14,6 @@ const config: CapacitorConfig = {
     Camera: {
       presentationStyle: 'popover',
     },
-    YoutubePlayer: {
-      patchRefererHeader: true,
-      refererHeader: 'https://www.youtube.com',
-    },
   },
   server: {
     androidScheme: 'https',

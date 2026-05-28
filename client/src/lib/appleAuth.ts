@@ -43,10 +43,8 @@ async function performAppleSignIn() {
       return userCredential;
     }
     
-    // If no credential returned but user exists, the native layer handled it
-    // We need to wait for auth state to sync
-    // Return null credential case - caller will handle
-    return null as any;
+    // No credential returned - user likely cancelled
+    throw new Error("Sign-in cancelled or no credential returned");
   } else {
     // Web: use popup
     return await signInWithPopup(auth, appleProvider);
