@@ -7,6 +7,8 @@ import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
+import { YoutubePlayer } from '@capgo/capacitor-youtube-player';
+import { isNativePlatform } from '@/lib/platform';
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -371,10 +373,33 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
   const ytId = ytVideos[book];
   const hasWatched = game.watchedVideos.includes(book);
 
-  const handleVideoPlay = () => {
+  const handleVideoPlay = async () => {
     if (!hasWatched) {
       game.markVideoWatched(book);
     }
+    // On native: use fullscreen native YouTube player
+    if (isNativePlatform() && ytId) {
+      try {
+        await YoutubePlayer.initialize({
+          playerId: `yt-${book.replace(/\s/g, '-')}`,
+          videoId: ytId,
+          playerSize: { width: 640, height: 360 },
+          fullscreen: true,
+          playerVars: {
+            autoplay: 1,
+            rel: 0,
+            modestbranding: 1,
+          },
+        });
+      } catch (e) {
+        console.error('YouTube native player error:', e);
+        // Fallback: open in browser
+        window.open(`https://www.youtube.com/watch?v=${ytId}`, '_blank');
+      }
+      return;
+    }
+    // On web: toggle iframe open
+    setVideoOpen(true);
   };
 
   return (
@@ -412,7 +437,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
           {/* Unwatched: show thumbnail preview */}
           {!hasWatched && !videoOpen && (
             <button
-              onClick={() => setVideoOpen(true)}
+              onClick={handleVideoPlay}
               className="w-full block active:scale-[0.98] transition-transform"
             >
               {/* Thumbnail */}
@@ -447,7 +472,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
           {/* Watched: collapsed simple bar */}
           {hasWatched && !videoOpen && (
             <button
-              onClick={() => setVideoOpen(!videoOpen)}
+              onClick={handleVideoPlay}
               className="w-full p-3 flex items-center justify-between active:scale-[0.99] transition-transform bg-[rgba(15,8,40,0.6)]"
             >
               <div className="flex items-center gap-2">
@@ -464,8 +489,8 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
             </button>
           )}
 
-          {/* Expanded: iframe player */}
-          {videoOpen && (
+          {/* Expanded: iframe player (web only - native uses fullscreen player) */}
+          {videoOpen && !isNativePlatform() && (
             <div>
               <button
                 onClick={() => setVideoOpen(false)}

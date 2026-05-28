@@ -90,3 +90,12 @@
 - [x] Bug Fix: YouTube error 153 - videos won't play in WKWebView iframe (must play in-app)
 - [x] Bug Fix: Bible AI "temporarily unavailable" error on iOS device
 - [x] Build 13: Rebuild, clean, and prepare iOS zip
+
+## YouTube Fix + Android Build (May 28, 2026)
+- [x] Install @capgo/capacitor-youtube-player plugin
+- [x] Replace YouTube iframe embed with native plugin in Bible.tsx
+- [x] Configure patchRefererHeader in capacitor.config.ts
+- [ ] Set up Android platform (capacitor add android)
+- [ ] Configure Android project (icons, package name, signing)
+- [x] Build iOS zip (Build 13 final)
+- [ ] Build Android project zip for Google Play Store
