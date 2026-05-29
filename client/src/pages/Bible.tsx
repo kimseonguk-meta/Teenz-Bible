@@ -7,8 +7,6 @@ import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
-import { Browser } from '@capacitor/browser';
-import { isNativePlatform } from '@/lib/platform';
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -377,18 +375,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
     if (!hasWatched) {
       game.markVideoWatched(book);
     }
-    // On native: open YouTube in In-App Browser (SFSafariViewController)
-    // This avoids error 152/153 that occurs with WKWebView iframe embeds
-    if (isNativePlatform() && ytId) {
-      try {
-        await Browser.open({ url: `https://www.youtube.com/watch?v=${ytId}` });
-      } catch (e) {
-        console.error('In-App Browser error:', e);
-        window.open(`https://www.youtube.com/watch?v=${ytId}`, '_blank');
-      }
-      return;
-    }
-    // On web: toggle iframe open
+    // Open inline iframe player (uses youtube.html proxy to avoid error 152/153)
     setVideoOpen(true);
   };
 
@@ -479,8 +466,8 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
             </button>
           )}
 
-          {/* Expanded: iframe player (web only - native uses fullscreen player) */}
-          {videoOpen && !isNativePlatform() && (
+          {/* Expanded: inline iframe player with youtube.html proxy */}
+          {videoOpen && (
             <div>
               <button
                 onClick={() => setVideoOpen(false)}
