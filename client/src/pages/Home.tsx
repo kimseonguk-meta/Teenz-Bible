@@ -4,6 +4,7 @@ import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { toast } from "sonner";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
+import { celebrateLogin } from "@/lib/celebration";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 // Standard chapter counts for each Bible book
@@ -187,6 +188,7 @@ export default function Home() {
       const result = await linkOrSignInWithGoogle();
       if (result.success) {
         setAccountLinked(true);
+        celebrateLogin();
         toast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Google!");
       } else {
         toast.error(result.message || "Failed to link account");
@@ -203,6 +205,7 @@ export default function Home() {
       const result = await linkOrSignInWithApple();
       if (result.success) {
         setAccountLinked(true);
+        celebrateLogin();
         toast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Apple!");
       } else {
         toast.error(result.message || "Failed to link account");

@@ -8,6 +8,7 @@ import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/l
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 import { isNativePlatform } from "@/lib/platform";
 import { deleteAllUserData } from "@/lib/firebaseSync";
+import { celebrateLogin } from "@/lib/celebration";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -221,6 +222,7 @@ export default function Profile() {
       clearTimeout(timeout);
       setLinkMessage({ text: result.message, success: result.success });
       if (result.success) {
+        celebrateLogin();
         setGoogleLinked(true);
         setGoogleEmail(getLinkedGoogleEmail());
         if (result.type === "signed-in" && result.restored) {
@@ -264,6 +266,7 @@ export default function Profile() {
       clearTimeout(timeout);
       setLinkMessage({ text: result.message, success: result.success });
       if (result.success) {
+        celebrateLogin();
         setAppleLinked(true);
         setAppleEmail(getLinkedAppleEmail());
         if (result.type === "signed-in" && result.restored) {
