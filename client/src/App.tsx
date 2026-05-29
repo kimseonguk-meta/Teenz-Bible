@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState, useEffect, useRef } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
@@ -61,8 +61,7 @@ function Router() {
 function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [authReady, setAuthReady] = useState(false);
-  // Flag to prevent Firebase sync from overriding Edit Profile action
-  const editProfileActiveRef = useRef(false);
+
 
   useEffect(() => {
     // Apply saved theme on app load
@@ -74,12 +73,7 @@ function App() {
       setShowOnboarding(true);
     }
 
-    // Listen for Edit Profile event from Profile page
-    const handleEditProfile = () => {
-      editProfileActiveRef.current = true;
-      setShowOnboarding(true);
-    };
-    window.addEventListener("triggerEditProfile", handleEditProfile);
+
 
     // Firebase anonymous auth + data sync
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -103,7 +97,7 @@ function App() {
               window.dispatchEvent(new CustomEvent("sync-restored"));
               window.dispatchEvent(new CustomEvent("gems-changed"));
               const profile = localStorage.getItem("teensBibleProfile");
-              if (profile && !editProfileActiveRef.current) setShowOnboarding(false);
+              if (profile) setShowOnboarding(false);
             }
           }
 
@@ -115,9 +109,9 @@ function App() {
             // Notify all components that data was restored
             window.dispatchEvent(new CustomEvent("sync-restored"));
             window.dispatchEvent(new CustomEvent("gems-changed"));
-            // If profile was restored, hide onboarding — but NOT if user triggered Edit Profile
+            // If profile was restored, hide onboarding
             const profile = localStorage.getItem("teensBibleProfile");
-            if (profile && !editProfileActiveRef.current) {
+            if (profile) {
               setShowOnboarding(false);
             }
           }
@@ -144,7 +138,7 @@ function App() {
 
     return () => {
       unsubscribe();
-      window.removeEventListener("triggerEditProfile", handleEditProfile);
+
       window.removeEventListener("teensBibleDataChanged", handleStorageSync);
       window.removeEventListener("teensBibleCriticalSync", handleCriticalSync);
     };
@@ -152,8 +146,6 @@ function App() {
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
-    // Reset the edit profile flag so future syncs work normally
-    editProfileActiveRef.current = false;
     // Sync new profile to Firebase immediately
     scheduleSyncToFirebase();
   };
@@ -164,7 +156,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <GameProvider>
-            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} onCancel={editProfileActiveRef.current ? () => { setShowOnboarding(false); editProfileActiveRef.current = false; } : undefined} />}
+            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
             {authReady && !showOnboarding && <DailyBonus />}
             {authReady && !showOnboarding && <ProfilePhotoPrompt />}
             {authReady && !showOnboarding && <FloatingPet />}

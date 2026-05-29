@@ -99,3 +99,10 @@
 - [ ] Configure Android project (icons, package name, signing)
 - [x] Build iOS zip (Build 13 final)
 - [ ] Build Android project zip for Google Play Store
+
+## Build 14 Fixes (May 28, 2026)
+- [x] YouTube error 152-4 fixed: replaced @capgo/capacitor-youtube-player with @capacitor/browser In-App Browser (SFSafariViewController)
+- [x] Bible AI "temporarily unavailable" fixed: updated model priority to gemini-2.5-flash-lite → gemini-3.1-flash-lite → gemini-3-flash-preview (higher free tier quotas)
+- [x] Improved Gemini error handling: proper 429 detection, console warnings, model skip on any error
+- [x] Removed manus debug scripts from iOS bundle
+- [x] Build 14 zip created and delivered

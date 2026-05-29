@@ -320,8 +320,8 @@ export default function Profile() {
     }
     keysToRemove.forEach(k => localStorage.removeItem(k));
     setShowResetConfirm(false);
-    // Use custom event to trigger onboarding instead of reload (avoids WKWebView issues)
-    window.dispatchEvent(new CustomEvent("triggerEditProfile"));
+    // Reload to trigger onboarding
+    window.location.reload();
   }, []);
 
   const handleDeleteAccount = useCallback(async () => {
@@ -338,8 +338,8 @@ export default function Profile() {
       }
       const success = await deleteAllUserData();
       if (success) {
-        // Navigate to onboarding
-        window.dispatchEvent(new CustomEvent("triggerEditProfile"));
+        // Reload to trigger onboarding
+        window.location.reload();
       } else {
         alert("Failed to delete account. Please try again.");
       }
@@ -354,14 +354,7 @@ export default function Profile() {
 
   // Redeem code feature removed for App Store compliance (Guideline 3.1.1)
 
-  const handleEditProfile = useCallback(() => {
-    // Clear profile to trigger onboarding again
-    localStorage.removeItem("teensBibleProfile");
-    localStorage.removeItem("playerName");
-    // Dispatch custom event so App.tsx shows onboarding directly (no reload needed)
-    // This avoids WKWebView reload issues on iPad and prevents Firebase sync from restoring the profile
-    window.dispatchEvent(new CustomEvent("triggerEditProfile"));
-  }, []);
+
 
   return (
     <div className="px-4 pt-6 space-y-5 pb-8">
@@ -748,20 +741,7 @@ export default function Profile() {
         <div className="space-y-3 mb-5">
           <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">👥 Social</p>
 
-          {/* Edit Profile - Admin only */}
-          {auth.currentUser?.email === 'kimseonguk777@gmail.com' && (
-          <div
-            onClick={handleEditProfile}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
-          >
-            <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-xl">😎</div>
-            <div className="flex-1">
-              <p className="text-white text-sm font-medium">Edit Profile</p>
-              <p className="text-gray-500 text-[10px]">Change name, avatar, class</p>
-            </div>
-            <span className="text-gray-600">▶</span>
-          </div>
-          )}
+
 
           {/* Invite Friends */}
           <div
