@@ -483,7 +483,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
                 <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
                   <iframe
                     className="absolute inset-0 w-full h-full rounded-xl"
-                    src={`/youtube.html?v=${ytId}`}
+                    src={`https://teens-bible-94271.web.app/youtube.html?v=${ytId}`}
                     title={`${book} Introduction Video`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
