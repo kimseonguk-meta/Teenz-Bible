@@ -1,7 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { useLocation } from "wouter";
-import { auth } from "@/lib/firebase";
+import { auth, db, ref, update, serverTimestamp } from "@/lib/firebase";
+import { get } from "firebase/database";
 import { getProfilePhotoUrl, setProfilePhoto, setProfilePhotoUrl, uploadPhotoToFirebase } from "@/components/ProfilePhotoPrompt";
 import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOutGoogle } from "@/lib/googleAuth";
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
@@ -9,6 +10,8 @@ import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 import { isNativePlatform } from "@/lib/platform";
 import { deleteAllUserData } from "@/lib/firebaseSync";
 import { celebrateLogin } from "@/lib/celebration";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -123,6 +126,10 @@ export default function Profile() {
   const [showPhotoMenu, setShowPhotoMenu] = useState(false);
   const [profilePhoto, setProfilePhotoState] = useState(getProfilePhotoUrl);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [showNicknameEdit, setShowNicknameEdit] = useState(false);
+  const [nicknameInput, setNicknameInput] = useState(playerName);
+  const [nicknameSaving, setNicknameSaving] = useState(false);
+  const [nicknameError, setNicknameError] = useState<string | null>(null);
   const [showPhotoNudge, setShowPhotoNudge] = useState(false);
   const [rawPhoto, setRawPhoto] = useState<string | null>(null);
   const [cropScale, setCropScale] = useState(1);
@@ -354,6 +361,64 @@ export default function Profile() {
       setShowDeleteAccount(false);
     }
   }, []);
+
+  const handleSaveNickname = useCallback(async () => {
+    const trimmed = nicknameInput.trim();
+    if (!trimmed || trimmed.length < 2) {
+      setNicknameError("Nickname must be at least 2 characters");
+      return;
+    }
+    if (trimmed.length > 20) {
+      setNicknameError("Nickname must be 20 characters or less");
+      return;
+    }
+    setNicknameError(null);
+    setNicknameSaving(true);
+    try {
+      // Check for duplicate nickname in the same group
+      const profile = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}");
+      const groupCode = profile.groupCode || "GLOBAL";
+      const uid = auth.currentUser?.uid;
+      if (uid && groupCode !== "GLOBAL" && groupCode !== "INDIVIDUAL") {
+        const membersSnap = await get(ref(db, `groups/${groupCode}/members`));
+        const members = membersSnap.val();
+        if (members) {
+          const duplicate = Object.entries(members).find(
+            ([memberUid, m]: [string, any]) =>
+              m.nickname?.toLowerCase() === trimmed.toLowerCase() && memberUid !== uid
+          );
+          if (duplicate) {
+            setNicknameError(`"${trimmed}" is already taken in your class. Choose another name.`);
+            setNicknameSaving(false);
+            return;
+          }
+        }
+      }
+
+      // Update localStorage
+      profile.nickname = trimmed;
+      localStorage.setItem("teensBibleProfile", JSON.stringify(profile));
+      localStorage.setItem("playerName", trimmed);
+
+      // Update Firebase leaderboard nodes directly
+      if (uid) {
+        await update(ref(db, `users/${uid}`), { nickname: trimmed, updatedAt: serverTimestamp() });
+        if (groupCode && groupCode !== "GLOBAL" && groupCode !== "INDIVIDUAL") {
+          await update(ref(db, `groups/${groupCode}/members/${uid}`), { nickname: trimmed, updatedAt: serverTimestamp() });
+        }
+      }
+
+      // Dispatch events so the rest of the app picks up the change
+      setPlayerName(trimmed);
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+      setShowNicknameEdit(false);
+    } catch (err) {
+      console.error("[Nickname] Save failed:", err);
+      setNicknameError("Failed to save. Please try again.");
+    } finally {
+      setNicknameSaving(false);
+    }
+  }, [nicknameInput]);
 
   // Redeem code feature removed for App Store compliance (Guideline 3.1.1)
 
@@ -623,7 +688,14 @@ export default function Profile() {
             </div>
           </div>
         )}
-        <h2 className="text-2xl font-bold text-white mt-3 font-display">{playerName}</h2>
+        <button
+          onClick={() => { setNicknameInput(playerName); setNicknameError(null); setShowNicknameEdit(true); }}
+          className="mt-3 flex items-center gap-1.5 group active:scale-[0.97] transition-transform"
+        >
+          <h2 className="text-2xl font-bold text-white font-display">{playerName}</h2>
+          <span className="text-gray-500 group-hover:text-purple-400 transition-colors text-sm">✏️</span>
+        </button>
+        <p className="text-gray-500 text-[10px] mt-0.5">Tap to change nickname</p>
         <div className="flex items-center gap-2 mt-1">
           <span className="px-3 py-1 rounded-full bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium">
             ⭐ Lv. {level.level} {level.name}
@@ -633,6 +705,44 @@ export default function Profile() {
           </span>
         </div>
       </div>
+
+      {/* Nickname Edit Dialog */}
+      <Dialog open={showNicknameEdit} onOpenChange={setShowNicknameEdit}>
+        <DialogContent className="bg-[#0e1830] border-purple-500/30 max-w-[320px]" showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle className="text-white text-center">Change Nickname</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Input
+              value={nicknameInput}
+              onChange={(e) => setNicknameInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter" && !nicknameSaving) handleSaveNickname(); }}
+              placeholder="Enter your nickname"
+              maxLength={20}
+              autoFocus
+              className="bg-gray-900/60 border-purple-500/40 text-white placeholder:text-gray-500"
+            />
+            <p className="text-gray-500 text-[10px] text-right">{nicknameInput.trim().length}/20</p>
+            {nicknameError && <p className="text-red-400 text-xs">{nicknameError}</p>}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowNicknameEdit(false)}
+                disabled={nicknameSaving}
+                className="flex-1 py-2.5 rounded-lg border border-gray-600 text-gray-300 text-sm font-medium active:scale-[0.97] transition-transform disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveNickname}
+                disabled={nicknameSaving || !nicknameInput.trim()}
+                className="flex-1 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform disabled:opacity-50"
+              >
+                {nicknameSaving ? "Saving..." : "Save ✨"}
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-3">

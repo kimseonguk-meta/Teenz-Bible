@@ -106,3 +106,8 @@
 - [x] Improved Gemini error handling: proper 429 detection, console warnings, model skip on any error
 - [x] Removed manus debug scripts from iOS bundle
 - [x] Build 14 zip created and delivered
+
+## Nickname Edit Feature (Jun 4, 2026)
+- [x] Add nickname/display name edit on Profile page (tap name to change)
+- [x] Duplicate nickname check within same class group
+- [x] Sync nickname change to Firebase leaderboard

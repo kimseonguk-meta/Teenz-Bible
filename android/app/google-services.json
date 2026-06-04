@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "226355097233",
+    "firebase_url": "https://teens-bible-94271-default-rtdb.firebaseio.com",
+    "project_id": "teens-bible-94271",
+    "storage_bucket": "teens-bible-94271.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226355097233:android:7bf357ceceb17bb1225930",
+        "android_client_info": {
+          "package_name": "com.teenzbible.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226355097233-l37actfh9rh5kgis06hcp8tqes9u2eod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teenzbible.app",
+            "certificate_hash": "edeca0ecea81147616b43141974198f060620b1e"
+          }
+        },
+        {
+          "client_id": "226355097233-ss288j0cpeh6jbka6sqfc7b4kn63oh2r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teenzbible.app",
+            "certificate_hash": "bb06256ab321d72b473fd56937e4dd1fc51cb7cd"
+          }
+        },
+        {
+          "client_id": "226355097233-p0e7bl8l4h8rcc0h98smnhaiqrlqvemf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnlqM46f7sB4rDrx2ePb6SB0-TPXHGxy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226355097233-p0e7bl8l4h8rcc0h98smnhaiqrlqvemf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "226355097233-db3p7kefrds5tdovhk50clalv1d0ndms.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.teenzbible.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 // swift-tools-version: 5.9
 import PackageDescription
 
+// DO NOT MODIFY THIS FILE - managed by Capacitor CLI commands
 let package = Package(
     name: "CapApp-SPM",
     platforms: [.iOS(.v15)],
@@ -11,9 +12,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.3.4"),
-        .package(name: "CapacitorFirebaseAuthentication", path: "../capacitor-plugins/capacitor-firebase-authentication"),
-        .package(name: "CapacitorBrowser", path: "../capacitor-plugins/capacitor-browser"),
-        .package(name: "CapacitorCamera", path: "../capacitor-plugins/capacitor-camera")
+        .package(name: "CapacitorFirebaseAuthentication", path: "../../../node_modules/.pnpm/@capacitor-firebase+authentication@8.2.0_@capacitor+core@8.3.4_firebase@12.13.0/node_modules/@capacitor-firebase/authentication"),
+        .package(name: "CapacitorBrowser", path: "../../../node_modules/.pnpm/@capacitor+browser@8.0.3_@capacitor+core@8.3.4/node_modules/@capacitor/browser"),
+        .package(name: "CapacitorCamera", path: "../../../node_modules/.pnpm/@capacitor+camera@8.2.0_@capacitor+core@8.3.4/node_modules/@capacitor/camera")
     ],
     targets: [
         .target(
