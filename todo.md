@@ -111,3 +111,7 @@
 - [x] Add nickname/display name edit on Profile page (tap name to change)
 - [x] Duplicate nickname check within same class group
 - [x] Sync nickname change to Firebase leaderboard
+
+## Bible AI Fix (Jun 4, 2026)
+- [ ] Fix Bible AI 'temporarily unavailable' error - switch to server-side invokeLLM
+- [ ] Ensure native app (Android/iOS) also uses server proxy via Manus hosting

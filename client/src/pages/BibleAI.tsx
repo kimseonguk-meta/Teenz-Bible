@@ -73,44 +73,46 @@ function isSpeechRecognitionSupported(): boolean {
   return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
 }
 
-// Gemini API call - uses server proxy on web, direct API on native iOS (no server available)
+// Bible AI API call - uses Firebase Cloud Function proxy (/api/bible-ai)
+// This works for both web and native (via Firebase Hosting URL)
+const FIREBASE_HOSTING_URL = "https://teens-bible-94271.web.app";
+
 async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
   try {
-    // On native platforms (iOS/Android), call Gemini directly since there's no backend server
+    // Determine the base URL - on native, use the full Firebase Hosting URL
     const isNative = typeof (window as any).Capacitor !== 'undefined' && (window as any).Capacitor.isNativePlatform();
+    const baseUrl = isNative ? FIREBASE_HOSTING_URL : '';
     
-    if (isNative) {
-      return await callGeminiDirect(messages, systemPrompt);
-    }
-    
-    // On web, use the server proxy
-    const resp = await fetch("/api/bible-ai", {
+    const resp = await fetch(`${baseUrl}/api/bible-ai`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages, systemPrompt }),
     });
     const result = await resp.json();
     if (result.error) {
-      return { answer: "", error: `Oops! Something went wrong. Please try again. 🙏` };
+      // If Cloud Function fails, try direct Gemini as fallback
+      console.warn("Cloud Function error, trying direct Gemini:", result.error);
+      return await callGeminiDirect(messages, systemPrompt);
     }
     if (result.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
       const answer = result.data.candidates[0].content.parts[0].text;
       return { answer };
     }
-    return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
+    // No valid response from Cloud Function, try direct
+    return await callGeminiDirect(messages, systemPrompt);
   } catch (e: any) {
-    return { answer: "", error: "Bible AI is temporarily unavailable. Please try again later! 🙏" };
+    // Network error or Cloud Function unavailable, try direct Gemini as fallback
+    console.warn("Cloud Function fetch failed, trying direct Gemini:", e.message);
+    return await callGeminiDirect(messages, systemPrompt);
   }
 }
 
-// Direct Gemini API call for native platforms (iOS/Android)
+// Direct Gemini API call - fallback when Cloud Function is unavailable
 const GEMINI_NATIVE_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
 async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
-  // Use multiple models as fallback chain - newer lite/preview models have higher free tier quotas
-  const models = ["gemini-2.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-2.0-flash"];
+  const models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"];
   for (const model of models) {
     try {
-      // Use thinkingConfig for 2.5 thinking models (not lite) to limit thinking budget
       const isThinkingModel = model.includes("2.5") && !model.includes("lite");
       const reqBody = JSON.stringify({
         system_instruction: { parts: [{ text: systemPrompt }] },
@@ -132,21 +134,17 @@ async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ t
         { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
       );
       const data = await resp.json();
-      // Check for API errors first
       if (data.error) {
         console.warn(`Gemini ${model} error:`, data.error.code, data.error.message?.slice(0, 80));
         if (data.error.code === 429) {
-          // Rate limited - wait briefly then try next model
           await new Promise(r => setTimeout(r, 1000));
         }
         continue;
       }
-      // Null-safe check: thinking models can return content without parts
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
       if (text) {
         return { answer: text };
       }
-      // No text in response (blocked or empty) - try next model
       continue;
     } catch (e) {
       console.warn(`Gemini ${model} fetch error:`, e);
@@ -288,9 +286,9 @@ export default function BibleAI() {
   const hasHistory = messages.length > 1;
 
   return (
-    <div className="flex flex-col h-screen bg-[#0a0a1a]">
+    <div className="flex flex-col h-[100dvh] bg-[#0a0a1a] overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
+      <div className="flex-shrink-0 flex items-center gap-3 px-4 py-3 border-b border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm z-10" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
         <button
           onClick={() => navigate("/")}
           className="text-purple-300 hover:text-white transition-colors"
@@ -364,7 +362,7 @@ export default function BibleAI() {
       </div>
 
       {/* Input */}
-      <div className="px-4 py-3 border-t border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm">
+      <div className="flex-shrink-0 px-4 py-3 border-t border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0.75rem))' }}>
         {isListening && (
           <div className="flex items-center justify-center gap-2 mb-2 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
@@ -372,7 +370,7 @@ export default function BibleAI() {
             <button onClick={toggleListening} className="text-red-400 hover:text-red-300 text-xs ml-1">✕ Stop</button>
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full">
           {isSpeechRecognitionSupported() && (
             <button
               onClick={toggleListening}
@@ -394,13 +392,13 @@ export default function BibleAI() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendChat()}
             placeholder={isListening ? "Listening..." : "Ask anything..."}
-            className="flex-1 bg-[#1a1a3a] border border-purple-500/30 rounded-full px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-colors"
+            className="flex-1 min-w-0 bg-[#1a1a3a] border border-purple-500/30 rounded-full px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-colors"
             disabled={isLoading}
           />
           <button
             onClick={() => sendChat()}
             disabled={isLoading || !input.trim()}
-            className="bg-purple-600 hover:bg-purple-500 disabled:bg-purple-900 disabled:opacity-50 text-white font-bold px-5 py-2.5 rounded-full text-sm transition-all active:scale-95"
+            className="flex-shrink-0 bg-purple-600 hover:bg-purple-500 disabled:bg-purple-900 disabled:opacity-50 text-white font-bold px-4 py-2.5 rounded-full text-sm transition-all active:scale-95"
           >
             SEND
           </button>

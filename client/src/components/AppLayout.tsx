@@ -13,7 +13,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   const [location, setLocation] = useLocation();
 
   return (
-    <div className="cosmic-bg min-h-screen flex flex-col max-w-[480px] mx-auto relative">
+    <div className="cosmic-bg min-h-screen flex flex-col max-w-[480px] mx-auto relative overflow-x-hidden">
       {/* Floating crystals - uses --neon-rgb for theme awareness */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute top-[10%] right-[5%] w-6 h-6 opacity-40" style={{ animation: 'floatCrystal 4s ease-in-out infinite' }}>
@@ -31,7 +31,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main content */}
-      <main className={`flex-1 relative z-10 overflow-y-auto ${location === "/bible-ai" ? "" : "pb-20"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)' }}>
+      <main className={`flex-1 relative z-10 ${location === "/bible-ai" ? "overflow-hidden" : "overflow-y-auto pb-20"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)' }}>
         {children}
       </main>
 

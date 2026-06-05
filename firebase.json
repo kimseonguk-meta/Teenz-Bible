@@ -3,7 +3,6 @@
     "public": "dist/public",
     "ignore": [
       "firebase.json",
-      "**/.*",
       "**/node_modules/**",
       "**/__manus__/**"
     ],
@@ -13,11 +12,32 @@
         "destination": "/privacy-policy.html"
       },
       {
+        "source": "/.well-known/**",
+        "destination": "/.well-known/assetlinks.json"
+      },
+      {
+        "source": "/api/bible-ai",
+        "function": "bibleAI"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
     ],
     "headers": [
+      {
+        "source": "/.well-known/assetlinks.json",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
       {
         "source": "**/*.html",
         "headers": [
@@ -64,6 +84,9 @@
       }
     ],
     "site": "teens-bible-94271"
+  },
+  "functions": {
+    "source": "functions"
   },
   "database": {
     "rules": "database.rules.json"

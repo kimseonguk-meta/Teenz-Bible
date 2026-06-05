@@ -170,6 +170,83 @@ async function checkAndAutoFlag(report) {
 }
 
 /**
+ * Bible AI - Gemini API proxy for native and web clients
+ * This avoids rate limiting issues by routing through server with retry logic
+ */
+exports.bibleAI = functions.https.onRequest(async (req, res) => {
+  // CORS
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  if (req.method !== "POST") {
+    res.status(405).json({ error: "Method not allowed" });
+    return;
+  }
+
+  const { messages, systemPrompt } = req.body;
+  if (!messages || !systemPrompt) {
+    res.status(400).json({ error: "Missing messages or systemPrompt" });
+    return;
+  }
+
+  const GEMINI_KEY = functions.config().gemini?.key || "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
+  const models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"];
+  const fetch = require("node-fetch");
+
+  for (const model of models) {
+    try {
+      const isThinkingModel = model.includes("2.5") && !model.includes("lite");
+      const reqBody = JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: messages,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 8192,
+          ...(isThinkingModel ? { thinkingConfig: { thinkingBudget: 1024 } } : {}),
+        },
+        safetySettings: [
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        ],
+      });
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
+      );
+      const data = await response.json();
+
+      if (data.error) {
+        console.warn(`Gemini ${model} error:`, data.error.code, data.error.message?.slice(0, 80));
+        if (data.error.code === 429) {
+          await new Promise((r) => setTimeout(r, 1000));
+        }
+        continue;
+      }
+
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) {
+        res.json({ data: { candidates: [{ content: { parts: [{ text }] } }] } });
+        return;
+      }
+      continue;
+    } catch (e) {
+      console.warn(`Gemini ${model} fetch error:`, e.message);
+    }
+  }
+
+  res.status(503).json({ error: "All models unavailable. Please try again later." });
+});
+
+/**
  * HTTP function to get report statistics (for admin dashboard)
  */
 exports.getReportStats = functions.https.onRequest(async (req, res) => {
