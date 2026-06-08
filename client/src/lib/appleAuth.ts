@@ -29,27 +29,44 @@ export type LinkResult =
 /**
  * Build an OAuthCredential from the native plugin result
  */
-function buildAppleCredential(credential: { idToken?: string; nonce?: string }): AuthCredential {
+function buildAppleCredential(credential: { idToken?: string; nonce?: string; rawNonce?: string }): AuthCredential {
   const provider = new OAuthProvider("apple.com");
+  // The nonce field from the plugin is the raw nonce (unhashed)
+  const rawNonce = credential.nonce || credential.rawNonce;
   return provider.credential({
     idToken: credential.idToken!,
-    rawNonce: credential.nonce!,
+    rawNonce: rawNonce!,
   });
 }
 
 /**
- * Get the Apple credential from the native plugin (iOS) or return null for web.
+ * Get the Apple credential from the native plugin (iOS).
  * This only triggers the Apple UI once and returns the credential for reuse.
  */
 async function getAppleCredentialFromNative(): Promise<AuthCredential> {
   const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
   
+  console.log("[AppleAuth] Calling FirebaseAuthentication.signInWithApple()...");
   const result = await FirebaseAuthentication.signInWithApple();
   
-  console.log("[AppleAuth] Native plugin returned. User:", result.user?.uid, "Credential:", !!result.credential);
+  console.log("[AppleAuth] Native plugin returned:", JSON.stringify({
+    hasUser: !!result.user,
+    userId: result.user?.uid,
+    hasCredential: !!result.credential,
+    credentialKeys: result.credential ? Object.keys(result.credential) : [],
+    hasIdToken: !!result.credential?.idToken,
+    hasNonce: !!result.credential?.nonce,
+  }));
   
-  if (!result.credential?.idToken || !result.credential?.nonce) {
+  if (!result.credential?.idToken) {
     throw new Error("Sign-in cancelled or no credential returned");
+  }
+  
+  if (!result.credential?.nonce) {
+    // Some versions of the plugin may not return nonce with skipNativeAuth
+    // In that case, we cannot build a valid credential for Firebase JS SDK
+    console.error("[AppleAuth] No nonce returned from native plugin. Credential keys:", Object.keys(result.credential));
+    throw new Error("No nonce returned from Apple Sign-In plugin. Cannot authenticate.");
   }
   
   return buildAppleCredential(result.credential);
@@ -65,6 +82,7 @@ async function performAppleSignIn(): Promise<{ user: User; credential: AuthCrede
     const oauthCredential = await getAppleCredentialFromNative();
     
     // Sign in on the JS Firebase SDK
+    console.log("[AppleAuth] Calling signInWithCredential on JS SDK...");
     const userCredential = await signInWithCredential(auth, oauthCredential);
     console.log("[AppleAuth] JS SDK signInWithCredential success. User:", userCredential.user.uid);
     
@@ -75,6 +93,17 @@ async function performAppleSignIn(): Promise<{ user: User; credential: AuthCrede
     const credential = OAuthProvider.credentialFromResult(result);
     return { user: result.user, credential: credential! };
   }
+}
+
+/**
+ * Save Apple linked status and clear Google traces
+ */
+function saveAppleLinkedStatus(email: string) {
+  localStorage.setItem("teensBibleLinkedApple", "true");
+  localStorage.setItem("teensBibleAppleEmail", email || "Apple Account");
+  localStorage.setItem("teensBibleLastSignInProvider", "apple");
+  localStorage.removeItem("teensBibleLinkedGoogle");
+  localStorage.removeItem("teensBibleGoogleEmail");
 }
 
 /**
@@ -108,12 +137,7 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
     const result = await performAppleSignIn();
     await immediateSyncToFirebase();
     
-    // Clear Google trace so only Apple shows
-    localStorage.setItem("teensBibleLinkedApple", "true");
-    localStorage.setItem("teensBibleAppleEmail", result.user.email || "Apple Account");
-    localStorage.setItem("teensBibleLastSignInProvider", "apple");
-    localStorage.removeItem("teensBibleLinkedGoogle");
-    localStorage.removeItem("teensBibleGoogleEmail");
+    saveAppleLinkedStatus(result.user.email || "Apple Account");
     
     return { 
       success: true, 
@@ -130,7 +154,7 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
  * 
  * Key fix: We get the Apple credential ONCE from the native plugin, then:
  * 1. Try linkWithCredential (preserves anonymous UID)
- * 2. If that fails with credential-already-in-use, use the SAME credential
+ * 2. If that fails for ANY reason, use the SAME credential
  *    to signInWithCredential (no second Apple popup!)
  */
 async function linkAnonymousToApple(): Promise<LinkResult> {
@@ -153,27 +177,18 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
       const user = popupResult.user;
       console.log("[AppleAuth] Web popup sign-in success. User:", user.uid);
       await immediateSyncToFirebase();
-      // Clear Google trace so only Apple shows
-      localStorage.setItem("teensBibleLinkedApple", "true");
-      localStorage.setItem("teensBibleAppleEmail", user.email || "Apple Account");
-      localStorage.setItem("teensBibleLastSignInProvider", "apple");
-      localStorage.removeItem("teensBibleLinkedGoogle");
-      localStorage.removeItem("teensBibleGoogleEmail");
+      saveAppleLinkedStatus(user.email || "Apple Account");
       return { success: true, type: "linked", message: "Account linked to Apple!" };
     }
     
     // Step 2: Try to link the credential to the anonymous user
     try {
+      console.log("[AppleAuth] Attempting linkWithCredential...");
       const userCredential = await linkWithCredential(currentUser, oauthCredential);
       console.log("[AppleAuth] linkWithCredential success. User:", userCredential.user.uid);
       
       await immediateSyncToFirebase();
-      // Clear Google trace so only Apple shows
-      localStorage.setItem("teensBibleLinkedApple", "true");
-      localStorage.setItem("teensBibleAppleEmail", userCredential.user.email || "Apple Account");
-      localStorage.setItem("teensBibleLastSignInProvider", "apple");
-      localStorage.removeItem("teensBibleLinkedGoogle");
-      localStorage.removeItem("teensBibleGoogleEmail");
+      saveAppleLinkedStatus(userCredential.user.email || "Apple Account");
       
       return { 
         success: true, 
@@ -183,26 +198,23 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
     } catch (linkError: any) {
       console.log("[AppleAuth] linkWithCredential failed:", linkError.code, linkError.message);
       
-      if (linkError.code === "auth/credential-already-in-use") {
-        // Apple account already exists - use the SAME credential to sign in
-        // NO second Apple popup needed!
-        return await handleCredentialConflict(oauthCredential, oldUid);
-      }
-      
-      throw linkError;
+      // For ANY link failure, fall back to signInWithCredential
+      // Common cases: auth/credential-already-in-use, auth/provider-already-linked, 
+      // auth/email-already-in-use, auth/invalid-credential
+      return await handleCredentialConflict(oauthCredential, oldUid);
     }
   } catch (error: any) {
     // Native plugin cancellation
     if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
       return { success: false, message: "Sign-in cancelled" };
     }
-    console.log("[AppleAuth] Link failed:", error.code, error.message);
+    console.error("[AppleAuth] Link failed:", error.code, error.message, error);
     return handleAppleError(error);
   }
 }
 
 /**
- * Handle credential conflict: Apple account already linked to another Firebase user.
+ * Handle credential conflict: link failed for any reason.
  * Uses the ALREADY-OBTAINED credential to sign in (no second Apple popup).
  */
 async function handleCredentialConflict(oauthCredential: AuthCredential, oldAnonymousUid: string): Promise<LinkResult> {
@@ -212,6 +224,7 @@ async function handleCredentialConflict(oauthCredential: AuthCredential, oldAnon
     const anonData = anonDataSnapshot.val();
 
     // Sign in with the SAME credential we already have (no second Apple UI!)
+    console.log("[AppleAuth] Attempting signInWithCredential (fallback)...");
     const userCredential = await signInWithCredential(auth, oauthCredential);
     const appleUid = userCredential.user.uid;
 
@@ -225,12 +238,7 @@ async function handleCredentialConflict(oauthCredential: AuthCredential, oldAnon
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
-    // Save linked status — clear Google trace so only Apple shows
-    localStorage.setItem("teensBibleLinkedApple", "true");
-    localStorage.setItem("teensBibleAppleEmail", userCredential.user.email || "Apple Account");
-    localStorage.setItem("teensBibleLastSignInProvider", "apple");
-    localStorage.removeItem("teensBibleLinkedGoogle");
-    localStorage.removeItem("teensBibleGoogleEmail");
+    saveAppleLinkedStatus(userCredential.user.email || "Apple Account");
 
     return { 
       success: true, 
@@ -239,15 +247,15 @@ async function handleCredentialConflict(oauthCredential: AuthCredential, oldAnon
       restored: !!restored
     };
   } catch (err: any) {
-    console.error("[AppleAuth] Credential conflict handling failed:", err);
-    return handleAppleError(err);
+    console.error("[AppleAuth] Credential conflict handling failed:", err.code, err.message, err);
+    return { success: false, message: `Apple sign-in failed: ${err.code || err.message || 'Unknown error'}` };
   }
 }
 
 /**
  * Migrate anonymous user data to the Apple user account if needed
  */
-async function migrateDataIfNeeded(anonData: any, appleUid: string, oldAnonymousUid: string) {
+async function migrateDataIfNeeded(anonData: any, appleUid: string, _oldAnonymousUid: string) {
   if (!anonData) return;
   
   const appleDataSnapshot = await get(ref(db, `userData/${appleUid}`));
@@ -287,12 +295,7 @@ async function signInWithAppleDirect(): Promise<LinkResult> {
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
-    // Clear Google trace so only Apple shows
-    localStorage.setItem("teensBibleLinkedApple", "true");
-    localStorage.setItem("teensBibleAppleEmail", result.user.email || "Apple Account");
-    localStorage.setItem("teensBibleLastSignInProvider", "apple");
-    localStorage.removeItem("teensBibleLinkedGoogle");
-    localStorage.removeItem("teensBibleGoogleEmail");
+    saveAppleLinkedStatus(result.user.email || "Apple Account");
 
     return { 
       success: true, 
@@ -319,8 +322,10 @@ function handleAppleError(error: any): LinkResult {
   if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
     return { success: false, message: "Sign-in cancelled" };
   }
-  console.error('[AppleAuth] Error:', error.code, error.message);
-  return { success: false, message: 'Something went wrong. Please try again.' };
+  console.error('[AppleAuth] Error:', error.code, error.message, error);
+  // Show more detailed error for debugging
+  const detail = error.code || error.message || 'Unknown error';
+  return { success: false, message: `Apple sign-in failed: ${detail}` };
 }
 
 /**
