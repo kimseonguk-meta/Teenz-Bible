@@ -108,9 +108,12 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
     const result = await performAppleSignIn();
     await immediateSyncToFirebase();
     
+    // Clear Google trace so only Apple shows
     localStorage.setItem("teensBibleLinkedApple", "true");
     localStorage.setItem("teensBibleAppleEmail", result.user.email || "Apple Account");
     localStorage.setItem("teensBibleLastSignInProvider", "apple");
+    localStorage.removeItem("teensBibleLinkedGoogle");
+    localStorage.removeItem("teensBibleGoogleEmail");
     
     return { 
       success: true, 
@@ -150,9 +153,12 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
       const user = popupResult.user;
       console.log("[AppleAuth] Web popup sign-in success. User:", user.uid);
       await immediateSyncToFirebase();
+      // Clear Google trace so only Apple shows
       localStorage.setItem("teensBibleLinkedApple", "true");
       localStorage.setItem("teensBibleAppleEmail", user.email || "Apple Account");
       localStorage.setItem("teensBibleLastSignInProvider", "apple");
+      localStorage.removeItem("teensBibleLinkedGoogle");
+      localStorage.removeItem("teensBibleGoogleEmail");
       return { success: true, type: "linked", message: "Account linked to Apple!" };
     }
     
@@ -162,9 +168,12 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
       console.log("[AppleAuth] linkWithCredential success. User:", userCredential.user.uid);
       
       await immediateSyncToFirebase();
+      // Clear Google trace so only Apple shows
       localStorage.setItem("teensBibleLinkedApple", "true");
       localStorage.setItem("teensBibleAppleEmail", userCredential.user.email || "Apple Account");
       localStorage.setItem("teensBibleLastSignInProvider", "apple");
+      localStorage.removeItem("teensBibleLinkedGoogle");
+      localStorage.removeItem("teensBibleGoogleEmail");
       
       return { 
         success: true, 
@@ -216,10 +225,12 @@ async function handleCredentialConflict(oauthCredential: AuthCredential, oldAnon
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
-    // Save linked status - use Apple info regardless of what Firebase shows as primary provider
+    // Save linked status — clear Google trace so only Apple shows
     localStorage.setItem("teensBibleLinkedApple", "true");
     localStorage.setItem("teensBibleAppleEmail", userCredential.user.email || "Apple Account");
     localStorage.setItem("teensBibleLastSignInProvider", "apple");
+    localStorage.removeItem("teensBibleLinkedGoogle");
+    localStorage.removeItem("teensBibleGoogleEmail");
 
     return { 
       success: true, 
@@ -276,9 +287,12 @@ async function signInWithAppleDirect(): Promise<LinkResult> {
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
+    // Clear Google trace so only Apple shows
     localStorage.setItem("teensBibleLinkedApple", "true");
     localStorage.setItem("teensBibleAppleEmail", result.user.email || "Apple Account");
     localStorage.setItem("teensBibleLastSignInProvider", "apple");
+    localStorage.removeItem("teensBibleLinkedGoogle");
+    localStorage.removeItem("teensBibleGoogleEmail");
 
     return { 
       success: true, 

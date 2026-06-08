@@ -97,10 +97,12 @@ async function linkAnonymousToGoogle(): Promise<LinkResult> {
     // Sync again to make sure everything is saved
     await immediateSyncToFirebase();
     
-    // Save the linked status
+    // Save the linked status — clear Apple trace so only Google shows
     localStorage.setItem("teensBibleLinkedGoogle", "true");
     localStorage.setItem("teensBibleGoogleEmail", googleResult.user.email || "");
     localStorage.setItem("teensBibleLastSignInProvider", "google");
+    localStorage.removeItem("teensBibleLinkedApple");
+    localStorage.removeItem("teensBibleAppleEmail");
     
     return { 
       success: true, 
@@ -176,10 +178,12 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
-    // Save linked status
+    // Save linked status — clear Apple trace so only Google shows
     localStorage.setItem("teensBibleLinkedGoogle", "true");
     localStorage.setItem("teensBibleGoogleEmail", googleUser.email || "");
     localStorage.setItem("teensBibleLastSignInProvider", "google");
+    localStorage.removeItem("teensBibleLinkedApple");
+    localStorage.removeItem("teensBibleAppleEmail");
 
     return { 
       success: true, 
@@ -208,10 +212,12 @@ async function signInWithGoogleDirect(): Promise<LinkResult> {
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
-    // Save linked status
+    // Save linked status — clear Apple trace so only Google shows
     localStorage.setItem("teensBibleLinkedGoogle", "true");
     localStorage.setItem("teensBibleGoogleEmail", result.user.email || "");
     localStorage.setItem("teensBibleLastSignInProvider", "google");
+    localStorage.removeItem("teensBibleLinkedApple");
+    localStorage.removeItem("teensBibleAppleEmail");
 
     return { 
       success: true, 
