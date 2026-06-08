@@ -8,11 +8,13 @@
  * 1. JS generates a random rawNonce
  * 2. JS computes SHA256(rawNonce) → hashedNonce
  * 3. Pass hashedNonce to native Apple Sign-In plugin
- * 4. Apple returns identityToken containing hashedNonce
- * 5. JS creates OAuthCredential with { idToken: identityToken, rawNonce }
- * 6. Firebase JS SDK verifies: SHA256(rawNonce) === nonce in idToken → MATCH!
+ * 4. Apple returns identityToken + authorizationCode
+ * 5. JS creates OAuthCredential with { idToken, rawNonce, accessToken: authorizationCode }
+ * 6. Firebase JS SDK verifies the credential with Apple's servers using the authorizationCode
  * 
- * This approach bypasses native Firebase SDK entirely, avoiding nonce mismatch issues.
+ * CRITICAL: Firebase Auth backend requires authorizationCode (as accessToken) since 2024.
+ * Without it, Firebase returns misleading "auth/missing-or-invalid-nonce" error.
+ * See: firebase/flutterfire#13235, firebase/firebase-ios-sdk#16199
  */
 
 import { auth, appleProvider, db, ref, get, set } from "./firebase";
@@ -62,6 +64,9 @@ async function sha256(input: string): Promise<string> {
 /**
  * Perform Apple sign-in using native plugin (iOS) with JS-controlled nonce.
  * Returns the Firebase User after successful authentication.
+ * 
+ * KEY FIX (Build 29): Pass authorizationCode as accessToken to Firebase.
+ * Firebase Auth backend requires this to validate the Apple credential.
  */
 async function performNativeAppleSignIn(): Promise<User> {
   const { SignInWithApple } = await import("@capacitor-community/apple-sign-in");
@@ -71,35 +76,52 @@ async function performNativeAppleSignIn(): Promise<User> {
   const hashedNonce = await sha256(rawNonce);
   
   console.log("[AppleAuth] Generated nonce, calling SignInWithApple.authorize()...");
-  console.log("[AppleAuth] hashedNonce (first 10 chars):", hashedNonce.substring(0, 10));
   
   // Call native Apple Sign-In UI with our hashed nonce
-  const result = await SignInWithApple.authorize({
-    clientId: "com.teensbible.app", // Not used on native iOS, but required by plugin
-    redirectURI: "", // Not used on native iOS
-    scopes: "email name",
-    nonce: hashedNonce, // Pass the SHA256 hash to Apple
-  });
+  let result: any;
+  try {
+    result = await SignInWithApple.authorize({
+      clientId: "com.teensbible.app", // Not used on native iOS, but required by plugin
+      redirectURI: "", // Not used on native iOS
+      scopes: "email name",
+      nonce: hashedNonce, // Pass the SHA256 hash to Apple
+    });
+  } catch (authorizeError: any) {
+    console.error("[AppleAuth] SignInWithApple.authorize() FAILED:", authorizeError);
+    if (authorizeError?.code === "ERR_CANCELED" || authorizeError?.code === "1001") {
+      throw authorizeError; // Let the error handler treat it as cancelled
+    }
+    throw new Error(`Apple authorize failed: ${authorizeError?.message || authorizeError}`);
+  }
+  
+  const identityToken = result.response.identityToken;
+  const authorizationCode = result.response.authorizationCode;
   
   console.log("[AppleAuth] Apple returned response:", JSON.stringify({
-    hasUser: !!result.response.user,
-    hasEmail: !!result.response.email,
-    hasIdentityToken: !!result.response.identityToken,
-    tokenLength: result.response.identityToken?.length,
+    hasIdentityToken: !!identityToken,
+    tokenLength: identityToken?.length,
+    hasAuthorizationCode: !!authorizationCode,
+    authCodeLength: authorizationCode?.length,
   }));
   
-  if (!result.response.identityToken) {
+  if (!identityToken) {
     throw new Error("No identity token returned from Apple Sign-In");
   }
   
-  // Create Firebase credential with the identity token and RAW nonce
+  if (!authorizationCode) {
+    console.warn("[AppleAuth] No authorizationCode returned - Firebase may reject credential");
+  }
+  
+  // Create Firebase credential with idToken, rawNonce, AND accessToken (authorizationCode)
+  // This is the critical fix! Firebase requires the authorizationCode to validate with Apple.
   const provider = new OAuthProvider("apple.com");
   const credential = provider.credential({
-    idToken: result.response.identityToken,
-    rawNonce: rawNonce, // Firebase will SHA256 this and compare with token's nonce
+    idToken: identityToken,
+    rawNonce: rawNonce,
+    accessToken: authorizationCode, // CRITICAL: Firebase needs this to validate with Apple!
   });
   
-  console.log("[AppleAuth] Created Firebase credential, signing in...");
+  console.log("[AppleAuth] Created Firebase credential with accessToken (authorizationCode), signing in...");
   
   // Try to link with current anonymous user first
   const currentUser = auth.currentUser;
@@ -238,12 +260,7 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
       restored: !!restored
     };
   } catch (error: any) {
-    // Plugin cancellation
-    if (error.message?.includes("canceled") || error.message?.includes("cancelled") || 
-        error.message?.includes("The operation couldn") || error.code === "ERR_CANCELED") {
-      return { success: false, message: "Sign-in cancelled" };
-    }
-    console.error("[AppleAuth] Link failed:", error.code, error.message, error);
+    console.error("[AppleAuth] linkAnonymousToApple failed:", error.code, error.message, error);
     return handleAppleError(error);
   }
 }
@@ -315,18 +332,21 @@ async function signInWithAppleDirect(): Promise<LinkResult> {
  * Common error handler for Apple sign-in errors
  */
 function handleAppleError(error: any): LinkResult {
+  console.error('[AppleAuth] handleAppleError called with:', error.code, error.message, error);
+  
+  // Only treat as cancelled if user explicitly tapped cancel button
   if (error.code === "auth/popup-closed-by-user" || error.code === "auth/cancelled-popup-request") {
     return { success: false, message: "Sign-in cancelled" };
   }
   if (error.code === "auth/popup-blocked") {
     return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
   }
-  // Native plugin cancellation
-  if (error.message?.includes("canceled") || error.message?.includes("cancelled") || 
-      error.message?.includes("The operation couldn") || error.code === "ERR_CANCELED") {
+  // Only treat as cancelled if error code is specifically 1001 (ASAuthorizationError.canceled)
+  if (error.code === "ERR_CANCELED" || error.code === "1001") {
     return { success: false, message: "Sign-in cancelled" };
   }
-  console.error('[AppleAuth] Error:', error.code, error.message, error);
+  
+  // ALWAYS show the actual error to user - never hide it
   const detail = error.code || error.message || 'Unknown error';
   return { success: false, message: `Apple sign-in failed: ${detail}` };
 }
@@ -346,7 +366,7 @@ export async function handleAppleRedirectResult(): Promise<LinkResult | null> {
 export function isLinkedToApple(): boolean {
   const user = auth.currentUser;
   if (!user) return false;
-  return user.providerData.some(p => p.providerId === "apple.com") || 
+  return user.providerData.some(p => p.providerId === "apple.com") ||
          localStorage.getItem("teensBibleLinkedApple") === "true";
 }
 
