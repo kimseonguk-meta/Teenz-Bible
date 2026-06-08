@@ -100,6 +100,7 @@ async function linkAnonymousToGoogle(): Promise<LinkResult> {
     // Save the linked status
     localStorage.setItem("teensBibleLinkedGoogle", "true");
     localStorage.setItem("teensBibleGoogleEmail", googleResult.user.email || "");
+    localStorage.setItem("teensBibleLastSignInProvider", "google");
     
     return { 
       success: true, 
@@ -178,6 +179,7 @@ async function handleCredentialConflict(error: any, oldAnonymousUid: string): Pr
     // Save linked status
     localStorage.setItem("teensBibleLinkedGoogle", "true");
     localStorage.setItem("teensBibleGoogleEmail", googleUser.email || "");
+    localStorage.setItem("teensBibleLastSignInProvider", "google");
 
     return { 
       success: true, 
@@ -209,6 +211,7 @@ async function signInWithGoogleDirect(): Promise<LinkResult> {
     // Save linked status
     localStorage.setItem("teensBibleLinkedGoogle", "true");
     localStorage.setItem("teensBibleGoogleEmail", result.user.email || "");
+    localStorage.setItem("teensBibleLastSignInProvider", "google");
 
     return { 
       success: true, 
@@ -281,6 +284,7 @@ export async function signOutGoogle(): Promise<void> {
   // Clear linked status
   localStorage.removeItem("teensBibleLinkedGoogle");
   localStorage.removeItem("teensBibleGoogleEmail");
+  localStorage.removeItem("teensBibleLastSignInProvider");
   
   // Sign in anonymously again
   const { signInAnonymously } = await import("firebase/auth");
