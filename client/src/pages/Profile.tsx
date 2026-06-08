@@ -931,9 +931,9 @@ export default function Profile() {
               {(() => {
                 const lastProvider = localStorage.getItem("teensBibleLastSignInProvider");
                 // Determine which provider to display:
-                // Priority: lastProvider flag > whichever is linked
-                const showApple = lastProvider === "apple" || (!lastProvider && appleLinked && !googleLinked);
-                const showGoogle = !showApple && googleLinked;
+                // Priority: lastProvider flag > appleLinked (Apple preferred when ambiguous) > googleLinked
+                const showApple = lastProvider === "apple" || (!lastProvider && appleLinked);
+                const showGoogle = lastProvider === "google" || (!showApple && googleLinked);
 
                 if (showApple && appleLinked) {
                   return (

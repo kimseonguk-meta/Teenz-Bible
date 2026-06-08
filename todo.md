@@ -115,3 +115,11 @@
 ## Bible AI Fix (Jun 4, 2026)
 - [ ] Fix Bible AI 'temporarily unavailable' error - switch to server-side invokeLLM
 - [ ] Ensure native app (Android/iOS) also uses server proxy via Manus hosting
+
+## Build 23 — Apple Sign-In Fix + Single Provider UI (Jun 8, 2026)
+- [x] Rewrite appleAuth.ts: get credential once, reuse in conflict handler (no double Apple popup)
+- [x] skipNativeAuth: true confirmed in capacitor.config.ts
+- [x] Profile UI: show only ONE linked account (last sign-in provider) using teensBibleLastSignInProvider localStorage key
+- [x] Fix Package.swift paths (relative paths for ZIP)
+- [x] Bump build number to 23
+- [x] Package and deliver Build 23 ZIP
