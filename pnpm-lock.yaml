@@ -16,6 +16,9 @@ importers:
 
   .:
     dependencies:
+      '@capacitor-community/apple-sign-in':
+        specifier: ^7.1.0
+        version: 7.1.0(@capacitor/core@8.3.4)
       '@capacitor-firebase/authentication':
         specifier: ^8.2.0
         version: 8.2.0(@capacitor/core@8.3.4)(firebase@12.13.0)
@@ -403,6 +406,11 @@ packages:
     resolution: {integrity: sha512-iAHFkaLBDJBC+EkGO1hF7hnIW2+oKKYVOl8NFAQH//3xeNEzvGdS9tOALRPR+JjR/M5NLyj+FG0VV7WFb1aJmw==}
     peerDependencies:
       vite: ^4.0.0 || ^5.0.0
+
+  '@capacitor-community/apple-sign-in@7.1.0':
+    resolution: {integrity: sha512-df7cA7vfvvvilTtpJKeVvxO31W+py5t3HK9233GBD5MvgAgtGvCqeQ3pI0noNkVsKPF9B1g/po8Mph6s4bVSmw==}
+    peerDependencies:
+      '@capacitor/core': '>=7.0.0'
 
   '@capacitor-firebase/authentication@8.2.0':
     resolution: {integrity: sha512-9TXdnxnDVuptwUM0fcChnAbejYAjO6UR7VHWHak7PRaBL/6MyHKtb8vgorFMH3Gf+pInZ6jAJUVpVBcaJ5HnLw==}
@@ -2510,6 +2518,9 @@ packages:
 
   '@types/request@2.48.13':
     resolution: {integrity: sha512-FGJ6udDNUCjd19pp0Q3iTiDkwhYup7J8hpMW9c4k53NrccQFFWKRho6hvtPPEhnXWKvukfwAlB6DbDz4yhH5Gg==}
+
+  '@types/scriptjs@0.0.2':
+    resolution: {integrity: sha512-GFrUgzGYfNX3VWZwMyzr0JrBwzLv5Kes4BQBvo6hXdRy14/GBbpCiVwwB7v1o2xIEvFf+9GyznmYhuesQQjSag==}
 
   '@types/send@0.17.5':
     resolution: {integrity: sha512-z6F2D3cOStZvuk2SaP6YrwkNO65iTZcwA2ZkSABegdkAh/lf+Aa/YQndZVfmEXT5vgAp6zv06VQ3ejSVjAny4w==}
@@ -5551,6 +5562,9 @@ packages:
   scheduler@0.27.0:
     resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
+  scriptjs@2.5.9:
+    resolution: {integrity: sha512-qGVDoreyYiP1pkQnbnFAUIS5AjenNwwQBdl7zeos9etl+hYKWahjRTfzAZZYBv5xNHx7vNKCmaLDQZ6Fr2AEXg==}
+
   semver-diff@3.1.1:
     resolution: {integrity: sha512-GX0Ix/CJcHyB8c4ykpHGIAvLyOwOobtM/8d+TQkAd81/bEjgPHrfba41Vpesr7jX/t8Uh+R3EX9eAS5be+jQYg==}
     engines: {node: '>=8'}
@@ -6562,6 +6576,12 @@ snapshots:
     dependencies:
       '@builder.io/jsx-loc-internals': 0.0.1
       vite: 7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6)(yaml@2.9.0)
+
+  '@capacitor-community/apple-sign-in@7.1.0(@capacitor/core@8.3.4)':
+    dependencies:
+      '@capacitor/core': 8.3.4
+      '@types/scriptjs': 0.0.2
+      scriptjs: 2.5.9
 
   '@capacitor-firebase/authentication@8.2.0(@capacitor/core@8.3.4)(firebase@12.13.0)':
     dependencies:
@@ -8769,6 +8789,8 @@ snapshots:
       '@types/tough-cookie': 4.0.5
       form-data: 2.5.5
     optional: true
+
+  '@types/scriptjs@0.0.2': {}
 
   '@types/send@0.17.5':
     dependencies:
@@ -12481,6 +12503,8 @@ snapshots:
   sax@1.6.0: {}
 
   scheduler@0.27.0: {}
+
+  scriptjs@2.5.9: {}
 
   semver-diff@3.1.1:
     dependencies:
