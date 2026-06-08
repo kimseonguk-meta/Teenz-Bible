@@ -1,24 +1,26 @@
 /**
  * Apple Account Linking for Teenz Bible
  * 
- * Uses @capacitor-community/apple-sign-in for native Apple UI only.
- * Firebase authentication is handled entirely by the JS SDK.
+ * Uses @capacitor-firebase/authentication for native Apple Sign-In on iOS.
+ * This is the same pattern as Google Auth - the native Firebase SDK handles
+ * the entire Apple Sign-In flow including nonce generation and validation.
  * 
  * Flow (native iOS):
- * 1. JS generates a random rawNonce
- * 2. JS computes SHA256(rawNonce) → hashedNonce
- * 3. Pass hashedNonce to native Apple Sign-In plugin
- * 4. Apple returns identityToken + authorizationCode
- * 5. JS creates OAuthCredential with { idToken, rawNonce, accessToken: authorizationCode }
- * 6. Firebase JS SDK verifies the credential with Apple's servers using the authorizationCode
+ * 1. Call FirebaseAuthentication.signInWithApple()
+ * 2. Native Firebase SDK generates nonce, shows Apple UI, validates token
+ * 3. Native SDK returns credential (idToken, nonce, authorizationCode)
+ * 4. JS creates OAuthCredential from the returned credential
+ * 5. JS calls signInWithCredential to sync the web layer
  * 
- * CRITICAL: Firebase Auth backend requires authorizationCode (as accessToken) since 2024.
- * Without it, Firebase returns misleading "auth/missing-or-invalid-nonce" error.
- * See: firebase/flutterfire#13235, firebase/firebase-ios-sdk#16199
+ * This approach eliminates nonce mismatch errors because the native Firebase SDK
+ * manages the entire nonce lifecycle internally.
+ * 
+ * BUILD 30 FIX: Switched from @capacitor-community/apple-sign-in (manual nonce)
+ * to @capacitor-firebase/authentication (native Firebase handles nonce).
  */
 
 import { auth, appleProvider, db, ref, get, set } from "./firebase";
-import { OAuthProvider, signInWithPopup, signInWithCredential, linkWithCredential, onAuthStateChanged } from "firebase/auth";
+import { OAuthProvider, signInWithPopup, signInWithCredential, linkWithCredential } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { syncFromFirebase, immediateSyncToFirebase } from "./firebaseSync";
 import { isNativePlatform } from "./platform";
@@ -41,107 +43,65 @@ function saveAppleLinkedStatus(email: string) {
 }
 
 /**
- * Generate a cryptographically random nonce string
- */
-function generateNonce(length = 32): string {
-  const charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._";
-  const values = new Uint8Array(length);
-  crypto.getRandomValues(values);
-  return Array.from(values, (v) => charset[v % charset.length]).join("");
-}
-
-/**
- * SHA256 hash a string and return hex
- */
-async function sha256(input: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(input);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-/**
- * Perform Apple sign-in using native plugin (iOS) with JS-controlled nonce.
+ * Perform Apple sign-in using native Firebase Authentication plugin (iOS).
+ * The native plugin handles the entire flow: nonce generation, Apple UI, Firebase auth.
  * Returns the Firebase User after successful authentication.
  * 
- * KEY FIX (Build 29): Pass authorizationCode as accessToken to Firebase.
- * Firebase Auth backend requires this to validate the Apple credential.
+ * This mirrors the Google Auth pattern exactly:
+ * 1. Native plugin does the sign-in (handles nonce internally)
+ * 2. Returns credential with idToken + nonce
+ * 3. We create a JS credential and sign in on the web layer
  */
 async function performNativeAppleSignIn(): Promise<User> {
-  const { SignInWithApple } = await import("@capacitor-community/apple-sign-in");
+  const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
   
-  // Generate nonce in JS - this is the key to avoiding nonce mismatch!
-  const rawNonce = generateNonce();
-  const hashedNonce = await sha256(rawNonce);
+  console.log("[AppleAuth] Calling FirebaseAuthentication.signInWithApple()...");
   
-  console.log("[AppleAuth] Generated nonce, calling SignInWithApple.authorize()...");
+  const result = await FirebaseAuthentication.signInWithApple();
   
-  // Call native Apple Sign-In UI with our hashed nonce
-  let result: any;
-  try {
-    result = await SignInWithApple.authorize({
-      clientId: "com.teensbible.app", // Not used on native iOS, but required by plugin
-      redirectURI: "", // Not used on native iOS
-      scopes: "email name",
-      nonce: hashedNonce, // Pass the SHA256 hash to Apple
-    });
-  } catch (authorizeError: any) {
-    console.error("[AppleAuth] SignInWithApple.authorize() FAILED:", authorizeError);
-    if (authorizeError?.code === "ERR_CANCELED" || authorizeError?.code === "1001") {
-      throw authorizeError; // Let the error handler treat it as cancelled
-    }
-    throw new Error(`Apple authorize failed: ${authorizeError?.message || authorizeError}`);
-  }
-  
-  const identityToken = result.response.identityToken;
-  const authorizationCode = result.response.authorizationCode;
-  
-  console.log("[AppleAuth] Apple returned response:", JSON.stringify({
-    hasIdentityToken: !!identityToken,
-    tokenLength: identityToken?.length,
-    hasAuthorizationCode: !!authorizationCode,
-    authCodeLength: authorizationCode?.length,
+  console.log("[AppleAuth] Native signInWithApple result:", JSON.stringify({
+    hasUser: !!result.user,
+    hasCredential: !!result.credential,
+    providerId: result.credential?.providerId,
+    hasIdToken: !!result.credential?.idToken,
+    hasNonce: !!result.credential?.nonce,
+    hasAuthorizationCode: !!result.credential?.authorizationCode,
   }));
   
-  if (!identityToken) {
-    throw new Error("No identity token returned from Apple Sign-In");
+  if (!result.credential) {
+    throw new Error("Sign-in cancelled or no credential returned");
   }
   
-  if (!authorizationCode) {
-    console.warn("[AppleAuth] No authorizationCode returned - Firebase may reject credential");
-  }
-  
-  // Create Firebase credential with idToken, rawNonce, AND accessToken (authorizationCode)
-  // This is the critical fix! Firebase requires the authorizationCode to validate with Apple.
+  // Create JS credential from the native result (same pattern as Google Auth)
   const provider = new OAuthProvider("apple.com");
-  const credential = provider.credential({
-    idToken: identityToken,
-    rawNonce: rawNonce,
-    accessToken: authorizationCode, // CRITICAL: Firebase needs this to validate with Apple!
+  const oauthCredential = provider.credential({
+    idToken: result.credential.idToken!,
+    rawNonce: result.credential.nonce!,
+    accessToken: result.credential.authorizationCode || undefined,
   });
   
-  console.log("[AppleAuth] Created Firebase credential with accessToken (authorizationCode), signing in...");
+  console.log("[AppleAuth] Created JS credential, signing in on web layer...");
   
+  // Sign in on the web layer so Firebase JS SDK is authenticated
   // Try to link with current anonymous user first
   const currentUser = auth.currentUser;
   if (currentUser && currentUser.isAnonymous) {
     try {
       console.log("[AppleAuth] Attempting to link with anonymous user...");
-      const linkResult = await linkWithCredential(currentUser, credential);
+      const linkResult = await linkWithCredential(currentUser, oauthCredential);
       console.log("[AppleAuth] Link successful! User:", linkResult.user.uid);
       return linkResult.user;
     } catch (linkError: any) {
       console.log("[AppleAuth] Link failed:", linkError.code, "- falling back to signIn");
       // If link fails (e.g., credential already in use), sign in directly
-      const signInResult = await signInWithCredential(auth, credential);
+      const signInResult = await signInWithCredential(auth, oauthCredential);
       console.log("[AppleAuth] SignIn successful! User:", signInResult.user.uid);
       return signInResult.user;
     }
   }
   
   // No anonymous user or not anonymous - just sign in
-  const signInResult = await signInWithCredential(auth, credential);
+  const signInResult = await signInWithCredential(auth, oauthCredential);
   console.log("[AppleAuth] SignIn successful! User:", signInResult.user.uid);
   return signInResult.user;
 }
@@ -230,12 +190,12 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
       }
     }
     
-    // Native iOS: use @capacitor-community/apple-sign-in with JS nonce
+    // Native iOS: use @capacitor-firebase/authentication
     // Read anonymous data before we potentially lose the anonymous user
     const anonDataSnapshot = await get(ref(db, `userData/${oldUid}`));
     const anonData = anonDataSnapshot.val();
     
-    console.log("[AppleAuth] Starting native Apple sign-in with JS-controlled nonce...");
+    console.log("[AppleAuth] Starting native Apple sign-in via FirebaseAuthentication plugin...");
     const user = await performNativeAppleSignIn();
     const newUid = user.uid;
     
@@ -341,8 +301,8 @@ function handleAppleError(error: any): LinkResult {
   if (error.code === "auth/popup-blocked") {
     return { success: false, message: "Pop-up blocked. Please allow pop-ups and try again." };
   }
-  // Only treat as cancelled if error code is specifically 1001 (ASAuthorizationError.canceled)
-  if (error.code === "ERR_CANCELED" || error.code === "1001") {
+  // Native cancelled
+  if (error.code === "ERR_CANCELED" || error.code === "1001" || error.message?.includes("cancelled") || error.message?.includes("canceled")) {
     return { success: false, message: "Sign-in cancelled" };
   }
   
