@@ -8,7 +8,7 @@ const config: CapacitorConfig = {
   webDir: 'dist/public',
   plugins: {
     FirebaseAuthentication: {
-      skipNativeAuth: true,
+      skipNativeAuth: false,
       providers: ["apple.com", "google.com"],
     },
     Camera: {

@@ -1,21 +1,27 @@
 /**
  * Apple Account Linking for Teenz Bible
  * 
- * Uses @capacitor-firebase/authentication for native iOS sign-in (fixes blank screen in WebView)
- * Falls back to signInWithPopup for web browsers.
+ * With skipNativeAuth: false (default), the native Capacitor plugin handles BOTH:
+ * 1. The Apple Sign-In UI (ASAuthorizationController)
+ * 2. Firebase Auth sign-in (Auth.auth().signIn(with: credential))
+ * 
+ * This means after FirebaseAuthentication.signInWithApple() resolves:
+ * - The user is ALREADY signed into Firebase natively
+ * - result.user contains the Firebase user info
+ * - No need to call signInWithCredential on the JS SDK
+ * 
+ * However, the JS Firebase SDK may not be aware of the native sign-in.
+ * We need to detect the auth state change via onAuthStateChanged or
+ * reload the auth state.
  * 
  * Flow:
- * 1. User is currently anonymous → native/popup Apple sign-in → link/migrate data
- * 2. On new device → sign in with Apple → restore data from Firebase
- * 
- * With skipNativeAuth: true, the native Capacitor plugin handles the Apple Sign-In UI
- * but does NOT call Firebase Auth natively. It returns the credential (idToken + nonce)
- * to JS, where we call signInWithCredential on the JS SDK.
- * This avoids the nonce-already-consumed issue that occurs with skipNativeAuth: false.
+ * 1. User taps "Sign in with Apple"
+ * 2. Native plugin shows Apple UI + signs into Firebase natively
+ * 3. JS detects auth state change and syncs data
  */
 
 import { auth, appleProvider, db, ref, get, set } from "./firebase";
-import { OAuthProvider, signInWithPopup, signInWithCredential, linkWithCredential } from "firebase/auth";
+import { OAuthProvider, signInWithPopup, signInWithCredential, linkWithCredential, onAuthStateChanged } from "firebase/auth";
 import type { User, AuthCredential } from "firebase/auth";
 import { syncFromFirebase, immediateSyncToFirebase } from "./firebaseSync";
 import { isNativePlatform } from "./platform";
@@ -27,75 +33,6 @@ export type LinkResult =
   | { success: false; message: string };
 
 /**
- * Build an OAuthCredential from the native plugin result
- */
-function buildAppleCredential(credential: { idToken?: string; nonce?: string; rawNonce?: string }): AuthCredential {
-  const provider = new OAuthProvider("apple.com");
-  // The nonce field from the plugin is the raw nonce (unhashed)
-  const rawNonce = credential.nonce || credential.rawNonce;
-  return provider.credential({
-    idToken: credential.idToken!,
-    rawNonce: rawNonce!,
-  });
-}
-
-/**
- * Get the Apple credential from the native plugin (iOS).
- * This only triggers the Apple UI once and returns the credential for reuse.
- */
-async function getAppleCredentialFromNative(): Promise<AuthCredential> {
-  const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
-  
-  console.log("[AppleAuth] Calling FirebaseAuthentication.signInWithApple()...");
-  const result = await FirebaseAuthentication.signInWithApple();
-  
-  console.log("[AppleAuth] Native plugin returned:", JSON.stringify({
-    hasUser: !!result.user,
-    userId: result.user?.uid,
-    hasCredential: !!result.credential,
-    credentialKeys: result.credential ? Object.keys(result.credential) : [],
-    hasIdToken: !!result.credential?.idToken,
-    hasNonce: !!result.credential?.nonce,
-  }));
-  
-  if (!result.credential?.idToken) {
-    throw new Error("Sign-in cancelled or no credential returned");
-  }
-  
-  if (!result.credential?.nonce) {
-    // Some versions of the plugin may not return nonce with skipNativeAuth
-    // In that case, we cannot build a valid credential for Firebase JS SDK
-    console.error("[AppleAuth] No nonce returned from native plugin. Credential keys:", Object.keys(result.credential));
-    throw new Error("No nonce returned from Apple Sign-In plugin. Cannot authenticate.");
-  }
-  
-  return buildAppleCredential(result.credential);
-}
-
-/**
- * Perform Apple sign-in using native plugin (iOS) or popup (web)
- * With skipNativeAuth: true, the plugin only handles the Apple UI.
- * We then use the returned credential to sign in on the JS Firebase SDK.
- */
-async function performAppleSignIn(): Promise<{ user: User; credential: AuthCredential }> {
-  if (isNativePlatform()) {
-    const oauthCredential = await getAppleCredentialFromNative();
-    
-    // Sign in on the JS Firebase SDK
-    console.log("[AppleAuth] Calling signInWithCredential on JS SDK...");
-    const userCredential = await signInWithCredential(auth, oauthCredential);
-    console.log("[AppleAuth] JS SDK signInWithCredential success. User:", userCredential.user.uid);
-    
-    return { user: userCredential.user, credential: oauthCredential };
-  } else {
-    // Web: use popup
-    const result = await signInWithPopup(auth, appleProvider);
-    const credential = OAuthProvider.credentialFromResult(result);
-    return { user: result.user, credential: credential! };
-  }
-}
-
-/**
  * Save Apple linked status and clear Google traces
  */
 function saveAppleLinkedStatus(email: string) {
@@ -104,6 +41,99 @@ function saveAppleLinkedStatus(email: string) {
   localStorage.setItem("teensBibleLastSignInProvider", "apple");
   localStorage.removeItem("teensBibleLinkedGoogle");
   localStorage.removeItem("teensBibleGoogleEmail");
+}
+
+/**
+ * Wait for the Firebase JS SDK to detect the native auth state change.
+ * With skipNativeAuth: false, the native plugin signs into Firebase natively,
+ * but the JS SDK needs a moment to sync via its internal listener.
+ */
+function waitForAuthStateChange(timeoutMs = 10000): Promise<User | null> {
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      unsubscribe();
+      resolve(null);
+    }, timeoutMs);
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && !user.isAnonymous) {
+        clearTimeout(timeout);
+        unsubscribe();
+        resolve(user);
+      }
+    });
+    
+    // Also check immediately - auth state might already be updated
+    const currentUser = auth.currentUser;
+    if (currentUser && !currentUser.isAnonymous) {
+      clearTimeout(timeout);
+      unsubscribe();
+      resolve(currentUser);
+    }
+  });
+}
+
+/**
+ * Perform Apple sign-in using native plugin (iOS) or popup (web).
+ * With skipNativeAuth: false, the native plugin handles everything.
+ * The result.user will contain the Firebase user info.
+ */
+async function performNativeAppleSignIn(): Promise<User> {
+  const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
+  
+  console.log("[AppleAuth] Calling FirebaseAuthentication.signInWithApple() with skipNativeAuth=false...");
+  const result = await FirebaseAuthentication.signInWithApple();
+  
+  console.log("[AppleAuth] Native plugin returned:", JSON.stringify({
+    hasUser: !!result.user,
+    userId: result.user?.uid,
+    userEmail: result.user?.email,
+    hasCredential: !!result.credential,
+  }));
+  
+  if (!result.user) {
+    throw new Error("Sign-in cancelled or no user returned");
+  }
+  
+  // With skipNativeAuth: false, the native Firebase SDK is now signed in.
+  // We need to wait for the JS SDK to pick up this auth state change.
+  console.log("[AppleAuth] Waiting for JS SDK to detect native auth state...");
+  
+  // Force a token refresh to sync the JS SDK with native state
+  try {
+    await auth.currentUser?.getIdToken(true);
+  } catch (e) {
+    // Ignore - might not have a current user yet in JS
+  }
+  
+  // Wait for auth state to propagate to JS SDK
+  const jsUser = await waitForAuthStateChange(8000);
+  
+  if (jsUser) {
+    console.log("[AppleAuth] JS SDK synced. User:", jsUser.uid, "Email:", jsUser.email);
+    return jsUser;
+  }
+  
+  // If JS SDK didn't pick it up, try to use the credential to sign in on JS side
+  // This is a fallback - the native sign-in already happened
+  if (result.credential?.idToken && result.credential?.nonce) {
+    console.log("[AppleAuth] JS SDK didn't sync. Trying signInWithCredential as fallback...");
+    const provider = new OAuthProvider("apple.com");
+    const oauthCredential = provider.credential({
+      idToken: result.credential.idToken,
+      rawNonce: result.credential.nonce,
+    });
+    const userCredential = await signInWithCredential(auth, oauthCredential);
+    return userCredential.user;
+  }
+  
+  // Last resort: reload auth
+  await auth.currentUser?.reload();
+  if (auth.currentUser && !auth.currentUser.isAnonymous) {
+    return auth.currentUser;
+  }
+  
+  throw new Error("Apple sign-in succeeded natively but JS SDK failed to sync");
 }
 
 /**
@@ -130,14 +160,19 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
     };
   }
 
-  // User is signed in with Google but wants to also link Apple
+  // User is signed in with Google but wants to switch to Apple
   try {
     await immediateSyncToFirebase();
     
-    const result = await performAppleSignIn();
-    await immediateSyncToFirebase();
-    
-    saveAppleLinkedStatus(result.user.email || "Apple Account");
+    if (isNativePlatform()) {
+      const user = await performNativeAppleSignIn();
+      await immediateSyncToFirebase();
+      saveAppleLinkedStatus(user.email || "Apple Account");
+    } else {
+      const result = await signInWithPopup(auth, appleProvider);
+      await immediateSyncToFirebase();
+      saveAppleLinkedStatus(result.user.email || "Apple Account");
+    }
     
     return { 
       success: true, 
@@ -150,12 +185,11 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
 }
 
 /**
- * Link anonymous account to Apple credential.
+ * Link anonymous account to Apple.
  * 
- * Key fix: We get the Apple credential ONCE from the native plugin, then:
- * 1. Try linkWithCredential (preserves anonymous UID)
- * 2. If that fails for ANY reason, use the SAME credential
- *    to signInWithCredential (no second Apple popup!)
+ * With skipNativeAuth: false, the native plugin will sign into Firebase directly.
+ * This means the anonymous user will be replaced by the Apple user.
+ * We save anonymous data first, then migrate after sign-in.
  */
 async function linkAnonymousToApple(): Promise<LinkResult> {
   const currentUser = auth.currentUser;
@@ -164,45 +198,61 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
   const oldUid = currentUser.uid;
 
   try {
+    // Save current data before sign-in
     await immediateSyncToFirebase();
     
-    // Step 1: Get the Apple credential from native plugin (triggers Apple UI ONCE)
-    let oauthCredential: AuthCredential;
-    if (isNativePlatform()) {
-      oauthCredential = await getAppleCredentialFromNative();
-    } else {
-      const popupResult = await signInWithPopup(auth, appleProvider);
-      oauthCredential = OAuthProvider.credentialFromResult(popupResult)!;
-      // On web, signInWithPopup already signs in, so just return
-      const user = popupResult.user;
-      console.log("[AppleAuth] Web popup sign-in success. User:", user.uid);
-      await immediateSyncToFirebase();
-      saveAppleLinkedStatus(user.email || "Apple Account");
-      return { success: true, type: "linked", message: "Account linked to Apple!" };
+    if (!isNativePlatform()) {
+      // Web: use popup (this handles linking automatically)
+      try {
+        const popupResult = await signInWithPopup(auth, appleProvider);
+        const user = popupResult.user;
+        console.log("[AppleAuth] Web popup sign-in success. User:", user.uid);
+        await immediateSyncToFirebase();
+        saveAppleLinkedStatus(user.email || "Apple Account");
+        return { success: true, type: "linked", message: "Account linked to Apple!" };
+      } catch (popupError: any) {
+        if (popupError.code === "auth/credential-already-in-use") {
+          const credential = OAuthProvider.credentialFromError(popupError);
+          if (credential) {
+            const userCredential = await signInWithCredential(auth, credential);
+            await syncFromFirebase();
+            saveAppleLinkedStatus(userCredential.user.email || "Apple Account");
+            return { success: true, type: "signed-in", message: "Signed in with Apple!", restored: true };
+          }
+        }
+        throw popupError;
+      }
     }
     
-    // Step 2: Try to link the credential to the anonymous user
-    try {
-      console.log("[AppleAuth] Attempting linkWithCredential...");
-      const userCredential = await linkWithCredential(currentUser, oauthCredential);
-      console.log("[AppleAuth] linkWithCredential success. User:", userCredential.user.uid);
-      
-      await immediateSyncToFirebase();
-      saveAppleLinkedStatus(userCredential.user.email || "Apple Account");
-      
-      return { 
-        success: true, 
-        type: "linked", 
-        message: `Account linked to Apple!` 
-      };
-    } catch (linkError: any) {
-      console.log("[AppleAuth] linkWithCredential failed:", linkError.code, linkError.message);
-      
-      // For ANY link failure, fall back to signInWithCredential
-      // Common cases: auth/credential-already-in-use, auth/provider-already-linked, 
-      // auth/email-already-in-use, auth/invalid-credential
-      return await handleCredentialConflict(oauthCredential, oldUid);
+    // Native: the plugin will sign in directly to Firebase
+    // Read anonymous data before we lose the anonymous user
+    const anonDataSnapshot = await get(ref(db, `userData/${oldUid}`));
+    const anonData = anonDataSnapshot.val();
+    
+    console.log("[AppleAuth] Starting native Apple sign-in (skipNativeAuth=false)...");
+    const user = await performNativeAppleSignIn();
+    const newUid = user.uid;
+    
+    console.log(`[AppleAuth] Sign-in complete. Old UID: ${oldUid}, New UID: ${newUid}`);
+    
+    // Migrate data if the UID changed (anonymous → Apple user)
+    if (newUid !== oldUid) {
+      await migrateDataIfNeeded(anonData, newUid, oldUid);
     }
+    
+    const restored = await syncFromFirebase();
+    
+    window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+    window.dispatchEvent(new CustomEvent("auth-changed"));
+    
+    saveAppleLinkedStatus(user.email || "Apple Account");
+    
+    return { 
+      success: true, 
+      type: "signed-in", 
+      message: `Signed in with Apple!`,
+      restored: !!restored
+    };
   } catch (error: any) {
     // Native plugin cancellation
     if (error.message?.includes("canceled") || error.message?.includes("cancelled")) {
@@ -210,45 +260,6 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
     }
     console.error("[AppleAuth] Link failed:", error.code, error.message, error);
     return handleAppleError(error);
-  }
-}
-
-/**
- * Handle credential conflict: link failed for any reason.
- * Uses the ALREADY-OBTAINED credential to sign in (no second Apple popup).
- */
-async function handleCredentialConflict(oauthCredential: AuthCredential, oldAnonymousUid: string): Promise<LinkResult> {
-  try {
-    // Read anonymous user's data before switching
-    const anonDataSnapshot = await get(ref(db, `userData/${oldAnonymousUid}`));
-    const anonData = anonDataSnapshot.val();
-
-    // Sign in with the SAME credential we already have (no second Apple UI!)
-    console.log("[AppleAuth] Attempting signInWithCredential (fallback)...");
-    const userCredential = await signInWithCredential(auth, oauthCredential);
-    const appleUid = userCredential.user.uid;
-
-    console.log(`[AppleAuth] Credential conflict resolved. Old UID: ${oldAnonymousUid}, New UID: ${appleUid}`);
-
-    // Migrate data if needed
-    await migrateDataIfNeeded(anonData, appleUid, oldAnonymousUid);
-
-    const restored = await syncFromFirebase();
-    
-    window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
-    window.dispatchEvent(new CustomEvent("auth-changed"));
-
-    saveAppleLinkedStatus(userCredential.user.email || "Apple Account");
-
-    return { 
-      success: true, 
-      type: "signed-in", 
-      message: `Signed in with Apple!`,
-      restored: !!restored
-    };
-  } catch (err: any) {
-    console.error("[AppleAuth] Credential conflict handling failed:", err.code, err.message, err);
-    return { success: false, message: `Apple sign-in failed: ${err.code || err.message || 'Unknown error'}` };
   }
 }
 
@@ -288,14 +299,21 @@ async function migrateDataIfNeeded(anonData: any, appleUid: string, _oldAnonymou
  */
 async function signInWithAppleDirect(): Promise<LinkResult> {
   try {
-    const result = await performAppleSignIn();
+    let user: User;
+    
+    if (isNativePlatform()) {
+      user = await performNativeAppleSignIn();
+    } else {
+      const result = await signInWithPopup(auth, appleProvider);
+      user = result.user;
+    }
     
     const restored = await syncFromFirebase();
     
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
     window.dispatchEvent(new CustomEvent("auth-changed"));
 
-    saveAppleLinkedStatus(result.user.email || "Apple Account");
+    saveAppleLinkedStatus(user.email || "Apple Account");
 
     return { 
       success: true, 
@@ -323,7 +341,6 @@ function handleAppleError(error: any): LinkResult {
     return { success: false, message: "Sign-in cancelled" };
   }
   console.error('[AppleAuth] Error:', error.code, error.message, error);
-  // Show more detailed error for debugging
   const detail = error.code || error.message || 'Unknown error';
   return { success: false, message: `Apple sign-in failed: ${detail}` };
 }
@@ -343,8 +360,6 @@ export async function handleAppleRedirectResult(): Promise<LinkResult | null> {
 export function isLinkedToApple(): boolean {
   const user = auth.currentUser;
   if (!user) return false;
-  // Check both Firebase providerData AND localStorage (for cases where 
-  // Firebase shows Google as primary but Apple was used to sign in)
   return user.providerData.some(p => p.providerId === "apple.com") || 
          localStorage.getItem("teensBibleLinkedApple") === "true";
 }
