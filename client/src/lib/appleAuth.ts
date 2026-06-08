@@ -57,7 +57,13 @@ async function performNativeAppleSignIn(): Promise<User> {
   
   console.log("[AppleAuth] Calling FirebaseAuthentication.signInWithApple()...");
   
-  const result = await FirebaseAuthentication.signInWithApple();
+  // CRITICAL: skipNativeAuth must be true for Apple!
+  // When false, native SDK calls Auth.auth().signIn() which CONSUMES the nonce.
+  // Then when JS SDK tries signInWithCredential with the same nonce, Firebase rejects it
+  // because Apple nonces are one-time use (unlike Google tokens).
+  const result = await FirebaseAuthentication.signInWithApple({
+    skipNativeAuth: true,
+  });
   
   console.log("[AppleAuth] Native signInWithApple result:", JSON.stringify({
     hasUser: !!result.user,
