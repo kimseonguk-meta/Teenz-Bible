@@ -63,11 +63,11 @@ export default function FloatingPet() {
   const pet = equipped.pet ? PETS.find(p => p.id === equipped.pet) : null;
   const dialogue = pet ? getPetDialogue(pet.id) : null;
 
-  // Safe zone: avoid nav bar (bottom 70px) and top 40px
+  // Safe zone: avoid nav bar (bottom 70px) and top header area (120px to clear reader buttons + safe area)
   const getSafeArea = () => ({
     minX: 10,
     maxX: Math.min(window.innerWidth - 70, 420), // max-width of app is 480
-    minY: 60,
+    minY: 120,
     maxY: window.innerHeight - 140,
   });
 

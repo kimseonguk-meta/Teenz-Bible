@@ -949,11 +949,9 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
           <div className="relative flex items-center gap-1">
             <button onClick={() => { setFontSize(f => Math.max(12, f - 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              onTouchEnd={(e) => { e.preventDefault(); setFontSize(f => Math.max(12, f - 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation">A-</button>
+              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation relative z-[101]">A-</button>
             <button onClick={() => { setFontSize(f => Math.min(28, f + 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              onTouchEnd={(e) => { e.preventDefault(); setFontSize(f => Math.min(28, f + 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation">A+</button>
+              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation relative z-[101]">A+</button>
             {showFontTip && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
                 👆 Adjust font size here!

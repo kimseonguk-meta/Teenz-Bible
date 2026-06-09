@@ -131,3 +131,7 @@
 
 ## Build 35 Bug Fix (Jun 9, 2026)
 - [x] Fix font size A+/A- buttons becoming unresponsive when audio player bar is active in Bible reader
+
+## Build 36 Bug Fix (Jun 9, 2026)
+- [x] Fix Meme Save button to directly save to Photos instead of opening Share Sheet (same as Share)
+- [x] Fix font size A+/A- buttons completely unresponsive (regardless of TTS state) - find real root cause (FloatingPet z-[100] overlapping)

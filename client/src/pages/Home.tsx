@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import { registerPlugin } from '@capacitor/core';
 import { isNativePlatform } from '@/lib/platform';
+
+interface SaveToPhotosPlugin {
+  savePhoto(options: { url: string }): Promise<{ saved: boolean }>;
+}
+const SaveToPhotos = registerPlugin<SaveToPhotosPlugin>('SaveToPhotos');
 import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { toast } from "sonner";
@@ -460,20 +466,9 @@ export default function Home() {
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
-                      // Native: download file to cache, then open Share Sheet so user can "Save Image"
-                      const ext = memeUrl.split('.').pop() || 'jpg';
-                      const fileName = `bible-meme-${Date.now()}.${ext}`;
-                      await Filesystem.downloadFile({
-                        url: memeUrl,
-                        path: fileName,
-                        directory: Directory.Cache,
-                      });
-                      const fileUri = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
-                      await Share.share({
-                        title: 'Save Bible Meme',
-                        files: [fileUri.uri],
-                      });
-                      toast.success('Meme saved! 📥');
+                      // Native: save directly to Photos library
+                      await SaveToPhotos.savePhoto({ url: memeUrl });
+                      toast.success('Saved to Photos! 📥');
                     } else {
                       // Web fallback: blob download
                       const response = await fetch(memeUrl);
