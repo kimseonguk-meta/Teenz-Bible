@@ -457,7 +457,7 @@ export default function FloatingPet() {
   }, [isDragging, handlePetTap, pos, triggerReaction]);
 
   // Don't render if no pet equipped, on bible-ai page, or on bible page (overlaps reader buttons)
-  if (!pet || location === "/bible-ai" || location === "/bible") return null;
+  if (!pet || location === "/bible-ai" || location.startsWith("/bible")) return null;
 
   const moodEmoji = getPetMoodEmoji(petState.mood);
   const moodBorderColor = petState.mood === "happy" ? "border-green-500/50" : petState.mood === "hungry" ? "border-yellow-500/50" : "border-red-500/50";

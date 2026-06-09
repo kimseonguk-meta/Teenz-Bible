@@ -472,25 +472,31 @@ export default function Home() {
                         toast.success('Saved to Photos! 📥');
                       } catch (pluginErr) {
                         // Plugin not available or failed - fallback to Filesystem + Share
-                        const ext = memeUrl.split('.').pop() || 'jpg';
-                        const fileName = `bible-meme-${Date.now()}.${ext}`;
-                        const { Filesystem, Directory } = await import('@capacitor/filesystem');
-                        const { Share: NativeShare } = await import('@capacitor/share');
-                        const downloadResult = await Filesystem.downloadFile({
-                          url: memeUrl,
-                          path: fileName,
-                          directory: Directory.Cache,
-                        });
-                        const fileUri = await Filesystem.getUri({
-                          path: fileName,
-                          directory: Directory.Cache,
-                        });
-                        await NativeShare.share({
-                          title: 'Save Bible Meme',
-                          text: 'Tap "Save Image" to save to Photos',
-                          url: fileUri.uri,
-                          dialogTitle: 'Save Meme',
-                        });
+                        try {
+                          const ext = memeUrl.split('.').pop() || 'jpg';
+                          const fileName = `bible-meme-${Date.now()}.${ext}`;
+                          const { Filesystem, Directory } = await import('@capacitor/filesystem');
+                          const { Share: NativeShare } = await import('@capacitor/share');
+                          await Filesystem.downloadFile({
+                            url: memeUrl,
+                            path: fileName,
+                            directory: Directory.Cache,
+                          });
+                          const fileUri = await Filesystem.getUri({
+                            path: fileName,
+                            directory: Directory.Cache,
+                          });
+                          await NativeShare.share({
+                            title: 'Save Bible Meme',
+                            text: 'Tap "Save Image" to save to Photos',
+                            url: fileUri.uri,
+                            dialogTitle: 'Save Meme',
+                          });
+                          // User completed the share sheet action
+                        } catch (shareErr: any) {
+                          // User cancelled share sheet - this is NOT an error
+                          // Don't show any error toast
+                        }
                       }
                     } else {
                       // Web fallback: blob download
@@ -507,7 +513,8 @@ export default function Home() {
                       toast.success('Meme saved! 📥');
                     }
                   } catch (err: any) {
-                    if (err?.name !== 'AbortError') {
+                    // Only show error for unexpected failures, not user cancellations
+                    if (err?.name !== 'AbortError' && err?.message !== 'Share canceled') {
                       toast.error('Could not save meme');
                     }
                   }
