@@ -254,6 +254,9 @@ function handleGoogleError(error: any): LinkResult {
 export function isLinkedToGoogle(): boolean {
   const user = auth.currentUser;
   if (!user) return false;
+  // If last sign-in was explicitly Apple, don't show Google as active
+  const lastProvider = localStorage.getItem("teensBibleLastSignInProvider");
+  if (lastProvider === "apple") return false;
   return user.providerData.some(p => p.providerId === "google.com");
 }
 

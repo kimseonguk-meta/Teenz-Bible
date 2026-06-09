@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import { registerPlugin } from '@capacitor/core';
 import { isNativePlatform } from '@/lib/platform';
+
+// Register the SaveToPhotos native plugin
+interface SaveToPhotosPlugin {
+  savePhoto(options: { url: string }): Promise<{ saved: boolean }>;
+}
+const SaveToPhotos = registerPlugin<SaveToPhotosPlugin>('SaveToPhotos');
 import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { toast } from "sonner";
@@ -460,30 +467,8 @@ export default function Home() {
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
-                      // Native: directly save to Photos via WKScriptMessageHandler (bypasses Capacitor plugin system)
-                      const callbackId = 'save_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-                      const result = await new Promise<{success: boolean; error?: string}>((resolve) => {
-                        // Setup callback registry
-                        if (!(window as any).__saveToPhotosCallbacks) {
-                          (window as any).__saveToPhotosCallbacks = {};
-                        }
-                        (window as any).__saveToPhotosCallbacks[callbackId] = (res: any) => {
-                          delete (window as any).__saveToPhotosCallbacks[callbackId];
-                          resolve(res);
-                        };
-                        // Call native handler
-                        (window as any).webkit?.messageHandlers?.saveToPhotos?.postMessage({ url: memeUrl, callbackId });
-                        // Timeout after 30s
-                        setTimeout(() => {
-                          if ((window as any).__saveToPhotosCallbacks?.[callbackId]) {
-                            delete (window as any).__saveToPhotosCallbacks[callbackId];
-                            resolve({ success: false, error: 'Timeout' });
-                          }
-                        }, 30000);
-                      });
-                      if (!result.success) {
-                        throw new Error(result.error || 'Save failed');
-                      }
+                      // Native: use Capacitor SaveToPhotos plugin
+                      await SaveToPhotos.savePhoto({ url: memeUrl });
                       toast.success('Saved to Photos! 📥');
                     } else {
                       // Web fallback: blob download

@@ -332,6 +332,9 @@ export async function handleAppleRedirectResult(): Promise<LinkResult | null> {
 export function isLinkedToApple(): boolean {
   const user = auth.currentUser;
   if (!user) return false;
+  // If last sign-in was explicitly Google, don't show Apple as active
+  const lastProvider = localStorage.getItem("teensBibleLastSignInProvider");
+  if (lastProvider === "google") return false;
   return user.providerData.some(p => p.providerId === "apple.com") ||
          localStorage.getItem("teensBibleLinkedApple") === "true";
 }

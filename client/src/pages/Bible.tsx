@@ -539,6 +539,42 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const chapter = chapters[chapterIdx];
   const meta = bookMeta[book];
   const [fontSize, setFontSize] = useState(parseInt(localStorage.getItem("readerFontSize") || "16"));
+  const fontMinusBtnRef = useRef<HTMLButtonElement>(null);
+  const fontPlusBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Use native event listeners for font buttons - React synthetic events can fail in WKWebView
+  useEffect(() => {
+    const minusBtn = fontMinusBtnRef.current;
+    const plusBtn = fontPlusBtnRef.current;
+    const handleMinus = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); return nv; });
+    };
+    const handlePlus = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); return nv; });
+    };
+    if (minusBtn) {
+      minusBtn.addEventListener('touchstart', handleMinus, { passive: false });
+      minusBtn.addEventListener('click', handleMinus);
+    }
+    if (plusBtn) {
+      plusBtn.addEventListener('touchstart', handlePlus, { passive: false });
+      plusBtn.addEventListener('click', handlePlus);
+    }
+    return () => {
+      if (minusBtn) {
+        minusBtn.removeEventListener('touchstart', handleMinus);
+        minusBtn.removeEventListener('click', handleMinus);
+      }
+      if (plusBtn) {
+        plusBtn.removeEventListener('touchstart', handlePlus);
+        plusBtn.removeEventListener('click', handlePlus);
+      }
+    };
+  }, []);
   const [marked, setMarked] = useState(false);
   const [reachedBottom, setReachedBottom] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -949,13 +985,11 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
           <div className="relative flex items-center gap-1">
             <button
-              onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              onClick={() => { setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation relative z-[101]">A-</button>
+              ref={fontMinusBtnRef}
+              className="w-10 h-10 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation relative z-[101] select-none">A-</button>
             <button
-              onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              onClick={() => { setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation relative z-[101]">A+</button>
+              ref={fontPlusBtnRef}
+              className="w-10 h-10 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation relative z-[101] select-none">A+</button>
             {showFontTip && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
                 👆 Adjust font size here!
