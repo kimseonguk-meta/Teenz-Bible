@@ -466,38 +466,9 @@ export default function Home() {
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
-                      // Native: try SaveToPhotos plugin first, fallback to Share
-                      try {
-                        await SaveToPhotos.savePhoto({ url: memeUrl });
-                        toast.success('Saved to Photos! 📥');
-                      } catch (pluginErr) {
-                        // Plugin not available or failed - fallback to Filesystem + Share
-                        try {
-                          const ext = memeUrl.split('.').pop() || 'jpg';
-                          const fileName = `bible-meme-${Date.now()}.${ext}`;
-                          const { Filesystem, Directory } = await import('@capacitor/filesystem');
-                          const { Share: NativeShare } = await import('@capacitor/share');
-                          await Filesystem.downloadFile({
-                            url: memeUrl,
-                            path: fileName,
-                            directory: Directory.Cache,
-                          });
-                          const fileUri = await Filesystem.getUri({
-                            path: fileName,
-                            directory: Directory.Cache,
-                          });
-                          await NativeShare.share({
-                            title: 'Save Bible Meme',
-                            text: 'Tap "Save Image" to save to Photos',
-                            url: fileUri.uri,
-                            dialogTitle: 'Save Meme',
-                          });
-                          // User completed the share sheet action
-                        } catch (shareErr: any) {
-                          // User cancelled share sheet - this is NOT an error
-                          // Don't show any error toast
-                        }
-                      }
+                      // Native: directly save to Photos using SaveToPhotos plugin
+                      await SaveToPhotos.savePhoto({ url: memeUrl });
+                      toast.success('Saved to Photos! 📥');
                     } else {
                       // Web fallback: blob download
                       const response = await fetch(memeUrl);
@@ -513,10 +484,8 @@ export default function Home() {
                       toast.success('Meme saved! 📥');
                     }
                   } catch (err: any) {
-                    // Only show error for unexpected failures, not user cancellations
-                    if (err?.name !== 'AbortError' && err?.message !== 'Share canceled') {
-                      toast.error('Could not save meme');
-                    }
+                    console.error('Save meme error:', err);
+                    toast.error('Could not save meme. Please allow photo access in Settings.');
                   }
                 }}
                 className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold text-sm border border-white/20 transition-all active:scale-95"
