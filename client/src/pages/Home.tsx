@@ -466,9 +466,32 @@ export default function Home() {
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
-                      // Native: save directly to Photos library
-                      await SaveToPhotos.savePhoto({ url: memeUrl });
-                      toast.success('Saved to Photos! 📥');
+                      // Native: try SaveToPhotos plugin first, fallback to Share
+                      try {
+                        await SaveToPhotos.savePhoto({ url: memeUrl });
+                        toast.success('Saved to Photos! 📥');
+                      } catch (pluginErr) {
+                        // Plugin not available or failed - fallback to Filesystem + Share
+                        const ext = memeUrl.split('.').pop() || 'jpg';
+                        const fileName = `bible-meme-${Date.now()}.${ext}`;
+                        const { Filesystem, Directory } = await import('@capacitor/filesystem');
+                        const { Share: NativeShare } = await import('@capacitor/share');
+                        const downloadResult = await Filesystem.downloadFile({
+                          url: memeUrl,
+                          path: fileName,
+                          directory: Directory.Cache,
+                        });
+                        const fileUri = await Filesystem.getUri({
+                          path: fileName,
+                          directory: Directory.Cache,
+                        });
+                        await NativeShare.share({
+                          title: 'Save Bible Meme',
+                          text: 'Tap "Save Image" to save to Photos',
+                          url: fileUri.uri,
+                          dialogTitle: 'Save Meme',
+                        });
+                      }
                     } else {
                       // Web fallback: blob download
                       const response = await fetch(memeUrl);

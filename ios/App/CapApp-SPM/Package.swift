@@ -1,7 +1,6 @@
 // swift-tools-version: 5.9
 import PackageDescription
 
-// DO NOT MODIFY THIS FILE - managed by Capacitor CLI commands
 let package = Package(
     name: "CapApp-SPM",
     platforms: [.iOS(.v15)],
@@ -17,7 +16,8 @@ let package = Package(
         .package(name: "CapacitorBrowser", path: "../capacitor-plugins/capacitor-browser"),
         .package(name: "CapacitorCamera", path: "../capacitor-plugins/capacitor-camera"),
         .package(name: "CapacitorFilesystem", path: "../capacitor-plugins/capacitor-filesystem"),
-        .package(name: "CapacitorShare", path: "../capacitor-plugins/capacitor-share")
+        .package(name: "CapacitorShare", path: "../capacitor-plugins/capacitor-share"),
+        .package(name: "SaveToPhotos", path: "../capacitor-plugins/save-to-photos")
     ],
     targets: [
         .target(
@@ -30,7 +30,8 @@ let package = Package(
                 .product(name: "CapacitorBrowser", package: "CapacitorBrowser"),
                 .product(name: "CapacitorCamera", package: "CapacitorCamera"),
                 .product(name: "CapacitorFilesystem", package: "CapacitorFilesystem"),
-                .product(name: "CapacitorShare", package: "CapacitorShare")
+                .product(name: "CapacitorShare", package: "CapacitorShare"),
+                .product(name: "SaveToPhotosPlugin", package: "SaveToPhotos")
             ]
         )
     ]

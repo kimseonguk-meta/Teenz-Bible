@@ -8,6 +8,7 @@ import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOut
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 import { isNativePlatform } from "@/lib/platform";
+import { Share } from '@capacitor/share';
 import { deleteAllUserData } from "@/lib/firebaseSync";
 import { celebrateLogin } from "@/lib/celebration";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -881,9 +882,17 @@ export default function Profile() {
           <div
             onClick={async () => {
               const shareText = "Join me on Teenz Bible! Read the Bible together and compete on the leaderboard 🏆";
-              const shareUrl = window.location.origin;
+              const shareUrl = "https://teens-bible-94271.web.app";
               try {
-                if (navigator.share) {
+                if (isNativePlatform()) {
+                  // Use Capacitor Share plugin for native iOS
+                  await Share.share({
+                    title: "Teenz Bible",
+                    text: shareText,
+                    url: shareUrl,
+                    dialogTitle: "Invite Friends to Teenz Bible",
+                  });
+                } else if (navigator.share) {
                   await navigator.share({
                     title: "Teenz Bible",
                     text: shareText,

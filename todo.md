@@ -135,3 +135,8 @@
 ## Build 36 Bug Fix (Jun 9, 2026)
 - [x] Fix Meme Save button to directly save to Photos instead of opening Share Sheet (same as Share)
 - [x] Fix font size A+/A- buttons completely unresponsive (regardless of TTS state) - find real root cause (FloatingPet z-[100] overlapping)
+
+## Build 37 Bug Fix (Jun 9, 2026)
+- [x] Fix font size A+/A- buttons in Bible reader - FloatingPet hidden on /bible page (was capturing touch events)
+- [x] Fix Meme Save button - created SaveToPhotos as proper SPM package (was in App target, not auto-discovered)
+- [x] Fix Invite Friends button - uses @capacitor/share plugin for native iOS Share Sheet
