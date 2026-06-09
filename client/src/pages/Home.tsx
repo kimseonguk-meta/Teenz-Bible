@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { isNativePlatform } from '@/lib/platform';
 import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { toast } from "sonner";
@@ -164,7 +167,7 @@ export default function Home() {
   const equippedPet = PETS.find(p => p.id === equipped.pet);
   const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
   const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
-  // Re-check linked status when Firebase auth state resolves (may be null on first render)
+  // Re-check linked status when Firebase auth state resolves or auth-changed event fires
   useEffect(() => {
     const checkLinked = () => {
       if (isLinkedToGoogle() || isLinkedToApple()) setAccountLinked(true);
@@ -173,7 +176,12 @@ export default function Home() {
     const t1 = setTimeout(checkLinked, 500);
     const t2 = setTimeout(checkLinked, 1500);
     const t3 = setTimeout(checkLinked, 3000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    // Listen for auth-changed event (fired after successful Apple/Google sign-in)
+    window.addEventListener("auth-changed", checkLinked);
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
+      window.removeEventListener("auth-changed", checkLinked);
+    };
   }, []);
   const [bannerDismissed, setBannerDismissed] = useState(() => {
     const dismissed = localStorage.getItem("syncBannerDismissed");
@@ -412,7 +420,23 @@ export default function Home() {
               <button
                 onClick={async () => {
                   try {
-                    if (navigator.share) {
+                    if (isNativePlatform()) {
+                      // Native: download file to cache, then share via native Share Sheet
+                      const ext = memeUrl.split('.').pop() || 'jpg';
+                      const fileName = `bible-meme-${Date.now()}.${ext}`;
+                      await Filesystem.downloadFile({
+                        url: memeUrl,
+                        path: fileName,
+                        directory: Directory.Cache,
+                      });
+                      const fileUri = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
+                      await Share.share({
+                        title: '😂 Bible Meme of the Day',
+                        text: 'Check out this Bible meme from Teenz Bible!',
+                        files: [fileUri.uri],
+                      });
+                      toast.success('Shared successfully!');
+                    } else if (navigator.share) {
                       const response = await fetch(memeUrl);
                       const blob = await response.blob();
                       const file = new File([blob], 'bible-meme.jpg', { type: blob.type });
@@ -435,19 +459,39 @@ export default function Home() {
               <button
                 onClick={async () => {
                   try {
-                    const response = await fetch(memeUrl);
-                    const blob = await response.blob();
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `bible-meme-${new Date().toISOString().split('T')[0]}.jpg`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    toast.success('Meme saved! 📥');
-                  } catch {
-                    toast.error('Could not save meme');
+                    if (isNativePlatform()) {
+                      // Native: download file to cache, then open Share Sheet so user can "Save Image"
+                      const ext = memeUrl.split('.').pop() || 'jpg';
+                      const fileName = `bible-meme-${Date.now()}.${ext}`;
+                      await Filesystem.downloadFile({
+                        url: memeUrl,
+                        path: fileName,
+                        directory: Directory.Cache,
+                      });
+                      const fileUri = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
+                      await Share.share({
+                        title: 'Save Bible Meme',
+                        files: [fileUri.uri],
+                      });
+                      toast.success('Meme saved! 📥');
+                    } else {
+                      // Web fallback: blob download
+                      const response = await fetch(memeUrl);
+                      const blob = await response.blob();
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `bible-meme-${new Date().toISOString().split('T')[0]}.jpg`;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                      URL.revokeObjectURL(url);
+                      toast.success('Meme saved! 📥');
+                    }
+                  } catch (err: any) {
+                    if (err?.name !== 'AbortError') {
+                      toast.error('Could not save meme');
+                    }
                   }
                 }}
                 className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold text-sm border border-white/20 transition-all active:scale-95"

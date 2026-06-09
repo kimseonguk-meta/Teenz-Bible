@@ -1,7 +1,6 @@
 // swift-tools-version: 5.9
 import PackageDescription
 
-// DO NOT MODIFY THIS FILE - managed by Capacitor CLI commands
 let package = Package(
     name: "CapApp-SPM",
     platforms: [.iOS(.v15)],
@@ -15,7 +14,9 @@ let package = Package(
         .package(name: "CapacitorCommunityAppleSignIn", path: "../capacitor-plugins/capacitor-community-apple-sign-in"),
         .package(name: "CapacitorFirebaseAuthentication", path: "../capacitor-plugins/capacitor-firebase-authentication"),
         .package(name: "CapacitorBrowser", path: "../capacitor-plugins/capacitor-browser"),
-        .package(name: "CapacitorCamera", path: "../capacitor-plugins/capacitor-camera")
+        .package(name: "CapacitorCamera", path: "../capacitor-plugins/capacitor-camera"),
+        .package(name: "CapacitorFilesystem", path: "../capacitor-plugins/capacitor-filesystem"),
+        .package(name: "CapacitorShare", path: "../capacitor-plugins/capacitor-share")
     ],
     targets: [
         .target(
@@ -26,7 +27,9 @@ let package = Package(
                 .product(name: "CapacitorCommunityAppleSignIn", package: "CapacitorCommunityAppleSignIn"),
                 .product(name: "CapacitorFirebaseAuthentication", package: "CapacitorFirebaseAuthentication"),
                 .product(name: "CapacitorBrowser", package: "CapacitorBrowser"),
-                .product(name: "CapacitorCamera", package: "CapacitorCamera")
+                .product(name: "CapacitorCamera", package: "CapacitorCamera"),
+                .product(name: "CapacitorFilesystem", package: "CapacitorFilesystem"),
+                .product(name: "CapacitorShare", package: "CapacitorShare")
             ]
         )
     ]

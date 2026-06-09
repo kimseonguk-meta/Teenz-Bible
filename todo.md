@@ -123,3 +123,8 @@
 - [x] Fix Package.swift paths (relative paths for ZIP)
 - [x] Bump build number to 23
 - [x] Package and deliver Build 23 ZIP
+
+## Build 34 Bug Fixes (Jun 9, 2026)
+- [x] Fix Home screen auth state not updating after Apple Sign-In (banner stays after successful login)
+- [x] Fix Meme save failing ("Could not save meme" error)
+- [x] Fix Meme share to use native iOS Share Sheet instead of clipboard copy
