@@ -672,7 +672,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
         const overallProgress = ((chunkIdx + chunkProgress) / totalChunks) * 100;
         setTtsProgress(Math.min(100, overallProgress));
       }
-    }, 200);
+    }, 1000);
   };
   const stopProgressTracking = () => {
     if (progressIntervalRef.current) { clearInterval(progressIntervalRef.current); progressIntervalRef.current = null; }
@@ -940,7 +940,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   return (
     <div className="px-4 pb-8" style={{ paddingTop: '1rem' }}>
       {/* Reader Header */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-2 relative z-20">
         <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform shrink-0">← Back</button>
         <div className="flex items-center gap-1.5 flex-wrap justify-end">
           <button onClick={() => setLang(lang === "en" ? "ko" : "en")}
@@ -949,9 +949,11 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
           <div className="relative flex items-center gap-1">
             <button onClick={() => { setFontSize(f => Math.max(12, f - 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20">A-</button>
+              onTouchEnd={(e) => { e.preventDefault(); setFontSize(f => Math.max(12, f - 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
+              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation">A-</button>
             <button onClick={() => { setFontSize(f => Math.min(28, f + 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20">A+</button>
+              onTouchEnd={(e) => { e.preventDefault(); setFontSize(f => Math.min(28, f + 2)); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
+              className="w-8 h-8 rounded-lg bg-gradient-to-b from-purple-700 to-purple-900 border-2 border-purple-400/60 text-sm font-bold text-white active:scale-90 transition-all shadow-lg shadow-purple-500/20 touch-manipulation">A+</button>
             {showFontTip && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
                 👆 Adjust font size here!
@@ -1015,7 +1017,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
       {/* TTS Controls */}
       {isSpeaking && (
-        <div className="mb-3 rounded-xl bg-purple-900/40 border border-purple-500/20 overflow-hidden">
+        <div className="mb-3 rounded-xl bg-purple-900/40 border border-purple-500/20 overflow-hidden relative z-10">
           {/* Progress Bar */}
           <div className="w-full h-1.5 bg-purple-950/60">
             <div
