@@ -1,26 +1,33 @@
 /**
  * Apple Account Linking for Teenz Bible
  * 
- * Uses @capacitor-firebase/authentication for native Apple Sign-In on iOS.
- * This is the same pattern as Google Auth - the native Firebase SDK handles
- * the entire Apple Sign-In flow including nonce generation and validation.
+ * BUILD 32 FIX - THE REAL SOLUTION:
+ * 
+ * The root cause of auth/missing-or-invalid-nonce was:
+ * - Native Firebase SDK signs in with Apple (consumes the one-time nonce)
+ * - Then JS code called signInWithCredential with the SAME nonce → Firebase rejects it
+ * 
+ * Google Auth works because Google tokens are reusable (no nonce).
+ * Apple Auth fails because Apple nonces are ONE-TIME USE.
+ * 
+ * SOLUTION: Do NOT call signInWithCredential for Apple on native iOS.
+ * When skipNativeAuth is false (our config), the native Firebase SDK
+ * handles the entire sign-in. The JS SDK's onAuthStateChanged fires
+ * automatically because they share the same auth state.
+ * 
+ * We just need to WAIT for auth.currentUser to update after the native call.
  * 
  * Flow (native iOS):
- * 1. Call FirebaseAuthentication.signInWithApple()
+ * 1. Call FirebaseAuthentication.signInWithApple() (skipNativeAuth: false in config)
  * 2. Native Firebase SDK generates nonce, shows Apple UI, validates token
- * 3. Native SDK returns credential (idToken, nonce, authorizationCode)
- * 4. JS creates OAuthCredential from the returned credential
- * 5. JS calls signInWithCredential to sync the web layer
- * 
- * This approach eliminates nonce mismatch errors because the native Firebase SDK
- * manages the entire nonce lifecycle internally.
- * 
- * BUILD 30 FIX: Switched from @capacitor-community/apple-sign-in (manual nonce)
- * to @capacitor-firebase/authentication (native Firebase handles nonce).
+ * 3. Native Firebase SDK calls Auth.auth().signIn(with: credential) internally
+ * 4. JS SDK's auth state updates automatically (shared auth state)
+ * 5. We wait for auth.currentUser to be the Apple user
+ * 6. NO signInWithCredential call needed!
  */
 
 import { auth, appleProvider, db, ref, get, set } from "./firebase";
-import { OAuthProvider, signInWithPopup, signInWithCredential, linkWithCredential } from "firebase/auth";
+import { OAuthProvider, signInWithPopup, signInWithCredential, onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { syncFromFirebase, immediateSyncToFirebase } from "./firebaseSync";
 import { isNativePlatform } from "./platform";
@@ -43,73 +50,89 @@ function saveAppleLinkedStatus(email: string) {
 }
 
 /**
+ * Wait for Firebase JS SDK auth state to update after native sign-in.
+ * The native Firebase SDK and JS SDK share auth state, so after native
+ * sign-in completes, onAuthStateChanged will fire with the new user.
+ */
+function waitForAuthStateChange(timeoutMs: number = 10000): Promise<User> {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      unsubscribe();
+      reject(new Error("Timeout waiting for auth state change after native Apple sign-in"));
+    }, timeoutMs);
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && !user.isAnonymous) {
+        clearTimeout(timeout);
+        unsubscribe();
+        resolve(user);
+      }
+    });
+    
+    // Also check if already signed in (race condition)
+    const currentUser = auth.currentUser;
+    if (currentUser && !currentUser.isAnonymous && 
+        currentUser.providerData.some(p => p.providerId === "apple.com")) {
+      clearTimeout(timeout);
+      unsubscribe();
+      resolve(currentUser);
+    }
+  });
+}
+
+/**
  * Perform Apple sign-in using native Firebase Authentication plugin (iOS).
- * The native plugin handles the entire flow: nonce generation, Apple UI, Firebase auth.
- * Returns the Firebase User after successful authentication.
  * 
- * This mirrors the Google Auth pattern exactly:
- * 1. Native plugin does the sign-in (handles nonce internally)
- * 2. Returns credential with idToken + nonce
- * 3. We create a JS credential and sign in on the web layer
+ * CRITICAL DIFFERENCE FROM GOOGLE AUTH:
+ * - Google: native sign-in → get credential → signInWithCredential (tokens are reusable)
+ * - Apple: native sign-in → auth state auto-syncs (nonces are one-time, can't reuse)
+ * 
+ * We do NOT call signInWithCredential for Apple. The native SDK handles everything.
  */
 async function performNativeAppleSignIn(): Promise<User> {
   const { FirebaseAuthentication } = await import('@capacitor-firebase/authentication');
   
   console.log("[AppleAuth] Calling FirebaseAuthentication.signInWithApple()...");
+  console.log("[AppleAuth] skipNativeAuth is FALSE (global config) - native SDK will handle full auth");
   
-  // CRITICAL: skipNativeAuth must be true for Apple!
-  // When false, native SDK calls Auth.auth().signIn() which CONSUMES the nonce.
-  // Then when JS SDK tries signInWithCredential with the same nonce, Firebase rejects it
-  // because Apple nonces are one-time use (unlike Google tokens).
-  const result = await FirebaseAuthentication.signInWithApple({
-    skipNativeAuth: true,
-  });
+  // DO NOT pass skipNativeAuth here - let the global config (false) apply.
+  // This means the native Firebase SDK will:
+  // 1. Generate a nonce
+  // 2. Show Apple Sign-In UI
+  // 3. Receive the Apple ID token
+  // 4. Call Auth.auth().signIn(with: credential) internally
+  // 5. The JS SDK auth state will update automatically
+  const result = await FirebaseAuthentication.signInWithApple();
   
-  console.log("[AppleAuth] Native signInWithApple result:", JSON.stringify({
+  console.log("[AppleAuth] Native signInWithApple returned:", JSON.stringify({
     hasUser: !!result.user,
+    userUid: result.user?.uid,
+    userEmail: result.user?.email,
     hasCredential: !!result.credential,
-    providerId: result.credential?.providerId,
-    hasIdToken: !!result.credential?.idToken,
-    hasNonce: !!result.credential?.nonce,
-    hasAuthorizationCode: !!result.credential?.authorizationCode,
   }));
   
-  if (!result.credential) {
-    throw new Error("Sign-in cancelled or no credential returned");
+  // The native SDK has already signed in. Now wait for JS SDK to sync.
+  // Check if result.user already has the info we need
+  if (result.user && result.user.uid) {
+    console.log("[AppleAuth] Native SDK returned user directly. Waiting for JS SDK auth state...");
   }
   
-  // Create JS credential from the native result (same pattern as Google Auth)
-  const provider = new OAuthProvider("apple.com");
-  const oauthCredential = provider.credential({
-    idToken: result.credential.idToken!,
-    rawNonce: result.credential.nonce!,
-    accessToken: result.credential.authorizationCode || undefined,
-  });
-  
-  console.log("[AppleAuth] Created JS credential, signing in on web layer...");
-  
-  // Sign in on the web layer so Firebase JS SDK is authenticated
-  // Try to link with current anonymous user first
-  const currentUser = auth.currentUser;
-  if (currentUser && currentUser.isAnonymous) {
-    try {
-      console.log("[AppleAuth] Attempting to link with anonymous user...");
-      const linkResult = await linkWithCredential(currentUser, oauthCredential);
-      console.log("[AppleAuth] Link successful! User:", linkResult.user.uid);
-      return linkResult.user;
-    } catch (linkError: any) {
-      console.log("[AppleAuth] Link failed:", linkError.code, "- falling back to signIn");
-      // If link fails (e.g., credential already in use), sign in directly
-      const signInResult = await signInWithCredential(auth, oauthCredential);
-      console.log("[AppleAuth] SignIn successful! User:", signInResult.user.uid);
-      return signInResult.user;
+  // Wait for the JS SDK auth state to reflect the native sign-in
+  // This should happen almost immediately since they share state
+  try {
+    const user = await waitForAuthStateChange(15000);
+    console.log("[AppleAuth] JS SDK auth state updated! User:", user.uid, user.email);
+    return user;
+  } catch (waitError) {
+    console.log("[AppleAuth] Auth state wait timed out. Checking auth.currentUser...");
+    // Fallback: check if currentUser is already set
+    const currentUser = auth.currentUser;
+    if (currentUser && !currentUser.isAnonymous) {
+      console.log("[AppleAuth] Found user in auth.currentUser:", currentUser.uid);
+      return currentUser;
     }
+    throw new Error("Apple sign-in completed on native but JS SDK did not receive auth state. Please try again.");
   }
-  
-  // No anonymous user or not anonymous - just sign in
-  const signInResult = await signInWithCredential(auth, oauthCredential);
-  console.log("[AppleAuth] SignIn successful! User:", signInResult.user.uid);
-  return signInResult.user;
 }
 
 /**
@@ -162,6 +185,10 @@ export async function linkOrSignInWithApple(): Promise<LinkResult> {
 
 /**
  * Link anonymous account to Apple.
+ * 
+ * NOTE: With native auth (skipNativeAuth: false), we cannot "link" the anonymous
+ * account because the native SDK does a full sign-in (replacing the anonymous user).
+ * Instead, we save the anonymous data first, then migrate it to the Apple account.
  */
 async function linkAnonymousToApple(): Promise<LinkResult> {
   const currentUser = auth.currentUser;
@@ -201,7 +228,7 @@ async function linkAnonymousToApple(): Promise<LinkResult> {
     const anonDataSnapshot = await get(ref(db, `userData/${oldUid}`));
     const anonData = anonDataSnapshot.val();
     
-    console.log("[AppleAuth] Starting native Apple sign-in via FirebaseAuthentication plugin...");
+    console.log("[AppleAuth] Starting native Apple sign-in (native SDK handles full auth)...");
     const user = await performNativeAppleSignIn();
     const newUid = user.uid;
     
