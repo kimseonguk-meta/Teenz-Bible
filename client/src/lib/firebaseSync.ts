@@ -148,7 +148,7 @@ function collectLocalData(): UserDataSnapshot {
 
   // Settings
   const settings = {
-    readerFontSize: localStorage.getItem("readerFontSize") || "text-lg",
+    readerFontSize: localStorage.getItem("readerFontSize") || "16",
     readerLang: localStorage.getItem("readerLang") || "en",
     bibleTestament: localStorage.getItem("bibleTestament") || "ot",
   };
@@ -244,7 +244,10 @@ function applyDataToLocal(data: UserDataSnapshot) {
 
   // Settings
   if (data.settings) {
-    localStorage.setItem("readerFontSize", data.settings.readerFontSize);
+    // Convert legacy CSS class values ("text-lg") to numeric px values
+    const syncedFontSize = data.settings.readerFontSize;
+    const numericFontSize = isNaN(parseInt(syncedFontSize)) ? "16" : String(parseInt(syncedFontSize));
+    localStorage.setItem("readerFontSize", numericFontSize);
     localStorage.setItem("readerLang", data.settings.readerLang);
     localStorage.setItem("bibleTestament", data.settings.bibleTestament);
   }

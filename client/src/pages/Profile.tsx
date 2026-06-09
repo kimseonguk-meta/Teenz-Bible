@@ -69,7 +69,8 @@ function getLanguagePref(): "en" | "ko" {
 }
 
 function getFontSize(): number {
-  return parseInt(localStorage.getItem("readerFontSize") || "16");
+  const val = parseInt(localStorage.getItem("readerFontSize") || "16");
+  return isNaN(val) ? 16 : val;
 }
 
 const badges = [
