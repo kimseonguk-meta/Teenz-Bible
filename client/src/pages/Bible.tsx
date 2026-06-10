@@ -648,6 +648,8 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const ttsAbortRef = useRef<(() => void) | null>(null);
   const wakeLockRef = useRef<any>(null);
   const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const prefetchCacheRef = useRef<{ key: string; audioBase64: string } | null>(null);
+  const prefetchingRef = useRef(false);
 
   // Wake Lock API - keep screen on during audio playback
   const requestWakeLock = async () => {
@@ -689,14 +691,20 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     localStorage.setItem('ttsAutoAdvance', String(autoAdvance));
   }, [autoAdvance]);
 
-  // Split text into chunks for Cloud TTS (max 4500 chars per request)
-  const splitTextToChunks = (text: string, maxLen: number) => {
+  // Split text into chunks for Cloud TTS
+  // First chunk is smaller (1500 chars) for faster initial playback, rest are 4500
+  const splitTextToChunks = (text: string, maxLen: number, firstChunkMax?: number) => {
     const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
     const chunks: string[] = [];
     let current = '';
+    let isFirst = true;
+    const getLimit = () => isFirst && firstChunkMax ? firstChunkMax : maxLen;
     for (const s of sentences) {
-      if ((current + s).length > maxLen) {
-        if (current) chunks.push(current.trim());
+      if ((current + s).length > getLimit()) {
+        if (current) {
+          chunks.push(current.trim());
+          if (isFirst) isFirst = false;
+        }
         current = s;
       } else {
         current += s;
@@ -705,6 +713,35 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     if (current.trim()) chunks.push(current.trim());
     return chunks;
   };
+
+  // Pre-fetch first chunk TTS when chapter loads
+  useEffect(() => {
+    const text = paragraphs.filter((p: string) => !p.startsWith("§")).join(". ");
+    if (!text) return;
+    const voice = lang === 'ko' ? TTS_VOICE_KO : TTS_VOICE_EN;
+    const chunks = splitTextToChunks(text, 4500, 1500);
+    const firstChunk = chunks[0];
+    if (!firstChunk) return;
+    const cacheKey = `${book}-${chapterIdx}-${lang}-${firstChunk.slice(0, 50)}`;
+    // Skip if already cached for this chapter
+    if (prefetchCacheRef.current?.key === cacheKey) return;
+    prefetchCacheRef.current = null;
+    prefetchingRef.current = true;
+    fetch(TTS_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: firstChunk, voice, speed: 1, pitch: -1.0 })
+    })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.audioContent) {
+          prefetchCacheRef.current = { key: cacheKey, audioBase64: data.audioContent };
+          console.log('[TTS] Pre-fetched first chunk');
+        }
+      })
+      .catch(() => {})
+      .finally(() => { prefetchingRef.current = false; });
+  }, [book, chapterIdx, lang, paragraphs]);
 
   // Fallback to browser Web Speech API if cloud TTS fails
   const fallbackWebSpeech = (text: string) => {
@@ -729,7 +766,6 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     setIsSpeaking(true);
     setIsPaused(false);
     setTtsProgress(0);
-    setTtsStatus('⏳ Loading HD voice...');
 
     // Acquire Wake Lock to keep screen on
     await requestWakeLock();
@@ -737,23 +773,37 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     // Unlock audio on mobile
     try { const ctx = new (window.AudioContext || (window as any).webkitAudioContext)(); ctx.resume().then(() => ctx.close()); } catch(e) {}
 
-    const chunks = splitTextToChunks(text, 4500);
+    const chunks = splitTextToChunks(text, 4500, 1500);
     const voice = lang === 'ko' ? TTS_VOICE_KO : TTS_VOICE_EN;
+    const cacheKey = `${book}-${chapterIdx}-${lang}-${chunks[0]?.slice(0, 50)}`;
 
     for (let i = 0; i < chunks.length; i++) {
       if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
       try {
-        const resp = await fetch(TTS_PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: chunks[i], voice, speed: speechRate, pitch: -1.0 })
-        });
-        if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
-        if (!resp.ok) { fallbackWebSpeech(text); return; }
-        const data = await resp.json();
-        if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
+        let audioBase64: string | null = null;
 
-        const audio = new Audio('data:audio/mp3;base64,' + data.audioContent);
+        // Use pre-fetched audio for first chunk if available
+        if (i === 0 && prefetchCacheRef.current?.key === cacheKey) {
+          audioBase64 = prefetchCacheRef.current.audioBase64;
+          setTtsStatus('▶ HD Playing...');
+          console.log('[TTS] Using pre-fetched audio');
+        } else {
+          setTtsStatus(i === 0 ? '⏳ Loading HD voice...' : `▶ HD Playing... (${i + 1}/${chunks.length})`);
+          const resp = await fetch(TTS_PROXY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: chunks[i], voice, speed: speechRate, pitch: -1.0 })
+          });
+          if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
+          if (!resp.ok) { fallbackWebSpeech(text); return; }
+          const data = await resp.json();
+          if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
+          audioBase64 = data.audioContent;
+        }
+
+        if (!audioBase64) { fallbackWebSpeech(text); return; }
+
+        const audio = new Audio('data:audio/mp3;base64,' + audioBase64);
         audio.playbackRate = speechRate;
         ttsAudioRef.current = audio;
         setTtsStatus(`▶ HD Playing... (${i + 1}/${chunks.length})`);
