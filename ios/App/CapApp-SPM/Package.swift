@@ -16,7 +16,7 @@ let package = Package(
         .package(name: "CapacitorCamera", path: "../capacitor-plugins/capacitor-camera"),
         .package(name: "CapacitorFilesystem", path: "../capacitor-plugins/capacitor-filesystem"),
         .package(name: "CapacitorShare", path: "../capacitor-plugins/capacitor-share"),
-        .package(name: "SaveToPhotos", path: "../capacitor-plugins/save-to-photos"),
+        .package(name: "SaveToPhotos", path: "../capacitor-plugins/save-to-photos")
     ],
     targets: [
         .target(
@@ -30,7 +30,7 @@ let package = Package(
                 .product(name: "CapacitorCamera", package: "CapacitorCamera"),
                 .product(name: "CapacitorFilesystem", package: "CapacitorFilesystem"),
                 .product(name: "CapacitorShare", package: "CapacitorShare"),
-                .product(name: "SaveToPhotosPlugin", package: "SaveToPhotos"),
+                .product(name: "SaveToPhotosPlugin", package: "SaveToPhotos")
             ]
         )
     ]
