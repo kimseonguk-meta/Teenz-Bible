@@ -1147,23 +1147,17 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       {showReadWarning && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6" style={{backgroundColor: 'rgba(0,0,0,0.6)'}}>
           <div className="bg-gradient-to-br from-purple-900 to-indigo-900 border-2 border-yellow-500/60 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl" style={{animation: 'celebrationPop 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards'}}>
-            <div className="text-5xl mb-3">📖</div>
-            <h3 className="text-white font-bold text-lg mb-2">Take your time!</h3>
+            <div className="text-5xl mb-3">⏪</div>
+            <h3 className="text-white font-bold text-lg mb-2">Whoa, slow down!</h3>
             <p className="text-purple-200 text-sm leading-relaxed mb-4">
-              It looks like you scrolled through pretty fast. Try reading more carefully to earn your XP & Gems! 😊
+              You scrolled way too fast lol. Actually read it to earn your XP & Gems! 😊
             </p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => { setShowReadWarning(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-yellow-500/30"
               >
-                📖 Read Again
-              </button>
-              <button
-                onClick={() => { setShowReadWarning(false); }}
-                className="px-5 py-2 text-purple-300 text-xs hover:text-white transition-colors"
-              >
-                Continue anyway →
+                ⏪ Slow down! Read more carefully
               </button>
             </div>
           </div>
