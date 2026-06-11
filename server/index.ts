@@ -67,6 +67,40 @@ async function startServer() {
     }
   });
 
+  // ─── Manus Storage Proxy ─────────────────────────────────────
+  app.get("/manus-storage/:key(*)", async (req, res) => {
+    const key = req.params.key;
+    if (!key) {
+      res.status(400).send("Missing storage key");
+      return;
+    }
+    const forgeBaseUrl = (process.env.BUILT_IN_FORGE_API_URL || "").replace(/\/+$/, "");
+    const forgeKey = process.env.BUILT_IN_FORGE_API_KEY;
+    if (!forgeBaseUrl || !forgeKey) {
+      res.status(500).send("Storage proxy not configured");
+      return;
+    }
+    try {
+      const forgeUrl = new URL("v1/storage/presign/get", forgeBaseUrl + "/");
+      forgeUrl.searchParams.set("path", key);
+      const forgeResp = await fetch(forgeUrl.toString(), {
+        headers: { Authorization: `Bearer ${forgeKey}` },
+      });
+      if (!forgeResp.ok) {
+        res.status(502).send("Storage backend error");
+        return;
+      }
+      const { url } = (await forgeResp.json()) as { url: string };
+      if (!url) {
+        res.status(502).send("Empty signed URL");
+        return;
+      }
+      res.redirect(307, url);
+    } catch {
+      res.status(502).send("Storage proxy error");
+    }
+  });
+
   // Serve static files from dist/public in production
   const staticPath =
     process.env.NODE_ENV === "production"

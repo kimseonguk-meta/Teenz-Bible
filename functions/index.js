@@ -285,3 +285,61 @@ exports.getReportStats = functions.https.onRequest(async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+/**
+ * Manus Storage Proxy - serves images from Manus storage via presigned URLs
+ * This allows Firebase Hosting to serve /manus-storage/* paths
+ */
+exports.manusStorageProxy = functions.https.onRequest(async (req, res) => {
+  // CORS
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+  if (req.method !== "GET") {
+    res.status(405).send("Method not allowed");
+    return;
+  }
+
+  // Extract the storage key from the URL path
+  const key = req.path.replace(/^\/manus-storage\//, "").replace(/^\//, "");
+  if (!key) {
+    res.status(400).send("Missing storage key");
+    return;
+  }
+
+  const forgeBaseUrl = "https://forge.manus.ai";
+  const forgeKey = "hVW5miJaNkNp8YsD3NUfcU";
+
+  if (!forgeBaseUrl || !forgeKey) {
+    res.status(500).send("Storage proxy not configured");
+    return;
+  }
+
+  try {
+    const fetch = require("node-fetch");
+    const forgeUrl = new URL("v1/storage/presign/get", forgeBaseUrl + "/");
+    forgeUrl.searchParams.set("path", key);
+    const forgeResp = await fetch(forgeUrl.toString(), {
+      headers: { Authorization: `Bearer ${forgeKey}` },
+    });
+    if (!forgeResp.ok) {
+      res.status(502).send("Storage backend error");
+      return;
+    }
+    const { url } = await forgeResp.json();
+    if (!url) {
+      res.status(502).send("Empty signed URL");
+      return;
+    }
+    // Cache the redirect for 1 hour to reduce function invocations
+    res.set("Cache-Control", "public, max-age=3600");
+    res.redirect(307, url);
+  } catch (e) {
+    console.error("Storage proxy error:", e);
+    res.status(502).send("Storage proxy error");
+  }
+});
