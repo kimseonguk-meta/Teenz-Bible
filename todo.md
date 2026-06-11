@@ -163,10 +163,14 @@
 - [x] UX #14: Weekly leaderboard as default + resets every Monday message
 
 ## Pet Character Redesign — All 14 Pets in Modern KakaoTalk Style (Jun 11, 2026)
-- [ ] Generate 14 pet normal/default sprites (cat, puppy, lamb, lion, owl, dove, eagle, fox, bear, bunny, whale, butterfly, dragon, unicorn)
-- [ ] Generate 7 additional expressions per pet (excited, sleepy, love, angry, dance, peek, cool) = 98 images
-- [ ] Upload all 112 sprites as webdev static assets
-- [ ] Create pet sprite mapping module (petSprites.ts)
-- [ ] Update FloatingPet.tsx to use character images instead of emoji
-- [ ] Update Store pet cards to show new character images
-- [ ] Deploy to Firebase Hosting
+- [x] Generate 14 pet normal/default sprites (cat, puppy, lamb, lion, owl, dove, eagle, fox, bear, bunny, whale, butterfly, dragon, unicorn)
+- [x] Generate 7 additional expressions per pet (excited, sleepy, love, angry, dance, peek, cool) = 98 images
+- [x] Upload all 112 sprites as webdev static assets
+- [x] Create pet sprite mapping module (petSprites.ts)
+- [x] Update FloatingPet.tsx to use character images instead of emoji
+- [x] Update Store pet cards to show new character images
+- [x] Deploy to Firebase Hosting
+
+## Pet Interaction & Animation Improvements (Jun 11, 2026)
+- [x] Click floating pet → random expression change + short greeting speech bubble
+- [x] Fade in/out animation when pet expression changes (smooth transition, no flicker)

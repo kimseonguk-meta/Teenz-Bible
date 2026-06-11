@@ -66,6 +66,10 @@ export default function FloatingPet() {
   const [isSulking, setIsSulking] = useState(false);
   // #7 Celebration dance
   const [isDancing, setIsDancing] = useState(false);
+  // Fade transition for expression changes
+  const [spriteOpacity, setSpriteOpacity] = useState(1);
+  const [displayExpression, setDisplayExpression] = useState<PetExpression>("normal");
+  const expressionTransitionRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const tamedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dragRef = useRef<{ startX: number; startY: number; startPosX: number; startPosY: number } | null>(null);
@@ -82,6 +86,23 @@ export default function FloatingPet() {
   const swipeRef = useRef<{ lastX: number; count: number; timer: ReturnType<typeof setTimeout> | null }>({ lastX: 0, count: 0, timer: null });
   // #1 Peek timer
   const peekTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Smooth fade transition when expression changes
+  useEffect(() => {
+    if (expression === displayExpression) return;
+    // Fade out
+    setSpriteOpacity(0);
+    if (expressionTransitionRef.current) clearTimeout(expressionTransitionRef.current);
+    expressionTransitionRef.current = setTimeout(() => {
+      // Switch expression while invisible
+      setDisplayExpression(expression);
+      // Fade in
+      setSpriteOpacity(1);
+    }, 150); // 150ms fade out, then swap and fade in
+    return () => {
+      if (expressionTransitionRef.current) clearTimeout(expressionTransitionRef.current);
+    };
+  }, [expression, displayExpression]);
 
   const pet = equipped.pet ? PETS.find(p => p.id === equipped.pet) : null;
   const dialogue = pet ? getPetDialogue(pet.id) : null;
@@ -544,6 +565,11 @@ export default function FloatingPet() {
           return next;
         });
       } else {
+        // Random expression change on tap + greeting bubble
+        const tapExpressions: PetExpression[] = ["excited", "love", "dance", "cool", "normal"];
+        const randomExpr = tapExpressions[Math.floor(Math.random() * tapExpressions.length)];
+        setExpression(randomExpr);
+
         // #6 Sulking tap response
         if (isSulking) {
           const sulkResponses = [
@@ -560,6 +586,8 @@ export default function FloatingPet() {
         setShowBubble(true);
         setBounceClass("animate-bounce-excited");
         setTimeout(() => setBounceClass("animate-bounce-gentle"), 1000);
+        // Reset expression back to normal after 2.5s
+        setTimeout(() => setExpression("normal"), 2500);
         if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
         bubbleTimerRef.current = setTimeout(() => setShowBubble(false), 3500);
       }
@@ -844,17 +872,21 @@ export default function FloatingPet() {
         <div className="pet-alive-container relative">
           {(() => {
             const petKey = pet.id.replace('pet_', '');
-            const spriteExpression: SpriteExpression = isDancing ? 'dance' : (expression === 'peek' ? 'normal' : expression as SpriteExpression);
+            const spriteExpression: SpriteExpression = isDancing ? 'dance' : (displayExpression === 'peek' ? 'normal' : displayExpression as SpriteExpression);
             const spriteUrl = getPetSprite(petKey, spriteExpression);
             return spriteUrl ? (
               <img
                 src={spriteUrl}
                 alt={pet.name}
-                className={`w-14 h-14 object-contain ${expression === 'normal' ? 'pet-blink' : ''} ${expression === 'excited' ? 'pet-tail-wag' : ''} ${isDancing ? 'pet-dance' : ''} ${isSulking ? 'pet-sulk' : ''}`}
-                style={{ filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}
+                className={`w-14 h-14 object-contain ${displayExpression === 'normal' ? 'pet-blink' : ''} ${displayExpression === 'excited' ? 'pet-tail-wag' : ''} ${isDancing ? 'pet-dance' : ''} ${isSulking ? 'pet-sulk' : ''}`}
+                style={{
+                  filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))',
+                  opacity: spriteOpacity,
+                  transition: 'opacity 150ms ease-in-out',
+                }}
               />
             ) : (
-              <span className={`text-5xl pet-creature ${expression === 'normal' ? 'pet-blink' : ''}`} style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
+              <span className={`text-5xl pet-creature ${displayExpression === 'normal' ? 'pet-blink' : ''}`} style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))', opacity: spriteOpacity, transition: 'opacity 150ms ease-in-out' }}>
                 {pet.petEmoji}
               </span>
             );
