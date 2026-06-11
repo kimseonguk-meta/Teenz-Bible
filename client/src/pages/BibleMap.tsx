@@ -52,13 +52,17 @@ const TAB_INFO: { key: string; label: string; emoji: string; center: [number, nu
   { key: "paul", label: "Paul's Journeys", emoji: "🚀", center: [38.5, 28.0], zoom: 5 },
 ];
 
+type ViewMode = "list" | "grid";
+
 export default function BibleMap() {
   const [activeTab, setActiveTab] = useState("jerusalem");
   const [selectedLoc, setSelectedLoc] = useState<MapLocation | null>(null);
+  const [modalLoc, setModalLoc] = useState<MapLocation | null>(null);
   const [lang, setLang] = useState<"en" | "ko">(
     (localStorage.getItem("readerLang") as "en" | "ko") || "en"
   );
   const [search, setSearch] = useState("");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [, navigate] = useLocation();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -70,14 +74,14 @@ export default function BibleMap() {
 
   // Haversine formula to calculate distance between two coordinates in km
   const getDistanceKm = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
-    const R = 6371; // Earth's radius in km
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLng = (lng2 - lng1) * Math.PI / 180;
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
       Math.sin(dLng / 2) * Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return Math.round(R * c * 10) / 10; // Round to 1 decimal
+    return Math.round(R * c * 10) / 10;
   };
 
   const filteredLocations = search
@@ -91,7 +95,6 @@ export default function BibleMap() {
   useEffect(() => {
     if (!mapContainerRef.current) return;
     
-    // Dynamic import of Leaflet to avoid SSR issues
     import("leaflet").then((L) => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
@@ -104,7 +107,6 @@ export default function BibleMap() {
         attributionControl: false,
       });
 
-      // Use satellite/terrain hybrid tile layer for clear visibility
       L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
         subdomains: "abcd",
@@ -112,7 +114,6 @@ export default function BibleMap() {
 
       mapInstanceRef.current = map;
 
-      // Force a resize after mount (fixes grey tiles on mobile)
       setTimeout(() => {
         map.invalidateSize();
       }, 100);
@@ -124,7 +125,7 @@ export default function BibleMap() {
         mapInstanceRef.current = null;
       }
     };
-  }, []); // Only initialize once
+  }, []);
 
   // Update markers and view when tab changes
   useEffect(() => {
@@ -134,7 +135,6 @@ export default function BibleMap() {
       const map = mapInstanceRef.current;
       if (!map) return;
 
-      // Clear existing markers
       markersRef.current.forEach(m => map.removeLayer(m));
       markersRef.current = [];
       if (polylineRef.current) {
@@ -142,7 +142,6 @@ export default function BibleMap() {
         polylineRef.current = null;
       }
 
-      // Fly to tab center with smooth animation
       map.flyTo(currentTabInfo.center, currentTabInfo.zoom, {
         duration: 1.5,
         easeLinearity: 0.25,
@@ -150,7 +149,6 @@ export default function BibleMap() {
 
       const locs = mapLocations[activeTab] || [];
 
-      // Add markers
       locs.forEach((loc) => {
         const icon = L.divIcon({
           className: "custom-emoji-marker",
@@ -173,7 +171,6 @@ export default function BibleMap() {
 
         const marker = L.marker([loc.lat, loc.lng], { icon }).addTo(map);
         
-        // Popup on click
         const popupContent = `
           <div style="max-width: 220px; font-family: sans-serif;">
             <img src="${loc.photo}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 6px; margin-bottom: 6px;" loading="lazy" />
@@ -191,24 +188,21 @@ export default function BibleMap() {
         marker.bindPopup(popupContent, { closeButton: true, maxWidth: 220 });
         
         marker.on("click", () => {
-          setSelectedLoc(loc);
+          setModalLoc(loc);
         });
 
         markersRef.current.push(marker);
       });
 
-      // Draw animated polyline for Paul's journeys
       if (activeTab === "paul") {
         const path = locs.map(loc => [loc.lat, loc.lng] as [number, number]);
         
-        // Background trail (faint)
         L.polyline(path, {
           color: "#7c3aed",
           weight: 2,
           opacity: 0.3,
         }).addTo(map);
 
-        // Animated dashed line on top
         polylineRef.current = L.polyline(path, {
           color: "#c084fc",
           weight: 3,
@@ -220,16 +214,15 @@ export default function BibleMap() {
     });
   }, [activeTab, lang, currentTabInfo]);
 
-  // Handle location click from list
+  // Handle location click from list/grid - open modal
   const handleLocClick = (loc: MapLocation) => {
-    setSelectedLoc(selectedLoc?.name === loc.name ? null : loc);
+    setModalLoc(loc);
     if (mapInstanceRef.current) {
       mapInstanceRef.current.flyTo(
         [loc.lat, loc.lng],
         activeTab === "paul" ? 7 : 14,
         { duration: 1.2, easeLinearity: 0.25 }
       );
-      // Open the marker popup
       const marker = markersRef.current.find(m => {
         const pos = m.getLatLng();
         return Math.abs(pos.lat - loc.lat) < 0.001 && Math.abs(pos.lng - loc.lng) < 0.001;
@@ -256,7 +249,7 @@ export default function BibleMap() {
         {TAB_INFO.map(tab => (
           <button
             key={tab.key}
-            onClick={() => { setActiveTab(tab.key); setSelectedLoc(null); setSearch(""); }}
+            onClick={() => { setActiveTab(tab.key); setSelectedLoc(null); setModalLoc(null); setSearch(""); }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 ${
               activeTab === tab.key
                 ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/30"
@@ -303,109 +296,189 @@ export default function BibleMap() {
         );
       })()}
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder={lang === "en" ? "🔍 Search locations..." : "🔍 장소 검색..."}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full px-4 py-2.5 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-purple-400 transition-all"
-      />
+      {/* Search + View Toggle */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          placeholder={lang === "en" ? "🔍 Search locations..." : "🔍 장소 검색..."}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-1 px-4 py-2.5 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-purple-400 transition-all"
+        />
+        <button
+          onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+          className="px-3 py-2.5 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-purple-300 active:scale-95 transition-all"
+          title={viewMode === "grid" ? "Switch to list view" : "Switch to grid view"}
+        >
+          {viewMode === "grid" ? "☰" : "⊞"}
+        </button>
+      </div>
 
-      {/* Location Detail Modal */}
-      {selectedLoc && (
-        <div className="neon-card-gold p-4 space-y-3">
-          {/* Photo */}
-          <img
-            src={selectedLoc.photo}
-            alt={selectedLoc.name}
-            className="w-full h-[140px] object-cover rounded-lg"
-            loading="lazy"
-          />
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">{selectedLoc.icon}</span>
-              <div>
-                <h3 className="text-white font-bold text-base">{lang === "en" ? selectedLoc.name : selectedLoc.nameKo}</h3>
-                <p className="text-gray-400 text-xs">{lang === "en" ? selectedLoc.nameKo : selectedLoc.name}</p>
+      {/* Grid View */}
+      {viewMode === "grid" && (
+        <div className="grid grid-cols-3 gap-2.5">
+          {filteredLocations.map(loc => (
+            <div
+              key={loc.name}
+              onClick={() => handleLocClick(loc)}
+              className="neon-card p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
+            >
+              <div className="w-full aspect-square rounded-lg overflow-hidden relative">
+                <img
+                  src={loc.photo}
+                  alt={loc.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute top-1 left-1 bg-black/60 rounded-full w-7 h-7 flex items-center justify-center text-sm">
+                  {loc.icon}
+                </div>
+              </div>
+              <p className="text-white text-[11px] font-bold text-center leading-tight line-clamp-2">
+                {lang === "en" ? loc.name : loc.nameKo}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* List View */}
+      {viewMode === "list" && (
+        <div className="space-y-3">
+          {filteredLocations.map(loc => (
+            <div
+              key={loc.name}
+              onClick={() => handleLocClick(loc)}
+              className="neon-card p-4 active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <div className="flex items-start gap-3">
+                <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" loading="lazy" />
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-white font-bold text-sm">{loc.icon} {lang === "en" ? loc.name : loc.nameKo}</h3>
+                  <p className="text-gray-400 text-xs mt-1 line-clamp-2">
+                    {lang === "en" ? loc.desc : loc.descKo}
+                  </p>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {loc.verses.slice(0, 3).map(v => (
+                      <span
+                        key={v}
+                        className="px-1.5 py-0.5 bg-purple-900/40 border border-purple-500/20 rounded text-[9px] text-purple-300"
+                      >
+                        📖 {v}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-            <button onClick={() => setSelectedLoc(null)} className="text-gray-400 text-lg active:scale-95">✕</button>
-          </div>
-          <p className="text-gray-200 text-sm leading-relaxed">
-            {lang === "en" ? selectedLoc.desc : selectedLoc.descKo}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {selectedLoc.verses.map(v => (
+          ))}
+        </div>
+      )}
+
+      {/* Modal Overlay */}
+      {modalLoc && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+          onClick={() => setModalLoc(null)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          
+          {/* Modal Content */}
+          <div
+            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50"
+            onClick={(e) => e.stopPropagation()}
+            style={{ animation: "modalIn 0.2s cubic-bezier(0.23, 1, 0.32, 1)" }}
+          >
+            {/* Photo */}
+            <div className="relative">
+              <img
+                src={modalLoc.photo}
+                alt={modalLoc.name}
+                className="w-full h-[180px] object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a0a3e] via-transparent to-transparent" />
               <button
-                key={v}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // Parse verse reference like "Matthew 2" or "Acts 13:4-12"
-                  const match = v.match(/^(.+?)\s+(\d+)/);
-                  if (match) {
-                    const book = match[1].toLowerCase().replace(/\s+/g, "-");
-                    const chapter = match[2];
-                    navigate(`/bible/${book}/${chapter}`);
-                  }
-                }}
-                className="px-2 py-0.5 bg-purple-900/50 border border-purple-500/30 rounded text-[10px] text-purple-300 hover:bg-purple-700/50 hover:border-purple-400 active:scale-95 transition-all cursor-pointer"
+                onClick={() => setModalLoc(null)}
+                className="absolute top-3 right-3 w-8 h-8 bg-black/60 rounded-full flex items-center justify-center text-white text-sm active:scale-90 transition-transform"
               >
-                📖 {v}
+                ✕
               </button>
-            ))}
+            </div>
+
+            {/* Info */}
+            <div className="p-5 space-y-3 -mt-6 relative">
+              <div className="flex items-center gap-2">
+                <span className="text-3xl">{modalLoc.icon}</span>
+                <div>
+                  <h3 className="text-white font-bold text-lg">{lang === "en" ? modalLoc.name : modalLoc.nameKo}</h3>
+                  <p className="text-gray-400 text-xs">{lang === "en" ? modalLoc.nameKo : modalLoc.name}</p>
+                </div>
+              </div>
+
+              <p className="text-gray-200 text-sm leading-relaxed">
+                {lang === "en" ? modalLoc.desc : modalLoc.descKo}
+              </p>
+
+              {/* Verses */}
+              <div className="flex flex-wrap gap-1.5">
+                {modalLoc.verses.map(v => (
+                  <button
+                    key={v}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const match = v.match(/^(.+?)\s+(\d+)/);
+                      if (match) {
+                        const book = match[1].toLowerCase().replace(/\s+/g, "-");
+                        const chapter = match[2];
+                        setModalLoc(null);
+                        navigate(`/bible/${book}/${chapter}`);
+                      }
+                    }}
+                    className="px-2.5 py-1 bg-purple-900/50 border border-purple-500/30 rounded-lg text-xs text-purple-300 hover:bg-purple-700/50 hover:border-purple-400 active:scale-95 transition-all cursor-pointer"
+                  >
+                    📖 {v}
+                  </button>
+                ))}
+              </div>
+
+              {/* Show on Map button */}
+              <button
+                onClick={() => {
+                  setModalLoc(null);
+                  if (mapInstanceRef.current) {
+                    mapInstanceRef.current.flyTo(
+                      [modalLoc.lat, modalLoc.lng],
+                      activeTab === "paul" ? 7 : 14,
+                      { duration: 1.2, easeLinearity: 0.25 }
+                    );
+                  }
+                  // Scroll to top to see the map
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-sm font-bold rounded-xl active:scale-[0.97] transition-transform"
+              >
+                📍 {lang === "en" ? "Show on Map" : "지도에서 보기"}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Location List */}
-      <div className="space-y-3">
-        {filteredLocations.map(loc => (
-          <div
-            key={loc.name}
-            onClick={() => handleLocClick(loc)}
-            className={`neon-card p-4 active:scale-[0.98] transition-all cursor-pointer ${
-              selectedLoc?.name === loc.name ? "border-purple-400/60 shadow-lg shadow-purple-500/20" : ""
-            }`}
-          >
-            <div className="flex items-start gap-3">
-              <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" loading="lazy" />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-white font-bold text-sm">{loc.icon} {lang === "en" ? loc.name : loc.nameKo}</h3>
-                  {selectedLoc && selectedLoc.name !== loc.name && (
-                    <span className="text-[10px] text-cyan-400 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded-full flex-shrink-0">
-                      📍 {getDistanceKm(selectedLoc.lat, selectedLoc.lng, loc.lat, loc.lng)} km
-                    </span>
-                  )}
-                </div>
-                <p className="text-gray-400 text-xs mt-1 line-clamp-2">
-                  {lang === "en" ? loc.desc : loc.descKo}
-                </p>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {loc.verses.slice(0, 3).map(v => (
-                    <button
-                      key={v}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const match = v.match(/^(.+?)\s+(\d+)/);
-                        if (match) {
-                          const book = match[1].toLowerCase().replace(/\s+/g, "-");
-                          const chapter = match[2];
-                          navigate(`/bible/${book}/${chapter}`);
-                        }
-                      }}
-                      className="px-1.5 py-0.5 bg-purple-900/40 border border-purple-500/20 rounded text-[9px] text-purple-300 hover:bg-purple-700/40 active:scale-95 transition-all"
-                    >
-                      📖 {v}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Modal animation keyframes */}
+      <style>{`
+        @keyframes modalIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
