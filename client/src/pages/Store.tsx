@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   THEMES,
   READER_BACKGROUNDS,
@@ -19,8 +19,27 @@ import {
   type ItemCategory,
   type Rarity,
 } from "@/data/storeItems";
-import { getPetDefaultSprite } from "@/data/petSprites";
+import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+
+// Pet stats/abilities data for detail popup
+const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
+  cat: { personality: "도도하지만 은근히 다정한 츤데레", ability: "조용한 위로 — 슬플 때 옆에 와서 가만히 앉아줌", lore: "브리티시 숏헤어 혈통의 고양이. 겉으론 무심한 척하지만 주인이 성경 읽을 때 항상 옆에 있다.", stats: { faith: 7, wisdom: 8, joy: 6, courage: 5 } },
+  puppy: { personality: "항상 밝고 에너지 넘치는 희망의 아이콘", ability: "응원 짖기 — 매일 읽기 완료 시 보너스 XP +10%", lore: "골든 리트리버 강아지. 주인이 성경을 펼치면 꼬리를 미친 듯이 흔들며 달려온다.", stats: { faith: 8, wisdom: 5, joy: 9, courage: 7 } },
+  lamb: { personality: "포근하고 따뜻한 힐러 타입", ability: "평화의 양털 — 스트레스 받을 때 마음을 진정시켜줌", lore: "라벤더 베레모를 쓴 아기양. 예수님의 양처럼 순하고 온유한 성격의 소유자.", stats: { faith: 9, wisdom: 7, joy: 8, courage: 5 } },
+  lion: { personality: "용감하고 정의로운 리더", ability: "사자후 — 어려운 구절도 용기 있게 도전하게 해줌", lore: "유다 지파의 사자를 닮은 아기 사자. 작은 왕관과 빨간 망토가 트레이드마크.", stats: { faith: 8, wisdom: 6, joy: 6, courage: 10 } },
+  owl: { personality: "지혜롭고 차분한 학자 타입", ability: "지혜의 눈 — 어려운 단어 해설을 자동으로 보여줌", lore: "솔로몬의 지혜를 물려받은 올빼미. 금테 안경 너머로 세상을 관찰한다.", stats: { faith: 7, wisdom: 10, joy: 5, courage: 6 } },
+  dove: { personality: "평화롭고 순수한 천사 같은 존재", ability: "평화의 올리브 — 읽기 중 마음이 평온해지는 효과", lore: "성령의 상징인 비둘기. 올리브 가지를 물고 하늘에서 내려온 평화의 메신저.", stats: { faith: 10, wisdom: 7, joy: 7, courage: 5 } },
+  eagle: { personality: "자유롭고 강인한 모험가", ability: "독수리 날개 — 긴 챕터도 끝까지 읽게 해주는 인내력 부스트", lore: "이사야 40:31의 독수리. 비행 고글을 쓰고 하늘 높이 날아오르는 꿈을 가졌다.", stats: { faith: 7, wisdom: 6, joy: 6, courage: 10 } },
+  fox: { personality: "영리하고 장난기 넘치는 트릭스터", ability: "별의 마법 — 퀴즈 힌트를 살짝 알려줌", lore: "마법사 모자를 쓴 여우. 별 지팡이로 성경 속 숨겨진 보물을 찾아낸다.", stats: { faith: 6, wisdom: 9, joy: 8, courage: 6 } },
+  bear: { personality: "듬직하고 따뜻한 보호자", ability: "곰의 포옹 — 힘들 때 따뜻한 격려 메시지를 보내줌", lore: "체크 조끼를 입은 아기 곰. 꿀단지를 항상 들고 다니며 달콤한 말씀을 전한다.", stats: { faith: 8, wisdom: 6, joy: 7, courage: 9 } },
+  bunny: { personality: "수줍지만 다정한 꽃소녀", ability: "꽃의 축복 — 연속 읽기 시 보너스 젬 획득 확률 UP", lore: "데이지 화관을 쓴 토끼. 수줍어서 처음엔 숨지만, 친해지면 세상에서 제일 다정하다.", stats: { faith: 7, wisdom: 7, joy: 9, courage: 4 } },
+  whale: { personality: "느긋하고 유머러스한 선장", ability: "깊은 바다의 지혜 — 성경의 깊은 의미를 쉽게 풀어줌", lore: "요나를 삼킨 그 고래의 후손. 선장 모자를 쓰고 바다를 누비며 모험을 즐긴다.", stats: { faith: 8, wisdom: 9, joy: 7, courage: 7 } },
+  butterfly: { personality: "신비롭고 우아한 변신의 아이콘", ability: "변화의 날개 — 새로운 책을 시작할 때 특별 보너스", lore: "갤럭시 날개를 가진 나비. 애벌레에서 나비로의 변신처럼, 말씀으로 변화되는 삶을 상징.", stats: { faith: 8, wisdom: 7, joy: 8, courage: 6 } },
+  dragon: { personality: "쿨하고 반항적이지만 속은 따뜻한 츤데레", ability: "불꽃의 열정 — 읽기 스트릭 유지 시 추가 보상", lore: "가죽 재킷을 입은 아기 용. 겉은 터프하지만 성경 이야기에 감동받으면 눈물을 흘린다.", stats: { faith: 6, wisdom: 7, joy: 6, courage: 10 } },
+  unicorn: { personality: "마법적이고 신비로운 꿈의 존재", ability: "무지개 축복 — 모든 활동에서 젬 획득량 +5%", lore: "무지개 갈기와 꽃 화관의 유니콘. 하나님의 약속처럼 아름답고 신비로운 존재.", stats: { faith: 9, wisdom: 8, joy: 9, courage: 7 } },
+};
 
 const tabs = [
   { id: "themes", icon: "🎨", label: "Themes" },
@@ -50,6 +69,19 @@ export default function Store() {
   const [isOpening, setIsOpening] = useState(false);
   const [previewingTheme, setPreviewingTheme] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<StoreItem | null>(null);
+  const [petSort, setPetSort] = useState<'default' | 'price_asc' | 'price_desc'>('default');
+  const [petFilter, setPetFilter] = useState<'all' | Rarity>('all');
+  const [imgLoaded, setImgLoaded] = useState<Record<string, boolean>>({});
+
+  const sortedFilteredPets = useMemo(() => {
+    let list = [...PETS];
+    if (petFilter !== 'all') {
+      list = list.filter(p => p.rarity === petFilter);
+    }
+    if (petSort === 'price_asc') list.sort((a, b) => a.price - b.price);
+    else if (petSort === 'price_desc') list.sort((a, b) => b.price - a.price);
+    return list;
+  }, [petSort, petFilter]);
 
   // Listen for gems changes and sync updates
   useEffect(() => {
@@ -171,9 +203,17 @@ export default function Store() {
         <div className="absolute top-1.5 left-1.5">
           <RarityBadge rarity={item.rarity} />
         </div>
-        <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center" onClick={() => setPreviewItem(item)}>
+        <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center h-12" onClick={() => setPreviewItem(item)}>
           {item.category === 'pets' && getPetDefaultSprite(item.id.replace('pet_', '')) ? (
-            <img src={getPetDefaultSprite(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
+            <>
+              {!imgLoaded[item.id] && <Skeleton className="w-12 h-12 rounded-full" />}
+              <img
+                src={getPetDefaultSprite(item.id.replace('pet_', ''))!}
+                alt={item.name}
+                className={`w-12 h-12 object-contain transition-opacity duration-200 ${imgLoaded[item.id] ? 'opacity-100' : 'opacity-0 absolute'}`}
+                onLoad={() => setImgLoaded(prev => ({ ...prev, [item.id]: true }))}
+              />
+            </>
           ) : (
             <span className="text-3xl">{item.emoji}</span>
           )}
@@ -456,8 +496,30 @@ export default function Store() {
         <div>
           <h2 className="text-lg font-bold text-purple-300 font-display mb-3">🐾 Pets</h2>
           <p className="text-gray-400 text-xs mb-3">A companion for your Bible journey!</p>
+          {/* Sort & Filter */}
+          <div className="flex gap-2 mb-3">
+            <select
+              value={petSort}
+              onChange={(e) => setPetSort(e.target.value as typeof petSort)}
+              className="flex-1 px-2 py-1.5 rounded-lg bg-purple-900/40 border border-purple-500/30 text-white text-[11px] focus:outline-none focus:border-purple-400"
+            >
+              <option value="default">기본 순서</option>
+              <option value="price_asc">가격 낮은순</option>
+              <option value="price_desc">가격 높은순</option>
+            </select>
+            <select
+              value={petFilter}
+              onChange={(e) => setPetFilter(e.target.value as typeof petFilter)}
+              className="flex-1 px-2 py-1.5 rounded-lg bg-purple-900/40 border border-purple-500/30 text-white text-[11px] focus:outline-none focus:border-purple-400"
+            >
+              <option value="all">전체 등급</option>
+              <option value="rare">⭐ Rare</option>
+              <option value="epic">💜 Epic</option>
+              <option value="legendary">👑 Legendary</option>
+            </select>
+          </div>
           <div className="grid grid-cols-3 gap-3">
-            {PETS.map(renderItemCard)}
+            {sortedFilteredPets.map(renderItemCard)}
           </div>
         </div>
       )}
@@ -744,56 +806,89 @@ export default function Store() {
             </div>
           )}
 
-          {previewItem.category === "pets" && (
-            <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
-              <div className="w-28 h-28 flex items-center justify-center">
-                {getPetDefaultSprite(previewItem.id.replace('pet_', '')) ? (
-                  <img src={getPetDefaultSprite(previewItem.id.replace('pet_', ''))!} alt={previewItem.name} className="w-28 h-28 object-contain" />
+          {previewItem.category === "pets" && (() => {
+            const petId = previewItem.id.replace('pet_', '');
+            const stats = PET_STATS[petId];
+            const rarityConf = RARITY_CONFIG[previewItem.rarity];
+            return (
+            <div className="flex flex-col items-center gap-3 max-w-xs w-full" onClick={(e) => e.stopPropagation()}>
+              {/* Character image */}
+              <div className="w-32 h-32 flex items-center justify-center">
+                {getPetDefaultSprite(petId) ? (
+                  <img src={getPetDefaultSprite(petId)!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
                 ) : (
                   <span className="text-7xl">{previewItem.petEmoji}</span>
                 )}
               </div>
+
+              {/* Name & Rarity */}
               <div className="text-center">
                 <p className="text-white text-xl font-bold">{previewItem.name}</p>
-                <p className="text-gray-400 text-sm mt-1">{previewItem.description}</p>
+                <div className="mt-1"><RarityBadge rarity={previewItem.rarity} /></div>
               </div>
-              {/* Pet mood preview */}
-              <div className="w-64 p-4 rounded-xl bg-white/[0.03] border border-purple-500/20 text-center space-y-2">
-                <p className="text-gray-400 text-xs">Pet Moods</p>
-                <div className="flex justify-around">
-                  <div className="text-center">
-                    <p className="text-2xl">😊</p>
-                    <p className="text-green-400 text-[10px]">Happy</p>
-                    <p className="text-gray-500 text-[9px]">Read today</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl">😐</p>
-                    <p className="text-yellow-400 text-[10px]">Hungry</p>
-                    <p className="text-gray-500 text-[9px]">1 day gap</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl">😢</p>
-                    <p className="text-red-400 text-[10px]">Sad</p>
-                    <p className="text-gray-500 text-[9px]">2+ days</p>
-                  </div>
+
+              {/* Personality & Lore */}
+              {stats && (
+                <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-purple-500/20 space-y-2">
+                  <p className="text-purple-300 text-xs font-bold">💜 성격</p>
+                  <p className="text-gray-300 text-xs">{stats.personality}</p>
+                  <p className="text-purple-300 text-xs font-bold mt-2">📜 스토리</p>
+                  <p className="text-gray-400 text-[11px] leading-relaxed">{stats.lore}</p>
                 </div>
-              </div>
-              {/* Bible companion mock */}
-              <div className="w-64 p-3 rounded-xl bg-purple-900/30 border border-purple-500/20">
-                <div className="flex items-center gap-2">
-                  {getPetDefaultSprite(previewItem.id.replace('pet_', '')) ? (
-                    <img src={getPetDefaultSprite(previewItem.id.replace('pet_', ''))!} alt={previewItem.name} className="w-8 h-8 object-contain" />
-                  ) : (
-                    <span className="text-2xl">{previewItem.petEmoji}</span>
-                  )}
-                  <div>
-                    <p className="text-white text-xs font-medium">{previewItem.name} is happy! 🎉</p>
-                    <p className="text-gray-400 text-[10px]">Your reading companion</p>
-                  </div>
+              )}
+
+              {/* Ability */}
+              {stats && (
+                <div className="w-full p-3 rounded-xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30">
+                  <p className="text-cyan-300 text-xs font-bold">✨ 특수 능력</p>
+                  <p className="text-white text-xs mt-1">{stats.ability}</p>
+                </div>
+              )}
+
+              {/* Stats bars */}
+              {stats && (
+                <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-purple-500/20 space-y-2">
+                  <p className="text-purple-300 text-xs font-bold">📊 능력치</p>
+                  {Object.entries(stats.stats).map(([key, val]) => {
+                    const labels: Record<string, { label: string; color: string }> = {
+                      faith: { label: '신앙', color: 'bg-yellow-400' },
+                      wisdom: { label: '지혜', color: 'bg-blue-400' },
+                      joy: { label: '기쁨', color: 'bg-pink-400' },
+                      courage: { label: '용기', color: 'bg-red-400' },
+                    };
+                    const conf = labels[key] || { label: key, color: 'bg-gray-400' };
+                    return (
+                      <div key={key} className="flex items-center gap-2">
+                        <span className="text-gray-400 text-[10px] w-8">{conf.label}</span>
+                        <div className="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
+                          <div className={`h-full rounded-full ${conf.color} transition-all duration-500`} style={{ width: `${val * 10}%` }} />
+                        </div>
+                        <span className="text-white text-[10px] font-bold w-4 text-right">{val}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Expression preview */}
+              <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-purple-500/20">
+                <p className="text-gray-400 text-xs text-center mb-2">🎭 표정 변화</p>
+                <div className="flex justify-around">
+                  {(['excited', 'love', 'sleepy', 'cool'] as PetExpression[]).map(expr => (
+                    <div key={expr} className="text-center">
+                      {getPetSprite(petId, expr) ? (
+                        <img src={getPetSprite(petId, expr)!} alt={expr} className="w-10 h-10 object-contain mx-auto" />
+                      ) : (
+                        <span className="text-xl">😊</span>
+                      )}
+                      <p className="text-gray-500 text-[9px] mt-0.5">{expr}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          )}
+            );
+          })()}
 
           {/* Item info */}
           <div className="mt-6 text-center">

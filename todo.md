@@ -174,3 +174,8 @@
 ## Pet Interaction & Animation Improvements (Jun 11, 2026)
 - [x] Click floating pet → random expression change + short greeting speech bubble
 - [x] Fade in/out animation when pet expression changes (smooth transition, no flicker)
+
+## Store Pet UX Improvements (Jun 11, 2026)
+- [x] Skeleton UI while pet images are loading in Store
+- [x] Sort/filter pets by price and rarity tier
+- [x] Pet detail popup with description and stats on image click
