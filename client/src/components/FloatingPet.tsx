@@ -825,7 +825,7 @@ export default function FloatingPet() {
         onPointerUp={handlePointerUp}
       >
         <div className="pet-alive-container relative">
-          <span className="text-5xl pet-creature" style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
+          <span className={`text-5xl pet-creature ${expression === 'normal' ? 'pet-blink' : ''} ${expression === 'excited' ? 'pet-tail-wag' : ''} ${isDancing ? 'pet-dance' : ''} ${isSulking ? 'pet-sulk' : ''}`} style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
             {pet.petEmoji}
           </span>
           {/* #5 Expression overlays */}

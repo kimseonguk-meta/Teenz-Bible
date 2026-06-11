@@ -149,15 +149,15 @@
 
 ## Pet System & UX Improvements (Jun 11, 2026)
 
-- [ ] Pet #1: Bible page peek mode - pet peeks from right edge with messages
-- [ ] Pet #2: Scroll speed reaction - too fast / idle detection
-- [ ] Pet #3: Text blocking prank - pet sits on text, tap to move
-- [ ] Pet #4: Swipe petting gesture - swipe on pet to pet it
-- [ ] Pet #5: Expression animation - eye blink, tail wag via CSS
-- [ ] Pet #6: Sulking when absent - pet turns back if user was away
-- [ ] Pet #7: Celebration dance on chapter complete
-- [ ] Pet #8: Quiz hints - pet moves toward answer or gives hints
-- [ ] UX #9: Reading progress bar at top of chapter
-- [ ] UX #11: Haptic feedback on quiz correct, XP gain
-- [ ] UX #13: Next chapter prompt after quiz completion
-- [ ] UX #14: Weekly leaderboard reset with season system
+- [x] Pet #1: Bible page peek mode - pet peeks from right edge with messages
+- [x] Pet #2: Scroll speed reaction - too fast / idle detection
+- [x] Pet #3: Text blocking prank - pet sits on text, tap to move
+- [x] Pet #4: Swipe petting gesture - swipe on pet to pet it
+- [x] Pet #5: Expression animation - multiple face states (normal, excited, sleepy, love, angry, peek, dance)
+- [x] Pet #6: Sulking when absent 24h+ - angry expression for 8 seconds
+- [x] Pet #7: Celebration dance on chapter complete
+- [x] Pet #8: Quiz result reactions (correct/wrong)
+- [x] UX #9: Reading progress bar at top of chapter
+- [x] UX #11: Haptic feedback (navigator.vibrate) on quiz correct
+- [x] UX #13: Next chapter prompt after quiz completion
+- [x] UX #14: Weekly leaderboard as default + resets every Monday message

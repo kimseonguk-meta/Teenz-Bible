@@ -142,6 +142,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addXP = useCallback((amount: number) => {
+    // #11 Haptic feedback on XP gain
+    if (navigator.vibrate) navigator.vibrate(30);
     setState(prev => {
       const newXP = prev.totalXP + amount;
       localStorage.setItem("totalXP", String(newXP));
@@ -149,6 +151,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       const newLevel = calcLevel(newXP);
       if (newLevel.level > oldLevel.level) {
         toast.success(`🎉 Level Up! Lv.${newLevel.level} ${newLevel.name}`);
+        if (navigator.vibrate) navigator.vibrate([50, 30, 50]); // Extra haptic for level up
       }
       dispatchSyncEvent();
       return { ...prev, totalXP: newXP };
