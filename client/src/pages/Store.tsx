@@ -19,6 +19,7 @@ import {
   type ItemCategory,
   type Rarity,
 } from "@/data/storeItems";
+import { getPetDefaultSprite } from "@/data/petSprites";
 import { toast } from "sonner";
 
 const tabs = [
@@ -170,7 +171,13 @@ export default function Store() {
         <div className="absolute top-1.5 left-1.5">
           <RarityBadge rarity={item.rarity} />
         </div>
-        <div className="text-3xl my-2 mt-5 cursor-pointer hover:scale-110 transition-transform" onClick={() => setPreviewItem(item)}>{item.emoji}</div>
+        <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center" onClick={() => setPreviewItem(item)}>
+          {item.category === 'pets' && getPetDefaultSprite(item.id.replace('pet_', '')) ? (
+            <img src={getPetDefaultSprite(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
+          ) : (
+            <span className="text-3xl">{item.emoji}</span>
+          )}
+        </div>
         <p className="text-white text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
         <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
 
@@ -279,7 +286,13 @@ export default function Store() {
                   <div className="absolute top-1.5 left-1.5">
                     <RarityBadge rarity={item.rarity} />
                   </div>
-                  <div className="text-3xl my-2 mt-5 cursor-pointer hover:scale-110 transition-transform" onClick={() => setPreviewItem(item)}>{item.emoji}</div>
+                  <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center" onClick={() => setPreviewItem(item)}>
+                    {item.category === 'pets' && getPetDefaultSprite(item.id.replace('pet_', '')) ? (
+                      <img src={getPetDefaultSprite(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
+                    ) : (
+                      <span className="text-3xl">{item.emoji}</span>
+                    )}
+                  </div>
                   <p className="text-white text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                   <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
 
@@ -733,7 +746,13 @@ export default function Store() {
 
           {previewItem.category === "pets" && (
             <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
-              <div className="text-7xl">{previewItem.petEmoji}</div>
+              <div className="w-28 h-28 flex items-center justify-center">
+                {getPetDefaultSprite(previewItem.id.replace('pet_', '')) ? (
+                  <img src={getPetDefaultSprite(previewItem.id.replace('pet_', ''))!} alt={previewItem.name} className="w-28 h-28 object-contain" />
+                ) : (
+                  <span className="text-7xl">{previewItem.petEmoji}</span>
+                )}
+              </div>
               <div className="text-center">
                 <p className="text-white text-xl font-bold">{previewItem.name}</p>
                 <p className="text-gray-400 text-sm mt-1">{previewItem.description}</p>
@@ -762,7 +781,11 @@ export default function Store() {
               {/* Bible companion mock */}
               <div className="w-64 p-3 rounded-xl bg-purple-900/30 border border-purple-500/20">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">{previewItem.petEmoji}</span>
+                  {getPetDefaultSprite(previewItem.id.replace('pet_', '')) ? (
+                    <img src={getPetDefaultSprite(previewItem.id.replace('pet_', ''))!} alt={previewItem.name} className="w-8 h-8 object-contain" />
+                  ) : (
+                    <span className="text-2xl">{previewItem.petEmoji}</span>
+                  )}
                   <div>
                     <p className="text-white text-xs font-medium">{previewItem.name} is happy! 🎉</p>
                     <p className="text-gray-400 text-[10px]">Your reading companion</p>

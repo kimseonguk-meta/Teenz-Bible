@@ -11,6 +11,7 @@ interface SaveToPhotosPlugin {
 const SaveToPhotos = registerPlugin<SaveToPhotosPlugin>('SaveToPhotos');
 import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
+import { getPetDefaultSprite } from "@/data/petSprites";
 import { toast } from "sonner";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
@@ -297,7 +298,13 @@ export default function Home() {
             {(() => { const photo = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-3xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-3xl">👦</span>; } })()}
           </div>
           <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
-          {equippedPet && <div className="absolute -top-1 -left-1 text-lg">{equippedPet.petEmoji}</div>}
+          {equippedPet && <div className="absolute -top-1 -left-1">
+            {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-6 h-6 object-contain" />
+            ) : (
+              <span className="text-lg">{equippedPet.petEmoji}</span>
+            )}
+          </div>}
         </div>
         <div>
           <h1 className="text-xl font-bold text-white font-display">{greeting}</h1>

@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
+import { getPetDefaultSprite } from "@/data/petSprites";
 import { useLocation } from "wouter";
 import { auth, db, ref, update, serverTimestamp } from "@/lib/firebase";
 import { get } from "firebase/database";
@@ -508,7 +509,13 @@ export default function Profile() {
             )}
           </div>
           {equippedPet && (
-            <div className="absolute -top-1 -left-2 text-2xl">{equippedPet.petEmoji}</div>
+            <div className="absolute -top-1 -left-2">
+              {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+                <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-7 h-7 object-contain" />
+              ) : (
+                <span className="text-2xl">{equippedPet.petEmoji}</span>
+              )}
+            </div>
           )}
         </div>
 
@@ -863,7 +870,13 @@ export default function Profile() {
           </div>
           <div className="neon-card p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Pet</p>
-            <div className="text-2xl">{equippedPet?.petEmoji || "—"}</div>
+            <div className="flex items-center justify-center">
+              {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+                <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-10 h-10 object-contain" />
+              ) : (
+                <span className="text-2xl">{equippedPet?.petEmoji || "—"}</span>
+              )}
+            </div>
             <p className="text-white text-xs mt-1">{equippedPet?.name || "None"}</p>
           </div>
         </div>

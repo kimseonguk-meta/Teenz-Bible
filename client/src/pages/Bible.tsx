@@ -7,6 +7,7 @@ import { useGame } from "@/contexts/GameContext";
 import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
+import { getPetDefaultSprite } from "@/data/petSprites";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -1309,8 +1310,12 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       {/* Pet Companion Widget */}
       {equippedPet && (
         <div className="mt-6 flex items-center gap-3 p-3 rounded-xl bg-purple-900/20 border border-purple-500/20">
-          <div className="text-3xl relative">
-            {equippedPet.petEmoji}
+          <div className="relative w-10 h-10 flex items-center justify-center">
+            {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-10 h-10 object-contain" />
+            ) : (
+              <span className="text-3xl">{equippedPet.petEmoji}</span>
+            )}
             <span className="absolute -top-1 -right-1 text-xs">{getPetMoodEmoji(petState.mood)}</span>
           </div>
           <div className="flex-1">

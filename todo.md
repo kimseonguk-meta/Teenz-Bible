@@ -161,3 +161,12 @@
 - [x] UX #11: Haptic feedback (navigator.vibrate) on quiz correct
 - [x] UX #13: Next chapter prompt after quiz completion
 - [x] UX #14: Weekly leaderboard as default + resets every Monday message
+
+## Pet Character Redesign — All 14 Pets in Modern KakaoTalk Style (Jun 11, 2026)
+- [ ] Generate 14 pet normal/default sprites (cat, puppy, lamb, lion, owl, dove, eagle, fox, bear, bunny, whale, butterfly, dragon, unicorn)
+- [ ] Generate 7 additional expressions per pet (excited, sleepy, love, angry, dance, peek, cool) = 98 images
+- [ ] Upload all 112 sprites as webdev static assets
+- [ ] Create pet sprite mapping module (petSprites.ts)
+- [ ] Update FloatingPet.tsx to use character images instead of emoji
+- [ ] Update Store pet cards to show new character images
+- [ ] Deploy to Firebase Hosting

@@ -9,6 +9,7 @@ import {
   type PetMood,
 } from "@/data/storeItems";
 import { getPetDialogue, getRandomMessage } from "@/data/petDialogues";
+import { getPetSprite, type PetExpression as SpriteExpression } from "@/data/petSprites";
 
 // ─── Floating Pet Companion ─────────────────────────────────
 // Enhanced with:
@@ -30,7 +31,7 @@ interface HeartParticle {
   emoji: string;
 }
 
-type PetExpression = "normal" | "excited" | "sleepy" | "love" | "angry" | "peek" | "dance";
+type PetExpression = "normal" | "excited" | "sleepy" | "love" | "angry" | "peek" | "dance" | "cool";
 
 export default function FloatingPet() {
   const [location] = useLocation();
@@ -686,16 +687,32 @@ export default function FloatingPet() {
         )}
         {/* Pet peeking from edge */}
         <div className={`pointer-events-auto cursor-pointer ${isDancing ? 'animate-pet-dance' : ''}`}>
-          <span
-            className="text-4xl pet-creature"
-            style={{
-              display: 'inline-block',
-              filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))',
-              transform: 'scaleX(-1)', // Face inward
-            }}
-          >
-            {pet.petEmoji}
-          </span>
+          {(() => {
+            const petKey = pet.id.replace('pet_', '');
+            const peekSprite = getPetSprite(petKey, 'peek');
+            return peekSprite ? (
+              <img
+                src={peekSprite}
+                alt={pet.name}
+                className="w-12 h-12 object-contain"
+                style={{
+                  filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))',
+                  transform: 'scaleX(-1)',
+                }}
+              />
+            ) : (
+              <span
+                className="text-4xl pet-creature"
+                style={{
+                  display: 'inline-block',
+                  filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))',
+                  transform: 'scaleX(-1)',
+                }}
+              >
+                {pet.petEmoji}
+              </span>
+            );
+          })()}
           {/* Expression overlay */}
           {expression === "excited" && <span className="absolute -top-2 -left-1 text-xs animate-bounce">⭐</span>}
           {expression === "sleepy" && <span className="absolute -top-2 -left-1 text-xs">💤</span>}
@@ -825,9 +842,23 @@ export default function FloatingPet() {
         onPointerUp={handlePointerUp}
       >
         <div className="pet-alive-container relative">
-          <span className={`text-5xl pet-creature ${expression === 'normal' ? 'pet-blink' : ''} ${expression === 'excited' ? 'pet-tail-wag' : ''} ${isDancing ? 'pet-dance' : ''} ${isSulking ? 'pet-sulk' : ''}`} style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
-            {pet.petEmoji}
-          </span>
+          {(() => {
+            const petKey = pet.id.replace('pet_', '');
+            const spriteExpression: SpriteExpression = isDancing ? 'dance' : (expression === 'peek' ? 'normal' : expression as SpriteExpression);
+            const spriteUrl = getPetSprite(petKey, spriteExpression);
+            return spriteUrl ? (
+              <img
+                src={spriteUrl}
+                alt={pet.name}
+                className={`w-14 h-14 object-contain ${expression === 'normal' ? 'pet-blink' : ''} ${expression === 'excited' ? 'pet-tail-wag' : ''} ${isDancing ? 'pet-dance' : ''} ${isSulking ? 'pet-sulk' : ''}`}
+                style={{ filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}
+              />
+            ) : (
+              <span className={`text-5xl pet-creature ${expression === 'normal' ? 'pet-blink' : ''}`} style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
+                {pet.petEmoji}
+              </span>
+            );
+          })()}
           {/* #5 Expression overlays */}
           {expression === "excited" && (
             <>
