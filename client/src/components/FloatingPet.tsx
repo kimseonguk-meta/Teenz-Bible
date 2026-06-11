@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useLocation } from "wouter";
 import {
   PETS,
@@ -6,15 +6,20 @@ import {
   getPetState,
   getPetMoodEmoji,
   feedPet,
+  type PetMood,
 } from "@/data/storeItems";
 import { getPetDialogue, getRandomMessage } from "@/data/petDialogues";
 
 // ─── Floating Pet Companion ─────────────────────────────────
-// The pet WANDERS around the screen autonomously!
-// - Floats to random positions every few seconds
-// - Sometimes comes to the CENTER to "interrupt" cutely
-// - Bounces, wiggles, does little dances
-// - Tappable for dialogue, double-tap for mini-game
+// Enhanced with:
+// #1 Peek mode on Bible page (eyes peeking from edge)
+// #2 Scroll speed reactions
+// #3 Text blocking prank
+// #4 Swipe petting gesture
+// #5 Expression animations (multiple face states)
+// #6 Sulking after absence
+// #7 Celebration dance on chapter complete
+// #8 Quiz hints
 
 type MiniGameAction = "feed" | "play" | "pet";
 
@@ -25,6 +30,8 @@ interface HeartParticle {
   emoji: string;
 }
 
+type PetExpression = "normal" | "excited" | "sleepy" | "love" | "angry" | "peek" | "dance";
+
 export default function FloatingPet() {
   const [location] = useLocation();
   const [equipped, setEquipped] = useState(getEquipped);
@@ -32,7 +39,6 @@ export default function FloatingPet() {
   const [showBubble, setShowBubble] = useState(false);
   const [bubbleText, setBubbleText] = useState("");
   const [reaction, setReaction] = useState<string | null>(null);
-  // Position as absolute x, y from top-left
   const [pos, setPos] = useState({ x: window.innerWidth - 70, y: window.innerHeight - 180 });
   const [targetPos, setTargetPos] = useState({ x: window.innerWidth - 70, y: window.innerHeight - 180 });
   const [isDragging, setIsDragging] = useState(false);
@@ -47,8 +53,20 @@ export default function FloatingPet() {
   const [wiggle, setWiggle] = useState(false);
   const [isTamed, setIsTamed] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const tamedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // #1 Peek mode
+  const [isPeekMode, setIsPeekMode] = useState(false);
+  const [peekVisible, setPeekVisible] = useState(false);
+  const [peekBubble, setPeekBubble] = useState<string | null>(null);
+  // #3 Text blocking
+  const [isBlockingText, setIsBlockingText] = useState(false);
+  // #5 Expression
+  const [expression, setExpression] = useState<PetExpression>("normal");
+  // #6 Sulking
+  const [isSulking, setIsSulking] = useState(false);
+  // #7 Celebration dance
+  const [isDancing, setIsDancing] = useState(false);
 
+  const tamedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dragRef = useRef<{ startX: number; startY: number; startPosX: number; startPosY: number } | null>(null);
   const petRef = useRef<HTMLDivElement>(null);
   const bubbleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -59,14 +77,20 @@ export default function FloatingPet() {
   const wanderTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const animFrameRef = useRef<number>(0);
   const pauseWanderRef = useRef(false);
+  // #4 Swipe petting
+  const swipeRef = useRef<{ lastX: number; count: number; timer: ReturnType<typeof setTimeout> | null }>({ lastX: 0, count: 0, timer: null });
+  // #1 Peek timer
+  const peekTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const pet = equipped.pet ? PETS.find(p => p.id === equipped.pet) : null;
   const dialogue = pet ? getPetDialogue(pet.id) : null;
 
-  // Safe zone: avoid nav bar (bottom 70px) and top header area (120px to clear reader buttons + safe area)
+  const isBiblePage = location.startsWith("/bible") && location !== "/bible-ai";
+
+  // Safe zone
   const getSafeArea = () => ({
     minX: 10,
-    maxX: Math.min(window.innerWidth - 70, 420), // max-width of app is 480
+    maxX: Math.min(window.innerWidth - 70, 420),
     minY: 120,
     maxY: window.innerHeight - 140,
   });
@@ -86,65 +110,211 @@ export default function FloatingPet() {
     };
   }, []);
 
+  // ─── #6 Sulking: Check last app open time ──────────────────
+  useEffect(() => {
+    if (!pet) return;
+    const lastOpen = localStorage.getItem("teensBibleLastOpen");
+    const now = Date.now();
+    if (lastOpen) {
+      const hoursSince = (now - parseInt(lastOpen)) / (1000 * 60 * 60);
+      if (hoursSince > 24) {
+        setIsSulking(true);
+        setExpression("angry");
+        setTimeout(() => {
+          setIsSulking(false);
+          setExpression("normal");
+        }, 8000);
+      }
+    }
+    localStorage.setItem("teensBibleLastOpen", String(now));
+  }, [pet]);
+
+  // ─── #1 Peek mode on Bible page ───────────────────────────
+  useEffect(() => {
+    if (isBiblePage && pet) {
+      setIsPeekMode(true);
+      setPeekVisible(false);
+      // Randomly peek every 30-60 seconds
+      peekTimerRef.current = setInterval(() => {
+        setPeekVisible(true);
+        const peekMessages = [
+          "Whatcha reading? 👀",
+          "Psst! I'm here~ 🙈",
+          "Don't mind me~ 👁️",
+          "*peeks* 😏",
+          "Still reading? Good! 📖",
+          "I'm watching you~ 👀✨",
+        ];
+        setPeekBubble(peekMessages[Math.floor(Math.random() * peekMessages.length)]);
+        // Hide after 4 seconds
+        setTimeout(() => {
+          setPeekVisible(false);
+          setPeekBubble(null);
+        }, 4000);
+      }, 30000 + Math.random() * 30000);
+
+      // Initial peek after 5 seconds
+      const initTimer = setTimeout(() => {
+        setPeekVisible(true);
+        setPeekBubble("I'll be quiet~ 🤫");
+        setTimeout(() => { setPeekVisible(false); setPeekBubble(null); }, 3500);
+      }, 5000);
+
+      return () => {
+        if (peekTimerRef.current) clearInterval(peekTimerRef.current);
+        clearTimeout(initTimer);
+      };
+    } else {
+      setIsPeekMode(false);
+      setPeekVisible(false);
+      setPeekBubble(null);
+      if (peekTimerRef.current) clearInterval(peekTimerRef.current);
+    }
+  }, [isBiblePage, pet]);
+
+  // ─── #2 Scroll speed reactions ─────────────────────────────
+  useEffect(() => {
+    if (!isBiblePage || !pet) return;
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.type === "fast") {
+        setPeekVisible(true);
+        setPeekBubble("Whoa! Slow down! 😵‍💫");
+        setExpression("excited");
+        setTimeout(() => { setPeekVisible(false); setPeekBubble(null); setExpression("normal"); }, 3500);
+      } else if (detail?.type === "idle") {
+        setPeekVisible(true);
+        setPeekBubble("...sleeping? 👀💤");
+        setExpression("sleepy");
+        setTimeout(() => { setPeekVisible(false); setPeekBubble(null); setExpression("normal"); }, 4000);
+      }
+    };
+    window.addEventListener("pet-scroll-speed", handler);
+    return () => window.removeEventListener("pet-scroll-speed", handler);
+  }, [isBiblePage, pet]);
+
+  // ─── #3 Text blocking prank (on non-Bible pages) ──────────
+  useEffect(() => {
+    if (!pet || isBiblePage || !isWandering) return;
+    // 5% chance every 40-80 seconds to block text
+    const timer = setInterval(() => {
+      if (pauseWanderRef.current || isDragging || showMiniGame || isTamed || isInterrupting) return;
+      if (Math.random() < 0.05) {
+        setIsBlockingText(true);
+        setTargetPos(getCenterPosition());
+        setExpression("excited");
+        triggerReaction("*sits on your screen* Hehe! 😝");
+        // Move away after tap or 4 seconds
+        setTimeout(() => {
+          if (isBlockingText) {
+            setIsBlockingText(false);
+            setExpression("normal");
+            triggerReaction("Fine, I'll move~ 😏");
+            setTargetPos(getRandomPosition());
+          }
+        }, 4000);
+      }
+    }, 40000 + Math.random() * 40000);
+    return () => clearInterval(timer);
+  }, [pet, isBiblePage, isWandering, isDragging, showMiniGame, isTamed, isInterrupting]);
+
+  // ─── #7 Celebration dance on chapter complete ──────────────
+  useEffect(() => {
+    const handler = () => {
+      if (!pet || !dialogue) return;
+      setIsDancing(true);
+      setExpression("excited");
+      triggerReaction(getRandomMessage(dialogue.reading));
+      setBounceClass("animate-bounce-excited");
+      if (!isBiblePage) {
+        setTargetPos(getCenterPosition());
+      } else {
+        // In peek mode, show full celebration
+        setPeekVisible(true);
+        setPeekBubble("🎉 AMAZING!! You did it! 🎉");
+      }
+      setTimeout(() => {
+        setIsDancing(false);
+        setExpression("normal");
+        setBounceClass("animate-bounce-gentle");
+        if (!isBiblePage) setTargetPos(getRandomPosition());
+        else { setPeekVisible(false); setPeekBubble(null); }
+      }, 3500);
+    };
+    window.addEventListener("pet-chapter-complete", handler);
+    return () => window.removeEventListener("pet-chapter-complete", handler);
+  }, [pet, dialogue, isBiblePage]);
+
+  // ─── #8 Quiz hint ──────────────────────────────────────────
+  useEffect(() => {
+    const handler = (e: Event) => {
+      if (!pet) return;
+      const detail = (e as CustomEvent).detail;
+      if (detail?.correct === true) {
+        if (isBiblePage) {
+          setPeekVisible(true);
+          setPeekBubble("YESSS! 🎉🧠");
+          setExpression("excited");
+          setTimeout(() => { setPeekVisible(false); setPeekBubble(null); setExpression("normal"); }, 3000);
+        } else {
+          setExpression("excited");
+          triggerReaction("BIG BRAIN! 🧠🎉");
+          spawnHearts("⭐", 4);
+          setTimeout(() => setExpression("normal"), 2000);
+        }
+      } else if (detail?.correct === false) {
+        if (isBiblePage) {
+          setPeekVisible(true);
+          setPeekBubble("Aww, next time! 💪");
+          setTimeout(() => { setPeekVisible(false); setPeekBubble(null); }, 3000);
+        } else {
+          triggerReaction("It's okay! You'll get it next time! 💪");
+        }
+      }
+    };
+    window.addEventListener("pet-quiz-result", handler);
+    return () => window.removeEventListener("pet-quiz-result", handler);
+  }, [pet, isBiblePage]);
+
   // ─── Smooth movement animation ───────────────────────────
   useEffect(() => {
+    if (isPeekMode) return; // Don't animate position in peek mode
     let lastTime = performance.now();
-
     const animate = (time: number) => {
-      const dt = Math.min((time - lastTime) / 1000, 0.1); // delta in seconds, cap at 100ms
+      const dt = Math.min((time - lastTime) / 1000, 0.1);
       lastTime = time;
-
       if (!isDragging && !pauseWanderRef.current) {
         setPos(prev => {
           const dx = targetPos.x - prev.x;
           const dy = targetPos.y - prev.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 1) return prev; // close enough
-
-          // Smooth easing - move 2-3% of remaining distance per frame
+          if (dist < 1) return prev;
           const speed = Math.max(1.5, dist * 0.03) * 60 * dt;
           const ratio = Math.min(speed / dist, 1);
-
-          return {
-            x: prev.x + dx * ratio,
-            y: prev.y + dy * ratio,
-          };
+          return { x: prev.x + dx * ratio, y: prev.y + dy * ratio };
         });
       }
-
       animFrameRef.current = requestAnimationFrame(animate);
     };
-
     animFrameRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [targetPos, isDragging]);
+  }, [targetPos, isDragging, isPeekMode]);
 
   // ─── Autonomous wandering ────────────────────────────────
   useEffect(() => {
-    if (!pet || !isWandering) return;
-
+    if (!pet || !isWandering || isPeekMode) return;
     const wander = () => {
       if (pauseWanderRef.current || isDragging || showMiniGame || isTamed) return;
-
-      // 15% chance to "interrupt" by coming to center
       if (Math.random() < 0.15 && !isInterrupting) {
         doInterrupt();
       } else {
         setTargetPos(getRandomPosition());
       }
     };
-
-    // Wander every 3-6 seconds
     wanderTimerRef.current = setInterval(wander, 3000 + Math.random() * 3000);
-
-    // Initial position
     setTimeout(() => setTargetPos(getRandomPosition()), 500);
-
-    return () => {
-      if (wanderTimerRef.current) clearInterval(wanderTimerRef.current);
-    };
-  }, [pet, isWandering, isDragging, showMiniGame, isInterrupting]);
+    return () => { if (wanderTimerRef.current) clearInterval(wanderTimerRef.current); };
+  }, [pet, isWandering, isDragging, showMiniGame, isInterrupting, isPeekMode]);
 
   // ─── Cute interrupt behavior ─────────────────────────────
   const doInterrupt = useCallback(() => {
@@ -152,8 +322,6 @@ export default function FloatingPet() {
     setIsInterrupting(true);
     setTargetPos(getCenterPosition());
     setWiggle(true);
-
-    // Show a cheeky message
     const interruptMessages = [
       "Hey! Look at me! 👋",
       "Whatcha doing~? 😏",
@@ -168,8 +336,6 @@ export default function FloatingPet() {
     ];
     const msg = interruptMessages[Math.floor(Math.random() * interruptMessages.length)];
     setReaction(msg);
-
-    // After 2.5 seconds, move away
     setTimeout(() => {
       setWiggle(false);
       setIsInterrupting(false);
@@ -216,40 +382,23 @@ export default function FloatingPet() {
     return () => window.removeEventListener("pet-state-changed", handler);
   }, [dialogue]);
 
-  // React to page changes
+  // React to page changes (non-Bible pages)
   useEffect(() => {
-    if (location !== prevLocationRef.current && pet && dialogue) {
+    if (location !== prevLocationRef.current && pet && dialogue && !isBiblePage) {
       prevLocationRef.current = location;
       const reactions = dialogue.pageReactions[location] || ["Let's explore! 🗺️"];
       triggerReaction(getRandomMessage(reactions));
       setBounceClass("animate-bounce-excited");
-      // Rush to a new position on page change
       setTargetPos(getRandomPosition());
       setTimeout(() => setBounceClass("animate-bounce-gentle"), 1500);
+    } else {
+      prevLocationRef.current = location;
     }
-  }, [location, pet, dialogue]);
+  }, [location, pet, dialogue, isBiblePage]);
 
-  // Listen for chapter read events
+  // Periodic idle messages (non-Bible pages)
   useEffect(() => {
-    const handler = () => {
-      if (pet && dialogue) {
-        triggerReaction(getRandomMessage(dialogue.reading));
-        setBounceClass("animate-bounce-excited");
-        // Come celebrate near center!
-        setTargetPos(getCenterPosition());
-        setTimeout(() => {
-          setBounceClass("animate-bounce-gentle");
-          setTargetPos(getRandomPosition());
-        }, 2500);
-      }
-    };
-    window.addEventListener("teensBibleDataChanged", handler);
-    return () => window.removeEventListener("teensBibleDataChanged", handler);
-  }, [pet, dialogue]);
-
-  // Periodic idle messages
-  useEffect(() => {
-    if (!pet || !dialogue) return;
+    if (!pet || !dialogue || isPeekMode) return;
     const interval = setInterval(() => {
       if (!showBubble && !reaction && !showMiniGame) {
         const idleMessages = dialogue.idle[petState.mood];
@@ -257,21 +406,26 @@ export default function FloatingPet() {
       }
     }, 20000 + Math.random() * 20000);
     return () => clearInterval(interval);
-  }, [pet, dialogue, petState.mood, showBubble, reaction, showMiniGame]);
+  }, [pet, dialogue, petState.mood, showBubble, reaction, showMiniGame, isPeekMode]);
 
   // Greeting on first render
   useEffect(() => {
-    if (pet && dialogue) {
+    if (pet && dialogue && !isBiblePage) {
       const timer = setTimeout(() => {
-        triggerReaction(getRandomMessage(dialogue.greeting));
+        // #6 Sulking greeting
+        if (isSulking) {
+          triggerReaction("Hmph! You forgot about me! 😤💢");
+        } else {
+          triggerReaction(getRandomMessage(dialogue.greeting));
+        }
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [pet?.id]);
+  }, [pet?.id, isSulking]);
 
-  // Show drag hint after 10 seconds if user hasn't seen it before
+  // Show drag hint
   useEffect(() => {
-    if (!pet) return;
+    if (!pet || isPeekMode) return;
     const hintSeen = localStorage.getItem("petDragHintSeen");
     if (hintSeen) return;
     const timer = setTimeout(() => {
@@ -282,7 +436,7 @@ export default function FloatingPet() {
       }, 6000);
     }, 10000);
     return () => clearTimeout(timer);
-  }, [pet]);
+  }, [pet, isPeekMode]);
 
   const triggerReaction = useCallback((text: string) => {
     setReaction(text);
@@ -309,7 +463,6 @@ export default function FloatingPet() {
   const handleMiniGameAction = useCallback((action: MiniGameAction) => {
     if (isDoingAction || !dialogue) return;
     setIsDoingAction(true);
-
     switch (action) {
       case "feed": {
         feedPet();
@@ -318,6 +471,8 @@ export default function FloatingPet() {
         triggerReaction(getRandomMessage(dialogue.fed));
         setHappiness(prev => Math.min(100, prev + 25));
         setBounceClass("animate-bounce-excited");
+        setExpression("love");
+        if (isSulking) { setIsSulking(false); }
         break;
       }
       case "play": {
@@ -337,6 +492,8 @@ export default function FloatingPet() {
         triggerReaction(playReactions[Math.floor(Math.random() * playReactions.length)]);
         setHappiness(prev => Math.min(100, prev + 15));
         setBounceClass("animate-bounce-excited");
+        setExpression("excited");
+        if (isSulking) { setIsSulking(false); }
         break;
       }
       case "pet": {
@@ -351,34 +508,54 @@ export default function FloatingPet() {
         triggerReaction(petReactions[Math.floor(Math.random() * petReactions.length)]);
         setHappiness(prev => Math.min(100, prev + 10));
         setBounceClass("animate-bounce-excited");
+        setExpression("love");
+        if (isSulking) { setIsSulking(false); }
         break;
       }
     }
-
     setTimeout(() => {
       setBounceClass("animate-bounce-gentle");
       setIsDoingAction(false);
+      setExpression("normal");
     }, 1200);
-  }, [dialogue, isDoingAction, playCount, spawnHearts, triggerReaction]);
+  }, [dialogue, isDoingAction, playCount, spawnHearts, triggerReaction, isSulking]);
 
   const handlePetTap = useCallback(() => {
     if (isDragging || !dialogue) return;
+
+    // #3 If blocking text, dismiss on tap
+    if (isBlockingText) {
+      setIsBlockingText(false);
+      setExpression("normal");
+      triggerReaction("Hehe, sorry~ 😏");
+      setTargetPos(getRandomPosition());
+      return;
+    }
 
     tapCountRef.current += 1;
     if (tapTimerRef.current) clearTimeout(tapTimerRef.current);
 
     tapTimerRef.current = setTimeout(() => {
       if (tapCountRef.current >= 2) {
-        // Double tap → toggle mini-game, pause wandering
         setShowMiniGame(prev => {
           const next = !prev;
           pauseWanderRef.current = next;
           return next;
         });
       } else {
-        // Single tap → show dialogue
-        const messages = dialogue.tap[petState.mood];
-        setBubbleText(getRandomMessage(messages));
+        // #6 Sulking tap response
+        if (isSulking) {
+          const sulkResponses = [
+            "Hmph! You left me alone! 😤",
+            "*turns away* ...I was worried! 😢",
+            "Do you even care about me?! 💢",
+            "*pouts* Feed me and maybe I'll forgive you... 🍖",
+          ];
+          setBubbleText(sulkResponses[Math.floor(Math.random() * sulkResponses.length)]);
+        } else {
+          const messages = dialogue.tap[petState.mood];
+          setBubbleText(getRandomMessage(messages));
+        }
         setShowBubble(true);
         setBounceClass("animate-bounce-excited");
         setTimeout(() => setBounceClass("animate-bounce-gentle"), 1000);
@@ -387,13 +564,15 @@ export default function FloatingPet() {
       }
       tapCountRef.current = 0;
     }, 300);
-  }, [petState.mood, isDragging, dialogue, isTamed, triggerReaction]);
+  }, [petState.mood, isDragging, dialogue, isTamed, isBlockingText, isSulking, triggerReaction, getRandomPosition]);
 
-  // Drag handlers - user can grab and toss the pet
+  // ─── #4 Swipe petting gesture ──────────────────────────────
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
     setIsDragging(false);
     pauseWanderRef.current = true;
+    swipeRef.current.lastX = e.clientX;
+    swipeRef.current.count = 0;
     dragRef.current = {
       startX: e.clientX,
       startY: e.clientY,
@@ -407,6 +586,27 @@ export default function FloatingPet() {
     if (!dragRef.current) return;
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
+
+    // #4 Detect horizontal swipe for petting
+    const swipeDx = e.clientX - swipeRef.current.lastX;
+    if (Math.abs(swipeDx) > 15 && Math.abs(dy) < 30) {
+      swipeRef.current.count++;
+      swipeRef.current.lastX = e.clientX;
+      if (swipeRef.current.count >= 3) {
+        // Petting gesture detected!
+        swipeRef.current.count = 0;
+        setExpression("love");
+        spawnHearts("💕", 2);
+        if (!reaction) {
+          const petResponses = ["*purrrr~* 😊", "That feels nice~ 💕", "*happy wiggle* ✨", "Hehe~ 🥰"];
+          triggerReaction(petResponses[Math.floor(Math.random() * petResponses.length)]);
+        }
+        setHappiness(prev => Math.min(100, prev + 3));
+        setTimeout(() => setExpression("normal"), 1500);
+        return; // Don't drag, just pet
+      }
+    }
+
     if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
       setIsDragging(true);
     }
@@ -414,19 +614,17 @@ export default function FloatingPet() {
     const newY = Math.max(40, Math.min(window.innerHeight - 120, dragRef.current.startPosY + dy));
     setPos({ x: newX, y: newY });
     setTargetPos({ x: newX, y: newY });
-  }, []);
+  }, [reaction, triggerReaction, spawnHearts]);
 
   const handlePointerUp = useCallback(() => {
     if (!isDragging && dragRef.current) {
       handlePetTap();
     } else if (isDragging) {
-      // Check if dropped in bottom-right corner zone
       const cornerThreshold = {
         x: window.innerWidth - 120,
         y: window.innerHeight - 200,
       };
       if (pos.x > cornerThreshold.x && pos.y > cornerThreshold.y) {
-        // Tame the pet - sit quietly for 15 seconds
         setIsTamed(true);
         pauseWanderRef.current = true;
         setIsInterrupting(false);
@@ -436,11 +634,13 @@ export default function FloatingPet() {
         setPos(cornerPos);
         setTargetPos(cornerPos);
         setBounceClass("animate-bounce-gentle");
+        setExpression("sleepy");
         triggerReaction("*sits quietly* 😊");
         if (tamedTimerRef.current) clearTimeout(tamedTimerRef.current);
         tamedTimerRef.current = setTimeout(() => {
           setIsTamed(false);
           pauseWanderRef.current = false;
+          setExpression("normal");
           triggerReaction("I'm back~! 🎉");
         }, 15000);
         dragRef.current = null;
@@ -449,19 +649,65 @@ export default function FloatingPet() {
       }
     }
     dragRef.current = null;
-    // Resume wandering after 3 seconds
     setTimeout(() => {
       pauseWanderRef.current = false;
       setIsDragging(false);
     }, 3000);
   }, [isDragging, handlePetTap, pos, triggerReaction]);
 
-  // Don't render if no pet equipped, on bible-ai page, or on bible page (overlaps reader buttons)
-  if (!pet || location === "/bible-ai" || location.startsWith("/bible")) return null;
+  // ─── Don't render if no pet or on bible-ai page ────────────
+  if (!pet || location === "/bible-ai") return null;
 
+  // ─── #1 PEEK MODE RENDER (Bible page) ─────────────────────
+  if (isPeekMode) {
+    return (
+      <div
+        className={`fixed z-[100] select-none touch-none transition-transform duration-500 ease-out`}
+        style={{
+          right: peekVisible ? '0px' : '-50px',
+          top: '45%',
+          transform: peekVisible ? 'translateX(0)' : 'translateX(100%)',
+        }}
+        onClick={() => {
+          if (peekVisible) {
+            setPeekBubble("Hehe~ back to reading! 📖");
+            setTimeout(() => { setPeekVisible(false); setPeekBubble(null); }, 2000);
+          }
+        }}
+      >
+        {/* Peek bubble */}
+        {peekBubble && (
+          <div className="absolute right-14 top-1/2 -translate-y-1/2 min-w-[120px] max-w-[160px] animate-fade-in pointer-events-none">
+            <div className="bg-white/95 text-gray-800 text-[11px] font-medium px-3 py-2 rounded-xl shadow-lg relative text-center">
+              {peekBubble}
+              <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 w-3 h-3 bg-white/95 rotate-45" />
+            </div>
+          </div>
+        )}
+        {/* Pet peeking from edge */}
+        <div className={`pointer-events-auto cursor-pointer ${isDancing ? 'animate-pet-dance' : ''}`}>
+          <span
+            className="text-4xl pet-creature"
+            style={{
+              display: 'inline-block',
+              filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))',
+              transform: 'scaleX(-1)', // Face inward
+            }}
+          >
+            {pet.petEmoji}
+          </span>
+          {/* Expression overlay */}
+          {expression === "excited" && <span className="absolute -top-2 -left-1 text-xs animate-bounce">⭐</span>}
+          {expression === "sleepy" && <span className="absolute -top-2 -left-1 text-xs">💤</span>}
+          {expression === "love" && <span className="absolute -top-2 -left-1 text-xs animate-pulse">💕</span>}
+          {expression === "angry" && <span className="absolute -top-2 -left-1 text-xs">💢</span>}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── NORMAL MODE RENDER (non-Bible pages) ──────────────────
   const moodEmoji = getPetMoodEmoji(petState.mood);
-  const moodBorderColor = petState.mood === "happy" ? "border-green-500/50" : petState.mood === "hungry" ? "border-yellow-500/50" : "border-red-500/50";
-  const moodGlow = petState.mood === "happy" ? "shadow-[0_0_12px_rgba(34,197,94,0.3)]" : petState.mood === "hungry" ? "shadow-[0_0_12px_rgba(234,179,8,0.3)]" : "shadow-[0_0_12px_rgba(239,68,68,0.3)]";
   const happinessColor = happiness > 70 ? "bg-green-500" : happiness > 40 ? "bg-yellow-500" : "bg-red-500";
 
   return (
@@ -571,22 +817,47 @@ export default function FloatingPet() {
         </div>
       )}
 
-      {/* Pet body - this is the interactive part */}
+      {/* Pet body */}
       <div
-        className={`relative cursor-grab active:cursor-grabbing pointer-events-auto ${bounceClass} ${wiggle ? "animate-wiggle" : ""}`}
+        className={`relative cursor-grab active:cursor-grabbing pointer-events-auto ${bounceClass} ${wiggle ? "animate-wiggle" : ""} ${isDancing ? "animate-pet-dance" : ""} ${isSulking ? "animate-sulk" : ""}`}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
       >
-        {/* Lifelike animated pet - no circle frame */}
         <div className="pet-alive-container relative">
           <span className="text-5xl pet-creature" style={{ display: 'inline-block', filter: 'drop-shadow(0 4px 12px rgba(139, 92, 246, 0.4))' }}>
             {pet.petEmoji}
           </span>
-          {/* Subtle sparkle particles around the pet */}
-          <div className="pet-sparkle pet-sparkle-1">✦</div>
-          <div className="pet-sparkle pet-sparkle-2">✧</div>
-          <div className="pet-sparkle pet-sparkle-3">✦</div>
+          {/* #5 Expression overlays */}
+          {expression === "excited" && (
+            <>
+              <span className="absolute -top-3 -right-2 text-sm animate-bounce">⭐</span>
+              <span className="absolute -top-2 -left-2 text-xs animate-ping">✨</span>
+            </>
+          )}
+          {expression === "love" && (
+            <>
+              <span className="absolute -top-3 right-0 text-sm animate-pulse">💕</span>
+              <span className="absolute -top-2 -left-1 text-xs animate-pulse" style={{ animationDelay: '0.3s' }}>💗</span>
+            </>
+          )}
+          {expression === "sleepy" && (
+            <span className="absolute -top-3 right-0 text-sm">💤</span>
+          )}
+          {expression === "angry" && (
+            <>
+              <span className="absolute -top-3 right-0 text-sm animate-bounce">💢</span>
+              <span className="absolute -top-1 -left-2 text-xs">😤</span>
+            </>
+          )}
+          {/* Sparkle particles */}
+          {!isSulking && (
+            <>
+              <div className="pet-sparkle pet-sparkle-1">✦</div>
+              <div className="pet-sparkle pet-sparkle-2">✧</div>
+              <div className="pet-sparkle pet-sparkle-3">✦</div>
+            </>
+          )}
         </div>
 
         {/* Mood indicator or Zzz when tamed */}

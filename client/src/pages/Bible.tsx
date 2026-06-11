@@ -207,7 +207,15 @@ export default function Bible() {
           } else {
             toast.error("Not quite! The correct answer was highlighted.");
           }
-          setView({ type: "chapters", book: view.book });
+          // Show next chapter prompt instead of going back to chapter list
+          const chapters = allBibleData[view.book] || [];
+          const currentChapterIdx = chapters.findIndex((c: any) => c.num === view.chapterNum);
+          if (currentChapterIdx >= 0 && currentChapterIdx < chapters.length - 1) {
+            setView({ type: "reading", book: view.book, chapterIdx: currentChapterIdx + 1 });
+            window.scrollTo(0, 0);
+          } else {
+            setView({ type: "chapters", book: view.book });
+          }
         }}
         onSkip={() => setView({ type: "chapters", book: view.book })}
       />
@@ -545,6 +553,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
   const [marked, setMarked] = useState(false);
   const [reachedBottom, setReachedBottom] = useState(false);
+  const [readingProgress, setReadingProgress] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [confettiPieces, setConfettiPieces] = useState<Array<{id: number; x: number; delay: number; color: string; size: number; duration: number}>>([]);
   const [showReadWarning, setShowReadWarning] = useState(false);
@@ -916,6 +925,55 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
     localStorage.setItem("ttsRate", String(speechRate));
   }, [speechRate]);
 
+  // Reading progress bar + scroll speed detection for pet
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let lastScrollTime = Date.now();
+    let speedCooldown = false;
+    const handleScroll = () => {
+      // Progress bar
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        setReadingProgress(Math.min(100, (scrollTop / docHeight) * 100));
+      }
+      // Scroll speed detection for pet
+      const now = Date.now();
+      const dt = now - lastScrollTime;
+      if (dt > 0 && dt < 500) {
+        const speed = Math.abs(scrollTop - lastScrollY) / dt; // px/ms
+        if (speed > 3 && !speedCooldown) {
+          speedCooldown = true;
+          window.dispatchEvent(new CustomEvent('pet-scroll-speed', { detail: { speed, type: 'fast' } }));
+          setTimeout(() => { speedCooldown = false; }, 10000);
+        }
+      }
+      lastScrollY = scrollTop;
+      lastScrollTime = now;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Idle detection for pet
+  useEffect(() => {
+    let idleTimer: ReturnType<typeof setTimeout>;
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('pet-scroll-speed', { detail: { speed: 0, type: 'idle' } }));
+      }, 45000);
+    };
+    window.addEventListener('scroll', resetIdle, { passive: true });
+    window.addEventListener('touchstart', resetIdle, { passive: true });
+    resetIdle();
+    return () => {
+      clearTimeout(idleTimer);
+      window.removeEventListener('scroll', resetIdle);
+      window.removeEventListener('touchstart', resetIdle);
+    };
+  }, []);
+
   // Detect when user scrolls to bottom of chapter content
   useEffect(() => {
     if (!contentEndRef.current) return;
@@ -947,6 +1005,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       }
       game.markChapterRead(book, chapter.num);
       setMarked(true);
+      // Haptic feedback on chapter complete
+      if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
+      // Dispatch pet celebration event
+      window.dispatchEvent(new CustomEvent('pet-chapter-complete'));
       // Trigger celebration animation
       setShowCelebration(true);
       const colors = ['#a78bfa', '#f59e0b', '#10b981', '#ec4899', '#06b6d4', '#f97316'];
@@ -993,6 +1055,13 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
   return (
     <div className="px-4 pb-8" style={{ paddingTop: '1rem' }}>
+      {/* Reading Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-800/50">
+        <div
+          className="h-full bg-gradient-to-r from-purple-500 to-cyan-400 transition-all duration-150 ease-out"
+          style={{ width: `${readingProgress}%` }}
+        />
+      </div>
       {/* Reader Header */}
       <div className="flex items-center justify-between mb-2 relative z-20">
         <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform shrink-0">← Back</button>
@@ -1186,10 +1255,19 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
         </div>
       )}
       {reachedBottom && marked && !showCelebration && (
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
             <span className="text-green-400 text-sm font-bold">✅ Chapter Complete! +10 XP, +5 💎</span>
           </div>
+          {/* Next chapter prompt */}
+          {chapterIdx < chapters.length - 1 && (
+            <button
+              onClick={() => { onNavigate(chapterIdx + 1); window.scrollTo(0, 0); }}
+              className="block mx-auto px-6 py-3 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-purple-500/20 animate-pulse"
+            >
+              📖 Read Next Chapter →
+            </button>
+          )}
         </div>
       )}
 
@@ -1344,6 +1422,12 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
     setSelected(idx);
     setShowResult(true);
     const isCorrect = idx === shuffled.correctIndex;
+    // Haptic feedback
+    if (navigator.vibrate) {
+      navigator.vibrate(isCorrect ? [50, 30, 80] : [100, 50, 100]);
+    }
+    // Dispatch quiz result event for pet
+    window.dispatchEvent(new CustomEvent('pet-quiz-result', { detail: { correct: isCorrect } }));
     const timer = setTimeout(() => { onFinish(isCorrect); }, 3500);
     setAutoFinishTimer(timer);
   };

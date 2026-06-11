@@ -140,3 +140,24 @@
 - [x] Fix font size A+/A- buttons in Bible reader - FloatingPet hidden on /bible page (was capturing touch events)
 - [x] Fix Meme Save button - created SaveToPhotos as proper SPM package (was in App target, not auto-discovered)
 - [x] Fix Invite Friends button - uses @capacitor/share plugin for native iOS Share Sheet
+
+## Bible Map UX Improvements (Jun 11, 2026)
+- [x] Add grid/icon view (3-column) as default for intuitive browsing
+- [x] Add list/grid view toggle button
+- [x] Replace inline detail expansion with modal popup overlay (preserves scroll position)
+- [x] Modal includes photo, description, verse links, and "Show on Map" button
+
+## Pet System & UX Improvements (Jun 11, 2026)
+
+- [ ] Pet #1: Bible page peek mode - pet peeks from right edge with messages
+- [ ] Pet #2: Scroll speed reaction - too fast / idle detection
+- [ ] Pet #3: Text blocking prank - pet sits on text, tap to move
+- [ ] Pet #4: Swipe petting gesture - swipe on pet to pet it
+- [ ] Pet #5: Expression animation - eye blink, tail wag via CSS
+- [ ] Pet #6: Sulking when absent - pet turns back if user was away
+- [ ] Pet #7: Celebration dance on chapter complete
+- [ ] Pet #8: Quiz hints - pet moves toward answer or gives hints
+- [ ] UX #9: Reading progress bar at top of chapter
+- [ ] UX #11: Haptic feedback on quiz correct, XP gain
+- [ ] UX #13: Next chapter prompt after quiz completion
+- [ ] UX #14: Weekly leaderboard reset with season system

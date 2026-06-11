@@ -63,11 +63,15 @@ export default function BibleMap() {
   );
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [modalDragY, setModalDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [, navigate] = useLocation();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const polylineRef = useRef<any>(null);
+  const touchStartY = useRef(0);
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
   const locations = mapLocations[activeTab] || [];
   const currentTabInfo = TAB_INFO.find(t => t.key === activeTab)!;
@@ -378,18 +382,51 @@ export default function BibleMap() {
       {/* Modal Overlay */}
       {modalLoc && (
         <div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center"
           onClick={() => setModalLoc(null)}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-          
-          {/* Modal Content */}
           <div
-            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            style={{ opacity: Math.max(0, 1 - modalDragY / 300) }}
+          />
+          
+          {/* Modal Content - swipeable */}
+          <div
+            ref={modalContentRef}
+            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50"
             onClick={(e) => e.stopPropagation()}
-            style={{ animation: "modalIn 0.2s cubic-bezier(0.23, 1, 0.32, 1)" }}
+            onTouchStart={(e) => {
+              touchStartY.current = e.touches[0].clientY;
+              setIsDragging(true);
+            }}
+            onTouchMove={(e) => {
+              if (!isDragging) return;
+              const deltaY = e.touches[0].clientY - touchStartY.current;
+              // Only allow dragging down
+              if (deltaY > 0) {
+                setModalDragY(deltaY);
+              }
+            }}
+            onTouchEnd={() => {
+              setIsDragging(false);
+              if (modalDragY > 120) {
+                // Dismiss threshold reached
+                setModalLoc(null);
+              }
+              setModalDragY(0);
+            }}
+            style={{
+              animation: modalDragY === 0 && !isDragging ? "modalSlideUp 0.25s cubic-bezier(0.23, 1, 0.32, 1)" : undefined,
+              transform: `translateY(${modalDragY}px)`,
+              transition: isDragging ? "none" : "transform 0.25s cubic-bezier(0.23, 1, 0.32, 1)",
+            }}
           >
+            {/* Swipe Handle */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 bg-gray-500/50 rounded-full" />
+            </div>
+
             {/* Photo */}
             <div className="relative">
               <img
@@ -454,7 +491,6 @@ export default function BibleMap() {
                       { duration: 1.2, easeLinearity: 0.25 }
                     );
                   }
-                  // Scroll to top to see the map
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-sm font-bold rounded-xl active:scale-[0.97] transition-transform"
@@ -468,14 +504,14 @@ export default function BibleMap() {
 
       {/* Modal animation keyframes */}
       <style>{`
-        @keyframes modalIn {
+        @keyframes modalSlideUp {
           from {
             opacity: 0;
-            transform: scale(0.95);
+            transform: translateY(100%);
           }
           to {
             opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
           }
         }
       `}</style>

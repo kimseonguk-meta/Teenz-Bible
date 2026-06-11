@@ -173,14 +173,14 @@ const SORT_TABS: { key: SortBy; icon: string; label: string }[] = [
 ];
 
 const TIME_FILTERS: { key: TimeFilter; label: string }[] = [
-  { key: "all", label: "All Time" },
   { key: "week", label: "This Week" },
   { key: "month", label: "This Month" },
+  { key: "all", label: "All Time" },
 ];
 
 export default function Leaderboard() {
   const [sortBy, setSortBy] = useState<SortBy>("chapters");
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>("month");
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>("week");
   const [scope, setScope] = useState<ScopeFilter>("all");
   const [members, setMembers] = useState<LeaderboardMember[]>([]);
   const [loading, setLoading] = useState(true);
@@ -311,6 +311,11 @@ export default function Leaderboard() {
           </button>
         ))}
       </div>
+      {timeFilter === "week" && (
+        <p className="text-center text-xs text-purple-300/70 -mt-1">
+          🔥 Weekly rankings reset every Monday — climb to the top!
+        </p>
+      )}
 
       {/* Scope Filter */}
       <div className="flex gap-2 justify-center">
