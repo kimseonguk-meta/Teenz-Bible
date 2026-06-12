@@ -187,3 +187,6 @@
 ## Bug Fixes — Galaxy Phone (Jun 12, 2026)
 - [x] Fix Bible Map location popup not closing (X button causes popup to glitch back open)
 - [x] Hide FloatingPet when modal/popup is open (pet overlaps popup content and X button)
+
+## Bug Fix — Leaderboard Infinite Loading (Jun 12, 2026)
+- [x] Fix Leaderboard page stuck on "Loading..." (reported by Apple app user CafePilo)

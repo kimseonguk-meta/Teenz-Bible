@@ -402,7 +402,7 @@ export default function BibleMap() {
           {/* Modal Content - swipeable */}
           <div
             ref={modalContentRef}
-            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50"
+            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-t-2xl sm:rounded-2xl shadow-2xl shadow-purple-900/50 mb-16 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => {
               if (closingRef.current) return;
@@ -429,6 +429,7 @@ export default function BibleMap() {
             style={{
               transform: `translateY(${modalDragY}px)`,
               transition: isDragging ? "none" : "transform 0.25s cubic-bezier(0.23, 1, 0.32, 1)",
+              maxHeight: '80vh',
             }}
           >
             {/* Swipe Handle */}

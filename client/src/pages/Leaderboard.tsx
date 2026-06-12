@@ -190,17 +190,30 @@ export default function Leaderboard() {
   const groupCode = getCurrentGroupCode();
   const isNasumMember = groupCode !== "INDIVIDUAL" && groupCode !== "GLOBAL";
 
-  // Auth setup
+  // Auth setup with timeout fallback
   useEffect(() => {
+    let authTimeout: ReturnType<typeof setTimeout> | null = null;
     const unsub = onAuthStateChanged(auth, (user) => {
+      if (authTimeout) { clearTimeout(authTimeout); authTimeout = null; }
       if (user) {
         setCurrentUid(user.uid);
         syncUserToFirebase(user.uid);
       } else {
-        signInAnonymously(auth).catch(console.error);
+        signInAnonymously(auth).catch((err) => {
+          console.error('Anonymous auth failed:', err);
+          setError('Unable to connect. Please check your internet and try again.');
+          setLoading(false);
+        });
       }
     });
-    return () => unsub();
+    // Timeout: if auth doesn't resolve in 10s, show error
+    authTimeout = setTimeout(() => {
+      if (!currentUid) {
+        setError('Connection timed out. Tap to retry.');
+        setLoading(false);
+      }
+    }, 10000);
+    return () => { unsub(); if (authTimeout) clearTimeout(authTimeout); };
   }, []);
 
   // If not a Nasum member, force scope to "all"
@@ -210,8 +223,9 @@ export default function Leaderboard() {
     }
   }, [isNasumMember, scope]);
 
-  // Load data
+  // Load data - only after auth is ready
   const loadData = useCallback(async () => {
+    if (!currentUid) return; // Wait for auth
     setLoading(true);
     setError(null);
     try {
@@ -230,11 +244,13 @@ export default function Leaderboard() {
     } finally {
       setLoading(false);
     }
-  }, [scope, timeFilter, sortBy, groupCode]);
+  }, [scope, timeFilter, sortBy, groupCode, currentUid]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    if (currentUid) {
+      loadData();
+    }
+  }, [loadData, currentUid]);
 
   const top3 = members.slice(0, 3);
   const rest = members.slice(3);
@@ -352,7 +368,16 @@ export default function Leaderboard() {
           </div>
         </div>
       ) : error ? (
-        <div className="text-center py-12 text-red-400">{error}</div>
+        <div className="flex flex-col items-center justify-center py-12 gap-3">
+          <span className="text-4xl">⚠️</span>
+          <p className="text-red-400 text-sm">{error}</p>
+          <button
+            onClick={() => { setError(null); setLoading(true); signInAnonymously(auth).catch(console.error); }}
+            className="px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-medium"
+          >
+            🔄 Retry
+          </button>
+        </div>
       ) : members.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 gap-2">
           <span className="text-4xl">🏆</span>
