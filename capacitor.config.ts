@@ -14,6 +14,9 @@ const config: CapacitorConfig = {
     Camera: {
       presentationStyle: 'popover',
     },
+    CapacitorUpdater: {
+      autoUpdate: true,
+    },
   },
   server: {
     androidScheme: 'https',

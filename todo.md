@@ -190,3 +190,11 @@
 
 ## Bug Fix — Leaderboard Infinite Loading (Jun 12, 2026)
 - [x] Fix Leaderboard page stuck on "Loading..." (reported by Apple app user CafePilo)
+
+## Capgo Live Update (OTA) Integration (Jun 12, 2026)
+- [x] Install @capgo/capacitor-updater plugin
+- [x] Configure capacitor.config.ts for Capgo
+- [x] Initialize Capgo app via CLI
+- [x] Upload first bundle to Capgo
+- [x] Create deploy script for future OTA updates
+- [x] Document new deployment workflow
