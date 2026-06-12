@@ -198,3 +198,7 @@
 - [x] Upload first bundle to Capgo
 - [x] Create deploy script for future OTA updates
 - [x] Document new deployment workflow
+
+## Bug Fixes — Build 44 OTA (Jun 12, 2026)
+- [x] Remove font size indicator toast ("Font: 28px" box) when changing font size in Bible reader
+- [x] Change share link to App Store URL (https://apps.apple.com/sg/app/teenz-bible/id6769426651) when running as native iOS app instead of PWA link

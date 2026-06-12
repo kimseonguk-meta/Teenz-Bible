@@ -8,7 +8,7 @@ import { getProfilePhotoUrl, setProfilePhoto, setProfilePhotoUrl, uploadPhotoToF
 import { linkOrSignInWithGoogle, isLinkedToGoogle, getLinkedGoogleEmail, signOutGoogle } from "@/lib/googleAuth";
 import { linkOrSignInWithApple, isLinkedToApple, getLinkedAppleEmail } from "@/lib/appleAuth";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
-import { isNativePlatform } from "@/lib/platform";
+import { isNativePlatform, getPlatform } from "@/lib/platform";
 import { Share } from '@capacitor/share';
 import { deleteAllUserData } from "@/lib/firebaseSync";
 import { celebrateLogin } from "@/lib/celebration";
@@ -896,7 +896,7 @@ export default function Profile() {
           <div
             onClick={async () => {
               const shareText = "Join me on Teenz Bible! Read the Bible together and compete on the leaderboard 🏆";
-              const shareUrl = "https://teens-bible-94271.web.app";
+              const shareUrl = getPlatform() === 'ios' ? "https://apps.apple.com/sg/app/teenz-bible/id6769426651" : "https://teens-bible-94271.web.app";
               try {
                 if (isNativePlatform()) {
                   // Use Capacitor Share plugin for native iOS

@@ -1073,10 +1073,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
           <div className="flex items-center gap-1">
             <button
-              onClick={() => { setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); toast(`Font: ${nv}px`); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
+              onClick={() => { setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
               className="w-10 h-10 rounded-lg bg-purple-800 border border-purple-400/60 text-sm font-bold text-white active:scale-95">A-</button>
             <button
-              onClick={() => { setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); toast(`Font: ${nv}px`); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
+              onClick={() => { setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
               className="w-10 h-10 rounded-lg bg-purple-800 border border-purple-400/60 text-sm font-bold text-white active:scale-95">A+</button>
             {showFontTip && (
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
