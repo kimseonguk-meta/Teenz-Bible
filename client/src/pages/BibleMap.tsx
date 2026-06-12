@@ -72,6 +72,8 @@ export default function BibleMap() {
   const polylineRef = useRef<any>(null);
   const touchStartY = useRef(0);
   const modalContentRef = useRef<HTMLDivElement>(null);
+  const closingRef = useRef(false);
+  const modalOpenedRef = useRef(false);
 
   const locations = mapLocations[activeTab] || [];
   const currentTabInfo = TAB_INFO.find(t => t.key === activeTab)!;
@@ -192,6 +194,9 @@ export default function BibleMap() {
         marker.bindPopup(popupContent, { closeButton: true, maxWidth: 220 });
         
         marker.on("click", () => {
+          closingRef.current = false;
+          setModalDragY(0);
+          setIsDragging(false);
           setModalLoc(loc);
         });
 
@@ -220,6 +225,9 @@ export default function BibleMap() {
 
   // Handle location click from list/grid - open modal
   const handleLocClick = (loc: MapLocation) => {
+    closingRef.current = false;
+    setModalDragY(0);
+    setIsDragging(false);
     setModalLoc(loc);
     if (mapInstanceRef.current) {
       mapInstanceRef.current.flyTo(
@@ -383,7 +391,7 @@ export default function BibleMap() {
       {modalLoc && (
         <div
           className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center"
-          onClick={() => setModalLoc(null)}
+          onClick={() => { closingRef.current = true; setModalLoc(null); }}
         >
           {/* Backdrop */}
           <div
@@ -397,11 +405,12 @@ export default function BibleMap() {
             className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl shadow-purple-900/50"
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => {
+              if (closingRef.current) return;
               touchStartY.current = e.touches[0].clientY;
               setIsDragging(true);
             }}
             onTouchMove={(e) => {
-              if (!isDragging) return;
+              if (!isDragging || closingRef.current) return;
               const deltaY = e.touches[0].clientY - touchStartY.current;
               // Only allow dragging down
               if (deltaY > 0) {
@@ -409,6 +418,7 @@ export default function BibleMap() {
               }
             }}
             onTouchEnd={() => {
+              if (closingRef.current) return;
               setIsDragging(false);
               if (modalDragY > 120) {
                 // Dismiss threshold reached
@@ -417,7 +427,6 @@ export default function BibleMap() {
               setModalDragY(0);
             }}
             style={{
-              animation: modalDragY === 0 && !isDragging ? "modalSlideUp 0.25s cubic-bezier(0.23, 1, 0.32, 1)" : undefined,
               transform: `translateY(${modalDragY}px)`,
               transition: isDragging ? "none" : "transform 0.25s cubic-bezier(0.23, 1, 0.32, 1)",
             }}
@@ -437,7 +446,8 @@ export default function BibleMap() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1a0a3e] via-transparent to-transparent" />
               <button
-                onClick={() => setModalLoc(null)}
+                onTouchEnd={(e) => { e.stopPropagation(); e.preventDefault(); closingRef.current = true; setModalLoc(null); }}
+                onClick={(e) => { e.stopPropagation(); closingRef.current = true; setModalLoc(null); }}
                 className="absolute top-3 right-3 w-8 h-8 bg-black/60 rounded-full flex items-center justify-center text-white text-sm active:scale-90 transition-transform"
               >
                 ✕

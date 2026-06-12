@@ -37,6 +37,32 @@ export default function FloatingPet() {
   const [location] = useLocation();
   const [equipped, setEquipped] = useState(getEquipped);
   const [petState, setPetState] = useState(getPetState);
+  // Hide pet when any modal/overlay is open (z-[200], z-[9999], dialog-overlay, etc.)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    const checkModals = () => {
+      // Check for any fixed/absolute overlay with high z-index or dialog overlays
+      const overlays = document.querySelectorAll('[data-slot="dialog-overlay"], [data-slot="dialog-content"]');
+      if (overlays.length > 0) { setIsModalOpen(true); return; }
+      // Check for custom overlays with z-[200] or z-[9999] class
+      const allFixed = Array.from(document.querySelectorAll('.fixed'));
+      for (let i = 0; i < allFixed.length; i++) {
+        const cls = allFixed[i].className || '';
+        // Detect full-screen overlays: high z-index OR z-50 with inset-0 (modal backdrop pattern)
+        const isHighZ = cls.includes('z-[200]') || cls.includes('z-[9999]') || cls.includes('z-[10000]');
+        const isModalBackdrop = cls.includes('z-50') && cls.includes('inset-0');
+        if ((isHighZ || isModalBackdrop) && allFixed[i].querySelector('*')) {
+          setIsModalOpen(true); return;
+        }
+      }
+      setIsModalOpen(false);
+    };
+    // Use MutationObserver to detect modal open/close
+    const observer = new MutationObserver(checkModals);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+    checkModals(); // Initial check
+    return () => observer.disconnect();
+  }, []);
   const [showBubble, setShowBubble] = useState(false);
   const [bubbleText, setBubbleText] = useState("");
   const [reaction, setReaction] = useState<string | null>(null);
@@ -684,8 +710,8 @@ export default function FloatingPet() {
     }, 3000);
   }, [isDragging, handlePetTap, pos, triggerReaction]);
 
-  // ─── Don't render if no pet or on bible-ai page ────────────
-  if (!pet || location === "/bible-ai") return null;
+  // ─── Don't render if no pet, on bible-ai page, or modal is open ────────────
+  if (!pet || location === "/bible-ai" || isModalOpen) return null;
 
   // ─── #1 PEEK MODE RENDER (Bible page) ─────────────────────
   if (isPeekMode) {

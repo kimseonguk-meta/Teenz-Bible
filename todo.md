@@ -179,3 +179,11 @@
 - [x] Skeleton UI while pet images are loading in Store
 - [x] Sort/filter pets by price and rarity tier
 - [x] Pet detail popup with description and stats on image click
+
+## Store Pet Search & Hover Effects (Jun 11, 2026)
+- [ ] Add pet name search input at top of Pets tab
+- [ ] Add smooth scale-up hover effect on pet cards
+
+## Bug Fixes — Galaxy Phone (Jun 12, 2026)
+- [x] Fix Bible Map location popup not closing (X button causes popup to glitch back open)
+- [x] Hide FloatingPet when modal/popup is open (pet overlaps popup content and X button)

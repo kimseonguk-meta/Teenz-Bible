@@ -189,10 +189,10 @@ export default function Store() {
     return (
       <div
         key={item.id}
-        className={`p-3 rounded-xl text-center relative transition-all ${rarityConfig.glow} ${
+        className={`p-3 rounded-xl text-center relative transition-all duration-200 ease-out hover:scale-105 ${rarityConfig.glow} ${
           active
             ? "bg-purple-600/20 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
-            : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40"
+            : "bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40 hover:shadow-[0_0_16px_rgba(168,85,247,0.2)]"
         }`}
       >
         {active && (
