@@ -562,6 +562,7 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   const contentEndRef = useRef<HTMLDivElement>(null);
   const [showFontTip, setShowFontTip] = useState(() => !localStorage.getItem("fontTipShown"));
   const [showVerses, setShowVerses] = useState(() => localStorage.getItem("showVerseNumbers") === "true");
+  const [showFontPopup, setShowFontPopup] = useState(false);
 
   // Pet state for reading companion
   const [petReaction, setPetReaction] = useState<string | null>(null);
@@ -1063,46 +1064,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           style={{ width: `${readingProgress}%` }}
         />
       </div>
-      {/* Reader Header */}
-      <div className="flex items-center justify-between mb-2 relative z-20">
-        <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 active:scale-95 transition-transform shrink-0">← Back</button>
-        <div className="flex items-center gap-1.5 flex-wrap justify-end">
-          <button onClick={() => setLang(lang === "en" ? "ko" : "en")}
-            className="w-8 h-8 rounded-lg bg-purple-900/50 border border-purple-500/30 text-sm text-purple-200 active:scale-95 transition-transform flex items-center justify-center">
-            {lang === "en" ? "🇰🇷" : "🇬🇧"}
-          </button>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => { setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-10 h-10 rounded-lg bg-purple-800 border border-purple-400/60 text-sm font-bold text-white active:scale-95">A-</button>
-            <button
-              onClick={() => { setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); if (showFontTip) { setShowFontTip(false); localStorage.setItem("fontTipShown", "1"); } }}
-              className="w-10 h-10 rounded-lg bg-purple-800 border border-purple-400/60 text-sm font-bold text-white active:scale-95">A+</button>
-            {showFontTip && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-cyan-600 text-white text-[11px] font-bold rounded-lg whitespace-nowrap z-50 shadow-lg shadow-cyan-500/30 animate-bounce">
-                👆 Adjust font size here!
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-600 rotate-45" />
-              </div>
-            )}
-          </div>
-          <button onClick={isSpeaking ? (isPaused ? pauseSpeech : pauseSpeech) : startSpeech}
-            className={`w-8 h-8 rounded-lg border-2 text-sm font-bold active:scale-90 transition-all flex items-center justify-center shadow-lg ${
-              isSpeaking ? 'bg-gradient-to-r from-purple-600 to-pink-600 border-purple-400 text-white shadow-pink-500/20' : 'bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-white shadow-purple-500/20 hover:border-purple-300'
-            }`}>
-            {isSpeaking ? (isPaused ? '▶' : '⏸') : '🎧'}
-          </button>
-          <button onClick={() => { const next = !showVerses; setShowVerses(next); localStorage.setItem("showVerseNumbers", String(next)); }}
-            className={`w-8 h-8 rounded-lg border-2 text-[10px] font-bold active:scale-90 transition-all shadow-lg ${
-              showVerses ? 'bg-gradient-to-r from-cyan-600 to-cyan-800 border-cyan-400 text-white shadow-cyan-500/20' : 'bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-purple-300 shadow-purple-500/20'
-            }`} title="Toggle verse numbers">
-            v.
-          </button>
-          <button onClick={() => setShowReaderPicker(!showReaderPicker)}
-            className="w-8 h-8 rounded-lg border-2 text-sm active:scale-90 transition-all shadow-lg bg-gradient-to-b from-purple-700 to-purple-900 border-purple-400/60 text-white shadow-purple-500/20"
-            title="Change reader skin">
-            🎨
-          </button>
-        </div>
+      {/* Minimal Reader Header */}
+      <div className="flex items-center justify-between mb-4 relative z-20">
+        <button onClick={onBack} className="text-white text-lg active:scale-95 transition-transform">←</button>
+        <span className="text-gray-400 text-xs">{chapterIdx + 1} / {chapters.length}</span>
       </div>
 
       {/* Reader BG Picker */}
@@ -1187,10 +1152,9 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       )}
 
       {/* Chapter Title */}
-      <div className="text-center mb-6">
-        <span className="text-3xl">{meta?.emoji}</span>
-        <h1 className="text-xl font-bold text-white font-display mt-2">{book} {chapter.num}</h1>
-        <h2 className="text-purple-300 text-sm mt-1">{chapter.title}</h2>
+      <div className="text-center mb-5">
+        <h1 className="text-2xl font-bold text-white font-display uppercase tracking-wide">{book} {chapter.num}</h1>
+        <h2 className="text-purple-300 text-sm mt-1.5">{chapter.title}</h2>
         {marked ? (
           <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full">
             <span className="text-green-400 text-[10px]">✅ +10 XP earned</span>
@@ -1359,6 +1323,54 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           </button>
         ) : <div />}
       </div>
+
+      {/* Bottom Floating Toolbar */}
+      <div className="fixed left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 px-4 py-2.5 rounded-full shadow-2xl" style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))', backgroundColor: 'rgba(30, 20, 50, 0.92)', backdropFilter: 'blur(12px)', border: '1px solid rgba(139, 92, 246, 0.25)' }}>
+        {/* Language toggle */}
+        <button onClick={() => setLang(lang === "en" ? "ko" : "en")}
+          className="w-9 h-9 rounded-full flex items-center justify-center text-base active:scale-90 transition-transform hover:bg-purple-500/20">
+          {lang === "en" ? "🇰🇷" : "🇬🇧"}
+        </button>
+        {/* Font size */}
+        <div className="relative">
+          <button onClick={() => setShowFontPopup(!showFontPopup)}
+            className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white active:scale-90 transition-transform hover:bg-purple-500/20">
+            Aa
+          </button>
+          {showFontPopup && (
+            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-xl shadow-xl" style={{ backgroundColor: 'rgba(30, 20, 50, 0.95)', border: '1px solid rgba(139, 92, 246, 0.4)' }}>
+              <button
+                onClick={() => { setFontSize(f => { const nv = Math.max(12, f - 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); }}
+                className="w-8 h-8 rounded-lg bg-purple-800 border border-purple-400/60 text-xs font-bold text-white active:scale-95">A-</button>
+              <span className="text-white text-xs font-medium w-8 text-center">{fontSize}</span>
+              <button
+                onClick={() => { setFontSize(f => { const nv = Math.min(28, f + 2); localStorage.setItem("readerFontSize", String(nv)); return nv; }); }}
+                className="w-8 h-8 rounded-lg bg-purple-800 border border-purple-400/60 text-xs font-bold text-white active:scale-95">A+</button>
+            </div>
+          )}
+        </div>
+        {/* TTS */}
+        <button onClick={isSpeaking ? (isPaused ? pauseSpeech : pauseSpeech) : startSpeech}
+          className={`w-9 h-9 rounded-full flex items-center justify-center text-base active:scale-90 transition-transform ${
+            isSpeaking ? 'bg-purple-600/50 text-white' : 'hover:bg-purple-500/20 text-white'
+          }`}>
+          {isSpeaking ? (isPaused ? '▶️' : '⏸️') : '🎧'}
+        </button>
+        {/* Reader skin */}
+        <button onClick={() => setShowReaderPicker(!showReaderPicker)}
+          className="w-9 h-9 rounded-full flex items-center justify-center text-base active:scale-90 transition-transform hover:bg-purple-500/20">
+          🎨
+        </button>
+        {/* Verse numbers toggle */}
+        <button onClick={() => { const next = !showVerses; setShowVerses(next); localStorage.setItem("showVerseNumbers", String(next)); }}
+          className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold active:scale-90 transition-transform ${
+            showVerses ? 'bg-cyan-600/50 text-white' : 'hover:bg-purple-500/20 text-purple-300'
+          }`}>
+          v.
+        </button>
+      </div>
+      {/* Spacer for bottom toolbar */}
+      <div className="h-16" />
     </div>
   );
 }

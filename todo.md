@@ -202,3 +202,11 @@
 ## Bug Fixes — Build 44 OTA (Jun 12, 2026)
 - [x] Remove font size indicator toast ("Font: 28px" box) when changing font size in Bible reader
 - [x] Change share link to App Store URL (https://apps.apple.com/sg/app/teenz-bible/id6769426651) when running as native iOS app instead of PWA link
+
+## Bible Reading Page Redesign — Option A: Minimal Reader (Jun 14, 2026)
+- [x] Remove top toolbar icons (6 large buttons) from header area
+- [x] Remove cross icon and diamond decorations from header
+- [x] Simplify header to: ← Back (left) + page indicator (right)
+- [x] Keep chapter title (MATTHEW 1) and subtitle centered below header
+- [x] Add bottom floating toolbar bar with tools (language, font size, audio, theme, verse toggle)
+- [x] Maximize reading card area for better content focus
