@@ -210,3 +210,15 @@
 - [x] Keep chapter title (MATTHEW 1) and subtitle centered below header
 - [x] Add bottom floating toolbar bar with tools (language, font size, audio, theme, verse toggle)
 - [x] Maximize reading card area for better content focus
+
+## Korean Bible Translation Audit & Fix (Jun 14, 2026)
+- [x] Fix **bold** markdown showing as raw text (141 → 0)
+- [x] Fix internet slang ㅇㅇ, ㄱㄱ, 갑분싸 (76 → 0)
+- [x] Translate English § section markers to Korean (249 → 0)
+- [x] Replace vulgar expressions: 빡치, 오지게, 막장, 개- prefix (161 → 0)
+- [x] Remove embedded verse numbers from paragraph text (159 → 0)
+- [x] Replace 쌤 → 선생님 (130 → 0)
+- [x] Replace 미친 → 엄청나게/말도 안 되는 짓 (59 → 0)
+- [x] Reduce 대박 frequency (516 → 166)
+- [x] Reduce 전설급 frequency (198 → 45)
+- [x] Deploy Korean translation fixes to Firebase + Capgo OTA (v1.0.4)
