@@ -225,3 +225,10 @@
 - [x] Convert Jesus's speech from 반말 to 존댓말 (111 chapters in 5 books: Matthew, Mark, Luke, John, Revelation)
 - [x] Fix duplicate verse numbers in paragraph text (1030 paragraphs fixed)
 - [x] Deploy Jesus 존댓말 + verse number fix to Firebase + Capgo OTA (v1.0.8)
+
+## English Bible Re-translation (Jun 15, 2026)
+- [x] Re-translate 23 summarized chapters from The Message Bible into proper teen-friendly English
+- [x] Mark: chapters 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+- [x] Matthew: chapters 6, 7, 8, 9, 10, 12, 13, 19
+- [x] 2 Kings 9 (data missing), 3 John 1, Song of Solomon 6, John 3, Luke 12
+- [x] Deploy re-translated chapters to Firebase + Capgo OTA (v1.0.9)
