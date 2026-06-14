@@ -222,3 +222,6 @@
 - [x] Reduce 대박 frequency (516 → 166)
 - [x] Reduce 전설급 frequency (198 → 45)
 - [x] Deploy Korean translation fixes to Firebase + Capgo OTA (v1.0.4)
+- [x] Convert Jesus's speech from 반말 to 존댓말 (111 chapters in 5 books: Matthew, Mark, Luke, John, Revelation)
+- [x] Fix duplicate verse numbers in paragraph text (1030 paragraphs fixed)
+- [x] Deploy Jesus 존댓말 + verse number fix to Firebase + Capgo OTA (v1.0.8)
