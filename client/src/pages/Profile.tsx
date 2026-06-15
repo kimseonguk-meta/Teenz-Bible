@@ -991,6 +991,19 @@ export default function Profile() {
             </div>
             <span className="text-gray-600">▶</span>
           </div>
+
+          {/* Feedback */}
+          <div
+            onClick={() => { window.location.href = "/feedback"; }}
+            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+          >
+            <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-xl">📝</div>
+            <div className="flex-1">
+              <p className="text-white text-sm font-medium">Send Feedback</p>
+              <p className="text-gray-500 text-[10px]">Help us improve the app</p>
+            </div>
+            <span className="text-gray-600">▶</span>
+          </div>
         </div>
 
         {/* Account & Cloud Sync */}

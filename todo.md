@@ -263,3 +263,11 @@
 - [x] My Groups tab: show dropdown of joined groups, display group-specific ranking
 - [x] Global tab: show all users across all groups (existing behavior)
 - [x] Replace class badge (11C, 13B) with group name badge for non-Nasum groups
+
+## In-App Feedback Page for Google Play Review (Jun 15, 2026)
+- [x] Create /feedback route with professional feedback submission form
+- [x] Store feedback in Firebase (feedbacks node)
+- [x] Show public feedback log with timestamps and categories
+- [x] Add developer response capability (admin can reply to feedback)
+- [x] Add feedback link in app navigation (Profile/Settings)
+- [x] Deploy to Firebase Hosting
