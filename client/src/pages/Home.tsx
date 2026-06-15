@@ -17,6 +17,18 @@ import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
 
+// CDN asset URLs
+const ASSETS = {
+  icon_fire: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_fire-PSuGmTqQ6GnBozu7oY27qQ.png",
+  icon_gem: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_gem-6dAsfLvDEGCL224yzj4Jur.png",
+  icon_xp: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_xp-DsyR87coBmaYenzUxoyeow.png",
+  ribbon_banner: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/ribbon_banner-7XcaBYpxn6WMCwThWF6mWZ.png",
+  icon_brain: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_brain-fdfi8aRbESprEa78gmnXiD.png",
+  icon_candle: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_candle-7pJw6KRqLjHePX3RH5dcgm.png",
+  icon_friends: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_friends-jQZRGz7xZXV4Y9M7ne5wkh.png",
+  tb_shield: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb_shield_logo-UQFWadwEXYHQS4rezKukvV.png",
+};
+
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 const CHAPTER_COUNTS: Record<string, number> = {
   Genesis:50,Exodus:40,Leviticus:27,Numbers:36,Deuteronomy:34,Joshua:24,Judges:21,Ruth:4,
@@ -119,20 +131,6 @@ function getDailyMemeUrl(): string {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
   const idx = dayOfYear % allMemes.length;
   return MEME_BASE_URL + allMemes[idx];
-}
-
-function ProgressRing({ progress, size = 80, strokeWidth = 6 }: { progress: number; size?: number; strokeWidth?: number }) {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (progress / 100) * circumference;
-  return (
-    <svg width={size} height={size} className="transform -rotate-90">
-      <circle cx={size/2} cy={size/2} r={radius} stroke="rgba(212,175,55,0.15)" strokeWidth={strokeWidth} fill="none" />
-      <circle cx={size/2} cy={size/2} r={radius} stroke="url(#goldGradient)" strokeWidth={strokeWidth} fill="none"
-        strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-700" />
-      <defs><linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#d4af37"/><stop offset="50%" stopColor="#f0d060"/><stop offset="100%" stopColor="#d4af37"/></linearGradient></defs>
-    </svg>
-  );
 }
 
 export default function Home() {
@@ -270,16 +268,16 @@ export default function Home() {
       {/* ═══ TOP STAT PILLS — Illustrated icons, thick beveled gold border ═══ */}
       <div className="flex items-center justify-between gap-2">
         <div className="gold-pill">
-          <img src="/manus-storage/icon_fire_d0c7de2c.png" alt="" className="w-7 h-7 object-contain" />
+          <img src={ASSETS.icon_fire} alt="" className="w-7 h-7 object-contain" />
           <span className="font-bold">{streak}</span>
         </div>
         <div className="gold-pill">
-          <img src="/manus-storage/icon_gem_purple_194e753f.png" alt="" className="w-7 h-7 object-contain" />
+          <img src={ASSETS.icon_gem} alt="" className="w-7 h-7 object-contain" />
           <span className="font-bold">{totalXP.toLocaleString()}</span>
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-600/60 text-purple-200 font-bold">XP</span>
         </div>
         <div className="gold-pill">
-          <img src="/manus-storage/icon_diamond_gold_2509326a.png" alt="" className="w-7 h-7 object-contain" />
+          <img src={ASSETS.icon_xp} alt="" className="w-7 h-7 object-contain" />
           <span className="font-bold">{gems.toLocaleString()}</span>
         </div>
       </div>
@@ -287,7 +285,7 @@ export default function Home() {
       {/* ═══ WELCOME RIBBON — Real ribbon image asset + white name ═══ */}
       <div className="flex flex-col items-center gap-1 pt-3">
         <div className="relative flex items-center justify-center" style={{ width: '280px', height: '70px' }}>
-          <img src="/manus-storage/ribbon_welcome_d4e52875.png" alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <img src={ASSETS.ribbon_banner} alt="" className="absolute inset-0 w-full h-full object-contain" />
           <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '6px' }}>Welcome Back!</span>
         </div>
         <h1 className="text-4xl font-bold font-display text-white mt-2" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>{playerName || "Adventurer"}</h1>
@@ -305,7 +303,7 @@ export default function Home() {
         return (
           <div className="gold-card-ornate p-6">
             <div className="flex items-center gap-2 mb-3">
-              <img src="/manus-storage/icon_book_mission_19d93b63.png" alt="" className="w-6 h-6 object-contain" />
+              <img src={ASSETS.tb_shield} alt="" className="w-6 h-6 object-contain" />
               <span className="text-[#f0d060] text-sm font-bold">Today's Mission</span>
             </div>
             <h2 className="text-xl font-bold text-white font-display">Read {bookName} Chapter {chapterNum}</h2>
@@ -362,7 +360,7 @@ export default function Home() {
               border: '3px solid #d4af37',
               boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
             }}>
-              <img src="/manus-storage/action_quiz_brain_d084333a.png" alt="Quiz" className="w-12 h-12 object-contain" />
+              <img src={ASSETS.icon_brain} alt="Quiz" className="w-12 h-12 object-contain" />
             </div>
             <span className="text-xs text-gray-300 font-medium">Quiz</span>
           </button>
@@ -372,7 +370,7 @@ export default function Home() {
               border: '3px solid #d4af37',
               boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
             }}>
-              <img src="/manus-storage/action_devotion_candle_a27f9c7b.png" alt="Devotion" className="w-12 h-12 object-contain" />
+              <img src={ASSETS.icon_candle} alt="Devotion" className="w-12 h-12 object-contain" />
             </div>
             <span className="text-xs text-gray-300 font-medium">Devotion</span>
           </button>
@@ -382,7 +380,7 @@ export default function Home() {
               border: '3px solid #d4af37',
               boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
             }}>
-              <img src="/manus-storage/action_friends_people_17df3959.png" alt="Friends" className="w-12 h-12 object-contain" />
+              <img src={ASSETS.icon_friends} alt="Friends" className="w-12 h-12 object-contain" />
             </div>
             <span className="text-xs text-gray-300 font-medium">Friends</span>
           </button>

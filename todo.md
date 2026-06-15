@@ -287,14 +287,21 @@
 - [x] Deploy V2 redesign to Firebase Hosting (Capgo OTA requires API key login - will deploy with next native build)
 
 ## V2 Pixel-Perfect Rebuild (Jun 16, 2026)
-- [ ] Generate illustrated nav icons: castle, bible book, trophy, treasure chest, shield with face
-- [ ] Generate quick action icons: brain, candle, people group (gold-ringed circles)
-- [ ] Generate 3D gold ribbon banner image for "Welcome Back!"
-- [ ] Rebuild stat pills with thick 4-5px 3D beveled gold borders
-- [ ] Rebuild Today's Mission card: thick gold frame, corner ornaments, leather texture inner fill
-- [ ] Make progress bar much thicker (12-16px) with 3D metallic gold gradient
-- [ ] Change CTA button to PURPLE with gold text (not gold button)
-- [ ] Replace emoji icons with generated illustrated assets
-- [ ] Rebuild bottom nav with illustrated icon images + dark charcoal tab backgrounds
-- [ ] Make diamond quilted background much more subtle
-- [ ] Add proper depth/shadows throughout for 3D quality
+- [x] Generate illustrated nav icons: castle, bible book, trophy, treasure chest, shield with face
+- [x] Generate quick action icons: brain, candle, people group (gold-ringed circles)
+- [x] Generate 3D gold ribbon banner image for "Welcome Back!"
+- [x] Rebuild stat pills with thick 4-5px 3D beveled gold borders + illustrated icons
+- [x] Rebuild Today's Mission card: thick gold frame, corner ornaments
+- [x] Make progress bar much thicker with 3D metallic gold gradient
+- [x] Change CTA button to PURPLE with gold text
+- [x] Replace emoji icons with generated illustrated assets
+- [x] Rebuild bottom nav with illustrated icon images + dark charcoal tab backgrounds
+- [x] Make diamond quilted background subtle
+- [x] Add proper depth/shadows throughout for 3D quality
+
+## V2 CDN URL Fix (Jun 16, 2026)
+- [x] Replace all /manus-storage/ paths with direct CDN URLs in AppLayout.tsx (bottom nav icons)
+- [x] Replace all /manus-storage/ paths with direct CDN URLs in Home.tsx (stat icons, ribbon, quick actions)
+- [x] Generate missing icon assets (fire, gem, XP, brain, candle, friends)
+- [x] Verify zero /manus-storage/ references remain in client code
+- [x] Save checkpoint and deploy to Firebase

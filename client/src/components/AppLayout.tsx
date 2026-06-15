@@ -2,11 +2,11 @@ import { useLocation } from "wouter";
 import { ReactNode } from "react";
 
 const navItems = [
-  { path: "/", label: "Home", icon: "/manus-storage/nav_home_castle_d6be6171.png" },
-  { path: "/bible", label: "Bible", icon: "/manus-storage/nav_bible_book_b8e590a0.png" },
-  { path: "/leaderboard", label: "Ranking", icon: "/manus-storage/nav_ranking_trophy_46023f35.png" },
-  { path: "/store", label: "Store", icon: "/manus-storage/nav_store_chest_f92b53d2.png" },
-  { path: "/profile", label: "Profile", icon: "/manus-storage/nav_profile_shield_59208b81.png" },
+  { path: "/", label: "Home", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_castle-KoXjH75nNuhrYQF774AvGn.png" },
+  { path: "/bible", label: "Bible", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_bible-PeAg5oaXwhMnMxRV3KnacD.png" },
+  { path: "/leaderboard", label: "Ranking", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_trophy-74XXiNxVYgkASo8goifFy9.png" },
+  { path: "/store", label: "Store", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_chest-CjFaYjjDUNBdfzYmfXF37c.png" },
+  { path: "/profile", label: "Profile", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_profile-3QmZGNkarqzjfShZmoZHTk.png" },
 ];
 
 export default function AppLayout({ children }: { children: ReactNode }) {
