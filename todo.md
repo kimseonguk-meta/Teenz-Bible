@@ -271,3 +271,17 @@
 - [x] Add developer response capability (admin can reply to feedback)
 - [x] Add feedback link in app navigation (Profile/Settings)
 - [x] Deploy to Firebase Hosting
+
+## V2 UI Redesign — Clash Royale Premium Style (Jun 15, 2026)
+- [x] CSS theme system: dark purple (#1a0a2e) diamond quilted background, gold metallic variables
+- [x] Bottom Navigation: 5-tab metallic bar (Home, Bible, Ranking, Store, Profile) with active glow
+- [x] Home dashboard redesign: gold ribbon banner, XP/gems pills, streak card, quest cards, pet display
+- [x] Bible book selection: 3-column grid, progress bars, locked/unlocked states, Old/New Testament tabs
+- [x] Bible reading page: cream/ivory parchment reading area, dark brown text, minimal game UI header/footer
+- [x] Ranking page: gold/silver/bronze podium with circular photo frames, real user photos, group tabs
+- [x] Quiz page: question card with gold border, 4 answer buttons, correct/wrong feedback, XP reward
+- [x] Store/Pet page: featured pet banner, 2-column pet grid, accessories section, gem balance
+- [x] Profile page: avatar frame, level badge, stats grid, settings menu with gold accents
+- [x] Onboarding: TB shield logo, nickname input, group selection buttons, START ADVENTURE CTA
+- [x] Feedback page: category pills, form fields, device info, recent feedback list
+- [ ] Deploy V2 redesign to Firebase + Capgo OTA

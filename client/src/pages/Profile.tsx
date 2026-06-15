@@ -472,7 +472,7 @@ export default function Profile() {
       {/* Full-screen loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
         <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-purple-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <svg className="animate-spin h-10 w-10 text-[#d4af37]" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
           <p className="text-white text-sm font-medium">
             {linkingApple ? "Connecting to Apple..." : "Connecting to Google..."}
           </p>
@@ -483,7 +483,7 @@ export default function Profile() {
       {/* Photo Nudge Popup */}
       {showPhotoNudge && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[300px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+          <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-[rgba(212,175,55,0.5)]/30 rounded-2xl p-6 max-w-[300px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
             <div className="text-5xl mb-3">📸</div>
             <h3 className="text-white font-bold text-lg mb-1">Add a Profile Photo!</h3>
             <p className="text-gray-400 text-sm mb-4 leading-relaxed">
@@ -517,7 +517,7 @@ export default function Profile() {
         <div className="relative">
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
-            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
+            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-[rgba(26,10,46,0.4)] cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
           >
             {profilePhoto ? (
               <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
@@ -569,7 +569,7 @@ export default function Profile() {
                   if (!isNativePlatform()) cameraInputRef.current?.click();
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.4)] text-[#f0d060] text-xs font-medium transition-all active:scale-95"
             >
               📸 Take Photo
             </button>
@@ -591,7 +591,7 @@ export default function Profile() {
                   if (!isNativePlatform()) photoInputRef.current?.click();
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.4)] text-[#f0d060] text-xs font-medium transition-all active:scale-95"
             >
               🖼️ Gallery
             </button>
@@ -639,7 +639,7 @@ export default function Profile() {
         {/* Photo Crop & Preview Modal */}
         {rawPhoto && (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[320px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-200">
+            <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-[rgba(212,175,55,0.5)]/30 rounded-2xl p-6 max-w-[320px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-200">
               <p className="text-gray-400 text-xs mb-1">Drag to move • Pinch to zoom</p>
               <p className="text-gray-500 text-[10px] mb-3">Adjust your photo in the circle</p>
               {/* Crop area */}
@@ -741,11 +741,11 @@ export default function Profile() {
           className="mt-3 flex items-center gap-1.5 group active:scale-[0.97] transition-transform"
         >
           <h2 className="text-2xl font-bold text-white font-display">{playerName}</h2>
-          <span className="text-gray-500 group-hover:text-purple-400 transition-colors text-sm">✏️</span>
+          <span className="text-gray-500 group-hover:text-[#d4af37] transition-colors text-sm">✏️</span>
         </button>
         <p className="text-gray-500 text-[10px] mt-0.5">Tap to change nickname</p>
         <div className="flex items-center gap-2 mt-1">
-          <span className="px-3 py-1 rounded-full bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium">
+          <span className="px-3 py-1 rounded-full bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.4)] text-[#f0d060] text-xs font-medium">
             ⭐ Lv. {level.level} {level.name}
           </span>
           {myGroups.length > 0 ? (
@@ -768,7 +768,7 @@ export default function Profile() {
 
       {/* Nickname Edit Dialog */}
       <Dialog open={showNicknameEdit} onOpenChange={setShowNicknameEdit}>
-        <DialogContent className="bg-[#0e1830] border-purple-500/30 max-w-[320px]" showCloseButton={false}>
+        <DialogContent className="bg-[#0e1830] border-[rgba(212,175,55,0.3)] max-w-[320px]" showCloseButton={false}>
           <DialogHeader>
             <DialogTitle className="text-white text-center">Change Nickname</DialogTitle>
           </DialogHeader>
@@ -780,7 +780,7 @@ export default function Profile() {
               placeholder="Enter your nickname"
               maxLength={20}
               autoFocus
-              className="bg-gray-900/60 border-purple-500/40 text-white placeholder:text-gray-500"
+              className="bg-gray-900/60 border-[rgba(212,175,55,0.4)] text-white placeholder:text-gray-500"
             />
             <p className="text-gray-500 text-[10px] text-right">{nicknameInput.trim().length}/20</p>
             {nicknameError && <p className="text-red-400 text-xs">{nicknameError}</p>}
@@ -806,21 +806,21 @@ export default function Profile() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="neon-card p-3 text-center">
+        <div className="gold-card p-3 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
-            <div className="w-6 h-6 rounded-md bg-purple-600/40 flex items-center justify-center text-[10px] font-bold text-purple-200">XP</div>
+            <div className="w-6 h-6 rounded-md bg-purple-600/40 flex items-center justify-center text-[10px] font-bold text-[#f0d060]">XP</div>
           </div>
           <div className="text-lg font-bold text-white">{totalXP.toLocaleString()}</div>
           <div className="text-[10px] text-gray-500">Total XP</div>
         </div>
-        <div className="neon-card p-3 text-center border-cyan-500/40">
+        <div className="gold-card p-3 text-center border-cyan-500/40">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">💎</span>
           </div>
           <div className="text-lg font-bold text-white">{gems}</div>
           <div className="text-[10px] text-gray-500">Gems</div>
         </div>
-        <div className="neon-card p-3 text-center border-yellow-500/40">
+        <div className="gold-card p-3 text-center border-yellow-500/40">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">📖</span>
           </div>
@@ -832,22 +832,22 @@ export default function Profile() {
       {/* Quiz Stats Link */}
       <button 
         onClick={() => setLocation("/quiz-stats")}
-        className="w-full neon-card p-4 flex items-center justify-between active:scale-[0.98] transition-all"
+        className="w-full gold-card p-4 flex items-center justify-between active:scale-[0.98] transition-all"
       >
         <div className="flex items-center gap-3">
           <span className="text-2xl">📊</span>
           <div className="text-left">
             <p className="text-white font-bold text-sm">Quiz Statistics</p>
-            <p className="text-purple-300 text-xs">View your accuracy, streaks & history</p>
+            <p className="text-[#d4af37] text-xs">View your accuracy, streaks & history</p>
           </div>
         </div>
-        <span className="text-purple-300">→</span>
+        <span className="text-[#d4af37]">→</span>
       </button>
 
       {/* Badges */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">🏆 Badges</h3>
+          <h3 className="text-base font-bold text-[#d4af37]">🏆 Badges</h3>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
           {badges.map((badge) => {
@@ -856,7 +856,7 @@ export default function Profile() {
               <div key={badge.name} className={`flex flex-col items-center min-w-[70px] ${!earned ? 'opacity-40' : ''}`}>
                 <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl ${
                   earned
-                    ? 'bg-purple-600/30 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(139,92,246,0.3)]'
+                    ? 'bg-[rgba(212,175,55,0.15)] border-2 border-[rgba(212,175,55,0.6)] shadow-[0_0_12px_rgba(139,92,246,0.3)]'
                     : 'bg-gray-800/50 border-2 border-gray-700/50'
                 }`}>
                   {badge.icon}
@@ -872,9 +872,9 @@ export default function Profile() {
       {/* Reading Progress */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">📖 Reading Progress</h3>
+          <h3 className="text-base font-bold text-[#d4af37]">📖 Reading Progress</h3>
         </div>
-        <div className="neon-card p-4">
+        <div className="gold-card p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-white font-bold text-sm">Overall Bible</span>
             <span className="text-white font-bold">{Math.round((chaptersRead / 1189) * 100)}%</span>
@@ -889,27 +889,27 @@ export default function Profile() {
       {/* Equipped Items */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">✨ Equipped Items</h3>
+          <h3 className="text-base font-bold text-[#d4af37]">✨ Equipped Items</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="neon-card p-3 text-center">
+          <div className="gold-card p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Theme</p>
             <div className="text-2xl">{equippedTheme?.emoji || "🌙"}</div>
             <p className="text-white text-xs mt-1">{equippedTheme?.name || "Twilight"}</p>
           </div>
-          <div className="neon-card p-3 text-center">
+          <div className="gold-card p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Reader BG</p>
             <div className="text-2xl">{equippedReader?.emoji || "🌑"}</div>
             <p className="text-white text-xs mt-1">{equippedReader?.name || "Dark"}</p>
           </div>
-          <div className="neon-card p-3 text-center">
+          <div className="gold-card p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Frame</p>
-            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center bg-purple-900/50 ${equippedFrame?.frameClass || ''}`}>
+            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center bg-[rgba(26,10,46,0.6)] ${equippedFrame?.frameClass || ''}`}>
               <span className="text-sm">{avatar}</span>
             </div>
             <p className="text-white text-xs mt-1">{equippedFrame?.name || "None"}</p>
           </div>
-          <div className="neon-card p-3 text-center">
+          <div className="gold-card p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Pet</p>
             <div className="flex items-center justify-center">
               {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
@@ -925,7 +925,7 @@ export default function Profile() {
 
       {/* ============ SETTINGS SECTION ============ */}
       <div className="pt-4 border-t border-gray-800/60">
-        <h3 className="text-lg font-bold text-purple-300 font-display mb-4">⚙️ Settings</h3>
+        <h3 className="text-lg font-bold text-[#d4af37] font-display mb-4">⚙️ Settings</h3>
 
         {/* Social Settings */}
         <div className="space-y-3 mb-5">
@@ -934,7 +934,7 @@ export default function Profile() {
           {/* Manage Groups */}
           <div
             onClick={() => setShowGroupManager(true)}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-xl">👥</div>
             <div className="flex-1">
@@ -982,7 +982,7 @@ export default function Profile() {
                 }
               }
             }}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">📨</div>
             <div className="flex-1">
@@ -995,9 +995,9 @@ export default function Profile() {
           {/* Feedback */}
           <div
             onClick={() => { window.location.href = "/feedback"; }}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
-            <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-xl">📝</div>
+            <div className="w-10 h-10 rounded-lg bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-xl">📝</div>
             <div className="flex-1">
               <p className="text-white text-sm font-medium">Send Feedback</p>
               <p className="text-gray-500 text-[10px]">Help us improve the app</p>
@@ -1012,7 +1012,7 @@ export default function Profile() {
 
           {/* Status banner - show only the LAST sign-in provider to avoid confusion */}
           {(googleLinked || appleLinked) ? (
-            <div className="neon-card p-4">
+            <div className="gold-card p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                   <span className="text-xl">✅</span>
@@ -1044,7 +1044,7 @@ export default function Profile() {
 
             </div>
           ) : (
-            <div className="neon-card p-4">
+            <div className="gold-card p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
                   <span className="text-xl">⚠️</span>
@@ -1103,7 +1103,7 @@ export default function Profile() {
           <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">🤖 AI & Data</p>
 
           {/* Bible AI Status */}
-          <div className="neon-card p-3 flex items-center justify-between">
+          <div className="gold-card p-3 flex items-center justify-between">
             <div>
               <p className="text-white text-sm font-medium">Bible AI</p>
               <p className="text-green-400 text-[10px]">✅ Connected & Ready</p>
@@ -1117,7 +1117,7 @@ export default function Profile() {
           <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">📄 Legal</p>
           <div
             onClick={() => window.open('/privacy-policy.html', '_blank')}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-gray-500/20 flex items-center justify-center text-xl">🔒</div>
             <div className="flex-1">
@@ -1140,7 +1140,7 @@ export default function Profile() {
               🗑️ Reset All Progress
             </button>
           ) : (
-            <div className="neon-card p-4 border-red-500/40">
+            <div className="gold-card p-4 border-red-500/40">
               <p className="text-red-300 text-sm font-bold mb-2">Are you sure?</p>
               <p className="text-gray-400 text-xs mb-3">This will delete ALL your progress, items, and profile. This cannot be undone.</p>
               <div className="flex gap-2">
@@ -1169,7 +1169,7 @@ export default function Profile() {
               🚫 Delete Account
             </button>
           ) : (
-            <div className="neon-card p-4 border-red-600/50">
+            <div className="gold-card p-4 border-red-600/50">
               <p className="text-red-300 text-sm font-bold mb-2">Delete your account?</p>
               <p className="text-gray-400 text-xs mb-3">This will permanently delete your account and all associated data from our servers. This action cannot be undone.</p>
               <div className="flex gap-2">
@@ -1197,7 +1197,7 @@ export default function Profile() {
       {showGroupManager && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => { setShowGroupManager(false); setSelectedGroupForManage(null); setShowCreateGroup(false); setShowJoinGroup(false); setGroupError(null); setGroupSuccess(null); }}>
           <div
-            className="w-[90%] max-w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 shadow-[0_0_40px_rgba(0,0,0,0.5)] p-5 animate-in slide-in-from-bottom-4 duration-300"
+            className="w-[90%] max-w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-[rgba(212,175,55,0.3)] shadow-[0_0_40px_rgba(0,0,0,0.5)] p-5 animate-in slide-in-from-bottom-4 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -1230,13 +1230,13 @@ export default function Profile() {
               <div className="space-y-3">
                 <button
                   onClick={() => { setSelectedGroupForManage(null); setGroupError(null); setGroupSuccess(null); }}
-                  className="text-purple-400 text-xs font-medium mb-2 flex items-center gap-1"
+                  className="text-[#d4af37] text-xs font-medium mb-2 flex items-center gap-1"
                 >
                   ← Back to groups
                 </button>
 
                 {/* Group Info Card */}
-                <div className="neon-card p-4">
+                <div className="gold-card p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-white font-bold text-base">
                       {groupMetas[selectedGroupForManage]?.name || selectedGroupForManage}
@@ -1255,7 +1255,7 @@ export default function Profile() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => { setRenameInput(groupMetas[selectedGroupForManage]?.name || ""); setShowRenameGroup(true); }}
-                      className="flex-1 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium active:scale-95 transition-transform"
+                      className="flex-1 py-2 rounded-lg bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] text-[#d4af37] text-xs font-medium active:scale-95 transition-transform"
                     >
                       ✏️ Rename
                     </button>
@@ -1264,13 +1264,13 @@ export default function Profile() {
 
                 {/* Rename Dialog */}
                 {showRenameGroup && (
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20 space-y-2">
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)] space-y-2">
                     <Input
                       value={renameInput}
                       onChange={(e) => setRenameInput(e.target.value)}
                       placeholder="New group name"
                       maxLength={30}
-                      className="bg-gray-900/60 border-purple-500/40 text-white text-sm"
+                      className="bg-gray-900/60 border-[rgba(212,175,55,0.4)] text-white text-sm"
                     />
                     <div className="flex gap-2">
                       <button
@@ -1310,7 +1310,7 @@ export default function Profile() {
                   <div className="space-y-1.5 max-h-[200px] overflow-y-auto">
                     {groupMembers.sort((a, b) => (b.xp || 0) - (a.xp || 0)).map((m) => (
                       <div key={m.uid} className="flex items-center gap-2 p-2 rounded-lg bg-white/[0.03]">
-                        <div className="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center overflow-hidden border border-purple-500/30">
+                        <div className="w-8 h-8 rounded-full bg-[rgba(26,10,46,0.6)] flex items-center justify-center overflow-hidden border border-[rgba(212,175,55,0.3)]">
                           {m.profilePhotoUrl ? (
                             <img src={m.profilePhotoUrl} className="w-8 h-8 rounded-full object-cover" />
                           ) : (
@@ -1394,7 +1394,7 @@ export default function Profile() {
                             setGroupMembers(members);
                           } catch { setGroupMembers([]); }
                         }}
-                        className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+                        className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
                       >
                         <div className="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-xl">
                           {g.role === "admin" ? "👑" : "👥"}

@@ -18,7 +18,6 @@ import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
-// Standard chapter counts for each Bible book
 const CHAPTER_COUNTS: Record<string, number> = {
   Genesis:50,Exodus:40,Leviticus:27,Numbers:36,Deuteronomy:34,Joshua:24,Judges:21,Ruth:4,
   "1 Samuel":31,"2 Samuel":24,"1 Kings":22,"2 Kings":25,"1 Chronicles":29,"2 Chronicles":36,
@@ -56,6 +55,9 @@ function getChaptersRead() {
   }
   return total;
 }
+function getStreak() {
+  try { const raw = localStorage.getItem("teensBible"); return raw ? JSON.parse(raw).streak || 0 : 0; } catch { return 0; }
+}
 function getLevel(xp: number) {
   if (xp >= 5000) return { name: "Master", level: 10, next: 999999 };
   if (xp >= 3000) return { name: "Champion", level: 8, next: 5000 };
@@ -66,7 +68,7 @@ function getLevel(xp: number) {
   return { name: "Newbie", level: 1, next: 100 };
 }
 
-// Real meme images hosted on Firebase (same as old app)
+// Real meme images hosted on Firebase
 const MEME_BASE_URL = "https://teens-bible-94271.web.app/memes/";
 const memeUrls = [
   "meme_001.jpg","meme_002.jpg","meme_003.jpg","meme_004.jpg","meme_005.jpg",
@@ -93,14 +95,7 @@ const memeUrls = [
   "meme_103.webp","meme_104.jpg","meme_105.jpg","meme_106.webp",
 ];
 
-// Seasonal memes (disabled - no seasonal files currently)
-const seasonalMemes: Record<string, string[]> = {
-  // christmas: [],
-  // easter: [],
-  // thanksgiving: [],
-  // lent: [],
-  // backtoschool: [],
-};
+const seasonalMemes: Record<string, string[]> = {};
 
 function getActiveSeason(): string | null {
   const now = new Date();
@@ -126,16 +121,16 @@ function getDailyMemeUrl(): string {
   return MEME_BASE_URL + allMemes[idx];
 }
 
-function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: number; size?: number; strokeWidth?: number }) {
+function ProgressRing({ progress, size = 80, strokeWidth = 6 }: { progress: number; size?: number; strokeWidth?: number }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress / 100) * circumference;
   return (
     <svg width={size} height={size} className="transform -rotate-90">
-      <circle cx={size/2} cy={size/2} r={radius} stroke="rgba(139,92,246,0.15)" strokeWidth={strokeWidth} fill="none" />
-      <circle cx={size/2} cy={size/2} r={radius} stroke="url(#pgr)" strokeWidth={strokeWidth} fill="none"
+      <circle cx={size/2} cy={size/2} r={radius} stroke="rgba(212,175,55,0.15)" strokeWidth={strokeWidth} fill="none" />
+      <circle cx={size/2} cy={size/2} r={radius} stroke="url(#goldGradient)" strokeWidth={strokeWidth} fill="none"
         strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-700" />
-      <defs><linearGradient id="pgr" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#7c3aed"/><stop offset="100%" stopColor="#c084fc"/></linearGradient></defs>
+      <defs><linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#d4af37"/><stop offset="50%" stopColor="#f0d060"/><stop offset="100%" stopColor="#d4af37"/></linearGradient></defs>
     </svg>
   );
 }
@@ -144,18 +139,15 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const playerName = getPlayerName();
   const totalXP = getTotalXP();
-
   const chaptersRead = getChaptersRead();
   const gems = getGems();
+  const streak = getStreak();
   const level = getLevel(totalXP);
   const xpProgress = Math.min(100, (totalXP / level.next) * 100);
-
   const memeUrl = getDailyMemeUrl();
 
   // Meme fullscreen viewer state
   const [memeFullscreen, setMemeFullscreen] = useState(false);
-
-  // Meme reactions state
   const [memeLoaded, setMemeLoaded] = useState(false);
   const [reactions, setReactions] = useState<Record<string, number>>(() => {
     try { return JSON.parse(localStorage.getItem("memeReactions") || "{}"); } catch { return {}; }
@@ -175,22 +167,21 @@ export default function Home() {
   const equippedPet = PETS.find(p => p.id === equipped.pet);
   const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
   const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
-  // Re-check linked status when Firebase auth state resolves or auth-changed event fires
+  
   useEffect(() => {
     const checkLinked = () => {
       if (isLinkedToGoogle() || isLinkedToApple()) setAccountLinked(true);
     };
-    // Check after short delay for Firebase auth to initialize
     const t1 = setTimeout(checkLinked, 500);
     const t2 = setTimeout(checkLinked, 1500);
     const t3 = setTimeout(checkLinked, 3000);
-    // Listen for auth-changed event (fired after successful Apple/Google sign-in)
     window.addEventListener("auth-changed", checkLinked);
     return () => {
       clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
       window.removeEventListener("auth-changed", checkLinked);
     };
   }, []);
+
   const [bannerDismissed, setBannerDismissed] = useState(() => {
     const dismissed = localStorage.getItem("syncBannerDismissed");
     if (!dismissed) return false;
@@ -238,25 +229,26 @@ export default function Home() {
   };
 
   return (
-    <div className="px-4 pt-6 space-y-4">
+    <div className="px-4 pt-5 space-y-4">
       {/* Full-screen loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
         <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-purple-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <svg className="animate-spin h-10 w-10 text-[#d4af37]" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
           <p className="text-white text-sm font-medium">
             {linkingApple ? "Connecting to Apple..." : "Connecting to Google..."}
           </p>
           <p className="text-gray-400 text-xs">Please wait, this may take a moment</p>
         </div>
       )}
-      {/* Account Linking Banner */}
+
+      {/* Account Linking Banner — V2 Gold Style */}
       {!accountLinked && !bannerDismissed && (
-        <div className="relative rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-900/30 to-orange-900/20 p-4">
+        <div className="relative gold-card p-4">
           <button onClick={handleDismissBanner} className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 text-lg leading-none p-1">✕</button>
           <div className="flex items-start gap-3">
             <div className="text-2xl mt-0.5">⚠️</div>
             <div className="flex-1 pr-4">
-              <h3 className="text-amber-200 font-bold text-sm">Back up your progress</h3>
+              <h3 className="text-[#f0d060] font-bold text-sm">Back up your progress</h3>
               <p className="text-gray-400 text-xs mt-1">Link an account to save your progress across devices.</p>
               <div className="flex gap-2 mt-3">
                 <button
@@ -265,12 +257,7 @@ export default function Home() {
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-800 text-xs font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                  {linkingGoogle ? (
-                    <>
-                      <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                      Signing in...
-                    </>
-                  ) : "Google"}
+                  {linkingGoogle ? "Signing in..." : "Google"}
                 </button>
                 <button
                   onClick={handleBannerLinkApple}
@@ -278,12 +265,7 @@ export default function Home() {
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-black text-white text-xs font-semibold border border-gray-600/50 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-                  {linkingApple ? (
-                    <>
-                      <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                      Signing in...
-                    </>
-                  ) : "Apple"}
+                  {linkingApple ? "Signing in..." : "Apple"}
                 </button>
               </div>
             </div>
@@ -291,13 +273,13 @@ export default function Home() {
         </div>
       )}
 
-      {/* Header */}
+      {/* ═══ V2 Header — Gold Ribbon Style ═══ */}
       <div className="flex items-center gap-4">
         <div className="relative">
-          <div className={`w-16 h-16 rounded-full overflow-hidden bg-purple-900/50 flex items-center justify-center ${equippedFrame?.frameClass || 'border-[3px] border-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]'}`}>
+          <div className={`w-16 h-16 rounded-full overflow-hidden flex items-center justify-center ${equippedFrame?.frameClass || 'photo-frame-gold'}`} style={{ background: 'rgba(26, 10, 46, 0.8)' }}>
             {(() => { const photo = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-3xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-3xl">👦</span>; } })()}
           </div>
-          <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ background: 'linear-gradient(135deg, #d4af37, #f0d060)', color: '#1a0a2e', border: '2px solid #1a0a2e' }}>{level.level}</div>
           {equippedPet && <div className="absolute -top-1 -left-1">
             {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
               <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-6 h-6 object-contain" />
@@ -306,41 +288,63 @@ export default function Home() {
             )}
           </div>}
         </div>
-        <div>
-          <h1 className="text-xl font-bold text-white font-display">{greeting}</h1>
-          <div className="flex items-center gap-3 text-sm text-gray-300">
-            <span>📖 {chaptersRead} Chapters Read</span>
-            <span>💎 Lv. {level.level}</span>
+        <div className="flex-1">
+          <h1 className="text-xl font-bold font-display gold-text">{greeting}</h1>
+          <div className="flex items-center gap-3 text-sm text-gray-300 mt-0.5">
+            <span className="gold-pill">⚡ {totalXP} XP</span>
+            <span className="gold-pill">💎 {gems}</span>
           </div>
         </div>
       </div>
 
-      {/* Today's Reading Card */}
+      {/* ═══ Streak & Stats Row ═══ */}
+      <div className="flex gap-3">
+        <div className="flex-1 gold-card p-3 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}>
+            <span className="text-lg">🔥</span>
+          </div>
+          <div>
+            <div className="text-xl font-bold text-[#f0d060]">{streak}</div>
+            <div className="text-[10px] text-gray-400">Day Streak</div>
+          </div>
+        </div>
+        <div className="flex-1 gold-card p-3 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}>
+            <span className="text-lg">📖</span>
+          </div>
+          <div>
+            <div className="text-xl font-bold text-[#f0d060]">{chaptersRead}</div>
+            <div className="text-[10px] text-gray-400">Chapters</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ Today's Reading Card — V2 Gold Frame ═══ */}
       {(() => {
         const lastRead = getLastRead();
         const bookName = lastRead?.book || "Genesis";
         const chapterNum = lastRead?.chapter || 1;
         const progress = lastRead?.progress || 0;
         return (
-          <div className="neon-card p-5">
+          <div className="gold-card p-5">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-purple-300 text-sm font-semibold">{lastRead ? "📖 CONTINUE READING" : "📖 START READING"}</span>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[#d4af37] text-xs font-bold uppercase tracking-wider">{lastRead ? "📖 Continue Reading" : "📖 Start Reading"}</span>
                 </div>
                 <h2 className="text-2xl font-bold text-white font-display">{bookName}</h2>
-                <h3 className="text-xl font-bold text-white font-display">Chapter {chapterNum}</h3>
-                <p className="text-gray-400 text-sm mt-1">{lastRead ? `${lastRead.totalChapters} chapters total` : "Begin your journey"}</p>
+                <h3 className="text-lg font-bold text-gray-300 font-display">Chapter {chapterNum}</h3>
+                <p className="text-gray-500 text-xs mt-1">{lastRead ? `${lastRead.totalChapters} chapters total` : "Begin your journey"}</p>
                 <button onClick={() => setLocation("/bible")}
-                  className="mt-3 px-4 py-2 bg-purple-600/30 border border-purple-500/50 rounded-xl text-purple-200 text-sm font-medium flex items-center gap-2 hover:bg-purple-600/50 transition-all active:scale-95">
-                  📖 {lastRead ? "Continue Reading" : "Start Reading"}
+                  className="mt-3 gold-btn text-sm flex items-center gap-2">
+                  📖 {lastRead ? "Continue" : "Start Reading"}
                 </button>
               </div>
               <div className="relative flex items-center justify-center">
                 <ProgressRing progress={progress} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-bold text-white">{progress}<span className="text-sm">%</span></span>
-                  <span className="text-[10px] text-purple-300">Progress</span>
+                  <span className="text-xl font-bold text-[#f0d060]">{progress}<span className="text-xs">%</span></span>
+                  <span className="text-[9px] text-gray-400">Progress</span>
                 </div>
               </div>
             </div>
@@ -348,60 +352,54 @@ export default function Home() {
         );
       })()}
 
-      {/* Bible AI - Prominent Card */}
+      {/* ═══ XP Progress Bar ═══ */}
+      <div className="gold-card p-4 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}>
+          <span className="text-xs font-bold text-white">XP</span>
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-white font-bold text-sm">{totalXP.toLocaleString()}</span>
+            <span className="text-gray-400 text-xs">/ {level.next.toLocaleString()} XP</span>
+          </div>
+          <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(212,175,55,0.15)' }}>
+            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${xpProgress}%`, background: 'linear-gradient(90deg, #a08520, #d4af37, #f0d060)' }} />
+          </div>
+        </div>
+        <div className="text-sm text-gray-400">Lv.{level.level}</div>
+      </div>
+
+      {/* ═══ Bible AI Card ═══ */}
       <button
         onClick={() => setLocation("/bible-ai")}
-        className="w-full neon-card p-5 flex items-center gap-4 hover:border-purple-400/60 transition-all active:scale-[0.98] cursor-pointer group"
+        className="w-full gold-card p-4 flex items-center gap-4 hover:border-[#f0d060] transition-all active:scale-[0.98] cursor-pointer group"
       >
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 border border-purple-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Rounded square outline */}
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6b21a8, #9333ea)', border: '2px solid rgba(212,175,55,0.5)' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="white" strokeWidth="1.8" fill="none" />
-            {/* Large 4-point star (bottom-left) */}
             <path d="M8 17 L8.8 14.5 L11 13.7 L8.8 12.9 L8 10.4 L7.2 12.9 L5 13.7 L7.2 14.5 Z" fill="white" />
-            {/* Medium 4-point star (top-right) */}
             <path d="M16 11 L16.7 9 L18.5 8.3 L16.7 7.6 L16 5.6 L15.3 7.6 L13.5 8.3 L15.3 9 Z" fill="white" />
-            {/* Small 4-point star (top-left area) */}
             <path d="M9 7.5 L9.4 6.3 L10.5 5.9 L9.4 5.5 L9 4.3 L8.6 5.5 L7.5 5.9 L8.6 6.3 Z" fill="white" />
           </svg>
         </div>
         <div className="flex-1 text-left">
-          <h3 className="text-white font-bold text-base">Bible AI</h3>
-          <p className="text-gray-400 text-sm mt-0.5">Ask anything about the Bible — get instant answers</p>
+          <h3 className="text-white font-bold text-sm">Bible AI</h3>
+          <p className="text-gray-400 text-xs mt-0.5">Ask anything about the Bible — get instant answers</p>
         </div>
-        <div className="text-purple-400 text-lg">→</div>
+        <div className="text-[#d4af37] text-lg">→</div>
       </button>
 
-      {/* XP Bar */}
-      <div className="neon-card p-4 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-600 to-yellow-800 border border-yellow-500/50 flex items-center justify-center shadow-[0_0_10px_rgba(234,179,8,0.3)]">
-          <span className="text-xs font-bold text-yellow-200">XP</span>
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-white font-bold">{totalXP.toLocaleString()}</span>
-            <span className="text-gray-400 text-xs">/ {level.next.toLocaleString()} XP</span>
-          </div>
-          <div className="h-2.5 bg-gray-800/80 rounded-full overflow-hidden">
-            <div className="h-full rounded-full bg-gradient-to-r from-purple-600 via-purple-400 to-cyan-400 transition-all duration-500" style={{ width: `${xpProgress}%` }} />
-          </div>
-        </div>
-        <div className="w-8 h-8 rounded-full bg-yellow-600/20 border border-yellow-500/40 flex items-center justify-center"><span className="text-sm">🏆</span></div>
-      </div>
-
-
-
-      {/* Bible Meme of the Day */}
-      <div className="neon-card p-4">
+      {/* ═══ Bible Meme of the Day ═══ */}
+      <div className="gold-card p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-white font-bold text-sm">😂 BIBLE MEME OF THE DAY</span>
         </div>
-        <div className="rounded-xl overflow-hidden border border-purple-500/20 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
-          {!memeLoaded && <div className="w-full h-64 bg-purple-900/30 animate-pulse rounded-xl" />}
+        <div className="rounded-lg overflow-hidden border border-[#b8962e]/30 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
+          {!memeLoaded && <div className="w-full h-64 bg-purple-900/30 animate-pulse rounded-lg" />}
           <img
             src={memeUrl}
             alt="Bible Meme of the Day"
-            className={`w-full h-auto rounded-xl ${memeLoaded ? '' : 'absolute opacity-0'}`}
+            className={`w-full h-auto rounded-lg ${memeLoaded ? '' : 'absolute opacity-0'}`}
             loading="lazy"
             onLoad={() => setMemeLoaded(true)}
           />
@@ -409,7 +407,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center gap-3 mt-3">
           {["😂", "🔥", "💀", "🙏"].map(emoji => (
-            <button key={emoji} onClick={() => handleReaction(emoji)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm active:scale-95 transition-all ${userReaction === emoji ? 'bg-purple-600/60 border-purple-400 scale-110' : 'bg-purple-900/40 border-purple-500/30'}`}>
+            <button key={emoji} onClick={() => handleReaction(emoji)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm active:scale-95 transition-all ${userReaction === emoji ? 'bg-[#d4af37]/20 border-[#d4af37] scale-110' : 'bg-purple-900/40 border-[#b8962e]/30'}`}>
               <span>{emoji}</span>
               {(reactions[emoji] || 0) > 0 && <span className="text-xs text-gray-300">{reactions[emoji]}</span>}
             </button>
@@ -420,35 +418,23 @@ export default function Home() {
       {/* Meme Fullscreen Viewer */}
       {memeFullscreen && (
         <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center" onClick={() => setMemeFullscreen(false)}>
-          {/* Close button */}
           <button onClick={() => setMemeFullscreen(false)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white text-xl hover:bg-white/20 transition-all">
             ✕
           </button>
-          {/* Meme image */}
           <div className="flex-1 flex items-center justify-center w-full px-4 py-16" onClick={(e) => e.stopPropagation()}>
             <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-full object-contain rounded-lg" />
           </div>
-          {/* Action buttons */}
           <div className="absolute bottom-0 left-0 right-0 pb-24 pt-4 bg-gradient-to-t from-black/80 to-transparent" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-center gap-4 px-6">
               <button
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
-                      // Native: download file to cache, then share via native Share Sheet
                       const ext = memeUrl.split('.').pop() || 'jpg';
                       const fileName = `bible-meme-${Date.now()}.${ext}`;
-                      await Filesystem.downloadFile({
-                        url: memeUrl,
-                        path: fileName,
-                        directory: Directory.Cache,
-                      });
+                      await Filesystem.downloadFile({ url: memeUrl, path: fileName, directory: Directory.Cache });
                       const fileUri = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
-                      await Share.share({
-                        title: '😂 Bible Meme of the Day',
-                        text: 'Check out this Bible meme from Teenz Bible!',
-                        files: [fileUri.uri],
-                      });
+                      await Share.share({ title: '😂 Bible Meme of the Day', text: 'Check out this Bible meme from Teenz Bible!', files: [fileUri.uri] });
                       toast.success('Shared successfully!');
                     } else if (navigator.share) {
                       const response = await fetch(memeUrl);
@@ -466,7 +452,7 @@ export default function Home() {
                     }
                   }
                 }}
-                className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition-all active:scale-95"
+                className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold text-sm transition-all active:scale-95" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}
               >
                 <span>📤</span> Share
               </button>
@@ -474,11 +460,9 @@ export default function Home() {
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
-                      // Native: use Capacitor SaveToPhotos plugin
                       await SaveToPhotos.savePhoto({ url: memeUrl });
                       toast.success('Saved to Photos! 📥');
                     } else {
-                      // Web fallback: blob download
                       const response = await fetch(memeUrl);
                       const blob = await response.blob();
                       const url = URL.createObjectURL(blob);
@@ -505,18 +489,12 @@ export default function Home() {
         </div>
       )}
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="neon-card p-3 text-center"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1">{chaptersRead}</div><div className="text-[10px] text-gray-400">Chapters Read</div></div>
-        <div className="neon-card p-3 text-center"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1">{gems}</div><div className="text-[10px] text-gray-400">Gems</div></div>
-      </div>
-
-      {/* Quick Actions */}
+      {/* ═══ Quick Actions Grid ═══ */}
       <div className="grid grid-cols-2 gap-3 pb-24">
-        <button onClick={() => setLocation("/bible")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+        <button onClick={() => setLocation("/bible")} className="gold-card p-4 text-center hover:border-[#f0d060] transition-all active:scale-95">
           <span className="text-2xl">📖</span><div className="text-sm font-medium text-white mt-1">Start Reading</div>
         </button>
-        <button onClick={() => setLocation("/bible-map")} className="neon-card p-4 text-center hover:border-purple-400 transition-all active:scale-95">
+        <button onClick={() => setLocation("/bible-map")} className="gold-card p-4 text-center hover:border-[#f0d060] transition-all active:scale-95">
           <span className="text-2xl">🗺️</span><div className="text-sm font-medium text-white mt-1">Bible Map</div>
         </button>
       </div>

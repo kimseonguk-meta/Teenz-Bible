@@ -185,8 +185,8 @@ export default function Feedback() {
 
       {/* Stats Banner */}
       <div className="grid grid-cols-2 gap-2">
-        <div className="bg-white/[0.04] border border-purple-500/20 rounded-xl p-3 text-center">
-          <p className="text-xl font-bold text-purple-400">{totalFeedbacks}</p>
+        <div className="bg-white/[0.04] border border-[rgba(212,175,55,0.2)] rounded-xl p-3 text-center">
+          <p className="text-xl font-bold text-[#d4af37]">{totalFeedbacks}</p>
           <p className="text-[10px] text-gray-500 mt-0.5">Total Feedback</p>
         </div>
         <div className="bg-white/[0.04] border border-green-500/20 rounded-xl p-3 text-center">
@@ -203,7 +203,7 @@ export default function Feedback() {
           <p className="text-gray-400 text-xs">Our team will review it shortly.</p>
           <button
             onClick={() => setSubmitted(false)}
-            className="mt-2 text-xs text-purple-400 underline"
+            className="mt-2 text-xs text-[#d4af37] underline"
           >
             Submit another
           </button>
@@ -213,7 +213,7 @@ export default function Feedback() {
       {!showForm && !submitted && (
         <button
           onClick={() => setShowForm(true)}
-          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold text-sm shadow-[0_4px_20px_rgba(168,85,247,0.3)] active:scale-[0.98] transition-transform"
+          className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white font-bold text-sm shadow-[0_4px_20px_rgba(168,85,247,0.3)] active:scale-[0.98] transition-transform"
         >
           ✍️ Submit New Feedback
         </button>
@@ -221,7 +221,7 @@ export default function Feedback() {
 
       {/* Feedback Form */}
       {showForm && (
-        <div className="bg-white/[0.03] border border-purple-500/20 rounded-xl p-4 space-y-4">
+        <div className="bg-white/[0.03] border border-[rgba(212,175,55,0.2)] rounded-xl p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-bold text-sm">New Feedback</h2>
             <button onClick={() => { setShowForm(false); setAttempted(false); }} className="text-gray-500 text-lg">✕</button>
@@ -239,7 +239,7 @@ export default function Feedback() {
                   onClick={() => setCategory(cat.key)}
                   className={`p-2.5 rounded-lg text-left transition-all ${
                     category === cat.key
-                      ? "bg-purple-500/20 border border-purple-500/50 text-white"
+                      ? "bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.5)] text-white"
                       : "bg-white/[0.03] border border-transparent text-gray-400 hover:bg-white/[0.05]"
                   }`}
                 >
@@ -263,7 +263,7 @@ export default function Feedback() {
               className={`w-full px-3 py-2.5 rounded-lg bg-white/[0.05] text-white text-sm placeholder:text-gray-600 focus:outline-none transition-all ${
                 isTitleError
                   ? "border border-red-500/60 ring-1 ring-red-500/30 bg-red-500/5"
-                  : "border border-purple-500/20 focus:border-purple-500/50"
+                  : "border border-[rgba(212,175,55,0.2)] focus:border-[rgba(212,175,55,0.5)]"
               }`}
               maxLength={100}
             />
@@ -281,7 +281,7 @@ export default function Feedback() {
               className={`w-full px-3 py-2.5 rounded-lg bg-white/[0.05] text-white text-sm placeholder:text-gray-600 focus:outline-none resize-none transition-all ${
                 isMessageError
                   ? "border border-red-500/60 ring-1 ring-red-500/30 bg-red-500/5"
-                  : "border border-purple-500/20 focus:border-purple-500/50"
+                  : "border border-[rgba(212,175,55,0.2)] focus:border-[rgba(212,175,55,0.5)]"
               }`}
               rows={4}
               maxLength={1000}
@@ -354,7 +354,7 @@ export default function Feedback() {
                           {statusInfo.label}
                         </span>
                         {catInfo && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/15 text-purple-400">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/15 text-[#d4af37]">
                             {catInfo.label}
                           </span>
                         )}
@@ -402,7 +402,7 @@ export default function Feedback() {
           All feedback is reviewed by our development team. We aim to respond within 48 hours.
           <br />
           For urgent issues, contact us at{" "}
-          <a href="mailto:support@teenzbible.com" className="text-purple-400 underline">
+          <a href="mailto:support@teenzbible.com" className="text-[#d4af37] underline">
             support@teenzbible.com
           </a>
         </p>

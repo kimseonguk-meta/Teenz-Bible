@@ -254,10 +254,10 @@ export default function Bible() {
     : currentBooks;
 
   return (
-    <div className="px-4 pt-6 space-y-4">
+    <div className="px-4 pt-5 space-y-4">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white font-display neon-text-purple">📖 BIBLE</h1>
+        <h1 className="text-2xl font-bold font-display gold-text">📖 BIBLE</h1>
       </div>
 
       {/* Search */}
@@ -267,7 +267,7 @@ export default function Bible() {
           placeholder="🔍 Search books..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-4 py-3 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-purple-400 transition-all"
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none transition-all" style={{ background: 'rgba(26, 10, 46, 0.7)', border: '1px solid rgba(212,175,55,0.3)' }}
         />
       </div>
 
@@ -277,9 +277,10 @@ export default function Bible() {
           onClick={() => setTestament("ot")}
           className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${
             testament === "ot"
-              ? "bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg shadow-red-500/20"
-              : "bg-gray-800/50 border border-gray-700/30 text-gray-400"
+              ? ""
+              : "text-gray-400"
           }`}
+          style={testament === "ot" ? { background: 'linear-gradient(135deg, #d4af37, #a08520)', color: '#1a0a2e' } : { background: 'rgba(26, 10, 46, 0.6)', border: '1px solid rgba(212,175,55,0.2)' }}
         >
           📜 OLD TESTAMENT
         </button>
@@ -287,23 +288,24 @@ export default function Bible() {
           onClick={() => setTestament("nt")}
           className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${
             testament === "nt"
-              ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/20"
-              : "bg-gray-800/50 border border-gray-700/30 text-gray-400"
+              ? ""
+              : "text-gray-400"
           }`}
+          style={testament === "nt" ? { background: 'linear-gradient(135deg, #d4af37, #a08520)', color: '#1a0a2e' } : { background: 'rgba(26, 10, 46, 0.6)', border: '1px solid rgba(212,175,55,0.2)' }}
         >
           ✨ NEW TESTAMENT
         </button>
       </div>
 
       {/* Progress Summary */}
-      <div className="neon-card p-3">
+      <div className="gold-card p-3">
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-300">📖 {testament === "ot" ? "Old Testament" : "New Testament"}</span>
-          <span className="text-purple-300">{totalRead} / {totalChapters} chapters ({totalChapters > 0 ? Math.round((totalRead / totalChapters) * 100) : 0}%)</span>
+          <span className="text-[#f0d060]">{totalRead} / {totalChapters} chapters ({totalChapters > 0 ? Math.round((totalRead / totalChapters) * 100) : 0}%)</span>
         </div>
-        <div className="mt-2 h-2 bg-gray-800/80 rounded-full overflow-hidden">
-          <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all"
-            style={{ width: `${totalChapters > 0 ? (totalRead / totalChapters) * 100 : 0}%` }} />
+        <div className="mt-2 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(212,175,55,0.15)' }}>
+          <div className="h-full rounded-full transition-all"
+            style={{ width: `${totalChapters > 0 ? (totalRead / totalChapters) * 100 : 0}%`, background: 'linear-gradient(90deg, #a08520, #d4af37, #f0d060)' }} />
         </div>
       </div>
 
@@ -323,7 +325,7 @@ export default function Bible() {
               onClick={() => toggleCategory(cat)}
               className="w-full flex items-center justify-between py-2 active:scale-[0.99] transition-transform"
             >
-              <h2 className="text-base font-bold text-purple-300 font-display">
+              <h2 className="text-base font-bold text-[#f0d060] font-display">
                 {catIcon} {cat.toUpperCase()}
               </h2>
               <span className="text-gray-500 text-xs">{catBooks.length} books {isCollapsed ? "▶" : "▼"}</span>
@@ -340,16 +342,16 @@ export default function Bible() {
                     <div
                       key={bookName}
                       onClick={() => setView({ type: "chapters", book: bookName })}
-                      className="neon-card p-3 flex items-center gap-3 active:scale-[0.98] transition-transform cursor-pointer"
+                      className="gold-card p-3 flex items-center gap-3 active:scale-[0.98] transition-transform cursor-pointer"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-purple-900/50 border border-purple-500/30 flex items-center justify-center text-xl shrink-0">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0" style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)' }}>
                         {meta?.emoji}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="text-white font-bold text-sm">{bookName}{game.watchedVideos.includes(bookName) && <span className="ml-1 text-xs" title="Video watched">🎬</span>}</h3>
                         <p className="text-gray-400 text-[11px] mt-0.5">{chapters.length} chapters · {meta?.desc}</p>
-                        <div className="mt-1.5 h-1 bg-gray-800/80 rounded-full overflow-hidden">
-                          <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400" style={{ width: `${progress}%` }} />
+                        <div className="mt-1.5 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(212,175,55,0.15)' }}>
+                          <div className="h-full rounded-full" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #a08520, #d4af37)' }} />
                         </div>
                         <p className="text-gray-500 text-[9px] mt-0.5">{read.length}/{chapters.length} read ({progress}%)</p>
                       </div>
@@ -390,7 +392,7 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
 
   return (
     <div className="px-4 space-y-4" style={{ paddingTop: '1.5rem' }}>
-      <button onClick={onBack} className="text-purple-300 text-sm flex items-center gap-1 mb-2 active:scale-95 transition-transform">
+      <button onClick={onBack} className="text-[#d4af37] text-sm flex items-center gap-1 mb-2 active:scale-95 transition-transform">
         ← Back to Books
       </button>
       <div className="text-center mb-4">
@@ -399,10 +401,10 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
           {book} {hasWatched && <span className="text-sm" title="Video watched">🎬</span>}
         </h1>
         <p className="text-gray-400 text-sm">{meta?.desc}</p>
-        <p className="text-purple-300 text-xs mt-1">{readChapters.length}/{chapters.length} chapters read</p>
-        <div className="mt-2 h-2 bg-gray-800/80 rounded-full overflow-hidden max-w-[200px] mx-auto">
-          <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-purple-400"
-            style={{ width: `${chapters.length > 0 ? (readChapters.length / chapters.length) * 100 : 0}%` }} />
+        <p className="text-[#f0d060] text-xs mt-1">{readChapters.length}/{chapters.length} chapters read</p>
+        <div className="mt-2 h-2 rounded-full overflow-hidden max-w-[200px] mx-auto" style={{ background: 'rgba(212,175,55,0.15)' }}>
+          <div className="h-full rounded-full"
+            style={{ width: `${chapters.length > 0 ? (readChapters.length / chapters.length) * 100 : 0}%`, background: 'linear-gradient(90deg, #a08520, #d4af37, #f0d060)' }} />
         </div>
       </div>
 
@@ -515,11 +517,8 @@ function BookDetailView({ book, game, onBack, onReadChapter }: {
             <button
               key={ch.num}
               onClick={() => onReadChapter(idx)}
-              className={`p-2 rounded-xl text-center transition-all active:scale-95 relative ${
-                isRead
-                  ? "bg-purple-600/30 border border-purple-500/50 text-purple-200"
-                  : "bg-gray-800/40 border border-gray-700/30 text-gray-300 hover:border-purple-500/30"
-              }`}
+              className={`p-2 rounded-xl text-center transition-all active:scale-95 relative`}
+              style={isRead ? { background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.5)', color: '#f0d060' } : { background: 'rgba(26, 10, 46, 0.6)', border: '1px solid rgba(212,175,55,0.15)', color: '#e2e8f0' }}
             >
               <div className="text-sm font-bold">{ch.num}</div>
               {isRead && <div className="text-[7px] text-green-400">✓</div>}
@@ -1058,21 +1057,21 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
   return (
     <div className="px-4 pb-8" style={{ paddingTop: '1rem' }}>
       {/* Reading Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-800/50">
+      <div className="fixed top-0 left-0 right-0 z-50 h-1" style={{ background: 'rgba(212,175,55,0.15)' }}>
         <div
-          className="h-full bg-gradient-to-r from-purple-500 to-cyan-400 transition-all duration-150 ease-out"
-          style={{ width: `${readingProgress}%` }}
+          className="h-full transition-all duration-150 ease-out"
+          style={{ width: `${readingProgress}%`, background: 'linear-gradient(90deg, #a08520, #d4af37, #f0d060)' }}
         />
       </div>
       {/* Minimal Reader Header */}
       <div className="flex items-center justify-between mb-4 relative z-20">
-        <button onClick={onBack} className="text-white text-lg active:scale-95 transition-transform">←</button>
+        <button onClick={onBack} className="text-[#d4af37] text-lg active:scale-95 transition-transform">←</button>
         <span className="text-gray-400 text-xs">{chapterIdx + 1} / {chapters.length}</span>
       </div>
 
       {/* Reader BG Picker */}
       {showReaderPicker && (
-        <div className="mb-4 p-3 rounded-xl neon-card">
+        <div className="mb-4 p-3 rounded-xl gold-card">
           <div className="flex items-center justify-between mb-2">
             <span className="text-white text-xs font-bold">📖 Reader Skin</span>
             <button onClick={() => setShowReaderPicker(false)} className="text-purple-300 text-xs">✕</button>
@@ -1154,27 +1153,27 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       {/* Chapter Title */}
       <div className="text-center mb-5">
         <h1 className="text-2xl font-bold text-white font-display uppercase tracking-wide">{book} {chapter.num}</h1>
-        <h2 className="text-purple-300 text-sm mt-1.5">{chapter.title}</h2>
+        <h2 className="text-[#d4af37] text-sm mt-1.5">{chapter.title}</h2>
         {marked ? (
-          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-green-500/20 border border-green-500/30 rounded-full">
+          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
             <span className="text-green-400 text-[10px]">✅ +10 XP earned</span>
           </div>
         ) : (
-          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 border border-purple-500/30 rounded-full">
-            <span className="text-purple-300 text-[10px]">📖 Read to earn +10 XP</span>
+          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)' }}>
+            <span className="text-[#f0d060] text-[10px]">📖 Read to earn +10 XP</span>
           </div>
         )}
       </div>
 
-      {/* Chapter Content */}
-      <div className="space-y-4 p-4 rounded-xl transition-colors" style={{ backgroundColor: readerBgStyle?.bg || 'transparent' }}>
+      {/* Chapter Content — V2 Cream/Warm reading area for readability */}
+      <div className="space-y-4 p-5 rounded-2xl transition-colors" style={{ backgroundColor: readerBgStyle?.bg || '#faf7f0', border: readerBgStyle ? 'none' : '1px solid rgba(212,175,55,0.2)' }}>
         {paragraphs.map((para: string, i: number) => {
           const vr = verseRanges[i] || null;
           if (para.startsWith("§")) {
             return <h3 key={i} className="font-bold mt-4 mb-2" style={{ fontSize: `${fontSize}px`, color: readerBgStyle ? readerBgStyle.text : undefined, opacity: 0.8 }}>{para.slice(1)}</h3>;
           }
           return (
-            <p key={i} className="leading-relaxed" style={{ fontSize: `${fontSize}px`, color: readerBgStyle?.text || '#e2e8f0' }}>
+            <p key={i} className="leading-relaxed" style={{ fontSize: `${fontSize}px`, lineHeight: '1.8', color: readerBgStyle?.text || '#3d2c1a' }}>
               {showVerses && vr && (
                 <span className="inline-block mr-1.5 font-bold align-super opacity-60" style={{ fontSize: `${Math.round(fontSize * 0.7)}px`, color: '#a78bfa' }}>{vr}</span>
               )}
@@ -1208,10 +1207,10 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center" style={{animation: 'celebrationPop 0.5s 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards', opacity: 0, transform: 'scale(0.5)'}}>
               <div className="text-6xl mb-3" style={{animation: 'celebrationBounce 1s 0.4s ease-in-out infinite'}}>🎉</div>
-              <div className="bg-gradient-to-r from-purple-600/90 to-cyan-600/90 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/20 shadow-2xl">
+              <div className="backdrop-blur-sm px-6 py-3 rounded-2xl shadow-2xl" style={{ background: 'linear-gradient(135deg, rgba(26,10,46,0.95), rgba(60,20,90,0.95))', border: '2px solid rgba(212,175,55,0.6)' }}>
                 <div className="text-white font-bold text-lg">Chapter Complete!</div>
                 <div className="flex items-center justify-center gap-3 mt-1">
-                  <span className="text-yellow-300 font-bold">+10 XP</span>
+                  <span className="text-[#f0d060] font-bold">+10 XP</span>
                   <span className="text-cyan-300 font-bold">+5 💎</span>
                 </div>
               </div>
@@ -1221,14 +1220,14 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       )}
       {reachedBottom && marked && !showCelebration && (
         <div className="mt-4 text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)' }}>
             <span className="text-green-400 text-sm font-bold">✅ Chapter Complete! +10 XP, +5 💎</span>
           </div>
           {/* Next chapter prompt */}
           {chapterIdx < chapters.length - 1 && (
             <button
               onClick={() => { onNavigate(chapterIdx + 1); window.scrollTo(0, 0); }}
-              className="block mx-auto px-6 py-3 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-purple-500/20 animate-pulse"
+              className="block mx-auto px-6 py-3 rounded-xl text-sm font-bold active:scale-95 transition-transform animate-pulse gold-btn"
             >
               📖 Read Next Chapter →
             </button>
@@ -1296,36 +1295,36 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
 
       {/* Quiz prompt */}
       {quizAvailable && (
-        <div className="mt-6 neon-card-gold p-4 text-center">
+        <div className="mt-6 gold-card p-4 text-center">
           <span className="text-2xl">🧠</span>
           <h3 className="text-white font-bold text-sm mt-1">DID YOU CATCH THIS?</h3>
           <p className="text-gray-400 text-xs mt-1">Take the quiz to earn bonus XP & Gems</p>
           <button onClick={() => onFinishChapter(chapter.num)}
-            className="mt-3 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-xl text-white text-sm font-bold active:scale-95 transition-transform">
+            className="mt-3 px-4 py-2 rounded-xl text-sm font-bold active:scale-95 transition-transform gold-btn">
             🎯 Take Quiz (+10 XP, +3 💎)
           </button>
         </div>
       )}
 
       {/* Navigation */}
-      <div className="flex items-center justify-between mt-8 pt-4 border-t border-purple-500/20">
+      <div className="flex items-center justify-between mt-8 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.2)' }}>
         {chapterIdx > 0 ? (
           <button onClick={() => onNavigate(chapterIdx - 1)}
-            className="px-4 py-2 rounded-xl bg-purple-900/30 border border-purple-500/30 text-purple-200 text-sm active:scale-95 transition-transform">
+            className="px-4 py-2 rounded-xl text-sm active:scale-95 transition-transform" style={{ background: 'rgba(26, 10, 46, 0.6)', border: '1px solid rgba(212,175,55,0.3)', color: '#f0d060' }}>
             ← Prev
           </button>
         ) : <div />}
         <span className="text-gray-400 text-xs">{chapterIdx + 1} / {chapters.length}</span>
         {chapterIdx < chapters.length - 1 ? (
           <button onClick={() => onNavigate(chapterIdx + 1)}
-            className="px-4 py-2 rounded-xl bg-purple-600/30 border border-purple-500/50 text-purple-200 text-sm active:scale-95 transition-transform">
+            className="px-4 py-2 rounded-xl text-sm active:scale-95 transition-transform" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)', color: '#1a0a2e', fontWeight: 'bold' }}>
             Next →
           </button>
         ) : <div />}
       </div>
 
       {/* Bottom Floating Toolbar */}
-      <div className="fixed left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 px-4 py-2.5 rounded-full shadow-2xl" style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))', backgroundColor: 'rgba(30, 20, 50, 0.92)', backdropFilter: 'blur(12px)', border: '1px solid rgba(139, 92, 246, 0.25)' }}>
+      <div className="fixed left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 px-4 py-2.5 rounded-full shadow-2xl" style={{ bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))', backgroundColor: 'rgba(26, 10, 46, 0.95)', backdropFilter: 'blur(12px)', border: '1px solid rgba(212,175,55,0.4)' }}>
         {/* Language toggle */}
         <button onClick={() => setLang(lang === "en" ? "ko" : "en")}
           className="w-9 h-9 rounded-full flex items-center justify-center text-base active:scale-90 transition-transform hover:bg-purple-500/20">
@@ -1466,35 +1465,35 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
   return (
     <div className="px-4 pt-6 space-y-5">
       <div className="flex items-center justify-between">
-        <button onClick={onSkip} className="text-purple-300 text-sm active:scale-95 transition-transform">← Skip</button>
+        <button onClick={onSkip} className="text-[#d4af37] text-sm active:scale-95 transition-transform">← Skip</button>
         <span className="text-gray-400 text-xs">{book} Ch.{chapterNum}</span>
       </div>
 
       <div className="text-center">
         <span className="text-4xl">🧠</span>
-        <h1 className="text-lg font-bold text-white font-display mt-2">DID YOU CATCH THIS?</h1>
-        <p className="text-purple-300 text-xs mt-1">{book} Chapter {chapterNum}</p>
+        <h1 className="text-lg font-bold font-display mt-2 gold-text">DID YOU CATCH THIS?</h1>
+        <p className="text-[#d4af37] text-xs mt-1">{book} Chapter {chapterNum}</p>
       </div>
 
-      <div className="neon-card p-5">
+      <div className="gold-card p-5">
         <p className="text-white font-bold text-base leading-relaxed">{quiz.q}</p>
       </div>
 
       <div className="space-y-3">
         {shuffled.options.map((opt, idx) => {
-          let btnClass = "w-full neon-card p-4 text-left active:scale-[0.98] transition-all cursor-pointer";
+          let btnStyle: React.CSSProperties = { background: 'rgba(26, 10, 46, 0.7)', border: '1px solid rgba(212,175,55,0.3)' };
           if (showResult) {
-            if (idx === shuffled.correctIndex) btnClass += " !border-green-500/60 bg-green-900/20";
-            else if (idx === selected && idx !== shuffled.correctIndex) btnClass += " !border-red-500/60 bg-red-900/20";
+            if (idx === shuffled.correctIndex) btnStyle = { background: 'rgba(16,185,129,0.15)', border: '2px solid rgba(16,185,129,0.6)' };
+            else if (idx === selected && idx !== shuffled.correctIndex) btnStyle = { background: 'rgba(239,68,68,0.15)', border: '2px solid rgba(239,68,68,0.6)' };
           }
           return (
-            <button key={idx} onClick={() => handleSelect(idx)} className={btnClass} disabled={selected !== null}>
+            <button key={idx} onClick={() => handleSelect(idx)} className="w-full p-4 rounded-xl text-left active:scale-[0.98] transition-all cursor-pointer" style={btnStyle} disabled={selected !== null}>
               <div className="flex items-center gap-3">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
                   showResult && idx === shuffled.correctIndex ? 'bg-green-500 text-white' :
                   showResult && idx === selected ? 'bg-red-500 text-white' :
-                  'bg-purple-900/50 border border-purple-500/30 text-purple-200'
-                }`}>
+                  ''
+                }`} style={!(showResult && (idx === shuffled.correctIndex || idx === selected)) ? { background: 'rgba(212,175,55,0.2)', border: '1px solid rgba(212,175,55,0.4)', color: '#f0d060' } : undefined}>
                   {String.fromCharCode(65 + idx)}
                 </div>
                 <span className="text-white text-sm">{opt}</span>

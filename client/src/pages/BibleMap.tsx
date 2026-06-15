@@ -247,10 +247,10 @@ export default function BibleMap() {
     <div className="px-4 pt-4 pb-6 space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white font-display neon-text-purple">🗺️ BIBLE MAP</h1>
+        <h1 className="text-2xl font-bold text-white font-display gold-text">🗺️ BIBLE MAP</h1>
         <button
           onClick={() => setLang(lang === "en" ? "ko" : "en")}
-          className="px-3 py-1.5 rounded-lg bg-purple-900/50 border border-purple-500/30 text-xs text-purple-200 active:scale-95 transition-transform"
+          className="px-3 py-1.5 rounded-lg bg-[rgba(26,10,46,0.6)] border border-[rgba(212,175,55,0.3)] text-xs text-[#f0d060] active:scale-95 transition-transform"
         >
           {lang === "en" ? "🇰🇷 한국어" : "🇺🇸 English"}
         </button>
@@ -264,8 +264,8 @@ export default function BibleMap() {
             onClick={() => { setActiveTab(tab.key); setSelectedLoc(null); setModalLoc(null); setSearch(""); }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 ${
               activeTab === tab.key
-                ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/30"
-                : "bg-[rgba(15,5,40,0.7)] border border-purple-500/20 text-gray-400"
+                ? "bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white shadow-lg shadow-purple-500/30"
+                : "bg-[rgba(15,5,40,0.7)] border border-[rgba(212,175,55,0.2)] text-gray-400"
             }`}
           >
             {tab.emoji} {tab.label}
@@ -274,7 +274,7 @@ export default function BibleMap() {
       </div>
 
       {/* Leaflet Map */}
-      <div className="neon-card overflow-hidden rounded-xl">
+      <div className="gold-card overflow-hidden rounded-xl">
         <div
           ref={mapContainerRef}
           className="w-full h-[280px]"
@@ -290,7 +290,7 @@ export default function BibleMap() {
           totalDist += getDistanceKm(paulLocs[i].lat, paulLocs[i].lng, paulLocs[i + 1].lat, paulLocs[i + 1].lng);
         }
         return (
-          <div className="neon-card p-3 flex items-center gap-3 border-amber-500/30 bg-gradient-to-r from-amber-900/20 to-purple-900/20">
+          <div className="gold-card p-3 flex items-center gap-3 border-amber-500/30 bg-gradient-to-r from-amber-900/20 to-purple-900/20">
             <span className="text-2xl">🚀</span>
             <div className="flex-1">
               <p className="text-amber-300 text-xs font-bold">
@@ -315,11 +315,11 @@ export default function BibleMap() {
           placeholder={lang === "en" ? "🔍 Search locations..." : "🔍 장소 검색..."}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 px-4 py-2.5 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-purple-400 transition-all"
+          className="flex-1 px-4 py-2.5 bg-[rgba(15,5,40,0.7)] border border-[rgba(212,175,55,0.3)] rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-[rgba(212,175,55,0.5)] transition-all"
         />
         <button
           onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
-          className="px-3 py-2.5 bg-[rgba(15,5,40,0.7)] border border-purple-500/30 rounded-xl text-purple-300 active:scale-95 transition-all"
+          className="px-3 py-2.5 bg-[rgba(15,5,40,0.7)] border border-[rgba(212,175,55,0.3)] rounded-xl text-[#d4af37] active:scale-95 transition-all"
           title={viewMode === "grid" ? "Switch to list view" : "Switch to grid view"}
         >
           {viewMode === "grid" ? "☰" : "⊞"}
@@ -333,7 +333,7 @@ export default function BibleMap() {
             <div
               key={loc.name}
               onClick={() => handleLocClick(loc)}
-              className="neon-card p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
+              className="gold-card p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
             >
               <div className="w-full aspect-square rounded-lg overflow-hidden relative">
                 <img
@@ -361,7 +361,7 @@ export default function BibleMap() {
             <div
               key={loc.name}
               onClick={() => handleLocClick(loc)}
-              className="neon-card p-4 active:scale-[0.98] transition-all cursor-pointer"
+              className="gold-card p-4 active:scale-[0.98] transition-all cursor-pointer"
             >
               <div className="flex items-start gap-3">
                 <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" loading="lazy" />
@@ -374,7 +374,7 @@ export default function BibleMap() {
                     {loc.verses.slice(0, 3).map(v => (
                       <span
                         key={v}
-                        className="px-1.5 py-0.5 bg-purple-900/40 border border-purple-500/20 rounded text-[9px] text-purple-300"
+                        className="px-1.5 py-0.5 bg-[rgba(26,10,46,0.5)] border border-[rgba(212,175,55,0.2)] rounded text-[9px] text-[#d4af37]"
                       >
                         📖 {v}
                       </span>
@@ -402,7 +402,7 @@ export default function BibleMap() {
           {/* Modal Content - swipeable */}
           <div
             ref={modalContentRef}
-            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-purple-500/40 rounded-t-2xl sm:rounded-2xl shadow-2xl shadow-purple-900/50 mb-16 overflow-y-auto"
+            className="relative w-full max-w-sm bg-gradient-to-b from-[#1a0a3e] to-[#0f0528] border border-[rgba(212,175,55,0.4)] rounded-t-2xl sm:rounded-2xl shadow-2xl shadow-purple-900/50 mb-16 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => {
               if (closingRef.current) return;
@@ -484,7 +484,7 @@ export default function BibleMap() {
                         navigate(`/bible/${book}/${chapter}`);
                       }
                     }}
-                    className="px-2.5 py-1 bg-purple-900/50 border border-purple-500/30 rounded-lg text-xs text-purple-300 hover:bg-purple-700/50 hover:border-purple-400 active:scale-95 transition-all cursor-pointer"
+                    className="px-2.5 py-1 bg-[rgba(26,10,46,0.6)] border border-[rgba(212,175,55,0.3)] rounded-lg text-xs text-[#d4af37] hover:bg-purple-700/50 hover:border-[rgba(212,175,55,0.5)] active:scale-95 transition-all cursor-pointer"
                   >
                     📖 {v}
                   </button>
@@ -504,7 +504,7 @@ export default function BibleMap() {
                   }
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-sm font-bold rounded-xl active:scale-[0.97] transition-transform"
+                className="w-full py-2.5 bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white text-sm font-bold rounded-xl active:scale-[0.97] transition-transform"
               >
                 📍 {lang === "en" ? "Show on Map" : "지도에서 보기"}
               </button>

@@ -45,7 +45,7 @@ class ErrorBoundary extends Component<Props, State> {
               onClick={() => window.location.reload()}
               className={cn(
                 "flex items-center gap-2 px-6 py-3 rounded-xl",
-                "bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold",
+                "bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white font-bold",
                 "shadow-[0_4px_20px_rgba(168,85,247,0.3)]",
                 "hover:opacity-90 cursor-pointer transition-transform active:scale-[0.97]"
               )}

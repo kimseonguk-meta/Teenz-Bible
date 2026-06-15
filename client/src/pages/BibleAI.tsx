@@ -288,10 +288,10 @@ export default function BibleAI() {
   return (
     <div className="flex flex-col h-[100dvh] bg-[#0a0a1a] overflow-hidden">
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center gap-3 px-4 py-3 border-b border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm z-10" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
+      <div className="flex-shrink-0 flex items-center gap-3 px-4 py-3 border-b border-[rgba(212,175,55,0.2)] bg-[#0d0d2b]/80 backdrop-blur-sm z-10" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
         <button
           onClick={() => navigate("/")}
-          className="text-purple-300 hover:text-white transition-colors"
+          className="text-[#d4af37] hover:text-white transition-colors"
         >
           ←
         </button>
@@ -301,13 +301,13 @@ export default function BibleAI() {
           </div>
           <div>
             <h1 className="text-white font-bold text-base">Bible AI</h1>
-            <p className="text-purple-300 text-xs">Ask anything about the Bible</p>
+            <p className="text-[#d4af37] text-xs">Ask anything about the Bible</p>
           </div>
         </div>
         {hasHistory && (
           <button
             onClick={clearHistory}
-            className="text-purple-400 hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg border border-purple-500/20 hover:border-red-500/30"
+            className="text-[#d4af37] hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg border border-[rgba(212,175,55,0.2)] hover:border-red-500/30"
             title="Clear chat history"
           >
             🗑️ Clear
@@ -325,7 +325,7 @@ export default function BibleAI() {
               className={`text-xs px-3 py-1.5 rounded-full border transition-all active:scale-95 ${
                 q.isKo
                   ? "bg-gradient-to-r from-red-500/20 to-orange-500/20 border-red-500/40 text-red-300 hover:border-red-400"
-                  : "bg-purple-900/30 border-purple-500/30 text-purple-300 hover:border-purple-400"
+                  : "bg-purple-900/30 border-[rgba(212,175,55,0.3)] text-[#d4af37] hover:border-[rgba(212,175,55,0.5)]"
               }`}
             >
               {q.text}
@@ -345,7 +345,7 @@ export default function BibleAI() {
               className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                 msg.role === "user"
                   ? "bg-purple-600 text-white rounded-br-sm"
-                  : "bg-[#1a1a3a] text-gray-200 border border-purple-500/20 rounded-bl-sm"
+                  : "bg-[#1a1a3a] text-gray-200 border border-[rgba(212,175,55,0.2)] rounded-bl-sm"
               }`}
               dangerouslySetInnerHTML={{ __html: formatMessage(msg.text) }}
             />
@@ -353,7 +353,7 @@ export default function BibleAI() {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-[#1a1a3a] text-gray-300 border border-purple-500/20 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm">
+            <div className="bg-[#1a1a3a] text-gray-300 border border-[rgba(212,175,55,0.2)] px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm">
               🤔 Thinking...
             </div>
           </div>
@@ -362,7 +362,7 @@ export default function BibleAI() {
       </div>
 
       {/* Input */}
-      <div className="flex-shrink-0 px-4 py-3 border-t border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0.75rem))' }}>
+      <div className="flex-shrink-0 px-4 py-3 border-t border-[rgba(212,175,55,0.2)] bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0.75rem))' }}>
         {isListening && (
           <div className="flex items-center justify-center gap-2 mb-2 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
@@ -378,7 +378,7 @@ export default function BibleAI() {
               className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-95 ${
                 isListening
                   ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#1a1a3a] border border-purple-500/30 text-purple-300 hover:border-purple-400 hover:text-white"
+                  : "bg-[#1a1a3a] border border-[rgba(212,175,55,0.3)] text-[#d4af37] hover:border-[rgba(212,175,55,0.5)] hover:text-white"
               } disabled:opacity-50`}
               title={isListening ? "Stop listening" : "Voice input"}
             >
@@ -392,7 +392,7 @@ export default function BibleAI() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendChat()}
             placeholder={isListening ? "Listening..." : "Ask anything..."}
-            className="flex-1 min-w-0 bg-[#1a1a3a] border border-purple-500/30 rounded-full px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-colors"
+            className="flex-1 min-w-0 bg-[#1a1a3a] border border-[rgba(212,175,55,0.3)] rounded-full px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-[rgba(212,175,55,0.5)] transition-colors"
             disabled={isLoading}
           />
           <button

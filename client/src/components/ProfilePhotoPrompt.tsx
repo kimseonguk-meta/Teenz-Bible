@@ -242,12 +242,12 @@ export default function ProfilePhotoPrompt() {
 
   return (
     <Dialog open={showModal} onOpenChange={(open) => { if (!open) handleLater(); }}>
-      <DialogContent className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 rounded-2xl p-0 max-w-[380px] w-[92%] shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+      <DialogContent className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-[rgba(212,175,55,0.3)] rounded-2xl p-0 max-w-[380px] w-[92%] shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
         <VisuallyHidden><DialogTitle>Add a Profile Photo</DialogTitle></VisuallyHidden>
         <div className="p-6 text-center">
           {/* Header */}
           <div className="text-5xl mb-3">📸</div>
-          <h2 className="font-display text-purple-400 text-xl mb-2">Add a Profile Photo!</h2>
+          <h2 className="font-display text-[#d4af37] text-xl mb-2">Add a Profile Photo!</h2>
           <p className="text-gray-400 text-sm mb-5 leading-relaxed">
             Show off your style! Upload a photo so your friends can recognize you on the leaderboard.
           </p>
@@ -335,7 +335,7 @@ export default function ProfilePhotoPrompt() {
                 </div>
                 <button
                   onClick={() => { fileInputRef.current?.click(); }}
-                  className="text-purple-300 text-xs underline"
+                  className="text-[#d4af37] text-xs underline"
                 >
                   Choose different photo
                 </button>
@@ -366,7 +366,7 @@ export default function ProfilePhotoPrompt() {
                       if (!isNativePlatform()) cameraInputRef.current?.click();
                     }
                   }}
-                  className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
+                  className="w-24 h-24 rounded-full border-2 border-dashed border-[rgba(212,175,55,0.5)] flex flex-col items-center justify-center cursor-pointer hover:border-[rgba(212,175,55,0.5)] hover:bg-purple-500/10 transition-all active:scale-95"
                 >
                   <span className="text-2xl mb-1">📸</span>
                   <span className="text-[10px] text-gray-500">Take Photo</span>
@@ -393,7 +393,7 @@ export default function ProfilePhotoPrompt() {
                       if (!isNativePlatform()) fileInputRef.current?.click();
                     }
                   }}
-                  className="w-24 h-24 rounded-full border-2 border-dashed border-purple-500/50 flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 hover:bg-purple-500/10 transition-all active:scale-95"
+                  className="w-24 h-24 rounded-full border-2 border-dashed border-[rgba(212,175,55,0.5)] flex flex-col items-center justify-center cursor-pointer hover:border-[rgba(212,175,55,0.5)] hover:bg-purple-500/10 transition-all active:scale-95"
                 >
                   <span className="text-2xl mb-1">🖼️</span>
                   <span className="text-[10px] text-gray-500">Gallery</span>
@@ -419,7 +419,7 @@ export default function ProfilePhotoPrompt() {
                   >
                     <div
                       className={`w-12 h-12 rounded-lg overflow-hidden border-2 ${
-                        selectedFilter === idx ? "border-purple-400" : "border-transparent"
+                        selectedFilter === idx ? "border-[rgba(212,175,55,0.5)]" : "border-transparent"
                       }`}
                     >
                       <img
@@ -430,7 +430,7 @@ export default function ProfilePhotoPrompt() {
                       />
                     </div>
                     <span className={`text-[9px] ${
-                      selectedFilter === idx ? "text-purple-300 font-bold" : "text-gray-500"
+                      selectedFilter === idx ? "text-[#d4af37] font-bold" : "text-gray-500"
                     }`}>
                       {f.name}
                     </span>
@@ -462,7 +462,7 @@ export default function ProfilePhotoPrompt() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold text-sm shadow-[0_4px_20px_rgba(168,85,247,0.3)] transition-transform active:scale-[0.97] disabled:opacity-60"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white font-bold text-sm shadow-[0_4px_20px_rgba(168,85,247,0.3)] transition-transform active:scale-[0.97] disabled:opacity-60"
               >
                 {saving ? uploadProgress || "Saving..." : "Save Photo! ✨"}
               </button>
@@ -544,7 +544,7 @@ export function ProfilePhotoUploader() {
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="text-purple-300 text-xs underline disabled:opacity-50"
+          className="text-[#d4af37] text-xs underline disabled:opacity-50"
         >
           {uploading ? "Uploading..." : photo ? "📷 Change Photo" : "📷 Upload Photo"}
         </button>

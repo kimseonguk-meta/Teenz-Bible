@@ -302,7 +302,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
             {avatar}
           </div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 1 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">Choose a Nickname</h2>
+          <h2 className="font-display text-[#d4af37] text-2xl mb-2">Choose a Nickname</h2>
           <p className="text-gray-400 text-sm mb-1 leading-relaxed">
             This will be shown on the leaderboard.
           </p>
@@ -315,13 +315,13 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
             onChange={(e) => setNickname(e.target.value)}
             placeholder="e.g. BibleNinja, Grace99..."
             maxLength={20}
-            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-center text-lg placeholder:text-gray-500 focus:outline-none focus:border-purple-400/50 mb-4"
+            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-center text-lg placeholder:text-gray-500 focus:outline-none focus:border-[rgba(212,175,55,0.5)]/50 mb-4"
             autoFocus
           />
           <button
             onClick={() => nickname.trim() && setStep(2)}
             disabled={!nickname.trim()}
-            className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-purple-500 to-purple-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(168,85,247,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97]"
+            className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(168,85,247,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97]"
           >
             NEXT →
           </button>
@@ -337,7 +337,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
         <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
           <div className="text-6xl mb-4">👥</div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 2 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">
+          <h2 className="font-display text-[#d4af37] text-2xl mb-2">
             Join a Group
           </h2>
           <p className="text-gray-400 text-sm mb-6 leading-relaxed">
@@ -401,7 +401,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
         <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
           <div className="text-6xl mb-4">📋</div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">
+          <h2 className="font-display text-[#d4af37] text-2xl mb-2">
             Select your class
           </h2>
           <p className="text-gray-400 text-sm mb-2 leading-relaxed">
@@ -413,7 +413,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
           <select
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
-            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-base mb-4 focus:outline-none focus:border-purple-400/50 appearance-none cursor-pointer"
+            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-base mb-4 focus:outline-none focus:border-[rgba(212,175,55,0.5)]/50 appearance-none cursor-pointer"
           >
             <option value="" className="bg-[#1a2848] text-gray-400">-- Select Class --</option>
             {classConfig.map((group) => (
@@ -470,7 +470,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
         <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
           <div className="text-6xl mb-4">👥</div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">
+          <h2 className="font-display text-[#d4af37] text-2xl mb-2">
             Select a Group
           </h2>
           <p className="text-gray-400 text-sm mb-5 leading-relaxed">
@@ -602,9 +602,9 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
         <p className="text-gray-400 text-sm mb-2 leading-relaxed">
           Your adventure begins now!<br />Read, earn XP, and level up! 🚀
         </p>
-        <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-purple-500/30">
+        <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-[rgba(212,175,55,0.3)]">
           <p className="text-yellow-300 text-sm font-bold mb-1">🎁 Welcome Gift!</p>
-          <p className="text-purple-200 text-xs">💎 50 Gems + 🐱 Faithy Pet</p>
+          <p className="text-[#f0d060] text-xs">💎 50 Gems + 🐱 Faithy Pet</p>
         </div>
         <button
           onClick={onComplete}
