@@ -251,3 +251,9 @@
 
 ## Bug Fix — Group Manager Modal (Jun 15, 2026)
 - [x] Fix: Group Manager modal buttons cut off by bottom nav bar on mobile
+
+## Group Join UX Redesign (Jun 15, 2026)
+- [x] Remove invite code system from Join Group flow
+- [x] Join Group shows dropdown list of all available groups from Firebase
+- [x] Nasum Teenz always appears as pre-built group in the list
+- [x] Newly created groups automatically appear in the dropdown

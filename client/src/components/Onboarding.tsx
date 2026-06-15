@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { auth, db, ref, update, set, signInAnonymously, onAuthStateChanged, serverTimestamp } from "@/lib/firebase";
 import { get } from "firebase/database";
 import { getInventory, saveInventory, getEquipped, saveEquipped } from "@/data/storeItems";
-import { joinGroup, getLocalGroups } from "@/lib/groups";
-import type { GroupMembership } from "@/lib/groups";
+import { joinGroup, getLocalGroups, fetchAllAvailableGroups } from "@/lib/groups";
+import type { GroupMembership, GroupMeta } from "@/lib/groups";
 
 const AVATARS = ['😎','🦊','🐱','🐶','🦁','🐻','🐼','🐨','🐯','🦄','🐸','🐵','🦋','🐝','🌟','⭐','🔥','💎','🎮','🎯','🏀','⚽','🎸','🎨','🌈','🍕','🍩','🧁','🎂','🍦'];
 
@@ -28,6 +28,8 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   const [saving, setSaving] = useState(false);
   const [groupCodeInput, setGroupCodeInput] = useState("");
   const [groupCodeError, setGroupCodeError] = useState<string | null>(null);
+  const [availableGroups, setAvailableGroups] = useState<GroupMeta[]>([]);
+  const [loadingGroups, setLoadingGroups] = useState(false);
 
   // Load class config from Firebase
   useEffect(() => {
@@ -350,12 +352,22 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
             <span>⛪</span> I'm a Nasum Teenz member
           </button>
 
-          {/* Option B: Group Code */}
+          {/* Option B: Join Other Group (dropdown list) */}
           <button
-            onClick={() => { setStep(5); setGroupCodeError(null); setGroupCodeInput(""); }}
+            onClick={async () => {
+              setStep(5);
+              setGroupCodeError(null);
+              setLoadingGroups(true);
+              try {
+                const groups = await fetchAllAvailableGroups();
+                // Filter out Nasum classes (they have their own step)
+                setAvailableGroups(groups.filter(g => !g.isPrebuilt));
+              } catch (e) { console.warn(e); }
+              finally { setLoadingGroups(false); }
+            }}
             className="w-full py-4 px-4 rounded-xl border-none bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-base font-bold cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.3)] transition-transform active:scale-[0.97] mb-3 flex items-center justify-center gap-2"
           >
-            <span>🔑</span> I have a group invite code
+            <span>👥</span> Join another group
           </button>
 
           {/* Option C: Skip */}
@@ -451,38 +463,96 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
     );
   }
 
-  // Step 5: Group Code Entry
+  // Step 5: Select from available groups
   if (step === 5) {
     return (
       <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
         <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
-          <div className="text-6xl mb-4">🔑</div>
+          <div className="text-6xl mb-4">👥</div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
           <h2 className="font-display text-purple-400 text-2xl mb-2">
-            Enter Invite Code
+            Select a Group
           </h2>
           <p className="text-gray-400 text-sm mb-5 leading-relaxed">
-            Ask your group admin for the 6-character invite code.
+            Choose a group to join and compete with friends!
           </p>
-          <input
-            type="text"
-            value={groupCodeInput}
-            onChange={(e) => { setGroupCodeInput(e.target.value.toUpperCase()); setGroupCodeError(null); }}
-            placeholder="e.g. ABC123"
-            maxLength={8}
-            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-center text-2xl font-mono tracking-[0.3em] placeholder:text-gray-500 placeholder:text-base placeholder:tracking-normal focus:outline-none focus:border-purple-400/50 mb-2"
-            autoFocus
-          />
+
+          {loadingGroups ? (
+            <div className="py-8">
+              <p className="text-gray-400 text-sm animate-pulse">Loading groups...</p>
+            </div>
+          ) : availableGroups.length === 0 ? (
+            <div className="py-6">
+              <p className="text-gray-400 text-sm mb-2">No groups available yet.</p>
+              <p className="text-gray-500 text-xs">You can create one later from your Profile!</p>
+            </div>
+          ) : (
+            <div className="max-h-[250px] overflow-y-auto space-y-2 mb-4 text-left">
+              {availableGroups.map((g) => (
+                <button
+                  key={g.groupCode}
+                  onClick={async () => {
+                    setSaving(true);
+                    setGroupCodeError(null);
+                    try {
+                      let uid = auth.currentUser?.uid;
+                      if (!uid) {
+                        const cred = await signInAnonymously(auth);
+                        uid = cred.user.uid;
+                      }
+                      const profile = {
+                        nickname,
+                        groupCode: g.groupCode,
+                        joinedAt: Date.now(),
+                        avatar,
+                        isNasumMember: false,
+                      };
+                      localStorage.setItem("teensBibleProfile", JSON.stringify(profile));
+                      localStorage.setItem("playerName", nickname);
+                      await joinGroup(g.groupCode);
+                      const userData = {
+                        nickname, avatar, groupCode: g.groupCode,
+                        xp: 0, streak: 0, chaptersRead: 0, quizTotal: 0, quizCorrect: 0,
+                        isNasumMember: false, lastActive: serverTimestamp(), updatedAt: serverTimestamp(),
+                      };
+                      await update(ref(db, `users/${uid}`), userData);
+                      // Welcome bonus
+                      try {
+                        const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
+                        teensBible.gems = (teensBible.gems || 0) + 50;
+                        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+                        window.dispatchEvent(new CustomEvent("gems-changed", { detail: teensBible.gems }));
+                        const inv = getInventory();
+                        if (!inv.ownedItems.includes("pet_cat")) { inv.ownedItems.push("pet_cat"); saveInventory(inv); }
+                        const eq = getEquipped();
+                        if (!eq.pet) { eq.pet = "pet_cat"; saveEquipped(eq); }
+                      } catch (e) { /* ignore */ }
+                      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+                      setStep(4);
+                    } catch (err: any) {
+                      setGroupCodeError(err.message || "Failed to join group.");
+                    } finally {
+                      setSaving(false);
+                    }
+                  }}
+                  disabled={saving}
+                  className="w-full p-3.5 rounded-xl bg-black/30 border border-blue-400/20 hover:border-blue-400/50 flex items-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center text-xl">
+                    👥
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-medium truncate">{g.name}</p>
+                    <p className="text-gray-500 text-[10px]">{g.memberCount || 0} members</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
           {groupCodeError && (
             <p className="text-red-400 text-xs mb-3 text-left px-1">{groupCodeError}</p>
           )}
-          <button
-            onClick={handleGroupCodeJoin}
-            disabled={!groupCodeInput.trim() || saving}
-            className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97] mb-3 mt-2"
-          >
-            {saving ? "Joining..." : "JOIN GROUP 🚀"}
-          </button>
           <button
             onClick={() => setStep(2)}
             className="py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"

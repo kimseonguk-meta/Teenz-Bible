@@ -14,7 +14,7 @@ import { deleteAllUserData } from "@/lib/firebaseSync";
 import { celebrateLogin } from "@/lib/celebration";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { createGroup, joinGroup, leaveGroup, renameGroup, removeMember, getLocalGroups, fetchGroupMeta, fetchGroupMembers, isGroupAdmin, type GroupMeta, type GroupMembership } from "@/lib/groups";
+import { createGroup, joinGroup, leaveGroup, renameGroup, removeMember, getLocalGroups, fetchGroupMeta, fetchGroupMembers, isGroupAdmin, fetchAllAvailableGroups, type GroupMeta, type GroupMembership } from "@/lib/groups";
 import type { LeaderboardMember } from "@/lib/firebase";
 
 function getPlayerName() {
@@ -162,6 +162,8 @@ export default function Profile() {
   const [groupMembers, setGroupMembers] = useState<(LeaderboardMember & { role?: string })[]>([]);
   const [showRenameGroup, setShowRenameGroup] = useState(false);
   const [renameInput, setRenameInput] = useState("");
+  const [availableGroups, setAvailableGroups] = useState<GroupMeta[]>([]);
+  const [loadingAvailableGroups, setLoadingAvailableGroups] = useState(false);
 
   const getCroppedBase64 = (): string | null => {
     if (!rawPhoto) return null;
@@ -1230,21 +1232,8 @@ export default function Profile() {
                       <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400 font-bold">Admin</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-gray-400">
-                    <span>🔑 Code: <span className="text-teal-400 font-mono font-bold">{selectedGroupForManage}</span></span>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(selectedGroupForManage);
-                        setGroupSuccess("Invite code copied!");
-                        setTimeout(() => setGroupSuccess(null), 2000);
-                      }}
-                      className="text-purple-400 hover:text-purple-300 text-xs"
-                    >
-                      📋 Copy
-                    </button>
-                  </div>
                   <p className="text-gray-500 text-[10px] mt-1">
-                    Share this code with friends so they can join!
+                    Others can find and join this group from the Join Group list.
                   </p>
                 </div>
 
@@ -1420,10 +1409,21 @@ export default function Profile() {
                 {/* Action Buttons */}
                 <div className="flex gap-2 pt-2">
                   <button
-                    onClick={() => { setShowJoinGroup(true); setShowCreateGroup(false); setGroupError(null); setJoinCodeInput(""); }}
+                    onClick={async () => {
+                      setShowJoinGroup(true); setShowCreateGroup(false); setGroupError(null);
+                      setLoadingAvailableGroups(true);
+                      try {
+                        const groups = await fetchAllAvailableGroups();
+                        setAvailableGroups(groups);
+                      } catch (e) {
+                        console.warn('Failed to load groups', e);
+                      } finally {
+                        setLoadingAvailableGroups(false);
+                      }
+                    }}
                     className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-bold active:scale-95 transition-transform shadow-[0_4px_15px_rgba(99,102,241,0.3)]"
                   >
-                    🔑 Join Group
+                    👥 Join Group
                   </button>
                   <button
                     onClick={() => { setShowCreateGroup(true); setShowJoinGroup(false); setGroupError(null); setNewGroupName(""); }}
@@ -1433,41 +1433,56 @@ export default function Profile() {
                   </button>
                 </div>
 
-                {/* Join Group Form */}
+                {/* Join Group - Dropdown List */}
                 {showJoinGroup && (
                   <div className="p-4 rounded-xl bg-white/[0.03] border border-blue-500/20 space-y-3">
-                    <p className="text-white text-sm font-bold">🔑 Enter Invite Code</p>
-                    <Input
-                      value={joinCodeInput}
-                      onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
-                      placeholder="e.g. ABC123"
-                      maxLength={8}
-                      className="bg-gray-900/60 border-blue-500/40 text-white text-center text-lg font-mono tracking-widest"
-                    />
-                    <button
-                      onClick={async () => {
-                        if (!joinCodeInput.trim()) return;
-                        setGroupLoading(true);
-                        setGroupError(null);
-                        try {
-                          const meta = await joinGroup(joinCodeInput.trim());
-                          setMyGroups(getLocalGroups());
-                          setGroupMetas(prev => ({ ...prev, [meta.groupCode]: meta }));
-                          setGroupSuccess(`Joined "${meta.name}"!`);
-                          setShowJoinGroup(false);
-                          setJoinCodeInput("");
-                          setTimeout(() => setGroupSuccess(null), 3000);
-                        } catch (e: any) {
-                          setGroupError(e.message);
-                        } finally {
-                          setGroupLoading(false);
-                        }
-                      }}
-                      disabled={groupLoading || !joinCodeInput.trim()}
-                      className="w-full py-2.5 rounded-lg bg-blue-600 text-white text-sm font-bold disabled:opacity-50 active:scale-95 transition-transform"
-                    >
-                      {groupLoading ? "Joining..." : "Join"}
-                    </button>
+                    <p className="text-white text-sm font-bold">👥 Select a Group to Join</p>
+                    {loadingAvailableGroups ? (
+                      <div className="text-center py-4">
+                        <p className="text-gray-400 text-xs animate-pulse">Loading groups...</p>
+                      </div>
+                    ) : (
+                      <div className="max-h-[200px] overflow-y-auto space-y-2 pr-1">
+                        {availableGroups
+                          .filter(g => !myGroups.find(mg => mg.groupCode === g.groupCode))
+                          .map((g) => (
+                          <button
+                            key={g.groupCode}
+                            onClick={async () => {
+                              setGroupLoading(true);
+                              setGroupError(null);
+                              try {
+                                const meta = await joinGroup(g.groupCode);
+                                setMyGroups(getLocalGroups());
+                                setGroupMetas(prev => ({ ...prev, [meta.groupCode]: meta }));
+                                setGroupSuccess(`Joined "${meta.name}"!`);
+                                setShowJoinGroup(false);
+                                setTimeout(() => setGroupSuccess(null), 3000);
+                              } catch (e: any) {
+                                setGroupError(e.message);
+                              } finally {
+                                setGroupLoading(false);
+                              }
+                            }}
+                            disabled={groupLoading}
+                            className="w-full p-3 rounded-lg bg-gray-900/60 border border-gray-700/50 hover:border-blue-500/50 text-left flex items-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50"
+                          >
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-base" style={{ background: g.isPrebuilt ? 'rgba(234,179,8,0.15)' : 'rgba(99,102,241,0.15)' }}>
+                              {g.isPrebuilt ? '🏫' : '👥'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-white text-sm font-medium truncate">{g.name}</p>
+                              <p className="text-gray-500 text-[10px]">
+                                {g.isPrebuilt ? 'Nasum Teenz' : `${g.memberCount || 0} members`}
+                              </p>
+                            </div>
+                          </button>
+                        ))}
+                        {availableGroups.filter(g => !myGroups.find(mg => mg.groupCode === g.groupCode)).length === 0 && (
+                          <p className="text-gray-500 text-xs text-center py-3">No available groups to join. Create one!</p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -1491,7 +1506,7 @@ export default function Profile() {
                           const meta = await createGroup(newGroupName.trim());
                           setMyGroups(getLocalGroups());
                           setGroupMetas(prev => ({ ...prev, [meta.groupCode]: meta }));
-                          setGroupSuccess(`Group "${meta.name}" created! Code: ${meta.groupCode}`);
+                          setGroupSuccess(`Group "${meta.name}" created!`);
                           setShowCreateGroup(false);
                           setNewGroupName("");
                         } catch (e: any) {
@@ -1505,9 +1520,7 @@ export default function Profile() {
                     >
                       {groupLoading ? "Creating..." : "Create"}
                     </button>
-                    <p className="text-gray-500 text-[10px] text-center">
-                      A unique invite code will be generated automatically.
-                    </p>
+
                   </div>
                 )}
               </div>

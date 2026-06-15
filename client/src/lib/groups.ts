@@ -496,6 +496,52 @@ export async function syncToAllGroups(): Promise<void> {
 }
 
 /**
+ * Fetch ALL available groups from Firebase (for the Join Group dropdown)
+ * Returns all groupMeta entries + Nasum classes
+ */
+export async function fetchAllAvailableGroups(): Promise<GroupMeta[]> {
+  const results: GroupMeta[] = [];
+
+  // 1. Add all Nasum Teenz classes as pre-built groups
+  for (const cls of NASUM_CLASSES) {
+    results.push({
+      name: `Nasum Teenz ${cls}`,
+      groupCode: cls,
+      createdBy: "",
+      createdAt: 0,
+      inviteCode: cls,
+      isPrebuilt: true,
+    });
+  }
+
+  // 2. Fetch all user-created groups from groupMeta
+  try {
+    const snap = await get(ref(db, `groupMeta`));
+    if (snap.exists()) {
+      const all = snap.val();
+      Object.entries(all).forEach(([code, meta]: [string, any]) => {
+        // Skip if it's a Nasum class (already added above)
+        if (!NASUM_CLASSES.includes(code)) {
+          results.push({
+            name: meta.name || code,
+            groupCode: code,
+            createdBy: meta.createdBy || "",
+            createdAt: meta.createdAt || 0,
+            inviteCode: meta.inviteCode || code,
+            isPrebuilt: false,
+            memberCount: meta.memberCount || 0,
+          });
+        }
+      });
+    }
+  } catch (e) {
+    console.warn("Failed to fetch all groups:", e);
+  }
+
+  return results;
+}
+
+/**
  * Check if current user is admin of a group
  */
 export function isGroupAdmin(groupCode: string): boolean {
