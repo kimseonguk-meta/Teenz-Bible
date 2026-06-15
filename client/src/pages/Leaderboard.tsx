@@ -239,12 +239,9 @@ export default function Leaderboard() {
     // Set default selected group
     if (groups.length > 0) {
       setSelectedGroupCode(groups[0].groupCode);
-    } else {
-      // No groups — switch to global tab
-      setMainTab("global");
     }
 
-    // Fetch group names
+    // Fetch group names for user's groups
     const fetchNames = async () => {
       const names: Record<string, string> = {};
       for (const g of groups) {
@@ -281,6 +278,26 @@ export default function Leaderboard() {
       const filtered = filterByTime(raw, timeFilter);
       const sorted = sortMembers(filtered, sortBy);
       setMembers(sorted);
+
+      // Resolve group names for members in global view
+      if (mainTab === "global") {
+        const unknownCodes = new Set<string>();
+        sorted.forEach(m => {
+          if (m.groupCode && m.groupCode !== "INDIVIDUAL" && m.groupCode !== "GLOBAL" && !groupNames[m.groupCode]) {
+            unknownCodes.add(m.groupCode);
+          }
+        });
+        if (unknownCodes.size > 0) {
+          const newNames: Record<string, string> = {};
+          for (const code of Array.from(unknownCodes)) {
+            try {
+              const meta = await fetchGroupMeta(code);
+              newNames[code] = meta?.name || code;
+            } catch { newNames[code] = code; }
+          }
+          setGroupNames(prev => ({ ...prev, ...newNames }));
+        }
+      }
     } catch (err: any) {
       setError("Failed to load leaderboard");
       console.error(err);
@@ -302,21 +319,28 @@ export default function Leaderboard() {
     setSelectedMember({ member, rank });
   };
 
-  // Helper to display group badge
+  // Helper to display group badge (shows group name if available, falls back to code)
+  const getGroupDisplayName = (code: string | undefined): string => {
+    if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return "";
+    return groupNames[code] || code;
+  };
+
   const renderGroupBadgeInline = (code: string | undefined) => {
     if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
+    const displayName = getGroupDisplayName(code);
     return (
-      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0">
-        {code}
+      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0 max-w-[60px] truncate">
+        {displayName}
       </span>
     );
   };
 
   const renderGroupBadge = (code: string | undefined) => {
     if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
+    const displayName = getGroupDisplayName(code);
     return (
-      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400 mt-0.5">
-        {code}
+      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/20 text-teal-400 mt-0.5 max-w-[70px] truncate">
+        {displayName}
       </span>
     );
   };
@@ -341,18 +365,16 @@ export default function Leaderboard() {
 
       {/* Main Tabs: My Groups | Global */}
       <div className="flex gap-2 justify-center">
-        {hasGroups && (
-          <button
-            onClick={() => setMainTab("mygroups")}
-            className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
-              mainTab === "mygroups"
-                ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-[0_0_15px_rgba(78,205,196,0.3)]"
-                : "bg-transparent border border-purple-500/30 text-gray-400 hover:text-gray-200"
-            }`}
-          >
-            👥 My Groups
-          </button>
-        )}
+        <button
+          onClick={() => setMainTab("mygroups")}
+          className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+            mainTab === "mygroups"
+              ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-[0_0_15px_rgba(78,205,196,0.3)]"
+              : "bg-transparent border border-purple-500/30 text-gray-400 hover:text-gray-200"
+          }`}
+        >
+          👥 My Groups
+        </button>
         <button
           onClick={() => setMainTab("global")}
           className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
@@ -365,8 +387,20 @@ export default function Leaderboard() {
         </button>
       </div>
 
-      {/* Group Selector (only in My Groups tab with multiple groups) */}
-      {mainTab === "mygroups" && userGroups.length > 1 && (
+      {/* No Groups Empty State */}
+      {mainTab === "mygroups" && userGroups.length === 0 && (
+        <div className="text-center py-8 space-y-3">
+          <span className="text-5xl">👥</span>
+          <p className="text-gray-300 text-sm font-medium">You haven't joined any groups yet.</p>
+          <p className="text-gray-500 text-xs">Join a group from your Profile to see group rankings!</p>
+          <a href="/profile" className="inline-block mt-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-teal-500 to-teal-600 text-white text-sm font-bold active:scale-95 transition-transform shadow-[0_4px_15px_rgba(78,205,196,0.3)]">
+            Go to Profile →
+          </a>
+        </div>
+      )}
+
+      {/* Group Selector (in My Groups tab when user has groups) */}
+      {mainTab === "mygroups" && userGroups.length >= 1 && (
         <div className="relative">
           <button
             onClick={() => setShowGroupDropdown(!showGroupDropdown)}

@@ -257,3 +257,9 @@
 - [x] Join Group shows dropdown list of all available groups from Firebase
 - [x] Nasum Teenz always appears as pre-built group in the list
 - [x] Newly created groups automatically appear in the dropdown
+
+## Ranking Tab Redesign for Group System (Jun 15, 2026)
+- [x] Add "My Groups" / "Global" tab switcher at top of Ranking page
+- [x] My Groups tab: show dropdown of joined groups, display group-specific ranking
+- [x] Global tab: show all users across all groups (existing behavior)
+- [x] Replace class badge (11C, 13B) with group name badge for non-Nasum groups
