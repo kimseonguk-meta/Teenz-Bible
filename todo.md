@@ -113,8 +113,8 @@
 - [x] Sync nickname change to Firebase leaderboard
 
 ## Bible AI Fix (Jun 4, 2026)
-- [ ] Fix Bible AI 'temporarily unavailable' error - switch to server-side invokeLLM
-- [ ] Ensure native app (Android/iOS) also uses server proxy via Manus hosting
+- [x] Fix Bible AI 'temporarily unavailable' error - switch to server-side invokeLLM (Manus Forge API primary, Gemini fallback)
+- [x] Ensure native app (Android/iOS) also uses server proxy via Manus hosting (teenzbible.manus.space)
 
 ## Build 23 — Apple Sign-In Fix + Single Provider UI (Jun 8, 2026)
 - [x] Rewrite appleAuth.ts: get credential once, reuse in conflict handler (no double Apple popup)

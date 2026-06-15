@@ -73,15 +73,15 @@ function isSpeechRecognitionSupported(): boolean {
   return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
 }
 
-// Bible AI API call - uses Firebase Cloud Function proxy (/api/bible-ai)
-// This works for both web and native (via Firebase Hosting URL)
-const FIREBASE_HOSTING_URL = "https://teens-bible-94271.web.app";
+// Bible AI API call - uses server proxy (/api/bible-ai)
+// For native apps, uses Manus hosting URL; for web, uses relative path
+const SERVER_URL = "https://teenzbible.manus.space";
 
 async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
   try {
-    // Determine the base URL - on native, use the full Firebase Hosting URL
+    // Determine the base URL - on native, use the full server URL
     const isNative = typeof (window as any).Capacitor !== 'undefined' && (window as any).Capacitor.isNativePlatform();
-    const baseUrl = isNative ? FIREBASE_HOSTING_URL : '';
+    const baseUrl = isNative ? SERVER_URL : '';
     
     const resp = await fetch(`${baseUrl}/api/bible-ai`, {
       method: "POST",
@@ -107,50 +107,24 @@ async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text
   }
 }
 
-// Direct Gemini API call - fallback when Cloud Function is unavailable
-const GEMINI_NATIVE_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
+// Fallback: retry via server with different base URL
 async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
-  const models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"];
-  for (const model of models) {
-    try {
-      const isThinkingModel = model.includes("2.5") && !model.includes("lite");
-      const reqBody = JSON.stringify({
-        system_instruction: { parts: [{ text: systemPrompt }] },
-        contents: messages,
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 8192,
-          ...(isThinkingModel ? { thinkingConfig: { thinkingBudget: 1024 } } : {}),
-        },
-        safetySettings: [
-          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        ],
-      });
-      const resp = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_NATIVE_KEY}`,
-        { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
-      );
-      const data = await resp.json();
-      if (data.error) {
-        console.warn(`Gemini ${model} error:`, data.error.code, data.error.message?.slice(0, 80));
-        if (data.error.code === 429) {
-          await new Promise(r => setTimeout(r, 1000));
-        }
-        continue;
-      }
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (text) {
-        return { answer: text };
-      }
-      continue;
-    } catch (e) {
-      console.warn(`Gemini ${model} fetch error:`, e);
+  // Always route through server proxy (no client-side API key exposure)
+  try {
+    const resp = await fetch(`${SERVER_URL}/api/bible-ai`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, systemPrompt }),
+    });
+    const result = await resp.json();
+    if (result.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      return { answer: result.data.candidates[0].content.parts[0].text };
     }
+    return { answer: "", error: result.error || "Bible AI is temporarily unavailable. Please try again in a moment! \uD83D\uDE4F" };
+  } catch (e: any) {
+    console.warn("Bible AI fallback error:", e.message);
+    return { answer: "", error: "Bible AI is temporarily unavailable. Please try again in a moment! \uD83D\uDE4F" };
   }
-  return { answer: "", error: "Bible AI is temporarily unavailable. Please try again in a moment! 🙏" };
 }
 
 export default function BibleAI() {
