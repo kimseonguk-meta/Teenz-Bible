@@ -232,3 +232,9 @@
 - [x] Matthew: chapters 6, 7, 8, 9, 10, 12, 13, 19
 - [x] 2 Kings 9 (data missing), 3 John 1, Song of Solomon 6, John 3, Luke 12
 - [x] Deploy re-translated chapters to Firebase + Capgo OTA (v1.0.9)
+
+## Korean Bible Re-translation (Summarized Chapters) - Jun 15, 2026
+- [x] Re-translate 12 summarized Korean chapters from English full version
+- [x] Isaiah 14, Revelation 8, Acts 7, Acts 10, Proverbs 27, Ezekiel 17, Jeremiah 44
+- [x] Mark 6, 7, 10, 11, 13
+- [x] Deploy Korean re-translation to Firebase + Capgo OTA (v1.0.10)
