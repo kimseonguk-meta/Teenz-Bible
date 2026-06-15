@@ -285,3 +285,16 @@
 - [x] Onboarding: TB shield logo, nickname input, group selection buttons, START ADVENTURE CTA
 - [x] Feedback page: category pills, form fields, device info, recent feedback list
 - [x] Deploy V2 redesign to Firebase Hosting (Capgo OTA requires API key login - will deploy with next native build)
+
+## V2 Pixel-Perfect Rebuild (Jun 16, 2026)
+- [ ] Generate illustrated nav icons: castle, bible book, trophy, treasure chest, shield with face
+- [ ] Generate quick action icons: brain, candle, people group (gold-ringed circles)
+- [ ] Generate 3D gold ribbon banner image for "Welcome Back!"
+- [ ] Rebuild stat pills with thick 4-5px 3D beveled gold borders
+- [ ] Rebuild Today's Mission card: thick gold frame, corner ornaments, leather texture inner fill
+- [ ] Make progress bar much thicker (12-16px) with 3D metallic gold gradient
+- [ ] Change CTA button to PURPLE with gold text (not gold button)
+- [ ] Replace emoji icons with generated illustrated assets
+- [ ] Rebuild bottom nav with illustrated icon images + dark charcoal tab backgrounds
+- [ ] Make diamond quilted background much more subtle
+- [ ] Add proper depth/shadows throughout for 3D quality

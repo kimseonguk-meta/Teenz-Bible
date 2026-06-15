@@ -267,30 +267,31 @@ export default function Home() {
         </div>
       )}
 
-      {/* ═══ TOP STAT PILLS (Streak, XP, Gems) — Matches mockup top row ═══ */}
+      {/* ═══ TOP STAT PILLS — Illustrated icons, thick beveled gold border ═══ */}
       <div className="flex items-center justify-between gap-2">
         <div className="gold-pill">
-          <span className="text-base">🔥</span>
+          <img src="/manus-storage/icon_fire_d0c7de2c.png" alt="" className="w-7 h-7 object-contain" />
           <span className="font-bold">{streak}</span>
         </div>
         <div className="gold-pill">
-          <span className="text-base">💎</span>
+          <img src="/manus-storage/icon_gem_purple_194e753f.png" alt="" className="w-7 h-7 object-contain" />
           <span className="font-bold">{totalXP.toLocaleString()}</span>
-          <span className="text-[10px] opacity-70">XP</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-600/60 text-purple-200 font-bold">XP</span>
         </div>
         <div className="gold-pill">
-          <span className="text-base">⭐</span>
+          <img src="/manus-storage/icon_diamond_gold_2509326a.png" alt="" className="w-7 h-7 object-contain" />
           <span className="font-bold">{gems.toLocaleString()}</span>
         </div>
       </div>
 
-      {/* ═══ WELCOME RIBBON + NAME — Centered like mockup ═══ */}
-      <div className="flex flex-col items-center gap-2 pt-2">
-        <div className="gold-ribbon">
-          <span className="text-sm font-bold" style={{ color: '#1a0a2e' }}>Welcome Back!</span>
+      {/* ═══ WELCOME RIBBON — Real ribbon image asset + white name ═══ */}
+      <div className="flex flex-col items-center gap-1 pt-3">
+        <div className="relative flex items-center justify-center" style={{ width: '280px', height: '70px' }}>
+          <img src="/manus-storage/ribbon_welcome_d4e52875.png" alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '6px' }}>Welcome Back!</span>
         </div>
-        <h1 className="text-3xl font-bold font-display gold-text mt-1">{playerName || "Adventurer"}</h1>
-        <p className="text-gray-400 text-xs">Continue your journey</p>
+        <h1 className="text-4xl font-bold font-display text-white mt-2" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>{playerName || "Adventurer"}</h1>
+        <p className="text-gray-400 text-xs mt-1">Continue your journey</p>
       </div>
 
       {/* ═══ TODAY'S MISSION — Ornate card with gold frame corners ═══ */}
@@ -304,7 +305,7 @@ export default function Home() {
         return (
           <div className="gold-card-ornate p-6">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">📖</span>
+              <img src="/manus-storage/icon_book_mission_19d93b63.png" alt="" className="w-6 h-6 object-contain" />
               <span className="text-[#f0d060] text-sm font-bold">Today's Mission</span>
             </div>
             <h2 className="text-xl font-bold text-white font-display">Read {bookName} Chapter {chapterNum}</h2>
@@ -322,7 +323,13 @@ export default function Home() {
             </div>
             <p className="text-center text-gray-400 text-xs mt-2">{versesRead}/{totalVerses} chapters</p>
             <div className="flex justify-center mt-4">
-              <button onClick={() => setLocation("/bible")} className="gold-btn text-sm">
+              <button onClick={() => setLocation("/bible")} className="text-sm font-bold px-6 py-3 rounded-xl transition-transform active:scale-97" style={{
+                background: 'linear-gradient(180deg, #7c3aed 0%, #5b21b6 50%, #4c1d95 100%)',
+                border: '2px solid rgba(167, 139, 250, 0.5)',
+                color: '#f0d060',
+                boxShadow: '0 4px 12px rgba(91, 33, 182, 0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
+                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+              }}>
                 {lastRead ? "Continue Reading" : "Start Reading"}
               </button>
             </div>
@@ -330,54 +337,54 @@ export default function Home() {
         );
       })()}
 
-      {/* ═══ PET CARD + QUICK ACTIONS — Matches mockup bottom section ═══ */}
-      <div className="flex items-start gap-4">
-        {/* Pet Card */}
-        <div className="gold-card p-3 flex flex-col items-center" style={{ width: '120px' }}>
-          <div className="w-16 h-16 flex items-center justify-center">
+      {/* ═══ PET CARD + QUICK ACTIONS — Illustrated assets in gold-ringed circles ═══ */}
+      <div className="flex items-start gap-4 mt-2">
+        {/* Pet Card — taller, with illustrated pet */}
+        <div className="gold-card p-4 flex flex-col items-center" style={{ width: '140px' }}>
+          <div className="w-20 h-20 flex items-center justify-center">
             {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
-              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet?.name || 'Pet'} className="w-14 h-14 object-contain pet-creature" />
+              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet?.name || 'Pet'} className="w-18 h-18 object-contain" />
             ) : equippedPet ? (
-              <span className="text-4xl pet-creature">{equippedPet.petEmoji}</span>
+              <span className="text-5xl">{equippedPet.petEmoji}</span>
             ) : (
-              <span className="text-4xl pet-creature">🐑</span>
+              <span className="text-5xl">🐑</span>
             )}
           </div>
-          <span className="text-white text-xs font-bold mt-1">{equippedPet?.name || "Luna"}</span>
-          <span className="text-green-400 text-[10px]">Happy 😊</span>
+          <span className="text-white text-sm font-bold mt-2">{equippedPet?.name || "Luna"}</span>
+          <span className="text-green-400 text-xs">Happy 😊</span>
         </div>
 
-        {/* Quick Action Circles */}
-        <div className="flex-1 flex items-center justify-around pt-2">
-          <button onClick={() => setLocation("/bible")} className="flex flex-col items-center gap-1 active:scale-95 transition-transform">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{
-              background: 'linear-gradient(180deg, rgba(30,15,55,0.9), rgba(15,6,30,0.95))',
+        {/* Quick Action Circles — illustrated icons */}
+        <div className="flex-1 flex items-center justify-around pt-4">
+          <button onClick={() => setLocation("/bible")} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
+            <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center overflow-hidden" style={{
+              background: 'linear-gradient(180deg, #1a0a3a 0%, #0d0520 100%)',
               border: '3px solid #d4af37',
-              boxShadow: '0 0 10px rgba(212,175,55,0.3), inset 0 1px 0 rgba(240,208,96,0.2)'
+              boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
             }}>
-              <span className="text-2xl">🧠</span>
+              <img src="/manus-storage/action_quiz_brain_d084333a.png" alt="Quiz" className="w-12 h-12 object-contain" />
             </div>
-            <span className="text-[10px] text-gray-300 font-medium">Quiz</span>
+            <span className="text-xs text-gray-300 font-medium">Quiz</span>
           </button>
-          <button onClick={() => setLocation("/bible-ai")} className="flex flex-col items-center gap-1 active:scale-95 transition-transform">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{
-              background: 'linear-gradient(180deg, rgba(30,15,55,0.9), rgba(15,6,30,0.95))',
+          <button onClick={() => setLocation("/bible-ai")} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
+            <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center overflow-hidden" style={{
+              background: 'linear-gradient(180deg, #0a1a3a 0%, #050d20 100%)',
               border: '3px solid #d4af37',
-              boxShadow: '0 0 10px rgba(212,175,55,0.3), inset 0 1px 0 rgba(240,208,96,0.2)'
+              boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
             }}>
-              <span className="text-2xl">🕯️</span>
+              <img src="/manus-storage/action_devotion_candle_a27f9c7b.png" alt="Devotion" className="w-12 h-12 object-contain" />
             </div>
-            <span className="text-[10px] text-gray-300 font-medium">Devotion</span>
+            <span className="text-xs text-gray-300 font-medium">Devotion</span>
           </button>
-          <button onClick={() => setLocation("/leaderboard")} className="flex flex-col items-center gap-1 active:scale-95 transition-transform">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{
-              background: 'linear-gradient(180deg, rgba(30,15,55,0.9), rgba(15,6,30,0.95))',
+          <button onClick={() => setLocation("/leaderboard")} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
+            <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center overflow-hidden" style={{
+              background: 'linear-gradient(180deg, #0a2a1a 0%, #051a0d 100%)',
               border: '3px solid #d4af37',
-              boxShadow: '0 0 10px rgba(212,175,55,0.3), inset 0 1px 0 rgba(240,208,96,0.2)'
+              boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
             }}>
-              <span className="text-2xl">👥</span>
+              <img src="/manus-storage/action_friends_people_17df3959.png" alt="Friends" className="w-12 h-12 object-contain" />
             </div>
-            <span className="text-[10px] text-gray-300 font-medium">Friends</span>
+            <span className="text-xs text-gray-300 font-medium">Friends</span>
           </button>
         </div>
       </div>
