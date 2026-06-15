@@ -7,7 +7,6 @@ interface FeedbackEntry {
   uid: string;
   nickname: string;
   category: string;
-  rating: number;
   title: string;
   message: string;
   deviceInfo: string;
@@ -40,10 +39,11 @@ export default function Feedback() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const [attempted, setAttempted] = useState(false); // tracks if user tried to submit
 
   // Form state
   const [category, setCategory] = useState("");
-  const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [nickname, setNickname] = useState("");
@@ -53,7 +53,6 @@ export default function Feedback() {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUid(user.uid);
-        // Get nickname from localStorage
         try {
           const profile = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}");
           setNickname(profile.nickname || "Anonymous Tester");
@@ -76,7 +75,6 @@ export default function Feedback() {
             id,
             ...val,
           }));
-          // Sort by timestamp descending (newest first)
           entries.sort((a, b) => b.timestamp - a.timestamp);
           setFeedbacks(entries);
         }
@@ -91,7 +89,9 @@ export default function Feedback() {
 
   // Submit feedback
   const handleSubmit = async () => {
-    if (!category || !title.trim() || !message.trim() || rating === 0) return;
+    setAttempted(true);
+
+    if (!category || !title.trim() || !message.trim()) return;
     if (!currentUid) return;
 
     setSubmitting(true);
@@ -101,7 +101,6 @@ export default function Feedback() {
         uid: currentUid,
         nickname: nickname || "Anonymous Tester",
         category,
-        rating,
         title: title.trim(),
         message: message.trim(),
         deviceInfo: getDeviceInfo(),
@@ -112,12 +111,17 @@ export default function Feedback() {
 
       await set(ref(db, `feedbacks/${feedbackId}`), entry);
 
-      setSubmitted(true);
-      setShowForm(false);
-      setCategory("");
-      setRating(0);
-      setTitle("");
-      setMessage("");
+      // Show success animation
+      setShowSuccessAnimation(true);
+      setTimeout(() => {
+        setShowSuccessAnimation(false);
+        setSubmitted(true);
+        setShowForm(false);
+        setCategory("");
+        setTitle("");
+        setMessage("");
+        setAttempted(false);
+      }, 2200);
     } catch (err) {
       console.error("Failed to submit feedback:", err);
       alert("Failed to submit feedback. Please try again.");
@@ -145,33 +149,32 @@ export default function Feedback() {
     });
   };
 
-  const renderStars = (count: number, interactive = false, onSelect?: (n: number) => void) => {
-    return (
-      <div className="flex gap-0.5">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <button
-            key={n}
-            type="button"
-            onClick={() => interactive && onSelect?.(n)}
-            className={`text-lg transition-all ${interactive ? "cursor-pointer active:scale-110" : "cursor-default"} ${
-              n <= count ? "text-yellow-400" : "text-gray-600"
-            }`}
-            disabled={!interactive}
-          >
-            ★
-          </button>
-        ))}
-      </div>
-    );
-  };
+  // Validation helpers
+  const isCategoryError = attempted && !category;
+  const isTitleError = attempted && !title.trim();
+  const isMessageError = attempted && !message.trim();
 
   // Stats
   const totalFeedbacks = feedbacks.length;
   const resolvedCount = feedbacks.filter((f) => f.status === "resolved").length;
-  const avgRating = totalFeedbacks > 0 ? (feedbacks.reduce((sum, f) => sum + f.rating, 0) / totalFeedbacks).toFixed(1) : "—";
 
   return (
     <div className="px-4 pt-6 pb-8 space-y-5 max-w-lg mx-auto">
+      {/* Success Animation Overlay */}
+      {showSuccessAnimation && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-4 animate-[fadeInScale_0.4s_cubic-bezier(0.23,1,0.32,1)]">
+            <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-[pulse_0.8s_ease-in-out_infinite]">
+              <svg className="w-14 h-14 text-green-400 animate-[checkDraw_0.6s_ease-out_0.3s_both]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p className="text-white font-bold text-lg animate-[fadeIn_0.5s_ease-out_0.5s_both]">Feedback Submitted!</p>
+            <p className="text-gray-400 text-sm animate-[fadeIn_0.5s_ease-out_0.7s_both]">Thank you for helping us improve</p>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-white font-display">📝 Feedback Center</h1>
@@ -181,7 +184,7 @@ export default function Feedback() {
       </div>
 
       {/* Stats Banner */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <div className="bg-white/[0.04] border border-purple-500/20 rounded-xl p-3 text-center">
           <p className="text-xl font-bold text-purple-400">{totalFeedbacks}</p>
           <p className="text-[10px] text-gray-500 mt-0.5">Total Feedback</p>
@@ -190,14 +193,10 @@ export default function Feedback() {
           <p className="text-xl font-bold text-green-400">{resolvedCount}</p>
           <p className="text-[10px] text-gray-500 mt-0.5">Resolved</p>
         </div>
-        <div className="bg-white/[0.04] border border-yellow-500/20 rounded-xl p-3 text-center">
-          <p className="text-xl font-bold text-yellow-400">{avgRating}</p>
-          <p className="text-[10px] text-gray-500 mt-0.5">Avg Rating</p>
-        </div>
       </div>
 
       {/* Submit Button / Success */}
-      {submitted && (
+      {submitted && !showSuccessAnimation && (
         <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 text-center space-y-2">
           <span className="text-3xl">✅</span>
           <p className="text-green-400 font-bold text-sm">Thank you for your feedback!</p>
@@ -225,13 +224,15 @@ export default function Feedback() {
         <div className="bg-white/[0.03] border border-purple-500/20 rounded-xl p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-bold text-sm">New Feedback</h2>
-            <button onClick={() => setShowForm(false)} className="text-gray-500 text-lg">✕</button>
+            <button onClick={() => { setShowForm(false); setAttempted(false); }} className="text-gray-500 text-lg">✕</button>
           </div>
 
           {/* Category Selection */}
           <div className="space-y-2">
-            <label className="text-xs text-gray-400 font-medium">Category *</label>
-            <div className="grid grid-cols-2 gap-2">
+            <label className={`text-xs font-medium ${isCategoryError ? "text-red-400" : "text-gray-400"}`}>
+              Category * {isCategoryError && <span className="text-red-400 ml-1">— Please select a category</span>}
+            </label>
+            <div className={`grid grid-cols-2 gap-2 rounded-lg p-1 transition-all ${isCategoryError ? "ring-1 ring-red-500/50 bg-red-500/5" : ""}`}>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.key}
@@ -249,40 +250,39 @@ export default function Feedback() {
             </div>
           </div>
 
-          {/* Rating */}
-          <div className="space-y-2">
-            <label className="text-xs text-gray-400 font-medium">Overall Experience *</label>
-            <div className="flex items-center gap-3">
-              {renderStars(rating, true, setRating)}
-              {rating > 0 && (
-                <span className="text-xs text-gray-500">
-                  {rating === 1 ? "Poor" : rating === 2 ? "Fair" : rating === 3 ? "Good" : rating === 4 ? "Very Good" : "Excellent"}
-                </span>
-              )}
-            </div>
-          </div>
-
           {/* Title */}
           <div className="space-y-2">
-            <label className="text-xs text-gray-400 font-medium">Title *</label>
+            <label className={`text-xs font-medium ${isTitleError ? "text-red-400" : "text-gray-400"}`}>
+              Title * {isTitleError && <span className="text-red-400 ml-1">— Required</span>}
+            </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Brief summary of your feedback"
-              className="w-full px-3 py-2.5 rounded-lg bg-white/[0.05] border border-purple-500/20 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50"
+              className={`w-full px-3 py-2.5 rounded-lg bg-white/[0.05] text-white text-sm placeholder:text-gray-600 focus:outline-none transition-all ${
+                isTitleError
+                  ? "border border-red-500/60 ring-1 ring-red-500/30 bg-red-500/5"
+                  : "border border-purple-500/20 focus:border-purple-500/50"
+              }`}
               maxLength={100}
             />
           </div>
 
           {/* Message */}
           <div className="space-y-2">
-            <label className="text-xs text-gray-400 font-medium">Details *</label>
+            <label className={`text-xs font-medium ${isMessageError ? "text-red-400" : "text-gray-400"}`}>
+              Details * {isMessageError && <span className="text-red-400 ml-1">— Required</span>}
+            </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Please describe your feedback in detail. Include steps to reproduce if reporting a bug."
-              className="w-full px-3 py-2.5 rounded-lg bg-white/[0.05] border border-purple-500/20 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-purple-500/50 resize-none"
+              className={`w-full px-3 py-2.5 rounded-lg bg-white/[0.05] text-white text-sm placeholder:text-gray-600 focus:outline-none resize-none transition-all ${
+                isMessageError
+                  ? "border border-red-500/60 ring-1 ring-red-500/30 bg-red-500/5"
+                  : "border border-purple-500/20 focus:border-purple-500/50"
+              }`}
               rows={4}
               maxLength={1000}
             />
@@ -296,12 +296,20 @@ export default function Feedback() {
             <span>v2.1.0</span>
           </div>
 
+          {/* Validation Error Summary */}
+          {attempted && (!category || !title.trim() || !message.trim()) && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 flex items-center gap-2">
+              <span className="text-red-400 text-sm">⚠️</span>
+              <p className="text-red-400 text-xs">Please fill in all required fields highlighted above.</p>
+            </div>
+          )}
+
           {/* Submit */}
           <button
             onClick={handleSubmit}
-            disabled={!category || !title.trim() || !message.trim() || rating === 0 || submitting}
+            disabled={submitting}
             className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
-              !category || !title.trim() || !message.trim() || rating === 0 || submitting
+              submitting
                 ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                 : "bg-gradient-to-r from-green-500 to-teal-500 text-white shadow-[0_4px_15px_rgba(16,185,129,0.3)] active:scale-[0.98]"
             }`}
@@ -353,7 +361,6 @@ export default function Feedback() {
                       </div>
                       <p className="text-white text-sm font-medium mt-1.5 truncate">{fb.title}</p>
                     </div>
-                    <div className="shrink-0">{renderStars(fb.rating)}</div>
                   </div>
 
                   {/* Message */}
@@ -400,6 +407,22 @@ export default function Feedback() {
           </a>
         </p>
       </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes fadeInScale {
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes checkDraw {
+          from { stroke-dasharray: 100; stroke-dashoffset: 100; }
+          to { stroke-dasharray: 100; stroke-dashoffset: 0; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
