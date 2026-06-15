@@ -330,6 +330,20 @@ export async function syncToFirebase(): Promise<boolean> {
     await update(ref(db, `users/${uid}`), leaderboardData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
 
+    // Also sync to all other groups the user belongs to
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          const groupData = { ...leaderboardData, groupCode: g.groupCode };
+          await update(ref(db, `groups/${g.groupCode}/members/${uid}`), groupData);
+        }
+      }
+    } catch (e) {
+      // Groups module not yet loaded or no groups — skip
+    }
+
     console.log("[Sync] \u2705 Data uploaded to Firebase");
     return true;
   } catch (err) {
@@ -582,6 +596,20 @@ async function smartSyncToFirebase(): Promise<boolean> {
     await update(ref(db, `users/${uid}`), leaderboardData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
 
+    // Also sync to all other groups the user belongs to
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          const groupData = { ...leaderboardData, groupCode: g.groupCode };
+          await update(ref(db, `groups/${g.groupCode}/members/${uid}`), groupData);
+        }
+      }
+    } catch (e) {
+      // Groups module not yet loaded or no groups — skip
+    }
+
     console.log("[Sync] \u2705 Smart sync uploaded to Firebase");   return true;
   } catch (err) {
     console.error("[Sync] ❌ Smart sync failed, falling back to regular sync:", err);
@@ -617,9 +645,26 @@ export async function deleteAllUserData(): Promise<boolean> {
     await remove(ref(db, `users/${uid}`));
     console.log("[Delete] Removed users/" + uid);
 
-    // 3. Delete from group membership
+    // 3. Delete from group membership (all groups)
     await remove(ref(db, `groups/${groupCode}/members/${uid}`));
     console.log("[Delete] Removed groups/" + groupCode + "/members/" + uid);
+
+    // 3b. Delete from all other groups
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          await remove(ref(db, `groups/${g.groupCode}/members/${uid}`));
+          console.log("[Delete] Removed groups/" + g.groupCode + "/members/" + uid);
+        }
+      }
+      // Delete userGroups node
+      await remove(ref(db, `userGroups/${uid}`));
+      console.log("[Delete] Removed userGroups/" + uid);
+    } catch (e) {
+      // Groups module not loaded — skip
+    }
 
     // 4. Clear ALL localStorage
     localStorage.clear();
@@ -688,12 +733,25 @@ export async function initializeSync(): Promise<{ restored: boolean }> {
       const unsubscribe = auth.onAuthStateChanged((user) => {
         unsubscribe();
         if (user) {
-          fullSync().then(resolve);
+          fullSync().then(async (result) => {
+            // Also sync group memberships from Firebase
+            try {
+              const { syncGroupsFromFirebase } = await import("./groups");
+              await syncGroupsFromFirebase();
+            } catch (e) { /* groups module not loaded */ }
+            resolve(result);
+          });
         } else {
           resolve({ restored: false });
         }
       });
     });
   }
-  return fullSync();
+  const result = await fullSync();
+  // Also sync group memberships from Firebase
+  try {
+    const { syncGroupsFromFirebase } = await import("./groups");
+    await syncGroupsFromFirebase();
+  } catch (e) { /* groups module not loaded */ }
+  return result;
 }

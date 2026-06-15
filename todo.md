@@ -238,3 +238,13 @@
 - [x] Isaiah 14, Revelation 8, Acts 7, Acts 10, Proverbs 27, Ezekiel 17, Jeremiah 44
 - [x] Mark 6, 7, 10, 11, 13
 - [x] Deploy Korean re-translation to Firebase + Capgo OTA (v1.0.10)
+
+## Group System Feature (Jun 15, 2026)
+- [x] Group CRUD: create group (name + auto-generated code), join via code, leave group
+- [x] Group admin powers: rename group, remove members
+- [x] Multi-group support: one user can belong to multiple groups
+- [x] Nasum Teenz classes treated as pre-built groups
+- [x] Update onboarding: Nasum Teenz / Group Code / Skip options
+- [x] Ranking tab: [My Groups] + [Global] sub-tabs
+- [x] Group management UI in Profile/Settings (create, join, view members)
+- [x] Preserve all existing user data (XP, gems, streak, chaptersRead, etc.)

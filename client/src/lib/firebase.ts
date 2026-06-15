@@ -213,6 +213,20 @@ export async function syncUserToFirebase(uid: string) {
   try {
     await update(ref(db, `users/${uid}`), userData);
     await update(ref(db, `groups/${groupCode}/members/${uid}`), userData);
+    
+    // Also sync to all other joined groups
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          const groupData = { ...userData, groupCode: g.groupCode };
+          await update(ref(db, `groups/${g.groupCode}/members/${uid}`), groupData);
+        }
+      }
+    } catch (e) {
+      // Groups module not loaded or no groups — skip
+    }
   } catch (err) {
     console.log("Sync error:", err);
   }

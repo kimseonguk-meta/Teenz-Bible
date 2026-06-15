@@ -14,8 +14,8 @@ import {
   type LeaderboardMember,
   type SortBy,
   type TimeFilter,
-  type ScopeFilter,
 } from "@/lib/firebase";
+import { getLocalGroups, fetchGroupMeta, type GroupMeta, type GroupMembership } from "@/lib/groups";
 import { PROFILE_FRAMES } from "@/data/storeItems";
 
 // Get frame class by ID
@@ -178,17 +178,25 @@ const TIME_FILTERS: { key: TimeFilter; label: string }[] = [
   { key: "all", label: "All Time" },
 ];
 
+type MainTab = "mygroups" | "global";
+
 export default function Leaderboard() {
+  const [mainTab, setMainTab] = useState<MainTab>("mygroups");
   const [sortBy, setSortBy] = useState<SortBy>("chapters");
   const [timeFilter, setTimeFilter] = useState<TimeFilter>("week");
-  const [scope, setScope] = useState<ScopeFilter>("all");
   const [members, setMembers] = useState<LeaderboardMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentUid, setCurrentUid] = useState<string | null>(null);
   const [selectedMember, setSelectedMember] = useState<{ member: LeaderboardMember; rank: number } | null>(null);
+  
+  // Multi-group state
+  const [userGroups, setUserGroups] = useState<GroupMembership[]>([]);
+  const [selectedGroupCode, setSelectedGroupCode] = useState<string>("");
+  const [groupNames, setGroupNames] = useState<Record<string, string>>({});
+  const [showGroupDropdown, setShowGroupDropdown] = useState(false);
+
   const groupCode = getCurrentGroupCode();
-  const isNasumMember = groupCode !== "INDIVIDUAL" && groupCode !== "GLOBAL";
 
   // Auth setup with timeout fallback
   useEffect(() => {
@@ -216,12 +224,41 @@ export default function Leaderboard() {
     return () => { unsub(); if (authTimeout) clearTimeout(authTimeout); };
   }, []);
 
-  // If not a Nasum member, force scope to "all"
+  // Load user groups
   useEffect(() => {
-    if (!isNasumMember && scope === "myclass") {
-      setScope("all");
+    const groups = getLocalGroups();
+    // Also include primary groupCode if not in groups list
+    const primaryCode = groupCode;
+    if (primaryCode && primaryCode !== "GLOBAL" && primaryCode !== "INDIVIDUAL") {
+      if (!groups.find(g => g.groupCode === primaryCode)) {
+        groups.unshift({ groupCode: primaryCode, joinedAt: 0, role: "member" });
+      }
     }
-  }, [isNasumMember, scope]);
+    setUserGroups(groups);
+    
+    // Set default selected group
+    if (groups.length > 0) {
+      setSelectedGroupCode(groups[0].groupCode);
+    } else {
+      // No groups — switch to global tab
+      setMainTab("global");
+    }
+
+    // Fetch group names
+    const fetchNames = async () => {
+      const names: Record<string, string> = {};
+      for (const g of groups) {
+        try {
+          const meta = await fetchGroupMeta(g.groupCode);
+          names[g.groupCode] = meta?.name || g.groupCode;
+        } catch {
+          names[g.groupCode] = g.groupCode;
+        }
+      }
+      setGroupNames(names);
+    };
+    if (groups.length > 0) fetchNames();
+  }, [groupCode]);
 
   // Load data - only after auth is ready
   const loadData = useCallback(async () => {
@@ -230,10 +267,16 @@ export default function Leaderboard() {
     setError(null);
     try {
       let raw: LeaderboardMember[];
-      if (scope === "all") {
+      if (mainTab === "global") {
         raw = await fetchAllMembers();
       } else {
-        raw = await fetchClassMembers(groupCode);
+        // My Groups tab — fetch selected group
+        const code = selectedGroupCode || groupCode;
+        if (code && code !== "GLOBAL" && code !== "INDIVIDUAL") {
+          raw = await fetchClassMembers(code);
+        } else {
+          raw = await fetchAllMembers();
+        }
       }
       const filtered = filterByTime(raw, timeFilter);
       const sorted = sortMembers(filtered, sortBy);
@@ -244,7 +287,7 @@ export default function Leaderboard() {
     } finally {
       setLoading(false);
     }
-  }, [scope, timeFilter, sortBy, groupCode, currentUid]);
+  }, [mainTab, selectedGroupCode, timeFilter, sortBy, groupCode, currentUid]);
 
   useEffect(() => {
     if (currentUid) {
@@ -260,6 +303,15 @@ export default function Leaderboard() {
   };
 
   // Helper to display group badge
+  const renderGroupBadgeInline = (code: string | undefined) => {
+    if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
+    return (
+      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0">
+        {code}
+      </span>
+    );
+  };
+
   const renderGroupBadge = (code: string | undefined) => {
     if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
     return (
@@ -269,14 +321,7 @@ export default function Leaderboard() {
     );
   };
 
-  const renderGroupBadgeInline = (code: string | undefined) => {
-    if (!code || code === "INDIVIDUAL" || code === "GLOBAL") return null;
-    return (
-      <span className="text-[9px] px-1.5 py-0.5 rounded bg-teal-500/15 text-teal-400 shrink-0">
-        {code}
-      </span>
-    );
-  };
+  const hasGroups = userGroups.length > 0;
 
   return (
     <div className="px-4 pt-6 space-y-4 pb-4">
@@ -291,8 +336,71 @@ export default function Leaderboard() {
 
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-white font-display neon-text-purple">🏆 LEADERBOARD</h1>
+        <h1 className="text-3xl font-bold text-white font-display neon-text-purple">🏆 RANKING</h1>
       </div>
+
+      {/* Main Tabs: My Groups | Global */}
+      <div className="flex gap-2 justify-center">
+        {hasGroups && (
+          <button
+            onClick={() => setMainTab("mygroups")}
+            className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+              mainTab === "mygroups"
+                ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-[0_0_15px_rgba(78,205,196,0.3)]"
+                : "bg-transparent border border-purple-500/30 text-gray-400 hover:text-gray-200"
+            }`}
+          >
+            👥 My Groups
+          </button>
+        )}
+        <button
+          onClick={() => setMainTab("global")}
+          className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+            mainTab === "global"
+              ? "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+              : "bg-transparent border border-purple-500/30 text-gray-400 hover:text-gray-200"
+          }`}
+        >
+          🌍 Global
+        </button>
+      </div>
+
+      {/* Group Selector (only in My Groups tab with multiple groups) */}
+      {mainTab === "mygroups" && userGroups.length > 1 && (
+        <div className="relative">
+          <button
+            onClick={() => setShowGroupDropdown(!showGroupDropdown)}
+            className="w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-purple-500/20 text-white text-sm font-medium flex items-center justify-between transition-all hover:bg-white/[0.06]"
+          >
+            <span className="flex items-center gap-2">
+              <span className="text-teal-400">📌</span>
+              {groupNames[selectedGroupCode] || selectedGroupCode}
+            </span>
+            <span className={`text-gray-400 transition-transform ${showGroupDropdown ? "rotate-180" : ""}`}>▾</span>
+          </button>
+          
+          {showGroupDropdown && (
+            <div className="absolute top-full left-0 right-0 mt-1 z-30 bg-[rgba(15,5,40,0.98)] border border-purple-500/30 rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+              {userGroups.map((g) => (
+                <button
+                  key={g.groupCode}
+                  onClick={() => { setSelectedGroupCode(g.groupCode); setShowGroupDropdown(false); }}
+                  className={`w-full py-3 px-4 text-left text-sm transition-all flex items-center justify-between ${
+                    selectedGroupCode === g.groupCode
+                      ? "bg-teal-500/10 text-teal-400 font-bold"
+                      : "text-gray-300 hover:bg-white/[0.04]"
+                  }`}
+                >
+                  <span>{groupNames[g.groupCode] || g.groupCode}</span>
+                  {g.role === "admin" && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Admin</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Sort Tabs */}
       <div id="lb-tabs" className="flex gap-1.5 justify-center">
@@ -333,32 +441,6 @@ export default function Leaderboard() {
         </p>
       )}
 
-      {/* Scope Filter */}
-      <div className="flex gap-2 justify-center">
-        {isNasumMember && (
-          <button
-            onClick={() => setScope("myclass")}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-              scope === "myclass"
-                ? "bg-teal-500 text-white shadow-[0_0_10px_rgba(78,205,196,0.4)]"
-                : "bg-transparent border border-purple-500/30 text-gray-400"
-            }`}
-          >
-            My Class ({groupCode})
-          </button>
-        )}
-        <button
-          onClick={() => setScope("all")}
-          className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-            scope === "all"
-              ? "bg-teal-500 text-white shadow-[0_0_10px_rgba(78,205,196,0.4)]"
-              : "bg-transparent border border-purple-500/30 text-gray-400"
-          }`}
-        >
-          Everyone
-        </button>
-      </div>
-
       {/* Loading / Error / Content */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
@@ -388,7 +470,9 @@ export default function Leaderboard() {
         <>
           {/* Member count */}
           <p className="text-center text-teal-400 text-xs font-bold">
-            All {members.length} members
+            {mainTab === "mygroups" && selectedGroupCode
+              ? `${groupNames[selectedGroupCode] || selectedGroupCode} — ${members.length} members`
+              : `All ${members.length} members`}
           </p>
 
           {/* Top 3 Podium */}
@@ -406,7 +490,7 @@ export default function Leaderboard() {
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[1]?.nickname}</p>
-                {renderGroupBadge(top3[1]?.groupCode)}
+                {mainTab === "global" && renderGroupBadge(top3[1]?.groupCode)}
                 <p className="text-purple-300 font-bold text-xs mt-0.5">{getDisplayValue(top3[1], sortBy)}</p>
                 <span className="text-yellow-400 text-xs">★</span>
               </div>
@@ -427,7 +511,7 @@ export default function Leaderboard() {
                   {top3[0]?.nickname}
                   {top3[0]?.uid === currentUid && <span className="text-red-400 text-xs ml-1">(You)</span>}
                 </p>
-                {renderGroupBadge(top3[0]?.groupCode)}
+                {mainTab === "global" && renderGroupBadge(top3[0]?.groupCode)}
                 <p className="text-yellow-300 font-bold text-sm mt-0.5">{getDisplayValue(top3[0], sortBy)}</p>
                 <span className="text-yellow-400 text-xs">★</span>
               </div>
@@ -444,7 +528,7 @@ export default function Leaderboard() {
                   </div>
                 </div>
                 <p className="text-white text-xs font-bold mt-2 max-w-[70px] truncate">{top3[2]?.nickname}</p>
-                {renderGroupBadge(top3[2]?.groupCode)}
+                {mainTab === "global" && renderGroupBadge(top3[2]?.groupCode)}
                 <p className="text-amber-400 font-bold text-xs mt-0.5">{getDisplayValue(top3[2], sortBy)}</p>
                 <span className="text-yellow-400 text-xs">★</span>
               </div>
@@ -484,7 +568,7 @@ export default function Leaderboard() {
                       {member.joinedAt && (Date.now() - member.joinedAt < 7 * 24 * 60 * 60 * 1000) && (
                         <span className="text-[9px] text-gray-500">NEW</span>
                       )}
-                      {scope === "all" && renderGroupBadgeInline(member.groupCode)}
+                      {mainTab === "global" && renderGroupBadgeInline(member.groupCode)}
                     </div>
                     <p className="text-gray-400 text-xs">{getDisplayValue(member, sortBy)}</p>
                   </div>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { auth, db, ref, update, signInAnonymously, onAuthStateChanged, serverTimestamp } from "@/lib/firebase";
+import { auth, db, ref, update, set, signInAnonymously, onAuthStateChanged, serverTimestamp } from "@/lib/firebase";
 import { get } from "firebase/database";
 import { getInventory, saveInventory, getEquipped, saveEquipped } from "@/data/storeItems";
+import { joinGroup, getLocalGroups } from "@/lib/groups";
+import type { GroupMembership } from "@/lib/groups";
 
 const AVATARS = ['😎','🦊','🐱','🐶','🦁','🐻','🐼','🐨','🐯','🦄','🐸','🐵','🦋','🐝','🌟','⭐','🔥','💎','🎮','🎯','🏀','⚽','🎸','🎨','🌈','🍕','🍩','🧁','🎂','🍦'];
 
@@ -18,12 +20,14 @@ interface OnboardingProps {
 }
 
 export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
-  const [step, setStep] = useState(1); // 1: nickname, 2: member check, 3: class select, 4: celebration
+  const [step, setStep] = useState(1); // 1: nickname, 2: member check, 3: class select, 3b: group code, 4: celebration
   const [nickname, setNickname] = useState("");
   const [avatar, setAvatar] = useState(() => AVATARS[Math.floor(Math.random() * AVATARS.length)]);
   const [classConfig, setClassConfig] = useState(DEFAULT_CLASS_CONFIG);
   const [selectedClass, setSelectedClass] = useState("");
   const [saving, setSaving] = useState(false);
+  const [groupCodeInput, setGroupCodeInput] = useState("");
+  const [groupCodeError, setGroupCodeError] = useState<string | null>(null);
 
   // Load class config from Firebase
   useEffect(() => {
@@ -106,6 +110,19 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
 
       await update(ref(db, `users/${uid}`), userData);
       await update(ref(db, `groups/${groupCode}/members/${uid}`), userData);
+
+      // Also register in userGroups for multi-group support
+      await set(ref(db, `userGroups/${uid}/${groupCode}`), {
+        joinedAt: Date.now(),
+        role: "member",
+      });
+
+      // Update local groups storage
+      const groups = getLocalGroups();
+      if (!groups.find(g => g.groupCode === groupCode)) {
+        const updatedGroups: GroupMembership[] = [...groups, { groupCode, joinedAt: Date.now(), role: "member" }];
+        localStorage.setItem("teensBibleGroups", JSON.stringify(updatedGroups));
+      }
 
       // ─── Welcome Bonus: 50 gems + free starter pet ───
       try {
@@ -199,6 +216,72 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
     checkDuplicateAndSave(selectedClass, true);
   };
 
+  const handleGroupCodeJoin = async () => {
+    const code = groupCodeInput.trim().toUpperCase();
+    if (!code) return;
+    
+    setGroupCodeError(null);
+    setSaving(true);
+    
+    try {
+      // Ensure user is signed in first
+      let uid = auth.currentUser?.uid;
+      if (!uid) {
+        const cred = await signInAnonymously(auth);
+        uid = cred.user.uid;
+      }
+
+      // Save profile first with the group code as primary
+      const profile = {
+        nickname,
+        groupCode: code,
+        joinedAt: Date.now(),
+        avatar,
+        isNasumMember: false,
+      };
+      localStorage.setItem("teensBibleProfile", JSON.stringify(profile));
+      localStorage.setItem("playerName", nickname);
+
+      // Try to join the group
+      await joinGroup(code);
+
+      // Sync to Firebase
+      const userData = {
+        nickname,
+        avatar,
+        groupCode: code,
+        xp: 0,
+        streak: 0,
+        chaptersRead: 0,
+        quizTotal: 0,
+        quizCorrect: 0,
+        isNasumMember: false,
+        lastActive: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+      await update(ref(db, `users/${uid}`), userData);
+
+      // Welcome bonus
+      try {
+        const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
+        teensBible.gems = (teensBible.gems || 0) + 50;
+        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+        window.dispatchEvent(new CustomEvent("gems-changed", { detail: teensBible.gems }));
+        const inv = getInventory();
+        if (!inv.ownedItems.includes("pet_cat")) { inv.ownedItems.push("pet_cat"); saveInventory(inv); }
+        const eq = getEquipped();
+        if (!eq.pet) { eq.pet = "pet_cat"; saveEquipped(eq); }
+      } catch (e) { /* ignore */ }
+
+      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
+      setStep(4);
+    } catch (err: any) {
+      setGroupCodeError(err.message || "Failed to join group. Please check the code and try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   // Step 1: Nickname + Avatar
   if (step === 1) {
     return (
@@ -245,43 +328,52 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
     );
   }
 
-  // Step 2: Nasum member check
+  // Step 2: Join a group (3 options)
   if (step === 2) {
     return (
       <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
         <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
-          <div className="text-6xl mb-4">⛪</div>
+          <div className="text-6xl mb-4">👥</div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 2 / 3</p>
           <h2 className="font-display text-purple-400 text-2xl mb-2">
-            Are you a Nasum Teenz member?
+            Join a Group
           </h2>
-          <p className="text-gray-400 text-sm mb-2 leading-relaxed">
-            If yes, you can join your class leaderboard and compete with friends!
+          <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+            Groups let you compete with friends on a shared leaderboard!
           </p>
-          <p className="text-teal-400 text-xs mb-6 leading-relaxed">
-            📢 Teachers, please also tap YES and select your class!
+
+          {/* Option A: Nasum Teenz */}
+          <button
+            onClick={() => setStep(3)}
+            className="w-full py-4 px-4 rounded-xl border-none bg-gradient-to-r from-teal-500 to-teal-600 text-white text-base font-bold cursor-pointer shadow-[0_4px_20px_rgba(78,205,196,0.3)] transition-transform active:scale-[0.97] mb-3 flex items-center justify-center gap-2"
+          >
+            <span>⛪</span> I'm a Nasum Teenz member
+          </button>
+
+          {/* Option B: Group Code */}
+          <button
+            onClick={() => { setStep(5); setGroupCodeError(null); setGroupCodeInput(""); }}
+            className="w-full py-4 px-4 rounded-xl border-none bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-base font-bold cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.3)] transition-transform active:scale-[0.97] mb-3 flex items-center justify-center gap-2"
+          >
+            <span>🔑</span> I have a group invite code
+          </button>
+
+          {/* Option C: Skip */}
+          <button
+            onClick={handleIndividual}
+            disabled={saving}
+            className="w-full py-3.5 px-4 rounded-xl border border-gray-600/50 bg-white/5 text-gray-300 text-base font-medium cursor-pointer transition-all hover:bg-white/10 active:scale-[0.97] mb-4 disabled:opacity-60"
+          >
+            {saving ? "Setting up..." : "Skip — I'll join later"}
+          </button>
+
+          <p className="text-gray-500 text-xs leading-relaxed">
+            You can always create or join groups later from your Profile.
           </p>
-          <div className="flex gap-3 mb-4">
-            <button
-              onClick={() => setStep(3)}
-              className="flex-1 py-4 px-4 rounded-xl border-none bg-gradient-to-r from-teal-500 to-teal-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(78,205,196,0.3)] transition-transform active:scale-[0.97]"
-            >
-              YES! ✋
-            </button>
-            <button
-              onClick={handleIndividual}
-              disabled={saving}
-              className="flex-1 py-4 px-4 rounded-xl border-none bg-gradient-to-r from-gray-600 to-gray-700 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(100,100,100,0.3)] transition-transform active:scale-[0.97] disabled:opacity-60"
-            >
-              {saving ? "..." : "NO"}
-            </button>
-          </div>
-          <p className="text-gray-500 text-xs mb-4 leading-relaxed">
-            Not a member? No worries! You can still read, earn XP, and enjoy all features. You'll appear on the global leaderboard.
-          </p>
+
           <button
             onClick={() => setStep(1)}
-            className="py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
+            className="mt-4 py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
           >
             ← BACK
           </button>
@@ -290,7 +382,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
     );
   }
 
-  // Step 3: Class selection
+  // Step 3: Nasum Teenz class selection
   if (step === 3) {
     return (
       <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
@@ -347,6 +439,49 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
             className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-teal-500 to-teal-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(78,205,196,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97] mb-3"
           >
             {saving ? "Saving..." : "JOIN! 🚀"}
+          </button>
+          <button
+            onClick={() => setStep(2)}
+            className="py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
+          >
+            ← BACK
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 5: Group Code Entry
+  if (step === 5) {
+    return (
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
+        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
+          <div className="text-6xl mb-4">🔑</div>
+          <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
+          <h2 className="font-display text-purple-400 text-2xl mb-2">
+            Enter Invite Code
+          </h2>
+          <p className="text-gray-400 text-sm mb-5 leading-relaxed">
+            Ask your group admin for the 6-character invite code.
+          </p>
+          <input
+            type="text"
+            value={groupCodeInput}
+            onChange={(e) => { setGroupCodeInput(e.target.value.toUpperCase()); setGroupCodeError(null); }}
+            placeholder="e.g. ABC123"
+            maxLength={8}
+            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-center text-2xl font-mono tracking-[0.3em] placeholder:text-gray-500 placeholder:text-base placeholder:tracking-normal focus:outline-none focus:border-purple-400/50 mb-2"
+            autoFocus
+          />
+          {groupCodeError && (
+            <p className="text-red-400 text-xs mb-3 text-left px-1">{groupCodeError}</p>
+          )}
+          <button
+            onClick={handleGroupCodeJoin}
+            disabled={!groupCodeInput.trim() || saving}
+            className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97] mb-3 mt-2"
+          >
+            {saving ? "Joining..." : "JOIN GROUP 🚀"}
           </button>
           <button
             onClick={() => setStep(2)}
