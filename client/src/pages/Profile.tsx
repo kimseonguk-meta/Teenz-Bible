@@ -1180,9 +1180,9 @@ export default function Profile() {
 
       {/* ============ GROUP MANAGER MODAL ============ */}
       {showGroupManager && (
-        <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => { setShowGroupManager(false); setSelectedGroupForManage(null); setShowCreateGroup(false); setShowJoinGroup(false); setGroupError(null); setGroupSuccess(null); }}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => { setShowGroupManager(false); setSelectedGroupForManage(null); setShowCreateGroup(false); setShowJoinGroup(false); setGroupError(null); setGroupSuccess(null); }}>
           <div
-            className="w-full max-w-[380px] max-h-[85vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] p-5 animate-in slide-in-from-bottom-4 duration-300"
+            className="w-[90%] max-w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 shadow-[0_0_40px_rgba(0,0,0,0.5)] p-5 animate-in slide-in-from-bottom-4 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}

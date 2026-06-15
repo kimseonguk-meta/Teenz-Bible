@@ -248,3 +248,6 @@
 - [x] Ranking tab: [My Groups] + [Global] sub-tabs
 - [x] Group management UI in Profile/Settings (create, join, view members)
 - [x] Preserve all existing user data (XP, gems, streak, chaptersRead, etc.)
+
+## Bug Fix — Group Manager Modal (Jun 15, 2026)
+- [x] Fix: Group Manager modal buttons cut off by bottom nav bar on mobile
