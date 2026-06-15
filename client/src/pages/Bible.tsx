@@ -350,10 +350,13 @@ export default function Bible() {
                       <div className="flex-1 min-w-0">
                         <h3 className="text-white font-bold text-sm">{bookName}{game.watchedVideos.includes(bookName) && <span className="ml-1 text-xs" title="Video watched">🎬</span>}</h3>
                         <p className="text-gray-400 text-[11px] mt-0.5">{chapters.length} chapters · {meta?.desc}</p>
-                        <div className="mt-1.5 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(212,175,55,0.15)' }}>
-                          <div className="h-full rounded-full" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #a08520, #d4af37)' }} />
+                        <div className="mt-1.5 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          <div className="h-full rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #8b6914, #d4af37, #f0d060)', boxShadow: progress > 0 ? '0 0 4px rgba(212,175,55,0.4)' : 'none' }} />
                         </div>
-                        <p className="text-gray-500 text-[9px] mt-0.5">{read.length}/{chapters.length} read ({progress}%)</p>
+                        <div className="flex items-center justify-between mt-0.5">
+                          <p className="text-gray-500 text-[9px]">{read.length}/{chapters.length} chapters read</p>
+                          <p className="text-[#d4af37] text-[9px] font-bold">{progress}%</p>
+                        </div>
                       </div>
                     </div>
                   );

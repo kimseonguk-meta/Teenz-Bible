@@ -65,7 +65,7 @@
 - [x] Add minimum reading time before marking chapter as read (prevent scroll-through cheating)
 
 ## Reading Progress Visualization
-- [ ] Add reading progress bar for each Bible book in the book list view
+- [x] Add reading progress bar for each Bible book in the book list view
 
 ## Apple Review Fix (May 2026)
 - [x] Fix Apple Sign-in blank screen bug (Guideline 2.1a)
@@ -181,8 +181,8 @@
 - [x] Pet detail popup with description and stats on image click
 
 ## Store Pet Search & Hover Effects (Jun 11, 2026)
-- [ ] Add pet name search input at top of Pets tab
-- [ ] Add smooth scale-up hover effect on pet cards
+- [x] Add pet name search input at top of Pets tab
+- [x] Add smooth scale-up hover effect on pet cards (already implemented with hover:scale-105)
 
 ## Bug Fixes — Galaxy Phone (Jun 12, 2026)
 - [x] Fix Bible Map location popup not closing (X button causes popup to glitch back open)

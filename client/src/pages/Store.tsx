@@ -71,17 +71,22 @@ export default function Store() {
   const [previewItem, setPreviewItem] = useState<StoreItem | null>(null);
   const [petSort, setPetSort] = useState<'default' | 'price_asc' | 'price_desc'>('default');
   const [petFilter, setPetFilter] = useState<'all' | Rarity>('all');
+  const [petSearch, setPetSearch] = useState('');
   const [imgLoaded, setImgLoaded] = useState<Record<string, boolean>>({});
 
   const sortedFilteredPets = useMemo(() => {
     let list = [...PETS];
+    if (petSearch.trim()) {
+      const q = petSearch.toLowerCase();
+      list = list.filter(p => p.name.toLowerCase().includes(q));
+    }
     if (petFilter !== 'all') {
       list = list.filter(p => p.rarity === petFilter);
     }
     if (petSort === 'price_asc') list.sort((a, b) => a.price - b.price);
     else if (petSort === 'price_desc') list.sort((a, b) => b.price - a.price);
     return list;
-  }, [petSort, petFilter]);
+  }, [petSort, petFilter, petSearch]);
 
   // Listen for gems changes and sync updates
   useEffect(() => {
@@ -496,6 +501,21 @@ export default function Store() {
         <div>
           <h2 className="text-lg font-bold text-[#d4af37] font-display mb-3">🐾 Pets</h2>
           <p className="text-gray-400 text-xs mb-3">A companion for your Bible journey!</p>
+          {/* Search */}
+          <div className="mb-3">
+            <div className="relative">
+              <input
+                type="text"
+                value={petSearch}
+                onChange={(e) => setPetSearch(e.target.value)}
+                placeholder="🔍 Search pets by name..."
+                className="w-full px-3 py-2 pr-8 rounded-lg bg-[rgba(26,10,46,0.5)] border border-[rgba(212,175,55,0.3)] text-white text-xs placeholder:text-gray-500 focus:outline-none focus:border-[#d4af37] transition-colors"
+              />
+              {petSearch && (
+                <button onClick={() => setPetSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-sm">✕</button>
+              )}
+            </div>
+          </div>
           {/* Sort & Filter */}
           <div className="flex gap-2 mb-3">
             <select
@@ -518,9 +538,16 @@ export default function Store() {
               <option value="legendary">👑 Legendary</option>
             </select>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            {sortedFilteredPets.map(renderItemCard)}
-          </div>
+          {sortedFilteredPets.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-400 text-sm">No pets found</p>
+              <button onClick={() => { setPetSearch(''); setPetFilter('all'); }} className="mt-2 text-[#d4af37] text-xs underline">Clear filters</button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-3">
+              {sortedFilteredPets.map(renderItemCard)}
+            </div>
+          )}
         </div>
       )}
 
