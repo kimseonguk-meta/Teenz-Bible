@@ -229,7 +229,7 @@ export default function Home() {
   };
 
   return (
-    <div className="px-4 pt-5 space-y-4">
+    <div className="px-4 pt-5 space-y-5 pb-28">
       {/* Full-screen loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
         <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
@@ -241,7 +241,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Account Linking Banner — V2 Gold Style */}
+      {/* Account Linking Banner */}
       {!accountLinked && !bannerDismissed && (
         <div className="relative gold-card p-4">
           <button onClick={handleDismissBanner} className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 text-lg leading-none p-1">✕</button>
@@ -251,19 +251,13 @@ export default function Home() {
               <h3 className="text-[#f0d060] font-bold text-sm">Back up your progress</h3>
               <p className="text-gray-400 text-xs mt-1">Link an account to save your progress across devices.</p>
               <div className="flex gap-2 mt-3">
-                <button
-                  onClick={handleBannerLinkGoogle}
-                  disabled={linkingGoogle || linkingApple}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-800 text-xs font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50"
-                >
+                <button onClick={handleBannerLinkGoogle} disabled={linkingGoogle || linkingApple}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-800 text-xs font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50">
                   <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                   {linkingGoogle ? "Signing in..." : "Google"}
                 </button>
-                <button
-                  onClick={handleBannerLinkApple}
-                  disabled={linkingGoogle || linkingApple}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-black text-white text-xs font-semibold border border-gray-600/50 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50"
-                >
+                <button onClick={handleBannerLinkApple} disabled={linkingGoogle || linkingApple}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-black text-white text-xs font-semibold border border-gray-600/50 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
                   {linkingApple ? "Signing in..." : "Apple"}
                 </button>
@@ -273,121 +267,120 @@ export default function Home() {
         </div>
       )}
 
-      {/* ═══ V2 Header — Gold Ribbon Style ═══ */}
-      <div className="flex items-center gap-4">
-        <div className="relative">
-          <div className={`w-16 h-16 rounded-full overflow-hidden flex items-center justify-center ${equippedFrame?.frameClass || 'photo-frame-gold'}`} style={{ background: 'rgba(26, 10, 46, 0.8)' }}>
-            {(() => { const photo = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-3xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-3xl">👦</span>; } })()}
-          </div>
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ background: 'linear-gradient(135deg, #d4af37, #f0d060)', color: '#1a0a2e', border: '2px solid #1a0a2e' }}>{level.level}</div>
-          {equippedPet && <div className="absolute -top-1 -left-1">
-            {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
-              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-6 h-6 object-contain" />
-            ) : (
-              <span className="text-lg">{equippedPet.petEmoji}</span>
-            )}
-          </div>}
+      {/* ═══ TOP STAT PILLS (Streak, XP, Gems) — Matches mockup top row ═══ */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="gold-pill">
+          <span className="text-base">🔥</span>
+          <span className="font-bold">{streak}</span>
         </div>
-        <div className="flex-1">
-          <h1 className="text-xl font-bold font-display gold-text">{greeting}</h1>
-          <div className="flex items-center gap-3 text-sm text-gray-300 mt-0.5">
-            <span className="gold-pill">⚡ {totalXP} XP</span>
-            <span className="gold-pill">💎 {gems}</span>
-          </div>
+        <div className="gold-pill">
+          <span className="text-base">💎</span>
+          <span className="font-bold">{totalXP.toLocaleString()}</span>
+          <span className="text-[10px] opacity-70">XP</span>
+        </div>
+        <div className="gold-pill">
+          <span className="text-base">⭐</span>
+          <span className="font-bold">{gems.toLocaleString()}</span>
         </div>
       </div>
 
-      {/* ═══ Streak & Stats Row ═══ */}
-      <div className="flex gap-3">
-        <div className="flex-1 gold-card p-3 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}>
-            <span className="text-lg">🔥</span>
-          </div>
-          <div>
-            <div className="text-xl font-bold text-[#f0d060]">{streak}</div>
-            <div className="text-[10px] text-gray-400">Day Streak</div>
-          </div>
+      {/* ═══ WELCOME RIBBON + NAME — Centered like mockup ═══ */}
+      <div className="flex flex-col items-center gap-2 pt-2">
+        <div className="gold-ribbon">
+          <span className="text-sm font-bold" style={{ color: '#1a0a2e' }}>Welcome Back!</span>
         </div>
-        <div className="flex-1 gold-card p-3 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}>
-            <span className="text-lg">📖</span>
-          </div>
-          <div>
-            <div className="text-xl font-bold text-[#f0d060]">{chaptersRead}</div>
-            <div className="text-[10px] text-gray-400">Chapters</div>
-          </div>
-        </div>
+        <h1 className="text-3xl font-bold font-display gold-text mt-1">{playerName || "Adventurer"}</h1>
+        <p className="text-gray-400 text-xs">Continue your journey</p>
       </div>
 
-      {/* ═══ Today's Reading Card — V2 Gold Frame ═══ */}
+      {/* ═══ TODAY'S MISSION — Ornate card with gold frame corners ═══ */}
       {(() => {
         const lastRead = getLastRead();
         const bookName = lastRead?.book || "Genesis";
         const chapterNum = lastRead?.chapter || 1;
         const progress = lastRead?.progress || 0;
+        const versesRead = lastRead ? Math.round((progress / 100) * (lastRead.totalChapters || 5)) : 0;
+        const totalVerses = lastRead?.totalChapters || 5;
         return (
-          <div className="gold-card p-5">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[#d4af37] text-xs font-bold uppercase tracking-wider">{lastRead ? "📖 Continue Reading" : "📖 Start Reading"}</span>
-                </div>
-                <h2 className="text-2xl font-bold text-white font-display">{bookName}</h2>
-                <h3 className="text-lg font-bold text-gray-300 font-display">Chapter {chapterNum}</h3>
-                <p className="text-gray-500 text-xs mt-1">{lastRead ? `${lastRead.totalChapters} chapters total` : "Begin your journey"}</p>
-                <button onClick={() => setLocation("/bible")}
-                  className="mt-3 gold-btn text-sm flex items-center gap-2">
-                  📖 {lastRead ? "Continue" : "Start Reading"}
-                </button>
-              </div>
-              <div className="relative flex items-center justify-center">
-                <ProgressRing progress={progress} />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-xl font-bold text-[#f0d060]">{progress}<span className="text-xs">%</span></span>
-                  <span className="text-[9px] text-gray-400">Progress</span>
-                </div>
-              </div>
+          <div className="gold-card-ornate p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">📖</span>
+              <span className="text-[#f0d060] text-sm font-bold">Today's Mission</span>
+            </div>
+            <h2 className="text-xl font-bold text-white font-display">Read {bookName} Chapter {chapterNum}</h2>
+            {/* Gold 3D Progress Bar */}
+            <div className="mt-4 h-5 rounded-full overflow-hidden relative" style={{
+              background: 'linear-gradient(180deg, rgba(30,15,55,0.9) 0%, rgba(15,6,30,0.95) 100%)',
+              border: '2px solid #5c4510',
+              boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
+            }}>
+              <div className="h-full rounded-full transition-all duration-700" style={{
+                width: `${Math.max(progress, 8)}%`,
+                background: 'linear-gradient(180deg, #f5e6a3 0%, #e8c84a 30%, #d4af37 60%, #8b6914 100%)',
+                boxShadow: '0 0 8px rgba(212,175,55,0.5), inset 0 1px 0 rgba(255,255,255,0.4)'
+              }} />
+            </div>
+            <p className="text-center text-gray-400 text-xs mt-2">{versesRead}/{totalVerses} chapters</p>
+            <div className="flex justify-center mt-4">
+              <button onClick={() => setLocation("/bible")} className="gold-btn text-sm">
+                {lastRead ? "Continue Reading" : "Start Reading"}
+              </button>
             </div>
           </div>
         );
       })()}
 
-      {/* ═══ XP Progress Bar ═══ */}
-      <div className="gold-card p-4 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}>
-          <span className="text-xs font-bold text-white">XP</span>
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-white font-bold text-sm">{totalXP.toLocaleString()}</span>
-            <span className="text-gray-400 text-xs">/ {level.next.toLocaleString()} XP</span>
+      {/* ═══ PET CARD + QUICK ACTIONS — Matches mockup bottom section ═══ */}
+      <div className="flex items-start gap-4">
+        {/* Pet Card */}
+        <div className="gold-card p-3 flex flex-col items-center" style={{ width: '120px' }}>
+          <div className="w-16 h-16 flex items-center justify-center">
+            {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet?.name || 'Pet'} className="w-14 h-14 object-contain pet-creature" />
+            ) : equippedPet ? (
+              <span className="text-4xl pet-creature">{equippedPet.petEmoji}</span>
+            ) : (
+              <span className="text-4xl pet-creature">🐑</span>
+            )}
           </div>
-          <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(212,175,55,0.15)' }}>
-            <div className="h-full rounded-full transition-all duration-500" style={{ width: `${xpProgress}%`, background: 'linear-gradient(90deg, #a08520, #d4af37, #f0d060)' }} />
-          </div>
+          <span className="text-white text-xs font-bold mt-1">{equippedPet?.name || "Luna"}</span>
+          <span className="text-green-400 text-[10px]">Happy 😊</span>
         </div>
-        <div className="text-sm text-gray-400">Lv.{level.level}</div>
-      </div>
 
-      {/* ═══ Bible AI Card ═══ */}
-      <button
-        onClick={() => setLocation("/bible-ai")}
-        className="w-full gold-card p-4 flex items-center gap-4 hover:border-[#f0d060] transition-all active:scale-[0.98] cursor-pointer group"
-      >
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6b21a8, #9333ea)', border: '2px solid rgba(212,175,55,0.5)' }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="white" strokeWidth="1.8" fill="none" />
-            <path d="M8 17 L8.8 14.5 L11 13.7 L8.8 12.9 L8 10.4 L7.2 12.9 L5 13.7 L7.2 14.5 Z" fill="white" />
-            <path d="M16 11 L16.7 9 L18.5 8.3 L16.7 7.6 L16 5.6 L15.3 7.6 L13.5 8.3 L15.3 9 Z" fill="white" />
-            <path d="M9 7.5 L9.4 6.3 L10.5 5.9 L9.4 5.5 L9 4.3 L8.6 5.5 L7.5 5.9 L8.6 6.3 Z" fill="white" />
-          </svg>
+        {/* Quick Action Circles */}
+        <div className="flex-1 flex items-center justify-around pt-2">
+          <button onClick={() => setLocation("/bible")} className="flex flex-col items-center gap-1 active:scale-95 transition-transform">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{
+              background: 'linear-gradient(180deg, rgba(30,15,55,0.9), rgba(15,6,30,0.95))',
+              border: '3px solid #d4af37',
+              boxShadow: '0 0 10px rgba(212,175,55,0.3), inset 0 1px 0 rgba(240,208,96,0.2)'
+            }}>
+              <span className="text-2xl">🧠</span>
+            </div>
+            <span className="text-[10px] text-gray-300 font-medium">Quiz</span>
+          </button>
+          <button onClick={() => setLocation("/bible-ai")} className="flex flex-col items-center gap-1 active:scale-95 transition-transform">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{
+              background: 'linear-gradient(180deg, rgba(30,15,55,0.9), rgba(15,6,30,0.95))',
+              border: '3px solid #d4af37',
+              boxShadow: '0 0 10px rgba(212,175,55,0.3), inset 0 1px 0 rgba(240,208,96,0.2)'
+            }}>
+              <span className="text-2xl">🕯️</span>
+            </div>
+            <span className="text-[10px] text-gray-300 font-medium">Devotion</span>
+          </button>
+          <button onClick={() => setLocation("/leaderboard")} className="flex flex-col items-center gap-1 active:scale-95 transition-transform">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{
+              background: 'linear-gradient(180deg, rgba(30,15,55,0.9), rgba(15,6,30,0.95))',
+              border: '3px solid #d4af37',
+              boxShadow: '0 0 10px rgba(212,175,55,0.3), inset 0 1px 0 rgba(240,208,96,0.2)'
+            }}>
+              <span className="text-2xl">👥</span>
+            </div>
+            <span className="text-[10px] text-gray-300 font-medium">Friends</span>
+          </button>
         </div>
-        <div className="flex-1 text-left">
-          <h3 className="text-white font-bold text-sm">Bible AI</h3>
-          <p className="text-gray-400 text-xs mt-0.5">Ask anything about the Bible — get instant answers</p>
-        </div>
-        <div className="text-[#d4af37] text-lg">→</div>
-      </button>
+      </div>
 
       {/* ═══ Bible Meme of the Day ═══ */}
       <div className="gold-card p-4">
@@ -396,13 +389,9 @@ export default function Home() {
         </div>
         <div className="rounded-lg overflow-hidden border border-[#b8962e]/30 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
           {!memeLoaded && <div className="w-full h-64 bg-purple-900/30 animate-pulse rounded-lg" />}
-          <img
-            src={memeUrl}
-            alt="Bible Meme of the Day"
+          <img src={memeUrl} alt="Bible Meme of the Day"
             className={`w-full h-auto rounded-lg ${memeLoaded ? '' : 'absolute opacity-0'}`}
-            loading="lazy"
-            onLoad={() => setMemeLoaded(true)}
-          />
+            loading="lazy" onLoad={() => setMemeLoaded(true)} />
           {memeLoaded && <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 text-[10px] text-gray-300 pointer-events-none"><span>🔍</span> Tap to view</div>}
         </div>
         <div className="flex justify-center gap-3 mt-3">
@@ -489,15 +478,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ═══ Quick Actions Grid ═══ */}
-      <div className="grid grid-cols-2 gap-3 pb-24">
-        <button onClick={() => setLocation("/bible")} className="gold-card p-4 text-center hover:border-[#f0d060] transition-all active:scale-95">
-          <span className="text-2xl">📖</span><div className="text-sm font-medium text-white mt-1">Start Reading</div>
-        </button>
-        <button onClick={() => setLocation("/bible-map")} className="gold-card p-4 text-center hover:border-[#f0d060] transition-all active:scale-95">
-          <span className="text-2xl">🗺️</span><div className="text-sm font-medium text-white mt-1">Bible Map</div>
-        </button>
-      </div>
+
     </div>
   );
 }

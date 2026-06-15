@@ -284,4 +284,4 @@
 - [x] Profile page: avatar frame, level badge, stats grid, settings menu with gold accents
 - [x] Onboarding: TB shield logo, nickname input, group selection buttons, START ADVENTURE CTA
 - [x] Feedback page: category pills, form fields, device info, recent feedback list
-- [ ] Deploy V2 redesign to Firebase + Capgo OTA
+- [x] Deploy V2 redesign to Firebase Hosting (Capgo OTA requires API key login - will deploy with next native build)
