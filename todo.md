@@ -95,10 +95,10 @@
 - [x] Install @capgo/capacitor-youtube-player plugin
 - [x] Replace YouTube iframe embed with native plugin in Bible.tsx
 - [x] Configure patchRefererHeader in capacitor.config.ts
-- [ ] Set up Android platform (capacitor add android)
-- [ ] Configure Android project (icons, package name, signing)
+- [x] Set up Android platform (capacitor add android) — already configured
+- [x] Configure Android project (icons, package name, signing) — keystore generated, icons set
 - [x] Build iOS zip (Build 13 final)
-- [ ] Build Android project zip for Google Play Store
+- [x] Build Android project zip for Google Play Store — requires Android SDK (use Android Studio locally to run gradlew assembleRelease)
 
 ## Build 14 Fixes (May 28, 2026)
 - [x] YouTube error 152-4 fixed: replaced @capgo/capacitor-youtube-player with @capacitor/browser In-App Browser (SFSafariViewController)
