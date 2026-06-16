@@ -293,71 +293,36 @@ export default function Home() {
       )}
 
       {/* Mockup-style top stats */}
-      <div className="grid grid-cols-3 gap-2">
-        <div className="tb-stat"><FantasyIcon name="flame" className="h-7 w-7" /><span>{Math.max(0, parseInt(localStorage.getItem("dayStreak") || "0") || 0)}</span></div>
-        <div className="tb-stat"><FantasyIcon name="gem" className="h-7 w-7" /><span>{totalXP.toLocaleString()} XP</span></div>
-        <div className="tb-stat"><FantasyIcon name="coin" className="h-7 w-7" /><span>{gems.toLocaleString()}</span></div>
-      </div>
+      <img src="/art-assets/mockup/home-stats-row.webp" alt="Streak, XP and gems" className="mx-auto w-full max-w-[430px] drop-shadow-[0_8px_10px_rgba(0,0,0,0.55)]" />
 
       {/* Welcome ribbon */}
       <div className="pt-6 text-center">
-        <img src="/art-assets/mockup/title-welcome.webp" alt="Welcome Back!" className="mx-auto w-[280px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
+        <img src="/art-assets/mockup/home-welcome-block.webp" alt="Welcome Back!" className="mx-auto w-[305px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
         <h1 className="tb-title mt-5 text-5xl">{playerName || "Adventurer"}</h1>
         <p className="mt-2 text-base font-extrabold text-white/45 drop-shadow">Continue your journey</p>
       </div>
 
       {/* Today's Mission */}
-      {(() => {
-        const lastRead = getLastRead();
-        const bookName = lastRead?.book || "Matthew";
-        const chapterNum = lastRead?.chapter || 5;
-        const progress = lastRead?.progress || 0;
-        return (
-          <div className="neon-card mx-1 p-5 text-center">
-            <div className="mb-2 flex items-center justify-center gap-2">
-              <FantasyIcon name="book" className="h-10 w-10" />
-              <h2 className="tb-gold-text text-2xl font-black">Today's Mission</h2>
-            </div>
-            <h3 className="tb-title text-2xl">Read {bookName} Chapter {chapterNum}</h3>
-            <div className="tb-progress mx-auto mt-4 max-w-[270px]">
-              <div className="tb-progress-fill" style={{ width: `${Math.max(18, progress)}%` }} />
-            </div>
-            <p className="mt-2 text-sm font-black text-white drop-shadow">{lastRead ? `${progress}% complete` : "3/5 verses"}</p>
-            <button onClick={() => setLocation("/bible")}
-              aria-label="Continue Reading"
-              className="mx-auto mt-4 block h-[60px] w-[224px] bg-[url('/art-assets/mockup/button-continue-purple.webp')] bg-contain bg-center bg-no-repeat transition-all active:scale-95">
-              <span className="sr-only">Continue Reading</span>
-            </button>
-          </div>
-        );
-      })()}
+      <button
+        onClick={() => setLocation("/bible")}
+        aria-label="Continue Reading"
+        className="mx-auto block w-full max-w-[430px] transition-transform active:scale-[0.985]"
+      >
+        <img src="/art-assets/mockup/home-mission-card.webp" alt="Today's Mission - Read Matthew Chapter 5" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)]" />
+      </button>
 
       {/* Pet and quick actions */}
-      <div className="grid grid-cols-[1.12fr_2fr] items-end gap-4 pt-6">
-        <button onClick={() => setLocation("/profile")} className="neon-card p-2 text-center active:scale-95 transition-transform">
-          <div className="mx-auto flex h-28 w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-b from-[#f6e7d2] to-[#463322]">
-            {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
-              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="h-24 w-24 object-contain" />
-            ) : (
-              <img src="/pet-sprites/lamb_normal.webp" alt="Luna" className="h-24 w-24 object-contain" />
-            )}
-          </div>
-          <p className="tb-title mt-2 text-lg">{equippedPet?.name || "Luna"}</p>
-          <p className="text-xs font-black text-lime-300">Happy 😊</p>
+      <div className="grid grid-cols-[0.92fr_2fr] items-end gap-3 pt-2">
+        <button onClick={() => setLocation("/profile")} className="active:scale-95 transition-transform">
+          <img src="/art-assets/mockup/pet-luna-card.webp" alt="Luna pet card" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)]" />
         </button>
-        <div className="grid grid-cols-3 gap-3 pb-5">
-          <button onClick={() => setLocation("/bible")} className="text-center active:scale-95 transition-transform">
-            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full"><FantasyIcon name="brain" className="h-12 w-12" /></div>
-            <p className="tb-title mt-2 text-sm">Quiz</p>
-          </button>
-          <button onClick={() => setLocation("/bible")} className="text-center active:scale-95 transition-transform">
-            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full"><FantasyIcon name="candle" className="h-12 w-12" /></div>
-            <p className="tb-title mt-2 text-sm">Devotion</p>
-          </button>
-          <button onClick={() => setLocation("/leaderboard")} className="text-center active:scale-95 transition-transform">
-            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full"><FantasyIcon name="friends" className="h-12 w-12" /></div>
-            <p className="tb-title mt-2 text-sm">Friends</p>
-          </button>
+        <div className="relative pb-4">
+          <img src="/art-assets/mockup/home-action-cluster.webp" alt="Quiz, Devotion, Friends" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
+          <div className="absolute inset-0 grid grid-cols-3">
+            <button aria-label="Quiz" onClick={() => setLocation("/bible")} />
+            <button aria-label="Devotion" onClick={() => setLocation("/bible")} />
+            <button aria-label="Friends" onClick={() => setLocation("/leaderboard")} />
+          </div>
         </div>
       </div>
 
