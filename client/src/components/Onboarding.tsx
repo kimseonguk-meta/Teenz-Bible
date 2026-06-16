@@ -298,11 +298,12 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
               ✕
             </button>
           )}
-          <div className="mx-auto mb-4 flex h-40 w-40 items-center justify-center rounded-[34px] border-[6px] border-[#d79b25] bg-gradient-to-br from-[#321d13] to-[#15131d] text-7xl shadow-[inset_0_0_0_3px_rgba(255,238,166,0.4),0_0_30px_rgba(148,64,255,0.45)] cursor-pointer hover:scale-105 transition-transform" onClick={randomizeAvatar}>
-            🛡️
-          </div>
-          <h1 className="tb-title text-5xl">TEENZ BIBLE</h1>
-          <p className="tb-title mt-2 text-2xl text-white/90">Level Up Your Faith</p>
+          <img
+            src="/art-assets/mockup/onboarding-logo.webp"
+            alt="Teenz Bible - Level Up Your Faith"
+            className="mx-auto mb-4 w-[360px] drop-shadow-[0_12px_18px_rgba(0,0,0,0.65)] cursor-pointer hover:scale-105 transition-transform"
+            onClick={randomizeAvatar}
+          />
           <div className="neon-card mt-6 p-5">
             <h2 className="tb-gold-text text-2xl font-black">Welcome, Adventurer!</h2>
             <p className="text-white/80 text-sm font-bold mt-1 mb-4 leading-relaxed">
@@ -322,9 +323,10 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
           <button
             onClick={() => nickname.trim() && setStep(2)}
             disabled={!nickname.trim()}
-            className="tb-btn mt-5 w-full py-4 text-2xl cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97]"
+            aria-label="Start Adventure"
+            className="mt-5 h-[78px] w-full bg-[url('/art-assets/mockup/button-start-adventure.webp')] bg-contain bg-center bg-no-repeat cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97]"
           >
-            START ADVENTURE →
+            <span className="sr-only">START ADVENTURE</span>
           </button>
         </div>
       </div>

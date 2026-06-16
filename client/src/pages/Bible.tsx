@@ -259,7 +259,7 @@ export default function Bible() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex-1 text-center pl-20">
-          <div className="tb-ribbon text-4xl">BIBLE</div>
+          <img src="/art-assets/mockup/title-bible.webp" alt="Bible" className="mx-auto w-[250px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
         </div>
         <div className="flex w-20 flex-col gap-2">
           <span className="tb-stat text-xs">💎 {(() => { try { return (JSON.parse(localStorage.getItem("teensBible") || "{}").gems || 0).toLocaleString(); } catch { return "0"; } })()}</span>

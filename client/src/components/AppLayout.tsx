@@ -1,14 +1,21 @@
 import { useLocation } from "wouter";
 import { ReactNode } from "react";
-import FantasyIcon from "./FantasyIcon";
 
 const navItems = [
-  { path: "/", icon: "castle", label: "Home" },
-  { path: "/bible", icon: "book", label: "Bible" },
-  { path: "/leaderboard", icon: "trophy", label: "Ranking" },
-  { path: "/store", icon: "chest", label: "Store" },
-  { path: "/profile", icon: "shield", label: "Profile" },
-] as const;
+  { path: "/", label: "Home" },
+  { path: "/bible", label: "Bible" },
+  { path: "/leaderboard", label: "Ranking" },
+  { path: "/store", label: "Store" },
+  { path: "/profile", label: "Profile" },
+];
+
+function getNavAsset(location: string) {
+  if (location.startsWith("/bible")) return "/art-assets/mockup/nav-bible.webp";
+  if (location === "/leaderboard") return "/art-assets/mockup/nav-ranking.webp";
+  if (location === "/store") return "/art-assets/mockup/nav-store.webp";
+  if (location === "/profile") return "/art-assets/mockup/nav-profile.webp";
+  return "/art-assets/mockup/nav-home.webp";
+}
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -35,22 +42,18 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       {/* Bottom Navigation - uses --neon-rgb for theme-aware styling */}
       {location !== "/bible-ai" && <nav className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
-        <div className="pointer-events-auto flex justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]" style={{ background: 'url("/art-assets/ui/nav-bar.svg") center / 100% 100% no-repeat' }}>
+        <div
+          className="pointer-events-auto flex h-[78px] justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]"
+          style={{ background: `url("${getNavAsset(location)}") center / 100% 100% no-repeat` }}
+        >
           {navItems.map((item) => {
-            const isActive = location === item.path;
             return (
               <button
                 key={item.path}
+                aria-label={item.label}
                 onClick={() => setLocation(item.path)}
-                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-2 transition-all duration-200 relative ${
-                  isActive
-                    ? "scale-[1.02] bg-gradient-to-b from-[#fff0a7] via-[#e3a622] to-[#9a5608] text-white shadow-[inset_0_0_0_2px_rgba(99,48,0,0.45),0_0_18px_rgba(255,194,45,0.62)]"
-                    : "text-white/70 hover:text-white bg-black/10"
-                }`}
-              >
-                <FantasyIcon name={item.icon} className="h-8 w-8" />
-                <span className="text-[10px] font-black tracking-[-0.02em] drop-shadow-[0_2px_0_rgba(0,0,0,0.85)]">{item.label}</span>
-              </button>
+                className="min-w-0 flex-1 rounded-xl active:scale-95 transition-transform"
+              />
             );
           })}
         </div>

@@ -361,7 +361,7 @@ export default function Leaderboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <button className="tb-soft-button h-11 w-11 text-xl">←</button>
-        <div className="tb-ribbon text-3xl">RANKING</div>
+        <img src="/art-assets/mockup/title-ranking.webp" alt="Ranking" className="w-[260px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
         <button className="tb-soft-button h-11 w-11 text-xl">ⓘ</button>
       </div>
 

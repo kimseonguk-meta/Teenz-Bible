@@ -301,7 +301,7 @@ export default function Home() {
 
       {/* Welcome ribbon */}
       <div className="pt-6 text-center">
-        <div className="tb-ribbon text-xl">Welcome Back!</div>
+        <img src="/art-assets/mockup/title-welcome.webp" alt="Welcome Back!" className="mx-auto w-[280px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
         <h1 className="tb-title mt-5 text-5xl">{playerName || "Adventurer"}</h1>
         <p className="mt-2 text-base font-extrabold text-white/45 drop-shadow">Continue your journey</p>
       </div>
@@ -324,8 +324,9 @@ export default function Home() {
             </div>
             <p className="mt-2 text-sm font-black text-white drop-shadow">{lastRead ? `${progress}% complete` : "3/5 verses"}</p>
             <button onClick={() => setLocation("/bible")}
-              className="tb-btn-purple mx-auto mt-4 px-6 py-3 text-base transition-all active:scale-95">
-              Continue Reading
+              aria-label="Continue Reading"
+              className="mx-auto mt-4 block h-[60px] w-[224px] bg-[url('/art-assets/mockup/button-continue-purple.webp')] bg-contain bg-center bg-no-repeat transition-all active:scale-95">
+              <span className="sr-only">Continue Reading</span>
             </button>
           </div>
         );

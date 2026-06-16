@@ -177,7 +177,7 @@ export default function Feedback() {
 
       {/* Header */}
       <div className="text-center space-y-3">
-        <div className="tb-ribbon text-3xl">FEEDBACK</div>
+        <img src="/art-assets/mockup/title-feedback.webp" alt="Feedback" className="mx-auto w-[260px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
         <p className="text-white/55 text-sm font-bold">
           Help us improve Teenz Bible! Your feedback is valuable and reviewed by our development team.
         </p>

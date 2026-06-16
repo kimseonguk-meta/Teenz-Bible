@@ -259,7 +259,7 @@ export default function Store() {
     <div className="px-4 pt-6 space-y-5 pb-6">
       {/* Header */}
       <div className="text-center">
-        <div className="tb-ribbon text-3xl">STORE</div>
+        <img src="/art-assets/mockup/title-store.webp" alt="Store" className="mx-auto w-[235px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
       </div>
       <div className="flex items-center justify-center gap-3">
         <div className="tb-stat">

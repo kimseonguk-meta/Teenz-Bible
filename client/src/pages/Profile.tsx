@@ -514,7 +514,7 @@ export default function Profile() {
 
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
-        <div className="tb-ribbon mb-5 text-3xl">PROFILE</div>
+        <img src="/art-assets/mockup/title-profile.webp" alt="Profile" className="mb-5 w-[245px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
         <div className="relative">
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
