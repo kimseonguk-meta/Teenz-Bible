@@ -65,7 +65,7 @@
 - [x] Add minimum reading time before marking chapter as read (prevent scroll-through cheating)
 
 ## Reading Progress Visualization
-- [x] Add reading progress bar for each Bible book in the book list view
+- [ ] Add reading progress bar for each Bible book in the book list view
 
 ## Apple Review Fix (May 2026)
 - [x] Fix Apple Sign-in blank screen bug (Guideline 2.1a)
@@ -95,10 +95,10 @@
 - [x] Install @capgo/capacitor-youtube-player plugin
 - [x] Replace YouTube iframe embed with native plugin in Bible.tsx
 - [x] Configure patchRefererHeader in capacitor.config.ts
-- [x] Set up Android platform (capacitor add android) — already configured
-- [x] Configure Android project (icons, package name, signing) — keystore generated, icons set
+- [ ] Set up Android platform (capacitor add android)
+- [ ] Configure Android project (icons, package name, signing)
 - [x] Build iOS zip (Build 13 final)
-- [x] Build Android project zip for Google Play Store — requires Android SDK (use Android Studio locally to run gradlew assembleRelease)
+- [ ] Build Android project zip for Google Play Store
 
 ## Build 14 Fixes (May 28, 2026)
 - [x] YouTube error 152-4 fixed: replaced @capgo/capacitor-youtube-player with @capacitor/browser In-App Browser (SFSafariViewController)
@@ -113,8 +113,8 @@
 - [x] Sync nickname change to Firebase leaderboard
 
 ## Bible AI Fix (Jun 4, 2026)
-- [x] Fix Bible AI 'temporarily unavailable' error - switch to server-side invokeLLM (Manus Forge API primary, Gemini fallback)
-- [x] Ensure native app (Android/iOS) also uses server proxy via Manus hosting (teenzbible.manus.space)
+- [ ] Fix Bible AI 'temporarily unavailable' error - switch to server-side invokeLLM
+- [ ] Ensure native app (Android/iOS) also uses server proxy via Manus hosting
 
 ## Build 23 — Apple Sign-In Fix + Single Provider UI (Jun 8, 2026)
 - [x] Rewrite appleAuth.ts: get credential once, reuse in conflict handler (no double Apple popup)
@@ -181,8 +181,8 @@
 - [x] Pet detail popup with description and stats on image click
 
 ## Store Pet Search & Hover Effects (Jun 11, 2026)
-- [x] Add pet name search input at top of Pets tab
-- [x] Add smooth scale-up hover effect on pet cards (already implemented with hover:scale-105)
+- [ ] Add pet name search input at top of Pets tab
+- [ ] Add smooth scale-up hover effect on pet cards
 
 ## Bug Fixes — Galaxy Phone (Jun 12, 2026)
 - [x] Fix Bible Map location popup not closing (X button causes popup to glitch back open)
@@ -271,78 +271,3 @@
 - [x] Add developer response capability (admin can reply to feedback)
 - [x] Add feedback link in app navigation (Profile/Settings)
 - [x] Deploy to Firebase Hosting
-
-## V2 UI Redesign — Clash Royale Premium Style (Jun 15, 2026)
-- [x] CSS theme system: dark purple (#1a0a2e) diamond quilted background, gold metallic variables
-- [x] Bottom Navigation: 5-tab metallic bar (Home, Bible, Ranking, Store, Profile) with active glow
-- [x] Home dashboard redesign: gold ribbon banner, XP/gems pills, streak card, quest cards, pet display
-- [x] Bible book selection: 3-column grid, progress bars, locked/unlocked states, Old/New Testament tabs
-- [x] Bible reading page: cream/ivory parchment reading area, dark brown text, minimal game UI header/footer
-- [x] Ranking page: gold/silver/bronze podium with circular photo frames, real user photos, group tabs
-- [x] Quiz page: question card with gold border, 4 answer buttons, correct/wrong feedback, XP reward
-- [x] Store/Pet page: featured pet banner, 2-column pet grid, accessories section, gem balance
-- [x] Profile page: avatar frame, level badge, stats grid, settings menu with gold accents
-- [x] Onboarding: TB shield logo, nickname input, group selection buttons, START ADVENTURE CTA
-- [x] Feedback page: category pills, form fields, device info, recent feedback list
-- [x] Deploy V2 redesign to Firebase Hosting (Capgo OTA requires API key login - will deploy with next native build)
-
-## V2 Pixel-Perfect Rebuild (Jun 16, 2026)
-- [x] Generate illustrated nav icons: castle, bible book, trophy, treasure chest, shield with face
-- [x] Generate quick action icons: brain, candle, people group (gold-ringed circles)
-- [x] Generate 3D gold ribbon banner image for "Welcome Back!"
-- [x] Rebuild stat pills with thick 4-5px 3D beveled gold borders + illustrated icons
-- [x] Rebuild Today's Mission card: thick gold frame, corner ornaments
-- [x] Make progress bar much thicker with 3D metallic gold gradient
-- [x] Change CTA button to PURPLE with gold text
-- [x] Replace emoji icons with generated illustrated assets
-- [x] Rebuild bottom nav with illustrated icon images + dark charcoal tab backgrounds
-- [x] Make diamond quilted background subtle
-- [x] Add proper depth/shadows throughout for 3D quality
-
-## V2 CDN URL Fix (Jun 16, 2026)
-- [x] Replace all /manus-storage/ paths with direct CDN URLs in AppLayout.tsx (bottom nav icons)
-- [x] Replace all /manus-storage/ paths with direct CDN URLs in Home.tsx (stat icons, ribbon, quick actions)
-- [x] Generate missing icon assets (fire, gem, XP, brain, candle, friends)
-- [x] Verify zero /manus-storage/ references remain in client code
-- [x] Save checkpoint and deploy to Firebase
-
-## V2 Full Image-Based UI Redesign (Jun 16, 2026)
-- [x] Generate bottom nav icons (castle, bible book, trophy, treasure chest, shield+boy face)
-- [x] Generate gold ribbon banners (Welcome Back, BIBLE, RANKING, STORE, PROFILE, DAILY QUIZ)
-- [x] Generate Home assets (stat pill frames with icons, mission card gold frame, quick action circle icons)
-- [x] Generate Bible page assets (unlocked book card with gold frame, locked book card with silver frame, progress bar)
-- [x] Generate Ranking assets (gold/silver/bronze trophy podiums, hexagonal rank badges)
-- [x] Generate Store assets (featured pet gold frame, pet card frames, accessory circle icons)
-- [x] Generate Profile assets (gold oval avatar frame, achievement hexagon badges, settings circle icons)
-- [x] Generate Quiz assets (question card ornate frame, answer button gold frames, XP/gem reward icons)
-- [x] Generate Onboarding assets (TB shield logo, gold input frame, gold button frame, START ADVENTURE button)
-- [x] Upload all assets to CDN
-- [x] Rebuild AppLayout bottom nav with image assets
-- [x] Rebuild Home page with image assets
-- [x] Rebuild Bible page with image assets
-- [x] Rebuild Ranking page with image assets
-- [x] Rebuild Store page with image assets
-- [x] Rebuild Profile page with image assets
-- [x] Rebuild Quiz page with image assets
-- [x] Rebuild Bible Reader page with parchment style
-- [x] Rebuild Onboarding page with image assets
-- [x] Test all pages and deploy
-
-## Firebase-Only Deployment Fix (Jun 16, 2026)
-- [x] Copy all generated PNG assets to dist/public/assets/ for Firebase deploy
-- [x] Update all /manus-storage/ paths in source code to /assets/ paths
-- [x] Build and redeploy to Firebase Hosting
-- [x] Deploy to Capgo OTA with API key (v1.0.11)
-- [x] Verify all images load correctly on Firebase
-
-## V3 CSS-Only Redesign - Duolingo/Flat Style (Jun 16, 2026)
-- [x] Define new design system (colors, typography, component patterns)
-- [x] Rebuild AppLayout bottom nav with CSS-only colorful icons
-- [x] Rebuild Home page (flat colorful gamification, no image dependencies)
-- [x] Rebuild Bible page with colorful book cards
-- [x] Rebuild Leaderboard with CSS podium
-- [x] Rebuild Store with colorful pet cards
-- [x] Rebuild Profile page
-- [x] Build and deploy to Firebase + Capgo (v1.0.14)
-- [x] Remove all /manus-storage/ and ASSETS image dependencies
-- [x] Verify all pages work on Firebase without any broken images
