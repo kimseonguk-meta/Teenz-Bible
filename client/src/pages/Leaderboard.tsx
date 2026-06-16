@@ -359,31 +359,33 @@ export default function Leaderboard() {
       )}
 
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-white font-display neon-text-purple">🏆 RANKING</h1>
+      <div className="flex items-center justify-between">
+        <button className="tb-soft-button h-11 w-11 text-xl">←</button>
+        <div className="tb-ribbon text-3xl">RANKING</div>
+        <button className="tb-soft-button h-11 w-11 text-xl">ⓘ</button>
       </div>
 
       {/* Main Tabs: My Groups | Global */}
-      <div className="flex gap-2 justify-center">
+      <div className="neon-card grid grid-cols-2 gap-1 p-1">
         <button
           onClick={() => setMainTab("mygroups")}
-          className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+          className={`py-3 rounded-xl text-sm font-black transition-all ${
             mainTab === "mygroups"
-              ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-[0_0_15px_rgba(78,205,196,0.3)]"
-              : "bg-transparent border border-purple-500/30 text-gray-400 hover:text-gray-200"
+              ? "tb-btn text-white"
+              : "tb-soft-button text-white/70"
           }`}
         >
-          👥 My Groups
+          My Groups
         </button>
         <button
           onClick={() => setMainTab("global")}
-          className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
+          className={`py-3 rounded-xl text-sm font-black transition-all ${
             mainTab === "global"
-              ? "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]"
-              : "bg-transparent border border-purple-500/30 text-gray-400 hover:text-gray-200"
+              ? "tb-btn text-white"
+              : "tb-soft-button text-white/70"
           }`}
         >
-          🌍 Global
+          Global
         </button>
       </div>
 
@@ -404,7 +406,7 @@ export default function Leaderboard() {
         <div className="relative">
           <button
             onClick={() => setShowGroupDropdown(!showGroupDropdown)}
-            className="w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-purple-500/20 text-white text-sm font-medium flex items-center justify-between transition-all hover:bg-white/[0.06]"
+            className="tb-soft-button w-full py-3 px-4 text-white text-sm font-black flex items-center justify-between transition-all"
           >
             <span className="flex items-center gap-2">
               <span className="text-teal-400">📌</span>
@@ -421,7 +423,7 @@ export default function Leaderboard() {
                   onClick={() => { setSelectedGroupCode(g.groupCode); setShowGroupDropdown(false); }}
                   className={`w-full py-3 px-4 text-left text-sm transition-all flex items-center justify-between ${
                     selectedGroupCode === g.groupCode
-                      ? "bg-teal-500/10 text-teal-400 font-bold"
+                      ? "bg-yellow-500/15 text-yellow-300 font-bold"
                       : "text-gray-300 hover:bg-white/[0.04]"
                   }`}
                 >
@@ -579,10 +581,10 @@ export default function Leaderboard() {
                 <div
                   key={member.uid}
                   onClick={() => handleMemberTap(member, rank)}
-                  className={`p-3 flex items-center gap-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] ${
+                  className={`neon-card p-3 flex items-center gap-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] ${
                     isMe
-                      ? "bg-red-500/10 border border-red-500/30"
-                      : "bg-white/[0.03] border border-transparent"
+                      ? "!border-purple-500 shadow-[0_0_18px_rgba(148,64,255,0.45)]"
+                      : ""
                   }`}
                 >
                   <span className="text-base font-bold text-gray-400 w-7 text-center">{rank}</span>

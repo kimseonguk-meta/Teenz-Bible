@@ -291,108 +291,102 @@ export default function Home() {
         </div>
       )}
 
-      {/* Header / Hero */}
-      <div className="neon-card relative overflow-hidden p-5">
-        <div className="absolute -right-10 -top-12 h-36 w-36 rounded-full bg-white/10 blur-2xl" />
-        <div className="relative flex items-center gap-4">
-          <div className="relative shrink-0">
-            <div className={`w-[72px] h-[72px] rounded-[26px] overflow-hidden bg-white/10 flex items-center justify-center ${equippedFrame?.frameClass || 'border border-white/18 shadow-[0_14px_28px_rgba(0,0,0,0.2)]'}`}>
-              {(() => { const photo = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-4xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-4xl">👦</span>; } })()}
-            </div>
-            <div className="absolute -bottom-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#24134f] text-[11px] font-black shadow-lg">Lv.{level.level}</div>
-            {equippedPet && <div className="absolute -top-2 -left-2 rounded-full bg-white/90 p-1 shadow-lg">
-              {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
-                <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-6 h-6 object-contain" />
-              ) : (
-                <span className="text-lg">{equippedPet.petEmoji}</span>
-              )}
-            </div>}
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="teenz-eyebrow">Teenz Bible</p>
-            <h1 className="teenz-title mt-1">{greeting}</h1>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="teenz-pill">📖 {chaptersRead} read</span>
-              <span className="teenz-pill">💎 {gems} gems</span>
-              <span className="teenz-pill">⚡ {totalXP.toLocaleString()} XP</span>
-            </div>
-          </div>
-        </div>
+      {/* Mockup-style top stats */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="tb-stat"><span className="text-xl">🔥</span><span>{Math.max(0, parseInt(localStorage.getItem("dayStreak") || "0") || 0)}</span></div>
+        <div className="tb-stat"><span className="text-xl">💎</span><span>{totalXP.toLocaleString()} XP</span></div>
+        <div className="tb-stat"><span className="text-xl">🔶</span><span>{gems.toLocaleString()}</span></div>
       </div>
 
-      {/* Today's Reading Card */}
+      {/* Welcome ribbon */}
+      <div className="pt-6 text-center">
+        <div className="tb-ribbon text-xl">Welcome Back!</div>
+        <h1 className="tb-title mt-5 text-5xl">{playerName || "Adventurer"}</h1>
+        <p className="mt-2 text-base font-extrabold text-white/45 drop-shadow">Continue your journey</p>
+      </div>
+
+      {/* Today's Mission */}
       {(() => {
         const lastRead = getLastRead();
-        const bookName = lastRead?.book || "Genesis";
-        const chapterNum = lastRead?.chapter || 1;
+        const bookName = lastRead?.book || "Matthew";
+        const chapterNum = lastRead?.chapter || 5;
         const progress = lastRead?.progress || 0;
         return (
-          <div className="neon-card relative overflow-hidden p-5">
-            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/10 to-transparent" />
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2 relative">
-                  <span className="teenz-eyebrow">{lastRead ? "Continue reading" : "Start reading"}</span>
-                </div>
-                <h2 className="text-3xl font-black tracking-[-0.04em] text-white">{bookName}</h2>
-                <h3 className="text-base font-bold text-white/70">Chapter {chapterNum}</h3>
-                <p className="text-white/55 text-sm mt-1">{lastRead ? `${lastRead.totalChapters} chapters total` : "Begin your journey"}</p>
-                <button onClick={() => setLocation("/bible")}
-                  className="teenz-cta mt-4 px-5 py-2.5 text-sm flex items-center gap-2 transition-all active:scale-95">
-                  📖 {lastRead ? "Continue Reading" : "Start Reading"}
-                </button>
-              </div>
-              <div className="relative flex items-center justify-center">
-                <ProgressRing progress={progress} />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-black text-white">{progress}<span className="text-sm">%</span></span>
-                  <span className="text-[10px] text-white/55">Progress</span>
-                </div>
-              </div>
+          <div className="neon-card mx-1 p-5 text-center">
+            <div className="mb-2 flex items-center justify-center gap-2">
+              <span className="text-3xl">📖</span>
+              <h2 className="tb-gold-text text-2xl font-black">Today's Mission</h2>
             </div>
+            <h3 className="tb-title text-2xl">Read {bookName} Chapter {chapterNum}</h3>
+            <div className="tb-progress mx-auto mt-4 max-w-[270px]">
+              <div className="tb-progress-fill" style={{ width: `${Math.max(18, progress)}%` }} />
+            </div>
+            <p className="mt-2 text-sm font-black text-white drop-shadow">{lastRead ? `${progress}% complete` : "3/5 verses"}</p>
+            <button onClick={() => setLocation("/bible")}
+              className="tb-btn-purple mx-auto mt-4 px-6 py-3 text-base transition-all active:scale-95">
+              Continue Reading
+            </button>
           </div>
         );
       })()}
 
+      {/* Pet and quick actions */}
+      <div className="grid grid-cols-[1.12fr_2fr] items-end gap-4 pt-6">
+        <button onClick={() => setLocation("/profile")} className="neon-card p-2 text-center active:scale-95 transition-transform">
+          <div className="mx-auto flex h-28 w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-b from-[#f6e7d2] to-[#463322]">
+            {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="h-24 w-24 object-contain" />
+            ) : (
+              <span className="text-6xl">{equippedPet?.petEmoji || "🐑"}</span>
+            )}
+          </div>
+          <p className="tb-title mt-2 text-lg">{equippedPet?.name || "Luna"}</p>
+          <p className="text-xs font-black text-lime-300">Happy 😊</p>
+        </button>
+        <div className="grid grid-cols-3 gap-3 pb-5">
+          <button onClick={() => setLocation("/bible")} className="text-center active:scale-95 transition-transform">
+            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl">🧠</div>
+            <p className="tb-title mt-2 text-sm">Quiz</p>
+          </button>
+          <button onClick={() => setLocation("/bible")} className="text-center active:scale-95 transition-transform">
+            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl">🕯️</div>
+            <p className="tb-title mt-2 text-sm">Devotion</p>
+          </button>
+          <button onClick={() => setLocation("/leaderboard")} className="text-center active:scale-95 transition-transform">
+            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl">👥</div>
+            <p className="tb-title mt-2 text-sm">Friends</p>
+          </button>
+        </div>
+      </div>
+
       {/* Bible AI - Prominent Card */}
       <button
         onClick={() => setLocation("/bible-ai")}
-        className="w-full neon-card p-5 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group"
+        className="w-full neon-card p-4 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group"
       >
-        <div className="w-14 h-14 rounded-[22px] bg-white text-[#28145a] flex items-center justify-center shadow-[0_14px_28px_rgba(255,255,255,0.14)] transition-all">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Rounded square outline */}
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="white" strokeWidth="1.8" fill="none" />
-            {/* Large 4-point star (bottom-left) */}
-            <path d="M8 17 L8.8 14.5 L11 13.7 L8.8 12.9 L8 10.4 L7.2 12.9 L5 13.7 L7.2 14.5 Z" fill="white" />
-            {/* Medium 4-point star (top-right) */}
-            <path d="M16 11 L16.7 9 L18.5 8.3 L16.7 7.6 L16 5.6 L15.3 7.6 L13.5 8.3 L15.3 9 Z" fill="white" />
-            {/* Small 4-point star (top-left area) */}
-            <path d="M9 7.5 L9.4 6.3 L10.5 5.9 L9.4 5.5 L9 4.3 L8.6 5.5 L7.5 5.9 L8.6 6.3 Z" fill="white" />
-          </svg>
-        </div>
+        <div className="tb-gold-panel flex h-14 w-14 items-center justify-center rounded-full text-2xl">✨</div>
         <div className="flex-1 text-left">
-          <h3 className="text-white font-black text-base">Bible AI</h3>
-          <p className="text-white/58 text-sm mt-0.5">Ask anything about the Bible — get instant answers</p>
+          <h3 className="tb-title text-lg">Bible AI</h3>
+          <p className="text-white/55 text-xs font-bold mt-0.5">Ask anything about the Bible</p>
         </div>
-        <div className="text-white/70 text-lg">→</div>
+        <div className="tb-gold-text text-2xl">›</div>
       </button>
 
       {/* XP Bar */}
       <div className="neon-card p-4 flex items-center gap-3">
-        <div className="w-11 h-11 rounded-[18px] bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center shadow-[0_14px_26px_rgba(251,191,36,0.16)]">
-          <span className="text-xs font-black text-[#3a2500]">XP</span>
+        <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full">
+          <span className="text-xs font-black text-white drop-shadow">XP</span>
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-white font-black">{totalXP.toLocaleString()}</span>
-            <span className="text-white/52 text-xs">/ {level.next.toLocaleString()} XP</span>
+            <span className="tb-title text-base">{totalXP.toLocaleString()}</span>
+            <span className="text-white/55 text-xs font-bold">/ {level.next.toLocaleString()} XP</span>
           </div>
-          <div className="teenz-progress-track">
-            <div className="teenz-progress-fill transition-all duration-500" style={{ width: `${xpProgress}%` }} />
+          <div className="tb-progress">
+            <div className="tb-progress-fill transition-all duration-500" style={{ width: `${xpProgress}%` }} />
           </div>
         </div>
-        <div className="w-9 h-9 rounded-full bg-white/9 border border-white/12 flex items-center justify-center"><span className="text-sm">🏆</span></div>
+        <div className="text-2xl">🏆</div>
       </div>
 
 

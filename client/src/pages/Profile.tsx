@@ -514,10 +514,11 @@ export default function Profile() {
 
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
+        <div className="tb-ribbon mb-5 text-3xl">PROFILE</div>
         <div className="relative">
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
-            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
+            className={`w-32 h-32 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[6px] border-[#d79b25] shadow-[inset_0_0_0_3px_rgba(255,238,166,0.5),0_0_28px_rgba(255,190,42,0.28)]'}`}
           >
             {profilePhoto ? (
               <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
@@ -740,12 +741,12 @@ export default function Profile() {
           onClick={() => { setNicknameInput(playerName); setNicknameError(null); setShowNicknameEdit(true); }}
           className="mt-3 flex items-center gap-1.5 group active:scale-[0.97] transition-transform"
         >
-          <h2 className="text-2xl font-bold text-white font-display">{playerName}</h2>
+          <h2 className="tb-title text-3xl">{playerName}</h2>
           <span className="text-gray-500 group-hover:text-purple-400 transition-colors text-sm">✏️</span>
         </button>
         <p className="text-gray-500 text-[10px] mt-0.5">Tap to change nickname</p>
         <div className="flex items-center gap-2 mt-1">
-          <span className="px-3 py-1 rounded-full bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium">
+          <span className="tb-btn-purple px-3 py-1 text-xs">
             ⭐ Lv. {level.level} {level.name}
           </span>
           {myGroups.length > 0 ? (

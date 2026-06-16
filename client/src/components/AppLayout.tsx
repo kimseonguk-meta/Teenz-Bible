@@ -2,11 +2,11 @@ import { useLocation } from "wouter";
 import { ReactNode } from "react";
 
 const navItems = [
-  { path: "/", icon: "🏠", label: "Home" },
-  { path: "/bible", icon: "📖", label: "Bible" },
-  { path: "/leaderboard", icon: "🏆", label: "Rank" },
-  { path: "/store", icon: "💎", label: "Store" },
-  { path: "/profile", icon: "🙂", label: "Me" },
+  { path: "/", icon: "🏰", label: "Home" },
+  { path: "/bible", icon: "📕", label: "Bible" },
+  { path: "/leaderboard", icon: "🏆", label: "Ranking" },
+  { path: "/store", icon: "🎁", label: "Store" },
+  { path: "/profile", icon: "🛡️", label: "Profile" },
 ];
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -33,22 +33,22 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </main>
 
       {/* Bottom Navigation - uses --neon-rgb for theme-aware styling */}
-      {location !== "/bible-ai" && <nav className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pb-3 pointer-events-none" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.75rem)' }}>
-        <div className="pointer-events-auto flex justify-around items-center gap-1 rounded-[28px] border border-white/12 bg-[#171232]/82 px-2 py-2 shadow-[0_18px_55px_rgba(0,0,0,0.38)] backdrop-blur-2xl">
+      {location !== "/bible-ai" && <nav className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
+        <div className="pointer-events-auto flex justify-around items-stretch gap-1 rounded-[16px] border-2 border-[#9d5b0d] bg-gradient-to-b from-[#242631] to-[#0d0f15] p-1 shadow-[inset_0_0_0_1px_rgba(255,232,128,0.3),0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]">
           {navItems.map((item) => {
             const isActive = location === item.path;
             return (
               <button
                 key={item.path}
                 onClick={() => setLocation(item.path)}
-                className={`flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl px-2 py-2 transition-all duration-200 relative ${
+                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-2 transition-all duration-200 relative ${
                   isActive
-                    ? "scale-105 bg-white text-[#24134f] shadow-[0_10px_24px_rgba(255,255,255,0.18)]"
-                    : "text-white/55 hover:text-white/85"
+                    ? "scale-[1.02] bg-gradient-to-b from-[#fff0a7] via-[#e3a622] to-[#9a5608] text-white shadow-[inset_0_0_0_2px_rgba(99,48,0,0.45),0_0_18px_rgba(255,194,45,0.62)]"
+                    : "text-white/70 hover:text-white bg-black/10"
                 }`}
               >
-                <span className="text-xl">{item.icon}</span>
-                <span className="text-[10px] font-extrabold tracking-[-0.01em]">{item.label}</span>
+                <span className="text-2xl drop-shadow-[0_3px_0_rgba(0,0,0,0.55)]">{item.icon}</span>
+                <span className="text-[10px] font-black tracking-[-0.02em] drop-shadow-[0_2px_0_rgba(0,0,0,0.85)]">{item.label}</span>
               </button>
             );
           })}

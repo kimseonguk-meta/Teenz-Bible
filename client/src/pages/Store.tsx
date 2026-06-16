@@ -257,24 +257,30 @@ export default function Store() {
   return (
     <div className="px-4 pt-6 space-y-5 pb-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white font-display neon-text-purple">Gem Store</h1>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-900/50 border border-purple-500/30">
+      <div className="text-center">
+        <div className="tb-ribbon text-3xl">STORE</div>
+      </div>
+      <div className="flex items-center justify-center gap-3">
+        <div className="tb-stat">
           <span className="text-sm">💎</span>
-          <span className="text-white font-bold text-sm">{gems}</span>
+          <span className="text-white font-bold text-sm">{gems} gems</span>
+        </div>
+        <div className="tb-stat">
+          <span className="text-sm">🪙</span>
+          <span className="text-white font-bold text-sm">800 coins</span>
         </div>
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-1 overflow-x-auto pb-1 -mx-4 px-4">
+      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 teenz-scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs whitespace-nowrap transition-all ${
+            className={`flex flex-col items-center gap-1 px-3 py-2 text-xs whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? "bg-purple-600/30 border border-purple-500/50 text-purple-200"
-                : "text-gray-400 hover:text-gray-200"
+                ? "tb-btn text-white"
+                : "tb-soft-button text-white/70"
             }`}
           >
             <span className="text-lg">{tab.icon}</span>
