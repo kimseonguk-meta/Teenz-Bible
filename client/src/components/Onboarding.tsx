@@ -4,7 +4,6 @@ import { get } from "firebase/database";
 import { getInventory, saveInventory, getEquipped, saveEquipped } from "@/data/storeItems";
 import { joinGroup, getLocalGroups, fetchAllAvailableGroups } from "@/lib/groups";
 import type { GroupMembership, GroupMeta } from "@/lib/groups";
-import { ASSETS } from "@/lib/assets";
 
 const AVATARS = ['😎','🦊','🐱','🐶','🦁','🐻','🐼','🐨','🐯','🦄','🐸','🐵','🦋','🐝','🌟','⭐','🔥','💎','🎮','🎯','🏀','⚽','🎸','🎨','🌈','🍕','🍩','🧁','🎂','🍦'];
 

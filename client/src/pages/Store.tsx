@@ -22,7 +22,6 @@ import {
 import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { ASSETS } from "@/lib/assets";
 
 // Pet stats/abilities data for detail popup
 const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
@@ -197,8 +196,8 @@ export default function Store() {
         key={item.id}
         className={`p-3 rounded-xl text-center relative transition-all duration-200 ease-out hover:scale-105 ${rarityConfig.glow} ${
           active
-            ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
-            : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)] hover:shadow-[0_0_16px_rgba(212,175,55,0.2)]"
+            ? "bg-[#F3F4F6] border-2 border-gray-200,0.6)] shadow-[0_0_12px_#E5E5E5]"
+            : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)] hover:shadow-[0_0_16px_#E5E5E5]"
         }`}
       >
         {active && (
@@ -262,15 +261,12 @@ export default function Store() {
 
   return (
     <div className="px-4 pt-6 space-y-5 pb-6">
-      {/* Header - Gold Ribbon Banner */}
+      {/* Header */}
       <div className="flex flex-col items-center gap-3">
-        <div className="relative flex items-center justify-center" style={{ width: '240px', height: '60px' }}>
-          <img src={ASSETS.ribbons.store} alt="" className="absolute inset-0 w-full h-full object-contain" />
-          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>GEM STORE</span>
-        </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(26,10,46,0.6)', border: '1.5px solid rgba(212,175,55,0.4)' }}>
-          <img src={ASSETS.store.gemCurrency} alt="" className="w-6 h-6 object-contain" />
-          <span className="text-gray-800 font-bold text-sm">{gems}</span>
+        <h1 className="text-2xl font-black text-gray-800">💎 Gem Store</h1>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDE7F6] border-2 border-[#7C4DFF]">
+          <span className="text-lg">💎</span>
+          <span className="text-[#7C4DFF] font-bold text-sm">{gems}</span>
         </div>
       </div>
 
@@ -282,7 +278,7 @@ export default function Store() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? "bg-[rgba(212,175,55,0.15)] border border-gray-200,0.5)] text-[#f0d060]"
+                ? "bg-[#E5E5E5] border border-gray-200,0.5)] text-[#f0d060]"
                 : "text-gray-600 hover:text-gray-200"
             }`}
           >
@@ -295,7 +291,7 @@ export default function Store() {
       {/* Content */}
       {activeTab === "themes" && (
         <div>
-          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">🎨 App Themes</h2>
+          <h2 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-3">🎨 App Themes</h2>
           <p className="text-gray-600 text-xs mb-3">Change the entire app color scheme!</p>
           {previewingTheme && (
             <div className="mb-3 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-between">
@@ -323,7 +319,7 @@ export default function Store() {
                   key={item.id}
                   className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                     active
-                      ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                      ? "bg-[#F3F4F6] border-2 border-gray-200,0.6)] shadow-[0_0_12px_#E5E5E5]"
                       : previewing
                       ? "bg-yellow-600/10 border-2 border-yellow-500/40"
                       : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)]"
@@ -389,7 +385,7 @@ export default function Store() {
 
       {activeTab === "readerBg" && (
         <div>
-          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">📖 Reader Backgrounds</h2>
+          <h2 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-3">📖 Reader Backgrounds</h2>
           <p className="text-gray-600 text-xs mb-3">Customize your Bible reading experience!</p>
           <div className="grid grid-cols-3 gap-3">
             {READER_BACKGROUNDS.map((item) => {
@@ -399,7 +395,7 @@ export default function Store() {
                 key={item.id}
                 className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                   isEquipped(item.id, "readerBg")
-                    ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                    ? "bg-[#F3F4F6] border-2 border-gray-200,0.6)] shadow-[0_0_12px_#E5E5E5]"
                     : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)]"
                 }`}
               >
@@ -448,7 +444,7 @@ export default function Store() {
 
       {activeTab === "frames" && (
         <div>
-          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">🖼️ Profile Frames</h2>
+          <h2 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-3">🖼️ Profile Frames</h2>
           <p className="text-gray-600 text-xs mb-3">Stand out on the leaderboard!</p>
           <div className="grid grid-cols-3 gap-3">
             {PROFILE_FRAMES.map((item) => {
@@ -458,7 +454,7 @@ export default function Store() {
                 key={item.id}
                 className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                   isEquipped(item.id, "frames")
-                    ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                    ? "bg-[#F3F4F6] border-2 border-gray-200,0.6)] shadow-[0_0_12px_#E5E5E5]"
                     : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)]"
                 }`}
               >
@@ -469,7 +465,7 @@ export default function Store() {
                   <RarityBadge rarity={item.rarity} />
                 </div>
                 {/* Frame preview */}
-                <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl bg-[rgba(26,10,46,0.6)] my-2 mt-5 cursor-pointer hover:scale-110 transition-transform ${item.frameClass}`} onClick={() => setPreviewItem(item)}>
+                <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl bg-[white] my-2 mt-5 cursor-pointer hover:scale-110 transition-transform ${item.frameClass}`} onClick={() => setPreviewItem(item)}>
                   😎
                 </div>
                 <p className="text-gray-800 text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
@@ -503,7 +499,7 @@ export default function Store() {
 
       {activeTab === "pets" && (
         <div>
-          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">🐾 Pets</h2>
+          <h2 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-3">🐾 Pets</h2>
           <p className="text-gray-600 text-xs mb-3">A companion for your Bible journey!</p>
           {/* Search */}
           <div className="mb-3">
@@ -513,7 +509,7 @@ export default function Store() {
                 value={petSearch}
                 onChange={(e) => setPetSearch(e.target.value)}
                 placeholder="🔍 Search pets by name..."
-                className="w-full px-3 py-2 pr-8 rounded-lg bg-[rgba(26,10,46,0.5)] border border-gray-200,0.3)] text-gray-800 text-xs placeholder:text-gray-500 focus:outline-none focus:border-[#d4af37] transition-colors"
+                className="w-full px-3 py-2 pr-8 rounded-lg bg-[white] border border-gray-200,0.3)] text-gray-800 text-xs placeholder:text-gray-500 focus:outline-none focus:border-[#d4af37] transition-colors"
               />
               {petSearch && (
                 <button onClick={() => setPetSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 text-sm">✕</button>
@@ -525,7 +521,7 @@ export default function Store() {
             <select
               value={petSort}
               onChange={(e) => setPetSort(e.target.value as typeof petSort)}
-              className="flex-1 px-2 py-1.5 rounded-lg bg-[rgba(26,10,46,0.5)] border border-gray-200,0.3)] text-gray-800 text-[11px] focus:outline-none focus:border-gray-200,0.5)]"
+              className="flex-1 px-2 py-1.5 rounded-lg bg-[white] border border-gray-200,0.3)] text-gray-800 text-[11px] focus:outline-none focus:border-gray-200,0.5)]"
             >
               <option value="default">기본 순서</option>
               <option value="price_asc">가격 낮은순</option>
@@ -534,7 +530,7 @@ export default function Store() {
             <select
               value={petFilter}
               onChange={(e) => setPetFilter(e.target.value as typeof petFilter)}
-              className="flex-1 px-2 py-1.5 rounded-lg bg-[rgba(26,10,46,0.5)] border border-gray-200,0.3)] text-gray-800 text-[11px] focus:outline-none focus:border-gray-200,0.5)]"
+              className="flex-1 px-2 py-1.5 rounded-lg bg-[white] border border-gray-200,0.3)] text-gray-800 text-[11px] focus:outline-none focus:border-gray-200,0.5)]"
             >
               <option value="all">전체 등급</option>
               <option value="rare">⭐ Rare</option>
@@ -545,7 +541,7 @@ export default function Store() {
           {sortedFilteredPets.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-600 text-sm">No pets found</p>
-              <button onClick={() => { setPetSearch(''); setPetFilter('all'); }} className="mt-2 text-[#FF9600] font-bold text-xs underline">Clear filters</button>
+              <button onClick={() => { setPetSearch(''); setPetFilter('all'); }} className="mt-2 text-[#FF8C00] font-bold text-xs underline">Clear filters</button>
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-3">
@@ -557,7 +553,7 @@ export default function Store() {
 
       {activeTab === "mystery" && (
         <div className="flex flex-col items-center pt-6">
-          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-2">🎁 Mystery Box</h2>
+          <h2 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-2">🎁 Mystery Box</h2>
           <p className="text-gray-600 text-sm mb-6 text-center">
             Open for a random item or bonus gems!<br />
             <span className="text-xs text-gray-500">70% chance of item, 30% chance of gems</span>
@@ -565,7 +561,7 @@ export default function Store() {
 
           {/* Mystery Box Visual */}
           <div
-            className={`w-32 h-32 rounded-2xl bg-gradient-to-br from-[rgba(212,175,55,0.15)] to-[rgba(160,133,32,0.1)] border-2 border-gray-200,0.4)] flex items-center justify-center text-6xl mb-4 transition-all cursor-pointer hover:scale-105 ${
+            className={`w-32 h-32 rounded-2xl bg-gradient-to-br from-[#E5E5E5] to-[rgba(160,133,32,0.1)] border-2 border-gray-200,0.4)] flex items-center justify-center text-6xl mb-4 transition-all cursor-pointer hover:scale-105 ${
               isOpening ? "animate-bounce" : ""
             }`}
             onClick={!isOpening ? handleMysteryBox : undefined}
@@ -582,7 +578,7 @@ export default function Store() {
           <button
             onClick={handleMysteryBox}
             disabled={isOpening || gems < MYSTERY_BOX.price}
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 font-bold shadow-[0_0_15px_#E5E5E5] disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
           >
             {isOpening ? "Opening..." : "Open Box! 🎁"}
           </button>
@@ -606,7 +602,7 @@ export default function Store() {
 
       {activeTab === "earn" && (
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">💰 How to Earn Gems</h2>
+          <h2 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-3">💰 How to Earn Gems</h2>
           <p className="text-gray-600 text-xs mb-4">Complete activities to earn gems and unlock awesome items!</p>
 
           {/* Earn methods list */}
@@ -669,7 +665,7 @@ export default function Store() {
 
             <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-xl">📚</div>
+                <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center text-xl">📚</div>
                 <div className="flex-1">
                   <p className="text-gray-800 text-sm font-medium">Finish a Book</p>
                   <p className="text-gray-500 text-xs">Read all chapters in one book</p>
@@ -697,8 +693,8 @@ export default function Store() {
           </div>
 
           {/* Tips */}
-          <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-[rgba(212,175,55,0.08)] to-[rgba(160,133,32,0.05)] border border-gray-200,0.2)]">
-            <p className="text-[#FF9600] font-bold text-sm font-bold mb-2">💡 Pro Tips</p>
+          <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-[#F9FAFB] to-[rgba(160,133,32,0.05)] border border-gray-200,0.2)]">
+            <p className="text-[#FF8C00] font-bold text-sm font-bold mb-2">💡 Pro Tips</p>
             <ul className="text-gray-600 text-xs space-y-1.5">
               <li>• Read consistently every day to maximize gem earnings</li>
               <li>• Quizzes are available after reading each chapter</li>
@@ -814,7 +810,7 @@ export default function Store() {
 
           {previewItem.category === "frames" && (
             <div className="flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
-              <div className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl bg-[rgba(26,10,46,0.6)] ${previewItem.frameClass}`}>
+              <div className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl bg-[white] ${previewItem.frameClass}`}>
                 😎
               </div>
               <div className="text-center">
@@ -824,7 +820,7 @@ export default function Store() {
               {/* Show on leaderboard mock */}
               <div className="w-64 p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg bg-[rgba(26,10,46,0.6)] ${previewItem.frameClass}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg bg-[white] ${previewItem.frameClass}`}>
                     😎
                   </div>
                   <div className="flex-1">
@@ -861,9 +857,9 @@ export default function Store() {
               {/* Personality & Lore */}
               {stats && (
                 <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)] space-y-2">
-                  <p className="text-[#FF9600] font-bold text-xs font-bold">💜 성격</p>
+                  <p className="text-[#FF8C00] font-bold text-xs font-bold">💜 성격</p>
                   <p className="text-gray-300 text-xs">{stats.personality}</p>
-                  <p className="text-[#FF9600] font-bold text-xs font-bold mt-2">📜 스토리</p>
+                  <p className="text-[#FF8C00] font-bold text-xs font-bold mt-2">📜 스토리</p>
                   <p className="text-gray-600 text-[11px] leading-relaxed">{stats.lore}</p>
                 </div>
               )}
@@ -879,7 +875,7 @@ export default function Store() {
               {/* Stats bars */}
               {stats && (
                 <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)] space-y-2">
-                  <p className="text-[#FF9600] font-bold text-xs font-bold">📊 능력치</p>
+                  <p className="text-[#FF8C00] font-bold text-xs font-bold">📊 능력치</p>
                   {Object.entries(stats.stats).map(([key, val]) => {
                     const labels: Record<string, { label: string; color: string }> = {
                       faith: { label: '신앙', color: 'bg-yellow-400' },

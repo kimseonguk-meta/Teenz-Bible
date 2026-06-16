@@ -17,7 +17,6 @@ import {
 } from "@/lib/firebase";
 import { getLocalGroups, fetchGroupMeta, type GroupMeta, type GroupMembership } from "@/lib/groups";
 import { PROFILE_FRAMES } from "@/data/storeItems";
-import { ASSETS } from "@/lib/assets";
 
 // Get frame class by ID
 function getFrameClass(frameId?: string): string {
@@ -89,16 +88,16 @@ function MiniProfileCard({
       <div
         className="relative w-full max-w-[280px] rounded-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
-        style={{ background: 'rgba(26, 10, 46, 0.98)', border: '1px solid rgba(212,175,55,0.4)', boxShadow: '0 0 30px rgba(212,175,55,0.15)', animation: 'popIn 200ms cubic-bezier(0.23,1,0.32,1)' }}
+        style={{ background: 'white', border: '2px solid #E5E5E5', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', animation: 'popIn 200ms cubic-bezier(0.23,1,0.32,1)' }}
       >
         {/* Top gradient bar */}
-        <div className="h-16" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.3), rgba(160,133,32,0.2), rgba(212,175,55,0.3))' }} />
+        <div className="h-16" style={{ background: 'linear-gradient(135deg, #FFF8E1, #FFECB3)' }} />
 
         {/* Avatar */}
         <div className="flex flex-col items-center -mt-10">
           <div
             className={`w-20 h-20 rounded-full flex items-center justify-center overflow-hidden ${frameClass}`}
-            style={{ background: 'rgba(26, 10, 46, 0.9)', border: '3px solid rgba(212,175,55,0.5)' }}
+            style={{ background: 'white', border: '3px solid #FFB74D' }}
           >
             {member.profilePhotoUrl ? (
               <img
@@ -116,7 +115,7 @@ function MiniProfileCard({
           {/* Name & Rank */}
           <h3 className="text-gray-800 font-bold text-lg mt-2">{member.nickname || "Anonymous"}</h3>
           <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-sm font-bold text-[#FF9600] font-bold">{rankLabel}</span>
+            <span className="text-sm font-bold text-[#FF8C00] font-bold">{rankLabel}</span>
             {member.groupCode && member.groupCode !== "INDIVIDUAL" && member.groupCode !== "GLOBAL" && (
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#58CC02]/20 text-[#58CC02] font-bold">
                 {member.groupCode}
@@ -127,19 +126,19 @@ function MiniProfileCard({
 
         {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-2 p-4 pt-3">
-          <div className="rounded-xl p-2.5 text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            <p className="text-[#FF9600] font-bold text-lg">{member.xp.toLocaleString()}</p>
+          <div className="rounded-xl p-2.5 text-center" style={{ background: '#F3F4F6', border: '2px solid #E5E5E5' }}>
+            <p className="text-[#FF8C00] font-bold text-lg">{member.xp.toLocaleString()}</p>
             <p className="text-gray-600 text-[10px]">⚡ XP</p>
           </div>
-          <div className="rounded-xl p-2.5 text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <div className="rounded-xl p-2.5 text-center" style={{ background: '#F3F4F6', border: '2px solid #E5E5E5' }}>
             <p className="text-orange-400 font-bold text-lg">{member.streak}</p>
             <p className="text-gray-600 text-[10px]">🔥 Streak</p>
           </div>
-          <div className="rounded-xl p-2.5 text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <div className="rounded-xl p-2.5 text-center" style={{ background: '#F3F4F6', border: '2px solid #E5E5E5' }}>
             <p className="text-blue-400 font-bold text-lg">{member.chaptersRead}</p>
             <p className="text-gray-600 text-[10px]">📖 Chapters</p>
           </div>
-          <div className="rounded-xl p-2.5 text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <div className="rounded-xl p-2.5 text-center" style={{ background: '#F3F4F6', border: '2px solid #E5E5E5' }}>
             <p className="text-green-400 font-bold text-lg">{quizAccuracy}%</p>
             <p className="text-gray-600 text-[10px]">🏆 Quiz ({member.quizTotal})</p>
           </div>
@@ -360,12 +359,10 @@ export default function Leaderboard() {
         />
       )}
 
-      {/* Header - Gold Ribbon Banner */}
-      <div className="flex justify-center">
-        <div className="relative flex items-center justify-center" style={{ width: '260px', height: '65px' }}>
-          <img src={ASSETS.ribbons.ranking} alt="" className="absolute inset-0 w-full h-full object-contain" />
-          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>RANKING</span>
-        </div>
+      {/* Header */}
+      <div className="text-center">
+        <h1 className="text-2xl font-black text-gray-800">🏆 Ranking</h1>
+        <p className="text-sm text-gray-500 mt-1">Compete with friends</p>
       </div>
 
       {/* Main Tabs: My Groups | Global */}
@@ -373,14 +370,14 @@ export default function Leaderboard() {
         <button
           onClick={() => setMainTab("mygroups")}
           className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all`}
-          style={mainTab === "mygroups" ? { background: 'linear-gradient(135deg, #d4af37, #a08520)', color: '#1a0a2e' } : { background: 'transparent', border: '1px solid rgba(212,175,55,0.3)', color: '#9ca3af' }}
+          style={mainTab === "mygroups" ? { background: '#58CC02', color: 'white' } : { background: 'white', border: '2px solid #E5E5E5', color: '#6B7280' }}
         >
           👥 My Groups
         </button>
         <button
           onClick={() => setMainTab("global")}
           className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all`}
-          style={mainTab === "global" ? { background: 'linear-gradient(135deg, #d4af37, #a08520)', color: '#1a0a2e' } : { background: 'transparent', border: '1px solid rgba(212,175,55,0.3)', color: '#9ca3af' }}
+          style={mainTab === "global" ? { background: '#58CC02', color: 'white' } : { background: 'white', border: '2px solid #E5E5E5', color: '#6B7280' }}
         >
           🌍 Global
         </button>
@@ -404,31 +401,31 @@ export default function Leaderboard() {
           <button
             onClick={() => setShowGroupDropdown(!showGroupDropdown)}
             className="w-full py-3 px-4 rounded-xl text-gray-800 text-sm font-medium flex items-center justify-between transition-all"
-            style={{ background: 'rgba(26, 10, 46, 0.6)', border: '1px solid rgba(212,175,55,0.3)' }}
+            style={{ background: 'white', border: '2px solid #E5E5E5' }}
           >
             <span className="flex items-center gap-2">
-              <span className="text-[#FF9600] font-bold">📌</span>
+              <span className="text-[#FF8C00] font-bold">📌</span>
               {groupNames[selectedGroupCode] || selectedGroupCode}
             </span>
             <span className={`text-gray-600 transition-transform ${showGroupDropdown ? "rotate-180" : ""}`}>▾</span>
           </button>
           
           {showGroupDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-1 z-30 rounded-xl overflow-hidden" style={{ background: 'rgba(26, 10, 46, 0.98)', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+            <div className="absolute top-full left-0 right-0 mt-1 z-30 rounded-xl overflow-hidden" style={{ background: 'white', border: '2px solid #E5E5E5', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
               {userGroups.map((g) => (
                 <button
                   key={g.groupCode}
                   onClick={() => { setSelectedGroupCode(g.groupCode); setShowGroupDropdown(false); }}
                   className={`w-full py-3 px-4 text-left text-sm transition-all flex items-center justify-between ${
                     selectedGroupCode === g.groupCode
-                      ? "text-[#FF9600] font-bold"
+                      ? "text-[#FF8C00] font-bold"
                       : "text-gray-300"
                   }`}
-                  style={selectedGroupCode === g.groupCode ? { background: 'rgba(212,175,55,0.1)' } : {}}
+                  style={selectedGroupCode === g.groupCode ? { background: '#F0FFF4' } : {}}
                 >
                   <span>{groupNames[g.groupCode] || g.groupCode}</span>
                   {g.role === "admin" && (
-                    <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.2)', color: '#f0d060' }}>Admin</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded" style={{ background: '#E8F5E9', color: '#2E7D32' }}>Admin</span>
                   )}
                 </button>
               ))}
@@ -444,7 +441,7 @@ export default function Leaderboard() {
             key={tab.key}
             onClick={() => setSortBy(tab.key)}
             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all`}
-            style={sortBy === tab.key ? { background: 'rgba(212,175,55,0.2)', border: '1px solid rgba(212,175,55,0.6)', color: '#f0d060' } : { background: 'transparent', border: '1px solid rgba(212,175,55,0.2)', color: '#9ca3af' }}
+            style={sortBy === tab.key ? { background: '#E8F5E9', border: '2px solid #58CC02', color: '#2E7D32' } : { background: 'white', border: '2px solid #E5E5E5', color: '#6B7280' }}
           >
             {tab.icon} {tab.label}
           </button>
@@ -458,14 +455,14 @@ export default function Leaderboard() {
             key={tf.key}
             onClick={() => setTimeFilter(tf.key)}
             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all`}
-            style={timeFilter === tf.key ? { background: 'rgba(212,175,55,0.3)', color: '#f0d060' } : { background: 'transparent', border: '1px solid rgba(212,175,55,0.15)', color: '#9ca3af' }}
+            style={timeFilter === tf.key ? { background: '#E8F5E9', color: '#2E7D32' } : { background: 'white', border: '2px solid #E5E5E5', color: '#6B7280' }}
           >
             {tf.label}
           </button>
         ))}
       </div>
       {timeFilter === "week" && (
-        <p className="text-center text-xs text-[#FF9600] font-bold/70 -mt-1">
+        <p className="text-center text-xs text-[#FF8C00] font-bold/70 -mt-1">
           🔥 Weekly rankings reset every Monday — climb to the top!
         </p>
       )}
@@ -474,7 +471,7 @@ export default function Leaderboard() {
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-3 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'rgba(212,175,55,0.6)', borderTopColor: 'transparent' }} />
+            <div className="w-8 h-8 border-3 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#58CC02', borderTopColor: 'transparent' }} />
             <span className="text-sm text-gray-600">Loading...</span>
           </div>
         </div>
@@ -498,7 +495,7 @@ export default function Leaderboard() {
       ) : (
         <>
           {/* Member count */}
-          <p className="text-center text-[#FF9600] font-bold text-xs font-bold">
+          <p className="text-center text-[#FF8C00] font-bold text-xs font-bold">
             {mainTab === "mygroups" && selectedGroupCode
               ? `${groupNames[selectedGroupCode] || selectedGroupCode} — ${members.length} members`
               : `All ${members.length} members`}
@@ -513,17 +510,17 @@ export default function Leaderboard() {
                 onClick={() => handleMemberTap(top3[1], 2)}
               >
                 <div className="relative">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10">
-                    <img src={ASSETS.ranking.badgeSilver} alt="2nd" className="w-full h-full object-contain" />
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10 rounded-full bg-gray-200 border-2 border-gray-400 flex items-center justify-center text-xs font-black text-gray-600">
+                    2
                   </div>
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ${!getFrameClass(top3[1]?.equippedFrame) ? "" : ""}`} style={{ background: 'rgba(26, 10, 46, 0.8)', border: '2px solid rgba(192,192,192,0.6)', boxShadow: '0 0 15px rgba(192,192,192,0.3)' }}>
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ${!getFrameClass(top3[1]?.equippedFrame) ? "" : ""}`} style={{ background: '#F3F4F6', border: '3px solid #9CA3AF' }}>
                     <MemberAvatar member={top3[1]} size="md" showFrame />
                   </div>
                 </div>
                 <p className="text-gray-800 text-xs font-bold mt-2 max-w-[70px] truncate">{top3[1]?.nickname}</p>
                 {mainTab === "global" && renderGroupBadge(top3[1]?.groupCode)}
                 <p className="text-gray-300 font-bold text-xs mt-0.5">{getDisplayValue(top3[1], sortBy)}</p>
-                <span className="text-[#FF9600] font-bold text-xs">★</span>
+                <span className="text-[#FF8C00] font-bold text-xs">★</span>
               </div>
 
               {/* 1st place */}
@@ -533,10 +530,10 @@ export default function Leaderboard() {
               >
                 <div className="text-2xl mb-1">👑</div>
                 <div className="relative">
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 z-10">
-                    <img src={ASSETS.ranking.badgeGold} alt="1st" className="w-full h-full object-contain" />
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 z-10 rounded-full bg-[#FFF8E1] border-2 border-[#FFB74D] flex items-center justify-center text-sm font-black text-[#F57C00]">
+                    1
                   </div>
-                  <div className={`flex items-center justify-center overflow-hidden ${!getFrameClass(top3[0]?.equippedFrame) ? "" : ""}`} style={{width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(26, 10, 46, 0.8)', border: '2px solid rgba(212,175,55,0.7)', boxShadow: '0 0 20px rgba(212,175,55,0.3)'}}>
+                  <div className={`flex items-center justify-center overflow-hidden ${!getFrameClass(top3[0]?.equippedFrame) ? "" : ""}`} style={{width: '72px', height: '72px', borderRadius: '50%', background: '#FFF8E1', border: '3px solid #FFB74D'}}>
                     <MemberAvatar member={top3[0]} size="lg" showFrame />
                   </div>
                 </div>
@@ -545,8 +542,8 @@ export default function Leaderboard() {
                   {top3[0]?.uid === currentUid && <span className="text-red-400 text-xs ml-1">(You)</span>}
                 </p>
                 {mainTab === "global" && renderGroupBadge(top3[0]?.groupCode)}
-                <p className="text-[#FF9600] font-bold text-sm mt-0.5">{getDisplayValue(top3[0], sortBy)}</p>
-                <span className="text-[#FF9600] font-bold text-xs">★</span>
+                <p className="text-[#FF8C00] font-bold text-sm mt-0.5">{getDisplayValue(top3[0], sortBy)}</p>
+                <span className="text-[#FF8C00] font-bold text-xs">★</span>
               </div>
 
               {/* 3rd place */}
@@ -555,17 +552,17 @@ export default function Leaderboard() {
                 onClick={() => handleMemberTap(top3[2], 3)}
               >
                 <div className="relative">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10">
-                    <img src={ASSETS.ranking.badgeBronze} alt="3rd" className="w-full h-full object-contain" />
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10 rounded-full bg-[#FBE9E7] border-2 border-[#FF8A65] flex items-center justify-center text-xs font-black text-[#E64A19]">
+                    3
                   </div>
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ${!getFrameClass(top3[2]?.equippedFrame) ? "" : ""}`} style={{ background: 'rgba(26, 10, 46, 0.8)', border: '2px solid rgba(205,127,50,0.6)', boxShadow: '0 0 15px rgba(205,127,50,0.3)' }}>
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ${!getFrameClass(top3[2]?.equippedFrame) ? "" : ""}`} style={{ background: '#FBE9E7', border: '3px solid #FF8A65' }}>
                     <MemberAvatar member={top3[2]} size="md" showFrame />
                   </div>
                 </div>
                 <p className="text-gray-800 text-xs font-bold mt-2 max-w-[70px] truncate">{top3[2]?.nickname}</p>
                 {mainTab === "global" && renderGroupBadge(top3[2]?.groupCode)}
                 <p className="text-amber-400 font-bold text-xs mt-0.5">{getDisplayValue(top3[2], sortBy)}</p>
-                <span className="text-[#FF9600] font-bold text-xs">★</span>
+                <span className="text-[#FF8C00] font-bold text-xs">★</span>
               </div>
             </div>
           )}
@@ -581,7 +578,7 @@ export default function Leaderboard() {
                   key={member.uid}
                   onClick={() => handleMemberTap(member, rank)}
                   className={`p-3 flex items-center gap-3 rounded-xl transition-all cursor-pointer active:scale-[0.98]`}
-                  style={isMe ? { background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.4)' } : { background: 'rgba(26, 10, 46, 0.4)', border: '1px solid rgba(212,175,55,0.1)' }}
+                  style={isMe ? { background: '#F0FFF4', border: '2px solid #58CC02' } : { background: 'white', border: '2px solid #E5E5E5' }}
                 >
                   <span className="text-base font-bold text-gray-600 w-7 text-center">{rank}</span>
                   <div className={`w-10 h-10 rounded-full bg-purple-900/50 flex items-center justify-center overflow-hidden ${memberFrameClass || "border border-purple-500/30"}`}>

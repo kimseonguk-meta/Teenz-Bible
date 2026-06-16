@@ -274,7 +274,7 @@ export default function BibleMap() {
       </div>
 
       {/* Leaflet Map */}
-      <div className="gold-card overflow-hidden rounded-xl">
+      <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm overflow-hidden rounded-xl">
         <div
           ref={mapContainerRef}
           className="w-full h-[280px]"
@@ -290,7 +290,7 @@ export default function BibleMap() {
           totalDist += getDistanceKm(paulLocs[i].lat, paulLocs[i].lng, paulLocs[i + 1].lat, paulLocs[i + 1].lng);
         }
         return (
-          <div className="gold-card p-3 flex items-center gap-3 border-amber-500/30 bg-gradient-to-r from-amber-900/20 to-purple-900/20">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 border-amber-500/30 bg-gradient-to-r from-amber-900/20 to-purple-900/20">
             <span className="text-2xl">🚀</span>
             <div className="flex-1">
               <p className="text-amber-300 text-xs font-bold">
@@ -333,7 +333,7 @@ export default function BibleMap() {
             <div
               key={loc.name}
               onClick={() => handleLocClick(loc)}
-              className="gold-card p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
+              className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
             >
               <div className="w-full aspect-square rounded-lg overflow-hidden relative">
                 <img
@@ -361,7 +361,7 @@ export default function BibleMap() {
             <div
               key={loc.name}
               onClick={() => handleLocClick(loc)}
-              className="gold-card p-4 active:scale-[0.98] transition-all cursor-pointer"
+              className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 active:scale-[0.98] transition-all cursor-pointer"
             >
               <div className="flex items-start gap-3">
                 <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" loading="lazy" />

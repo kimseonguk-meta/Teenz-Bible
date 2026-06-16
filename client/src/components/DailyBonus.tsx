@@ -136,7 +136,7 @@ export default function DailyBonus() {
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
-      <DialogContent className="bg-[#0f0f2e] border-[rgba(212,175,55,0.3)] max-w-[340px] rounded-2xl">
+      <DialogContent className="bg-[#0f0f2e] border-[#E5E5E5] max-w-[340px] rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-center text-white text-xl font-bold">
             {claimResult?.isMilestone ? "🎉 Milestone Reached!" : "🔥 Daily Bonus!"}
@@ -179,7 +179,7 @@ export default function DailyBonus() {
                         ? "bg-yellow-500/20 border-yellow-500/50 scale-105"
                         : reached
                         ? "bg-green-500/10 border-green-500/30"
-                        : "bg-white/[0.03] border-[rgba(212,175,55,0.2)]"
+                        : "bg-white/[0.03] border-[#E5E5E5]"
                     }`}
                   >
                     <p className="text-lg">{reached ? "✅" : m.emoji}</p>

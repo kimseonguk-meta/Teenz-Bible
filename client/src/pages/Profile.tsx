@@ -16,7 +16,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { createGroup, joinGroup, leaveGroup, renameGroup, removeMember, getLocalGroups, fetchGroupMeta, fetchGroupMembers, isGroupAdmin, fetchAllAvailableGroups, type GroupMeta, type GroupMembership } from "@/lib/groups";
 import type { LeaderboardMember } from "@/lib/firebase";
-import { ASSETS } from "@/lib/assets";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -473,7 +472,7 @@ export default function Profile() {
       {/* Full-screen loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
         <div className="fixed inset-0 z-[9999] bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-[#FF9600] font-bold" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <svg className="animate-spin h-10 w-10 text-[#FF8C00] font-bold" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
           <p className="text-gray-800 text-sm font-medium">
             {linkingApple ? "Connecting to Apple..." : "Connecting to Google..."}
           </p>
@@ -513,22 +512,18 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Profile Ribbon Header */}
-      <div className="flex justify-center mb-2">
-        <div className="relative flex items-center justify-center" style={{ width: '240px', height: '60px' }}>
-          <img src={ASSETS.ribbons.profile} alt="" className="absolute inset-0 w-full h-full object-contain" />
-          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>PROFILE</span>
-        </div>
+      {/* Profile Header */}
+      <div className="text-center mb-2">
+        <h1 className="text-2xl font-black text-gray-800">🛡️ Profile</h1>
       </div>
 
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative">
-          {/* Gold ornate frame behind avatar */}
-          <img src={ASSETS.frames.avatarCircle} alt="" className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] object-contain pointer-events-none z-20" />
+          {/* Avatar ring */}
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
-            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-[rgba(26,10,46,0.4)] cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
+            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-4 border-[#58CC02] shadow-lg'}`}
           >
             {profilePhoto ? (
               <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
@@ -580,7 +575,7 @@ export default function Profile() {
                   if (!isNativePlatform()) cameraInputRef.current?.click();
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.4)] text-[#FF9600] text-xs font-medium transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-[#E5E5E5] border border-[#E5E5E5] text-[#FF8C00] text-xs font-medium transition-all active:scale-95"
             >
               📸 Take Photo
             </button>
@@ -602,7 +597,7 @@ export default function Profile() {
                   if (!isNativePlatform()) photoInputRef.current?.click();
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.4)] text-[#FF9600] text-xs font-medium transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-[#E5E5E5] border border-[#E5E5E5] text-[#FF8C00] text-xs font-medium transition-all active:scale-95"
             >
               🖼️ Gallery
             </button>
@@ -752,11 +747,11 @@ export default function Profile() {
           className="mt-3 flex items-center gap-1.5 group active:scale-[0.97] transition-transform"
         >
           <h2 className="text-2xl font-bold text-gray-800 font-black">{playerName}</h2>
-          <span className="text-gray-600 group-hover:text-[#FF9600] font-bold transition-colors text-sm">✏️</span>
+          <span className="text-gray-600 group-hover:text-[#FF8C00] font-bold transition-colors text-sm">✏️</span>
         </button>
         <p className="text-gray-600 text-[10px] mt-0.5">Tap to change nickname</p>
         <div className="flex items-center gap-2 mt-1">
-          <span className="px-3 py-1 rounded-full bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.4)] text-[#FF9600] text-xs font-medium">
+          <span className="px-3 py-1 rounded-full bg-[#E5E5E5] border border-[#E5E5E5] text-[#FF8C00] text-xs font-medium">
             ⭐ Lv. {level.level} {level.name}
           </span>
           {myGroups.length > 0 ? (
@@ -791,7 +786,7 @@ export default function Profile() {
               placeholder="Enter your nickname"
               maxLength={20}
               autoFocus
-              className="bg-gray-900/60 border-[rgba(212,175,55,0.4)] text-gray-800 placeholder:text-gray-600"
+              className="bg-gray-900/60 border-[#E5E5E5] text-gray-800 placeholder:text-gray-600"
             />
             <p className="text-gray-600 text-[10px] text-right">{nicknameInput.trim().length}/20</p>
             {nicknameError && <p className="text-red-400 text-xs">{nicknameError}</p>}
@@ -817,21 +812,21 @@ export default function Profile() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="gold-card p-3 text-center">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
-            <div className="w-6 h-6 rounded-md bg-purple-600/40 flex items-center justify-center text-[10px] font-bold text-[#FF9600]">XP</div>
+            <div className="w-6 h-6 rounded-md bg-purple-600/40 flex items-center justify-center text-[10px] font-bold text-[#FF8C00]">XP</div>
           </div>
           <div className="text-lg font-bold text-gray-800">{totalXP.toLocaleString()}</div>
           <div className="text-[10px] text-gray-600">Total XP</div>
         </div>
-        <div className="gold-card p-3 text-center border-cyan-500/40">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center border-cyan-500/40">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">💎</span>
           </div>
           <div className="text-lg font-bold text-gray-800">{gems}</div>
           <div className="text-[10px] text-gray-600">Gems</div>
         </div>
-        <div className="gold-card p-3 text-center border-[#FFC800]/40">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center border-[#FFC800]/40">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">📖</span>
           </div>
@@ -843,22 +838,22 @@ export default function Profile() {
       {/* Quiz Stats Link */}
       <button 
         onClick={() => setLocation("/quiz-stats")}
-        className="w-full gold-card p-4 flex items-center justify-between active:scale-[0.98] transition-all"
+        className="w-full bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 flex items-center justify-between active:scale-[0.98] transition-all"
       >
         <div className="flex items-center gap-3">
           <span className="text-2xl">📊</span>
           <div className="text-left">
             <p className="text-gray-800 font-bold text-sm">Quiz Statistics</p>
-            <p className="text-[#FF9600] font-bold text-xs">View your accuracy, streaks & history</p>
+            <p className="text-[#FF8C00] font-bold text-xs">View your accuracy, streaks & history</p>
           </div>
         </div>
-        <span className="text-[#FF9600] font-bold">→</span>
+        <span className="text-[#FF8C00] font-bold">→</span>
       </button>
 
       {/* Badges */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-[#FF9600] font-bold">🏆 Badges</h3>
+          <h3 className="text-base font-bold text-[#FF8C00] font-bold">🏆 Badges</h3>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
           {badges.map((badge) => {
@@ -867,7 +862,7 @@ export default function Profile() {
               <div key={badge.name} className={`flex flex-col items-center min-w-[70px] ${!earned ? 'opacity-40' : ''}`}>
                 <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl ${
                   earned
-                    ? 'bg-[rgba(212,175,55,0.15)] border-2 border-[rgba(212,175,55,0.6)] shadow-[0_0_12px_rgba(139,92,246,0.3)]'
+                    ? 'bg-[#E5E5E5] border-2 border-[#FFB74D] shadow-[0_0_12px_rgba(139,92,246,0.3)]'
                     : 'bg-gray-800/50 border-2 border-gray-700/50'
                 }`}>
                   {badge.icon}
@@ -883,9 +878,9 @@ export default function Profile() {
       {/* Reading Progress */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-[#FF9600] font-bold">📖 Reading Progress</h3>
+          <h3 className="text-base font-bold text-[#FF8C00] font-bold">📖 Reading Progress</h3>
         </div>
-        <div className="gold-card p-4">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-800 font-bold text-sm">Overall Bible</span>
             <span className="text-gray-800 font-bold">{Math.round((chaptersRead / 1189) * 100)}%</span>
@@ -900,27 +895,27 @@ export default function Profile() {
       {/* Equipped Items */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-[#FF9600] font-bold">✨ Equipped Items</h3>
+          <h3 className="text-base font-bold text-[#FF8C00] font-bold">✨ Equipped Items</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="gold-card p-3 text-center">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
             <p className="text-gray-600 text-[10px] mb-2">Theme</p>
             <div className="text-2xl">{equippedTheme?.emoji || "🌙"}</div>
             <p className="text-gray-800 text-xs mt-1">{equippedTheme?.name || "Twilight"}</p>
           </div>
-          <div className="gold-card p-3 text-center">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
             <p className="text-gray-600 text-[10px] mb-2">Reader BG</p>
             <div className="text-2xl">{equippedReader?.emoji || "🌑"}</div>
             <p className="text-gray-800 text-xs mt-1">{equippedReader?.name || "Dark"}</p>
           </div>
-          <div className="gold-card p-3 text-center">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
             <p className="text-gray-600 text-[10px] mb-2">Frame</p>
             <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center bg-gray-50 ${equippedFrame?.frameClass || ''}`}>
               <span className="text-sm">{avatar}</span>
             </div>
             <p className="text-gray-800 text-xs mt-1">{equippedFrame?.name || "None"}</p>
           </div>
-          <div className="gold-card p-3 text-center">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
             <p className="text-gray-600 text-[10px] mb-2">Pet</p>
             <div className="flex items-center justify-center">
               {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
@@ -936,16 +931,16 @@ export default function Profile() {
 
       {/* ============ SETTINGS SECTION ============ */}
       <div className="pt-4 border-t border-gray-800/60">
-        <h3 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-4">⚙️ Settings</h3>
+        <h3 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-4">⚙️ Settings</h3>
 
         {/* Social Settings */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-[#FF9600] font-bold/80 uppercase tracking-wider">👥 Social</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">👥 Social</p>
 
           {/* Manage Groups */}
           <div
             onClick={() => setShowGroupManager(true)}
-            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-[#58CC02]/20 flex items-center justify-center text-xl">👥</div>
             <div className="flex-1">
@@ -993,7 +988,7 @@ export default function Profile() {
                 }
               }
             }}
-            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">📨</div>
             <div className="flex-1">
@@ -1006,9 +1001,9 @@ export default function Profile() {
           {/* Feedback */}
           <div
             onClick={() => { window.location.href = "/feedback"; }}
-            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
-            <div className="w-10 h-10 rounded-lg bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-xl">📝</div>
+            <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center text-xl">📝</div>
             <div className="flex-1">
               <p className="text-gray-800 text-sm font-medium">Send Feedback</p>
               <p className="text-gray-600 text-[10px]">Help us improve the app</p>
@@ -1019,11 +1014,11 @@ export default function Profile() {
 
         {/* Account & Cloud Sync */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-[#FF9600] font-bold/80 uppercase tracking-wider">☁️ Account & Sync</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">☁️ Account & Sync</p>
 
           {/* Status banner - show only the LAST sign-in provider to avoid confusion */}
           {(googleLinked || appleLinked) ? (
-            <div className="gold-card p-4">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                   <span className="text-xl">✅</span>
@@ -1055,14 +1050,14 @@ export default function Profile() {
 
             </div>
           ) : (
-            <div className="gold-card p-4">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
                   <span className="text-xl">⚠️</span>
                 </div>
                 <div className="flex-1">
                   <p className="text-gray-800 text-sm font-medium">Back Up Your Progress</p>
-                  <p className="text-[#FF9600] font-bold text-[10px]">Sign in to save your progress</p>
+                  <p className="text-[#FF8C00] font-bold text-[10px]">Sign in to save your progress</p>
                 </div>
               </div>
               <p className="text-gray-600 text-[10px] mb-3">If you clear your browser or switch devices, you'll lose all progress. Link an account to keep your data safe!</p>
@@ -1111,10 +1106,10 @@ export default function Profile() {
 
         {/* AI & Data */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-[#FF9600] font-bold/80 uppercase tracking-wider">🤖 AI & Data</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">🤖 AI & Data</p>
 
           {/* Bible AI Status */}
-          <div className="gold-card p-3 flex items-center justify-between">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center justify-between">
             <div>
               <p className="text-gray-800 text-sm font-medium">Bible AI</p>
               <p className="text-green-400 text-[10px]">✅ Connected & Ready</p>
@@ -1125,10 +1120,10 @@ export default function Profile() {
 
         {/* Legal */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-[#FF9600] font-bold/80 uppercase tracking-wider">📄 Legal</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">📄 Legal</p>
           <div
             onClick={() => window.open('/privacy-policy.html', '_blank')}
-            className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-gray-500/20 flex items-center justify-center text-xl">🔒</div>
             <div className="flex-1">
@@ -1151,7 +1146,7 @@ export default function Profile() {
               🗑️ Reset All Progress
             </button>
           ) : (
-            <div className="gold-card p-4 border-red-500/40">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 border-red-500/40">
               <p className="text-red-300 text-sm font-bold mb-2">Are you sure?</p>
               <p className="text-gray-600 text-xs mb-3">This will delete ALL your progress, items, and profile. This cannot be undone.</p>
               <div className="flex gap-2">
@@ -1180,7 +1175,7 @@ export default function Profile() {
               🚫 Delete Account
             </button>
           ) : (
-            <div className="gold-card p-4 border-red-600/50">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 border-red-600/50">
               <p className="text-red-300 text-sm font-bold mb-2">Delete your account?</p>
               <p className="text-gray-600 text-xs mb-3">This will permanently delete your account and all associated data from our servers. This action cannot be undone.</p>
               <div className="flex gap-2">
@@ -1241,19 +1236,19 @@ export default function Profile() {
               <div className="space-y-3">
                 <button
                   onClick={() => { setSelectedGroupForManage(null); setGroupError(null); setGroupSuccess(null); }}
-                  className="text-[#FF9600] font-bold text-xs font-medium mb-2 flex items-center gap-1"
+                  className="text-[#FF8C00] font-bold text-xs font-medium mb-2 flex items-center gap-1"
                 >
                   ← Back to groups
                 </button>
 
                 {/* Group Info Card */}
-                <div className="gold-card p-4">
+                <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-gray-800 font-bold text-base">
                       {groupMetas[selectedGroupForManage]?.name || selectedGroupForManage}
                     </h4>
                     {isGroupAdmin(selectedGroupForManage) && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-[#FF9600] font-bold font-bold">Admin</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-[#FF8C00] font-bold font-bold">Admin</span>
                     )}
                   </div>
                   <p className="text-gray-600 text-[10px] mt-1">
@@ -1266,7 +1261,7 @@ export default function Profile() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => { setRenameInput(groupMetas[selectedGroupForManage]?.name || ""); setShowRenameGroup(true); }}
-                      className="flex-1 py-2 rounded-lg bg-[rgba(212,175,55,0.1)] border border-gray-200 text-[#FF9600] font-bold text-xs font-medium active:scale-95 transition-transform"
+                      className="flex-1 py-2 rounded-lg bg-[#F3F4F6] border border-gray-200 text-[#FF8C00] font-bold text-xs font-medium active:scale-95 transition-transform"
                     >
                       ✏️ Rename
                     </button>
@@ -1281,7 +1276,7 @@ export default function Profile() {
                       onChange={(e) => setRenameInput(e.target.value)}
                       placeholder="New group name"
                       maxLength={30}
-                      className="bg-gray-900/60 border-[rgba(212,175,55,0.4)] text-gray-800 text-sm"
+                      className="bg-gray-900/60 border-[#E5E5E5] text-gray-800 text-sm"
                     />
                     <div className="flex gap-2">
                       <button
@@ -1333,7 +1328,7 @@ export default function Profile() {
                           <p className="text-gray-600 text-[9px]">⚡ {m.xp || 0} XP</p>
                         </div>
                         {m.role === "admin" && (
-                          <span className="text-[8px] px-1 py-0.5 rounded bg-yellow-500/20 text-[#FF9600] font-bold">Admin</span>
+                          <span className="text-[8px] px-1 py-0.5 rounded bg-yellow-500/20 text-[#FF8C00] font-bold">Admin</span>
                         )}
                         {isGroupAdmin(selectedGroupForManage) && m.uid !== auth.currentUser?.uid && (
                           <button
@@ -1405,7 +1400,7 @@ export default function Profile() {
                             setGroupMembers(members);
                           } catch { setGroupMembers([]); }
                         }}
-                        className="gold-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+                        className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
                       >
                         <div className="w-10 h-10 rounded-lg bg-[#58CC02]/20 flex items-center justify-center text-xl">
                           {g.role === "admin" ? "👑" : "👥"}

@@ -366,7 +366,7 @@ export default function ProfilePhotoPrompt() {
                       if (!isNativePlatform()) cameraInputRef.current?.click();
                     }
                   }}
-                  className="w-24 h-24 rounded-full border-2 border-dashed border-[rgba(212,175,55,0.5)] flex flex-col items-center justify-center cursor-pointer hover:border-[rgba(212,175,55,0.5)] hover:bg-purple-500/10 transition-all active:scale-95"
+                  className="w-24 h-24 rounded-full border-2 border-dashed border-[#FFB74D] flex flex-col items-center justify-center cursor-pointer hover:border-[#FFB74D] hover:bg-purple-500/10 transition-all active:scale-95"
                 >
                   <span className="text-2xl mb-1">📸</span>
                   <span className="text-[10px] text-gray-500">Take Photo</span>
@@ -393,7 +393,7 @@ export default function ProfilePhotoPrompt() {
                       if (!isNativePlatform()) fileInputRef.current?.click();
                     }
                   }}
-                  className="w-24 h-24 rounded-full border-2 border-dashed border-[rgba(212,175,55,0.5)] flex flex-col items-center justify-center cursor-pointer hover:border-[rgba(212,175,55,0.5)] hover:bg-purple-500/10 transition-all active:scale-95"
+                  className="w-24 h-24 rounded-full border-2 border-dashed border-[#FFB74D] flex flex-col items-center justify-center cursor-pointer hover:border-[#FFB74D] hover:bg-purple-500/10 transition-all active:scale-95"
                 >
                   <span className="text-2xl mb-1">🖼️</span>
                   <span className="text-[10px] text-gray-500">Gallery</span>
@@ -419,7 +419,7 @@ export default function ProfilePhotoPrompt() {
                   >
                     <div
                       className={`w-12 h-12 rounded-lg overflow-hidden border-2 ${
-                        selectedFilter === idx ? "border-[rgba(212,175,55,0.5)]" : "border-transparent"
+                        selectedFilter === idx ? "border-[#FFB74D]" : "border-transparent"
                       }`}
                     >
                       <img

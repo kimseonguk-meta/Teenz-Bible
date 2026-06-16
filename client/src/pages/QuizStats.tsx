@@ -130,7 +130,7 @@ export default function QuizStats() {
           </div>
           
           {/* Progress ring */}
-          <div className="gold-card p-5 text-center">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-5 text-center">
             <div className="relative w-32 h-32 mx-auto mb-3">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(147,51,234,0.2)" strokeWidth="8" />
@@ -157,7 +157,7 @@ export default function QuizStats() {
           </div>
           
           {/* Weekly progress */}
-          <div className="gold-card p-4">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
             <h3 className="text-white font-bold text-sm mb-2">📅 This Week</h3>
             <div className="flex justify-between text-sm">
               <span className="text-[#FF9600] font-bold">Quizzes taken</span>
@@ -174,7 +174,7 @@ export default function QuizStats() {
           </div>
           
           {/* Best streak */}
-          <div className="gold-card p-4">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
             <h3 className="text-white font-bold text-sm mb-2">🏆 Records</h3>
             <div className="flex justify-between text-sm">
               <span className="text-[#FF9600] font-bold">Best streak</span>
@@ -188,14 +188,14 @@ export default function QuizStats() {
           
           {/* Most missed */}
           {mostMissed.length > 0 && (
-            <div className="gold-card p-4">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
               <h3 className="text-white font-bold text-sm mb-3">⚠️ Needs Review</h3>
               <div className="space-y-2">
                 {mostMissed.map(({ book, accuracy: acc, total }) => (
                   <div key={book} className="flex items-center justify-between">
                     <span className="text-[#f0d060] text-sm">{book}</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-16 h-2 bg-[rgba(26,10,46,0.6)] rounded-full overflow-hidden">
+                      <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div 
                           className={`h-full rounded-full ${acc >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`}
                           style={{ width: `${acc}%` }}
@@ -215,7 +215,7 @@ export default function QuizStats() {
       {tab === "books" && (
         <div className="space-y-3">
           {stats.total === 0 ? (
-            <div className="gold-card p-6 text-center">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-6 text-center">
               <span className="text-4xl">📚</span>
               <p className="text-[#f0d060] mt-3">No quiz data yet! Start reading chapters to take quizzes.</p>
             </div>
@@ -227,13 +227,13 @@ export default function QuizStats() {
                 .map(([book, s]) => {
                   const acc = Math.round((s.correct / s.total) * 100);
                   return (
-                    <div key={book} className="gold-card p-3 flex items-center justify-between">
+                    <div key={book} className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center justify-between">
                       <div>
                         <p className="text-white font-bold text-sm">{book}</p>
                         <p className="text-[#FF9600] font-bold text-xs">{s.correct}/{s.total} correct</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-2 bg-[rgba(26,10,46,0.6)] rounded-full overflow-hidden">
+                        <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
                           <div 
                             className={`h-full rounded-full ${acc >= 70 ? 'bg-green-500' : acc >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`}
                             style={{ width: `${acc}%` }}
@@ -255,7 +255,7 @@ export default function QuizStats() {
       {tab === "history" && (
         <div className="space-y-2">
           {recentHistory.length === 0 ? (
-            <div className="gold-card p-6 text-center">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-6 text-center">
               <span className="text-4xl">📋</span>
               <p className="text-[#f0d060] mt-3">No quiz history yet! Start reading to take quizzes.</p>
             </div>
@@ -263,7 +263,7 @@ export default function QuizStats() {
             <>
               <p className="text-[#FF9600] font-bold text-xs mb-2">Last 20 quizzes:</p>
               {recentHistory.map((entry, i) => (
-                <div key={i} className="gold-card p-3 flex items-center justify-between">
+                <div key={i} className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-lg">{entry.correct ? "✅" : "❌"}</span>
                     <div>
@@ -291,7 +291,7 @@ export default function QuizStats() {
 function StatCard({ label, value, emoji, color }: { label: string; value: string; emoji: string; color?: string }) {
   const colorClass = color === "green" ? "text-green-400" : color === "red" ? "text-red-400" : color === "yellow" ? "text-yellow-400" : "text-white";
   return (
-    <div className="gold-card p-4 text-center">
+    <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 text-center">
       <span className="text-2xl">{emoji}</span>
       <p className={`text-xl font-bold mt-1 ${colorClass}`}>{value}</p>
       <p className="text-[#FF9600] font-bold text-xs mt-1">{label}</p>

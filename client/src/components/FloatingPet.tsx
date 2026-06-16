@@ -809,7 +809,7 @@ export default function FloatingPet() {
       {/* Mini-game panel */}
       {showMiniGame && (
         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 animate-fade-in pointer-events-auto">
-          <div className="bg-[#1a1040]/95 backdrop-blur-md border border-[rgba(212,175,55,0.3)] rounded-2xl p-3 shadow-xl min-w-[180px]">
+          <div className="bg-[#1a1040]/95 backdrop-blur-md border border-[#E5E5E5] rounded-2xl p-3 shadow-xl min-w-[180px]">
             <div className="flex items-center justify-between mb-2">
               <span className="text-white text-xs font-bold">{pet.name}</span>
               <button
@@ -980,9 +980,9 @@ export default function FloatingPet() {
       {/* Drag hint tooltip */}
       {showHint && (
         <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[160px] animate-fade-in pointer-events-none">
-          <div className="bg-purple-900/95 text-white text-[10px] font-medium px-3 py-2 rounded-xl shadow-lg text-center border border-[rgba(212,175,55,0.4)]">
+          <div className="bg-purple-900/95 text-white text-[10px] font-medium px-3 py-2 rounded-xl shadow-lg text-center border border-[#E5E5E5]">
             💡 Drag me to the bottom-right corner to make me sit still!
-            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-purple-900/95 rotate-45 border-l border-t border-[rgba(212,175,55,0.4)]" />
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-purple-900/95 rotate-45 border-l border-t border-[#E5E5E5]" />
           </div>
         </div>
       )}

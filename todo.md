@@ -336,11 +336,13 @@
 - [x] Verify all images load correctly on Firebase
 
 ## V3 CSS-Only Redesign - Duolingo/Flat Style (Jun 16, 2026)
-- [ ] Define new design system (colors, typography, component patterns)
-- [ ] Rebuild AppLayout bottom nav with CSS-only colorful icons
-- [ ] Rebuild Home page (flat colorful gamification, no image dependencies)
-- [ ] Rebuild Bible page with colorful book cards
-- [ ] Rebuild Leaderboard with CSS podium
-- [ ] Rebuild Store with colorful pet cards
-- [ ] Rebuild Profile page
-- [ ] Build and deploy to Firebase + Capgo
+- [x] Define new design system (colors, typography, component patterns)
+- [x] Rebuild AppLayout bottom nav with CSS-only colorful icons
+- [x] Rebuild Home page (flat colorful gamification, no image dependencies)
+- [x] Rebuild Bible page with colorful book cards
+- [x] Rebuild Leaderboard with CSS podium
+- [x] Rebuild Store with colorful pet cards
+- [x] Rebuild Profile page
+- [x] Build and deploy to Firebase + Capgo (v1.0.14)
+- [x] Remove all /manus-storage/ and ASSETS image dependencies
+- [x] Verify all pages work on Firebase without any broken images

@@ -185,7 +185,7 @@ export default function Feedback() {
 
       {/* Stats Banner */}
       <div className="grid grid-cols-2 gap-2">
-        <div className="bg-white/[0.04] border border-[rgba(212,175,55,0.2)] rounded-xl p-3 text-center">
+        <div className="bg-white/[0.04] border border-[#E5E5E5] rounded-xl p-3 text-center">
           <p className="text-xl font-bold text-[#FF9600] font-bold">{totalFeedbacks}</p>
           <p className="text-[10px] text-gray-500 mt-0.5">Total Feedback</p>
         </div>
@@ -221,7 +221,7 @@ export default function Feedback() {
 
       {/* Feedback Form */}
       {showForm && (
-        <div className="bg-white/[0.03] border border-[rgba(212,175,55,0.2)] rounded-xl p-4 space-y-4">
+        <div className="bg-white/[0.03] border border-[#E5E5E5] rounded-xl p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-bold text-sm">New Feedback</h2>
             <button onClick={() => { setShowForm(false); setAttempted(false); }} className="text-gray-500 text-lg">✕</button>
@@ -239,7 +239,7 @@ export default function Feedback() {
                   onClick={() => setCategory(cat.key)}
                   className={`p-2.5 rounded-lg text-left transition-all ${
                     category === cat.key
-                      ? "bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.5)] text-white"
+                      ? "bg-[#F3F4F6] border border-[#FFB74D] text-white"
                       : "bg-white/[0.03] border border-transparent text-gray-400 hover:bg-white/[0.05]"
                   }`}
                 >
@@ -263,7 +263,7 @@ export default function Feedback() {
               className={`w-full px-3 py-2.5 rounded-lg bg-white/[0.05] text-white text-sm placeholder:text-gray-600 focus:outline-none transition-all ${
                 isTitleError
                   ? "border border-red-500/60 ring-1 ring-red-500/30 bg-red-500/5"
-                  : "border border-[rgba(212,175,55,0.2)] focus:border-[rgba(212,175,55,0.5)]"
+                  : "border border-[#E5E5E5] focus:border-[#FFB74D]"
               }`}
               maxLength={100}
             />
@@ -281,7 +281,7 @@ export default function Feedback() {
               className={`w-full px-3 py-2.5 rounded-lg bg-white/[0.05] text-white text-sm placeholder:text-gray-600 focus:outline-none resize-none transition-all ${
                 isMessageError
                   ? "border border-red-500/60 ring-1 ring-red-500/30 bg-red-500/5"
-                  : "border border-[rgba(212,175,55,0.2)] focus:border-[rgba(212,175,55,0.5)]"
+                  : "border border-[#E5E5E5] focus:border-[#FFB74D]"
               }`}
               rows={4}
               maxLength={1000}
