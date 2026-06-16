@@ -17,7 +17,7 @@ import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
 
-// Use centralized asset map with verified /manus-storage/ paths
+// Use centralized asset map with /assets/ paths (hosted on Firebase)
 import { ASSETS as CDN_ASSETS } from "@/lib/assets";
 const ASSETS = {
   icon_fire: CDN_ASSETS.stats.fire,

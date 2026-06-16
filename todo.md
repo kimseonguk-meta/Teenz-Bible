@@ -327,3 +327,10 @@
 - [x] Rebuild Bible Reader page with parchment style
 - [x] Rebuild Onboarding page with image assets
 - [x] Test all pages and deploy
+
+## Firebase-Only Deployment Fix (Jun 16, 2026)
+- [x] Copy all generated PNG assets to dist/public/assets/ for Firebase deploy
+- [x] Update all /manus-storage/ paths in source code to /assets/ paths
+- [x] Build and redeploy to Firebase Hosting
+- [x] Deploy to Capgo OTA with API key (v1.0.11)
+- [x] Verify all images load correctly on Firebase

@@ -1,105 +1,105 @@
 // V2 UI Assets - All paths for generated game UI elements
-// These are all AI-generated 3D metallic game-style assets uploaded via manus-upload-file --webdev
+// Hosted directly on Firebase Hosting in /assets/ folder
 
 export const ASSETS = {
   // === Bottom Navigation Icons ===
   nav: {
-    home: "/manus-storage/nav_home_castle_a356fd10.png",
-    bible: "/manus-storage/nav_bible_book_1adc62b2.png",
-    ranking: "/manus-storage/nav_ranking_trophy_a21a6f03.png",
-    store: "/manus-storage/nav_store_chest_b9bed882.png",
-    profile: "/manus-storage/nav_profile_shield_7660c91f.png",
+    home: "/assets/nav_home_castle.png",
+    bible: "/assets/nav_bible_book.png",
+    ranking: "/assets/nav_ranking_trophy.png",
+    store: "/assets/nav_store_chest.png",
+    profile: "/assets/nav_profile_shield.png",
   },
 
   // === Gold Ribbon Banners ===
   ribbons: {
-    welcomeBack: "/manus-storage/ribbon_welcome_back_c241832d.png",
-    bible: "/manus-storage/ribbon_bible_e88ae83d.png",
-    ranking: "/manus-storage/ribbon_ranking_5f1f94e3.png",
-    store: "/manus-storage/ribbon_store_f2f5f0ce.png",
-    profile: "/manus-storage/ribbon_profile_e9f7f859.png",
-    dailyQuiz: "/manus-storage/ribbon_daily_quiz_75826ef1.png",
+    welcomeBack: "/assets/ribbon_welcome_back.png",
+    bible: "/assets/ribbon_bible.png",
+    ranking: "/assets/ribbon_ranking.png",
+    store: "/assets/ribbon_store.png",
+    profile: "/assets/ribbon_profile.png",
+    dailyQuiz: "/assets/ribbon_daily_quiz.png",
   },
 
   // === Stat Icons ===
   stats: {
-    fire: "/manus-storage/icon_fire_streak_179bbd33.png",
-    gem: "/manus-storage/icon_purple_gem_efcd8db6.png",
-    xp: "/manus-storage/icon_xp_star_8af03d1c.png",
+    fire: "/assets/icon_fire_streak.png",
+    gem: "/assets/icon_purple_gem.png",
+    xp: "/assets/icon_xp_star.png",
   },
 
   // === Quick Action Icons ===
   quickActions: {
-    brain: "/manus-storage/icon_brain_quiz_b2eaa813.png",
-    candle: "/manus-storage/icon_candle_devotion_cc90ebef.png",
-    friends: "/manus-storage/icon_friends_f5f8b366.png",
-    scroll: "/manus-storage/icon_scroll_quest_f5e35dad.png",
+    brain: "/assets/icon_brain_quiz.png",
+    candle: "/assets/icon_candle_devotion.png",
+    friends: "/assets/icon_friends.png",
+    scroll: "/assets/icon_scroll_quest.png",
   },
 
   // === Frames ===
   frames: {
-    missionCard: "/manus-storage/frame_mission_card_52bd7a2e.png",
-    statPill: "/manus-storage/frame_stat_pill_9f186bb6.png",
-    progressBar: "/manus-storage/frame_progress_bar_4a04790a.png",
-    avatarCircle: "/manus-storage/frame_avatar_circle_37b5d0af.png",
-    petCard: "/manus-storage/frame_pet_card_bf409d8b.png",
-    featuredBanner: "/manus-storage/frame_featured_banner_ec892283.png",
-    quizCard: "/manus-storage/frame_quiz_card_bc9f7acf.png",
-    inputGold: "/manus-storage/frame_input_gold_3f5384d6.png",
+    missionCard: "/assets/frame_mission_card.png",
+    statPill: "/assets/frame_stat_pill.png",
+    progressBar: "/assets/frame_progress_bar.png",
+    avatarCircle: "/assets/frame_avatar_circle.png",
+    petCard: "/assets/frame_pet_card.png",
+    featuredBanner: "/assets/frame_featured_banner.png",
+    quizCard: "/assets/frame_quiz_card.png",
+    inputGold: "/assets/frame_input_gold.png",
   },
 
   // === Bible Page ===
   bible: {
-    bookUnlocked: "/manus-storage/card_book_unlocked_78d7b3a9.png",
-    bookLocked: "/manus-storage/card_book_locked_d90203a4.png",
-    lock: "/manus-storage/icon_lock_4891f93e.png",
-    checkmark: "/manus-storage/icon_checkmark_52d66a0d.png",
+    bookUnlocked: "/assets/card_book_unlocked.png",
+    bookLocked: "/assets/card_book_locked.png",
+    lock: "/assets/icon_lock.png",
+    checkmark: "/assets/icon_checkmark.png",
   },
 
   // === Ranking Page ===
   ranking: {
-    podium: "/manus-storage/podium_ranking_198ac423.png",
-    badgeGold: "/manus-storage/badge_gold_1st_4fd0df38.png",
-    badgeSilver: "/manus-storage/badge_silver_2nd_57b772a5.png",
-    badgeBronze: "/manus-storage/badge_bronze_3rd_264491b8.png",
+    podium: "/assets/podium_ranking.png",
+    badgeGold: "/assets/badge_gold_1st.png",
+    badgeSilver: "/assets/badge_silver_2nd.png",
+    badgeBronze: "/assets/badge_bronze_3rd.png",
   },
 
   // === Store Page ===
   store: {
-    gemCurrency: "/manus-storage/icon_gem_currency_2f6f8548.png",
-    coinGold: "/manus-storage/icon_coin_gold_7a1ac3a8.png",
-    petCard: "/manus-storage/frame_pet_card_bf409d8b.png",
-    featuredBanner: "/manus-storage/frame_featured_banner_ec892283.png",
+    gemCurrency: "/assets/icon_gem_currency.png",
+    coinGold: "/assets/icon_coin_gold.png",
+    petCard: "/assets/frame_pet_card.png",
+    featuredBanner: "/assets/frame_featured_banner.png",
   },
 
   // === Buttons ===
   buttons: {
-    purpleGold: "/manus-storage/btn_purple_gold_3517711b.png",
-    answerGold: "/manus-storage/btn_answer_gold_3e185a9e.png",
-    answerCorrect: "/manus-storage/btn_answer_correct_5444f174.png",
-    answerWrong: "/manus-storage/btn_answer_wrong_08fb9c8f.png",
-    startAdventure: "/manus-storage/btn_start_adventure_4a097fb0.png",
+    purpleGold: "/assets/btn_purple_gold.png",
+    answerGold: "/assets/btn_answer_gold.png",
+    answerCorrect: "/assets/btn_answer_correct.png",
+    answerWrong: "/assets/btn_answer_wrong.png",
+    startAdventure: "/assets/btn_start_adventure.png",
   },
 
   // === Profile & Achievements ===
   achievements: {
-    star: "/manus-storage/badge_achievement_star_4483df50.png",
-    book: "/manus-storage/badge_achievement_book_2bbc55a3.png",
-    sword: "/manus-storage/badge_achievement_sword_7eb4e27e.png",
-    settingsGear: "/manus-storage/icon_settings_gear_b76e7217.png",
-    groupBanner: "/manus-storage/icon_group_banner_b25c2c55.png",
+    star: "/assets/badge_achievement_star.png",
+    book: "/assets/badge_achievement_book.png",
+    sword: "/assets/badge_achievement_sword.png",
+    settingsGear: "/assets/icon_settings_gear.png",
+    groupBanner: "/assets/icon_group_banner.png",
   },
 
   // === Misc Icons ===
   misc: {
-    rewardChest: "/manus-storage/icon_reward_chest_6cdd279e.png",
-    logoShield: "/manus-storage/logo_tb_shield_82d29be5.png",
+    rewardChest: "/assets/icon_reward_chest.png",
+    logoShield: "/assets/logo_tb_shield.png",
   },
 
   // === Backgrounds ===
   backgrounds: {
-    darkPurple: "/manus-storage/bg_dark_purple_4ec76ee1.png",
-    parchment: "/manus-storage/bg_parchment_full_59a688c8.png",
-    navBar: "/manus-storage/bg_nav_bar_0fbe9db8.png",
+    darkPurple: "/assets/bg_dark_purple.png",
+    parchment: "/assets/bg_parchment_full.png",
+    navBar: "/assets/bg_nav_bar.png",
   },
 } as const;
