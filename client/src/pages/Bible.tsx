@@ -8,6 +8,7 @@ import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
 import { getPetDefaultSprite } from "@/data/petSprites";
+import FantasyIcon from "@/components/FantasyIcon";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -348,8 +349,8 @@ export default function Bible() {
                       onClick={() => setView({ type: "chapters", book: bookName })}
                       className={`neon-card min-h-[180px] p-3 text-center active:scale-[0.98] transition-transform cursor-pointer ${progress === 0 ? "grayscale-[0.55] opacity-80" : ""}`}
                     >
-                      <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#5b2c1b] to-[#1c1110] text-4xl shadow-[inset_0_0_0_2px_rgba(255,220,110,0.35)]">
-                        📕
+                      <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#5b2c1b] to-[#1c1110] shadow-[inset_0_0_0_2px_rgba(255,220,110,0.35)]">
+                        <FantasyIcon name="book" className="h-12 w-12" />
                       </div>
                       <div>
                         <h3 className="tb-title text-base leading-tight">{bookName}{game.watchedVideos.includes(bookName) && <span className="ml-1 text-xs" title="Video watched">🎬</span>}</h3>

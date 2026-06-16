@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
+import FantasyIcon from "@/components/FantasyIcon";
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 // Standard chapter counts for each Bible book
@@ -293,9 +294,9 @@ export default function Home() {
 
       {/* Mockup-style top stats */}
       <div className="grid grid-cols-3 gap-2">
-        <div className="tb-stat"><span className="text-xl">🔥</span><span>{Math.max(0, parseInt(localStorage.getItem("dayStreak") || "0") || 0)}</span></div>
-        <div className="tb-stat"><span className="text-xl">💎</span><span>{totalXP.toLocaleString()} XP</span></div>
-        <div className="tb-stat"><span className="text-xl">🔶</span><span>{gems.toLocaleString()}</span></div>
+        <div className="tb-stat"><FantasyIcon name="flame" className="h-7 w-7" /><span>{Math.max(0, parseInt(localStorage.getItem("dayStreak") || "0") || 0)}</span></div>
+        <div className="tb-stat"><FantasyIcon name="gem" className="h-7 w-7" /><span>{totalXP.toLocaleString()} XP</span></div>
+        <div className="tb-stat"><FantasyIcon name="coin" className="h-7 w-7" /><span>{gems.toLocaleString()}</span></div>
       </div>
 
       {/* Welcome ribbon */}
@@ -337,7 +338,7 @@ export default function Home() {
             {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
               <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="h-24 w-24 object-contain" />
             ) : (
-              <span className="text-6xl">{equippedPet?.petEmoji || "🐑"}</span>
+              <img src="/pet-sprites/lamb_normal.webp" alt="Luna" className="h-24 w-24 object-contain" />
             )}
           </div>
           <p className="tb-title mt-2 text-lg">{equippedPet?.name || "Luna"}</p>
@@ -345,15 +346,15 @@ export default function Home() {
         </button>
         <div className="grid grid-cols-3 gap-3 pb-5">
           <button onClick={() => setLocation("/bible")} className="text-center active:scale-95 transition-transform">
-            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl">🧠</div>
+            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full"><FantasyIcon name="brain" className="h-12 w-12" /></div>
             <p className="tb-title mt-2 text-sm">Quiz</p>
           </button>
           <button onClick={() => setLocation("/bible")} className="text-center active:scale-95 transition-transform">
-            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl">🕯️</div>
+            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full"><FantasyIcon name="candle" className="h-12 w-12" /></div>
             <p className="tb-title mt-2 text-sm">Devotion</p>
           </button>
           <button onClick={() => setLocation("/leaderboard")} className="text-center active:scale-95 transition-transform">
-            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl">👥</div>
+            <div className="tb-gold-panel mx-auto flex h-20 w-20 items-center justify-center rounded-full"><FantasyIcon name="friends" className="h-12 w-12" /></div>
             <p className="tb-title mt-2 text-sm">Friends</p>
           </button>
         </div>

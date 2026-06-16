@@ -1,13 +1,14 @@
 import { useLocation } from "wouter";
 import { ReactNode } from "react";
+import FantasyIcon from "./FantasyIcon";
 
 const navItems = [
-  { path: "/", icon: "🏰", label: "Home" },
-  { path: "/bible", icon: "📕", label: "Bible" },
-  { path: "/leaderboard", icon: "🏆", label: "Ranking" },
-  { path: "/store", icon: "🎁", label: "Store" },
-  { path: "/profile", icon: "🛡️", label: "Profile" },
-];
+  { path: "/", icon: "castle", label: "Home" },
+  { path: "/bible", icon: "book", label: "Bible" },
+  { path: "/leaderboard", icon: "trophy", label: "Ranking" },
+  { path: "/store", icon: "chest", label: "Store" },
+  { path: "/profile", icon: "shield", label: "Profile" },
+] as const;
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -47,7 +48,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                     : "text-white/70 hover:text-white bg-black/10"
                 }`}
               >
-                <span className="text-2xl drop-shadow-[0_3px_0_rgba(0,0,0,0.55)]">{item.icon}</span>
+                <FantasyIcon name={item.icon} className="h-8 w-8" />
                 <span className="text-[10px] font-black tracking-[-0.02em] drop-shadow-[0_2px_0_rgba(0,0,0,0.85)]">{item.label}</span>
               </button>
             );
