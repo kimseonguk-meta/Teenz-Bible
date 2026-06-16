@@ -1,12 +1,13 @@
 import { useLocation } from "wouter";
 import { ReactNode } from "react";
+import { ASSETS } from "@/lib/assets";
 
 const navItems = [
-  { path: "/", label: "Home", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_castle-KoXjH75nNuhrYQF774AvGn.png" },
-  { path: "/bible", label: "Bible", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_bible-PeAg5oaXwhMnMxRV3KnacD.png" },
-  { path: "/leaderboard", label: "Ranking", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_trophy-74XXiNxVYgkASo8goifFy9.png" },
-  { path: "/store", label: "Store", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_chest-CjFaYjjDUNBdfzYmfXF37c.png" },
-  { path: "/profile", label: "Profile", icon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/nav_profile-3QmZGNkarqzjfShZmoZHTk.png" },
+  { path: "/", label: "Home", icon: ASSETS.nav.home },
+  { path: "/bible", label: "Bible", icon: ASSETS.nav.bible },
+  { path: "/leaderboard", label: "Ranking", icon: ASSETS.nav.ranking },
+  { path: "/store", label: "Store", icon: ASSETS.nav.store },
+  { path: "/profile", label: "Profile", icon: ASSETS.nav.profile },
 ];
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -22,7 +23,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* Bottom Navigation — V2 Royal Game Style with Illustrated Icons in Card Tabs */}
+      {/* Bottom Navigation — V2 Royal Game Style with Illustrated Icons */}
       {location !== "/bible-ai" && (
         <nav
           className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50"

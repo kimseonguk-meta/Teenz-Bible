@@ -17,16 +17,17 @@ import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
 
-// CDN asset URLs
+// Use centralized asset map with verified /manus-storage/ paths
+import { ASSETS as CDN_ASSETS } from "@/lib/assets";
 const ASSETS = {
-  icon_fire: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_fire-PSuGmTqQ6GnBozu7oY27qQ.png",
-  icon_gem: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_gem-6dAsfLvDEGCL224yzj4Jur.png",
-  icon_xp: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_xp-DsyR87coBmaYenzUxoyeow.png",
-  ribbon_banner: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/ribbon_banner-7XcaBYpxn6WMCwThWF6mWZ.png",
-  icon_brain: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_brain-fdfi8aRbESprEa78gmnXiD.png",
-  icon_candle: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_candle-7pJw6KRqLjHePX3RH5dcgm.png",
-  icon_friends: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/icon_friends-jQZRGz7xZXV4Y9M7ne5wkh.png",
-  tb_shield: "https://d2xsxph8kpxj0f.cloudfront.net/310519663322885440/eyf7JgudwZUosztoRMCJZY/tb_shield_logo-UQFWadwEXYHQS4rezKukvV.png",
+  icon_fire: CDN_ASSETS.stats.fire,
+  icon_gem: CDN_ASSETS.stats.gem,
+  icon_xp: CDN_ASSETS.stats.xp,
+  ribbon_banner: CDN_ASSETS.ribbons.welcomeBack,
+  icon_brain: CDN_ASSETS.quickActions.brain,
+  icon_candle: CDN_ASSETS.quickActions.candle,
+  icon_friends: CDN_ASSETS.quickActions.friends,
+  tb_shield: CDN_ASSETS.misc.logoShield,
 };
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }

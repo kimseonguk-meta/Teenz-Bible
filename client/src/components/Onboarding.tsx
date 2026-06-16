@@ -4,6 +4,7 @@ import { get } from "firebase/database";
 import { getInventory, saveInventory, getEquipped, saveEquipped } from "@/data/storeItems";
 import { joinGroup, getLocalGroups, fetchAllAvailableGroups } from "@/lib/groups";
 import type { GroupMembership, GroupMeta } from "@/lib/groups";
+import { ASSETS } from "@/lib/assets";
 
 const AVATARS = ['😎','🦊','🐱','🐶','🦁','🐻','🐼','🐨','🐯','🦄','🐸','🐵','🦋','🐝','🌟','⭐','🔥','💎','🎮','🎯','🏀','⚽','🎸','🎨','🌈','🍕','🍩','🧁','🎂','🍦'];
 
@@ -298,7 +299,9 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
               ✕
             </button>
           )}
-          <div className="text-6xl mb-4 cursor-pointer hover:scale-110 transition-transform" onClick={randomizeAvatar}>
+          {/* TB Shield Logo */}
+          <img src={ASSETS.misc.logoShield} alt="Teenz Bible" className="w-20 h-20 object-contain mx-auto mb-3" />
+          <div className="text-5xl mb-3 cursor-pointer hover:scale-110 transition-transform" onClick={randomizeAvatar}>
             {avatar}
           </div>
           <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 1 / 3</p>

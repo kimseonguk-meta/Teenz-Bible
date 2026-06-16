@@ -8,6 +8,7 @@ import { getQuiz, getShuffledOptions, hasQuiz } from "@/data/quizData";
 import { toast } from "sonner";
 import { getEquipped, getInventory, equipItem, PETS, READER_BACKGROUNDS, getPetState, getPetMoodEmoji, getPetMoodMessage, type PetMood } from "@/data/storeItems";
 import { getPetDefaultSprite } from "@/data/petSprites";
+import { ASSETS } from "@/lib/assets";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -255,9 +256,12 @@ export default function Bible() {
 
   return (
     <div className="px-4 pt-5 space-y-4">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-2xl font-bold font-display gold-text">📖 BIBLE</h1>
+      {/* Header - Gold Ribbon Banner */}
+      <div className="flex justify-center">
+        <div className="relative flex items-center justify-center" style={{ width: '240px', height: '60px' }}>
+          <img src={ASSETS.ribbons.bible} alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>BIBLE</span>
+        </div>
       </div>
 
       {/* Search */}
@@ -1472,10 +1476,13 @@ function QuizView({ book, chapterNum, lang, onFinish, onSkip }: {
         <span className="text-gray-400 text-xs">{book} Ch.{chapterNum}</span>
       </div>
 
-      <div className="text-center">
-        <span className="text-4xl">🧠</span>
-        <h1 className="text-lg font-bold font-display mt-2 gold-text">DID YOU CATCH THIS?</h1>
-        <p className="text-[#d4af37] text-xs mt-1">{book} Chapter {chapterNum}</p>
+      <div className="flex flex-col items-center gap-2">
+        <img src={ASSETS.quickActions.brain} alt="" className="w-14 h-14 object-contain" />
+        <div className="relative flex items-center justify-center" style={{ width: '220px', height: '55px' }}>
+          <img src={ASSETS.ribbons.dailyQuiz} alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <span className="relative z-10 text-sm font-bold" style={{ color: '#1a0a2e', paddingBottom: '3px' }}>DAILY QUIZ</span>
+        </div>
+        <p className="text-[#d4af37] text-xs">{book} Chapter {chapterNum}</p>
       </div>
 
       <div className="gold-card p-5">

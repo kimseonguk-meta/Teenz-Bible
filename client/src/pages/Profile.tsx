@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { createGroup, joinGroup, leaveGroup, renameGroup, removeMember, getLocalGroups, fetchGroupMeta, fetchGroupMembers, isGroupAdmin, fetchAllAvailableGroups, type GroupMeta, type GroupMembership } from "@/lib/groups";
 import type { LeaderboardMember } from "@/lib/firebase";
+import { ASSETS } from "@/lib/assets";
 
 function getPlayerName() {
   return localStorage.getItem("playerName") || "Player";
@@ -512,9 +513,19 @@ export default function Profile() {
         </div>
       )}
 
+      {/* Profile Ribbon Header */}
+      <div className="flex justify-center mb-2">
+        <div className="relative flex items-center justify-center" style={{ width: '240px', height: '60px' }}>
+          <img src={ASSETS.ribbons.profile} alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>PROFILE</span>
+        </div>
+      </div>
+
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative">
+          {/* Gold ornate frame behind avatar */}
+          <img src={ASSETS.frames.avatarCircle} alt="" className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] object-contain pointer-events-none z-20" />
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
             className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-[rgba(26,10,46,0.4)] cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}

@@ -17,6 +17,7 @@ import {
 } from "@/lib/firebase";
 import { getLocalGroups, fetchGroupMeta, type GroupMeta, type GroupMembership } from "@/lib/groups";
 import { PROFILE_FRAMES } from "@/data/storeItems";
+import { ASSETS } from "@/lib/assets";
 
 // Get frame class by ID
 function getFrameClass(frameId?: string): string {
@@ -359,9 +360,12 @@ export default function Leaderboard() {
         />
       )}
 
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold font-display gold-text">🏆 RANKING</h1>
+      {/* Header - Gold Ribbon Banner */}
+      <div className="flex justify-center">
+        <div className="relative flex items-center justify-center" style={{ width: '260px', height: '65px' }}>
+          <img src={ASSETS.ribbons.ranking} alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>RANKING</span>
+        </div>
       </div>
 
       {/* Main Tabs: My Groups | Global */}
@@ -509,7 +513,9 @@ export default function Leaderboard() {
                 onClick={() => handleMemberTap(top3[1], 2)}
               >
                 <div className="relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full text-white text-xs font-bold flex items-center justify-center z-10" style={{ background: '#c0c0c0', border: '2px solid #e0e0e0' }}>2</div>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10">
+                    <img src={ASSETS.ranking.badgeSilver} alt="2nd" className="w-full h-full object-contain" />
+                  </div>
                   <div className={`w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ${!getFrameClass(top3[1]?.equippedFrame) ? "" : ""}`} style={{ background: 'rgba(26, 10, 46, 0.8)', border: '2px solid rgba(192,192,192,0.6)', boxShadow: '0 0 15px rgba(192,192,192,0.3)' }}>
                     <MemberAvatar member={top3[1]} size="md" showFrame />
                   </div>
@@ -527,7 +533,9 @@ export default function Leaderboard() {
               >
                 <div className="text-2xl mb-1">👑</div>
                 <div className="relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full text-white text-xs font-bold flex items-center justify-center z-10" style={{ background: '#d4af37', border: '2px solid #f0d060', boxShadow: '0 0 10px rgba(212,175,55,0.5)' }}>1</div>
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 z-10">
+                    <img src={ASSETS.ranking.badgeGold} alt="1st" className="w-full h-full object-contain" />
+                  </div>
                   <div className={`flex items-center justify-center overflow-hidden ${!getFrameClass(top3[0]?.equippedFrame) ? "" : ""}`} style={{width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(26, 10, 46, 0.8)', border: '2px solid rgba(212,175,55,0.7)', boxShadow: '0 0 20px rgba(212,175,55,0.3)'}}>
                     <MemberAvatar member={top3[0]} size="lg" showFrame />
                   </div>
@@ -547,7 +555,9 @@ export default function Leaderboard() {
                 onClick={() => handleMemberTap(top3[2], 3)}
               >
                 <div className="relative">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full text-white text-xs font-bold flex items-center justify-center z-10" style={{ background: '#cd7f32', border: '2px solid #e8a050' }}>3</div>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 z-10">
+                    <img src={ASSETS.ranking.badgeBronze} alt="3rd" className="w-full h-full object-contain" />
+                  </div>
                   <div className={`w-14 h-14 rounded-full flex items-center justify-center overflow-hidden ${!getFrameClass(top3[2]?.equippedFrame) ? "" : ""}`} style={{ background: 'rgba(26, 10, 46, 0.8)', border: '2px solid rgba(205,127,50,0.6)', boxShadow: '0 0 15px rgba(205,127,50,0.3)' }}>
                     <MemberAvatar member={top3[2]} size="md" showFrame />
                   </div>

@@ -305,3 +305,25 @@
 - [x] Generate missing icon assets (fire, gem, XP, brain, candle, friends)
 - [x] Verify zero /manus-storage/ references remain in client code
 - [x] Save checkpoint and deploy to Firebase
+
+## V2 Full Image-Based UI Redesign (Jun 16, 2026)
+- [x] Generate bottom nav icons (castle, bible book, trophy, treasure chest, shield+boy face)
+- [x] Generate gold ribbon banners (Welcome Back, BIBLE, RANKING, STORE, PROFILE, DAILY QUIZ)
+- [x] Generate Home assets (stat pill frames with icons, mission card gold frame, quick action circle icons)
+- [x] Generate Bible page assets (unlocked book card with gold frame, locked book card with silver frame, progress bar)
+- [x] Generate Ranking assets (gold/silver/bronze trophy podiums, hexagonal rank badges)
+- [x] Generate Store assets (featured pet gold frame, pet card frames, accessory circle icons)
+- [x] Generate Profile assets (gold oval avatar frame, achievement hexagon badges, settings circle icons)
+- [x] Generate Quiz assets (question card ornate frame, answer button gold frames, XP/gem reward icons)
+- [x] Generate Onboarding assets (TB shield logo, gold input frame, gold button frame, START ADVENTURE button)
+- [x] Upload all assets to CDN
+- [x] Rebuild AppLayout bottom nav with image assets
+- [x] Rebuild Home page with image assets
+- [x] Rebuild Bible page with image assets
+- [x] Rebuild Ranking page with image assets
+- [x] Rebuild Store page with image assets
+- [x] Rebuild Profile page with image assets
+- [x] Rebuild Quiz page with image assets
+- [x] Rebuild Bible Reader page with parchment style
+- [x] Rebuild Onboarding page with image assets
+- [x] Test all pages and deploy

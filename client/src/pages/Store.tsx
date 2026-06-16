@@ -22,6 +22,7 @@ import {
 import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { ASSETS } from "@/lib/assets";
 
 // Pet stats/abilities data for detail popup
 const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
@@ -261,11 +262,14 @@ export default function Store() {
 
   return (
     <div className="px-4 pt-6 space-y-5 pb-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white font-display gold-text">Gem Store</h1>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(26,10,46,0.6)] border border-[rgba(212,175,55,0.3)]">
-          <span className="text-sm">💎</span>
+      {/* Header - Gold Ribbon Banner */}
+      <div className="flex flex-col items-center gap-3">
+        <div className="relative flex items-center justify-center" style={{ width: '240px', height: '60px' }}>
+          <img src={ASSETS.ribbons.store} alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '4px' }}>GEM STORE</span>
+        </div>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(26,10,46,0.6)', border: '1.5px solid rgba(212,175,55,0.4)' }}>
+          <img src={ASSETS.store.gemCurrency} alt="" className="w-6 h-6 object-contain" />
           <span className="text-white font-bold text-sm">{gems}</span>
         </div>
       </div>
