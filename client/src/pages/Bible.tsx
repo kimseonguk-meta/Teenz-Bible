@@ -1176,14 +1176,14 @@ function ChapterReader({ book, chapterIdx, lang, setLang, onBack, onNavigate, on
       </div>
 
       {/* Chapter Content */}
-      <div className="tb-reader-page space-y-5 p-6 text-[1.05rem] leading-relaxed transition-colors" style={readerBgStyle ? { backgroundColor: readerBgStyle.bg } : undefined}>
+      <div className="tb-reader-page space-y-5 p-6 text-[1.05rem] leading-relaxed transition-colors">
         {paragraphs.map((para: string, i: number) => {
           const vr = verseRanges[i] || null;
           if (para.startsWith("§")) {
-            return <h3 key={i} className="font-bold mt-4 mb-2" style={{ fontSize: `${fontSize}px`, color: readerBgStyle ? readerBgStyle.text : '#6a4310', opacity: 0.9 }}>{para.slice(1)}</h3>;
+            return <h3 key={i} className="font-bold mt-4 mb-2" style={{ fontSize: `${fontSize}px`, color: '#6a4310', opacity: 0.95 }}>{para.slice(1)}</h3>;
           }
           return (
-            <p key={i} className="leading-relaxed font-serif" style={{ fontSize: `${fontSize}px`, color: readerBgStyle?.text || '#1f1811' }}>
+            <p key={i} className="leading-relaxed font-serif" style={{ fontSize: `${fontSize}px`, color: '#21170d' }}>
               {showVerses && vr && (
                 <span className="inline-block mr-1.5 font-bold align-super opacity-80" style={{ fontSize: `${Math.round(fontSize * 0.7)}px`, color: '#b36d16' }}>{vr}</span>
               )}
