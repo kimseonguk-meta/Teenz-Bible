@@ -334,3 +334,13 @@
 - [x] Build and redeploy to Firebase Hosting
 - [x] Deploy to Capgo OTA with API key (v1.0.11)
 - [x] Verify all images load correctly on Firebase
+
+## V3 CSS-Only Redesign - Duolingo/Flat Style (Jun 16, 2026)
+- [ ] Define new design system (colors, typography, component patterns)
+- [ ] Rebuild AppLayout bottom nav with CSS-only colorful icons
+- [ ] Rebuild Home page (flat colorful gamification, no image dependencies)
+- [ ] Rebuild Bible page with colorful book cards
+- [ ] Rebuild Leaderboard with CSS podium
+- [ ] Rebuild Store with colorful pet cards
+- [ ] Rebuild Profile page
+- [ ] Build and deploy to Firebase + Capgo

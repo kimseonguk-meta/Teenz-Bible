@@ -95,7 +95,7 @@ export default function QuizStats() {
     <div className="min-h-screen pb-24 px-4 pt-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button onClick={() => navigate("/profile")} className="text-[#d4af37] active:scale-95 transition-transform">
+        <button onClick={() => navigate("/profile")} className="text-[#FF9600] font-bold active:scale-95 transition-transform">
           ← Back
         </button>
         <h1 className="text-xl font-bold text-white font-display">📊 Quiz Stats</h1>
@@ -110,7 +110,7 @@ export default function QuizStats() {
             className={`px-4 py-2 rounded-full text-sm font-bold transition-all active:scale-95 ${
               tab === t 
                 ? "bg-purple-600 text-white" 
-                : "bg-purple-900/30 text-[#d4af37] border border-[rgba(212,175,55,0.2)]"
+                : "bg-gray-50 text-[#FF9600] font-bold border border-gray-200"
             }`}
           >
             {t === "overview" ? "📈 Overview" : t === "books" ? "📚 Books" : "📋 History"}
@@ -144,7 +144,7 @@ export default function QuizStats() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-2xl font-bold text-white">{accuracy}%</span>
-                <span className="text-xs text-[#d4af37]">accuracy</span>
+                <span className="text-xs text-[#FF9600] font-bold">accuracy</span>
               </div>
             </div>
             <p className="text-[#f0d060] text-sm">
@@ -160,15 +160,15 @@ export default function QuizStats() {
           <div className="gold-card p-4">
             <h3 className="text-white font-bold text-sm mb-2">📅 This Week</h3>
             <div className="flex justify-between text-sm">
-              <span className="text-[#d4af37]">Quizzes taken</span>
+              <span className="text-[#FF9600] font-bold">Quizzes taken</span>
               <span className="text-white font-bold">{weeklyProgress.total}</span>
             </div>
             <div className="flex justify-between text-sm mt-1">
-              <span className="text-[#d4af37]">Correct answers</span>
+              <span className="text-[#FF9600] font-bold">Correct answers</span>
               <span className="text-green-400 font-bold">{weeklyProgress.correct}</span>
             </div>
             <div className="flex justify-between text-sm mt-1">
-              <span className="text-[#d4af37]">Weekly accuracy</span>
+              <span className="text-[#FF9600] font-bold">Weekly accuracy</span>
               <span className={`font-bold ${weeklyProgress.accuracy >= 70 ? 'text-green-400' : 'text-yellow-400'}`}>{weeklyProgress.accuracy}%</span>
             </div>
           </div>
@@ -177,11 +177,11 @@ export default function QuizStats() {
           <div className="gold-card p-4">
             <h3 className="text-white font-bold text-sm mb-2">🏆 Records</h3>
             <div className="flex justify-between text-sm">
-              <span className="text-[#d4af37]">Best streak</span>
+              <span className="text-[#FF9600] font-bold">Best streak</span>
               <span className="text-yellow-400 font-bold">{bestStreak} 🔥</span>
             </div>
             <div className="flex justify-between text-sm mt-1">
-              <span className="text-[#d4af37]">Current streak</span>
+              <span className="text-[#FF9600] font-bold">Current streak</span>
               <span className="text-orange-400 font-bold">{currentStreak} 🔥</span>
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function QuizStats() {
             </div>
           ) : (
             <>
-              <p className="text-[#d4af37] text-xs mb-2">Books you've been quizzed on:</p>
+              <p className="text-[#FF9600] font-bold text-xs mb-2">Books you've been quizzed on:</p>
               {Object.entries(bookStats)
                 .sort((a, b) => b[1].total - a[1].total)
                 .map(([book, s]) => {
@@ -230,7 +230,7 @@ export default function QuizStats() {
                     <div key={book} className="gold-card p-3 flex items-center justify-between">
                       <div>
                         <p className="text-white font-bold text-sm">{book}</p>
-                        <p className="text-[#d4af37] text-xs">{s.correct}/{s.total} correct</p>
+                        <p className="text-[#FF9600] font-bold text-xs">{s.correct}/{s.total} correct</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-20 h-2 bg-[rgba(26,10,46,0.6)] rounded-full overflow-hidden">
@@ -261,14 +261,14 @@ export default function QuizStats() {
             </div>
           ) : (
             <>
-              <p className="text-[#d4af37] text-xs mb-2">Last 20 quizzes:</p>
+              <p className="text-[#FF9600] font-bold text-xs mb-2">Last 20 quizzes:</p>
               {recentHistory.map((entry, i) => (
                 <div key={i} className="gold-card p-3 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-lg">{entry.correct ? "✅" : "❌"}</span>
                     <div>
                       <p className="text-white text-sm font-bold">{entry.book} Ch.{entry.chapter}</p>
-                      <p className="text-[#d4af37] text-xs">
+                      <p className="text-[#FF9600] font-bold text-xs">
                         {new Date(entry.timestamp).toLocaleDateString()} {new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
@@ -294,7 +294,7 @@ function StatCard({ label, value, emoji, color }: { label: string; value: string
     <div className="gold-card p-4 text-center">
       <span className="text-2xl">{emoji}</span>
       <p className={`text-xl font-bold mt-1 ${colorClass}`}>{value}</p>
-      <p className="text-[#d4af37] text-xs mt-1">{label}</p>
+      <p className="text-[#FF9600] font-bold text-xs mt-1">{label}</p>
     </div>
   );
 }

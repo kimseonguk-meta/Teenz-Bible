@@ -197,12 +197,12 @@ export default function Store() {
         key={item.id}
         className={`p-3 rounded-xl text-center relative transition-all duration-200 ease-out hover:scale-105 ${rarityConfig.glow} ${
           active
-            ? "bg-[rgba(212,175,55,0.1)] border-2 border-[rgba(212,175,55,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
-            : "bg-white/[0.03] border border-[rgba(212,175,55,0.2)] hover:border-[rgba(212,175,55,0.4)] hover:shadow-[0_0_16px_rgba(212,175,55,0.2)]"
+            ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+            : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)] hover:shadow-[0_0_16px_rgba(212,175,55,0.2)]"
         }`}
       >
         {active && (
-          <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">
+          <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-gray-800 text-[10px] flex items-center justify-center font-bold">
             ✓
           </div>
         )}
@@ -224,7 +224,7 @@ export default function Store() {
             <span className="text-3xl">{item.emoji}</span>
           )}
         </div>
-        <p className="text-white text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
+        <p className="text-gray-800 text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
         <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
 
         {/* Action button */}
@@ -232,14 +232,14 @@ export default function Store() {
           {!owned && item.price > 0 ? (
             <button
               onClick={() => handlePurchase(item)}
-              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-800 text-[11px] font-bold hover:opacity-90 transition-opacity"
             >
               {item.price} 💎
             </button>
           ) : owned && !active ? (
             <button
               onClick={() => handleEquip(item)}
-              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 text-[11px] font-bold hover:opacity-90 transition-opacity"
             >
               Equip
             </button>
@@ -270,7 +270,7 @@ export default function Store() {
         </div>
         <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(26,10,46,0.6)', border: '1.5px solid rgba(212,175,55,0.4)' }}>
           <img src={ASSETS.store.gemCurrency} alt="" className="w-6 h-6 object-contain" />
-          <span className="text-white font-bold text-sm">{gems}</span>
+          <span className="text-gray-800 font-bold text-sm">{gems}</span>
         </div>
       </div>
 
@@ -282,8 +282,8 @@ export default function Store() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-xs whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? "bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.5)] text-[#f0d060]"
-                : "text-gray-400 hover:text-gray-200"
+                ? "bg-[rgba(212,175,55,0.15)] border border-gray-200,0.5)] text-[#f0d060]"
+                : "text-gray-600 hover:text-gray-200"
             }`}
           >
             <span className="text-lg">{tab.icon}</span>
@@ -295,8 +295,8 @@ export default function Store() {
       {/* Content */}
       {activeTab === "themes" && (
         <div>
-          <h2 className="text-lg font-bold text-[#d4af37] font-display mb-3">🎨 App Themes</h2>
-          <p className="text-gray-400 text-xs mb-3">Change the entire app color scheme!</p>
+          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">🎨 App Themes</h2>
+          <p className="text-gray-600 text-xs mb-3">Change the entire app color scheme!</p>
           {previewingTheme && (
             <div className="mb-3 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-between">
               <span className="text-yellow-300 text-xs font-medium">👁️ Previewing theme...</span>
@@ -323,14 +323,14 @@ export default function Store() {
                   key={item.id}
                   className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                     active
-                      ? "bg-[rgba(212,175,55,0.1)] border-2 border-[rgba(212,175,55,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                      ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
                       : previewing
                       ? "bg-yellow-600/10 border-2 border-yellow-500/40"
-                      : "bg-white/[0.03] border border-[rgba(212,175,55,0.2)] hover:border-[rgba(212,175,55,0.4)]"
+                      : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)]"
                   }`}
                 >
                   {active && (
-                    <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
+                    <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-gray-800 text-[10px] flex items-center justify-center font-bold">✓</div>
                   )}
                   <div className="absolute top-1.5 left-1.5">
                     <RarityBadge rarity={item.rarity} />
@@ -342,7 +342,7 @@ export default function Store() {
                       <span className="text-3xl">{item.emoji}</span>
                     )}
                   </div>
-                  <p className="text-white text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
+                  <p className="text-gray-800 text-xs font-medium truncate cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                   <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1">{item.description}</p>
 
                   <div className="mt-2 space-y-1">
@@ -350,7 +350,7 @@ export default function Store() {
                       <>
                         <button
                           onClick={() => handlePurchase(item)}
-                          className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+                          className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-800 text-[11px] font-bold hover:opacity-90 transition-opacity"
                         >
                           {item.price} 💎
                         </button>
@@ -370,7 +370,7 @@ export default function Store() {
                           handleEquip(item);
                           setPreviewingTheme(null);
                         }}
-                        className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+                        className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 text-[11px] font-bold hover:opacity-90 transition-opacity"
                       >
                         Equip
                       </button>
@@ -389,8 +389,8 @@ export default function Store() {
 
       {activeTab === "readerBg" && (
         <div>
-          <h2 className="text-lg font-bold text-[#d4af37] font-display mb-3">📖 Reader Backgrounds</h2>
-          <p className="text-gray-400 text-xs mb-3">Customize your Bible reading experience!</p>
+          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">📖 Reader Backgrounds</h2>
+          <p className="text-gray-600 text-xs mb-3">Customize your Bible reading experience!</p>
           <div className="grid grid-cols-3 gap-3">
             {READER_BACKGROUNDS.map((item) => {
               const rarityConf = RARITY_CONFIG[item.rarity];
@@ -399,12 +399,12 @@ export default function Store() {
                 key={item.id}
                 className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                   isEquipped(item.id, "readerBg")
-                    ? "bg-[rgba(212,175,55,0.1)] border-2 border-[rgba(212,175,55,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
-                    : "bg-white/[0.03] border border-[rgba(212,175,55,0.2)] hover:border-[rgba(212,175,55,0.4)]"
+                    ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                    : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)]"
                 }`}
               >
                 {isEquipped(item.id, "readerBg") && (
-                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-gray-800 text-[10px] flex items-center justify-center font-bold">✓</div>
                 )}
                 <div className="absolute top-1.5 left-1.5">
                   <RarityBadge rarity={item.rarity} />
@@ -417,19 +417,19 @@ export default function Store() {
                 >
                   Abc 가나다
                 </div>
-                <p className="text-white text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
+                <p className="text-gray-800 text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                 <div className="mt-2">
                   {!isOwned(item.id) && item.price > 0 ? (
                     <button
                       onClick={() => handlePurchase(item)}
-                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold"
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-800 text-[11px] font-bold"
                     >
                       {item.price} 💎
                     </button>
                   ) : isOwned(item.id) && !isEquipped(item.id, "readerBg") ? (
                     <button
                       onClick={() => handleEquip(item)}
-                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white text-[11px] font-bold"
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 text-[11px] font-bold"
                     >
                       Equip
                     </button>
@@ -448,8 +448,8 @@ export default function Store() {
 
       {activeTab === "frames" && (
         <div>
-          <h2 className="text-lg font-bold text-[#d4af37] font-display mb-3">🖼️ Profile Frames</h2>
-          <p className="text-gray-400 text-xs mb-3">Stand out on the leaderboard!</p>
+          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">🖼️ Profile Frames</h2>
+          <p className="text-gray-600 text-xs mb-3">Stand out on the leaderboard!</p>
           <div className="grid grid-cols-3 gap-3">
             {PROFILE_FRAMES.map((item) => {
               const rarityConf = RARITY_CONFIG[item.rarity];
@@ -458,12 +458,12 @@ export default function Store() {
                 key={item.id}
                 className={`p-3 rounded-xl text-center relative transition-all ${rarityConf.glow} ${
                   isEquipped(item.id, "frames")
-                    ? "bg-[rgba(212,175,55,0.1)] border-2 border-[rgba(212,175,55,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
-                    : "bg-white/[0.03] border border-[rgba(212,175,55,0.2)] hover:border-[rgba(212,175,55,0.4)]"
+                    ? "bg-[rgba(212,175,55,0.1)] border-2 border-gray-200,0.6)] shadow-[0_0_12px_rgba(212,175,55,0.3)]"
+                    : "bg-white/[0.03] border border-gray-200,0.2)] hover:border-gray-200,0.4)]"
                 }`}
               >
                 {isEquipped(item.id, "frames") && (
-                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-gray-800 text-[10px] flex items-center justify-center font-bold">✓</div>
                 )}
                 <div className="absolute top-1.5 left-1.5">
                   <RarityBadge rarity={item.rarity} />
@@ -472,19 +472,19 @@ export default function Store() {
                 <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-xl bg-[rgba(26,10,46,0.6)] my-2 mt-5 cursor-pointer hover:scale-110 transition-transform ${item.frameClass}`} onClick={() => setPreviewItem(item)}>
                   😎
                 </div>
-                <p className="text-white text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
+                <p className="text-gray-800 text-xs font-medium cursor-pointer" onClick={() => setPreviewItem(item)}>{item.name}</p>
                 <div className="mt-2">
                   {!isOwned(item.id) && item.price > 0 ? (
                     <button
                       onClick={() => handlePurchase(item)}
-                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold"
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-800 text-[11px] font-bold"
                     >
                       {item.price} 💎
                     </button>
                   ) : isOwned(item.id) && !isEquipped(item.id, "frames") ? (
                     <button
                       onClick={() => handleEquip(item)}
-                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white text-[11px] font-bold"
+                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 text-[11px] font-bold"
                     >
                       Equip
                     </button>
@@ -503,8 +503,8 @@ export default function Store() {
 
       {activeTab === "pets" && (
         <div>
-          <h2 className="text-lg font-bold text-[#d4af37] font-display mb-3">🐾 Pets</h2>
-          <p className="text-gray-400 text-xs mb-3">A companion for your Bible journey!</p>
+          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">🐾 Pets</h2>
+          <p className="text-gray-600 text-xs mb-3">A companion for your Bible journey!</p>
           {/* Search */}
           <div className="mb-3">
             <div className="relative">
@@ -513,10 +513,10 @@ export default function Store() {
                 value={petSearch}
                 onChange={(e) => setPetSearch(e.target.value)}
                 placeholder="🔍 Search pets by name..."
-                className="w-full px-3 py-2 pr-8 rounded-lg bg-[rgba(26,10,46,0.5)] border border-[rgba(212,175,55,0.3)] text-white text-xs placeholder:text-gray-500 focus:outline-none focus:border-[#d4af37] transition-colors"
+                className="w-full px-3 py-2 pr-8 rounded-lg bg-[rgba(26,10,46,0.5)] border border-gray-200,0.3)] text-gray-800 text-xs placeholder:text-gray-500 focus:outline-none focus:border-[#d4af37] transition-colors"
               />
               {petSearch && (
-                <button onClick={() => setPetSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-sm">✕</button>
+                <button onClick={() => setPetSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 text-sm">✕</button>
               )}
             </div>
           </div>
@@ -525,7 +525,7 @@ export default function Store() {
             <select
               value={petSort}
               onChange={(e) => setPetSort(e.target.value as typeof petSort)}
-              className="flex-1 px-2 py-1.5 rounded-lg bg-[rgba(26,10,46,0.5)] border border-[rgba(212,175,55,0.3)] text-white text-[11px] focus:outline-none focus:border-[rgba(212,175,55,0.5)]"
+              className="flex-1 px-2 py-1.5 rounded-lg bg-[rgba(26,10,46,0.5)] border border-gray-200,0.3)] text-gray-800 text-[11px] focus:outline-none focus:border-gray-200,0.5)]"
             >
               <option value="default">기본 순서</option>
               <option value="price_asc">가격 낮은순</option>
@@ -534,7 +534,7 @@ export default function Store() {
             <select
               value={petFilter}
               onChange={(e) => setPetFilter(e.target.value as typeof petFilter)}
-              className="flex-1 px-2 py-1.5 rounded-lg bg-[rgba(26,10,46,0.5)] border border-[rgba(212,175,55,0.3)] text-white text-[11px] focus:outline-none focus:border-[rgba(212,175,55,0.5)]"
+              className="flex-1 px-2 py-1.5 rounded-lg bg-[rgba(26,10,46,0.5)] border border-gray-200,0.3)] text-gray-800 text-[11px] focus:outline-none focus:border-gray-200,0.5)]"
             >
               <option value="all">전체 등급</option>
               <option value="rare">⭐ Rare</option>
@@ -544,8 +544,8 @@ export default function Store() {
           </div>
           {sortedFilteredPets.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-400 text-sm">No pets found</p>
-              <button onClick={() => { setPetSearch(''); setPetFilter('all'); }} className="mt-2 text-[#d4af37] text-xs underline">Clear filters</button>
+              <p className="text-gray-600 text-sm">No pets found</p>
+              <button onClick={() => { setPetSearch(''); setPetFilter('all'); }} className="mt-2 text-[#FF9600] font-bold text-xs underline">Clear filters</button>
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-3">
@@ -557,15 +557,15 @@ export default function Store() {
 
       {activeTab === "mystery" && (
         <div className="flex flex-col items-center pt-6">
-          <h2 className="text-lg font-bold text-[#d4af37] font-display mb-2">🎁 Mystery Box</h2>
-          <p className="text-gray-400 text-sm mb-6 text-center">
+          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-2">🎁 Mystery Box</h2>
+          <p className="text-gray-600 text-sm mb-6 text-center">
             Open for a random item or bonus gems!<br />
             <span className="text-xs text-gray-500">70% chance of item, 30% chance of gems</span>
           </p>
 
           {/* Mystery Box Visual */}
           <div
-            className={`w-32 h-32 rounded-2xl bg-gradient-to-br from-[rgba(212,175,55,0.15)] to-[rgba(160,133,32,0.1)] border-2 border-[rgba(212,175,55,0.4)] flex items-center justify-center text-6xl mb-4 transition-all cursor-pointer hover:scale-105 ${
+            className={`w-32 h-32 rounded-2xl bg-gradient-to-br from-[rgba(212,175,55,0.15)] to-[rgba(160,133,32,0.1)] border-2 border-gray-200,0.4)] flex items-center justify-center text-6xl mb-4 transition-all cursor-pointer hover:scale-105 ${
               isOpening ? "animate-bounce" : ""
             }`}
             onClick={!isOpening ? handleMysteryBox : undefined}
@@ -574,15 +574,15 @@ export default function Store() {
           </div>
 
           <div className="flex items-center gap-1 mb-4">
-            <span className="text-white font-bold">{MYSTERY_BOX.price}</span>
+            <span className="text-gray-800 font-bold">{MYSTERY_BOX.price}</span>
             <span>💎</span>
-            <span className="text-gray-400 text-sm">per box</span>
+            <span className="text-gray-600 text-sm">per box</span>
           </div>
 
           <button
             onClick={handleMysteryBox}
             disabled={isOpening || gems < MYSTERY_BOX.price}
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
           >
             {isOpening ? "Opening..." : "Open Box! 🎁"}
           </button>
@@ -591,7 +591,7 @@ export default function Store() {
           {mysteryResult && (
             <div className="mt-6 p-5 rounded-xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 text-center animate-in zoom-in-95 duration-300">
               <div className="text-5xl mb-2">{mysteryResult.emoji}</div>
-              <p className="text-white font-bold">{mysteryResult.message}</p>
+              <p className="text-gray-800 font-bold">{mysteryResult.message}</p>
             </div>
           )}
 
@@ -606,8 +606,8 @@ export default function Store() {
 
       {activeTab === "earn" && (
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-[#d4af37] font-display mb-3">💰 How to Earn Gems</h2>
-          <p className="text-gray-400 text-xs mb-4">Complete activities to earn gems and unlock awesome items!</p>
+          <h2 className="text-lg font-bold text-[#FF9600] font-bold font-black mb-3">💰 How to Earn Gems</h2>
+          <p className="text-gray-600 text-xs mb-4">Complete activities to earn gems and unlock awesome items!</p>
 
           {/* Earn methods list */}
           <div className="space-y-3">
@@ -615,7 +615,7 @@ export default function Store() {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-xl">🔥</div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Daily Login Streak</p>
+                  <p className="text-gray-800 text-sm font-medium">Daily Login Streak</p>
                   <p className="text-gray-500 text-xs">Open app daily! Milestones: Day 3/7/14/30</p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/30">
@@ -625,11 +625,11 @@ export default function Store() {
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-xl">📖</div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Read a Chapter</p>
+                  <p className="text-gray-800 text-sm font-medium">Read a Chapter</p>
                   <p className="text-gray-500 text-xs">Complete reading any Bible chapter</p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
@@ -639,11 +639,11 @@ export default function Store() {
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">✅</div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Quiz Correct Answer</p>
+                  <p className="text-gray-800 text-sm font-medium">Quiz Correct Answer</p>
                   <p className="text-gray-500 text-xs">Answer a quiz question correctly</p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
@@ -653,11 +653,11 @@ export default function Store() {
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-xl">🎬</div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Watch Intro Video</p>
+                  <p className="text-gray-800 text-sm font-medium">Watch Intro Video</p>
                   <p className="text-gray-500 text-xs">Watch a book introduction video</p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
@@ -667,11 +667,11 @@ export default function Store() {
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-[rgba(212,175,55,0.1)] flex items-center justify-center text-xl">📚</div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Finish a Book</p>
+                  <p className="text-gray-800 text-sm font-medium">Finish a Book</p>
                   <p className="text-gray-500 text-xs">Read all chapters in one book</p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
@@ -681,11 +681,11 @@ export default function Store() {
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-xl">🤖</div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Ask Bible AI</p>
+                  <p className="text-gray-800 text-sm font-medium">Ask Bible AI</p>
                   <p className="text-gray-500 text-xs">Have a conversation with Bible AI</p>
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
@@ -697,9 +697,9 @@ export default function Store() {
           </div>
 
           {/* Tips */}
-          <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-[rgba(212,175,55,0.08)] to-[rgba(160,133,32,0.05)] border border-[rgba(212,175,55,0.2)]">
-            <p className="text-[#d4af37] text-sm font-bold mb-2">💡 Pro Tips</p>
-            <ul className="text-gray-400 text-xs space-y-1.5">
+          <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-[rgba(212,175,55,0.08)] to-[rgba(160,133,32,0.05)] border border-gray-200,0.2)]">
+            <p className="text-[#FF9600] font-bold text-sm font-bold mb-2">💡 Pro Tips</p>
+            <ul className="text-gray-600 text-xs space-y-1.5">
               <li>• Read consistently every day to maximize gem earnings</li>
               <li>• Quizzes are available after reading each chapter</li>
               <li>• Each book has an intro video — watch them all for bonus gems!</li>
@@ -711,12 +711,12 @@ export default function Store() {
       {/* ─── Fullscreen Preview Modal ─── */}
       {previewItem && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center p-6"
+          className="fixed inset-0 z-[9999] bg-white/95 flex flex-col items-center justify-center p-6"
           onClick={() => setPreviewItem(null)}
         >
           {/* Close button */}
           <button
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white text-xl hover:bg-white/20 transition-colors"
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-800 text-xl hover:bg-white/20 transition-colors"
             onClick={() => setPreviewItem(null)}
           >
             ✕
@@ -741,8 +741,8 @@ export default function Store() {
                   <div className="flex items-center gap-2">
                     <div className="text-2xl">{previewItem.emoji}</div>
                     <div>
-                      <p className="text-white text-sm font-bold">{previewItem.name}</p>
-                      <p className="text-gray-400 text-[10px]">{previewItem.description}</p>
+                      <p className="text-gray-800 text-sm font-bold">{previewItem.name}</p>
+                      <p className="text-gray-600 text-[10px]">{previewItem.description}</p>
                     </div>
                   </div>
                 </div>
@@ -767,8 +767,8 @@ export default function Store() {
                       borderColor: `rgba(${previewItem.cssVars["--neon-rgb"]}, 0.2)`,
                     }}
                   >
-                    <p className="text-white text-xs font-medium">Matthew Ch. 5</p>
-                    <p className="text-gray-400 text-[10px]">The Sermon on the Mount</p>
+                    <p className="text-gray-800 text-xs font-medium">Matthew Ch. 5</p>
+                    <p className="text-gray-600 text-[10px]">The Sermon on the Mount</p>
                   </div>
                   <div
                     className="p-3 rounded-xl border"
@@ -777,7 +777,7 @@ export default function Store() {
                       borderColor: `rgba(${previewItem.cssVars["--neon-rgb"]}, 0.2)`,
                     }}
                   >
-                    <p className="text-white text-xs font-medium">Daily Streak: 7 Days 🔥</p>
+                    <p className="text-gray-800 text-xs font-medium">Daily Streak: 7 Days 🔥</p>
                     <div className="w-full h-1.5 rounded-full bg-white/10 mt-1">
                       <div
                         className="h-full rounded-full"
@@ -818,18 +818,18 @@ export default function Store() {
                 😎
               </div>
               <div className="text-center">
-                <p className="text-white text-sm">Your avatar with</p>
-                <p className="text-white text-lg font-bold">{previewItem.name}</p>
+                <p className="text-gray-800 text-sm">Your avatar with</p>
+                <p className="text-gray-800 text-lg font-bold">{previewItem.name}</p>
               </div>
               {/* Show on leaderboard mock */}
-              <div className="w-64 p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
+              <div className="w-64 p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg bg-[rgba(26,10,46,0.6)] ${previewItem.frameClass}`}>
                     😎
                   </div>
                   <div className="flex-1">
-                    <p className="text-white text-xs font-bold">You</p>
-                    <p className="text-gray-400 text-[10px]">Level 5 • 1,250 XP</p>
+                    <p className="text-gray-800 text-xs font-bold">You</p>
+                    <p className="text-gray-600 text-[10px]">Level 5 • 1,250 XP</p>
                   </div>
                   <div className="text-yellow-400 text-sm font-bold">#1</div>
                 </div>
@@ -854,17 +854,17 @@ export default function Store() {
 
               {/* Name & Rarity */}
               <div className="text-center">
-                <p className="text-white text-xl font-bold">{previewItem.name}</p>
+                <p className="text-gray-800 text-xl font-bold">{previewItem.name}</p>
                 <div className="mt-1"><RarityBadge rarity={previewItem.rarity} /></div>
               </div>
 
               {/* Personality & Lore */}
               {stats && (
-                <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)] space-y-2">
-                  <p className="text-[#d4af37] text-xs font-bold">💜 성격</p>
+                <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)] space-y-2">
+                  <p className="text-[#FF9600] font-bold text-xs font-bold">💜 성격</p>
                   <p className="text-gray-300 text-xs">{stats.personality}</p>
-                  <p className="text-[#d4af37] text-xs font-bold mt-2">📜 스토리</p>
-                  <p className="text-gray-400 text-[11px] leading-relaxed">{stats.lore}</p>
+                  <p className="text-[#FF9600] font-bold text-xs font-bold mt-2">📜 스토리</p>
+                  <p className="text-gray-600 text-[11px] leading-relaxed">{stats.lore}</p>
                 </div>
               )}
 
@@ -872,14 +872,14 @@ export default function Store() {
               {stats && (
                 <div className="w-full p-3 rounded-xl bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30">
                   <p className="text-cyan-300 text-xs font-bold">✨ 특수 능력</p>
-                  <p className="text-white text-xs mt-1">{stats.ability}</p>
+                  <p className="text-gray-800 text-xs mt-1">{stats.ability}</p>
                 </div>
               )}
 
               {/* Stats bars */}
               {stats && (
-                <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)] space-y-2">
-                  <p className="text-[#d4af37] text-xs font-bold">📊 능력치</p>
+                <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)] space-y-2">
+                  <p className="text-[#FF9600] font-bold text-xs font-bold">📊 능력치</p>
                   {Object.entries(stats.stats).map(([key, val]) => {
                     const labels: Record<string, { label: string; color: string }> = {
                       faith: { label: '신앙', color: 'bg-yellow-400' },
@@ -890,11 +890,11 @@ export default function Store() {
                     const conf = labels[key] || { label: key, color: 'bg-gray-400' };
                     return (
                       <div key={key} className="flex items-center gap-2">
-                        <span className="text-gray-400 text-[10px] w-8">{conf.label}</span>
+                        <span className="text-gray-600 text-[10px] w-8">{conf.label}</span>
                         <div className="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
                           <div className={`h-full rounded-full ${conf.color} transition-all duration-500`} style={{ width: `${val * 10}%` }} />
                         </div>
-                        <span className="text-white text-[10px] font-bold w-4 text-right">{val}</span>
+                        <span className="text-gray-800 text-[10px] font-bold w-4 text-right">{val}</span>
                       </div>
                     );
                   })}
@@ -902,8 +902,8 @@ export default function Store() {
               )}
 
               {/* Expression preview */}
-              <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-[rgba(212,175,55,0.2)]">
-                <p className="text-gray-400 text-xs text-center mb-2">🎭 표정 변화</p>
+              <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-gray-200,0.2)]">
+                <p className="text-gray-600 text-xs text-center mb-2">🎭 표정 변화</p>
                 <div className="flex justify-around">
                   {(['excited', 'love', 'sleepy', 'cool'] as PetExpression[]).map(expr => (
                     <div key={expr} className="text-center">
@@ -923,8 +923,8 @@ export default function Store() {
 
           {/* Item info */}
           <div className="mt-6 text-center">
-            <p className="text-white text-lg font-bold">{previewItem.emoji} {previewItem.name}</p>
-            <p className="text-gray-400 text-sm mt-1">{previewItem.description}</p>
+            <p className="text-gray-800 text-lg font-bold">{previewItem.emoji} {previewItem.name}</p>
+            <p className="text-gray-600 text-sm mt-1">{previewItem.description}</p>
             {previewItem.price > 0 && !isOwned(previewItem.id) && (
               <button
                 onClick={(e) => {
@@ -932,7 +932,7 @@ export default function Store() {
                   handlePurchase(previewItem);
                   setPreviewItem(null);
                 }}
-                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold text-sm hover:opacity-90 transition-opacity"
+                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-800 font-bold text-sm hover:opacity-90 transition-opacity"
               >
                 Buy for {previewItem.price} 💎
               </button>
@@ -944,7 +944,7 @@ export default function Store() {
                   handleEquip(previewItem);
                   setPreviewItem(null);
                 }}
-                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-white font-bold text-sm hover:opacity-90 transition-opacity"
+                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-[#d4af37] to-[#a08520] text-gray-800 font-bold text-sm hover:opacity-90 transition-opacity"
               >
                 Equip
               </button>

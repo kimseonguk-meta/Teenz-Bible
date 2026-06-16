@@ -971,7 +971,7 @@ export default function FloatingPet() {
 
         {/* Name tag */}
         <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap">
-          <span className="text-[9px] font-bold text-white/90 bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm">
+          <span className="text-[9px] font-bold text-white/90 bg-gray-800/70 px-2 py-0.5 rounded-full backdrop-blur-sm">
             {pet.name}
           </span>
         </div>

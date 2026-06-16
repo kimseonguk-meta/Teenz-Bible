@@ -4,31 +4,17 @@ import { Share } from '@capacitor/share';
 import { registerPlugin } from '@capacitor/core';
 import { isNativePlatform } from '@/lib/platform';
 
-// Register the SaveToPhotos native plugin
 interface SaveToPhotosPlugin {
   savePhoto(options: { url: string }): Promise<{ saved: boolean }>;
 }
 const SaveToPhotos = registerPlugin<SaveToPhotosPlugin>('SaveToPhotos');
 import { useLocation } from "wouter";
-import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
+import { getEquipped, PETS } from "@/data/storeItems";
 import { getPetDefaultSprite } from "@/data/petSprites";
 import { toast } from "sonner";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
-
-// Use centralized asset map with /assets/ paths (hosted on Firebase)
-import { ASSETS as CDN_ASSETS } from "@/lib/assets";
-const ASSETS = {
-  icon_fire: CDN_ASSETS.stats.fire,
-  icon_gem: CDN_ASSETS.stats.gem,
-  icon_xp: CDN_ASSETS.stats.xp,
-  ribbon_banner: CDN_ASSETS.ribbons.welcomeBack,
-  icon_brain: CDN_ASSETS.quickActions.brain,
-  icon_candle: CDN_ASSETS.quickActions.candle,
-  icon_friends: CDN_ASSETS.quickActions.friends,
-  tb_shield: CDN_ASSETS.misc.logoShield,
-};
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
 const CHAPTER_COUNTS: Record<string, number> = {
@@ -57,16 +43,6 @@ function getLastRead() {
 function getTotalXP() { return parseInt(localStorage.getItem("totalXP") || "0"); }
 function getGems() {
   try { const raw = localStorage.getItem("teensBible"); return raw ? JSON.parse(raw).gems || 0 : 0; } catch { return 0; }
-}
-function getChaptersRead() {
-  let total = 0;
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key?.startsWith("chaptersRead_")) {
-      try { const arr = JSON.parse(localStorage.getItem(key) || "[]"); total += arr.length; } catch {}
-    }
-  }
-  return total;
 }
 function getStreak() {
   try { const raw = localStorage.getItem("teensBible"); return raw ? JSON.parse(raw).streak || 0 : 0; } catch { return 0; }
@@ -104,48 +80,24 @@ const memeUrls = [
   "meme_086.jpg","meme_087.jpg","meme_088.jpg","meme_089.jpg","meme_090.jpg",
   "meme_091.jpg","meme_092.webp","meme_093.jpg","meme_094.jpg","meme_095.jpg",
   "meme_096.jpg","meme_097.jpg","meme_098.jpg","meme_099.jpg","meme_100.jpg",
-  "meme_101.jpeg","meme_102.jpeg",
-  "meme_103.webp","meme_104.jpg","meme_105.jpg","meme_106.webp",
+  "meme_101.jpeg","meme_102.jpeg","meme_103.webp","meme_104.jpg","meme_105.jpg","meme_106.webp",
 ];
 
-const seasonalMemes: Record<string, string[]> = {};
-
-function getActiveSeason(): string | null {
-  const now = new Date();
-  const month = now.getMonth() + 1;
-  const day = now.getDate();
-  if (month === 12 || (month === 1 && day <= 6)) return "christmas";
-  if ((month === 3 && day >= 15) || month === 4) return "easter";
-  if ((month === 2 && day >= 15) || (month === 3 && day < 15)) return "lent";
-  if (month === 11) return "thanksgiving";
-  if ((month === 8 && day >= 15) || (month === 9 && day <= 15)) return "backtoschool";
-  if (month === 2 && day >= 20 && day <= 28) return "backtoschool";
-  return null;
-}
-
 function getDailyMemeUrl(): string {
-  let allMemes = [...memeUrls];
-  const season = getActiveSeason();
-  if (season && seasonalMemes[season]) {
-    allMemes = allMemes.concat(seasonalMemes[season]);
-  }
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
-  const idx = dayOfYear % allMemes.length;
-  return MEME_BASE_URL + allMemes[idx];
+  const idx = dayOfYear % memeUrls.length;
+  return MEME_BASE_URL + memeUrls[idx];
 }
 
 export default function Home() {
   const [, setLocation] = useLocation();
   const playerName = getPlayerName();
   const totalXP = getTotalXP();
-  const chaptersRead = getChaptersRead();
   const gems = getGems();
   const streak = getStreak();
   const level = getLevel(totalXP);
-  const xpProgress = Math.min(100, (totalXP / level.next) * 100);
   const memeUrl = getDailyMemeUrl();
 
-  // Meme fullscreen viewer state
   const [memeFullscreen, setMemeFullscreen] = useState(false);
   const [memeLoaded, setMemeLoaded] = useState(false);
   const [reactions, setReactions] = useState<Record<string, number>>(() => {
@@ -161,10 +113,8 @@ export default function Home() {
     setReactions(newReactions); localStorage.setItem("memeReactions", JSON.stringify(newReactions));
   };
 
-  const greeting = playerName ? `Hey ${playerName}!` : "Hey there!";
   const equipped = getEquipped();
   const equippedPet = PETS.find(p => p.id === equipped.pet);
-  const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
   const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
   
   useEffect(() => {
@@ -175,10 +125,7 @@ export default function Home() {
     const t2 = setTimeout(checkLinked, 1500);
     const t3 = setTimeout(checkLinked, 3000);
     window.addEventListener("auth-changed", checkLinked);
-    return () => {
-      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
-      window.removeEventListener("auth-changed", checkLinked);
-    };
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); window.removeEventListener("auth-changed", checkLinked); };
   }, []);
 
   const [bannerDismissed, setBannerDismissed] = useState(() => {
@@ -192,35 +139,19 @@ export default function Home() {
     setLinkingGoogle(true);
     try {
       const result = await linkOrSignInWithGoogle();
-      if (result.success) {
-        setAccountLinked(true);
-        celebrateLogin();
-        toast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Google!");
-      } else {
-        toast.error(result.message || "Failed to link account");
-      }
-    } catch {
-      toast.error("Something went wrong");
-    } finally {
-      setLinkingGoogle(false);
-    }
+      if (result.success) { setAccountLinked(true); celebrateLogin(); toast.success(result.type === "linked" ? "Account linked!" : "Signed in with Google!"); }
+      else { toast.error(result.message || "Failed to link account"); }
+    } catch { toast.error("Something went wrong"); }
+    finally { setLinkingGoogle(false); }
   };
   const handleBannerLinkApple = async () => {
     setLinkingApple(true);
     try {
       const result = await linkOrSignInWithApple();
-      if (result.success) {
-        setAccountLinked(true);
-        celebrateLogin();
-        toast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Apple!");
-      } else {
-        toast.error(result.message || "Failed to link account");
-      }
-    } catch {
-      toast.error("Something went wrong");
-    } finally {
-      setLinkingApple(false);
-    }
+      if (result.success) { setAccountLinked(true); celebrateLogin(); toast.success(result.type === "linked" ? "Account linked!" : "Signed in with Apple!"); }
+      else { toast.error(result.message || "Failed to link account"); }
+    } catch { toast.error("Something went wrong"); }
+    finally { setLinkingApple(false); }
   };
   const handleDismissBanner = () => {
     setBannerDismissed(true);
@@ -229,36 +160,35 @@ export default function Home() {
 
   return (
     <div className="px-4 pt-5 space-y-5 pb-28">
-      {/* Full-screen loading overlay during sign-in */}
+      {/* Loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
-        <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-[#d4af37]" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-          <p className="text-white text-sm font-medium">
+        <div className="fixed inset-0 z-[9999] bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#58CC02] border-t-transparent rounded-full animate-spin" />
+          <p className="text-gray-700 text-sm font-bold">
             {linkingApple ? "Connecting to Apple..." : "Connecting to Google..."}
           </p>
-          <p className="text-gray-400 text-xs">Please wait, this may take a moment</p>
         </div>
       )}
 
       {/* Account Linking Banner */}
       {!accountLinked && !bannerDismissed && (
-        <div className="relative gold-card p-4">
-          <button onClick={handleDismissBanner} className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 text-lg leading-none p-1">✕</button>
+        <div className="game-card game-card-orange p-4 relative">
+          <button onClick={handleDismissBanner} className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-lg leading-none">✕</button>
           <div className="flex items-start gap-3">
-            <div className="text-2xl mt-0.5">⚠️</div>
+            <span className="text-2xl">🔒</span>
             <div className="flex-1 pr-4">
-              <h3 className="text-[#f0d060] font-bold text-sm">Back up your progress</h3>
-              <p className="text-gray-400 text-xs mt-1">Link an account to save your progress across devices.</p>
+              <h3 className="text-gray-800 font-extrabold text-sm">Back up your progress</h3>
+              <p className="text-gray-500 text-xs mt-1">Link an account to save your data across devices.</p>
               <div className="flex gap-2 mt-3">
                 <button onClick={handleBannerLinkGoogle} disabled={linkingGoogle || linkingApple}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-800 text-xs font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50">
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white text-gray-800 text-xs font-bold border-2 border-gray-200 border-b-4 active:border-b-2 active:translate-y-[2px] transition-all disabled:opacity-50">
                   <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                  {linkingGoogle ? "Signing in..." : "Google"}
+                  Google
                 </button>
                 <button onClick={handleBannerLinkApple} disabled={linkingGoogle || linkingApple}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-black text-white text-xs font-semibold border border-gray-600/50 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50">
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gray-900 text-white text-xs font-bold border-2 border-gray-700 border-b-4 active:border-b-2 active:translate-y-[2px] transition-all disabled:opacity-50">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-                  {linkingApple ? "Signing in..." : "Apple"}
+                  Apple
                 </button>
               </div>
             </div>
@@ -266,34 +196,31 @@ export default function Home() {
         </div>
       )}
 
-      {/* ═══ TOP STAT PILLS — Illustrated icons, thick beveled gold border ═══ */}
+      {/* ═══ STAT PILLS — Flat colorful badges ═══ */}
       <div className="flex items-center justify-between gap-2">
-        <div className="gold-pill">
-          <img src={ASSETS.icon_fire} alt="" className="w-7 h-7 object-contain" />
-          <span className="font-bold">{streak}</span>
+        <div className="stat-pill stat-pill-fire">
+          <span>🔥</span>
+          <span>{streak}</span>
         </div>
-        <div className="gold-pill">
-          <img src={ASSETS.icon_gem} alt="" className="w-7 h-7 object-contain" />
-          <span className="font-bold">{totalXP.toLocaleString()}</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-600/60 text-purple-200 font-bold">XP</span>
+        <div className="stat-pill stat-pill-gem">
+          <span>💎</span>
+          <span>{gems.toLocaleString()}</span>
         </div>
-        <div className="gold-pill">
-          <img src={ASSETS.icon_xp} alt="" className="w-7 h-7 object-contain" />
-          <span className="font-bold">{gems.toLocaleString()}</span>
+        <div className="stat-pill stat-pill-xp">
+          <span>⭐</span>
+          <span>{totalXP.toLocaleString()} XP</span>
         </div>
       </div>
 
-      {/* ═══ WELCOME RIBBON — Real ribbon image asset + white name ═══ */}
-      <div className="flex flex-col items-center gap-1 pt-3">
-        <div className="relative flex items-center justify-center" style={{ width: '280px', height: '70px' }}>
-          <img src={ASSETS.ribbon_banner} alt="" className="absolute inset-0 w-full h-full object-contain" />
-          <span className="relative z-10 text-base font-bold" style={{ color: '#1a0a2e', paddingBottom: '6px' }}>Welcome Back!</span>
-        </div>
-        <h1 className="text-4xl font-bold font-display text-white mt-2" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>{playerName || "Adventurer"}</h1>
-        <p className="text-gray-400 text-xs mt-1">Continue your journey</p>
+      {/* ═══ GREETING ═══ */}
+      <div className="text-center pt-2">
+        <h1 className="text-3xl font-black text-gray-800">
+          {playerName ? `Hey ${playerName}!` : "Hey there!"} 👋
+        </h1>
+        <p className="text-gray-500 text-sm mt-1 font-semibold">Continue your journey</p>
       </div>
 
-      {/* ═══ TODAY'S MISSION — Ornate card with gold frame corners ═══ */}
+      {/* ═══ TODAY'S MISSION — Green card ═══ */}
       {(() => {
         const lastRead = getLastRead();
         const bookName = lastRead?.book || "Genesis";
@@ -302,33 +229,19 @@ export default function Home() {
         const versesRead = lastRead ? Math.round((progress / 100) * (lastRead.totalChapters || 5)) : 0;
         const totalVerses = lastRead?.totalChapters || 5;
         return (
-          <div className="gold-card-ornate p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <img src={ASSETS.tb_shield} alt="" className="w-6 h-6 object-contain" />
-              <span className="text-[#f0d060] text-sm font-bold">Today's Mission</span>
+          <div className="game-card game-card-green">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-lg">📜</span>
+              <span className="text-[#4CAD02] text-sm font-extrabold uppercase tracking-wide">Today's Mission</span>
             </div>
-            <h2 className="text-xl font-bold text-white font-display">Read {bookName} Chapter {chapterNum}</h2>
-            {/* Gold 3D Progress Bar */}
-            <div className="mt-4 h-5 rounded-full overflow-hidden relative" style={{
-              background: 'linear-gradient(180deg, rgba(30,15,55,0.9) 0%, rgba(15,6,30,0.95) 100%)',
-              border: '2px solid #5c4510',
-              boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)'
-            }}>
-              <div className="h-full rounded-full transition-all duration-700" style={{
-                width: `${Math.max(progress, 8)}%`,
-                background: 'linear-gradient(180deg, #f5e6a3 0%, #e8c84a 30%, #d4af37 60%, #8b6914 100%)',
-                boxShadow: '0 0 8px rgba(212,175,55,0.5), inset 0 1px 0 rgba(255,255,255,0.4)'
-              }} />
+            <h2 className="text-xl font-black text-gray-800">Read {bookName} Ch. {chapterNum}</h2>
+            {/* Progress bar */}
+            <div className="progress-bar-container mt-4">
+              <div className="progress-bar-fill" style={{ width: `${Math.max(progress, 5)}%` }} />
             </div>
-            <p className="text-center text-gray-400 text-xs mt-2">{versesRead}/{totalVerses} chapters</p>
+            <p className="text-center text-gray-500 text-xs mt-2 font-bold">{versesRead}/{totalVerses} chapters completed</p>
             <div className="flex justify-center mt-4">
-              <button onClick={() => setLocation("/bible")} className="text-sm font-bold px-6 py-3 rounded-xl transition-transform active:scale-97" style={{
-                background: 'linear-gradient(180deg, #7c3aed 0%, #5b21b6 50%, #4c1d95 100%)',
-                border: '2px solid rgba(167, 139, 250, 0.5)',
-                color: '#f0d060',
-                boxShadow: '0 4px 12px rgba(91, 33, 182, 0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
-                textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-              }}>
+              <button onClick={() => setLocation("/bible")} className="btn-game btn-game-green">
                 {lastRead ? "Continue Reading" : "Start Reading"}
               </button>
             </div>
@@ -336,75 +249,61 @@ export default function Home() {
         );
       })()}
 
-      {/* ═══ PET CARD + QUICK ACTIONS — Illustrated assets in gold-ringed circles ═══ */}
-      <div className="flex items-start gap-4 mt-2">
-        {/* Pet Card — taller, with illustrated pet */}
-        <div className="gold-card p-4 flex flex-col items-center" style={{ width: '140px' }}>
-          <div className="w-20 h-20 flex items-center justify-center">
-            {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
-              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet?.name || 'Pet'} className="w-18 h-18 object-contain" />
-            ) : equippedPet ? (
-              <span className="text-5xl">{equippedPet.petEmoji}</span>
-            ) : (
-              <span className="text-5xl">🐑</span>
-            )}
-          </div>
-          <span className="text-white text-sm font-bold mt-2">{equippedPet?.name || "Luna"}</span>
-          <span className="text-green-400 text-xs">Happy 😊</span>
-        </div>
-
-        {/* Quick Action Circles — illustrated icons */}
-        <div className="flex-1 flex items-center justify-around pt-4">
-          <button onClick={() => setLocation("/bible")} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
-            <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center overflow-hidden" style={{
-              background: 'linear-gradient(180deg, #1a0a3a 0%, #0d0520 100%)',
-              border: '3px solid #d4af37',
-              boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
-            }}>
-              <img src={ASSETS.icon_brain} alt="Quiz" className="w-12 h-12 object-contain" />
-            </div>
-            <span className="text-xs text-gray-300 font-medium">Quiz</span>
-          </button>
-          <button onClick={() => setLocation("/bible-ai")} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
-            <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center overflow-hidden" style={{
-              background: 'linear-gradient(180deg, #0a1a3a 0%, #050d20 100%)',
-              border: '3px solid #d4af37',
-              boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
-            }}>
-              <img src={ASSETS.icon_candle} alt="Devotion" className="w-12 h-12 object-contain" />
-            </div>
-            <span className="text-xs text-gray-300 font-medium">Devotion</span>
-          </button>
-          <button onClick={() => setLocation("/leaderboard")} className="flex flex-col items-center gap-2 active:scale-95 transition-transform">
-            <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center overflow-hidden" style={{
-              background: 'linear-gradient(180deg, #0a2a1a 0%, #051a0d 100%)',
-              border: '3px solid #d4af37',
-              boxShadow: '0 0 12px rgba(212,175,55,0.3), 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(240,208,96,0.15)'
-            }}>
-              <img src={ASSETS.icon_friends} alt="Friends" className="w-12 h-12 object-contain" />
-            </div>
-            <span className="text-xs text-gray-300 font-medium">Friends</span>
-          </button>
-        </div>
+      {/* ═══ QUICK ACTIONS ═══ */}
+      <div className="flex items-center justify-around py-2">
+        <button onClick={() => setLocation("/bible")} className="flex flex-col items-center gap-2 active:scale-90 transition-transform">
+          <div className="action-circle action-circle-green">🧠</div>
+          <span className="text-xs text-gray-600 font-bold">Quiz</span>
+        </button>
+        <button onClick={() => setLocation("/bible-ai")} className="flex flex-col items-center gap-2 active:scale-90 transition-transform">
+          <div className="action-circle action-circle-blue">🕯️</div>
+          <span className="text-xs text-gray-600 font-bold">Devotion</span>
+        </button>
+        <button onClick={() => setLocation("/leaderboard")} className="flex flex-col items-center gap-2 active:scale-90 transition-transform">
+          <div className="action-circle action-circle-purple">👥</div>
+          <span className="text-xs text-gray-600 font-bold">Friends</span>
+        </button>
+        <button onClick={() => setLocation("/store")} className="flex flex-col items-center gap-2 active:scale-90 transition-transform">
+          <div className="action-circle action-circle-orange">🐾</div>
+          <span className="text-xs text-gray-600 font-bold">Pets</span>
+        </button>
       </div>
 
-      {/* ═══ Bible Meme of the Day ═══ */}
-      <div className="gold-card p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-white font-bold text-sm">😂 BIBLE MEME OF THE DAY</span>
+      {/* ═══ PET COMPANION ═══ */}
+      {equippedPet && (
+        <div className="pet-card flex items-center gap-4" style={{ borderColor: '#58CC02' }}>
+          <div className="w-16 h-16 flex items-center justify-center pet-creature">
+            {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-14 h-14 object-contain" />
+            ) : (
+              <span className="text-4xl">{equippedPet.petEmoji}</span>
+            )}
+          </div>
+          <div>
+            <p className="font-extrabold text-gray-800">{equippedPet.name}</p>
+            <p className="text-sm text-green-600 font-bold">Happy 😊</p>
+          </div>
         </div>
-        <div className="rounded-lg overflow-hidden border border-[#b8962e]/30 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
-          {!memeLoaded && <div className="w-full h-64 bg-purple-900/30 animate-pulse rounded-lg" />}
+      )}
+
+      {/* ═══ BIBLE MEME OF THE DAY ═══ */}
+      <div className="game-card game-card-blue">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-lg">😂</span>
+          <span className="text-[#1899D6] text-sm font-extrabold uppercase tracking-wide">Meme of the Day</span>
+        </div>
+        <div className="rounded-xl overflow-hidden border-2 border-gray-200 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
+          {!memeLoaded && <div className="w-full h-64 bg-gray-100 animate-pulse rounded-xl" />}
           <img src={memeUrl} alt="Bible Meme of the Day"
-            className={`w-full h-auto rounded-lg ${memeLoaded ? '' : 'absolute opacity-0'}`}
+            className={`w-full h-auto rounded-xl ${memeLoaded ? '' : 'absolute opacity-0'}`}
             loading="lazy" onLoad={() => setMemeLoaded(true)} />
-          {memeLoaded && <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 text-[10px] text-gray-300 pointer-events-none"><span>🔍</span> Tap to view</div>}
+          {memeLoaded && <div className="absolute bottom-2 right-2 bg-white/90 rounded-full px-2.5 py-1 flex items-center gap-1 text-[10px] text-gray-600 font-bold pointer-events-none shadow-sm">🔍 Tap to view</div>}
         </div>
-        <div className="flex justify-center gap-3 mt-3">
+        <div className="flex justify-center gap-2 mt-3">
           {["😂", "🔥", "💀", "🙏"].map(emoji => (
-            <button key={emoji} onClick={() => handleReaction(emoji)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm active:scale-95 transition-all ${userReaction === emoji ? 'bg-[#d4af37]/20 border-[#d4af37] scale-110' : 'bg-purple-900/40 border-[#b8962e]/30'}`}>
+            <button key={emoji} onClick={() => handleReaction(emoji)} className={`flex items-center gap-1 px-3.5 py-2 rounded-full border-2 text-sm font-bold active:scale-90 transition-all ${userReaction === emoji ? 'bg-blue-50 border-[#1CB0F6] scale-105' : 'bg-white border-gray-200'}`}>
               <span>{emoji}</span>
-              {(reactions[emoji] || 0) > 0 && <span className="text-xs text-gray-300">{reactions[emoji]}</span>}
+              {(reactions[emoji] || 0) > 0 && <span className="text-xs text-gray-500">{reactions[emoji]}</span>}
             </button>
           ))}
         </div>
@@ -412,12 +311,10 @@ export default function Home() {
 
       {/* Meme Fullscreen Viewer */}
       {memeFullscreen && (
-        <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center" onClick={() => setMemeFullscreen(false)}>
-          <button onClick={() => setMemeFullscreen(false)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white text-xl hover:bg-white/20 transition-all">
-            ✕
-          </button>
+        <div className="fixed inset-0 z-[9999] bg-white/95 flex flex-col items-center justify-center" onClick={() => setMemeFullscreen(false)}>
+          <button onClick={() => setMemeFullscreen(false)} className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white text-xl">✕</button>
           <div className="flex-1 flex items-center justify-center w-full px-4 py-16" onClick={(e) => e.stopPropagation()}>
-            <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-full object-contain rounded-lg" />
+            <img src={memeUrl} alt="Bible Meme" className="max-w-full max-h-full object-contain rounded-lg" />
           </div>
           <div className="absolute bottom-0 left-0 right-0 pb-24 pt-4 bg-gradient-to-t from-black/80 to-transparent" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-center gap-4 px-6">
@@ -429,62 +326,53 @@ export default function Home() {
                       const fileName = `bible-meme-${Date.now()}.${ext}`;
                       await Filesystem.downloadFile({ url: memeUrl, path: fileName, directory: Directory.Cache });
                       const fileUri = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
-                      await Share.share({ title: '😂 Bible Meme of the Day', text: 'Check out this Bible meme from Teenz Bible!', files: [fileUri.uri] });
-                      toast.success('Shared successfully!');
+                      await Share.share({ title: '😂 Bible Meme', text: 'Check out this Bible meme from Teenz Bible!', files: [fileUri.uri] });
+                      toast.success('Shared!');
                     } else if (navigator.share) {
                       const response = await fetch(memeUrl);
                       const blob = await response.blob();
                       const file = new File([blob], 'bible-meme.jpg', { type: blob.type });
-                      await navigator.share({ title: '😂 Bible Meme of the Day', text: 'Check out this Bible meme from Teenz Bible!', files: [file] });
-                      toast.success('Shared successfully!');
+                      await navigator.share({ title: '😂 Bible Meme', files: [file] });
                     } else {
                       await navigator.clipboard.writeText(memeUrl);
-                      toast.success('Link copied to clipboard!');
+                      toast.success('Link copied!');
                     }
                   } catch (err: any) {
                     if (err?.name !== 'AbortError') {
-                      try { await navigator.clipboard.writeText(memeUrl); toast.success('Link copied to clipboard!'); } catch { toast.error('Could not share'); }
+                      try { await navigator.clipboard.writeText(memeUrl); toast.success('Link copied!'); } catch { toast.error('Could not share'); }
                     }
                   }
                 }}
-                className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold text-sm transition-all active:scale-95" style={{ background: 'linear-gradient(135deg, #d4af37, #a08520)' }}
+                className="flex-1 max-w-[160px] btn-game btn-game-green text-sm"
               >
-                <span>📤</span> Share
+                📤 Share
               </button>
               <button
                 onClick={async () => {
                   try {
                     if (isNativePlatform()) {
                       await SaveToPhotos.savePhoto({ url: memeUrl });
-                      toast.success('Saved to Photos! 📥');
+                      toast.success('Saved! 📥');
                     } else {
                       const response = await fetch(memeUrl);
                       const blob = await response.blob();
                       const url = URL.createObjectURL(blob);
                       const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `bible-meme-${new Date().toISOString().split('T')[0]}.jpg`;
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
+                      a.href = url; a.download = `bible-meme-${new Date().toISOString().split('T')[0]}.jpg`;
+                      document.body.appendChild(a); a.click(); document.body.removeChild(a);
                       URL.revokeObjectURL(url);
-                      toast.success('Meme saved! 📥');
+                      toast.success('Saved! 📥');
                     }
-                  } catch (err: any) {
-                    console.error('Save meme error:', err);
-                    toast.error('Could not save meme. Please allow photo access in Settings.');
-                  }
+                  } catch { toast.error('Could not save'); }
                 }}
-                className="flex-1 max-w-[160px] flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold text-sm border border-white/20 transition-all active:scale-95"
+                className="flex-1 max-w-[160px] btn-game btn-game-blue text-sm"
               >
-                <span>💾</span> Save
+                💾 Save
               </button>
             </div>
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

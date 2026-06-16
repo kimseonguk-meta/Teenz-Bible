@@ -162,7 +162,7 @@ export default function Feedback() {
     <div className="px-4 pt-6 pb-8 space-y-5 max-w-lg mx-auto">
       {/* Success Animation Overlay */}
       {showSuccessAnimation && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/80 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-4 animate-[fadeInScale_0.4s_cubic-bezier(0.23,1,0.32,1)]">
             <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center animate-[pulse_0.8s_ease-in-out_infinite]">
               <svg className="w-14 h-14 text-green-400 animate-[checkDraw_0.6s_ease-out_0.3s_both]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -186,7 +186,7 @@ export default function Feedback() {
       {/* Stats Banner */}
       <div className="grid grid-cols-2 gap-2">
         <div className="bg-white/[0.04] border border-[rgba(212,175,55,0.2)] rounded-xl p-3 text-center">
-          <p className="text-xl font-bold text-[#d4af37]">{totalFeedbacks}</p>
+          <p className="text-xl font-bold text-[#FF9600] font-bold">{totalFeedbacks}</p>
           <p className="text-[10px] text-gray-500 mt-0.5">Total Feedback</p>
         </div>
         <div className="bg-white/[0.04] border border-green-500/20 rounded-xl p-3 text-center">
@@ -203,7 +203,7 @@ export default function Feedback() {
           <p className="text-gray-400 text-xs">Our team will review it shortly.</p>
           <button
             onClick={() => setSubmitted(false)}
-            className="mt-2 text-xs text-[#d4af37] underline"
+            className="mt-2 text-xs text-[#FF9600] font-bold underline"
           >
             Submit another
           </button>
@@ -354,7 +354,7 @@ export default function Feedback() {
                           {statusInfo.label}
                         </span>
                         {catInfo && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/15 text-[#d4af37]">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/15 text-[#FF9600] font-bold">
                             {catInfo.label}
                           </span>
                         )}
@@ -402,7 +402,7 @@ export default function Feedback() {
           All feedback is reviewed by our development team. We aim to respond within 48 hours.
           <br />
           For urgent issues, contact us at{" "}
-          <a href="mailto:support@teenzbible.com" className="text-[#d4af37] underline">
+          <a href="mailto:support@teenzbible.com" className="text-[#FF9600] font-bold underline">
             support@teenzbible.com
           </a>
         </p>
