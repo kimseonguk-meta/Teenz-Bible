@@ -35,7 +35,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       {/* Bottom Navigation - uses --neon-rgb for theme-aware styling */}
       {location !== "/bible-ai" && <nav className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
-        <div className="pointer-events-auto flex justify-around items-stretch gap-1 rounded-[16px] border-2 border-[#9d5b0d] bg-gradient-to-b from-[#242631] to-[#0d0f15] p-1 shadow-[inset_0_0_0_1px_rgba(255,232,128,0.3),0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]">
+        <div className="pointer-events-auto flex justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]" style={{ background: 'url("/art-assets/ui/nav-bar.svg") center / 100% 100% no-repeat' }}>
           {navItems.map((item) => {
             const isActive = location === item.path;
             return (

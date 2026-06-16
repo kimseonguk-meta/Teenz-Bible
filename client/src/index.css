@@ -321,6 +321,7 @@
   position: relative;
   border-radius: 21px;
   background:
+    url("/art-assets/ui/panel-frame.svg") center / 100% 100% no-repeat,
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.12), transparent 9rem),
     linear-gradient(145deg, rgba(255,255,255,0.07), rgba(0,0,0,0.25)),
     repeating-linear-gradient(135deg, rgba(255,255,255,0.018) 0 4px, transparent 4px 10px),
@@ -336,6 +337,14 @@
     0 0 18px rgba(255, 187, 45, 0.08);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+.tb-book-card {
+  background:
+    url("/art-assets/ui/panel-tall.svg") center / 100% 100% no-repeat,
+    linear-gradient(180deg, #282930, #090a0f);
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .neon-card::before,
@@ -390,9 +399,10 @@
   letter-spacing: -0.03em;
   text-shadow: var(--tb-text-shadow);
   background:
+    url("/art-assets/ui/ribbon-gold.svg") center / 100% 100% no-repeat,
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.6), transparent 3rem),
     linear-gradient(180deg, #fff7bc 0%, #ffc932 28%, #a35c08 66%, #5a3005 100%);
-  border: 3px solid #ffe98c;
+  border: 0;
   border-radius: 14px 14px 25px 25px;
   box-shadow:
     inset 0 2px 0 rgba(255,255,255,0.45),
@@ -403,15 +413,7 @@
 
 .tb-ribbon::before,
 .tb-ribbon::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 38px;
-  height: 31px;
-  z-index: -1;
-  background: linear-gradient(180deg, #d58d18, #6c3705);
-  border: 2px solid #cc8a19;
-  box-shadow: 0 5px 0 rgba(0,0,0,0.42);
+  content: none;
 }
 
 .tb-ribbon::before {
@@ -451,9 +453,10 @@
   font-weight: 950;
   text-shadow: var(--tb-text-shadow);
   background:
+    url("/art-assets/ui/stat-badge.svg") center / 100% 100% no-repeat,
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 3rem),
     linear-gradient(180deg, #282a32, #0e1016);
-  border: 3px solid #9d5b0d;
+  border: 0;
   box-shadow: inset 0 0 0 1px rgba(255, 229, 134, 0.5), inset 0 -8px 10px rgba(0,0,0,0.42), 0 5px 0 rgba(0,0,0,0.48);
 }
 
@@ -462,9 +465,11 @@
   border-radius: 10px;
   border: 2px solid #fff0a7;
   background:
+    url("/art-assets/ui/button-gold.svg") center / 100% 100% no-repeat,
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.65), transparent 3.4rem),
     linear-gradient(180deg, #fff5b2 0%, #ffca28 38%, #c67809 68%, #6f3904 100%);
   color: white;
+  border: 0;
   text-shadow: var(--tb-text-shadow);
   box-shadow: inset 0 0 0 2px rgba(119, 67, 4, 0.62), inset 0 5px 8px rgba(255,255,255,0.22), inset 0 -8px 11px rgba(74,35,0,0.46), 0 6px 0 rgba(0,0,0,0.48), 0 0 18px rgba(255, 190, 42, 0.35);
   font-weight: 950;
@@ -474,10 +479,12 @@
   border-radius: 10px;
   border: 2px solid #ffe784;
   background:
+    url("/art-assets/ui/button-purple.svg") center / 100% 100% no-repeat,
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.32), transparent 3rem),
     linear-gradient(180deg, #bc7cff 0%, #812dd0 52%, #3a146b 100%);
   color: white;
   text-shadow: var(--tb-text-shadow);
+  border: 0;
   box-shadow: inset 0 0 0 2px rgba(53, 12, 99, 0.58), 0 6px 0 rgba(0,0,0,0.42), 0 0 18px var(--tb-purple-glow);
   font-weight: 950;
 }
