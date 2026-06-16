@@ -22,7 +22,7 @@ import {
 import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import type { FantasyIconName } from "@/components/FantasyIcon";
+import FantasyIcon, { type FantasyIconName } from "@/components/FantasyIcon";
 
 // Pet stats/abilities data for detail popup
 const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
@@ -267,21 +267,18 @@ export default function Store() {
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-1 overflow-x-auto pb-2 -mx-4 px-4 teenz-scrollbar-hide">
+      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 teenz-scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`relative h-[72px] w-[66px] shrink-0 transition-all active:scale-95 ${
-              activeTab === tab.id ? "scale-105 drop-shadow-[0_0_14px_rgba(255,205,50,0.55)]" : "opacity-85"
+            className={`flex h-[72px] w-[66px] shrink-0 flex-col items-center justify-center gap-0.5 transition-all active:scale-95 ${
+              activeTab === tab.id ? "tb-btn text-white" : "tb-soft-button text-white/75"
             }`}
             aria-label={tab.label}
           >
-            <img
-              src={`/art-assets/mockup/store-tab-${tab.id === "readerBg" ? "reader" : tab.id}.webp`}
-              alt=""
-              className="h-full w-full object-contain"
-            />
+            <FantasyIcon name={tab.icon} className="h-8 w-8" />
+            <span className="text-[10px] font-black">{tab.label}</span>
           </button>
         ))}
       </div>

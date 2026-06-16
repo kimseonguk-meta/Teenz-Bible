@@ -523,7 +523,7 @@ export default function Profile() {
             {profilePhoto ? (
               <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              <img src="/art-assets/mockup/profile-avatar-frame.webp" alt="Profile avatar" className="h-[142px] w-[142px] max-w-none object-contain" />
+              <img src="/art-assets/mockup/profile-avatar-frame.webp" alt="Profile avatar" className="h-[156px] w-[206px] max-w-none object-contain" />
             )}
             {/* Upload loading overlay */}
             {isUploadingPhoto && (
