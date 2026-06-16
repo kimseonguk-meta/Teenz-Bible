@@ -1,4 +1,4 @@
-type FantasyIconName =
+export type FantasyIconName =
   | "castle"
   | "book"
   | "trophy"
@@ -9,7 +9,12 @@ type FantasyIconName =
   | "friends"
   | "gem"
   | "coin"
-  | "flame";
+  | "flame"
+  | "palette"
+  | "frame"
+  | "paw"
+  | "scroll"
+  | "bag";
 
 interface FantasyIconProps {
   name: FantasyIconName;
@@ -121,6 +126,47 @@ export default function FantasyIcon({ name, className = "" }: FantasyIconProps) 
           <>
             <path d="M34 6c6 10-1 15 7 22 3 3 5 7 5 12 0 10-7 18-15 18S17 51 17 40c0-8 5-12 10-18 4-5 4-10 7-16z" fill="#ff7a19" />
             <path d="M32 27c4 6-3 9 1 14 2 2 3 4 3 7 0 5-3 9-7 9s-8-4-8-9c0-6 6-9 11-21z" fill="#ffe65a" />
+          </>
+        )}
+        {name === "palette" && (
+          <>
+            <path d="M33 10c-14 0-24 9-24 22 0 12 10 21 22 21h4c4 0 6-4 4-7-1-2 0-5 4-5h3c7 0 10-5 10-11 0-12-10-20-23-20z" fill="#9a4de0" />
+            <circle cx="22" cy="26" r="4" fill="#ffdc4a" />
+            <circle cx="32" cy="21" r="4" fill="#4bd7ff" />
+            <circle cx="43" cy="28" r="4" fill="#ff6b57" />
+            <circle cx="28" cy="38" r="4" fill="#62e06f" />
+          </>
+        )}
+        {name === "frame" && (
+          <>
+            <rect x="10" y="12" width="44" height="38" rx="5" fill="url(#gold)" />
+            <rect x="17" y="19" width="30" height="24" rx="3" fill="#182034" />
+            <path d="M20 38l8-9 6 6 5-5 8 8" fill="#4fc3ff" />
+            <circle cx="39" cy="26" r="4" fill="#ffd95d" />
+          </>
+        )}
+        {name === "paw" && (
+          <>
+            <circle cx="22" cy="21" r="6" fill="#2aa7ff" />
+            <circle cx="34" cy="17" r="6" fill="#2aa7ff" />
+            <circle cx="45" cy="24" r="6" fill="#2aa7ff" />
+            <circle cx="19" cy="35" r="6" fill="#2aa7ff" />
+            <path d="M28 34c6-8 19-4 20 7 1 8-8 10-15 7-8 4-16 0-14-7 1-4 5-5 9-7z" fill="#1d6ccb" />
+          </>
+        )}
+        {name === "scroll" && (
+          <>
+            <path d="M17 13h28c5 0 8 3 8 8 0 4-3 7-7 7H22c-5 0-9-3-9-8 0-4 2-7 4-7z" fill="#f2ddb1" />
+            <path d="M22 28h25v21H17V20c0 4 2 8 5 8z" fill="#ead0a0" />
+            <path d="M22 34h18M22 40h15M22 46h20" stroke="#7a4510" />
+            <circle cx="45" cy="21" r="7" fill="url(#gold)" />
+          </>
+        )}
+        {name === "bag" && (
+          <>
+            <path d="M20 25h24l7 28H13z" fill="#d19016" />
+            <path d="M24 25c0-8 4-13 8-13s8 5 8 13" fill="none" />
+            <path d="M27 36h12M32 31v17" stroke="#fff2a8" />
           </>
         )}
       </g>

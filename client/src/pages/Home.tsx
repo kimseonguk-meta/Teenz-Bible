@@ -315,7 +315,7 @@ export default function Home() {
         return (
           <div className="neon-card mx-1 p-5 text-center">
             <div className="mb-2 flex items-center justify-center gap-2">
-              <span className="text-3xl">📖</span>
+              <FantasyIcon name="book" className="h-10 w-10" />
               <h2 className="tb-gold-text text-2xl font-black">Today's Mission</h2>
             </div>
             <h3 className="tb-title text-2xl">Read {bookName} Chapter {chapterNum}</h3>

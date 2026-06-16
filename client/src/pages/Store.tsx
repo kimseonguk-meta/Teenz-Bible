@@ -22,6 +22,7 @@ import {
 import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import FantasyIcon, { type FantasyIconName } from "@/components/FantasyIcon";
 
 // Pet stats/abilities data for detail popup
 const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
@@ -41,13 +42,13 @@ const PET_STATS: Record<string, { personality: string; ability: string; lore: st
   unicorn: { personality: "마법적이고 신비로운 꿈의 존재", ability: "무지개 축복 — 모든 활동에서 젬 획득량 +5%", lore: "무지개 갈기와 꽃 화관의 유니콘. 하나님의 약속처럼 아름답고 신비로운 존재.", stats: { faith: 9, wisdom: 8, joy: 9, courage: 7 } },
 };
 
-const tabs = [
-  { id: "themes", icon: "🎨", label: "Themes" },
-  { id: "readerBg", icon: "📖", label: "Reader" },
-  { id: "frames", icon: "🖼️", label: "Frames" },
-  { id: "pets", icon: "🐾", label: "Pets" },
-  { id: "mystery", icon: "🎁", label: "Mystery" },
-  { id: "earn", icon: "💰", label: "Earn" },
+const tabs: { id: string; icon: FantasyIconName; label: string }[] = [
+  { id: "themes", icon: "palette", label: "Themes" },
+  { id: "readerBg", icon: "book", label: "Reader" },
+  { id: "frames", icon: "frame", label: "Frames" },
+  { id: "pets", icon: "paw", label: "Pets" },
+  { id: "mystery", icon: "chest", label: "Mystery" },
+  { id: "earn", icon: "bag", label: "Earn" },
 ];
 
 function getGems(): number {
@@ -283,7 +284,7 @@ export default function Store() {
                 : "tb-soft-button text-white/70"
             }`}
           >
-            <span className="text-lg">{tab.icon}</span>
+            <FantasyIcon name={tab.icon} className="h-8 w-8" />
             <span>{tab.label}</span>
           </button>
         ))}
