@@ -238,7 +238,7 @@ export default function Home() {
   };
 
   return (
-    <div className="px-4 pt-6 space-y-4">
+    <div className="teenz-page space-y-4">
       {/* Full-screen loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
         <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
@@ -251,13 +251,13 @@ export default function Home() {
       )}
       {/* Account Linking Banner */}
       {!accountLinked && !bannerDismissed && (
-        <div className="relative rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-900/30 to-orange-900/20 p-4">
-          <button onClick={handleDismissBanner} className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 text-lg leading-none p-1">✕</button>
+        <div className="relative overflow-hidden rounded-[26px] border border-amber-300/25 bg-gradient-to-br from-amber-300/18 via-white/7 to-orange-500/10 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl">
+          <button onClick={handleDismissBanner} className="absolute top-2 right-2 text-white/55 hover:text-white text-lg leading-none p-1">✕</button>
           <div className="flex items-start gap-3">
             <div className="text-2xl mt-0.5">⚠️</div>
             <div className="flex-1 pr-4">
-              <h3 className="text-amber-200 font-bold text-sm">Back up your progress</h3>
-              <p className="text-gray-400 text-xs mt-1">Link an account to save your progress across devices.</p>
+              <h3 className="text-amber-100 font-black text-sm">Back up your progress</h3>
+              <p className="text-white/65 text-xs mt-1">Link an account to save your Bible journey across devices.</p>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={handleBannerLinkGoogle}
@@ -291,26 +291,31 @@ export default function Home() {
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <div className="relative">
-          <div className={`w-16 h-16 rounded-full overflow-hidden bg-purple-900/50 flex items-center justify-center ${equippedFrame?.frameClass || 'border-[3px] border-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]'}`}>
-            {(() => { const photo = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-3xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-3xl">👦</span>; } })()}
+      {/* Header / Hero */}
+      <div className="neon-card relative overflow-hidden p-5">
+        <div className="absolute -right-10 -top-12 h-36 w-36 rounded-full bg-white/10 blur-2xl" />
+        <div className="relative flex items-center gap-4">
+          <div className="relative shrink-0">
+            <div className={`w-[72px] h-[72px] rounded-[26px] overflow-hidden bg-white/10 flex items-center justify-center ${equippedFrame?.frameClass || 'border border-white/18 shadow-[0_14px_28px_rgba(0,0,0,0.2)]'}`}>
+              {(() => { const photo = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto"); if (photo) return <img src={photo} alt="" className="w-full h-full object-cover" />; try { const p = JSON.parse(localStorage.getItem("teensBibleProfile") || "{}"); return <span className="text-4xl">{p.avatar || "👦"}</span>; } catch { return <span className="text-4xl">👦</span>; } })()}
+            </div>
+            <div className="absolute -bottom-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#24134f] text-[11px] font-black shadow-lg">Lv.{level.level}</div>
+            {equippedPet && <div className="absolute -top-2 -left-2 rounded-full bg-white/90 p-1 shadow-lg">
+              {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
+                <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-6 h-6 object-contain" />
+              ) : (
+                <span className="text-lg">{equippedPet.petEmoji}</span>
+              )}
+            </div>}
           </div>
-          <div className="absolute -bottom-1 -right-1 bg-purple-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border border-purple-400">{level.level}</div>
-          {equippedPet && <div className="absolute -top-1 -left-1">
-            {getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
-              <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-6 h-6 object-contain" />
-            ) : (
-              <span className="text-lg">{equippedPet.petEmoji}</span>
-            )}
-          </div>}
-        </div>
-        <div>
-          <h1 className="text-xl font-bold text-white font-display">{greeting}</h1>
-          <div className="flex items-center gap-3 text-sm text-gray-300">
-            <span>📖 {chaptersRead} Chapters Read</span>
-            <span>💎 Lv. {level.level}</span>
+          <div className="min-w-0 flex-1">
+            <p className="teenz-eyebrow">Teenz Bible</p>
+            <h1 className="teenz-title mt-1">{greeting}</h1>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="teenz-pill">📖 {chaptersRead} read</span>
+              <span className="teenz-pill">💎 {gems} gems</span>
+              <span className="teenz-pill">⚡ {totalXP.toLocaleString()} XP</span>
+            </div>
           </div>
         </div>
       </div>
@@ -322,25 +327,26 @@ export default function Home() {
         const chapterNum = lastRead?.chapter || 1;
         const progress = lastRead?.progress || 0;
         return (
-          <div className="neon-card p-5">
+          <div className="neon-card relative overflow-hidden p-5">
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/10 to-transparent" />
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-purple-300 text-sm font-semibold">{lastRead ? "📖 CONTINUE READING" : "📖 START READING"}</span>
+                <div className="flex items-center gap-2 mb-2 relative">
+                  <span className="teenz-eyebrow">{lastRead ? "Continue reading" : "Start reading"}</span>
                 </div>
-                <h2 className="text-2xl font-bold text-white font-display">{bookName}</h2>
-                <h3 className="text-xl font-bold text-white font-display">Chapter {chapterNum}</h3>
-                <p className="text-gray-400 text-sm mt-1">{lastRead ? `${lastRead.totalChapters} chapters total` : "Begin your journey"}</p>
+                <h2 className="text-3xl font-black tracking-[-0.04em] text-white">{bookName}</h2>
+                <h3 className="text-base font-bold text-white/70">Chapter {chapterNum}</h3>
+                <p className="text-white/55 text-sm mt-1">{lastRead ? `${lastRead.totalChapters} chapters total` : "Begin your journey"}</p>
                 <button onClick={() => setLocation("/bible")}
-                  className="mt-3 px-4 py-2 bg-purple-600/30 border border-purple-500/50 rounded-xl text-purple-200 text-sm font-medium flex items-center gap-2 hover:bg-purple-600/50 transition-all active:scale-95">
+                  className="teenz-cta mt-4 px-5 py-2.5 text-sm flex items-center gap-2 transition-all active:scale-95">
                   📖 {lastRead ? "Continue Reading" : "Start Reading"}
                 </button>
               </div>
               <div className="relative flex items-center justify-center">
                 <ProgressRing progress={progress} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-bold text-white">{progress}<span className="text-sm">%</span></span>
-                  <span className="text-[10px] text-purple-300">Progress</span>
+                  <span className="text-2xl font-black text-white">{progress}<span className="text-sm">%</span></span>
+                  <span className="text-[10px] text-white/55">Progress</span>
                 </div>
               </div>
             </div>
@@ -351,9 +357,9 @@ export default function Home() {
       {/* Bible AI - Prominent Card */}
       <button
         onClick={() => setLocation("/bible-ai")}
-        className="w-full neon-card p-5 flex items-center gap-4 hover:border-purple-400/60 transition-all active:scale-[0.98] cursor-pointer group"
+        className="w-full neon-card p-5 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group"
       >
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 border border-purple-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] transition-all">
+        <div className="w-14 h-14 rounded-[22px] bg-white text-[#28145a] flex items-center justify-center shadow-[0_14px_28px_rgba(255,255,255,0.14)] transition-all">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             {/* Rounded square outline */}
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="white" strokeWidth="1.8" fill="none" />
@@ -366,27 +372,27 @@ export default function Home() {
           </svg>
         </div>
         <div className="flex-1 text-left">
-          <h3 className="text-white font-bold text-base">Bible AI</h3>
-          <p className="text-gray-400 text-sm mt-0.5">Ask anything about the Bible — get instant answers</p>
+          <h3 className="text-white font-black text-base">Bible AI</h3>
+          <p className="text-white/58 text-sm mt-0.5">Ask anything about the Bible — get instant answers</p>
         </div>
-        <div className="text-purple-400 text-lg">→</div>
+        <div className="text-white/70 text-lg">→</div>
       </button>
 
       {/* XP Bar */}
       <div className="neon-card p-4 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-600 to-yellow-800 border border-yellow-500/50 flex items-center justify-center shadow-[0_0_10px_rgba(234,179,8,0.3)]">
-          <span className="text-xs font-bold text-yellow-200">XP</span>
+        <div className="w-11 h-11 rounded-[18px] bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center shadow-[0_14px_26px_rgba(251,191,36,0.16)]">
+          <span className="text-xs font-black text-[#3a2500]">XP</span>
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-white font-bold">{totalXP.toLocaleString()}</span>
-            <span className="text-gray-400 text-xs">/ {level.next.toLocaleString()} XP</span>
+            <span className="text-white font-black">{totalXP.toLocaleString()}</span>
+            <span className="text-white/52 text-xs">/ {level.next.toLocaleString()} XP</span>
           </div>
-          <div className="h-2.5 bg-gray-800/80 rounded-full overflow-hidden">
-            <div className="h-full rounded-full bg-gradient-to-r from-purple-600 via-purple-400 to-cyan-400 transition-all duration-500" style={{ width: `${xpProgress}%` }} />
+          <div className="teenz-progress-track">
+            <div className="teenz-progress-fill transition-all duration-500" style={{ width: `${xpProgress}%` }} />
           </div>
         </div>
-        <div className="w-8 h-8 rounded-full bg-yellow-600/20 border border-yellow-500/40 flex items-center justify-center"><span className="text-sm">🏆</span></div>
+        <div className="w-9 h-9 rounded-full bg-white/9 border border-white/12 flex items-center justify-center"><span className="text-sm">🏆</span></div>
       </div>
 
 
