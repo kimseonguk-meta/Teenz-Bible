@@ -112,3 +112,8 @@ temp/
 client/public/__manus__/version.json
 ios/
 .project-config.json
+
+# Firebase service account keys (NEVER commit these)
+firebase-service-account.json
+teens-bible-94271-firebase-adminsdk-*.json
+*-firebase-adminsdk-*.json
