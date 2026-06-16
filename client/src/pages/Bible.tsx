@@ -257,14 +257,12 @@ export default function Bible() {
   return (
     <div className="px-4 pt-6 space-y-4">
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div className="flex-1 text-center pl-20">
-          <img src="/art-assets/mockup/title-bible.webp" alt="Bible" className="mx-auto w-[250px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
-        </div>
-        <div className="flex w-20 flex-col gap-2">
-          <span className="tb-stat text-xs">💎 {(() => { try { return (JSON.parse(localStorage.getItem("teensBible") || "{}").gems || 0).toLocaleString(); } catch { return "0"; } })()}</span>
-          <span className="tb-stat text-xs">🔶 {(() => { try { return (JSON.parse(localStorage.getItem("teensBible") || "{}").coins || 2450).toLocaleString(); } catch { return "2,450"; } })()}</span>
-        </div>
+      <div className="text-center">
+        <img
+          src="/art-assets/mockup/bible-header-full.webp"
+          alt="Bible"
+          className="mx-auto w-full max-w-[390px] drop-shadow-[0_12px_14px_rgba(0,0,0,0.65)]"
+        />
       </div>
 
       {/* Search */}

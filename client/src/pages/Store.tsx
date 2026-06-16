@@ -22,7 +22,7 @@ import {
 import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import FantasyIcon, { type FantasyIconName } from "@/components/FantasyIcon";
+import type { FantasyIconName } from "@/components/FantasyIcon";
 
 // Pet stats/abilities data for detail popup
 const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
@@ -259,33 +259,29 @@ export default function Store() {
     <div className="px-4 pt-6 space-y-5 pb-6">
       {/* Header */}
       <div className="text-center">
-        <img src="/art-assets/mockup/title-store.webp" alt="Store" className="mx-auto w-[235px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
-      </div>
-      <div className="flex items-center justify-center gap-3">
-        <div className="tb-stat">
-          <span className="text-sm">💎</span>
-          <span className="text-white font-bold text-sm">{gems} gems</span>
-        </div>
-        <div className="tb-stat">
-          <span className="text-sm">🪙</span>
-          <span className="text-white font-bold text-sm">800 coins</span>
-        </div>
+        <img
+          src="/art-assets/mockup/store-header-full.webp"
+          alt="Store"
+          className="mx-auto w-full max-w-[360px] drop-shadow-[0_12px_14px_rgba(0,0,0,0.65)]"
+        />
       </div>
 
       {/* Category Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 teenz-scrollbar-hide">
+      <div className="flex gap-1 overflow-x-auto pb-2 -mx-4 px-4 teenz-scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex flex-col items-center gap-1 px-3 py-2 text-xs whitespace-nowrap transition-all ${
-              activeTab === tab.id
-                ? "tb-btn text-white"
-                : "tb-soft-button text-white/70"
+            className={`relative h-[72px] w-[66px] shrink-0 transition-all active:scale-95 ${
+              activeTab === tab.id ? "scale-105 drop-shadow-[0_0_14px_rgba(255,205,50,0.55)]" : "opacity-85"
             }`}
+            aria-label={tab.label}
           >
-            <FantasyIcon name={tab.icon} className="h-8 w-8" />
-            <span>{tab.label}</span>
+            <img
+              src={`/art-assets/mockup/store-tab-${tab.id === "readerBg" ? "reader" : tab.id}.webp`}
+              alt=""
+              className="h-full w-full object-contain"
+            />
           </button>
         ))}
       </div>
