@@ -162,7 +162,7 @@
       border: 1px solid rgba(255,255,255,.13);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.24), inset 0 -2px 0 rgba(0,0,0,.4), 0 9px 0 rgba(0,0,0,.18), 0 18px 28px rgba(0,0,0,.18);
     }
-    .brand-icon svg { width: 52px; height: 52px; margin: 0 auto 8px; filter: drop-shadow(0 5px 8px rgba(0,0,0,.45)); }
+    .brand-icon svg { width: 62px; height: 62px; margin: 0 auto 8px; filter: drop-shadow(0 7px 10px rgba(0,0,0,.5)) drop-shadow(0 0 10px rgba(255,226,77,.16)); }
     .brand-icon small { color: var(--muted); font-weight: 850; }
 
     .component-row {
@@ -239,13 +239,108 @@
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute">
-    <symbol id="book" viewBox="0 0 64 64"><path d="M13 12c12-4 20 0 20 0v40s-8-4-20 0z" fill="#4a2d21"/><path d="M33 12s8-4 20 0v40c-12-4-20 0-20 0z" fill="#342018"/><path d="M33 12v40" stroke="#12090a" stroke-width="3"/><path d="M42 11v19l-5-4-5 4V14" fill="#f7c84b"/><path d="M20 20h8M20 27h8M40 20h7" stroke="#ffe89a" stroke-width="2" stroke-linecap="round"/></symbol>
-    <symbol id="bolt" viewBox="0 0 64 64"><path d="M37 3 12 35h18l-5 26 27-36H34z" fill="#ffe24d" stroke="#5a3006" stroke-width="4" stroke-linejoin="round"/></symbol>
-    <symbol id="gem" viewBox="0 0 64 64"><path d="M16 10h32l11 17-27 29L5 27z" fill="#22d3ee" stroke="#082f49" stroke-width="3"/><path d="M16 10 32 56M48 10 32 56M5 27h54" stroke="#dffbff" stroke-width="2" opacity=".8"/></symbol>
-    <symbol id="flame" viewBox="0 0 64 64"><path d="M35 4c8 13-2 19 7 29 4 4 6 8 6 14 0 10-7 15-16 15S16 56 16 46c0-11 9-17 14-27 3-6 2-10 5-15z" fill="#ff7a1a" stroke="#4c1d05" stroke-width="3"/><path d="M32 28c5 7-4 11 1 18 2 3 2 8-3 11-6-3-8-8-6-13 2-5 7-8 8-16z" fill="#ffe24d"/></symbol>
-    <symbol id="trophy" viewBox="0 0 64 64"><path d="M21 9h22v16c0 9-5 15-11 15S21 34 21 25z" fill="#f7c84b" stroke="#5a3006" stroke-width="3"/><path d="M21 15H9c0 11 5 18 13 18M43 15h12c0 11-5 18-13 18" fill="none" stroke="#f7c84b" stroke-width="4"/><path d="M27 40h10v8h9v9H18v-9h9z" fill="#f7c84b" stroke="#5a3006" stroke-width="3"/></symbol>
-    <symbol id="chest" viewBox="0 0 64 64"><path d="M10 30c0-12 9-20 22-20s22 8 22 20v4H10z" fill="#5b2f18" stroke="#2a1308" stroke-width="3"/><path d="M9 31h46v24H9z" fill="#3a2015" stroke="#2a1308" stroke-width="3"/><path d="M9 34h46M27 11v44M37 11v44" stroke="#f7c84b" stroke-width="5"/><rect x="26" y="35" width="12" height="12" rx="2" fill="#8b5cf6"/></symbol>
-    <symbol id="shield" viewBox="0 0 64 64"><path d="M32 5 54 14v18c0 14-9 23-22 28C19 55 10 46 10 32V14z" fill="#10223b" stroke="#f7c84b" stroke-width="4"/><path d="M32 14 44 19v12c0 8-4 13-12 17-8-4-12-9-12-17V19z" fill="#22d3ee" opacity=".65"/></symbol>
+    <defs>
+      <linearGradient id="leather" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#6b4532"/>
+        <stop offset=".45" stop-color="#3b241d"/>
+        <stop offset="1" stop-color="#160c0d"/>
+      </linearGradient>
+      <linearGradient id="leather-dark" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#2b1a19"/>
+        <stop offset="1" stop-color="#0b0709"/>
+      </linearGradient>
+      <linearGradient id="brand-gold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff4b2"/>
+        <stop offset=".28" stop-color="#f7c84b"/>
+        <stop offset=".62" stop-color="#b46f17"/>
+        <stop offset="1" stop-color="#5b3006"/>
+      </linearGradient>
+      <linearGradient id="brand-gold-light" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff8cf"/>
+        <stop offset=".5" stop-color="#ffe24d"/>
+        <stop offset="1" stop-color="#c8750c"/>
+      </linearGradient>
+      <linearGradient id="brand-cyan" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e9fbff"/>
+        <stop offset=".42" stop-color="#22d3ee"/>
+        <stop offset="1" stop-color="#0b6f92"/>
+      </linearGradient>
+      <linearGradient id="brand-fire" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff06a"/>
+        <stop offset=".38" stop-color="#ff8a1f"/>
+        <stop offset="1" stop-color="#b91c1c"/>
+      </linearGradient>
+      <filter id="sticker-shadow" x="-40%" y="-40%" width="180%" height="190%">
+        <feDropShadow dx="0" dy="5" stdDeviation="2.2" flood-color="#000000" flood-opacity=".62"/>
+        <feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#ffe24d" flood-opacity=".28"/>
+      </filter>
+      <filter id="yellow-glow" x="-55%" y="-55%" width="210%" height="210%">
+        <feGaussianBlur stdDeviation="2.8" result="blur"/>
+        <feColorMatrix in="blur" type="matrix" values="1 0 0 0 1  0 1 0 0 .78  0 0 1 0 .12  0 0 0 .8 0"/>
+        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <symbol id="book" viewBox="0 0 64 64">
+      <g filter="url(#sticker-shadow)" stroke="#2a1209" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M12 13c10-5 21-1 21-1v40s-11-4-21 1z" fill="url(#leather)"/>
+        <path d="M33 12s11-4 21 1v40c-10-5-21-1-21-1z" fill="url(#leather-dark)"/>
+        <path d="M33 12v40" fill="none"/>
+        <path d="M45 10v19l-6-4.5-6 4.5V13c4-2 8-3 12-3z" fill="url(#brand-gold)"/>
+        <path d="M17 19h11M17 26h9M40 19h8" stroke="#ffe89a" stroke-width="2.2"/>
+        <path d="M14 14c6-2 12-2 17 0" stroke="#fff1a8" stroke-width="1.5" opacity=".6"/>
+      </g>
+    </symbol>
+
+    <symbol id="bolt" viewBox="0 0 64 64">
+      <g filter="url(#yellow-glow)" stroke="#5a3006" stroke-width="4.6" stroke-linejoin="round">
+        <path d="M39 3 12 36h18l-6 25 29-37H36z" fill="url(#brand-gold-light)"/>
+        <path d="M35 10 22 30h14l-5 19 14-21H33z" fill="#fff6ad" opacity=".5" stroke="none"/>
+      </g>
+    </symbol>
+
+    <symbol id="gem" viewBox="0 0 64 64">
+      <g filter="url(#sticker-shadow)" stroke="#083247" stroke-width="3" stroke-linejoin="round">
+        <path d="M15 10h34l11 18-28 29L4 28z" fill="url(#brand-cyan)"/>
+        <path d="M15 10 32 57 49 10M4 28h56M23 10l-8 18 17 29 17-29-8-18" fill="none" stroke="#dffbff" stroke-width="2" opacity=".82"/>
+        <path d="M18 13h27" stroke="#fff" stroke-width="2" opacity=".55"/>
+      </g>
+    </symbol>
+
+    <symbol id="flame" viewBox="0 0 64 64">
+      <g filter="url(#sticker-shadow)" stroke="#4c1d05" stroke-width="3.2" stroke-linejoin="round">
+        <path d="M36 4c9 13-2 19 8 30 4 4 6 8 6 14 0 10-8 15-18 15s-18-6-18-16c0-11 10-17 15-28 3-6 3-10 7-15z" fill="url(#brand-fire)"/>
+        <path d="M33 29c6 8-4 12 1 19 2 3 1 8-4 11-7-3-9-9-6-15 2-5 7-8 9-15z" fill="url(#brand-gold-light)" stroke="#9a3412" stroke-width="2"/>
+        <path d="M36 10c2 8-2 13 4 20" fill="none" stroke="#fff6ad" stroke-width="1.8" opacity=".45"/>
+      </g>
+    </symbol>
+
+    <symbol id="trophy" viewBox="0 0 64 64">
+      <g filter="url(#sticker-shadow)" stroke="#5a3006" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M21 9h22v16c0 10-5 16-11 16s-11-6-11-16z" fill="url(#brand-gold)"/>
+        <path d="M21 16H8c0 11 5 18 14 18M43 16h13c0 11-5 18-14 18" fill="none" stroke="#f7c84b" stroke-width="4.2"/>
+        <path d="M27 41h10v8h9v9H18v-9h9z" fill="url(#brand-gold)"/>
+        <path d="M32 15l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="#fff4b2" stroke="#9a5a10" stroke-width="1.8"/>
+      </g>
+    </symbol>
+
+    <symbol id="chest" viewBox="0 0 64 64">
+      <g filter="url(#sticker-shadow)" stroke="#2a1308" stroke-width="3.1" stroke-linejoin="round">
+        <path d="M9 30c0-12 9-20 23-20s23 8 23 20v5H9z" fill="url(#leather)"/>
+        <path d="M8 31h48v25H8z" fill="url(#leather-dark)"/>
+        <path d="M8 34h48M27 11v45M37 11v45" stroke="url(#brand-gold)" stroke-width="5.4"/>
+        <rect x="25" y="35" width="14" height="14" rx="3" fill="#8b5cf6" stroke="#ffe89a" stroke-width="2"/>
+        <path d="M15 18c8-4 24-4 34 0" stroke="#fff1a8" stroke-width="1.8" opacity=".42"/>
+      </g>
+    </symbol>
+
+    <symbol id="shield" viewBox="0 0 64 64">
+      <g filter="url(#sticker-shadow)" stroke="#3a2108" stroke-width="3.2" stroke-linejoin="round">
+        <path d="M32 5 54 14v18c0 14-9 23-22 28C19 55 10 46 10 32V14z" fill="url(#brand-gold)"/>
+        <path d="M32 13 45 18v13c0 9-5 15-13 19-8-4-13-10-13-19V18z" fill="#103856" stroke="#ffe89a" stroke-width="2.3"/>
+        <path d="M32 15v33M21 30h22" stroke="#22d3ee" stroke-width="2" opacity=".65"/>
+      </g>
+    </symbol>
   </svg>
 
   <main class="wrap">
