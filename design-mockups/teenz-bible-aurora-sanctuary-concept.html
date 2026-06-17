@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teenz Bible — Aurora Sanctuary Concept</title>
+  <style>
+    :root {
+      --night-950: #070917;
+      --night-900: #0b1023;
+      --night-850: #111833;
+      --night-800: #171f3d;
+      --surface: rgba(18, 25, 52, .68);
+      --surface-strong: rgba(23, 31, 63, .84);
+      --line: rgba(255, 255, 255, .12);
+      --line-strong: rgba(255, 255, 255, .2);
+      --text: #f8f7ff;
+      --muted: #9ca6c6;
+      --quiet: #687296;
+      --aurora-a: #8b5cf6;
+      --aurora-b: #22d3ee;
+      --aurora-c: #34d399;
+      --gold: #f7c768;
+      --gold-strong: #ffe5a3;
+      --danger: #ff6b6b;
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, .34);
+      --shadow-card: 0 18px 45px rgba(0, 0, 0, .28);
+      --blur: blur(22px);
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+      --reader: Georgia, "Times New Roman", serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 36px;
+      color: var(--text);
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(139, 92, 246, .26), transparent 30rem),
+        radial-gradient(circle at 82% 2%, rgba(34, 211, 238, .16), transparent 24rem),
+        radial-gradient(circle at 56% 94%, rgba(52, 211, 153, .12), transparent 28rem),
+        linear-gradient(135deg, #151933, #080a17 70%);
+    }
+
+    svg { display: block; }
+    button { font: inherit; }
+
+    .hero {
+      max-width: 1040px;
+      margin: 0 auto 30px;
+      text-align: center;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 44px;
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+    .hero p {
+      margin: 12px auto 0;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: #d9d2ff;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: var(--blur);
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(5, 390px);
+      gap: 26px;
+      overflow-x: auto;
+      padding: 6px 2px 34px;
+    }
+
+    .phone {
+      position: relative;
+      overflow: hidden;
+      width: 390px;
+      height: 844px;
+      padding: 18px 18px 96px;
+      border-radius: 44px;
+      background:
+        radial-gradient(circle at 26% -5%, rgba(139, 92, 246, .28), transparent 18rem),
+        radial-gradient(circle at 90% 14%, rgba(34, 211, 238, .12), transparent 14rem),
+        radial-gradient(circle at 34% 88%, rgba(52, 211, 153, .09), transparent 15rem),
+        linear-gradient(180deg, #131a38, #090b19 76%);
+      box-shadow: var(--shadow-soft), inset 0 0 0 1px rgba(255,255,255,.11);
+      isolation: isolate;
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(115deg, transparent 0 18%, rgba(139,92,246,.1) 28%, transparent 44%),
+        linear-gradient(72deg, transparent 0 42%, rgba(34,211,238,.08) 52%, transparent 66%);
+      opacity: .9;
+    }
+    .phone::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,.18) 0 1px, transparent 2px),
+        radial-gradient(circle at 72% 30%, rgba(255,255,255,.14) 0 1px, transparent 2px),
+        radial-gradient(circle at 50% 72%, rgba(255,255,255,.12) 0 1px, transparent 2px);
+      background-size: 110px 130px;
+      opacity: .4;
+    }
+
+    .status {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: rgba(255,255,255,.72);
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 11px;
+    }
+    .mark {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #12091f;
+      background:
+        radial-gradient(circle at 36% 20%, #fff7ce, transparent 42%),
+        linear-gradient(145deg, #f7c768, #a78bfa 52%, #2dd4bf);
+      box-shadow: 0 0 28px rgba(139, 92, 246, .32), inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .brand h2 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .resource-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 33px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: rgba(255,255,255,.92);
+      font-size: 12px;
+      font-weight: 850;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.04)),
+        rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 10px 22px rgba(0,0,0,.18);
+      backdrop-filter: var(--blur);
+    }
+    .pill.gold {
+      color: #fff0bd;
+      border-color: rgba(247,199,104,.26);
+      background:
+        linear-gradient(180deg, rgba(247,199,104,.18), rgba(247,199,104,.055)),
+        rgba(255,255,255,.04);
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      color: currentColor;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .icon.solid { fill: currentColor; stroke: none; }
+
+    .screen-title {
+      margin: 0;
+      font-size: 33px;
+      line-height: .98;
+      letter-spacing: -.06em;
+    }
+    .screen-title .gold { color: var(--gold); }
+    .caption {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+    .eyebrow {
+      margin: 0;
+      color: #d9d1ff;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .glass, .raised, .soft-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.055) 46%, rgba(0,0,0,.1)),
+        var(--surface);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow:
+        var(--shadow-card),
+        inset 0 1px 0 rgba(255,255,255,.22),
+        inset 0 -1px 0 rgba(0,0,0,.45);
+      backdrop-filter: var(--blur);
+    }
+    .glass::before, .raised::before, .soft-card::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 42%, rgba(0,0,0,.12));
+      opacity: .65;
+    }
+    .raised {
+      box-shadow:
+        0 9px 0 rgba(0,0,0,.22),
+        0 22px 48px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.26),
+        inset 0 -2px 0 rgba(0,0,0,.42);
+    }
+
+    .button {
+      appearance: none;
+      border: 0;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      color: #12091f;
+      font-weight: 950;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.78), transparent 42%),
+        linear-gradient(180deg, #fff8d8, #f7c768 50%, #9f6720);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.72),
+        inset 0 -4px 0 rgba(79,48,10,.44),
+        0 7px 0 rgba(55,35,9,.62),
+        0 16px 34px rgba(247,199,104,.22);
+    }
+    .button.secondary {
+      color: white;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.28), transparent 42%),
+        linear-gradient(180deg, #a78bfa, #7c3aed 52%, #2dd4bf);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.32),
+        inset 0 -4px 0 rgba(28,14,79,.5),
+        0 7px 0 rgba(15,9,48,.74),
+        0 16px 34px rgba(139,92,246,.26);
+    }
+
+    .home-hero {
+      padding: 18px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .home-hero h1 {
+      margin: 8px 0 0;
+      font-size: 38px;
+      line-height: .96;
+      letter-spacing: -.065em;
+    }
+    .home-hero .mini-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .continue-card {
+      margin-top: 14px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 82px;
+      gap: 14px;
+      align-items: center;
+    }
+    .continue-card h3 {
+      margin: 6px 0 0;
+      font-size: 24px;
+      letter-spacing: -.045em;
+    }
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 2px 5px rgba(0,0,0,.55);
+      margin-top: 13px;
+    }
+    .progress span {
+      display: block;
+      width: 58%;
+      height: 100%;
+      border-radius: inherit;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.65), transparent 45%),
+        linear-gradient(90deg, var(--gold), var(--aurora-a), var(--aurora-b));
+      box-shadow: 0 0 18px rgba(247,199,104,.3);
+    }
+    .ring {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--gold) 0 58%, rgba(255,255,255,.09) 58% 100%);
+      box-shadow: 0 0 24px rgba(247,199,104,.18);
+    }
+    .ring b {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--night-850);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+    }
+
+    .pet-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .pet-card {
+      padding: 10px;
+      text-align: center;
+      border-radius: 24px;
+    }
+    .pet-face {
+      height: 86px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 20%, #fff1d4, #cfae85 74%);
+      font-size: 48px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -8px 18px rgba(70,38,10,.22);
+    }
+    .pet-card b { display: block; margin-top: 8px; }
+    .pet-card small { color: #9df78b; font-weight: 900; }
+    .actions {
+      align-self: end;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+    .action {
+      min-height: 86px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 22px;
+      border-radius: 24px;
+    }
+    .action small {
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .library-search {
+      padding: 13px 14px;
+      margin-top: 15px;
+      color: var(--quiet);
+      font-weight: 700;
+    }
+    .segment {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 6px;
+      margin-top: 12px;
+      border-radius: 24px;
+    }
+    .section-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 18px 0 10px;
+    }
+    .section-row h3 { margin: 0; font-size: 17px; letter-spacing: -.03em; }
+    .section-row small { color: var(--muted); font-weight: 800; }
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 11px;
+    }
+    .book-card {
+      min-height: 142px;
+      padding: 13px;
+      border-radius: 24px;
+    }
+    .book-card.locked { opacity: .54; filter: saturate(.55); }
+    .book-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #5d2b24, #21131a);
+      color: #ffd98a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), inset 0 -8px 16px rgba(0,0,0,.28);
+    }
+    .book-card h4 { margin: 10px 0 4px; font-size: 18px; }
+    .book-card p { margin: 0; color: var(--muted); font-size: 12px; font-weight: 700; }
+
+    .reader-head { text-align: center; }
+    .reader-head h1 { margin: 0; color: var(--gold); font-size: 25px; }
+    .reader-sheet {
+      margin-top: 16px;
+      min-height: 620px;
+      padding: 22px 22px 110px;
+      color: #25190e;
+      border-radius: 26px 26px 10px 10px;
+      background:
+        repeating-linear-gradient(0deg, rgba(90,52,12,.04) 0 1px, transparent 1px 7px),
+        linear-gradient(180deg, #fff8e5, #ecd2a4);
+      border: 2px solid rgba(247,199,104,.84);
+      box-shadow: inset 0 0 34px rgba(128,73,16,.12), 0 18px 46px rgba(0,0,0,.35);
+    }
+    .reader-sheet h2 { margin: 18px 0 10px; color: #6f4513; font-size: 22px; }
+    .reader-sheet p { margin: 0 0 20px; font-family: var(--reader); font-size: 21px; line-height: 1.65; }
+    .verse { color: #b36d16; font-size: 13px; font-weight: 900; vertical-align: super; margin-right: 5px; }
+    .reader-toolbar {
+      position: absolute;
+      left: 44px;
+      right: 44px;
+      bottom: 94px;
+      height: 56px;
+      border-radius: 999px;
+      background: rgba(36, 24, 61, .94);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: var(--blur);
+    }
+    .reader-toolbar b {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      font-size: 13px;
+    }
+
+    .store-tabs { display: flex; gap: 8px; overflow: hidden; margin-top: 16px; }
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .item-card {
+      min-height: 165px;
+      padding: 13px;
+      border-radius: 25px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(192,132,252,.26), transparent 44%),
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04) 50%, rgba(0,0,0,.14)),
+        rgba(139,92,246,.12);
+      border: 1px solid rgba(192,132,252,.25);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.28),
+        inset 0 -2px 0 rgba(0,0,0,.5),
+        0 9px 0 rgba(0,0,0,.22),
+        0 18px 32px rgba(0,0,0,.2);
+    }
+    .item-art {
+      height: 70px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      color: #ffd985;
+      background: rgba(255,255,255,.06);
+      box-shadow: inset 0 1px rgba(255,255,255,.16);
+    }
+    .item-card h4 { margin: 10px 0 3px; }
+    .price {
+      margin-top: 9px;
+      display: inline-flex;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.45), transparent 48%),
+        linear-gradient(90deg, #09c6f9, #2d7cff);
+      font-weight: 900;
+      font-size: 12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 0 rgba(0,0,0,.22), 0 5px 0 rgba(0,0,0,.24);
+    }
+
+    .profile-hero { text-align: center; padding-top: 12px; }
+    .avatar {
+      width: 126px;
+      height: 126px;
+      margin: 10px auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 50% 20%, rgba(192,132,252,.45), rgba(139,92,246,.18) 55%, transparent 56%);
+      border: 2px solid rgba(192,132,252,.45);
+      box-shadow: var(--glow-violet);
+    }
+    .profile-hero h2 { margin: 0; font-size: 32px; letter-spacing: -.04em; }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+    .stat-card {
+      text-align: center;
+      border-radius: 24px;
+      padding: 15px 10px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.045) 52%, rgba(0,0,0,.14)),
+        rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.42),
+        inset 0 -2px 0 rgba(0,0,0,.5),
+        0 8px 0 rgba(0,0,0,.22),
+        0 16px 28px rgba(0,0,0,.2);
+    }
+    .stat-card strong { display: block; margin-top: 5px; font-size: 24px; }
+    .stat-card small { color: var(--muted); font-weight: 800; }
+
+    .tabbar {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      height: 72px;
+      padding: 7px;
+      border-radius: 25px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: rgba(9,11,19,.86);
+      border: 1px solid rgba(247,199,104,.28);
+      box-shadow: 0 -12px 40px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.1);
+      backdrop-filter: var(--blur);
+    }
+    .tab {
+      display: grid;
+      place-items: center;
+      border-radius: 19px;
+      color: rgba(255,255,255,.52);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .tab.active {
+      color: #160b2b;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.8), transparent 45%),
+        linear-gradient(180deg, #fff8d5, #f7c768 52%, #b77920);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.8),
+        inset 0 -4px 0 rgba(111,73,15,.4),
+        0 0 24px rgba(247,199,104,.32),
+        0 7px 0 rgba(0,0,0,.2);
+    }
+    .tab small { display: block; margin-top: 1px; font-size: 9px; font-weight: 900; }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V21h-6v-6H9v6H3z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 5c4-1.5 7 0 7 0v15s-3-1.5-7 0zM12 5s3-1.5 7 0v15c-4-1.5-7 0-7 0z"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5c0 4-2 7-4 7s-4-3-4-7zM8 6H4c0 4 2 7 5 7M16 6h4c0 4-2 7-5 7M10 16h4v3h3v2H7v-2h3z"/></symbol>
+    <symbol id="i-chest" viewBox="0 0 24 24"><path d="M4 10h16v10H4zM5 10c0-4 3-6 7-6s7 2 7 6M12 4v16M4 14h16"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6z"/></symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 4h12l4 6-10 11L2 10zM2 10h20M6 4l6 17M18 4l-6 17"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M13 2c3 5-1 7 3 11 1.5 1.5 2 3 2 5a6 6 0 0 1-12 0c0-4 3-6 5-9 1.5-2 1-4 2-7z"/></symbol>
+    <symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 7a4 4 0 0 0-3 7 5 5 0 0 0 9 4 5 5 0 0 0 5-5 4 4 0 0 0-5-4 4 4 0 0 0-6-2z"/></symbol>
+    <symbol id="i-candle" viewBox="0 0 24 24"><path d="M9 11h6v10H9zM12 3c3 3 1 6 0 7-1-1-3-4 0-7zM8 11h8"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM16 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21c1-5 4-8 8-8s7 3 8 8M13 21c1-4 3-6 6-6 2 0 4 2 5 6"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><path d="M5 10h14l-2 11H7zM8 10c0-4 2-7 4-7s4 3 4 7"/></symbol>
+  </svg>
+
+  <header class="hero">
+    <div class="badge">Aurora Sanctuary</div>
+    <h1>Teenz Bible — Premium Growth Concept</h1>
+    <p>Modern, implementable redesign direction: calm premium reading experience, with RPG growth used as motivation rather than visual noise.</p>
+  </header>
+
+  <main class="board">
+    <section class="phone">
+      <div class="status"><span>9:41</span><span>LTE 100%</span></div>
+      <div class="topbar">
+        <div class="brand"><div class="mark"><svg class="icon"><use href="#i-shield"/></svg></div><div><h2>Teenz Bible</h2><p>Level up your faith</p></div></div>
+        <div class="resource-row"><div class="pill gold"><svg class="icon"><use href="#i-flame"/></svg>7</div><div class="pill"><svg class="icon"><use href="#i-gem"/></svg>2.4K</div></div>
+      </div>
+      <div class="glass home-hero"><p class="eyebrow">Today’s path</p><h1>Welcome back,<br>David</h1><p class="caption">Your next chapter is ready. Read, reflect, and collect XP without breaking focus.</p><div class="mini-row"><span class="pill">Matthew 5</span><span class="pill gold">+50 XP ready</span></div></div>
+      <div class="raised continue-card"><div><p class="eyebrow">Continue reading</p><h3>Matthew 5</h3><p class="caption">The Sermon on the Mount</p><div class="progress"><span></span></div></div><div class="ring"><b>58%</b></div></div>
+      <div class="pet-grid"><div class="raised pet-card"><div class="pet-face">🐑</div><b>Luna</b><small>Happy</small></div><div class="actions"><div class="raised action"><svg class="icon"><use href="#i-brain"/></svg><small>Quiz</small></div><div class="raised action"><svg class="icon"><use href="#i-candle"/></svg><small>Devotion</small></div><div class="raised action"><svg class="icon"><use href="#i-users"/></svg><small>Group</small></div></div></div>
+      <div class="glass continue-card"><div><p class="eyebrow">Bible AI</p><h3>Ask with context</h3></div><button class="button secondary">Open</button></div>
+      <nav class="tabbar"><div class="tab active"><svg class="icon solid"><use href="#i-home"/></svg><small>Home</small></div><div class="tab"><svg class="icon"><use href="#i-book"/></svg><small>Bible</small></div><div class="tab"><svg class="icon"><use href="#i-trophy"/></svg><small>Rank</small></div><div class="tab"><svg class="icon"><use href="#i-chest"/></svg><small>Store</small></div><div class="tab"><svg class="icon"><use href="#i-shield"/></svg><small>Me</small></div></nav>
+    </section>
+
+    <section class="phone">
+      <div class="status"><span>9:41</span><span>Reader</span></div>
+      <div class="topbar"><div><p class="eyebrow">Bible library</p><h1 class="screen-title">Choose a book</h1></div><span class="pill"><svg class="icon"><use href="#i-gem"/></svg>2.4K</span></div>
+      <div class="glass library-search">Search books...</div>
+      <div class="glass segment"><button class="button">Old Testament</button><button class="button secondary">New Testament</button></div>
+      <div class="section-row"><h3>Law</h3><small>5 books</small></div>
+      <div class="book-grid"><div class="raised book-card"><div class="book-icon"><svg class="icon"><use href="#i-book"/></svg></div><h4>Genesis</h4><p>5/50 chapters</p><div class="progress"><span style="width:10%"></span></div></div><div class="raised book-card"><div class="book-icon"><svg class="icon"><use href="#i-book"/></svg></div><h4>Exodus</h4><p>3/40 chapters</p><div class="progress"><span style="width:8%"></span></div></div><div class="raised book-card locked"><div class="book-icon"><svg class="icon"><use href="#i-shield"/></svg></div><h4>Leviticus</h4><p>0/27 chapters</p></div><div class="raised book-card locked"><div class="book-icon"><svg class="icon"><use href="#i-shield"/></svg></div><h4>Numbers</h4><p>0/36 chapters</p></div></div>
+      <nav class="tabbar"><div class="tab"><svg class="icon"><use href="#i-home"/></svg><small>Home</small></div><div class="tab active"><svg class="icon solid"><use href="#i-book"/></svg><small>Bible</small></div><div class="tab"><svg class="icon"><use href="#i-trophy"/></svg><small>Rank</small></div><div class="tab"><svg class="icon"><use href="#i-chest"/></svg><small>Store</small></div><div class="tab"><svg class="icon"><use href="#i-shield"/></svg><small>Me</small></div></nav>
+    </section>
+
+    <section class="phone">
+      <div class="status"><span>←</span><span>Bookmark</span></div>
+      <div class="reader-head"><h1>Matthew 5</h1><p class="caption">5 / 28 · The Sermon on the Mount</p></div>
+      <article class="reader-sheet"><p><span class="verse">1-2</span>Seeing the massive crowd, Jesus hiked up a hill, sat down with his disciples, and started dropping absolute truth bombs.</p><h2>The Beatitudes</h2><p><span class="verse">3</span>"You're blessed when you're at the end of your rope. With less of you, there is more of God and his rule."</p><p><span class="verse">4</span>"You're blessed when you feel you've lost what is most dear to you. Only then can you be embraced."</p><p><span class="verse">5</span>"You're blessed when you're content with just who you are—no more, no less."</p></article>
+      <div class="reader-toolbar"><b>KR</b><b>Aa</b><b>🎧</b><b>🎨</b><b>v.</b></div>
+      <nav class="tabbar"><div class="tab"><svg class="icon"><use href="#i-home"/></svg><small>Home</small></div><div class="tab active"><svg class="icon solid"><use href="#i-book"/></svg><small>Bible</small></div><div class="tab"><svg class="icon"><use href="#i-trophy"/></svg><small>Rank</small></div><div class="tab"><svg class="icon"><use href="#i-chest"/></svg><small>Store</small></div><div class="tab"><svg class="icon"><use href="#i-shield"/></svg><small>Me</small></div></nav>
+    </section>
+
+    <section class="phone">
+      <div class="status"><span>9:41</span><span>Store</span></div>
+      <div class="topbar"><div><p class="eyebrow">Gem store</p><h1 class="screen-title">Collect & equip</h1></div><span class="pill gold"><svg class="icon"><use href="#i-gem"/></svg>2.4K</span></div>
+      <div class="store-tabs"><button class="button">Themes</button><button class="button secondary">Reader</button><button class="button secondary">Pets</button></div>
+      <div class="section-row"><h3>App Themes</h3><small>Rare drops</small></div>
+      <div class="store-grid"><div class="item-card"><div class="item-art">🌙</div><h4>Twilight Purple</h4><p class="caption">Default dark glow</p><span class="price">Equipped</span></div><div class="item-card"><div class="item-art">🌊</div><h4>Ocean Blue</h4><p class="caption">Calm ocean vibes</p><span class="price">180 💎</span></div><div class="item-card"><div class="item-art">🌲</div><h4>Forest Green</h4><p class="caption">Peaceful forest</p><span class="price">180 💎</span></div><div class="item-card"><div class="item-art">🌅</div><h4>Sunset Orange</h4><p class="caption">Warm sunset</p><span class="price">190 💎</span></div></div>
+      <nav class="tabbar"><div class="tab"><svg class="icon"><use href="#i-home"/></svg><small>Home</small></div><div class="tab"><svg class="icon"><use href="#i-book"/></svg><small>Bible</small></div><div class="tab"><svg class="icon"><use href="#i-trophy"/></svg><small>Rank</small></div><div class="tab active"><svg class="icon solid"><use href="#i-chest"/></svg><small>Store</small></div><div class="tab"><svg class="icon"><use href="#i-shield"/></svg><small>Me</small></div></nav>
+    </section>
+
+    <section class="phone">
+      <div class="status"><span>9:41</span><span>Profile</span></div>
+      <div class="profile-hero"><p class="eyebrow">My journey</p><div class="avatar"><svg class="icon" style="width:58px;height:58px"><use href="#i-shield"/></svg></div><h2>David Kim</h2><div style="display:flex;justify-content:center;margin-top:9px"><span class="pill gold">Lv. 12 Scholar</span></div></div>
+      <div class="stat-row"><div class="stat-card">XP<strong>4.2K</strong><small>Total XP</small></div><div class="stat-card"><svg class="icon" style="margin:auto"><use href="#i-gem"/></svg><strong>2.4K</strong><small>Gems</small></div><div class="stat-card"><svg class="icon" style="margin:auto"><use href="#i-book"/></svg><strong>23</strong><small>Chapters</small></div></div>
+      <div class="glass continue-card"><div><h3>Quiz Statistics</h3><p class="caption">View accuracy, streaks & history</p></div><span>→</span></div>
+      <div class="section-row"><h3>Achievements</h3><small>2/12 unlocked</small></div>
+      <div style="display:flex;gap:14px;overflow:hidden"><div class="raised action"><svg class="icon"><use href="#i-book"/></svg></div><div class="raised action"><svg class="icon"><use href="#i-flame"/></svg></div><div class="raised action" style="opacity:.35"><svg class="icon"><use href="#i-shield"/></svg></div><div class="raised action" style="opacity:.35"><svg class="icon"><use href="#i-trophy"/></svg></div></div>
+      <nav class="tabbar"><div class="tab"><svg class="icon"><use href="#i-home"/></svg><small>Home</small></div><div class="tab"><svg class="icon"><use href="#i-book"/></svg><small>Bible</small></div><div class="tab"><svg class="icon"><use href="#i-trophy"/></svg><small>Rank</small></div><div class="tab"><svg class="icon"><use href="#i-chest"/></svg><small>Store</small></div><div class="tab active"><svg class="icon solid"><use href="#i-shield"/></svg><small>Me</small></div></nav>
+    </section>
+  </main>
+</body>
+</html>
