@@ -177,7 +177,20 @@
       font-weight: 950;
       font-size: 13px;
     }
-    .stat img { width: 30px; height: 30px; object-fit: contain; }
+    .icon-frame {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 13px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.14), transparent 52%),
+        linear-gradient(180deg, rgba(7,20,38,.96), rgba(4,8,18,.96));
+      border: 1px solid rgba(248,201,74,.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.48), 0 0 12px rgba(255,226,77,.08);
+    }
+    .icon-frame img { width: 31px; height: 31px; object-fit: contain; }
+    .stat .icon-frame { width: 34px; height: 34px; }
 
     .card {
       position: relative;
@@ -250,6 +263,73 @@
     }
     .bubble b { display: block; font-size: 13px; }
     .bubble span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+
+    .meme {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 12px;
+      align-items: stretch;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .meme-art {
+      position: relative;
+      overflow: hidden;
+      min-height: 104px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 58% 28%, rgba(255,226,77,.18), transparent 42%),
+        linear-gradient(145deg, #f5dfb9, #54372a 74%);
+      border: 1px solid rgba(248,201,74,.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -8px 18px rgba(0,0,0,.3);
+    }
+    .meme-art::before {
+      content: "Bible meme";
+      position: absolute;
+      left: 10px;
+      top: 9px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      color: #2b1712;
+      background: rgba(255,248,232,.86);
+      font-size: 10px;
+      font-weight: 950;
+    }
+    .meme-art::after {
+      content: "When Matthew 5 reads your group chat";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      color: white;
+      font-size: 13px;
+      line-height: 1.12;
+      font-weight: 950;
+      text-shadow: 0 2px 6px rgba(0,0,0,.7);
+    }
+    .meme-copy {
+      min-width: 0;
+      align-self: center;
+    }
+    .meme-copy b { display: block; font-size: 15px; }
+    .meme-copy span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .reactions {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .react {
+      min-width: 36px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      font-weight: 900;
+    }
 
     .quest {
       padding: 15px;
@@ -332,7 +412,7 @@
       border: 1px solid rgba(255,255,255,.13);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.2), inset 0 -2px 0 rgba(0,0,0,.4), 0 8px 0 rgba(0,0,0,.18), 0 16px 26px rgba(0,0,0,.18);
     }
-    .quick img { width: 42px; height: 42px; object-fit: contain; }
+    .quick .icon-frame { margin: 0 auto; }
     .quick b { display: block; margin-top: 4px; font-size: 11px; }
 
     .ai {
@@ -382,7 +462,8 @@
       font-size: 10px;
       font-weight: 900;
     }
-    .tab img { width: 28px; height: 28px; object-fit: contain; opacity: .75; }
+    .tab .icon-frame { width: 30px; height: 30px; border-radius: 10px; opacity: .78; }
+    .tab .icon-frame img { width: 26px; height: 26px; object-fit: contain; }
     .tab.active {
       color: #21120f;
       background:
@@ -390,7 +471,7 @@
         linear-gradient(180deg, #fff3b0, var(--faith-gold) 52%, #a46617);
       box-shadow: inset 0 2px rgba(255,255,255,.7), inset 0 -4px rgba(92,54,10,.42), 0 0 20px rgba(248,201,74,.22), 0 6px 0 rgba(0,0,0,.2);
     }
-    .tab.active img { opacity: 1; }
+    .tab.active .icon-frame { opacity: 1; background: rgba(7,20,38,.28); border-color: rgba(33,18,15,.18); box-shadow: none; }
 
     .notes {
       display: grid;
@@ -415,7 +496,7 @@
     <header class="header">
       <span class="badge">Phase 2</span>
       <h1>Home Redesign</h1>
-      <p>Home becomes the daily starting point for the Faith Energy loop: Luna guidance, Today’s Faith Quest, reading progress, and focused next actions.</p>
+      <p>Home becomes the daily starting point for the Faith Energy loop: dynamic greeting, Bible Meme, Today’s Faith Quest, reading progress, and focused next actions.</p>
     </header>
     <section class="stage">
       <div class="phone">
@@ -428,20 +509,21 @@
           <div class="settings">⚙</div>
         </div>
         <div class="stats">
-          <div class="stat"><img src="../client/public/art-assets/brand-icons/flame-streak.webp" alt="" />7</div>
-          <div class="stat"><img src="../client/public/art-assets/brand-icons/xp-lightning.webp" alt="" />4.2K</div>
-          <div class="stat"><img src="../client/public/art-assets/brand-icons/gem-crystal.webp" alt="" />2.4K</div>
+          <div class="stat"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/flame-streak.webp" alt="" /></span>7</div>
+          <div class="stat"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/xp-lightning.webp" alt="" /></span>4.2K</div>
+          <div class="stat"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/gem-crystal.webp" alt="" /></span>2.4K</div>
         </div>
         <section class="card hero-card">
           <p class="eyebrow">Today’s path</p>
           <h1>Welcome back,<br />David</h1>
           <p>Luna found your next chapter. Read Matthew 5, charge Faith Energy, then unlock today’s quiz.</p>
         </section>
-        <section class="card luna">
-          <img class="luna-img" src="../client/public/art-assets/brand-icons/luna-lamb-pet.webp" alt="Luna" />
-          <div class="bubble">
-            <b>Luna says</b>
-            <span>Matthew 5 is a power chapter. Want to read together?</span>
+        <section class="card meme">
+          <div class="meme-art"></div>
+          <div class="meme-copy">
+            <b>Bible Meme of the Day</b>
+            <span>A quick laugh before reading. Opens fullscreen with share/save.</span>
+            <div class="reactions"><span class="react">😂 12</span><span class="react">🔥 8</span><span class="react">🙏 4</span></div>
           </div>
         </section>
         <section class="card quest">
@@ -463,21 +545,16 @@
           </div>
         </section>
         <div class="quick-grid">
-          <button class="quick"><div><img src="../client/public/art-assets/brand-icons/gold-trophy.webp" alt="" /><b>Quiz</b></div></button>
-          <button class="quick"><div><img src="../client/public/art-assets/brand-icons/bookmark.webp" alt="" /><b>Devotion</b></div></button>
-          <button class="quick"><div><img src="../client/public/art-assets/brand-icons/shield-profile.webp" alt="" /><b>Group</b></div></button>
+          <button class="quick"><div><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/bible-book.webp" alt="" /></span><b>Bible AI</b></div></button>
+          <button class="quick"><div><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/quest-scroll.webp" alt="" /></span><b>Bible Map</b></div></button>
+          <button class="quick"><div><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/gold-trophy.webp" alt="" /></span><b>Quiz Stats</b></div></button>
         </div>
-        <section class="card ai">
-          <img src="../client/public/art-assets/brand-icons/bible-book.webp" alt="" />
-          <div><b>Bible AI</b><span>Ask with reading context</span></div>
-          <button class="open">Open</button>
-        </section>
         <nav class="tabbar">
-          <div class="tab active"><img src="../client/public/art-assets/brand-icons/bible-book.webp" alt="" />Home</div>
-          <div class="tab"><img src="../client/public/art-assets/brand-icons/bookmark.webp" alt="" />Bible</div>
-          <div class="tab"><img src="../client/public/art-assets/brand-icons/gold-trophy.webp" alt="" />Rank</div>
-          <div class="tab"><img src="../client/public/art-assets/brand-icons/treasure-chest.webp" alt="" />Store</div>
-          <div class="tab"><img src="../client/public/art-assets/brand-icons/shield-profile.webp" alt="" />Me</div>
+          <div class="tab active"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/bible-book.webp" alt="" /></span>Home</div>
+          <div class="tab"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/bookmark.webp" alt="" /></span>Bible</div>
+          <div class="tab"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/gold-trophy.webp" alt="" /></span>Rank</div>
+          <div class="tab"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/treasure-chest.webp" alt="" /></span>Store</div>
+          <div class="tab"><span class="icon-frame"><img src="../client/public/art-assets/brand-icons/shield-profile.webp" alt="" /></span>Me</div>
         </nav>
       </div>
       <aside class="notes">
@@ -485,7 +562,7 @@
           <h3>Home hierarchy</h3>
           <ul>
             <li>Start with brand/app status, not decorative chrome.</li>
-            <li>Luna becomes the daily guide, not a side decoration.</li>
+            <li>Bible Meme brings fun back into the Home feed.</li>
             <li>Today’s Faith Quest is the main action card.</li>
             <li>Quick actions stay secondary and compact.</li>
           </ul>
@@ -494,9 +571,9 @@
           <h3>Implementation mapping</h3>
           <ul>
             <li><b>HomeStats</b>: flame, XP, gem brand icons.</li>
-            <li><b>PetGuide</b>: Luna icon + dialogue bubble.</li>
-            <li><b>FaithQuestCard</b>: leather surface + reward CTA.</li>
-            <li><b>QuickActionGrid</b>: Quiz, Devotion, Group.</li>
+            <li><b>MemeCard</b>: existing Bible Meme of the Day feature.</li>
+            <li><b>FaithQuestCard</b>: last-read/daily quest logic + reward CTA.</li>
+            <li><b>QuickActionGrid</b>: Bible AI, Bible Map, Quiz Stats.</li>
             <li><b>BottomNav</b>: brand-icon tabs with raised active state.</li>
           </ul>
         </div>
@@ -506,7 +583,7 @@
             <li>No emoji in Tier 1/2 UI.</li>
             <li>Gold appears on CTA, reward, active nav only.</li>
             <li>Reader entry remains one tap away.</li>
-            <li>All motion uses Phase 1.5 tokens.</li>
+            <li>Hero copy changes by time, last-read state, and quest status.</li>
           </ul>
         </div>
       </aside>
