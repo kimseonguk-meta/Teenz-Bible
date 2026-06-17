@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teenz Bible Phase 2 — Home Redesign</title>
+  <style>
+    :root {
+      --icon-navy: #071426;
+      --night-950: #050914;
+      --night-900: #0b1628;
+      --night-850: #101d35;
+      --surface: rgba(17, 29, 56, .74);
+      --surface-strong: rgba(23, 38, 70, .86);
+      --book-leather: #342018;
+      --book-ink: #1b1012;
+      --faith-gold: #f8c94a;
+      --lightning: #ffe24d;
+      --energy-purple: #8b5cf6;
+      --aurora-cyan: #22d3ee;
+      --growth-green: #34d399;
+      --parchment: #f3dfb8;
+      --text: #fff8e8;
+      --muted: #aab4d0;
+      --quiet: #6f7d9f;
+      --line: rgba(255,255,255,.14);
+      --gold-line: rgba(248,201,74,.34);
+      --shadow: 0 24px 70px rgba(0,0,0,.42);
+      --card-shadow: 0 18px 42px rgba(0,0,0,.3);
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 36px;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 6%, rgba(255,226,77,.14), transparent 28rem),
+        radial-gradient(circle at 84% 0%, rgba(139,92,246,.22), transparent 30rem),
+        radial-gradient(circle at 48% 100%, rgba(34,211,238,.12), transparent 26rem),
+        linear-gradient(135deg, #102039, #050914 72%);
+    }
+    svg, img { display: block; }
+    button { font: inherit; }
+
+    .wrap { max-width: 1320px; margin: 0 auto; }
+    .header { text-align: center; margin: 0 0 28px; }
+    .header .badge {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(248,201,74,.26);
+      background: rgba(248,201,74,.09);
+      color: #ffeaa6;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      margin: 14px 0 0;
+      font-size: 44px;
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .header p { margin: 10px auto 0; max-width: 760px; color: var(--muted); line-height: 1.6; }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .phone {
+      width: 390px;
+      height: 844px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 44px;
+      padding: 16px 16px 92px;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255,226,77,.12), transparent 15rem),
+        radial-gradient(circle at 82% 10%, rgba(139,92,246,.24), transparent 17rem),
+        radial-gradient(circle at 46% 86%, rgba(34,211,238,.08), transparent 16rem),
+        linear-gradient(180deg, #13223d, #060a16 78%);
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.12);
+      isolation: isolate;
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(120deg, transparent 0 42%, rgba(255,255,255,.035) 43% 44%, transparent 45%),
+        linear-gradient(60deg, transparent 0 46%, rgba(0,0,0,.25) 47% 48%, transparent 49%);
+      background-size: 90px 90px;
+      opacity: .85;
+    }
+    .phone::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.08), transparent 22rem),
+        linear-gradient(90deg, rgba(0,0,0,.35), transparent 18%, transparent 82%, rgba(0,0,0,.35));
+    }
+
+    .status {
+      height: 26px;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255,255,255,.72);
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .app-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      box-shadow: 0 0 22px rgba(255,226,77,.26), 0 10px 18px rgba(0,0,0,.28);
+    }
+    .brand b { display: block; font-size: 16px; letter-spacing: -.03em; }
+    .brand small { display: block; color: var(--muted); font-size: 11px; font-weight: 700; margin-top: 2px; }
+    .settings {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 9px 18px rgba(0,0,0,.2);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .stat {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04) 48%, rgba(0,0,0,.16)),
+        rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -2px 0 rgba(0,0,0,.38), 0 8px 0 rgba(0,0,0,.18), 0 14px 24px rgba(0,0,0,.18);
+      font-weight: 950;
+      font-size: 13px;
+    }
+    .stat img { width: 30px; height: 30px; object-fit: contain; }
+
+    .card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05) 48%, rgba(0,0,0,.14)),
+        var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--card-shadow), inset 0 1px 0 rgba(255,255,255,.2), inset 0 -2px 0 rgba(0,0,0,.42);
+      backdrop-filter: blur(22px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.16), transparent 38%, rgba(0,0,0,.14));
+      opacity: .75;
+    }
+    .card > * { position: relative; z-index: 1; }
+
+    .hero-card {
+      padding: 18px;
+      margin-bottom: 12px;
+    }
+    .eyebrow {
+      margin: 0;
+      color: #dacfff;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 950;
+    }
+    .hero-card h1 {
+      margin: 6px 0 0;
+      font-size: 33px;
+      line-height: .98;
+      letter-spacing: -.06em;
+    }
+    .hero-card p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .luna {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .luna-img {
+      width: 74px;
+      height: 74px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(255,226,77,.2));
+      animation: floatPet 3s ease-in-out infinite;
+    }
+    @keyframes floatPet { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    .bubble {
+      padding: 12px;
+      border-radius: 20px 20px 20px 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .bubble b { display: block; font-size: 13px; }
+    .bubble span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+
+    .quest {
+      padding: 15px;
+      margin-bottom: 12px;
+      background:
+        radial-gradient(circle at 86% 0%, rgba(255,226,77,.12), transparent 10rem),
+        linear-gradient(180deg, rgba(74,45,33,.88), rgba(27,16,18,.9));
+      border-color: rgba(248,201,74,.28);
+    }
+    .quest-head {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 11px;
+    }
+    .quest-head img { width: 54px; height: 54px; object-fit: contain; }
+    .quest h2 { margin: 0; font-size: 22px; letter-spacing: -.04em; }
+    .quest p { margin: 3px 0 0; color: #d7c6a7; font-size: 12px; }
+    .progress {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(0,0,0,.44);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 2px 5px rgba(0,0,0,.7);
+    }
+    .progress span {
+      display: block;
+      width: 58%;
+      height: 100%;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.75), transparent 45%),
+        linear-gradient(90deg, var(--faith-gold), var(--energy-purple), var(--aurora-cyan));
+      box-shadow: 0 0 18px rgba(255,226,77,.35);
+    }
+    .quest-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+    .reward {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      color: #ffe9a5;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .reward img { width: 24px; height: 24px; object-fit: contain; }
+    .cta {
+      border: 0;
+      height: 42px;
+      padding: 0 17px;
+      border-radius: 999px;
+      color: #21120f;
+      font-weight: 950;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.85), transparent 44%),
+        linear-gradient(180deg, #fff1aa, var(--faith-gold) 48%, #a46617);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.78), inset 0 -4px 0 rgba(74,39,5,.44), 0 6px 0 rgba(63,35,6,.62), 0 14px 26px rgba(248,201,74,.2);
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+    .quick {
+      min-height: 88px;
+      padding: 9px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 23px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.045) 48%, rgba(0,0,0,.14)),
+        rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.2), inset 0 -2px 0 rgba(0,0,0,.4), 0 8px 0 rgba(0,0,0,.18), 0 16px 26px rgba(0,0,0,.18);
+    }
+    .quick img { width: 42px; height: 42px; object-fit: contain; }
+    .quick b { display: block; margin-top: 4px; font-size: 11px; }
+
+    .ai {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+    }
+    .ai img { width: 54px; height: 54px; object-fit: contain; }
+    .ai b { display: block; font-size: 15px; }
+    .ai span { color: var(--muted); font-size: 12px; }
+    .ai .open {
+      border: 0;
+      border-radius: 999px;
+      height: 36px;
+      padding: 0 13px;
+      color: white;
+      font-weight: 900;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.35), transparent 44%),
+        linear-gradient(180deg, #a78bfa, #8b5cf6 50%, #1596a8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.3), inset 0 -3px 0 rgba(30,13,86,.45), 0 6px 0 rgba(15,8,50,.7);
+    }
+
+    .tabbar {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      height: 70px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      padding: 7px;
+      border-radius: 24px;
+      background: rgba(6, 11, 22, .86);
+      border: 1px solid rgba(248,201,74,.25);
+      box-shadow: 0 -12px 36px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.1);
+      backdrop-filter: blur(18px);
+    }
+    .tab {
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: rgba(255,255,255,.54);
+      font-size: 10px;
+      font-weight: 900;
+    }
+    .tab img { width: 28px; height: 28px; object-fit: contain; opacity: .75; }
+    .tab.active {
+      color: #21120f;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.78), transparent 45%),
+        linear-gradient(180deg, #fff3b0, var(--faith-gold) 52%, #a46617);
+      box-shadow: inset 0 2px rgba(255,255,255,.7), inset 0 -4px rgba(92,54,10,.42), 0 0 20px rgba(248,201,74,.22), 0 6px 0 rgba(0,0,0,.2);
+    }
+    .tab.active img { opacity: 1; }
+
+    .notes {
+      display: grid;
+      gap: 18px;
+    }
+    .note-card {
+      border-radius: 28px;
+      padding: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.04) 48%, rgba(0,0,0,.15)),
+        var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 1px rgba(255,255,255,.18), inset 0 -2px rgba(0,0,0,.4), 0 16px 34px rgba(0,0,0,.22);
+    }
+    .note-card h3 { margin: 0 0 10px; font-size: 21px; }
+    .note-card ul { margin: 0; padding-left: 19px; color: var(--muted); line-height: 1.55; }
+    .note-card li { margin: 7px 0; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="header">
+      <span class="badge">Phase 2</span>
+      <h1>Home Redesign</h1>
+      <p>Home becomes the daily starting point for the Faith Energy loop: Luna guidance, Today’s Faith Quest, reading progress, and focused next actions.</p>
+    </header>
+    <section class="stage">
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>LTE 100%</span></div>
+        <div class="topbar">
+          <div class="brand">
+            <img class="app-icon" src="../client/public/art-assets/brand/teenz-bible-app-icon.png" alt="Teenz Bible" />
+            <div><b>Teenz Bible</b><small>Faith Energy ready</small></div>
+          </div>
+          <div class="settings">⚙</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><img src="../client/public/art-assets/brand-icons/flame-streak.webp" alt="" />7</div>
+          <div class="stat"><img src="../client/public/art-assets/brand-icons/xp-lightning.webp" alt="" />4.2K</div>
+          <div class="stat"><img src="../client/public/art-assets/brand-icons/gem-crystal.webp" alt="" />2.4K</div>
+        </div>
+        <section class="card hero-card">
+          <p class="eyebrow">Today’s path</p>
+          <h1>Welcome back,<br />David</h1>
+          <p>Luna found your next chapter. Read Matthew 5, charge Faith Energy, then unlock today’s quiz.</p>
+        </section>
+        <section class="card luna">
+          <img class="luna-img" src="../client/public/art-assets/brand-icons/luna-lamb-pet.webp" alt="Luna" />
+          <div class="bubble">
+            <b>Luna says</b>
+            <span>Matthew 5 is a power chapter. Want to read together?</span>
+          </div>
+        </section>
+        <section class="card quest">
+          <div class="quest-head">
+            <img src="../client/public/art-assets/brand-icons/quest-scroll.webp" alt="" />
+            <div>
+              <p class="eyebrow">Today’s Faith Quest</p>
+              <h2>Read Matthew 5</h2>
+              <p>Reward: Faith Energy + Gems</p>
+            </div>
+          </div>
+          <div class="progress"><span></span></div>
+          <div class="quest-bottom">
+            <div class="reward">
+              <img src="../client/public/art-assets/brand-icons/xp-lightning.webp" alt="" /> +50 XP
+              <img src="../client/public/art-assets/brand-icons/gem-crystal.webp" alt="" /> +5
+            </div>
+            <button class="cta">Continue</button>
+          </div>
+        </section>
+        <div class="quick-grid">
+          <button class="quick"><div><img src="../client/public/art-assets/brand-icons/gold-trophy.webp" alt="" /><b>Quiz</b></div></button>
+          <button class="quick"><div><img src="../client/public/art-assets/brand-icons/bookmark.webp" alt="" /><b>Devotion</b></div></button>
+          <button class="quick"><div><img src="../client/public/art-assets/brand-icons/shield-profile.webp" alt="" /><b>Group</b></div></button>
+        </div>
+        <section class="card ai">
+          <img src="../client/public/art-assets/brand-icons/bible-book.webp" alt="" />
+          <div><b>Bible AI</b><span>Ask with reading context</span></div>
+          <button class="open">Open</button>
+        </section>
+        <nav class="tabbar">
+          <div class="tab active"><img src="../client/public/art-assets/brand-icons/bible-book.webp" alt="" />Home</div>
+          <div class="tab"><img src="../client/public/art-assets/brand-icons/bookmark.webp" alt="" />Bible</div>
+          <div class="tab"><img src="../client/public/art-assets/brand-icons/gold-trophy.webp" alt="" />Rank</div>
+          <div class="tab"><img src="../client/public/art-assets/brand-icons/treasure-chest.webp" alt="" />Store</div>
+          <div class="tab"><img src="../client/public/art-assets/brand-icons/shield-profile.webp" alt="" />Me</div>
+        </nav>
+      </div>
+      <aside class="notes">
+        <div class="note-card">
+          <h3>Home hierarchy</h3>
+          <ul>
+            <li>Start with brand/app status, not decorative chrome.</li>
+            <li>Luna becomes the daily guide, not a side decoration.</li>
+            <li>Today’s Faith Quest is the main action card.</li>
+            <li>Quick actions stay secondary and compact.</li>
+          </ul>
+        </div>
+        <div class="note-card">
+          <h3>Implementation mapping</h3>
+          <ul>
+            <li><b>HomeStats</b>: flame, XP, gem brand icons.</li>
+            <li><b>PetGuide</b>: Luna icon + dialogue bubble.</li>
+            <li><b>FaithQuestCard</b>: leather surface + reward CTA.</li>
+            <li><b>QuickActionGrid</b>: Quiz, Devotion, Group.</li>
+            <li><b>BottomNav</b>: brand-icon tabs with raised active state.</li>
+          </ul>
+        </div>
+        <div class="note-card">
+          <h3>Quality rules</h3>
+          <ul>
+            <li>No emoji in Tier 1/2 UI.</li>
+            <li>Gold appears on CTA, reward, active nav only.</li>
+            <li>Reader entry remains one tap away.</li>
+            <li>All motion uses Phase 1.5 tokens.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
