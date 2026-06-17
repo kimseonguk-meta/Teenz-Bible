@@ -55,6 +55,8 @@ Use app-owned rendered icons, not emoji and not simple line/flat SVG.
 Reference concept sheet:
 
 - `phase-1-brand-icon-set-concept.png`
+- `phase-1-brand-icon-sprite-no-labels.png`
+- `phase-1-brand-icon-assets.png`
 
 Style:
 
@@ -103,6 +105,25 @@ client/public/art-assets/brand-icons/luna-lamb-pet.webp
 ```
 
 Only secondary utility icons may use simpler vector treatment.
+
+## Phase 1 final icon assets
+
+The first production-ready icon asset pass has been split into individual PNG/WebP files:
+
+- `client/public/art-assets/brand-icons/bible-book.webp`
+- `client/public/art-assets/brand-icons/xp-lightning.webp`
+- `client/public/art-assets/brand-icons/gem-crystal.webp`
+- `client/public/art-assets/brand-icons/flame-streak.webp`
+- `client/public/art-assets/brand-icons/gold-trophy.webp`
+- `client/public/art-assets/brand-icons/treasure-chest.webp`
+- `client/public/art-assets/brand-icons/shield-profile.webp`
+- `client/public/art-assets/brand-icons/quest-scroll.webp`
+- `client/public/art-assets/brand-icons/bookmark.webp`
+- `client/public/art-assets/brand-icons/audio-speaker.webp`
+- `client/public/art-assets/brand-icons/font-aa.webp`
+- `client/public/art-assets/brand-icons/luna-lamb-pet.webp`
+
+These assets are extracted from a label-free high-fidelity sprite sheet so they can be used directly in Phase 2 Home and later product screens.
 
 ## UI component rules
 
