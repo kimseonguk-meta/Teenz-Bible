@@ -4,7 +4,9 @@ This phase defines the brand system before redesigning product screens.
 
 ## Source of truth
 
-The current app icon stays. The brand language should come from that icon:
+The current app icon stays and is the **main brand logo**. Do not replace it with a new mark.
+
+The brand language should come from that icon:
 
 - Dark navy atmosphere
 - Dark leather Bible
@@ -12,6 +14,13 @@ The current app icon stays. The brand language should come from that icon:
 - Lightning energy
 - Thick friendly outline
 - Warm yellow glow
+
+## Logo hierarchy
+
+- Main brand logo: existing Teenz Bible app icon
+- Submark: simplified TB Bible mark only if needed
+- XP/reward symbol: lightning icon derived from the app icon
+- Navigation/store/profile icons: same chunky sticker style, but never competing with the app icon
 - Premium but teen-friendly tone
 
 ## Brand concept
@@ -39,7 +48,7 @@ Read chapter -> gain Faith Energy XP -> unlock quiz -> earn gems -> pet reacts -
 
 ## Icon style
 
-Use app-owned icons, not emoji.
+Use app-owned icons, not emoji. Icons must look like they belong to the same family as the app icon.
 
 Style:
 
@@ -48,6 +57,7 @@ Style:
 - Warm gold highlights
 - Soft glow for active/reward states
 - Rounded/chunky geometry
+- Slight material texture / leather or bevel cues where appropriate
 
 Needed icons:
 
