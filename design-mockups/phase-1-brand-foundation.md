@@ -48,16 +48,23 @@ Read chapter -> gain Faith Energy XP -> unlock quiz -> earn gems -> pet reacts -
 
 ## Icon style
 
-Use app-owned icons, not emoji. Icons must look like they belong to the same family as the app icon.
+Use app-owned rendered icons, not emoji and not simple line/flat SVG.
+
+**All core icons must match the app icon's quality level.** If an icon cannot visually sit next to the Teenz Bible app icon without feeling cheaper, it is not acceptable.
+
+Reference concept sheet:
+
+- `phase-1-brand-icon-set-concept.png`
 
 Style:
 
-- Semi-3D sticker vector
+- Semi-3D sticker/rendered asset
 - Thick dark outline
 - Warm gold highlights
 - Soft glow for active/reward states
 - Rounded/chunky geometry
 - Slight material texture / leather or bevel cues where appropriate
+- Comparable material detail, lighting, shadow, glow, and polish to the existing app icon
 
 Needed icons:
 
@@ -73,6 +80,29 @@ Needed icons:
 - Audio
 - Font
 - Pet/Luna
+
+## Icon production rule
+
+Core brand icons should be produced as high-quality image/SVG assets first, then integrated into React.
+
+Recommended output:
+
+```text
+client/public/art-assets/brand-icons/bible-book.webp
+client/public/art-assets/brand-icons/xp-lightning.webp
+client/public/art-assets/brand-icons/gem-crystal.webp
+client/public/art-assets/brand-icons/flame-streak.webp
+client/public/art-assets/brand-icons/gold-trophy.webp
+client/public/art-assets/brand-icons/treasure-chest.webp
+client/public/art-assets/brand-icons/shield-profile.webp
+client/public/art-assets/brand-icons/quest-scroll.webp
+client/public/art-assets/brand-icons/bookmark.webp
+client/public/art-assets/brand-icons/audio-speaker.webp
+client/public/art-assets/brand-icons/font-aa.webp
+client/public/art-assets/brand-icons/luna-lamb-pet.webp
+```
+
+Only secondary utility icons may use simpler vector treatment.
 
 ## UI component rules
 
