@@ -73,15 +73,15 @@ function isSpeechRecognitionSupported(): boolean {
   return !!(window as any).webkitSpeechRecognition || !!(window as any).SpeechRecognition;
 }
 
-// Bible AI API call - uses Firebase Cloud Function proxy (/api/bible-ai)
-// This works for both web and native (via Firebase Hosting URL)
-const FIREBASE_HOSTING_URL = "https://teens-bible-94271.web.app";
+// Bible AI API call - uses server proxy (/api/bible-ai)
+// For native apps, uses Manus hosting URL; for web, uses relative path
+const SERVER_URL = "https://teenzbible.manus.space";
 
 async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
   try {
-    // Determine the base URL - on native, use the full Firebase Hosting URL
+    // Determine the base URL - on native, use the full server URL
     const isNative = typeof (window as any).Capacitor !== 'undefined' && (window as any).Capacitor.isNativePlatform();
-    const baseUrl = isNative ? FIREBASE_HOSTING_URL : '';
+    const baseUrl = isNative ? SERVER_URL : '';
     
     const resp = await fetch(`${baseUrl}/api/bible-ai`, {
       method: "POST",
@@ -107,50 +107,24 @@ async function callGeminiAPI(messages: Array<{ role: string; parts: Array<{ text
   }
 }
 
-// Direct Gemini API call - fallback when Cloud Function is unavailable
-const GEMINI_NATIVE_KEY = "AIzaSyBj4z0lM-Jbwxc40pvqWpNIJii7S1p_zUE";
+// Fallback: retry via server with different base URL
 async function callGeminiDirect(messages: Array<{ role: string; parts: Array<{ text: string }> }>, systemPrompt: string): Promise<{ answer: string; error?: string }> {
-  const models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"];
-  for (const model of models) {
-    try {
-      const isThinkingModel = model.includes("2.5") && !model.includes("lite");
-      const reqBody = JSON.stringify({
-        system_instruction: { parts: [{ text: systemPrompt }] },
-        contents: messages,
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 8192,
-          ...(isThinkingModel ? { thinkingConfig: { thinkingBudget: 1024 } } : {}),
-        },
-        safetySettings: [
-          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
-          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        ],
-      });
-      const resp = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_NATIVE_KEY}`,
-        { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
-      );
-      const data = await resp.json();
-      if (data.error) {
-        console.warn(`Gemini ${model} error:`, data.error.code, data.error.message?.slice(0, 80));
-        if (data.error.code === 429) {
-          await new Promise(r => setTimeout(r, 1000));
-        }
-        continue;
-      }
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (text) {
-        return { answer: text };
-      }
-      continue;
-    } catch (e) {
-      console.warn(`Gemini ${model} fetch error:`, e);
+  // Always route through server proxy (no client-side API key exposure)
+  try {
+    const resp = await fetch(`${SERVER_URL}/api/bible-ai`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages, systemPrompt }),
+    });
+    const result = await resp.json();
+    if (result.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      return { answer: result.data.candidates[0].content.parts[0].text };
     }
+    return { answer: "", error: result.error || "Bible AI is temporarily unavailable. Please try again in a moment! \uD83D\uDE4F" };
+  } catch (e: any) {
+    console.warn("Bible AI fallback error:", e.message);
+    return { answer: "", error: "Bible AI is temporarily unavailable. Please try again in a moment! \uD83D\uDE4F" };
   }
-  return { answer: "", error: "Bible AI is temporarily unavailable. Please try again in a moment! 🙏" };
 }
 
 export default function BibleAI() {
@@ -288,10 +262,10 @@ export default function BibleAI() {
   return (
     <div className="flex flex-col h-[100dvh] bg-[#0a0a1a] overflow-hidden">
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center gap-3 px-4 py-3 border-b border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm z-10" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
+      <div className="flex-shrink-0 flex items-center gap-3 px-4 py-3 border-b border-gray-200 bg-[#0d0d2b]/80 backdrop-blur-sm z-10" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top, 0.75rem))' }}>
         <button
           onClick={() => navigate("/")}
-          className="text-purple-300 hover:text-white transition-colors"
+          className="text-[#FF9600] font-bold hover:text-gray-800 transition-colors"
         >
           ←
         </button>
@@ -300,14 +274,14 @@ export default function BibleAI() {
             <span className="text-sm">✨</span>
           </div>
           <div>
-            <h1 className="text-white font-bold text-base">Bible AI</h1>
-            <p className="text-purple-300 text-xs">Ask anything about the Bible</p>
+            <h1 className="text-gray-800 font-bold text-base">Bible AI</h1>
+            <p className="text-[#FF9600] font-bold text-xs">Ask anything about the Bible</p>
           </div>
         </div>
         {hasHistory && (
           <button
             onClick={clearHistory}
-            className="text-purple-400 hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg border border-purple-500/20 hover:border-red-500/30"
+            className="text-[#FF9600] font-bold hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg border border-gray-200 hover:border-red-500/30"
             title="Clear chat history"
           >
             🗑️ Clear
@@ -325,7 +299,7 @@ export default function BibleAI() {
               className={`text-xs px-3 py-1.5 rounded-full border transition-all active:scale-95 ${
                 q.isKo
                   ? "bg-gradient-to-r from-red-500/20 to-orange-500/20 border-red-500/40 text-red-300 hover:border-red-400"
-                  : "bg-purple-900/30 border-purple-500/30 text-purple-300 hover:border-purple-400"
+                  : "bg-gray-50 border-gray-200 text-[#FF9600] font-bold hover:border-[#FF9600]"
               }`}
             >
               {q.text}
@@ -344,8 +318,8 @@ export default function BibleAI() {
             <div
               className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                 msg.role === "user"
-                  ? "bg-purple-600 text-white rounded-br-sm"
-                  : "bg-[#1a1a3a] text-gray-200 border border-purple-500/20 rounded-bl-sm"
+                  ? "bg-purple-600 text-gray-800 rounded-br-sm"
+                  : "bg-gray-50 text-gray-200 border border-gray-200 rounded-bl-sm"
               }`}
               dangerouslySetInnerHTML={{ __html: formatMessage(msg.text) }}
             />
@@ -353,7 +327,7 @@ export default function BibleAI() {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-[#1a1a3a] text-gray-300 border border-purple-500/20 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm">
+            <div className="bg-gray-50 text-gray-300 border border-gray-200 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm">
               🤔 Thinking...
             </div>
           </div>
@@ -362,7 +336,7 @@ export default function BibleAI() {
       </div>
 
       {/* Input */}
-      <div className="flex-shrink-0 px-4 py-3 border-t border-purple-500/20 bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0.75rem))' }}>
+      <div className="flex-shrink-0 px-4 py-3 border-t border-gray-200 bg-[#0d0d2b]/80 backdrop-blur-sm" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0.75rem))' }}>
         {isListening && (
           <div className="flex items-center justify-center gap-2 mb-2 py-1.5 bg-red-500/10 border border-red-500/30 rounded-full">
             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
@@ -377,8 +351,8 @@ export default function BibleAI() {
               disabled={isLoading}
               className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-95 ${
                 isListening
-                  ? "bg-red-500 text-white animate-pulse"
-                  : "bg-[#1a1a3a] border border-purple-500/30 text-purple-300 hover:border-purple-400 hover:text-white"
+                  ? "bg-red-500 text-gray-800 animate-pulse"
+                  : "bg-gray-50 border border-gray-200 text-[#FF9600] font-bold hover:border-[#FF9600] hover:text-gray-800"
               } disabled:opacity-50`}
               title={isListening ? "Stop listening" : "Voice input"}
             >
@@ -392,13 +366,13 @@ export default function BibleAI() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendChat()}
             placeholder={isListening ? "Listening..." : "Ask anything..."}
-            className="flex-1 min-w-0 bg-[#1a1a3a] border border-purple-500/30 rounded-full px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-purple-400 transition-colors"
+            className="flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-gray-800 text-sm placeholder-gray-500 focus:outline-none focus:border-[#FF9600] transition-colors"
             disabled={isLoading}
           />
           <button
             onClick={() => sendChat()}
             disabled={isLoading || !input.trim()}
-            className="flex-shrink-0 bg-purple-600 hover:bg-purple-500 disabled:bg-purple-900 disabled:opacity-50 text-white font-bold px-4 py-2.5 rounded-full text-sm transition-all active:scale-95"
+            className="flex-shrink-0 bg-purple-600 hover:bg-purple-500 disabled:bg-purple-900 disabled:opacity-50 text-gray-800 font-bold px-4 py-2.5 rounded-full text-sm transition-all active:scale-95"
           >
             SEND
           </button>

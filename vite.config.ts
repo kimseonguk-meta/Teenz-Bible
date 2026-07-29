@@ -252,8 +252,23 @@ function vitePluginStorageProxy(): Plugin {
             res.end("Empty signed URL");
             return;
           }
-          res.writeHead(307, { Location: url, "Cache-Control": "no-store" });
-          res.end();
+          // Pipe image data through to avoid cross-origin redirect issues in dev
+          const imgResp = await fetch(url);
+          if (!imgResp.ok) {
+            res.writeHead(502, { "Content-Type": "text/plain" });
+            res.end("Image fetch failed");
+            return;
+          }
+          const contentType = imgResp.headers.get("content-type") || "application/octet-stream";
+          const contentLength = imgResp.headers.get("content-length");
+          const headers: Record<string, string> = {
+            "Content-Type": contentType,
+            "Cache-Control": "public, max-age=3600",
+          };
+          if (contentLength) headers["Content-Length"] = contentLength;
+          res.writeHead(200, headers);
+          const arrayBuf = await imgResp.arrayBuffer();
+          res.end(Buffer.from(arrayBuf));
         } catch {
           res.writeHead(502, { "Content-Type": "text/plain" });
           res.end("Storage proxy error");

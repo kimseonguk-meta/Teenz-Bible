@@ -471,22 +471,22 @@ export default function Profile() {
 
       {/* Full-screen loading overlay during sign-in */}
       {(linkingApple || linkingGoogle) && (
-        <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-purple-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-          <p className="text-white text-sm font-medium">
+        <div className="fixed inset-0 z-[9999] bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+          <svg className="animate-spin h-10 w-10 text-[#FF8C00] font-bold" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <p className="text-gray-800 text-sm font-medium">
             {linkingApple ? "Connecting to Apple..." : "Connecting to Google..."}
           </p>
-          <p className="text-gray-400 text-xs">Please wait, this may take a moment</p>
+          <p className="text-gray-600 text-xs">Please wait, this may take a moment</p>
         </div>
       )}
 
       {/* Photo Nudge Popup */}
       {showPhotoNudge && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[300px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-white/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white border border-[#FF9600]/30 rounded-2xl p-6 max-w-[300px] w-full text-center shadow-xl animate-in zoom-in-95 duration-300">
             <div className="text-5xl mb-3">📸</div>
-            <h3 className="text-white font-bold text-lg mb-1">Add a Profile Photo!</h3>
-            <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+            <h3 className="text-gray-800 font-bold text-lg mb-1">Add a Profile Photo!</h3>
+            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
               Show your friends who you are on the leaderboard~ ✨
             </p>
             <button
@@ -495,7 +495,7 @@ export default function Profile() {
                 sessionStorage.setItem("photoNudgeDismissed", "1");
                 setShowPhotoMenu(true);
               }}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold text-sm shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform mb-2"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-gray-800 font-bold text-sm shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform mb-2"
             >
               Let's go! 📷
             </button>
@@ -504,7 +504,7 @@ export default function Profile() {
                 setShowPhotoNudge(false);
                 sessionStorage.setItem("photoNudgeDismissed", "1");
               }}
-              className="text-gray-500 text-xs hover:text-gray-300 transition-colors"
+              className="text-gray-600 text-xs hover:text-gray-300 transition-colors"
             >
               Maybe later
             </button>
@@ -512,12 +512,18 @@ export default function Profile() {
         </div>
       )}
 
+      {/* Profile Header */}
+      <div className="text-center mb-2">
+        <h1 className="text-2xl font-black text-gray-800">🛡️ Profile</h1>
+      </div>
+
       {/* Avatar Section */}
       <div className="flex flex-col items-center">
         <div className="relative">
+          {/* Avatar ring */}
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
-            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/30 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
+            className={`w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 cursor-pointer active:scale-95 transition-transform ${equippedFrame?.frameClass || 'border-4 border-[#58CC02] shadow-lg'}`}
           >
             {profilePhoto ? (
               <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
@@ -526,14 +532,14 @@ export default function Profile() {
             )}
             {/* Upload loading overlay */}
             {isUploadingPhoto && (
-              <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center z-10">
+              <div className="absolute inset-0 rounded-full bg-white/60 flex items-center justify-center z-10">
                 <div className="w-8 h-8 border-3 border-purple-300 border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
             {/* Camera overlay hint */}
             {!isUploadingPhoto && (
-              <div className="absolute inset-0 rounded-full bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                <span className="text-white text-2xl">📷</span>
+              <div className="absolute inset-0 rounded-full bg-white/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                <span className="text-gray-800 text-2xl">📷</span>
               </div>
             )}
           </div>
@@ -569,7 +575,7 @@ export default function Profile() {
                   if (!isNativePlatform()) cameraInputRef.current?.click();
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-[#E5E5E5] border border-[#E5E5E5] text-[#FF8C00] text-xs font-medium transition-all active:scale-95"
             >
               📸 Take Photo
             </button>
@@ -591,7 +597,7 @@ export default function Profile() {
                   if (!isNativePlatform()) photoInputRef.current?.click();
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-[#E5E5E5] border border-[#E5E5E5] text-[#FF8C00] text-xs font-medium transition-all active:scale-95"
             >
               🖼️ Gallery
             </button>
@@ -638,10 +644,10 @@ export default function Profile() {
 
         {/* Photo Crop & Preview Modal */}
         {rawPhoto && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-400/30 rounded-2xl p-6 max-w-[320px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-200">
-              <p className="text-gray-400 text-xs mb-1">Drag to move • Pinch to zoom</p>
-              <p className="text-gray-500 text-[10px] mb-3">Adjust your photo in the circle</p>
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-white/90 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white border border-[#FF9600]/30 rounded-2xl p-6 max-w-[320px] w-full text-center shadow-xl animate-in zoom-in-95 duration-200">
+              <p className="text-gray-600 text-xs mb-1">Drag to move • Pinch to zoom</p>
+              <p className="text-gray-600 text-[10px] mb-3">Adjust your photo in the circle</p>
               {/* Crop area */}
               <div
                 className={`w-40 h-40 mx-auto rounded-full overflow-hidden mb-3 relative touch-none select-none ${equippedFrame?.frameClass || 'border-[4px] border-purple-500 shadow-[0_0_25px_rgba(139,92,246,0.5)]'}`}
@@ -705,7 +711,7 @@ export default function Profile() {
               </div>
               {/* Zoom slider */}
               <div className="flex items-center gap-2 px-4 mb-3">
-                <span className="text-gray-500 text-xs">🔍</span>
+                <span className="text-gray-600 text-xs">🔍</span>
                 <input
                   type="range"
                   min="1"
@@ -715,10 +721,10 @@ export default function Profile() {
                   onChange={(e) => setCropScale(parseFloat(e.target.value))}
                   className="flex-1 h-1 accent-purple-500 cursor-pointer"
                 />
-                <span className="text-gray-500 text-xs">{Math.round(cropScale * 100)}%</span>
+                <span className="text-gray-600 text-xs">{Math.round(cropScale * 100)}%</span>
               </div>
-              <p className="text-white font-bold text-sm mb-0.5">{playerName}</p>
-              <p className="text-gray-500 text-[10px] mb-4">This is how you'll appear on the leaderboard</p>
+              <p className="text-gray-800 font-bold text-sm mb-0.5">{playerName}</p>
+              <p className="text-gray-600 text-[10px] mb-4">This is how you'll appear on the leaderboard</p>
               <div className="flex gap-2">
                 <button
                   onClick={() => { setRawPhoto(null); setCropScale(1); setCropOffset({ x: 0, y: 0 }); }}
@@ -728,7 +734,7 @@ export default function Profile() {
                 </button>
                 <button
                   onClick={handleConfirmPhoto}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-gray-800 text-sm font-bold shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform"
                 >
                   Save ✨
                 </button>
@@ -740,25 +746,25 @@ export default function Profile() {
           onClick={() => { setNicknameInput(playerName); setNicknameError(null); setShowNicknameEdit(true); }}
           className="mt-3 flex items-center gap-1.5 group active:scale-[0.97] transition-transform"
         >
-          <h2 className="text-2xl font-bold text-white font-display">{playerName}</h2>
-          <span className="text-gray-500 group-hover:text-purple-400 transition-colors text-sm">✏️</span>
+          <h2 className="text-2xl font-bold text-gray-800 font-black">{playerName}</h2>
+          <span className="text-gray-600 group-hover:text-[#FF8C00] font-bold transition-colors text-sm">✏️</span>
         </button>
-        <p className="text-gray-500 text-[10px] mt-0.5">Tap to change nickname</p>
+        <p className="text-gray-600 text-[10px] mt-0.5">Tap to change nickname</p>
         <div className="flex items-center gap-2 mt-1">
-          <span className="px-3 py-1 rounded-full bg-purple-600/30 border border-purple-500/40 text-purple-200 text-xs font-medium">
+          <span className="px-3 py-1 rounded-full bg-[#E5E5E5] border border-[#E5E5E5] text-[#FF8C00] text-xs font-medium">
             ⭐ Lv. {level.level} {level.name}
           </span>
           {myGroups.length > 0 ? (
             <button
               onClick={() => setShowGroupManager(true)}
-              className="px-2 py-1 rounded-full bg-teal-600/20 border border-teal-500/30 text-teal-300 text-xs font-medium flex items-center gap-1 active:scale-95 transition-transform"
+              className="px-2 py-1 rounded-full bg-teal-600/20 border border-teal-500/30 text-[#58CC02] text-xs font-medium flex items-center gap-1 active:scale-95 transition-transform"
             >
               👥 {myGroups.length} group{myGroups.length > 1 ? "s" : ""}
             </button>
           ) : (
             <button
               onClick={() => setShowGroupManager(true)}
-              className="px-2 py-1 rounded-full bg-teal-600/20 border border-teal-500/30 text-teal-300 text-xs font-medium flex items-center gap-1 active:scale-95 transition-transform"
+              className="px-2 py-1 rounded-full bg-teal-600/20 border border-teal-500/30 text-[#58CC02] text-xs font-medium flex items-center gap-1 active:scale-95 transition-transform"
             >
               {groupCode === "INDIVIDUAL" || groupCode === "GLOBAL" ? "+ Join Group" : groupCode}
             </button>
@@ -768,9 +774,9 @@ export default function Profile() {
 
       {/* Nickname Edit Dialog */}
       <Dialog open={showNicknameEdit} onOpenChange={setShowNicknameEdit}>
-        <DialogContent className="bg-[#0e1830] border-purple-500/30 max-w-[320px]" showCloseButton={false}>
+        <DialogContent className="bg-white border-gray-200 max-w-[320px]" showCloseButton={false}>
           <DialogHeader>
-            <DialogTitle className="text-white text-center">Change Nickname</DialogTitle>
+            <DialogTitle className="text-gray-800 text-center">Change Nickname</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
             <Input
@@ -780,9 +786,9 @@ export default function Profile() {
               placeholder="Enter your nickname"
               maxLength={20}
               autoFocus
-              className="bg-gray-900/60 border-purple-500/40 text-white placeholder:text-gray-500"
+              className="bg-gray-900/60 border-[#E5E5E5] text-gray-800 placeholder:text-gray-600"
             />
-            <p className="text-gray-500 text-[10px] text-right">{nicknameInput.trim().length}/20</p>
+            <p className="text-gray-600 text-[10px] text-right">{nicknameInput.trim().length}/20</p>
             {nicknameError && <p className="text-red-400 text-xs">{nicknameError}</p>}
             <div className="flex gap-2">
               <button
@@ -795,7 +801,7 @@ export default function Profile() {
               <button
                 onClick={handleSaveNickname}
                 disabled={nicknameSaving || !nicknameInput.trim()}
-                className="flex-1 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform disabled:opacity-50"
+                className="flex-1 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-gray-800 text-sm font-bold shadow-[0_4px_15px_rgba(168,85,247,0.3)] active:scale-[0.97] transition-transform disabled:opacity-50"
               >
                 {nicknameSaving ? "Saving..." : "Save ✨"}
               </button>
@@ -806,48 +812,48 @@ export default function Profile() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="neon-card p-3 text-center">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
           <div className="flex items-center justify-center gap-1 mb-1">
-            <div className="w-6 h-6 rounded-md bg-purple-600/40 flex items-center justify-center text-[10px] font-bold text-purple-200">XP</div>
+            <div className="w-6 h-6 rounded-md bg-purple-600/40 flex items-center justify-center text-[10px] font-bold text-[#FF8C00]">XP</div>
           </div>
-          <div className="text-lg font-bold text-white">{totalXP.toLocaleString()}</div>
-          <div className="text-[10px] text-gray-500">Total XP</div>
+          <div className="text-lg font-bold text-gray-800">{totalXP.toLocaleString()}</div>
+          <div className="text-[10px] text-gray-600">Total XP</div>
         </div>
-        <div className="neon-card p-3 text-center border-cyan-500/40">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center border-cyan-500/40">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">💎</span>
           </div>
-          <div className="text-lg font-bold text-white">{gems}</div>
-          <div className="text-[10px] text-gray-500">Gems</div>
+          <div className="text-lg font-bold text-gray-800">{gems}</div>
+          <div className="text-[10px] text-gray-600">Gems</div>
         </div>
-        <div className="neon-card p-3 text-center border-yellow-500/40">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center border-[#FFC800]/40">
           <div className="flex items-center justify-center gap-1 mb-1">
             <span className="text-sm">📖</span>
           </div>
-          <div className="text-lg font-bold text-white">{chaptersRead}</div>
-          <div className="text-[10px] text-gray-500">Chapters</div>
+          <div className="text-lg font-bold text-gray-800">{chaptersRead}</div>
+          <div className="text-[10px] text-gray-600">Chapters</div>
         </div>
       </div>
 
       {/* Quiz Stats Link */}
       <button 
         onClick={() => setLocation("/quiz-stats")}
-        className="w-full neon-card p-4 flex items-center justify-between active:scale-[0.98] transition-all"
+        className="w-full bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 flex items-center justify-between active:scale-[0.98] transition-all"
       >
         <div className="flex items-center gap-3">
           <span className="text-2xl">📊</span>
           <div className="text-left">
-            <p className="text-white font-bold text-sm">Quiz Statistics</p>
-            <p className="text-purple-300 text-xs">View your accuracy, streaks & history</p>
+            <p className="text-gray-800 font-bold text-sm">Quiz Statistics</p>
+            <p className="text-[#FF8C00] font-bold text-xs">View your accuracy, streaks & history</p>
           </div>
         </div>
-        <span className="text-purple-300">→</span>
+        <span className="text-[#FF8C00] font-bold">→</span>
       </button>
 
       {/* Badges */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">🏆 Badges</h3>
+          <h3 className="text-base font-bold text-[#FF8C00] font-bold">🏆 Badges</h3>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
           {badges.map((badge) => {
@@ -856,13 +862,13 @@ export default function Profile() {
               <div key={badge.name} className={`flex flex-col items-center min-w-[70px] ${!earned ? 'opacity-40' : ''}`}>
                 <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl ${
                   earned
-                    ? 'bg-purple-600/30 border-2 border-purple-500/60 shadow-[0_0_12px_rgba(139,92,246,0.3)]'
+                    ? 'bg-[#E5E5E5] border-2 border-[#FFB74D] shadow-[0_0_12px_rgba(139,92,246,0.3)]'
                     : 'bg-gray-800/50 border-2 border-gray-700/50'
                 }`}>
                   {badge.icon}
                 </div>
-                <p className="text-white text-[10px] font-medium mt-1 text-center">{badge.name}</p>
-                <p className="text-gray-500 text-[8px] text-center">{badge.desc}</p>
+                <p className="text-gray-800 text-[10px] font-medium mt-1 text-center">{badge.name}</p>
+                <p className="text-gray-600 text-[8px] text-center">{badge.desc}</p>
               </div>
             );
           })}
@@ -872,45 +878,45 @@ export default function Profile() {
       {/* Reading Progress */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">📖 Reading Progress</h3>
+          <h3 className="text-base font-bold text-[#FF8C00] font-bold">📖 Reading Progress</h3>
         </div>
-        <div className="neon-card p-4">
+        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-white font-bold text-sm">Overall Bible</span>
-            <span className="text-white font-bold">{Math.round((chaptersRead / 1189) * 100)}%</span>
+            <span className="text-gray-800 font-bold text-sm">Overall Bible</span>
+            <span className="text-gray-800 font-bold">{Math.round((chaptersRead / 1189) * 100)}%</span>
           </div>
           <div className="h-2.5 bg-gray-800/80 rounded-full overflow-hidden">
             <div className="h-full rounded-full bg-gradient-to-r from-purple-600 to-cyan-400" style={{ width: `${Math.round((chaptersRead / 1189) * 100)}%` }} />
           </div>
-          <p className="text-gray-500 text-[10px] mt-1">{chaptersRead} / 1,189 chapters</p>
+          <p className="text-gray-600 text-[10px] mt-1">{chaptersRead} / 1,189 chapters</p>
         </div>
       </div>
 
       {/* Equipped Items */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">✨ Equipped Items</h3>
+          <h3 className="text-base font-bold text-[#FF8C00] font-bold">✨ Equipped Items</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="neon-card p-3 text-center">
-            <p className="text-gray-400 text-[10px] mb-2">Theme</p>
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
+            <p className="text-gray-600 text-[10px] mb-2">Theme</p>
             <div className="text-2xl">{equippedTheme?.emoji || "🌙"}</div>
-            <p className="text-white text-xs mt-1">{equippedTheme?.name || "Twilight"}</p>
+            <p className="text-gray-800 text-xs mt-1">{equippedTheme?.name || "Twilight"}</p>
           </div>
-          <div className="neon-card p-3 text-center">
-            <p className="text-gray-400 text-[10px] mb-2">Reader BG</p>
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
+            <p className="text-gray-600 text-[10px] mb-2">Reader BG</p>
             <div className="text-2xl">{equippedReader?.emoji || "🌑"}</div>
-            <p className="text-white text-xs mt-1">{equippedReader?.name || "Dark"}</p>
+            <p className="text-gray-800 text-xs mt-1">{equippedReader?.name || "Dark"}</p>
           </div>
-          <div className="neon-card p-3 text-center">
-            <p className="text-gray-400 text-[10px] mb-2">Frame</p>
-            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center bg-purple-900/50 ${equippedFrame?.frameClass || ''}`}>
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
+            <p className="text-gray-600 text-[10px] mb-2">Frame</p>
+            <div className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center bg-gray-50 ${equippedFrame?.frameClass || ''}`}>
               <span className="text-sm">{avatar}</span>
             </div>
-            <p className="text-white text-xs mt-1">{equippedFrame?.name || "None"}</p>
+            <p className="text-gray-800 text-xs mt-1">{equippedFrame?.name || "None"}</p>
           </div>
-          <div className="neon-card p-3 text-center">
-            <p className="text-gray-400 text-[10px] mb-2">Pet</p>
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 text-center">
+            <p className="text-gray-600 text-[10px] mb-2">Pet</p>
             <div className="flex items-center justify-center">
               {equippedPet && getPetDefaultSprite(equippedPet.id.replace('pet_', '')) ? (
                 <img src={getPetDefaultSprite(equippedPet.id.replace('pet_', ''))!} alt={equippedPet.name} className="w-10 h-10 object-contain" />
@@ -918,28 +924,28 @@ export default function Profile() {
                 <span className="text-2xl">{equippedPet?.petEmoji || "—"}</span>
               )}
             </div>
-            <p className="text-white text-xs mt-1">{equippedPet?.name || "None"}</p>
+            <p className="text-gray-800 text-xs mt-1">{equippedPet?.name || "None"}</p>
           </div>
         </div>
       </div>
 
       {/* ============ SETTINGS SECTION ============ */}
       <div className="pt-4 border-t border-gray-800/60">
-        <h3 className="text-lg font-bold text-purple-300 font-display mb-4">⚙️ Settings</h3>
+        <h3 className="text-lg font-bold text-[#FF8C00] font-bold font-black mb-4">⚙️ Settings</h3>
 
         {/* Social Settings */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">👥 Social</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">👥 Social</p>
 
           {/* Manage Groups */}
           <div
             onClick={() => setShowGroupManager(true)}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
-            <div className="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-xl">👥</div>
+            <div className="w-10 h-10 rounded-lg bg-[#58CC02]/20 flex items-center justify-center text-xl">👥</div>
             <div className="flex-1">
-              <p className="text-white text-sm font-medium">Manage Groups</p>
-              <p className="text-gray-500 text-[10px]">
+              <p className="text-gray-800 text-sm font-medium">Manage Groups</p>
+              <p className="text-gray-600 text-[10px]">
                 {myGroups.length > 0 ? `${myGroups.length} group${myGroups.length > 1 ? "s" : ""} joined` : "Create or join a group"}
               </p>
             </div>
@@ -982,12 +988,12 @@ export default function Profile() {
                 }
               }
             }}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">📨</div>
             <div className="flex-1">
-              <p className="text-white text-sm font-medium">Invite Friends</p>
-              <p className="text-gray-500 text-[10px]">Share the app with your friends</p>
+              <p className="text-gray-800 text-sm font-medium">Invite Friends</p>
+              <p className="text-gray-600 text-[10px]">Share the app with your friends</p>
             </div>
             <span className="text-gray-600">▶</span>
           </div>
@@ -995,12 +1001,12 @@ export default function Profile() {
           {/* Feedback */}
           <div
             onClick={() => { window.location.href = "/feedback"; }}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
-            <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-xl">📝</div>
+            <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center text-xl">📝</div>
             <div className="flex-1">
-              <p className="text-white text-sm font-medium">Send Feedback</p>
-              <p className="text-gray-500 text-[10px]">Help us improve the app</p>
+              <p className="text-gray-800 text-sm font-medium">Send Feedback</p>
+              <p className="text-gray-600 text-[10px]">Help us improve the app</p>
             </div>
             <span className="text-gray-600">▶</span>
           </div>
@@ -1008,17 +1014,17 @@ export default function Profile() {
 
         {/* Account & Cloud Sync */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">☁️ Account & Sync</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">☁️ Account & Sync</p>
 
           {/* Status banner - show only the LAST sign-in provider to avoid confusion */}
           {(googleLinked || appleLinked) ? (
-            <div className="neon-card p-4">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                   <span className="text-xl">✅</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Account Protected</p>
+                  <p className="text-gray-800 text-sm font-medium">Account Protected</p>
                   <p className="text-green-400 text-[10px]">Your data is synced to the cloud</p>
                 </div>
               </div>
@@ -1030,7 +1036,7 @@ export default function Profile() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
                     <span className="text-gray-300 text-xs">{appleEmail || "Apple ID"}</span>
                   </div>
-                  <button onClick={handleSignOut} className="text-gray-500 text-[10px] hover:text-gray-300 transition-colors">Sign Out</button>
+                  <button onClick={handleSignOut} className="text-gray-600 text-[10px] hover:text-gray-300 transition-colors">Sign Out</button>
                 </div>
               ) : googleLinked ? (
                 <div className="flex items-center justify-between py-2 border-t border-gray-700/40">
@@ -1038,23 +1044,23 @@ export default function Profile() {
                     <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                     <span className="text-gray-300 text-xs">{googleEmail}</span>
                   </div>
-                  <button onClick={handleSignOut} className="text-gray-500 text-[10px] hover:text-gray-300 transition-colors">Sign Out</button>
+                  <button onClick={handleSignOut} className="text-gray-600 text-[10px] hover:text-gray-300 transition-colors">Sign Out</button>
                 </div>
               ) : null}
 
             </div>
           ) : (
-            <div className="neon-card p-4">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
                   <span className="text-xl">⚠️</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Back Up Your Progress</p>
-                  <p className="text-yellow-400 text-[10px]">Sign in to save your progress</p>
+                  <p className="text-gray-800 text-sm font-medium">Back Up Your Progress</p>
+                  <p className="text-[#FF8C00] font-bold text-[10px]">Sign in to save your progress</p>
                 </div>
               </div>
-              <p className="text-gray-400 text-[10px] mb-3">If you clear your browser or switch devices, you'll lose all progress. Link an account to keep your data safe!</p>
+              <p className="text-gray-600 text-[10px] mb-3">If you clear your browser or switch devices, you'll lose all progress. Link an account to keep your data safe!</p>
               <button
                 onClick={handleLinkGoogle}
                 disabled={linkingGoogle}
@@ -1075,7 +1081,7 @@ export default function Profile() {
               <button
                 onClick={handleLinkApple}
                 disabled={linkingApple}
-                className="w-full mt-2 py-2.5 rounded-lg bg-black text-white text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-50 border border-gray-600/50"
+                className="w-full mt-2 py-2.5 rounded-lg bg-gray-800 text-white text-sm font-bold flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-50 border border-gray-300"
               >
                 {linkingApple ? (
                   <>
@@ -1100,12 +1106,12 @@ export default function Profile() {
 
         {/* AI & Data */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">🤖 AI & Data</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">🤖 AI & Data</p>
 
           {/* Bible AI Status */}
-          <div className="neon-card p-3 flex items-center justify-between">
+          <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center justify-between">
             <div>
-              <p className="text-white text-sm font-medium">Bible AI</p>
+              <p className="text-gray-800 text-sm font-medium">Bible AI</p>
               <p className="text-green-400 text-[10px]">✅ Connected & Ready</p>
             </div>
           </div>
@@ -1114,15 +1120,15 @@ export default function Profile() {
 
         {/* Legal */}
         <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">📄 Legal</p>
+          <p className="text-xs font-bold text-[#FF8C00] font-bold/80 uppercase tracking-wider">📄 Legal</p>
           <div
             onClick={() => window.open('/privacy-policy.html', '_blank')}
-            className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+            className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
           >
             <div className="w-10 h-10 rounded-lg bg-gray-500/20 flex items-center justify-center text-xl">🔒</div>
             <div className="flex-1">
-              <p className="text-white text-sm font-medium">Privacy Policy</p>
-              <p className="text-gray-500 text-[10px]">How we handle your data</p>
+              <p className="text-gray-800 text-sm font-medium">Privacy Policy</p>
+              <p className="text-gray-600 text-[10px]">How we handle your data</p>
             </div>
             <span className="text-gray-600">▶</span>
           </div>
@@ -1140,19 +1146,19 @@ export default function Profile() {
               🗑️ Reset All Progress
             </button>
           ) : (
-            <div className="neon-card p-4 border-red-500/40">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 border-red-500/40">
               <p className="text-red-300 text-sm font-bold mb-2">Are you sure?</p>
-              <p className="text-gray-400 text-xs mb-3">This will delete ALL your progress, items, and profile. This cannot be undone.</p>
+              <p className="text-gray-600 text-xs mb-3">This will delete ALL your progress, items, and profile. This cannot be undone.</p>
               <div className="flex gap-2">
                 <button
                   onClick={handleResetProgress}
-                  className="flex-1 py-2 rounded-lg bg-red-600 text-white text-xs font-bold active:scale-95"
+                  className="flex-1 py-2 rounded-lg bg-red-600 text-gray-800 text-xs font-bold active:scale-95"
                 >
                   Yes, Reset Everything
                 </button>
                 <button
                   onClick={() => setShowResetConfirm(false)}
-                  className="flex-1 py-2 rounded-lg bg-gray-700 text-white text-xs font-bold active:scale-95"
+                  className="flex-1 py-2 rounded-lg bg-gray-700 text-gray-800 text-xs font-bold active:scale-95"
                 >
                   Cancel
                 </button>
@@ -1169,21 +1175,21 @@ export default function Profile() {
               🚫 Delete Account
             </button>
           ) : (
-            <div className="neon-card p-4 border-red-600/50">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4 border-red-600/50">
               <p className="text-red-300 text-sm font-bold mb-2">Delete your account?</p>
-              <p className="text-gray-400 text-xs mb-3">This will permanently delete your account and all associated data from our servers. This action cannot be undone.</p>
+              <p className="text-gray-600 text-xs mb-3">This will permanently delete your account and all associated data from our servers. This action cannot be undone.</p>
               <div className="flex gap-2">
                 <button
                   onClick={handleDeleteAccount}
                   disabled={isDeletingAccount}
-                  className="flex-1 py-2 rounded-lg bg-red-700 text-white text-xs font-bold active:scale-95 disabled:opacity-50"
+                  className="flex-1 py-2 rounded-lg bg-red-700 text-gray-800 text-xs font-bold active:scale-95 disabled:opacity-50"
                 >
                   {isDeletingAccount ? "Deleting..." : "Yes, Delete Account"}
                 </button>
                 <button
                   onClick={() => setShowDeleteAccount(false)}
                   disabled={isDeletingAccount}
-                  className="flex-1 py-2 rounded-lg bg-gray-700 text-white text-xs font-bold active:scale-95 disabled:opacity-50"
+                  className="flex-1 py-2 rounded-lg bg-gray-700 text-gray-800 text-xs font-bold active:scale-95 disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -1195,19 +1201,19 @@ export default function Profile() {
 
       {/* ============ GROUP MANAGER MODAL ============ */}
       {showGroupManager && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => { setShowGroupManager(false); setSelectedGroupForManage(null); setShowCreateGroup(false); setShowJoinGroup(false); setGroupError(null); setGroupSuccess(null); }}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => { setShowGroupManager(false); setSelectedGroupForManage(null); setShowCreateGroup(false); setShowJoinGroup(false); setGroupError(null); setGroupSuccess(null); }}>
           <div
-            className="w-[90%] max-w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-purple-500/30 shadow-[0_0_40px_rgba(0,0,0,0.5)] p-5 animate-in slide-in-from-bottom-4 duration-300"
+            className="w-[90%] max-w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-white border border-gray-200 shadow-[0_0_40px_rgba(0,0,0,0.5)] p-5 animate-in slide-in-from-bottom-4 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-white font-display">
+              <h3 className="text-lg font-bold text-gray-800 font-black">
                 {selectedGroupForManage ? "Group Details" : "👥 My Groups"}
               </h3>
               <button
                 onClick={() => { setShowGroupManager(false); setSelectedGroupForManage(null); setShowCreateGroup(false); setShowJoinGroup(false); setGroupError(null); setGroupSuccess(null); }}
-                className="text-gray-400 hover:text-white text-xl p-1"
+                className="text-gray-600 hover:text-gray-800 text-xl p-1"
               >
                 ✕
               </button>
@@ -1230,22 +1236,22 @@ export default function Profile() {
               <div className="space-y-3">
                 <button
                   onClick={() => { setSelectedGroupForManage(null); setGroupError(null); setGroupSuccess(null); }}
-                  className="text-purple-400 text-xs font-medium mb-2 flex items-center gap-1"
+                  className="text-[#FF8C00] font-bold text-xs font-medium mb-2 flex items-center gap-1"
                 >
                   ← Back to groups
                 </button>
 
                 {/* Group Info Card */}
-                <div className="neon-card p-4">
+                <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-white font-bold text-base">
+                    <h4 className="text-gray-800 font-bold text-base">
                       {groupMetas[selectedGroupForManage]?.name || selectedGroupForManage}
                     </h4>
                     {isGroupAdmin(selectedGroupForManage) && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400 font-bold">Admin</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-[#FF8C00] font-bold font-bold">Admin</span>
                     )}
                   </div>
-                  <p className="text-gray-500 text-[10px] mt-1">
+                  <p className="text-gray-600 text-[10px] mt-1">
                     Others can find and join this group from the Join Group list.
                   </p>
                 </div>
@@ -1255,7 +1261,7 @@ export default function Profile() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => { setRenameInput(groupMetas[selectedGroupForManage]?.name || ""); setShowRenameGroup(true); }}
-                      className="flex-1 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium active:scale-95 transition-transform"
+                      className="flex-1 py-2 rounded-lg bg-[#F3F4F6] border border-gray-200 text-[#FF8C00] font-bold text-xs font-medium active:scale-95 transition-transform"
                     >
                       ✏️ Rename
                     </button>
@@ -1264,13 +1270,13 @@ export default function Profile() {
 
                 {/* Rename Dialog */}
                 {showRenameGroup && (
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-purple-500/20 space-y-2">
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-gray-200 space-y-2">
                     <Input
                       value={renameInput}
                       onChange={(e) => setRenameInput(e.target.value)}
                       placeholder="New group name"
                       maxLength={30}
-                      className="bg-gray-900/60 border-purple-500/40 text-white text-sm"
+                      className="bg-gray-900/60 border-[#E5E5E5] text-gray-800 text-sm"
                     />
                     <div className="flex gap-2">
                       <button
@@ -1290,13 +1296,13 @@ export default function Profile() {
                           }
                         }}
                         disabled={groupLoading || !renameInput.trim()}
-                        className="flex-1 py-2 rounded-lg bg-purple-600 text-white text-xs font-bold disabled:opacity-50"
+                        className="flex-1 py-2 rounded-lg bg-purple-600 text-gray-800 text-xs font-bold disabled:opacity-50"
                       >
                         {groupLoading ? "Saving..." : "Save"}
                       </button>
                       <button
                         onClick={() => setShowRenameGroup(false)}
-                        className="flex-1 py-2 rounded-lg bg-gray-700 text-white text-xs"
+                        className="flex-1 py-2 rounded-lg bg-gray-700 text-gray-800 text-xs"
                       >
                         Cancel
                       </button>
@@ -1306,11 +1312,11 @@ export default function Profile() {
 
                 {/* Members List */}
                 <div className="mt-3">
-                  <p className="text-xs font-bold text-gray-400 mb-2">👥 Members ({groupMembers.length})</p>
+                  <p className="text-xs font-bold text-gray-600 mb-2">👥 Members ({groupMembers.length})</p>
                   <div className="space-y-1.5 max-h-[200px] overflow-y-auto">
                     {groupMembers.sort((a, b) => (b.xp || 0) - (a.xp || 0)).map((m) => (
                       <div key={m.uid} className="flex items-center gap-2 p-2 rounded-lg bg-white/[0.03]">
-                        <div className="w-8 h-8 rounded-full bg-purple-900/50 flex items-center justify-center overflow-hidden border border-purple-500/30">
+                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-200">
                           {m.profilePhotoUrl ? (
                             <img src={m.profilePhotoUrl} className="w-8 h-8 rounded-full object-cover" />
                           ) : (
@@ -1318,11 +1324,11 @@ export default function Profile() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-xs font-medium truncate">{m.nickname || "Anonymous"}</p>
-                          <p className="text-gray-500 text-[9px]">⚡ {m.xp || 0} XP</p>
+                          <p className="text-gray-800 text-xs font-medium truncate">{m.nickname || "Anonymous"}</p>
+                          <p className="text-gray-600 text-[9px]">⚡ {m.xp || 0} XP</p>
                         </div>
                         {m.role === "admin" && (
-                          <span className="text-[8px] px-1 py-0.5 rounded bg-yellow-500/20 text-yellow-400">Admin</span>
+                          <span className="text-[8px] px-1 py-0.5 rounded bg-yellow-500/20 text-[#FF8C00] font-bold">Admin</span>
                         )}
                         {isGroupAdmin(selectedGroupForManage) && m.uid !== auth.currentUser?.uid && (
                           <button
@@ -1394,16 +1400,16 @@ export default function Profile() {
                             setGroupMembers(members);
                           } catch { setGroupMembers([]); }
                         }}
-                        className="neon-card p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
+                        className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm p-3 flex items-center gap-3 cursor-pointer active:scale-[0.98] transition-all"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-xl">
+                        <div className="w-10 h-10 rounded-lg bg-[#58CC02]/20 flex items-center justify-center text-xl">
                           {g.role === "admin" ? "👑" : "👥"}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-white text-sm font-medium truncate">
+                          <p className="text-gray-800 text-sm font-medium truncate">
                             {groupMetas[g.groupCode]?.name || g.groupCode}
                           </p>
-                          <p className="text-gray-500 text-[10px]">
+                          <p className="text-gray-600 text-[10px]">
                             {g.role === "admin" ? "Admin" : "Member"} • Code: {g.groupCode}
                           </p>
                         </div>
@@ -1414,8 +1420,8 @@ export default function Profile() {
                 ) : (
                   <div className="text-center py-4">
                     <p className="text-4xl mb-2">👥</p>
-                    <p className="text-gray-400 text-sm">You haven't joined any groups yet.</p>
-                    <p className="text-gray-500 text-xs mt-1">Create or join a group to compete with friends!</p>
+                    <p className="text-gray-600 text-sm">You haven't joined any groups yet.</p>
+                    <p className="text-gray-600 text-xs mt-1">Create or join a group to compete with friends!</p>
                   </div>
                 )}
 
@@ -1434,13 +1440,13 @@ export default function Profile() {
                         setLoadingAvailableGroups(false);
                       }
                     }}
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-bold active:scale-95 transition-transform shadow-[0_4px_15px_rgba(99,102,241,0.3)]"
+                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-gray-800 text-sm font-bold active:scale-95 transition-transform shadow-[0_4px_15px_rgba(99,102,241,0.3)]"
                   >
                     👥 Join Group
                   </button>
                   <button
                     onClick={() => { setShowCreateGroup(true); setShowJoinGroup(false); setGroupError(null); setNewGroupName(""); }}
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white text-sm font-bold active:scale-95 transition-transform shadow-[0_4px_15px_rgba(78,205,196,0.3)]"
+                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#58CC02] to-[#4CAD02] text-white text-sm font-bold active:scale-95 transition-transform shadow-[0_4px_15px_rgba(78,205,196,0.3)]"
                   >
                     ➕ Create Group
                   </button>
@@ -1449,10 +1455,10 @@ export default function Profile() {
                 {/* Join Group - Dropdown List */}
                 {showJoinGroup && (
                   <div className="p-4 rounded-xl bg-white/[0.03] border border-blue-500/20 space-y-3">
-                    <p className="text-white text-sm font-bold">👥 Select a Group to Join</p>
+                    <p className="text-gray-800 text-sm font-bold">👥 Select a Group to Join</p>
                     {loadingAvailableGroups ? (
                       <div className="text-center py-4">
-                        <p className="text-gray-400 text-xs animate-pulse">Loading groups...</p>
+                        <p className="text-gray-600 text-xs animate-pulse">Loading groups...</p>
                       </div>
                     ) : (
                       <div className="max-h-[200px] overflow-y-auto space-y-2 pr-1">
@@ -1484,15 +1490,15 @@ export default function Profile() {
                               {g.isPrebuilt ? '🏫' : '👥'}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-white text-sm font-medium truncate">{g.name}</p>
-                              <p className="text-gray-500 text-[10px]">
+                              <p className="text-gray-800 text-sm font-medium truncate">{g.name}</p>
+                              <p className="text-gray-600 text-[10px]">
                                 {g.isPrebuilt ? 'Nasum Teenz' : `${g.memberCount || 0} members`}
                               </p>
                             </div>
                           </button>
                         ))}
                         {availableGroups.filter(g => !myGroups.find(mg => mg.groupCode === g.groupCode)).length === 0 && (
-                          <p className="text-gray-500 text-xs text-center py-3">No available groups to join. Create one!</p>
+                          <p className="text-gray-600 text-xs text-center py-3">No available groups to join. Create one!</p>
                         )}
                       </div>
                     )}
@@ -1502,13 +1508,13 @@ export default function Profile() {
                 {/* Create Group Form */}
                 {showCreateGroup && (
                   <div className="p-4 rounded-xl bg-white/[0.03] border border-teal-500/20 space-y-3">
-                    <p className="text-white text-sm font-bold">➕ Create New Group</p>
+                    <p className="text-gray-800 text-sm font-bold">➕ Create New Group</p>
                     <Input
                       value={newGroupName}
                       onChange={(e) => setNewGroupName(e.target.value)}
                       placeholder="Group name (e.g. Youth Group 2026)"
                       maxLength={30}
-                      className="bg-gray-900/60 border-teal-500/40 text-white text-sm"
+                      className="bg-gray-900/60 border-teal-500/40 text-gray-800 text-sm"
                     />
                     <button
                       onClick={async () => {
@@ -1529,7 +1535,7 @@ export default function Profile() {
                         }
                       }}
                       disabled={groupLoading || !newGroupName.trim()}
-                      className="w-full py-2.5 rounded-lg bg-teal-600 text-white text-sm font-bold disabled:opacity-50 active:scale-95 transition-transform"
+                      className="w-full py-2.5 rounded-lg bg-teal-600 text-gray-800 text-sm font-bold disabled:opacity-50 active:scale-95 transition-transform"
                     >
                       {groupLoading ? "Creating..." : "Create"}
                     </button>

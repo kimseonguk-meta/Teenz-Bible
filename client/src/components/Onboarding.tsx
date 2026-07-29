@@ -287,26 +287,28 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   // Step 1: Nickname + Avatar
   if (step === 1) {
     return (
-      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
-        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400 relative">
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-[#F7F7F7]">
+        <div className="bg-white border-2 border-gray-200 border-b-4 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-lg animate-in slide-in-from-bottom-4 duration-400 relative">
           {onCancel && (
             <button
               onClick={onCancel}
-              className="absolute top-3 right-3 text-gray-500 hover:text-white text-xl leading-none p-1 transition-colors"
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl leading-none p-1 transition-colors"
               aria-label="Close"
             >
               ✕
             </button>
           )}
-          <div className="text-6xl mb-4 cursor-pointer hover:scale-110 transition-transform" onClick={randomizeAvatar}>
+          {/* TB Logo */}
+          <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-[#58CC02] flex items-center justify-center text-white text-3xl font-black shadow-md">TB</div>
+          <div className="text-5xl mb-3 cursor-pointer hover:scale-110 transition-transform" onClick={randomizeAvatar}>
             {avatar}
           </div>
-          <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 1 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">Choose a Nickname</h2>
-          <p className="text-gray-400 text-sm mb-1 leading-relaxed">
+          <p className="text-gray-400 text-xs tracking-widest uppercase mb-3">STEP 1 / 3</p>
+          <h2 className="text-gray-800 text-2xl font-black mb-2">Choose a Nickname</h2>
+          <p className="text-gray-500 text-sm mb-1 leading-relaxed">
             This will be shown on the leaderboard.
           </p>
-          <p className="text-gray-500 text-xs mb-5 leading-relaxed">
+          <p className="text-gray-400 text-xs mb-5 leading-relaxed">
             Tap the emoji above to change your avatar!
           </p>
           <input
@@ -315,13 +317,13 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
             onChange={(e) => setNickname(e.target.value)}
             placeholder="e.g. BibleNinja, Grace99..."
             maxLength={20}
-            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-center text-lg placeholder:text-gray-500 focus:outline-none focus:border-purple-400/50 mb-4"
+            className="w-full p-4 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-800 text-center text-lg placeholder:text-gray-400 focus:outline-none focus:border-[#58CC02] mb-4 font-bold"
             autoFocus
           />
           <button
             onClick={() => nickname.trim() && setStep(2)}
             disabled={!nickname.trim()}
-            className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-purple-500 to-purple-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(168,85,247,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97]"
+            className="w-full py-4 rounded-xl border-none bg-[#58CC02] border-b-4 border-[#4CAD02] text-white text-lg font-bold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97] active:border-b-2 active:translate-y-[2px]"
           >
             NEXT →
           </button>
@@ -333,21 +335,21 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   // Step 2: Join a group (3 options)
   if (step === 2) {
     return (
-      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
-        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-[#F7F7F7]">
+        <div className="bg-white border-2 border-gray-200 border-b-4 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-lg animate-in slide-in-from-bottom-4 duration-400">
           <div className="text-6xl mb-4">👥</div>
-          <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 2 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">
+          <p className="text-gray-400 text-xs tracking-widest uppercase mb-3">STEP 2 / 3</p>
+          <h2 className="text-gray-800 text-2xl font-black mb-2">
             Join a Group
           </h2>
-          <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+          <p className="text-gray-500 text-sm mb-6 leading-relaxed">
             Groups let you compete with friends on a shared leaderboard!
           </p>
 
           {/* Option A: Nasum Teenz */}
           <button
             onClick={() => setStep(3)}
-            className="w-full py-4 px-4 rounded-xl border-none bg-gradient-to-r from-teal-500 to-teal-600 text-white text-base font-bold cursor-pointer shadow-[0_4px_20px_rgba(78,205,196,0.3)] transition-transform active:scale-[0.97] mb-3 flex items-center justify-center gap-2"
+            className="w-full py-4 px-4 rounded-xl bg-[#CE82FF] border-b-4 border-[#A855F7] text-white text-base font-bold cursor-pointer transition-transform active:scale-[0.97] active:border-b-2 active:translate-y-[2px] mb-3 flex items-center justify-center gap-2"
           >
             <span>⛪</span> I'm a Nasum Teenz member
           </button>
@@ -360,12 +362,11 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
               setLoadingGroups(true);
               try {
                 const groups = await fetchAllAvailableGroups();
-                // Filter out Nasum classes (they have their own step)
                 setAvailableGroups(groups.filter(g => !g.isPrebuilt));
               } catch (e) { console.warn(e); }
               finally { setLoadingGroups(false); }
             }}
-            className="w-full py-4 px-4 rounded-xl border-none bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-base font-bold cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.3)] transition-transform active:scale-[0.97] mb-3 flex items-center justify-center gap-2"
+            className="w-full py-4 px-4 rounded-xl bg-[#1CB0F6] border-b-4 border-[#1899D6] text-white text-base font-bold cursor-pointer transition-transform active:scale-[0.97] active:border-b-2 active:translate-y-[2px] mb-3 flex items-center justify-center gap-2"
           >
             <span>👥</span> Join another group
           </button>
@@ -374,18 +375,18 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
           <button
             onClick={handleIndividual}
             disabled={saving}
-            className="w-full py-3.5 px-4 rounded-xl border border-gray-600/50 bg-white/5 text-gray-300 text-base font-medium cursor-pointer transition-all hover:bg-white/10 active:scale-[0.97] mb-4 disabled:opacity-60"
+            className="w-full py-3.5 px-4 rounded-xl border-2 border-gray-200 border-b-4 bg-white text-gray-500 text-base font-bold cursor-pointer transition-all active:scale-[0.97] active:border-b-2 active:translate-y-[2px] mb-4 disabled:opacity-60"
           >
             {saving ? "Setting up..." : "Skip — I'll join later"}
           </button>
 
-          <p className="text-gray-500 text-xs leading-relaxed">
+          <p className="text-gray-400 text-xs leading-relaxed">
             You can always create or join groups later from your Profile.
           </p>
 
           <button
             onClick={() => setStep(1)}
-            className="mt-4 py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
+            className="mt-4 py-3 px-5 rounded-xl border-2 border-gray-200 bg-white text-gray-500 text-sm font-bold cursor-pointer hover:bg-gray-50 transition-colors"
           >
             ← BACK
           </button>
@@ -397,29 +398,29 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   // Step 3: Nasum Teenz class selection
   if (step === 3) {
     return (
-      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
-        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-[#F7F7F7]">
+        <div className="bg-white border-2 border-gray-200 border-b-4 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-lg animate-in slide-in-from-bottom-4 duration-400">
           <div className="text-6xl mb-4">📋</div>
-          <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">
+          <p className="text-gray-400 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
+          <h2 className="text-gray-800 text-2xl font-black mb-2">
             Select your class
           </h2>
-          <p className="text-gray-400 text-sm mb-2 leading-relaxed">
+          <p className="text-gray-500 text-sm mb-2 leading-relaxed">
             Choose the class you belong to for the leaderboard!
           </p>
-          <p className="text-teal-400 text-xs mb-5 leading-relaxed">
+          <p className="text-[#CE82FF] text-xs mb-5 leading-relaxed font-bold">
             🧑‍🏫 Teachers, please select the class you are in charge of.
           </p>
           <select
             value={selectedClass}
             onChange={(e) => setSelectedClass(e.target.value)}
-            className="w-full p-4 rounded-xl bg-black/30 border border-blue-400/20 text-white text-base mb-4 focus:outline-none focus:border-purple-400/50 appearance-none cursor-pointer"
+            className="w-full p-4 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-800 text-base mb-4 focus:outline-none focus:border-[#58CC02] appearance-none cursor-pointer font-bold"
           >
-            <option value="" className="bg-[#1a2848] text-gray-400">-- Select Class --</option>
+            <option value="" className="text-gray-400">-- Select Class --</option>
             {classConfig.map((group) => (
-              <optgroup key={group.label} label={group.label} className="bg-[#1a2848] text-gray-400">
+              <optgroup key={group.label} label={group.label}>
                 {group.classes.map((cls) => (
-                  <option key={cls} value={cls} className="bg-[#1a2848] text-white">
+                  <option key={cls} value={cls}>
                     {cls}
                   </option>
                 ))}
@@ -427,18 +428,18 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
             ))}
           </select>
           {duplicateWarning && (
-            <div className="mb-4 p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-300 text-xs text-left leading-relaxed">
+            <div className="mb-4 p-3 rounded-xl bg-amber-50 border-2 border-amber-200 text-amber-700 text-xs text-left leading-relaxed">
               ⚠️ {duplicateWarning}
               <div className="mt-2 flex gap-2">
                 <button
                   onClick={() => { setDuplicateWarning(null); setStep(1); }}
-                  className="flex-1 py-2 rounded-lg bg-yellow-500/20 text-yellow-300 text-xs font-bold"
+                  className="flex-1 py-2 rounded-lg bg-amber-100 text-amber-700 text-xs font-bold"
                 >
                   Change Name
                 </button>
                 <button
                   onClick={() => pendingGroupCode && saveProfile(pendingGroupCode, pendingIsNasum)}
-                  className="flex-1 py-2 rounded-lg bg-white/10 text-gray-300 text-xs"
+                  className="flex-1 py-2 rounded-lg bg-gray-100 text-gray-600 text-xs font-bold"
                 >
                   Continue Anyway
                 </button>
@@ -448,13 +449,13 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
           <button
             onClick={handleClassSelect}
             disabled={!selectedClass || saving}
-            className="w-full py-4 rounded-xl border-none bg-gradient-to-r from-teal-500 to-teal-600 text-white text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(78,205,196,0.3)] disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97] mb-3"
+            className="w-full py-4 rounded-xl bg-[#58CC02] border-b-4 border-[#4CAD02] text-white text-lg font-bold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-transform active:scale-[0.97] active:border-b-2 active:translate-y-[2px] mb-3"
           >
             {saving ? "Saving..." : "JOIN! 🚀"}
           </button>
           <button
             onClick={() => setStep(2)}
-            className="py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
+            className="py-3 px-5 rounded-xl border-2 border-gray-200 bg-white text-gray-500 text-sm font-bold cursor-pointer hover:bg-gray-50 transition-colors"
           >
             ← BACK
           </button>
@@ -466,25 +467,25 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
   // Step 5: Select from available groups
   if (step === 5) {
     return (
-      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/85 backdrop-blur-md">
-        <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border border-blue-400/20 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 duration-400">
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-[#F7F7F7]">
+        <div className="bg-white border-2 border-gray-200 border-b-4 rounded-2xl p-8 max-w-[360px] w-full text-center shadow-lg animate-in slide-in-from-bottom-4 duration-400">
           <div className="text-6xl mb-4">👥</div>
-          <p className="text-gray-500 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
-          <h2 className="font-display text-purple-400 text-2xl mb-2">
+          <p className="text-gray-400 text-xs tracking-widest uppercase mb-3">STEP 3 / 3</p>
+          <h2 className="text-gray-800 text-2xl font-black mb-2">
             Select a Group
           </h2>
-          <p className="text-gray-400 text-sm mb-5 leading-relaxed">
+          <p className="text-gray-500 text-sm mb-5 leading-relaxed">
             Choose a group to join and compete with friends!
           </p>
 
           {loadingGroups ? (
             <div className="py-8">
-              <p className="text-gray-400 text-sm animate-pulse">Loading groups...</p>
+              <p className="text-gray-500 text-sm animate-pulse">Loading groups...</p>
             </div>
           ) : availableGroups.length === 0 ? (
             <div className="py-6">
-              <p className="text-gray-400 text-sm mb-2">No groups available yet.</p>
-              <p className="text-gray-500 text-xs">You can create one later from your Profile!</p>
+              <p className="text-gray-500 text-sm mb-2">No groups available yet.</p>
+              <p className="text-gray-400 text-xs">You can create one later from your Profile!</p>
             </div>
           ) : (
             <div className="max-h-[250px] overflow-y-auto space-y-2 mb-4 text-left">
@@ -516,7 +517,6 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
                         isNasumMember: false, lastActive: serverTimestamp(), updatedAt: serverTimestamp(),
                       };
                       await update(ref(db, `users/${uid}`), userData);
-                      // Welcome bonus
                       try {
                         const teensBible = JSON.parse(localStorage.getItem("teensBible") || "{}");
                         teensBible.gems = (teensBible.gems || 0) + 50;
@@ -536,14 +536,14 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
                     }
                   }}
                   disabled={saving}
-                  className="w-full p-3.5 rounded-xl bg-black/30 border border-blue-400/20 hover:border-blue-400/50 flex items-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50"
+                  className="w-full p-3.5 rounded-xl bg-gray-50 border-2 border-gray-200 hover:border-[#1CB0F6] flex items-center gap-3 active:scale-[0.98] transition-all disabled:opacity-50"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center text-xl">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-xl">
                     👥
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white text-sm font-medium truncate">{g.name}</p>
-                    <p className="text-gray-500 text-[10px]">{g.memberCount || 0} members</p>
+                    <p className="text-gray-800 text-sm font-bold truncate">{g.name}</p>
+                    <p className="text-gray-400 text-[10px]">{g.memberCount || 0} members</p>
                   </div>
                 </button>
               ))}
@@ -551,11 +551,11 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
           )}
 
           {groupCodeError && (
-            <p className="text-red-400 text-xs mb-3 text-left px-1">{groupCodeError}</p>
+            <p className="text-red-500 text-xs mb-3 text-left px-1 font-bold">{groupCodeError}</p>
           )}
           <button
             onClick={() => setStep(2)}
-            className="py-3 px-5 rounded-xl border border-blue-400/20 bg-white/5 text-gray-400 text-sm cursor-pointer hover:bg-white/10 transition-colors"
+            className="py-3 px-5 rounded-xl border-2 border-gray-200 bg-white text-gray-500 text-sm font-bold cursor-pointer hover:bg-gray-50 transition-colors"
           >
             ← BACK
           </button>
@@ -566,7 +566,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
 
   // Step 4: Celebration
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-black/90 overflow-hidden">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-5 bg-[#58CC02] overflow-hidden">
       {/* Confetti particles */}
       {Array.from({ length: 40 }).map((_, i) => {
         const emojis = ['🎉','🎊','⭐','🔥','💎','🏆','⚡','🌟','🥳','🚀'];
@@ -593,22 +593,22 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
       })}
 
       {/* Welcome card */}
-      <div className="bg-gradient-to-br from-[#1a2848] to-[#0e1830] border-2 border-yellow-500 rounded-3xl p-10 max-w-[340px] w-[90%] text-center shadow-[0_0_60px_rgba(255,215,0,0.3),0_20px_60px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-500">
+      <div className="bg-white border-2 border-gray-200 border-b-4 rounded-3xl p-10 max-w-[340px] w-[90%] text-center shadow-xl animate-in zoom-in-95 duration-500">
         <div className="text-7xl mb-3">🎉</div>
-        <h2 className="font-display text-yellow-400 text-3xl mb-2 drop-shadow-[0_0_20px_rgba(255,215,0,0.3)]">
+        <h2 className="text-gray-800 text-3xl font-black mb-2">
           WELCOME!
         </h2>
-        <p className="text-teal-400 text-lg font-bold mb-1">{nickname}</p>
-        <p className="text-gray-400 text-sm mb-2 leading-relaxed">
+        <p className="text-[#58CC02] text-lg font-black mb-1">{nickname}</p>
+        <p className="text-gray-500 text-sm mb-2 leading-relaxed">
           Your adventure begins now!<br />Read, earn XP, and level up! 🚀
         </p>
-        <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-purple-500/30">
-          <p className="text-yellow-300 text-sm font-bold mb-1">🎁 Welcome Gift!</p>
-          <p className="text-purple-200 text-xs">💎 50 Gems + 🐱 Faithy Pet</p>
+        <div className="mb-4 p-3 rounded-xl bg-[#FFF3E0] border-2 border-[#FF9800]">
+          <p className="text-[#E65100] text-sm font-bold mb-1">🎁 Welcome Gift!</p>
+          <p className="text-[#FF6D00] text-xs font-bold">💎 50 Gems + 🐱 Faithy Pet</p>
         </div>
         <button
           onClick={onComplete}
-          className="py-4 px-10 rounded-xl border-none bg-gradient-to-r from-yellow-400 to-orange-500 text-[#1a2848] text-lg font-bold cursor-pointer shadow-[0_4px_20px_rgba(255,215,0,0.3)] transition-transform active:scale-[0.97]"
+          className="py-4 px-10 rounded-xl bg-[#FFC800] border-b-4 border-[#E5A800] text-gray-800 text-lg font-black cursor-pointer transition-transform active:scale-[0.97] active:border-b-2 active:translate-y-[2px]"
         >
           LET'S GO! ⚡
         </button>
