@@ -197,21 +197,50 @@ async function ye(c, u) {
     ).json();
     return g.choices?.[0]?.message?.content
       ? { answer: g.choices[0].message.content }
-      : {
-          answer: "",
-          error:
-            "Bible AI is temporarily unavailable. Please try again in a moment! 🙏",
-        };
+      : me(c);
   } catch (o) {
-    return (
-      console.warn("Forge LLM direct call failed:", o.message),
-      {
-        answer: "",
-        error:
-          "Bible AI is temporarily unavailable. Please try again in a moment! 🙏",
-      }
-    );
+    return (console.warn("Forge LLM direct call failed:", o.message), me(c));
   }
+}
+function me(c) {
+  const u = (c[c.length - 1]?.parts?.[0]?.text || "").toLowerCase(),
+    o = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(u),
+    r = o
+      ? {
+          jesus:
+            "예수님은 하나님의 아들이시고 우리를 구원하러 오신 분이야. 요한복음 3:16은 하나님이 세상을 사랑하셔서 독생자를 주셨다고 말해. 예수님은 우리 죄를 위해 죽으시고 다시 살아나셔서 하나님께 가는 길을 열어주셨어 (요한복음 14:6).",
+          grace:
+            "은혜는 우리가 벌어서 받는 게 아니라 하나님이 공짜로 주시는 사랑과 용서야. 에베소서 2:8-9는 우리가 믿음으로 구원받고, 이것이 하나님의 선물이라고 말해. 그래서 실수했을 때도 하나님께 돌아갈 수 있어.",
+          prayer:
+            "기도는 하나님께 솔직하게 말하는 거야. 빌립보서 4:6-7은 걱정 대신 기도로 하나님께 아뢰라고 해. 멋진 말보다 진짜 마음이 중요해.",
+          bible:
+            "성경은 하나님이 어떤 분인지, 예수님이 우리를 어떻게 구원하셨는지 알려주는 책이야. 디모데후서 3:16은 모든 성경이 하나님의 감동으로 되었다고 말해. 읽을 때는 '하나님이 나에게 뭘 보여주시지?' 하고 물어봐.",
+          default:
+            "좋은 질문이야! 지금 AI 연결이 불안정해서 기본 답변으로 도와줄게. 성경은 하나님이 우리를 사랑하시고 예수님 안에서 구원의 길을 주셨다고 말해 (요한복음 3:16, 로마서 5:8). 질문을 조금 더 구체적으로 쓰면 더 잘 이어서 설명해줄게.",
+        }
+      : {
+          jesus:
+            "Jesus is the Son of God who came to rescue us and show us what God is like. John 3:16 says God loved the world so much that He gave His only Son. Jesus died for our sins and rose again, opening the way back to God (John 14:6).",
+          grace:
+            "Grace means God's love and forgiveness that we receive as a gift, not something we earn. Ephesians 2:8-9 says we are saved by grace through faith, and that it is God's gift. That's why you can come back to God even after you mess up.",
+          prayer:
+            "Prayer is honestly talking with God. Philippians 4:6-7 says to bring your worries to God in prayer, and His peace will guard your heart. You don't need fancy words; God wants your real heart.",
+          bible:
+            "The Bible shows who God is and how Jesus saves us. 2 Timothy 3:16 says Scripture is breathed out by God and helps teach, correct, and train us. When you read it, ask, 'God, what are You showing me?'",
+          default:
+            "Great question! The AI connection is unstable right now, so here is a basic Bible answer: God loves us, Jesus came to save us, and we can trust Him with our lives (John 3:16; Romans 5:8). Ask with a little more detail and I'll help you keep exploring.",
+        };
+  return {
+    answer: u.includes("jesus") || u.includes("예수")
+      ? r.jesus
+      : u.includes("grace") || u.includes("은혜")
+        ? r.grace
+        : u.includes("prayer") || u.includes("기도")
+          ? r.prayer
+          : u.includes("bible") || u.includes("성경")
+            ? r.bible
+            : r.default,
+  };
 }
 function Ee() {
   const [, c] = de(),

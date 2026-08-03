@@ -11882,6 +11882,50 @@ button:not(.no-press):active {
     --width: calc(100vw - 32px);
   }
 }
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #0a0a0a;
+  color-scheme: dark;
+}
+body {
+  position: relative;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-x pan-y;
+}
+#root {
+  max-width: 480px;
+  min-height: 100dvh;
+  margin-inline: auto;
+  overflow: hidden;
+}
+@media (max-width: 480px) {
+  #root {
+    max-width: none;
+  }
+}
+.\!bg-\[\#1a1f3e\] {
+  background-color: #1a1200 !important;
+}
+.from-\[\#1c1a2e\] {
+  --tw-gradient-from: #1a1200;
+  --tw-gradient-stops:
+    var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+.to-\[\#0f0f1e\] {
+  --tw-gradient-to: #0a0a0a;
+}
+.tb-static-map {
+  touch-action: pan-x pan-y;
+  cursor: grab;
+}
+.tb-static-map:active {
+  cursor: grabbing;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-sonner-toast][data-state="entering"],
   [data-sonner-toast][data-state="leaving"] {

@@ -24217,12 +24217,12 @@ const c6 = Te.forwardRef(function (t, a) {
         toastOptions: {
           classNames: {
             toast:
-              "group toast !bg-[#1a1f3e] !border !border-[rgba(212,175,55,0.3)] !rounded-xl !shadow-[0_8px_32px_rgba(0,0,0,0.5)] !px-4 !py-3 !text-sm !font-[DM_Sans] !min-h-[48px] !backdrop-blur-md",
+              "group toast !bg-[#1a1200] !border !border-[rgba(212,175,55,0.3)] !rounded-xl !shadow-[0_8px_32px_rgba(0,0,0,0.5)] !px-4 !py-3 !text-sm !font-[DM_Sans] !min-h-[48px] !backdrop-blur-md",
             title: "!text-[#f5f0e8] !font-semibold !text-[14px]",
             description: "!text-[#a0a8c8] !text-[12px]",
             success: "!border-[rgba(74,222,128,0.4)] !bg-[#142028]",
             error: "!border-[rgba(248,113,113,0.4)] !bg-[#281420]",
-            info: "!border-[rgba(212,175,55,0.4)] !bg-[#1a1f3e]",
+            info: "!border-[rgba(212,175,55,0.4)] !bg-[#1a1200]",
             actionButton:
               "!bg-[#e6c346] !text-[#0d1117] !font-semibold !rounded-lg",
             cancelButton:
@@ -29001,7 +29001,7 @@ class k8 extends A.Component {
                       className: n8(
                         "flex items-center gap-2 px-6 py-3 rounded-xl",
                         "bg-gradient-to-r from-[#8a6800] to-[#e6c346] text-white font-bold",
-                        "shadow-[0_4px_20px_rgba(168,85,247,0.3)]",
+                        "shadow-[0_4px_20px_rgba(212,175,55,0.3)]",
                         "hover:opacity-90 cursor-pointer transition-transform active:scale-[0.97]",
                       ),
                       children: [
@@ -50372,32 +50372,39 @@ async function Jq() {
       const i = localStorage.getItem("teensBibleProfile");
       i && (a = JSON.parse(i).groupCode || "GLOBAL");
     } catch {}
-    (await fn(ve(xe, `userData/${t}`)),
-      await fn(ve(xe, `users/${t}`)),
-      await fn(ve(xe, `groups/${a}/members/${t}`)));
+    const i = [
+      fn(ve(xe, `userData/${t}`)),
+      fn(ve(xe, `users/${t}`)),
+      fn(ve(xe, `groups/${a}/members/${t}`)),
+    ];
+    const l = (localStorage.getItem("playerName") || "").trim().toLowerCase();
+    l && i.push(fn(ve(xe, `nicknames/${l}`)));
+    await Promise.allSettled(i);
     try {
-      const { getLocalGroups: i } = await tn(
+      const { getLocalGroups: c } = await tn(
           async () => {
-            const { getLocalGroups: c } = await Promise.resolve().then(
+            const { getLocalGroups: f } = await Promise.resolve().then(
               () => yu,
             );
-            return { getLocalGroups: c };
+            return { getLocalGroups: f };
           },
           void 0,
         ),
-        l = i();
-      for (const c of l)
-        c.groupCode !== a &&
-          (await fn(ve(xe, `groups/${c.groupCode}/members/${t}`)));
-      await fn(ve(xe, `userGroups/${t}`));
+        f = c();
+      await Promise.allSettled(
+        f
+          .filter((h) => h.groupCode !== a)
+          .map((h) => fn(ve(xe, `groups/${h.groupCode}/members/${t}`))),
+      );
+      await fn(ve(xe, `userGroups/${t}`)).catch(() => {});
     } catch {}
     localStorage.clear();
     try {
       await pk(s);
-    } catch (i) {
+    } catch (l) {
       (console.warn(
         "[Delete] Auth account deletion failed (may need re-auth):",
-        i.message,
+        l.message,
       ),
         await ct.signOut());
     }
@@ -53003,7 +53010,7 @@ function v5() {
                                 "w-full h-full rounded-full overflow-hidden flex items-center justify-center",
                               style: {
                                 background:
-                                  "linear-gradient(145deg, #1c1a2e, #0f0f1e)",
+                                  "linear-gradient(145deg, #1a1200, #0a0a0a)",
                               },
                               children: (() => {
                                 const L =
@@ -55619,8 +55626,24 @@ function x5() {
   for (let a = 0; a < 6; a++) t += s[Math.floor(Math.random() * s.length)];
   return t;
 }
+async function tbEnsureAuth() {
+  if (ct.currentUser?.uid) return ct.currentUser.uid;
+  try {
+    const s = await ok(ct);
+    return s.user?.uid || ct.currentUser?.uid || null;
+  } catch (s) {
+    return (console.warn("[Auth] Anonymous sign-in unavailable:", s), null);
+  }
+}
+function tbFallbackUid() {
+  return `local_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+}
 async function NG(s) {
-  return (await wt(ve(xe, `groupMeta/${s}`))).exists();
+  try {
+    return (await wt(ve(xe, `groupMeta/${s}`))).exists();
+  } catch (t) {
+    return (console.warn("[Crew] Could not check crew code:", t), !1);
+  }
 }
 async function SG() {
   let s = 0;
@@ -55632,8 +55655,7 @@ async function SG() {
   return x5() + Date.now().toString(36).slice(-2).toUpperCase();
 }
 async function w5(s, t = "open") {
-  const a = ct.currentUser?.uid;
-  if (!a) throw new Error("Must be signed in to create a crew");
+  const a = (await tbEnsureAuth()) || tbFallbackUid();
   if (Ci().length >= Cg)
     throw new Error(`You can join up to ${Cg} crews maximum.`);
   const l = await SG(),
@@ -55647,46 +55669,61 @@ async function w5(s, t = "open") {
       memberCount: 1,
       visibility: t,
     };
-  await ss(ve(xe, `groupMeta/${l}`), c);
   const f = rb(),
     h = Vk(f, l);
-  return (
-    await ss(ve(xe, `groups/${l}/members/${a}`), h),
-    await ss(ve(xe, `userGroups/${a}/${l}`), {
-      joinedAt: Date.now(),
-      role: "admin",
-    }),
-    Lk(l, "admin"),
-    c
-  );
+  try {
+    (await ss(ve(xe, `groupMeta/${l}`), c),
+      await ss(ve(xe, `groups/${l}/members/${a}`), h),
+      await ss(ve(xe, `userGroups/${a}/${l}`), {
+        joinedAt: Date.now(),
+        role: "admin",
+      }));
+  } catch (p) {
+    console.warn("[Crew] Remote create failed; saved locally:", p);
+  }
+  return (Lk(l, "admin"), c);
 }
 async function Rg(s) {
-  const t = ct.currentUser?.uid;
-  if (!t) throw new Error("Must be signed in to join a crew");
+  const t = (await tbEnsureAuth()) || tbFallbackUid();
   if (Ci().length >= Cg)
     throw new Error(`You can join up to ${Cg} crews maximum.`);
   const i = s.trim().toUpperCase(),
-    l = await wt(ve(xe, `groupMeta/${i}`));
+    l = await wt(ve(xe, `groupMeta/${i}`)).catch((p) => (
+      console.warn("[Crew] Could not fetch crew metadata:", p),
+      { exists: () => !1, val: () => null }
+    ));
   if (
     !l.exists() &&
-    !(await wt(ve(xe, `groups/${i}/members`))).exists() &&
+    !(await wt(ve(xe, `groups/${i}/members`)).catch(() => ({
+      exists: () => !1,
+    }))).exists() &&
     !bu.includes(i)
   )
     throw new Error("Crew not found. Please check the invite code.");
-  if ((await wt(ve(xe, `groups/${i}/members/${t}`))).exists())
-    throw new Error("You're already a member of this crew!");
+  try {
+    if ((await wt(ve(xe, `groups/${i}/members/${t}`))).exists())
+      throw new Error("You're already a member of this crew!");
+  } catch (f) {
+    if (f?.message === "You're already a member of this crew!") throw f;
+  }
   const f = rb(),
     h = Vk(f, i);
-  if (
-    (await ss(ve(xe, `groups/${i}/members/${t}`), h),
-    await ss(ve(xe, `userGroups/${t}/${i}`), {
-      joinedAt: Date.now(),
-      role: "member",
-    }),
-    l.exists())
-  ) {
+  if (l.exists()) {
     const g = l.val().memberCount || 0;
-    await qn(ve(xe, `groupMeta/${i}`), { memberCount: g + 1 });
+    try {
+      await qn(ve(xe, `groupMeta/${i}`), { memberCount: g + 1 });
+    } catch (x) {
+      console.warn("[Crew] Remote member count update failed:", x);
+    }
+  }
+  try {
+    (await ss(ve(xe, `groups/${i}/members/${t}`), h),
+      await ss(ve(xe, `userGroups/${t}/${i}`), {
+        joinedAt: Date.now(),
+        role: "member",
+      }));
+  } catch (g) {
+    console.warn("[Crew] Remote join failed; saved locally:", g);
   }
   return (
     Lk(i, "member"),
@@ -56119,17 +56156,14 @@ function DG({ onComplete: s, onCancel: t }) {
     [te, Se] = A.useState(null),
     [_e, z] = A.useState(!1),
     ae = () =>
-      new Promise((q, le) => {
-        if (ct.currentUser?.uid) {
-          q(ct.currentUser.uid);
+      new Promise(async (q, le) => {
+        const J = await tbEnsureAuth();
+        if (J) {
+          q(J);
           return;
         }
-        const J = setTimeout(() => {
-            (L(), le(new Error("AUTH_TIMEOUT")));
-          }, 1e4),
-          L = hw(ct, (re) => {
-            re?.uid && (clearTimeout(J), L(), q(re.uid));
-          });
+        le(new Error("AUTH_TIMEOUT"));
+        return;
       }),
     [Y, Oe] = A.useState(null),
     j = async (q, le) => {
@@ -56166,7 +56200,7 @@ function DG({ onComplete: s, onCancel: t }) {
     E = async (q, le) => {
       (ne(null), T(!0), Oe(null));
       try {
-        const J = await ae(),
+        const J = await ae().catch(() => tbFallbackUid()),
           L = {
             nickname: l,
             avatar: f,
@@ -56179,27 +56213,31 @@ function DG({ onComplete: s, onCancel: t }) {
             isNasumMember: le,
             lastActive: Hs(),
             updatedAt: Hs(),
-          };
-        (await qn(ve(xe, `users/${J}`), L),
-          await qn(ve(xe, `groups/${q}/members/${J}`), L),
-          await ss(ve(xe, `userGroups/${J}/${q}`), {
+          },
+          re = {
+            nickname: l,
+            groupCode: q,
             joinedAt: Date.now(),
-            role: "member",
-          }),
-          await ss(ve(xe, `nicknames/${l.trim().toLowerCase()}`), {
-            uid: J,
-            nickname: l.trim(),
-            createdAt: Date.now(),
-          }));
-        const re = {
-          nickname: l,
-          groupCode: q,
-          joinedAt: Date.now(),
-          avatar: f,
-          isNasumMember: le,
-        };
+            avatar: f,
+            isNasumMember: le,
+          };
         (localStorage.setItem("teensBibleProfile", JSON.stringify(re)),
           localStorage.setItem("playerName", l));
+        try {
+          (await qn(ve(xe, `users/${J}`), L),
+            await qn(ve(xe, `groups/${q}/members/${J}`), L),
+            await ss(ve(xe, `userGroups/${J}/${q}`), {
+              joinedAt: Date.now(),
+              role: "member",
+            }),
+            await ss(ve(xe, `nicknames/${l.trim().toLowerCase()}`), {
+              uid: J,
+              nickname: l.trim(),
+              createdAt: Date.now(),
+            }));
+        } catch (ce) {
+          console.warn("[Onboarding] Remote profile save failed:", ce);
+        }
         const ce = Ci();
         if (!ce.find((Q) => Q.groupCode === q)) {
           const Q = [
@@ -56245,7 +56283,7 @@ function DG({ onComplete: s, onCancel: t }) {
       if (q) {
         (B(null), T(!0), Oe(null));
         try {
-          const le = await ae(),
+          const le = await ae().catch(() => tbFallbackUid()),
             J = {
               nickname: l,
               groupCode: q,
@@ -56254,8 +56292,12 @@ function DG({ onComplete: s, onCancel: t }) {
               isNasumMember: !1,
             };
           (localStorage.setItem("teensBibleProfile", JSON.stringify(J)),
-            localStorage.setItem("playerName", l),
-            await Rg(q));
+            localStorage.setItem("playerName", l));
+          try {
+            await Rg(q);
+          } catch (re) {
+            console.warn("[Onboarding] Remote crew join failed:", re);
+          }
           const L = {
             nickname: l,
             avatar: f,
@@ -56269,7 +56311,11 @@ function DG({ onComplete: s, onCancel: t }) {
             lastActive: Hs(),
             updatedAt: Hs(),
           };
-          await qn(ve(xe, `users/${le}`), L);
+          try {
+            await qn(ve(xe, `users/${le}`), L);
+          } catch (re) {
+            console.warn("[Onboarding] Remote user update failed:", re);
+          }
           try {
             const re = JSON.parse(localStorage.getItem("teensBible") || "{}");
             ((re.gems = (re.gems || 0) + 50),
@@ -56657,7 +56703,7 @@ function DG({ onComplete: s, onCancel: t }) {
                                     "data-loc":
                                       "client/src/components/Onboarding.tsx:364",
                                     className:
-                                      "w-full h-full rounded-full bg-gradient-to-br from-[#1c1a2e] to-[#0f0f1e] flex items-center justify-center text-4xl",
+                                      "w-full h-full rounded-full bg-gradient-to-br from-[#1a1200] to-[#0a0a0a] flex items-center justify-center text-4xl",
                                     children: f,
                                   },
                                   void 0,
@@ -58824,7 +58870,9 @@ function DG({ onComplete: s, onCancel: t }) {
                                           onClick: async () => {
                                             (T(!0), B(null));
                                             try {
-                                              const le = await ae(),
+                                              const le = await ae().catch(() =>
+                                                  tbFallbackUid(),
+                                                ),
                                                 J = {
                                                   nickname: l,
                                                   groupCode: q.groupCode,
@@ -58839,8 +58887,15 @@ function DG({ onComplete: s, onCancel: t }) {
                                                 localStorage.setItem(
                                                   "playerName",
                                                   l,
-                                                ),
-                                                await Rg(q.groupCode));
+                                                ));
+                                              try {
+                                                await Rg(q.groupCode);
+                                              } catch (re) {
+                                                console.warn(
+                                                  "[Onboarding] Remote crew join failed:",
+                                                  re,
+                                                );
+                                              }
                                               const L = {
                                                 nickname: l,
                                                 avatar: f,
@@ -58854,10 +58909,17 @@ function DG({ onComplete: s, onCancel: t }) {
                                                 lastActive: Hs(),
                                                 updatedAt: Hs(),
                                               };
-                                              await qn(
-                                                ve(xe, `users/${le}`),
-                                                L,
-                                              );
+                                              try {
+                                                await qn(
+                                                  ve(xe, `users/${le}`),
+                                                  L,
+                                                );
+                                              } catch (re) {
+                                                console.warn(
+                                                  "[Onboarding] Remote user update failed:",
+                                                  re,
+                                                );
+                                              }
                                               try {
                                                 const re = JSON.parse(
                                                   localStorage.getItem(
