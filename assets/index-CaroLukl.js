@@ -55672,12 +55672,16 @@ async function w5(s, t = "open") {
   const f = rb(),
     h = Vk(f, l);
   try {
-    (await ss(ve(xe, `groupMeta/${l}`), c),
-      await ss(ve(xe, `groups/${l}/members/${a}`), h),
-      await ss(ve(xe, `userGroups/${a}/${l}`), {
+    const p = await Promise.allSettled([
+      ss(ve(xe, `groupMeta/${l}`), c),
+      ss(ve(xe, `groups/${l}/members/${a}`), h),
+      ss(ve(xe, `userGroups/${a}/${l}`), {
         joinedAt: Date.now(),
         role: "admin",
-      }));
+      }),
+    ]);
+    p.some((g) => g.status === "rejected") &&
+      console.warn("[Crew] Some remote create writes failed:", p);
   } catch (p) {
     console.warn("[Crew] Remote create failed; saved locally:", p);
   }
@@ -55717,11 +55721,15 @@ async function Rg(s) {
     }
   }
   try {
-    (await ss(ve(xe, `groups/${i}/members/${t}`), h),
-      await ss(ve(xe, `userGroups/${t}/${i}`), {
+    const g = await Promise.allSettled([
+      ss(ve(xe, `groups/${i}/members/${t}`), h),
+      ss(ve(xe, `userGroups/${t}/${i}`), {
         joinedAt: Date.now(),
         role: "member",
-      }));
+      }),
+    ]);
+    g.some((x) => x.status === "rejected") &&
+      console.warn("[Crew] Some remote join writes failed:", g);
   } catch (g) {
     console.warn("[Crew] Remote join failed; saved locally:", g);
   }
@@ -56222,19 +56230,24 @@ function DG({ onComplete: s, onCancel: t }) {
             isNasumMember: le,
           };
         (localStorage.setItem("teensBibleProfile", JSON.stringify(re)),
-          localStorage.setItem("playerName", l));
+          localStorage.setItem("playerName", l),
+          localStorage.setItem("className", q));
         try {
-          (await qn(ve(xe, `users/${J}`), L),
-            await qn(ve(xe, `groups/${q}/members/${J}`), L),
-            await ss(ve(xe, `userGroups/${J}/${q}`), {
+          const Q = await Promise.allSettled([
+            qn(ve(xe, `users/${J}`), L),
+            qn(ve(xe, `groups/${q}/members/${J}`), L),
+            ss(ve(xe, `userGroups/${J}/${q}`), {
               joinedAt: Date.now(),
               role: "member",
             }),
-            await ss(ve(xe, `nicknames/${l.trim().toLowerCase()}`), {
+            ss(ve(xe, `nicknames/${l.trim().toLowerCase()}`), {
               uid: J,
               nickname: l.trim(),
               createdAt: Date.now(),
-            }));
+            }),
+          ]);
+          Q.some((Be) => Be.status === "rejected") &&
+            console.warn("[Onboarding] Some remote profile writes failed:", Q);
         } catch (ce) {
           console.warn("[Onboarding] Remote profile save failed:", ce);
         }
@@ -56292,7 +56305,8 @@ function DG({ onComplete: s, onCancel: t }) {
               isNasumMember: !1,
             };
           (localStorage.setItem("teensBibleProfile", JSON.stringify(J)),
-            localStorage.setItem("playerName", l));
+            localStorage.setItem("playerName", l),
+            localStorage.setItem("className", q));
           try {
             await Rg(q);
           } catch (re) {
@@ -58887,6 +58901,10 @@ function DG({ onComplete: s, onCancel: t }) {
                                                 localStorage.setItem(
                                                   "playerName",
                                                   l,
+                                                ),
+                                                localStorage.setItem(
+                                                  "className",
+                                                  q.groupCode,
                                                 ));
                                               try {
                                                 await Rg(q.groupCode);
