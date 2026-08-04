@@ -56236,25 +56236,26 @@ function DG({ onComplete: s, onCancel: t }) {
         (localStorage.setItem("teensBibleProfile", JSON.stringify(re)),
           localStorage.setItem("playerName", l),
           localStorage.setItem("className", q));
-        try {
-          const Q = await Promise.allSettled([
-            qn(ve(xe, `users/${J}`), L),
-            qn(ve(xe, `groups/${q}/members/${J}`), L),
-            ss(ve(xe, `userGroups/${J}/${q}`), {
-              joinedAt: Date.now(),
-              role: "member",
-            }),
-            ss(ve(xe, `nicknames/${l.trim().toLowerCase()}`), {
-              uid: J,
-              nickname: l.trim(),
-              createdAt: Date.now(),
-            }),
-          ]);
-          Q.some((Be) => Be.status === "rejected") &&
-            console.warn("[Onboarding] Some remote profile writes failed:", Q);
-        } catch (ce) {
-          console.warn("[Onboarding] Remote profile save failed:", ce);
-        }
+        Promise.allSettled([
+          qn(ve(xe, `users/${J}`), L),
+          qn(ve(xe, `groups/${q}/members/${J}`), L),
+          ss(ve(xe, `userGroups/${J}/${q}`), {
+            joinedAt: Date.now(),
+            role: "member",
+          }),
+          ss(ve(xe, `nicknames/${l.trim().toLowerCase()}`), {
+            uid: J,
+            nickname: l.trim(),
+            createdAt: Date.now(),
+          }),
+        ])
+          .then((Q) => {
+            Q.some((Be) => Be.status === "rejected") &&
+              console.warn("[Onboarding] Some remote profile writes failed:", Q);
+          })
+          .catch((Q) => {
+            console.warn("[Onboarding] Remote profile save failed:", Q);
+          });
         const ce = Ci();
         if (!ce.find((Q) => Q.groupCode === q)) {
           const Q = [
