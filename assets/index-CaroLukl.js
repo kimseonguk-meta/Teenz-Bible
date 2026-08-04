@@ -56176,6 +56176,10 @@ function DG({ onComplete: s, onCancel: t }) {
     [Y, Oe] = A.useState(null),
     j = async (q, le) => {
       (T(!0), Oe(null));
+      if (le && bu.includes(q)) {
+        await E(q, le);
+        return;
+      }
       try {
         const J = await ae(),
           L = new Promise((Q) => setTimeout(() => Q(null), 5e3)),
