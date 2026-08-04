@@ -52341,14 +52341,35 @@ function _G() {
             : null;
 }
 function EG() {
-  let s = [...wG];
-  const t = _G();
-  t && y5[t] && (s = s.concat(y5[t]));
-  const i =
-    Math.floor(
-      (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 864e5,
-    ) % s.length;
-  return s[i] + "?v=2";
+  const s = [
+      ["When you remember God is with you", "Joshua 1:9", "😎🙏"],
+      ["Me trying to skip prayer, but God still loves me", "Romans 8:39", "🏃‍♂️💛"],
+      ["Bible open, snacks ready, wisdom loading", "Psalm 119:105", "📖🍿"],
+      ["That moment grace hits different", "Ephesians 2:8", "😭✨"],
+      ["New day, new mercy, same God", "Lamentations 3:23", "🌅🙌"],
+    ],
+    t =
+      Math.floor(
+        (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) /
+          864e5,
+      ) % s.length,
+    [a, i, l] = s[t],
+    c = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650" viewBox="0 0 900 650">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1a1200"/><stop offset=".55" stop-color="#0a0a0a"/><stop offset="1" stop-color="#2e1c0e"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".18" r=".75"><stop stop-color="#e6c346" stop-opacity=".32"/><stop offset="1" stop-color="#e6c346" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="900" height="650" rx="42" fill="url(#bg)"/>
+<rect width="900" height="650" rx="42" fill="url(#glow)"/>
+<rect x="36" y="36" width="828" height="578" rx="34" fill="none" stroke="#d4a028" stroke-width="5" stroke-opacity=".55"/>
+<text x="450" y="145" text-anchor="middle" font-size="86" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji">${l}</text>
+<text x="450" y="285" text-anchor="middle" font-size="46" font-weight="800" fill="#fae17a" font-family="Arial, sans-serif">
+${a}
+</text>
+<text x="450" y="360" text-anchor="middle" font-size="28" fill="#f5f0e8" fill-opacity=".82" font-family="Arial, sans-serif">${i}</text>
+<text x="450" y="535" text-anchor="middle" font-size="30" fill="#d4a028" font-weight="700" font-family="Arial, sans-serif">TEENZ BIBLE MEME</text>
+</svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(c)}`;
 }
 function v5() {
   const [, s] = Bg(),
