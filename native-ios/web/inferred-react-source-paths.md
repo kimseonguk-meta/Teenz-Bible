@@ -1,0 +1,68 @@
+# React source paths inferred from current Firebase Hosting release
+
+Count: 32
+
+- `/home/ubuntu/teens-bible-app/client/src/App.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/AppLayout.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/AvatarParticles.tsx`
+  - bundle: assets/Profile-DeU5glts.js
+- `/home/ubuntu/teens-bible-app/client/src/components/BannerAmbient.tsx`
+  - bundle: assets/Profile-DeU5glts.js
+- `/home/ubuntu/teens-bible-app/client/src/components/DailyBonus.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ErrorBoundary.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/FloatingPet.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/LightningBurst.tsx`
+  - bundle: assets/LightningBurst-C45S3iZ7.js
+- `/home/ubuntu/teens-bible-app/client/src/components/Onboarding.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/OnboardingTutorial.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/OrnateCorners.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ProfilePhotoPrompt.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/SplashScreen.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/VerseShareImage.tsx`
+  - bundle: assets/Bible-o7ln52A-.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ui/dialog.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ui/input.tsx`
+  - bundle: assets/Profile-DeU5glts.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ui/skeleton.tsx`
+  - bundle: assets/Store-CuzA7Kry.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ui/sonner.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/components/ui/tooltip.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/contexts/GameContext.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/contexts/ThemeContext.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/main.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/Bible.tsx`
+  - bundle: assets/Bible-o7ln52A-.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/BibleAI.tsx`
+  - bundle: assets/BibleAI-Q7OImf6U.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/BibleMap.tsx`
+  - bundle: assets/BibleMap-D3wubcX8.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/Feedback.tsx`
+  - bundle: assets/Feedback-Cv4-nuEj.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/Home.tsx`
+  - bundle: assets/index-CcqAg5kV.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/JoinCrew.tsx`
+  - bundle: assets/JoinCrew-CuAZt2gp.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/Leaderboard.tsx`
+  - bundle: assets/Leaderboard-Tbac8wCI.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/Profile.tsx`
+  - bundle: assets/Profile-DeU5glts.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/QuizStats.tsx`
+  - bundle: assets/QuizStats-CBU3Pl2K.js
+- `/home/ubuntu/teens-bible-app/client/src/pages/Store.tsx`
+  - bundle: assets/Store-CuzA7Kry.js

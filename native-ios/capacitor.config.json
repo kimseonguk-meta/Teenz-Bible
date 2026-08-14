@@ -1,0 +1,17 @@
+{
+  "appId": "com.teenzbible.app",
+  "appName": "Teenz Bible",
+  "webDir": "web",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "CapacitorUpdater": {
+      "autoUpdate": "off",
+      "appReadyTimeout": 10000,
+      "responseTimeout": 20,
+      "autoDeleteFailed": true,
+      "autoDeletePrevious": true,
+      "resetWhenUpdate": true,
+      "osLogging": true
+    }
+  }
+}
