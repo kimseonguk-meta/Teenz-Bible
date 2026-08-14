@@ -1,0 +1,11 @@
+if (typeof firebase === 'undefined') throw new Error('hosting/init-error: Firebase SDK not detected. You must include it before /__/firebase/init.js');
+firebase.initializeApp({
+  "apiKey": "AIzaSyCJ5qm_sCzkUfFGC8WcTGbjfviBz_SyNAg",
+  "appId": "1:226355097233:web:838afede878c9915225930",
+  "authDomain": "teens-bible-94271.firebaseapp.com",
+  "databaseURL": "https://teens-bible-94271-default-rtdb.firebaseio.com",
+  "measurementId": "G-MXRKJRQ0D3",
+  "messagingSenderId": "226355097233",
+  "projectId": "teens-bible-94271",
+  "storageBucket": "teens-bible-94271.firebasestorage.app"
+});
