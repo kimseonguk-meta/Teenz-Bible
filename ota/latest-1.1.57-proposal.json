@@ -1,0 +1,9 @@
+{
+  "version": "1.1.57",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.57.zip",
+  "checksum": "f5fba18686569c7421f4bdc4e8d8fb9880d3c8f12e358f66a4f58f3f4ddd39d2",
+  "size": 32601681,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Official Capgo CLI-built OTA archive. Uses CapacitorUpdater.next({ id }) to queue activation at app background/restart, preserving the current session and recording the version only after queueing succeeds."
+}
