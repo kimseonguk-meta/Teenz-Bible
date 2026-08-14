@@ -1,12 +1,12 @@
 {
-  "version": "1.1.54",
-  "source_files": 342,
-  "zip_files": 342,
+  "version": "1.1.55",
+  "source_files": 344,
+  "zip_files": 344,
   "missing": [],
   "extra": [],
   "mismatched": [],
-  "zip_sha256": "40f3a8b0f721e6d63bec002dd81676ab8bab545bc16a8301c78bd08d30c44452",
-  "proposal_checksum": "40f3a8b0f721e6d63bec002dd81676ab8bab545bc16a8301c78bd08d30c44452",
-  "proposal_size": 32558157,
-  "actual_size": 32558157
+  "zip_sha256": "d2bce1decdd7b179ca3d1c33141909f1b7ad640d48179ea09c87275d06b6452f",
+  "proposal_checksum": "d2bce1decdd7b179ca3d1c33141909f1b7ad640d48179ea09c87275d06b6452f",
+  "proposal_size": 32567422,
+  "actual_size": 32567422
 }
