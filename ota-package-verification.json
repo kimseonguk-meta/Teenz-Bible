@@ -1,0 +1,12 @@
+{
+  "version": "1.1.53",
+  "source_files": 340,
+  "zip_files": 340,
+  "missing": [],
+  "extra": [],
+  "mismatched": [],
+  "zip_sha256": "2429e165ae1c447bf406f15d3be90c5e56a7b525645efdbd355a611ccfaa3bad",
+  "proposal_checksum": "2429e165ae1c447bf406f15d3be90c5e56a7b525645efdbd355a611ccfaa3bad",
+  "proposal_size": 32548898,
+  "actual_size": 32548898
+}
