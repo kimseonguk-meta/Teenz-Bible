@@ -1,0 +1,9 @@
+{
+  "version": "1.1.69",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.69.zip",
+  "checksum": "28dfe642e032a82714c32347d8ed10af174d5b1268a2da8069054de9ff4a0371",
+  "size": 32755232,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Fixes the Ranking member-detail popup so the modal is body-anchored, viewport-centered, background-scroll-safe, and internally scrollable on mobile widths. The package retains all previous headerless-screen and Crew popup fixes in the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}
