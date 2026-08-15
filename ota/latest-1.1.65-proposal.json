@@ -1,0 +1,9 @@
+{
+  "version": "1.1.65",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.65.zip",
+  "checksum": "f5face4e1ad77142111c7024e2d3c087f4dee01e1e050f5c474c405e12645d56",
+  "size": 32685520,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Unifies all primary-screen headers across larger mobile viewports, fixes Crew popups to use the real viewport, and restores the Bible Map label. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}
