@@ -1,4 +1,4 @@
-# Teenz Bible iOS 1.2.0 — Firebase OTA Shell
+# Teenz Bible iOS 1.2.1 — Firebase OTA Shell
 
 ## What this project is
 
@@ -9,7 +9,7 @@ The project uses **CocoaPods**, not Swift Package Manager. This is intentional. 
 | Item | Configuration |
 |---|---|
 | Bundle identifier | `com.teenzbible.app` |
-| Native version | `1.2.0` |
+| Native version | `1.2.1` |
 | Minimum iOS | 15.0 |
 | Native dependency manager | CocoaPods |
 | Capacitor | 8.5.0 |
@@ -48,11 +48,11 @@ Open the `App` target and check the following before building:
 |---|---|
 | Team | The same Apple Developer Team that owns the current Teenz Bible App Store listing |
 | Bundle Identifier | `com.teenzbible.app` |
-| Version | `1.2.0` or a later App Store version |
+| Version | `1.2.1` or a later App Store version |
 | Build | A number greater than any build already uploaded for that version |
 | Signing | Automatically manage signing enabled |
 
-First select a physically connected and trusted iPhone or iPad, then click **Run**. After the local build succeeds, use **Product → Archive** with **Any iOS Device (arm64)** selected and upload the archive to TestFlight.
+First select a physically connected and trusted iPhone or iPad, then click **Run**. The 1.2.1 native version intentionally differs from the earlier local test build so the Updater's `resetWhenUpdate: true` setting removes any legacy downloaded OTA bundle before the newest Firebase bundle is checked. After the local build succeeds, use **Product → Archive** with **Any iOS Device (arm64)** selected and upload the archive to TestFlight.
 
 ## Firebase OTA behavior
 

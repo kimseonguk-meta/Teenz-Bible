@@ -1,0 +1,9 @@
+{
+  "version": "1.1.70",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.70.zip",
+  "checksum": "14b4f50267bebb5c2a81ed903b5c9cd3943dd7833ccb4c42cbdf8ff7b66a5841",
+  "size": 28804196,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Capgo CLI-generated clean PWA bundle for Firebase self-hosted iOS OTA. Excludes prior OTA archives and development backup artifacts; pairs with native iOS 1.2.1 to reset legacy downloaded bundles."
+}
