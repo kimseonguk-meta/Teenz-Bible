@@ -1,0 +1,9 @@
+{
+  "version": "1.1.71",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.71.zip",
+  "checksum": "98bf6c98b81f573df7e3288753746443960ac92746e245532c3679a5f710e875",
+  "size": 37043999,
+  "uploadedAt": "2026-08-16T01:20:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Fixes Ranking Create / Join Crew navigation by opening the existing Profile crew composer instead of silently returning to Profile. Firebase Hosting bundle verified with node syntax check and ZIP integrity check."
+}
