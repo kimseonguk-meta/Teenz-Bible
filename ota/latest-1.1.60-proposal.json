@@ -1,0 +1,9 @@
+{
+  "version": "1.1.60",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.60.zip",
+  "checksum": "84b1481d044d9c923e0d672d3411fd846e056fd14d9f4a01caea8f6eedf3b72c",
+  "size": 32613807,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Preserves the Firebase UID when an anonymous user links Google or Apple, preventing existing profile, XP, inventory, and crew data from being detached. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}
