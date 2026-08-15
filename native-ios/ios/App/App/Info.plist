@@ -63,6 +63,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-</dict>
+		<true/>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Teenz Bible uses the microphone for optional voice questions in Bible AI.</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>Teenz Bible uses speech recognition to turn optional voice questions into text for Bible AI.</string>
+	</dict>
 </plist>
