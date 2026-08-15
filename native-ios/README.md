@@ -1,52 +1,71 @@
-# Teenz Bible iOS Rebuild — Firebase OTA Recovery
+# Teenz Bible iOS 1.2.0 — Firebase OTA Shell
 
-이 폴더는 원래 iOS 소스가 복구 자료와 GitHub 이력에 남아 있지 않아 새로 구성한 **동일 App Store bundle ID (`com.teenzbible.app`)**의 Capacitor iOS 프로젝트입니다.
+## What this project is
 
-현재 Firebase OTA 최신 버전은 **v1.1.69**입니다. 앱은 Firebase Realtime Database의 `ota/latest.json`을 GET으로 확인하고, 업데이트 ZIP을 내려받은 뒤 `CapacitorUpdater.next()`로 다음 백그라운드/재실행에 적용합니다. **Capgo Cloud 계정이나 유료 서비스는 사용하지 않습니다.** Firebase는 계속 manifest와 ZIP을 제공하고, 앱 내부의 오픈소스 `@capgo/capacitor-updater` 플러그인만 수신·검증·활성화를 담당합니다.
+This folder contains the rebuilt iOS shell for Teenz Bible with the same App Store bundle identifier, `com.teenzbible.app`. It is the one-time native release required to let the App Store app receive later HTML, CSS, JavaScript, and image updates from Firebase.
 
-## 포함된 복구 항목
+The project uses **CocoaPods**, not Swift Package Manager. This is intentional. The previous Swift Package Manager build could fail in Xcode 26 with `Missing package product 'CapApp-SPM'`. The rebuilt project has no `CapApp-SPM` dependency and links Capacitor plugins through the generated `Podfile` instead.
 
-| 항목 | 구성 |
+| Item | Configuration |
 |---|---|
-| Bundle ID | `com.teenzbible.app` |
-| 표시 이름 | `Teenz Bible` |
-| iOS 제출 버전 | `1.2.0` / build `1` |
-| iOS Updater | `@capgo/capacitor-updater` `8.51.5` |
-| Firebase OTA | Realtime Database `ota/latest.json` → Firebase Hosting ZIP (self-hosted, Capgo Cloud 미사용) |
-| 적용 방식 | 다운로드 후 `next({ id })`; 앱 백그라운드/재실행 때 적용 |
-| 실패 복구 | `notifyAppReady`, 10초 ready timeout, 실패·이전 번들 자동 정리 |
-| 아이콘 | 현재 Teenz Bible PWA 아이콘을 1024px AppIcon으로 반영 |
+| Bundle identifier | `com.teenzbible.app` |
+| Native version | `1.2.0` |
+| Minimum iOS | 15.0 |
+| Native dependency manager | CocoaPods |
+| Capacitor | 8.5.0 |
+| Open-source OTA engine | `@capgo/capacitor-updater` 8.51.5 |
+| OTA server | Firebase Realtime Database `ota/latest.json` → Firebase Hosting ZIP |
+| Capgo Cloud account or billing | **Not used** |
+| Bundle activation | Download with `next({ id })`; activate at the next app background/restart |
 
-## Mac에서 여는 방법
+## One-command Mac setup
 
-1. 이 폴더 전체를 Mac으로 복사합니다.
-2. 터미널에서 프로젝트 루트로 이동합니다.
+Before the first build, make sure Xcode has the iOS platform installed. CocoaPods is also required once on the Mac. If `pod --version` does not return a version, install it with Homebrew:
 
 ```bash
-pnpm install
-pnpm exec cap sync ios
-open ios/App/App.xcodeproj
+brew install cocoapods
 ```
 
-3. Xcode의 **Signing & Capabilities**에서 Apple Developer Team을 `com.teenzbible.app`에 연결합니다. 기존 App Store 앱과 같은 Apple Developer 계정이어야 합니다.
-4. App target의 **Version**은 `1.2.0`, **Build**는 이전 App Store Connect 빌드보다 큰 값으로 설정합니다. Build `1`이 이미 사용된 경우 `2` 이상으로 올립니다.
-5. 실제 iPhone/iPad에서 먼저 Run을 실행합니다.
+Then run the setup script from this folder:
 
-## TestFlight OTA 검증
+```bash
+./bootstrap-ios-cocoapods.sh
+```
 
-1. 새 iOS 빌드를 TestFlight에 올리고 기기에 설치합니다.
-2. 앱을 Wi‑Fi에서 열어 1~2분 둡니다.
-3. 앱을 홈 화면으로 보내거나 완전히 종료합니다.
-4. 앱을 다시 엽니다. Firebase에서 예약된 최신 PWA가 적용됩니다.
-5. Home, Bible, Ranking, Store, Profile 화면이 정상적으로 열리는지 확인합니다.
-6. Xcode Console에서 `[OTA] Update available`, `[OTA] Bundle downloaded`, `Bundle queued for next background/restart` 로그를 확인합니다.
+The script installs the JavaScript dependencies, synchronizes the native iOS project, runs `pod install`, and opens the correct file:
 
-## OTA ZIP 생성 전환
+```text
+ios/App/App.xcworkspace
+```
 
-현재 공개 Firebase OTA ZIP은 Python 표준 ZIP으로 생성된 이력이 있습니다. 새 iOS 셸을 TestFlight에 올리기 전에는 OTA 생성 방식을 **`@capgo/cli bundle zip`**으로 전환해야 합니다. 공식 Updater 문서는 CLI가 만든 ZIP, 루트 `index.html`, 그리고 CLI가 산출한 checksum을 요구합니다. 이 전환과 Firebase manifest 갱신은 운영 작업으로 별도 검증합니다.
+> Always open **`App.xcworkspace`**, never `App.xcodeproj`. The workspace loads the CocoaPods-generated native dependencies, including Capacitor and the OTA updater.
 
-## 중요 제약
+## Xcode settings
 
-이 Linux 작업 환경에서는 Xcode, Apple 코드서명 인증서, App Store Connect 전송 도구를 실행할 수 없습니다. 따라서 Archive, TestFlight 업로드, App Store 제출은 Apple Developer 권한이 있는 Mac에서 수행해야 합니다.
+Open the `App` target and check the following before building:
 
-한 번 이 네이티브 업데이트가 App Store에 배포되면, 이후 HTML/CSS/JavaScript/이미지 변경은 Firebase OTA 방식으로 적용됩니다. iOS 플러그인, 권한, Info.plist, Swift 변경은 항상 새 App Store 바이너리가 필요합니다.
+| Xcode field | Required value |
+|---|---|
+| Team | The same Apple Developer Team that owns the current Teenz Bible App Store listing |
+| Bundle Identifier | `com.teenzbible.app` |
+| Version | `1.2.0` or a later App Store version |
+| Build | A number greater than any build already uploaded for that version |
+| Signing | Automatically manage signing enabled |
+
+First select a physically connected and trusted iPhone or iPad, then click **Run**. After the local build succeeds, use **Product → Archive** with **Any iOS Device (arm64)** selected and upload the archive to TestFlight.
+
+## Firebase OTA behavior
+
+The embedded web bundle checks Firebase only when running in the native app. It calls `notifyAppReady()`, reads `https://teens-bible-94271-default-rtdb.firebaseio.com/ota/latest.json`, downloads the newer bundle, and queues it with `next({ id })`. Therefore a newly downloaded OTA becomes active after the app is sent to the background or fully restarted.
+
+Before TestFlight testing, create the OTA ZIP with `@capgo/cli bundle zip`, publish the CLI-generated checksum to Firebase `latest.json`, and verify that the ZIP has `index.html` at its root. Do not use an arbitrary standard ZIP generator for the production iOS bundle.
+
+## Native-versus-OTA rule
+
+Firebase OTA is appropriate for web bundle changes such as UI, React/JavaScript, CSS, text, images, and Firebase-backed web behavior. A new App Store binary is still required for Swift code, Capacitor plugins, iOS permissions, `Info.plist`, app icons, or other native changes.
+
+## References
+
+- [Capacitor — CocoaPods and Swift Package Manager](https://capacitorjs.com/docs/ios/spm)
+- [Capgo Updater — Self-hosted Manual Update](https://capgo.app/docs/plugins/updater/self-hosted/manual-update/)
+- [Capgo Updater — Self-hosted Auto Update](https://capgo.app/docs/plugins/updater/self-hosted/auto-update/)
