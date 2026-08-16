@@ -1,6 +1,5 @@
 import UIKit
 import Capacitor
-import CapacitorFirebaseAuthentication
 import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -10,10 +9,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         window = UIWindow(windowScene: windowScene)
-        let bridgeViewController = CAPBridgeViewController()
-        // Explicit registration is required for this static CocoaPods integration.
-        bridgeViewController.bridge?.registerPluginInstance(FirebaseAuthenticationPlugin())
-        window?.rootViewController = bridgeViewController
+        window?.rootViewController = CAPBridgeViewController()
         window?.makeKeyAndVisible()
 
         SceneDelegateProxy.shared.scene(scene, willConnectTo: session, options: connectionOptions)
