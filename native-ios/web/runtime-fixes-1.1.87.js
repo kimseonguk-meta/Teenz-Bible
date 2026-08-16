@@ -683,7 +683,25 @@
     };
   });
 
+  const readLiveFirebaseSession = async () => {
+    try {
+      const core = await import('/assets/index-CcqAg5kV.js');
+      const auth = typeof core.H === 'function' ? core.H() : null;
+      const user = auth?.currentUser;
+      if (!user) return null;
+      const token = await user.getIdToken(true);
+      if (!token) return null;
+      return { uid: user.uid, token, name: user.displayName || user.email?.split('@')[0] || 'A friend' };
+    } catch (_) {
+      return null;
+    }
+  };
   const getTeenzSession = async () => {
+    const live = await readLiveFirebaseSession();
+    if (live?.uid && live?.token) {
+      cachedTeenzSession = live;
+      return live;
+    }
     if (cachedTeenzSession?.uid && cachedTeenzSession?.token) return cachedTeenzSession;
     cachedTeenzSession = readStoredFirebaseSession() || await readIndexedDbFirebaseSession();
     return cachedTeenzSession;
@@ -787,7 +805,10 @@
         }
       }).catch((error) => {
         console.warn('[Teenz Bible] Cheer was not sent:', error);
-        showCheerFeedback(error.message || 'Could not send your Cheer. Please try again.', 'error');
+        const message = /401|unauthorized|sign in is required/i.test(error?.message || '')
+          ? 'Your session needs a refresh. Please close and reopen Teenz Bible, then try again.'
+          : 'We could not send your Cheer right now. Please try again.';
+        showCheerFeedback(message, 'error');
       }).finally(() => {
         action.dataset.tbSending = '0';
         action.removeAttribute('aria-busy');
