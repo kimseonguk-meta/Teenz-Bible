@@ -1,0 +1,9 @@
+{
+  "version": "1.1.82",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.82.zip",
+  "checksum": "876500978eb123ca94b092f2e49e165c91f04791154ae3f907b80af0abe29fc8",
+  "size": 37273511,
+  "uploadedAt": "2026-08-16T04:10:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Uses authenticated Crew metadata lookup in the picker and places Create Crew and Join Crew in equal mobile actions."
+}
