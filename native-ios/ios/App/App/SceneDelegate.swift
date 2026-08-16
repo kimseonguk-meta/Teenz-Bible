@@ -1,16 +1,13 @@
 import UIKit
 import Capacitor
+import CapacitorFirebaseAuthentication
 import FirebaseAuth
 
 private final class TeenzBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
-        if let pluginClass = NSClassFromString("FirebaseAuthenticationPlugin") as? CAPPlugin.Type {
-            bridge?.registerPluginType(pluginClass)
-            CAPLog.print("✅ FirebaseAuthenticationPlugin registered after Capacitor bridge load")
-        } else {
-            CAPLog.print("❌ FirebaseAuthenticationPlugin class is unavailable in the App target")
-        }
+        bridge?.registerPluginType(FirebaseAuthenticationPlugin.self)
+        CAPLog.print("✅ FirebaseAuthenticationPlugin force-linked and registered after Capacitor bridge load")
     }
 }
 
