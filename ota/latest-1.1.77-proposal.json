@@ -1,0 +1,9 @@
+{
+  "version": "1.1.77",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.77.zip",
+  "checksum": "cf953466b7ac51f382fe2db4609833d75dd71d0371390e070a04f921ffce4322",
+  "size": 37160063,
+  "uploadedAt": "2026-08-16T02:45:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Replaces the hanging Android Firebase SDK crew write with authenticated, timeout-bound Realtime Database REST creation and a visible error state."
+}
