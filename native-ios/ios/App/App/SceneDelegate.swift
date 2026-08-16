@@ -1,13 +1,16 @@
 import UIKit
 import Capacitor
-import CapacitorFirebaseAuthentication
 import FirebaseAuth
+import GoogleSignIn
 
 private final class TeenzBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
-        bridge?.registerPluginType(FirebaseAuthenticationPlugin.self)
-        CAPLog.print("✅ FirebaseAuthenticationPlugin force-linked and registered after Capacitor bridge load")
+        if bridge?.plugin(withName: "FirebaseAuthentication") != nil {
+            CAPLog.print("✅ Teenz FirebaseAuthentication bridge registered")
+        } else {
+            CAPLog.print("❌ Teenz FirebaseAuthentication bridge is unavailable")
+        }
     }
 }
 
@@ -27,6 +30,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         // With UIScene lifecycle enabled, OAuth callbacks arrive here instead of AppDelegate.
         for context in URLContexts {
+            if GIDSignIn.sharedInstance.handle(context.url) {
+                return
+            }
             if Auth.auth().canHandle(context.url) {
                 return
             }

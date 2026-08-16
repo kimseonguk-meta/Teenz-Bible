@@ -2,6 +2,7 @@ import UIKit
 import Capacitor
 import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,7 +40,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        // Firebase Authentication must consume the Google OAuth callback before Capacitor handles the URL.
+        // Google Sign-In must consume its OAuth callback before Firebase or Capacitor handles the URL.
+        if GIDSignIn.sharedInstance.handle(url) {
+            return true
+        }
+        // Firebase Authentication may consume other Firebase-managed OAuth callbacks.
         if Auth.auth().canHandle(url) {
             return true
         }

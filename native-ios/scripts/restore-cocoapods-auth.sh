@@ -44,6 +44,9 @@ pnpm exec cap sync ios
 # Capacitor's generated Podfile uses the plugin's Lite subspec by default.
 # Google Sign-In requires the Google subspec, while Apple Sign-In remains included.
 sed -i '' "s/pod 'CapacitorFirebaseAuthentication'/pod 'CapacitorFirebaseAuthentication\\/Google'/" "$IOS_DIR/Podfile"
+# Use the App-target bridge for the two native social flows. Capacitor otherwise tries to
+# discover the static CocoaPods class by name, which is unreliable with the current toolchain.
+sed -i '' 's/"FirebaseAuthenticationPlugin"/"TeenzFirebaseAuthenticationPlugin"/' "$IOS_DIR/App/capacitor.config.json"
 
 echo "Installing CocoaPods dependencies..."
 cd "$IOS_DIR"
