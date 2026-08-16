@@ -1,0 +1,7 @@
+{
+  "version": "1.1.86",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.86.zip",
+  "checksum": "6dec385a87cfdfca72dab1d126c1a33473cf6e3372ca2625dffecfd170ebd668",
+  "size": 37370120,
+  "notes": "Firebase self-hosted OTA. Adds a native manual updater bridge and preserves the latest mobile Ranking and Crew popup fixes."
+}
