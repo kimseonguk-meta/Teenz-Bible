@@ -1,0 +1,9 @@
+{
+  "version": "1.1.76",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.76.zip",
+  "checksum": "d85b3587a094aaf73244fc7a749f1222cf7732441d618cde5e6e0dbb95e9c732",
+  "size": 37138814,
+  "uploadedAt": "2026-08-16T02:30:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Replaces the broken Profile redirect with a direct Ranking Crew creator modal that calls the existing authenticated Firebase crew creation function."
+}
