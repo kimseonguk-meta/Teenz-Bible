@@ -3,6 +3,17 @@
   "appName": "Teenz Bible",
   "webDir": "web",
   "bundledWebRuntime": false,
+  "experimental": {
+    "ios": {
+      "spm": {
+        "packageOptions": {
+          "@capacitor-firebase/authentication": {
+            "symlink": true
+          }
+        }
+      }
+    }
+  },
   "plugins": {
     "CapacitorUpdater": {
       "autoUpdate": "off",
@@ -12,6 +23,13 @@
       "autoDeletePrevious": true,
       "resetWhenUpdate": true,
       "osLogging": true
+    },
+    "FirebaseAuthentication": {
+      "skipNativeAuth": true,
+      "providers": [
+        "google.com",
+        "apple.com"
+      ]
     }
   }
 }
