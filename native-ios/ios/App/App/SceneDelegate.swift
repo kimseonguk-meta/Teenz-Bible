@@ -7,6 +7,9 @@ private final class TeenzBridgeViewController: CAPBridgeViewController {
         super.capacitorDidLoad()
         if let pluginClass = NSClassFromString("FirebaseAuthenticationPlugin") as? CAPPlugin.Type {
             bridge?.registerPluginType(pluginClass)
+            CAPLog.print("✅ FirebaseAuthenticationPlugin registered after Capacitor bridge load")
+        } else {
+            CAPLog.print("❌ FirebaseAuthenticationPlugin class is unavailable in the App target")
         }
     }
 }
