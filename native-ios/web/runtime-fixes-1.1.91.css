@@ -1894,16 +1894,3 @@ nav.fixed {
 .tb-ranking-action-portal [data-tb-portal-cheer] { border:1px solid rgba(250,225,122,.72); background:linear-gradient(135deg,#6a4715,#27180b); color:#fff0a4; box-shadow:0 8px 24px rgba(0,0,0,.46),inset 0 1px rgba(255,247,225,.16); }
 @media (min-width:641px) { .tb-ranking-action-portal { right:auto; left:50%; width:300px; transform:translateX(-50%); } }
 .tb-ranking-member-modal-viewport [data-tb-cheer], .tb-ranking-member-modal-viewport [data-tb-ranking-close] { display:none !important; }
-
-/* v1.1.91 — cohesive Bible AI composer rebuilt around the real 697/711/727 DOM hierarchy */
-@media (max-width: 640px) {
-  .tb-ai-compact-layout { padding-bottom: 72px !important; }
-  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:510"] { position:relative !important; display:flex !important; min-height:56px !important; height:56px !important; padding:0 12px !important; background:#0b0b0b !important; border-bottom:1px solid rgba(250,225,122,.16) !important; }
-  .tb-ai-direct-back { top:calc(env(safe-area-inset-top, 0px) + 10px) !important; left:14px !important; width:36px !important; height:36px !important; border-color:rgba(250,225,122,.42) !important; background:rgba(20,15,11,.96) !important; font-size:22px !important; }
-  .tb-ai-source-strip, .tb-ai-compact-context, .tb-ai-start-guide { display:none !important; }
-  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:697"] { position:fixed !important; z-index:2147483003 !important; right:0 !important; bottom:0 !important; left:0 !important; box-sizing:border-box !important; min-height:68px !important; height:68px !important; margin:0 !important; padding:10px 12px max(10px, env(safe-area-inset-bottom, 10px)) !important; background:#11100f !important; background-image:none !important; border-top:1px solid rgba(250,225,122,.18) !important; box-shadow:0 -10px 26px rgba(0,0,0,.40) !important; }
-  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] { display:grid !important; grid-template-columns:40px minmax(0,1fr) 40px !important; align-items:center !important; gap:9px !important; width:100% !important; }
-  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] > button { width:40px !important; height:40px !important; min-width:40px !important; min-height:40px !important; margin:0 !important; border-radius:50% !important; }
-  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:727"], .tb-ai-compact-composer { position:static !important; display:flex !important; width:auto !important; min-width:0 !important; height:40px !important; min-height:40px !important; margin:0 !important; padding:0 12px !important; border:1px solid rgba(250,225,122,.24) !important; border-radius:13px !important; background:rgba(255,255,255,.055) !important; box-shadow:none !important; }
-  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:729"] { width:100% !important; min-width:0 !important; height:38px !important; min-height:38px !important; margin:0 !important; padding:0 !important; font-size:13px !important; line-height:38px !important; }
-}
