@@ -58,11 +58,14 @@
       ".write": true
     },
     "notifications": {
-      ".read": true,
-      ".write": true,
-      ".indexOn": [
-        "date"
-      ]
+      "$recipientUid": {
+        ".read": "auth != null && auth.uid == $recipientUid",
+        "encouragements": {
+          "$senderUid": {
+            ".write": "auth != null && auth.uid == $senderUid && newData.child('type').val() == 'cheer' && newData.child('senderUid').val() == auth.uid && newData.child('recipientUid').val() == $recipientUid && newData.child('createdAt').isNumber()"
+          }
+        }
+      }
     },
     "adminTokens": {
       ".read": true,

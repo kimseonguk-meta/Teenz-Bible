@@ -1,4 +1,7 @@
 {
+  "database": {
+    "rules": "app/database.rules.json"
+  },
   "hosting": {
     "site": "teens-bible-94271",
     "public": "app",
