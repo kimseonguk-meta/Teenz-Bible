@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import FirebaseCore
 import FirebaseAuth
 
 @UIApplicationMain
@@ -8,7 +9,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Load GoogleService-Info.plist before Firebase Authentication handles Google OAuth.
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
         return true
     }
 
