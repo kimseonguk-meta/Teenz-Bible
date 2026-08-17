@@ -1907,3 +1907,34 @@ nav.fixed {
   .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:727"], .tb-ai-compact-composer { position:static !important; display:flex !important; width:auto !important; min-width:0 !important; height:40px !important; min-height:40px !important; margin:0 !important; padding:0 12px !important; border:1px solid rgba(250,225,122,.24) !important; border-radius:13px !important; background:rgba(255,255,255,.055) !important; box-shadow:none !important; }
   .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:729"] { width:100% !important; min-width:0 !important; height:38px !important; min-height:38px !important; margin:0 !important; padding:0 !important; font-size:13px !important; line-height:38px !important; }
 }
+
+/* v1.1.95: Ranking member rows are interactive surfaces; visual companions must not capture taps. */
+@media (max-width: 640px) {
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"],
+  [data-loc="client/src/pages/Leaderboard.tsx:1114"],
+  [data-loc="client/src/pages/Leaderboard.tsx:1130"],
+  [data-loc="client/src/pages/Leaderboard.tsx:1149"] {
+    position: relative !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] img,
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] svg,
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] [class*="pet" i],
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] [class*="dragon" i],
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] [class*="decoration" i],
+  [data-loc="client/src/pages/Leaderboard.tsx:1114"] img,
+  [data-loc="client/src/pages/Leaderboard.tsx:1130"] img,
+  [data-loc="client/src/pages/Leaderboard.tsx:1149"] img {
+    pointer-events: none !important;
+    touch-action: none !important;
+  }
+
+  .faithy-pet, .pet-companion, .ranking-pet, .rank-pet, .fire-dragon,
+  [data-tb-ranking-decor], [data-tb-pet-decoration] {
+    pointer-events: none !important;
+    touch-action: none !important;
+  }
+}
