@@ -12,6 +12,9 @@ def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/.pnpm/@capacitor+ios@8.5.0_@capacitor+core@8.5.0/node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/.pnpm/@capacitor+ios@8.5.0_@capacitor+core@8.5.0/node_modules/@capacitor/ios'
   pod 'CapacitorFirebaseAuthentication/Google', :path => '../../node_modules/.pnpm/@capacitor-firebase+authentication@8.4.0_@capacitor+core@8.5.0_firebase@12.17.1/node_modules/@capacitor-firebase/authentication'
+  # The app-owned TeenzFirebaseAuthenticationPlugin imports GoogleSignIn directly.
+  # Keep the module linked even when the Firebase plugin's transitive pod changes.
+  pod 'GoogleSignIn'
   pod 'CapacitorApp', :path => '../../node_modules/.pnpm/@capacitor+app@8.0.0_@capacitor+core@8.5.0/node_modules/@capacitor/app'
   pod 'CapacitorCamera', :path => '../../node_modules/.pnpm/@capacitor+camera@8.2.2_@capacitor+core@8.5.0/node_modules/@capacitor/camera'
   pod 'CapgoCapacitorUpdater', :path => '../../node_modules/.pnpm/@capgo+capacitor-updater@8.51.5_@capacitor+core@8.5.0/node_modules/@capgo/capacitor-updater'
