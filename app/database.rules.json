@@ -1,0 +1,88 @@
+{
+  "rules": {
+    "userData": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "groupMeta": {
+      ".read": "auth != null",
+      "$groupCode": {
+        ".write": "auth != null"
+      }
+    },
+    "userGroups": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "groups": {
+      ".read": "auth != null",
+      "$groupCode": {
+        "members": {
+          "$uid": {
+            ".read": true,
+            ".write": "$uid === auth.uid"
+          }
+        },
+        ".read": true
+      }
+    },
+    "rankSnapshots": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "classConfig": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "reports": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": [
+        "date",
+        "book",
+        "status"
+      ]
+    },
+    "flaggedChapters": {
+      ".read": true,
+      ".write": true
+    },
+    "notifications": {
+      "$recipientUid": {
+        ".read": "auth != null && auth.uid == $recipientUid",
+        "encouragements": {
+          "$senderUid": {
+            ".read": "auth != null && auth.uid == $senderUid",
+            ".write": "auth != null && auth.uid == $senderUid && newData.child('type').val() == 'cheer' && newData.child('senderUid').val() == auth.uid && newData.child('recipientUid').val() == $recipientUid && newData.child('createdAt').isNumber()"
+          }
+        }
+      }
+    },
+    "adminTokens": {
+      ".read": true,
+      ".write": true
+    },
+    "memeReactions": {
+      ".read": true,
+      ".write": true
+    },
+    "memeSubmissions": {
+      ".read": true,
+      ".write": true
+    },
+    "feedbacks": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
