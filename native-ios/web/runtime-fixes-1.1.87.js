@@ -885,7 +885,10 @@
         }
       } catch (error) {
         console.warn('[Teenz Bible] Portal Cheer was not sent:', error);
-        showCheerFeedback(error.message || 'Could not send your Cheer. Please try again.', 'error');
+        const message = /401|unauthorized|sign in is required/i.test(error?.message || '')
+          ? 'Your session needs a refresh. Please close and reopen Teenz Bible, then try again.'
+          : 'We could not send your Cheer right now. Please try again.';
+        showCheerFeedback(message, 'error');
       } finally {
         button.dataset.tbSending = '0';
         button.textContent = '⚔️ Cheer';
