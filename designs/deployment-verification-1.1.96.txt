@@ -1,0 +1,15 @@
+Teenz Bible 1.1.96 deployment verification
+
+Verified on 2026-08-17 06:28 GMT+8
+Live URL: https://teens-bible-94271.web.app/
+
+- The deployed page loaded runtime-fixes-1.1.96.js.
+- The deployed page loaded runtime-fixes-1.1.96.css.
+- /ota/latest.json returned version 1.1.96.
+- OTA URL: https://teens-bible-94271.web.app/ota/1.1.96.zip
+- OTA checksum: f4142cbab08e33dffebcffb26337704fda8381985416d62f29fc5ef4de6acba3
+- OTA size: 33401837 bytes.
+
+Mobile Profile layout check
+
+The deployed PWA Profile route loaded successfully at mobile width. The existing Profile header, identity card, achievement cards, reminder controls, and bottom navigation all remained mounted; the runtime inserts an encouragement card immediately after the Profile header when a recipient has Cheer data. The anonymous browser account had no received Cheer data, so no real recipient card was expected or displayed during this check.

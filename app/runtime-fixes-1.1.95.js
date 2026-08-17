@@ -819,6 +819,35 @@
     modal.addEventListener('touchend', interceptClick, true);
   };
 
+  const formatCheerTime = (createdAt) => {
+    const elapsed = Math.max(0, Date.now() - Number(createdAt || Date.now()));
+    const minutes = Math.floor(elapsed / 60000);
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    return `${Math.floor(hours / 24)}d ago`;
+  };
+
+  const launchCheerConfetti = (anchor) => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || document.getElementById('tb-cheer-confetti')) return;
+    const layer = document.createElement('div');
+    layer.id = 'tb-cheer-confetti';
+    layer.setAttribute('aria-hidden', 'true');
+    const colors = ['#fae17a', '#f6bc43', '#fff7e1', '#a6e3bb', '#d79cff'];
+    for (let index = 0; index < 20; index += 1) {
+      const piece = document.createElement('i');
+      piece.className = 'tb-cheer-confetti__piece';
+      piece.style.setProperty('--x', `${8 + Math.random() * 84}%`);
+      piece.style.setProperty('--delay', `${Math.random() * 180}ms`);
+      piece.style.setProperty('--spin', `${-220 + Math.random() * 440}deg`);
+      piece.style.setProperty('--color', colors[index % colors.length]);
+      layer.appendChild(piece);
+    }
+    (anchor || document.body).appendChild(layer);
+    window.setTimeout(() => layer.remove(), 2100);
+  };
+
   const renderCheerInbox = async () => {
     const profilePage = Array.from(document.querySelectorAll('.tb-page')).find((page) => page.querySelector('[data-loc*="Profile.tsx"]'));
     if (!profilePage || cheerInboxBusy) return;
@@ -827,14 +856,29 @@
     cheerInboxBusy = true;
     try {
       const events = await tbFetchJson(`notifications/${encodeURIComponent(session.uid)}/encouragements.json`, session.token) || {};
-      const recent = Object.values(events).filter((event) => event?.type === 'cheer').sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0)).slice(0, 3);
+      const recent = Object.entries(events).map(([id, event]) => ({ ...event, _id: id })).filter((event) => event?.type === 'cheer').sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0)).slice(0, 3);
       const existing = profilePage.querySelector('#tb-cheer-inbox');
       if (!recent.length) { existing?.remove(); return; }
+
       const card = existing || document.createElement('section');
+      const newest = recent[0];
+      const seenKey = `tb-cheer-last-seen:${session.uid}`;
+      const lastSeen = window.localStorage.getItem(seenKey);
+      const isNew = Boolean(newest?._id && newest._id !== lastSeen);
+      if (newest?._id) window.localStorage.setItem(seenKey, newest._id);
+
       card.id = 'tb-cheer-inbox';
-      card.className = 'tb-cheer-inbox';
-      card.innerHTML = `<div class="tb-cheer-inbox__head"><span>⚔️ ENCOURAGEMENTS</span><b>${recent.length} NEW</b></div>${recent.map((event) => `<p><strong>${escapeHtml(event.senderName || 'A friend')}</strong> cheered for you <span>· Keep growing!</span></p>`).join('')}`;
-      if (!existing) profilePage.insertBefore(card, profilePage.firstElementChild);
+      card.className = `tb-cheer-inbox${isNew ? ' is-new' : ''}`;
+      card.innerHTML = `<div class="tb-cheer-inbox__head"><span>⚔️ ENCOURAGEMENTS</span><b>${recent.length} NEW</b></div><div class="tb-cheer-inbox__list">${recent.map((event) => `<article class="tb-cheer-inbox__item"><div class="tb-cheer-inbox__avatar" aria-hidden="true">⚔️</div><div class="tb-cheer-inbox__copy"><strong>${escapeHtml(event.senderName || 'A friend')}</strong><p>cheered for you <span>· Keep growing!</span></p><time>${formatCheerTime(event.createdAt)}</time></div><div class="tb-cheer-inbox__seal" aria-hidden="true">✦</div></article>`).join('')}</div>`;
+
+      if (!existing) {
+        const header = profilePage.querySelector('.tb-centered-profile-header');
+        if (header) header.insertAdjacentElement('afterend', card); else profilePage.insertBefore(card, profilePage.firstElementChild);
+      }
+      if (isNew) {
+        launchCheerConfetti(card);
+        window.setTimeout(() => card.classList.remove('is-new'), 1200);
+      }
     } catch (error) {
       console.warn('[Teenz Bible] Cheer inbox unavailable:', error);
     } finally {
