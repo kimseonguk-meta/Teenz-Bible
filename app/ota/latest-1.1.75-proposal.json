@@ -1,0 +1,9 @@
+{
+  "version": "1.1.75",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.75.zip",
+  "checksum": "2f260e06aa9f0808fa34a7dc7cfb96b4e45dda98bf0380ddf6f7bb53fe74ad84",
+  "size": 37118733,
+  "uploadedAt": "2026-08-16T02:15:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Handles the actual text-only Create Crew link, uses an explicit URL intent, and forces service-worker revalidation so Android PWA sessions load the latest Crew fix."
+}

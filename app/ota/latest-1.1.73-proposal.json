@@ -1,0 +1,9 @@
+{
+  "version": "1.1.73",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.73.zip",
+  "checksum": "20a68c7848a2d4d47739beec2177efbedaa2178ff34b39053fcfd2eb5ef90e00",
+  "size": 37081161,
+  "uploadedAt": "2026-08-16T01:40:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Fixes Ranking Create Crew navigation by opening Profile's chooser and then the actual Create Crew form."
+}

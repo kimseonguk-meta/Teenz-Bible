@@ -1,0 +1,9 @@
+{
+  "version": "1.1.59",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.59.zip",
+  "checksum": "5f95f8a3ab8be1b4a3549f0c6634478926100822109b0d975b9149f541ac96d6",
+  "size": 32604539,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Fixes general-user crew discovery by establishing the existing anonymous Firebase session before querying crew metadata. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}

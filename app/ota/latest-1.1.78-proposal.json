@@ -1,0 +1,9 @@
+{
+  "version": "1.1.78",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.78.zip",
+  "checksum": "8cc0e95fe97ed1b6fe648c45800a8612adbde9aed2c3eb7cb152b21eed4f7e2f",
+  "size": 37181419,
+  "uploadedAt": "2026-08-16T03:00:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Persists new Crew selection to both Ranking state keys so a prior Crew cannot overwrite the newly created Crew after reload."
+}

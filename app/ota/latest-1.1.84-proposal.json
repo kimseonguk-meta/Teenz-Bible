@@ -1,0 +1,9 @@
+{
+  "version": "1.1.84",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.84.zip",
+  "checksum": "1674bb689594b320e0fce6c1a0942ad23ca1bfd5940e1da96226198d9a298642",
+  "size": 37321371,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Firebase self-hosted PWA OTA bundle. Keeps Crew Hub Create Crew and Join Crew actions balanced even when the web app is framed narrowly inside a desktop or tablet browser."
+}

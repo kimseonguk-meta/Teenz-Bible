@@ -1,0 +1,9 @@
+{
+  "version": "1.1.63",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.63.zip",
+  "checksum": "34f4c80aa10b4c90c0d0ad417272d77fa2a88da17a550803ca9798f880dac76e",
+  "size": 32653560,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Improves first-session completion choices, Bible AI language/context presentation, Store starter guidance, Crew Hub guidance, and Ranking trust safeguards while retaining anonymous UID preservation and account-safety handling. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}

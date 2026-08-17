@@ -1,0 +1,9 @@
+{
+  "version": "1.1.55",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.55.zip",
+  "checksum": "d2bce1decdd7b179ca3d1c33141909f1b7ad640d48179ea09c87275d06b6452f",
+  "size": 32567422,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "OTA recovery release: checks the Firebase latest pointer on each native app launch without HTTP caching, records the installed version only after CapacitorUpdater.set succeeds, and retains the compact v1.1.54 header design."
+}

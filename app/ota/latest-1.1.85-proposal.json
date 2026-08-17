@@ -1,0 +1,9 @@
+{
+  "version": "1.1.85",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.85.zip",
+  "checksum": "bac34e83c874eace1a8e17ecc0c5f625650134128a69befb6568cefc2634e638",
+  "size": 37345496,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Firebase self-hosted PWA OTA bundle. The Join with Invite Code input now shrinks safely and keeps Paste fully visible on narrow Galaxy Chrome viewports."
+}

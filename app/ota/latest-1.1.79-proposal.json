@@ -1,0 +1,9 @@
+{
+  "version": "1.1.79",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.79.zip",
+  "checksum": "179d60ea70e3ed64bc963b49d00209b940be09539af0a3d4c83bfa1617ccdeec",
+  "size": 37203086,
+  "uploadedAt": "2026-08-16T03:15:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "One-time migration selects a previously created custom Crew over an older stored class Crew in Ranking."
+}

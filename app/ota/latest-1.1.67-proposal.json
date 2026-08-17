@@ -1,0 +1,9 @@
+{
+  "version": "1.1.67",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.67.zip",
+  "checksum": "5d00b974ee16e374a3ea9764a8c9363a4bde7de6054030331da6a2b5955a1193",
+  "size": 32719911,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Uses the Ranking header as the exact shared design system on every primary screen, removes all header TEENZ BIBLE eyebrows, and equalizes title-frame spacing. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}

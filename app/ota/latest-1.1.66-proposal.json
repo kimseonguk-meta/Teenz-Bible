@@ -1,0 +1,9 @@
+{
+  "version": "1.1.66",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.66.zip",
+  "checksum": "90a609620fd983bea361bd92eca07fd1d86c38490c2fc9b64c236dfb1259c17e",
+  "size": 32702486,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Removes legacy header rows that overlapped shared page titles on tablet and desktop widths, while retaining one consistent header on all primary screens. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}

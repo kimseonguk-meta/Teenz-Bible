@@ -1,0 +1,55 @@
+/* Teenz Bible 1.1.45 iPhone PWA stability patch */
+:root {
+  --tb-visual-viewport-width: 100vw;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+body {
+  min-height: 100dvh;
+  touch-action: pan-y;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Prevent fixed overlays from following iOS layout viewport instead of visual viewport. */
+.fixed.inset-0,
+[role="dialog"] {
+  max-width: var(--tb-visual-viewport-width);
+}
+
+/* Preserve intentional horizontal card scrollers without allowing the document itself to drift. */
+.overflow-x-auto,
+.overflow-x-scroll {
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep bottom controls above the Home Indicator in the iOS app shell. */
+.safe-bottom,
+.fixed.bottom-0,
+nav.fixed {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* Leaflet needs an explicit stable height in iOS WebView during route transitions. */
+.leaflet-container {
+  max-width: 100%;
+  touch-action: pan-x pan-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,121 @@
+/* Teenz Bible social-account collision safety modal — v1.1.61 */
+.tb-social-conflict-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(22px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+  background: rgba(4, 5, 12, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: tb-social-conflict-fade-in 180ms ease-out;
+}
+
+.tb-social-conflict-dialog {
+  width: min(100%, 390px);
+  max-height: min(760px, calc(100vh - 44px));
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 24px 20px 19px;
+  border: 1px solid rgba(250, 225, 122, 0.38);
+  border-radius: 24px;
+  color: #fff9e7;
+  text-align: center;
+  background: radial-gradient(circle at 50% -15%, rgba(250, 225, 122, 0.22), transparent 42%), linear-gradient(155deg, #28221a 0%, #12151d 52%, #0d1119 100%);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.56), inset 0 1px 0 rgba(255, 248, 210, 0.18);
+  outline: none;
+  animation: tb-social-conflict-rise-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tb-social-conflict-icon {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 11px;
+  border: 1px solid rgba(250, 225, 122, 0.42);
+  border-radius: 50%;
+  font-size: 22px;
+  background: radial-gradient(circle at 34% 25%, rgba(255, 244, 180, 0.36), rgba(150, 105, 25, 0.46) 61%, rgba(69, 44, 14, 0.74));
+  box-shadow: 0 0 22px rgba(230, 195, 70, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.24);
+}
+
+.tb-social-conflict-eyebrow {
+  margin-bottom: 7px;
+  color: #fae17a;
+  font-family: Cinzel, Georgia, serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.tb-social-conflict-dialog h2 {
+  margin: 0 auto 11px;
+  max-width: 330px;
+  color: #fff8e0;
+  font-family: Fredoka, Nunito, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.16;
+}
+
+.tb-social-conflict-dialog p {
+  margin: 0 auto;
+  max-width: 334px;
+  color: rgba(245, 240, 226, 0.76);
+  font-family: Nunito, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.43;
+}
+
+.tb-social-conflict-safe {
+  display: grid;
+  gap: 4px;
+  margin-top: 16px !important;
+  padding: 12px 13px;
+  border: 1px solid rgba(250, 225, 122, 0.26);
+  border-radius: 14px;
+  text-align: left;
+  background: rgba(230, 195, 70, 0.08);
+}
+
+.tb-social-conflict-safe strong { color: #fae17a; font-size: 14px; }
+.tb-social-conflict-safe span { color: rgba(255, 249, 231, 0.76); font-size: 12px; line-height: 1.36; }
+.tb-social-conflict-reason { margin-top: 13px !important; font-size: 12px !important; line-height: 1.38 !important; }
+
+.tb-social-conflict-actions { display: grid; gap: 9px; margin-top: 18px; }
+.tb-social-conflict-actions button, .tb-social-conflict-help {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: 46px;
+  border-radius: 13px;
+  font-family: Fredoka, Nunito, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 130ms ease, filter 130ms ease, background 130ms ease;
+}
+.tb-social-conflict-actions button:active, .tb-social-conflict-help:active { transform: scale(0.975); }
+.tb-social-conflict-primary {
+  border: 1px solid rgba(255, 242, 168, 0.72);
+  color: #1a1609;
+  background: linear-gradient(145deg, #fff1a2 0%, #e6c346 56%, #bd8b24 100%);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+.tb-social-conflict-secondary { border: 1px solid rgba(250, 225, 122, 0.30); color: #fff8e0; background: rgba(255, 255, 255, 0.055); }
+.tb-social-conflict-secondary:hover { background: rgba(250, 225, 122, 0.10); }
+.tb-social-conflict-help { min-height: 34px; margin-top: 10px; padding: 2px 0; border: 0; color: rgba(250, 225, 122, 0.90); font-family: Nunito, sans-serif; font-size: 12px; font-weight: 700; background: transparent; }
+.tb-social-conflict-help span { text-decoration: underline; text-underline-offset: 2px; }
+.tb-social-conflict-more { margin-top: 7px; padding: 12px; border-top: 1px solid rgba(250, 225, 122, 0.18); text-align: left; }
+.tb-social-conflict-more p + p { margin-top: 9px; }
+
+@keyframes tb-social-conflict-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tb-social-conflict-rise-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (max-width: 360px) { .tb-social-conflict-dialog { padding: 20px 16px 16px; border-radius: 20px; } .tb-social-conflict-dialog h2 { font-size: 20px; } }
+@media (prefers-reduced-motion: reduce) { .tb-social-conflict-overlay, .tb-social-conflict-dialog { animation: none; } }
+@media (forced-colors: active) { .tb-social-conflict-dialog, .tb-social-conflict-actions button { border: 1px solid CanvasText; } }

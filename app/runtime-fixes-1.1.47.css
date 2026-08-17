@@ -1,0 +1,116 @@
+/* Teenz Bible 1.1.47 mobile stability and crew-ranking clarity patch */
+:root {
+  --tb-visual-viewport-width: 100vw;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+body {
+  min-height: 100dvh;
+  touch-action: pan-y;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Prevent fixed overlays from following iOS layout viewport instead of visual viewport. */
+.fixed.inset-0,
+[role="dialog"] {
+  max-width: var(--tb-visual-viewport-width);
+}
+
+/* Preserve intentional horizontal card scrollers without allowing the document itself to drift. */
+.overflow-x-auto,
+.overflow-x-scroll {
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep bottom controls above the Home Indicator in the iOS app shell. */
+.safe-bottom,
+.fixed.bottom-0,
+nav.fixed {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* Leaflet needs an explicit stable height in iOS WebView during route transitions. */
+.leaflet-container {
+  max-width: 100%;
+  touch-action: pan-x pan-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* The Ranking header previously stacked three ornate control groups on narrow phones.
+   Keep the game style, while turning it into a single compact and readable control area. */
+@media (max-width: 480px) {
+  [data-loc="client/src/pages/Leaderboard.tsx:752"] {
+    gap: 0.25rem !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:766"] {
+    padding: 0.55rem 0.85rem !important;
+    border-radius: 0 0 14px 14px;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:767"] {
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:772"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 0.55rem !important;
+    align-items: center !important;
+    padding: 0.45rem 0.7rem 0.3rem !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:774"],
+  [data-loc="client/src/pages/Leaderboard.tsx:819"] {
+    display: flex !important;
+    width: auto !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:786"],
+  [data-loc="client/src/pages/Leaderboard.tsx:801"] {
+    padding: 0.45rem 0.55rem !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:831"],
+  [data-loc="client/src/pages/Leaderboard.tsx:846"] {
+    padding: 0.45rem 0.5rem !important;
+    font-size: 10px !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:782"],
+  [data-loc="client/src/pages/Leaderboard.tsx:783"],
+  [data-loc="client/src/pages/Leaderboard.tsx:784"],
+  [data-loc="client/src/pages/Leaderboard.tsx:785"],
+  [data-loc="client/src/pages/Leaderboard.tsx:827"],
+  [data-loc="client/src/pages/Leaderboard.tsx:828"],
+  [data-loc="client/src/pages/Leaderboard.tsx:829"],
+  [data-loc="client/src/pages/Leaderboard.tsx:830"] {
+    display: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:912"] {
+    padding-top: 0.2rem !important;
+  }
+}

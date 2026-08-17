@@ -1,0 +1,9 @@
+{
+  "version": "1.1.64",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.64.zip",
+  "checksum": "a82fb31a8f966033a387ac6dab1173a45cd4a8fa4f33b5014c3c4508e3c45983",
+  "size": 32669279,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Fixes an onboarding timing condition so the First 60 Seconds panel appears only after the profile, membership, class, and Crew setup flow has completed. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}

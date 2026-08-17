@@ -1,0 +1,9 @@
+{
+  "version": "1.1.68",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.68.zip",
+  "checksum": "35b7489e311f75c5816fb3c627b79600f15962a48ea746da75ed5122669297b7",
+  "size": 32737363,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Removes standalone page headers across the primary screens and begins each screen directly with its first useful content card or control row. The package retains the historical Python ZIP_DEFLATED Firebase OTA format for installed iOS updater compatibility testing."
+}

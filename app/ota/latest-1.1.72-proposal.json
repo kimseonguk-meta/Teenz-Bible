@@ -1,0 +1,9 @@
+{
+  "version": "1.1.72",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.72.zip",
+  "checksum": "93497fa878274c15af20166f1bafb006b4b1642775b2ff840f163e58d8aa2e16",
+  "size": 37062551,
+  "uploadedAt": "2026-08-16T01:30:00+08:00",
+  "status": "published-to-firebase-hosting",
+  "notes": "Fixes the escaped whitespace regex that prevented Profile's existing Join or Create a Crew composer from opening after Ranking Create Crew navigation."
+}

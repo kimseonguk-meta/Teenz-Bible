@@ -1,0 +1,9 @@
+{
+  "version": "1.1.53",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.53.zip",
+  "checksum": "2429e165ae1c447bf406f15d3be90c5e56a7b525645efdbd355a611ccfaa3bad",
+  "size": 32548898,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Restores Home Bible Meme and Bible Map, separates the Today’s Journey eyebrow from the dynamic reading action, simplifies Bible AI controls, restores Ranking filter labels, makes crew creation and invite-code joining visible in My Crew, repairs Seonguk’s 12C crew index, removes QA/Test crew data, and applies the shared centered header system to all five primary screens."
+}

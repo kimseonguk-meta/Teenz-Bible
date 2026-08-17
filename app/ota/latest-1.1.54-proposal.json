@@ -1,0 +1,9 @@
+{
+  "version": "1.1.54",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.54.zip",
+  "checksum": "40f3a8b0f721e6d63bec002dd81676ab8bab545bc16a8301c78bd08d30c44452",
+  "size": 32558157,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Replaces the overlarge shared header cards with compact title strips, removes the duplicate Profile nickname from the header, and preserves all v1.1.53 Home, Bible AI, Ranking, crew, and OTA fixes."
+}

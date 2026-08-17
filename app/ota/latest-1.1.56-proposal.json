@@ -1,0 +1,9 @@
+{
+  "version": "1.1.56",
+  "url": "https://teens-bible-94271.web.app/ota/1.1.56.zip",
+  "checksum": "61238cb0bc48663e78805dcdef236488606c8ddb313fd138348263f7fcc0f65a",
+  "size": 32592301,
+  "uploadedAt": "PENDING_DEPLOYMENT",
+  "status": "staged-not-published",
+  "notes": "Official Capgo CLI-built OTA archive for the App Store iOS Capacitor Updater. Includes v1.1.55 activation recovery, v1.1.54 compact headers, and the current PWA bundle."
+}
