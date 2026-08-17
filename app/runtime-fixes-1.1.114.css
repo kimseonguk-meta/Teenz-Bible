@@ -2138,3 +2138,23 @@ nav.fixed {
     .tb-crew-modal-viewport > div { max-height: calc(100vh - 24px) !important; }
   }
 }
+
+/* v1.1.115 — allow real mobile touch events inside Crew overlays. */
+.tb-modal-viewport-safe.tb-crew-modal-viewport {
+  touch-action: auto !important;
+}
+.tb-modal-viewport-safe.tb-crew-modal-viewport > *,
+.tb-modal-viewport-safe.tb-crew-modal-viewport button,
+.tb-modal-viewport-safe.tb-crew-modal-viewport input,
+.tb-modal-viewport-safe.tb-crew-modal-viewport textarea,
+.tb-modal-viewport-safe.tb-crew-modal-viewport select {
+  touch-action: manipulation !important;
+}
+.tb-modal-viewport-safe.tb-crew-modal-viewport > div {
+  pointer-events: auto !important;
+}
+@media (max-width: 640px) {
+  .tb-modal-viewport-safe.tb-crew-modal-viewport {
+    overscroll-behavior: contain !important;
+  }
+}
