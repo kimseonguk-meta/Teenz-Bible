@@ -14,6 +14,9 @@ importers:
       '@capacitor/app':
         specifier: 8.0.0
         version: 8.0.0(@capacitor/core@8.5.0)
+      '@capacitor/camera':
+        specifier: 8.2.2
+        version: 8.2.2(@capacitor/core@8.5.0)
       '@capacitor/core':
         specifier: 8.5.0
         version: 8.5.0
@@ -44,6 +47,11 @@ packages:
 
   '@capacitor/app@8.0.0':
     resolution: {integrity: sha512-OwzIkUs4w433Bu9WWAEbEYngXEfJXZ9Wmdb8eoaqzYBgB0W9/3Ed/mh6sAYPNBAZlpyarmewgP7Nb+d3Vrh+xA==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+
+  '@capacitor/camera@8.2.2':
+    resolution: {integrity: sha512-WfaOsqrjPzvXGvrIBFqFtOZHBrc3hwGKssZje4ioJDNfTjIq2zrUNDXP+q6XmLyzifCYOu2YFC6k1+leb/BqSg==}
     peerDependencies:
       '@capacitor/core': '>=8.0.0'
 
@@ -772,6 +780,10 @@ snapshots:
       firebase: 12.17.1
 
   '@capacitor/app@8.0.0(@capacitor/core@8.5.0)':
+    dependencies:
+      '@capacitor/core': 8.5.0
+
+  '@capacitor/camera@8.2.2(@capacitor/core@8.5.0)':
     dependencies:
       '@capacitor/core': 8.5.0
 

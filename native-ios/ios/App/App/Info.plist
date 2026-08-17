@@ -64,6 +64,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 		<true/>
+		<key>NSCameraUsageDescription</key>
+		<string>Teenz Bible uses the camera when you choose to take a profile photo.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Teenz Bible lets you choose a profile photo from your photo library.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Teenz Bible may save an edited profile photo when you choose to do so.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Teenz Bible uses the microphone for optional voice questions in Bible AI.</string>
 		<key>NSSpeechRecognitionUsageDescription</key>

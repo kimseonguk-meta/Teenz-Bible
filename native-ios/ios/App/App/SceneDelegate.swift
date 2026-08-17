@@ -6,6 +6,10 @@ import GoogleSignIn
 private final class TeenzBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
+        // The app's web bundle calls the Capacitor plugin name `FirebaseAuthentication`.
+        // Register our in-target implementation explicitly so it cannot be omitted by
+        // generated capacitor.config class lists during a sync.
+        bridge?.registerPluginType(TeenzFirebaseAuthenticationPlugin.self)
         if bridge?.plugin(withName: "FirebaseAuthentication") != nil {
             CAPLog.print("✅ Teenz FirebaseAuthentication bridge registered")
         } else {
