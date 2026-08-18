@@ -68,20 +68,20 @@ const buildCleanupUpdates = async (database, uid) => {
     updates[`blocks/${blockerUid}/${uid}`] = null;
   }
 
-  // Feedback and safety reports submitted by the user are removed. Reports made
-  // against other users are retained only if they do not identify this account.
+  // Remove feedback and reports that either originate from or identify this
+  // account, so the deleted profile cannot remain discoverable in moderation data.
   for (const [id, record] of Object.entries(asObject(feedbackSnapshot.val()))) {
     if (record?.uid === uid || record?.userUid === uid || record?.authorUid === uid) {
       updates[`feedbacks/${id}`] = null;
     }
   }
   for (const [id, record] of Object.entries(asObject(reportsSnapshot.val()))) {
-    if (record?.reporterUid === uid || record?.uid === uid || record?.authorUid === uid) {
+    if (record?.reporterUid === uid || record?.reportedUid === uid || record?.uid === uid || record?.userUid === uid || record?.authorUid === uid) {
       updates[`reports/${id}`] = null;
     }
   }
   for (const [id, record] of Object.entries(asObject(safetyReportsSnapshot.val()))) {
-    if (record?.reporterUid === uid) updates[`safetyReports/${id}`] = null;
+    if (record?.reporterUid === uid || record?.reportedUid === uid) updates[`safetyReports/${id}`] = null;
   }
 
   return updates;
