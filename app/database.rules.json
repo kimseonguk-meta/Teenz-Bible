@@ -80,6 +80,20 @@
       ".read": true,
       ".write": true
     },
+    "blocks": {
+      "$ownerUid": {
+        ".read": "auth != null && auth.uid == $ownerUid",
+        "$blockedUid": {
+          ".write": "auth != null && auth.uid == $ownerUid && ((!data.exists() && newData.child('uid').val() == $blockedUid && newData.child('blockedAt').isNumber()) || (data.exists() && !newData.exists()))"
+        }
+      }
+    },
+    "safetyReports": {
+      "$reportId": {
+        ".read": false,
+        ".write": "auth != null && !data.exists() && newData.child('reporterUid').val() == auth.uid && newData.child('reportedUid').isString() && newData.child('reason').isString() && newData.child('createdAt').isNumber()"
+      }
+    },
     "feedbacks": {
       ".read": "auth != null",
       ".write": "auth != null"
