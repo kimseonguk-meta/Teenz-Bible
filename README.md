@@ -1,5 +1,8 @@
 # Teenz Bible — 현재 라이브 Firebase 릴리스 복구본
 
+> **현재 운영·배포 기준선:** 새 작업을 시작하기 전에 반드시 [`docs/HANDOFF.md`](docs/HANDOFF.md)를 읽으세요. 이 README의 Hosting 복구 이력은 2026-08-13 기준 정적 복구 기록이며, 이후의 **OTA 1.1.127**, **iOS 1.2.1 (Build 6)**, Firebase 안전 기능·App Store 제출 상태는 인수인계 문서가 최신 기준입니다.
+
+
 이 폴더는 다음 URL에 현재 서비스 중인 파일을 **Firebase Hosting 릴리스 API 기준으로 전체 복구한 결과**다.
 
 > https://teens-bible-94271.web.app/
