@@ -5,7 +5,7 @@
 > **GitHub 기준 브랜치:** [`main`](https://github.com/kimseonguk-meta/Teenz-Bible/tree/main)
 > **앱 릴리스 기준:** PWA/OTA `1.1.127`, iOS `1.2.1 (Build 6)`
 
-이 문서는 일반 인수인계 문서가 아니라, **다음 AI가 첫 대화부터 무엇을 이해하고 어떤 실수를 피해야 하는지** 기록한 작업 연속성 가이드다. 작업을 시작하기 전에 [`HANDOFF.md`](HANDOFF.md), [`ENVIRONMENT.md`](ENVIRONMENT.md), [`NEW_DEVELOPER_CHECKLIST.md`](NEW_DEVELOPER_CHECKLIST.md), [`../native-ios/README.md`](../native-ios/README.md)를 함께 읽는다.
+이 문서는 일반 인수인계 문서가 아니라, **다음 AI가 첫 대화부터 무엇을 이해하고 어떤 실수를 피해야 하는지** 기록한 작업 연속성 가이드다. 작업을 시작하기 전에 [`AI_FINAL_SUMMARY.md`](AI_FINAL_SUMMARY.md), [`HANDOFF.md`](HANDOFF.md), [`ENVIRONMENT.md`](ENVIRONMENT.md), [`NEW_DEVELOPER_CHECKLIST.md`](NEW_DEVELOPER_CHECKLIST.md), [`../native-ios/README.md`](../native-ios/README.md)를 함께 읽는다.
 
 ## 1. AI에게 바로 붙여넣을 시작 프롬프트
 
@@ -191,7 +191,7 @@ pnpm exec cap sync ios
 |---|---|
 | Galaxy PWA | Crew create/join/close, Profile avatar/photo sheet, Ranking modal, Bible AI input/back |
 | iPad iOS | Apple Login, Google Login, Camera, Gallery, Profile photo, Cheer, OTA restart |
-| 두 계정 | Cheer 수신·conffetti·24h 제한, Report, Block |
+| 두 계정 | Cheer 수신·confetti·24h 제한, Report, Block |
 | 테스트 계정 | Delete Account UI guard 및 end-to-end 삭제 |
 | App Store | screenshot, privacy, support URL, App Review Notes, Build 연결 |
 
@@ -215,7 +215,7 @@ git diff --cached --check
 ## 11. 다음 AI가 시작할 첫 행동
 
 1. 사용자에게 현재 원하는 변경 또는 Apple 상태 화면을 요청한다.
-2. GitHub `main`을 pull하고 현재 `app/ota/latest.json` 및 docs를 읽는다.
+2. GitHub `main`을 pull하고 `AI_FINAL_SUMMARY.md`, 현재 `app/ota/latest.json` 및 docs를 읽는다.
 3. 변경이 web/native/Firebase/App Store 중 어디에 속하는지 분류한다.
 4. 사용자의 실제 기기와 현재 화면을 기준으로 재현한다.
 5. 안전한 staging·검증·배포·GitHub commit 순서를 수행한다.

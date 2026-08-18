@@ -6,7 +6,7 @@
 > **앱 릴리스 기준 커밋:** `844ed22` (Build 6 iOS base bundle/OTA 1.1.127) 및 `45b8369` (iOS Firebase 규칙 미러)
 > **비밀·환경 변수 관리:** [`docs/ENVIRONMENT.md`](ENVIRONMENT.md)를 반드시 함께 읽는다.
 > **첫 작업일 체크리스트:** [`docs/NEW_DEVELOPER_CHECKLIST.md`](NEW_DEVELOPER_CHECKLIST.md)를 순서대로 실행한다.
-> **다음 AI용 맥락:** [`docs/AI_CONTINUITY_GUIDE.md`](AI_CONTINUITY_GUIDE.md)를 먼저 읽고 작업을 시작한다.
+> **다음 AI용 맥락:** [`docs/AI_FINAL_SUMMARY.md`](AI_FINAL_SUMMARY.md)를 먼저 읽고, 이어서 [`docs/AI_CONTINUITY_GUIDE.md`](AI_CONTINUITY_GUIDE.md)를 읽고 작업을 시작한다.
 
 ## 1. 현재 서비스 기준선
 
@@ -266,7 +266,8 @@ git reset --hard origin/main
 
 새 작업을 시작하는 사람에게 다음만 전달하면 된다.
 
-> GitHub `main`을 clone한 뒤 `docs/AI_CONTINUITY_GUIDE.md`, `docs/HANDOFF.md`, `docs/ENVIRONMENT.md`, `docs/NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`를 이 순서로 읽으세요. 현재 PWA/OTA는 1.1.127, App Store native version은 1.2.1 Build 6입니다. `app/`이 Firebase Hosting의 원본 기준이고, iOS native build 전에는 `native-ios/web/` 및 `native-ios/ios/App/App/public/`을 같은 버전으로 맞추세요. 서비스 계정·Apple 인증서·비밀키는 GitHub에 넣지 말고 소유자에게 안전한 별도 채널로 받으세요.
+> GitHub `main`을 clone한 뒤 `docs/AI_FINAL_SUMMARY.md`, `docs/AI_CONTINUITY_GUIDE.md`, `docs/HANDOFF.md`, `docs/ENVIRONMENT.md`, `docs/NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`를 이 순서로 읽으세요.
+ 현재 PWA/OTA는 1.1.127, App Store native version은 1.2.1 Build 6입니다. `app/`이 Firebase Hosting의 원본 기준이고, iOS native build 전에는 `native-ios/web/` 및 `native-ios/ios/App/App/public/`을 같은 버전으로 맞추세요. 서비스 계정·Apple 인증서·비밀키는 GitHub에 넣지 말고 소유자에게 안전한 별도 채널로 받으세요.
 
 ## References
 
