@@ -1,0 +1,18 @@
+# Local environment files. Keep the safe template tracked.
+.env
+.env.*
+!.env.example
+
+# Firebase CLI local state and downloaded service-account credentials.
+.firebase/
+*-firebase-adminsdk-*.json
+*service-account*.json
+
+# Apple signing material and local Xcode provisioning data.
+*.p12
+*.p8
+*.mobileprovision
+*.cer
+
+# Local operating-system metadata.
+.DS_Store

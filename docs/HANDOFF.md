@@ -4,6 +4,7 @@
 > **최종 갱신:** 2026-08-18 (GMT+8)
 > **기준 GitHub 브랜치:** [`main`](https://github.com/kimseonguk-meta/Teenz-Bible/tree/main)
 > **최신 기준 커밋:** `45b8369` — iOS 웹 번들 Firebase 안전 규칙 동기화
+> **비밀·환경 변수 관리:** [`docs/ENVIRONMENT.md`](ENVIRONMENT.md)를 반드시 함께 읽는다.
 
 ## 1. 현재 서비스 기준선
 
@@ -122,7 +123,7 @@ unzip -tq "$ROOT/ota/1.1.128.zip"
 
 ### 4.4 Firebase Hosting 배포와 라이브 검증
 
-Firebase 권한은 **저장소에 넣지 말고** 소유자 계정 또는 별도 안전한 서비스 계정으로 제공한다. 서비스 계정 JSON, Apple 인증서, `.p12`, 비밀키, API secret은 GitHub에 커밋하지 않는다.
+Firebase 권한은 **저장소에 넣지 말고** 소유자 계정 또는 별도 안전한 서비스 계정으로 제공한다. 서비스 계정 JSON, Apple 인증서, `.p12`, 비밀키, API secret은 GitHub에 커밋하지 않는다. 자세한 local CLI 인증 및 `.env.example` 사용법은 [`docs/ENVIRONMENT.md`](ENVIRONMENT.md)를 따른다.
 
 ```bash
 # 예시: 로그인한 Firebase CLI 환경
