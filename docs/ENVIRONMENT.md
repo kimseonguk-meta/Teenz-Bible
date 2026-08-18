@@ -6,6 +6,7 @@
 
 | 파일 | 용도 | GitHub 추적 여부 | 비밀값 여부 |
 |---|---|---:|---:|
+| `.firebaserc` | Firebase CLI의 기본 프로젝트 별칭 (`teens-bible-94271`) | 예 | 아니오 |
 | `firebase.json` | Hosting, Functions, RTDB rules 배포 경로 | 예 | 아니오 |
 | `app/database.rules.json` | 실제 RTDB 권한 규칙의 원본 | 예 | 아니오 |
 | `functions/package.json` | Cloud Functions Node 20·Firebase dependencies | 예 | 아니오 |

@@ -3,8 +3,9 @@
 > **목적:** 이 문서는 Teenz Bible을 처음 이어받는 개발자 또는 운영자가 현재 서비스 기준선을 복구하고, 웹 OTA·Firebase·iOS·App Store 작업을 안전하게 이어갈 수 있도록 작성한 운영 문서입니다.
 > **최종 갱신:** 2026-08-18 (GMT+8)
 > **기준 GitHub 브랜치:** [`main`](https://github.com/kimseonguk-meta/Teenz-Bible/tree/main)
-> **최신 기준 커밋:** `45b8369` — iOS 웹 번들 Firebase 안전 규칙 동기화
+> **앱 릴리스 기준 커밋:** `844ed22` (Build 6 iOS base bundle/OTA 1.1.127) 및 `45b8369` (iOS Firebase 규칙 미러)
 > **비밀·환경 변수 관리:** [`docs/ENVIRONMENT.md`](ENVIRONMENT.md)를 반드시 함께 읽는다.
+> **첫 작업일 체크리스트:** [`docs/NEW_DEVELOPER_CHECKLIST.md`](NEW_DEVELOPER_CHECKLIST.md)를 순서대로 실행한다.
 
 ## 1. 현재 서비스 기준선
 
@@ -264,7 +265,7 @@ git reset --hard origin/main
 
 새 작업을 시작하는 사람에게 다음만 전달하면 된다.
 
-> GitHub `main`을 clone한 뒤 `docs/HANDOFF.md`와 `native-ios/README.md`를 먼저 읽으세요. 현재 PWA/OTA는 1.1.127, App Store native version은 1.2.1 Build 6입니다. `app/`이 Firebase Hosting의 원본 기준이고, iOS native build 전에는 `native-ios/web/` 및 `native-ios/ios/App/App/public/`을 같은 버전으로 맞추세요. 서비스 계정·Apple 인증서·비밀키는 GitHub에 넣지 말고 소유자에게 안전한 별도 채널로 받으세요.
+> GitHub `main`을 clone한 뒤 `docs/HANDOFF.md`, `docs/ENVIRONMENT.md`, `docs/NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`를 이 순서로 읽으세요. 현재 PWA/OTA는 1.1.127, App Store native version은 1.2.1 Build 6입니다. `app/`이 Firebase Hosting의 원본 기준이고, iOS native build 전에는 `native-ios/web/` 및 `native-ios/ios/App/App/public/`을 같은 버전으로 맞추세요. 서비스 계정·Apple 인증서·비밀키는 GitHub에 넣지 말고 소유자에게 안전한 별도 채널로 받으세요.
 
 ## References
 

@@ -14,7 +14,7 @@ The project uses **CocoaPods**, not Swift Package Manager. This is intentional. 
 | Native dependency manager | CocoaPods |
 | Capacitor | 8.5.0 |
 | Open-source OTA engine | `@capgo/capacitor-updater` 8.51.5 |
-| OTA server | Firebase Realtime Database `ota/latest.json` → Firebase Hosting ZIP |
+| OTA manifest and ZIP host | Firebase Hosting `https://teens-bible-94271.web.app/ota/latest.json` → Firebase Hosting ZIP |
 | Capgo Cloud account or billing | **Not used** |
 | Bundle activation | Download with `next({ id })`; activate at the next app background/restart |
 
@@ -56,9 +56,9 @@ First select a physically connected and trusted iPhone or iPad, then click **Run
 
 ## Firebase OTA behavior
 
-The embedded web bundle checks Firebase only when running in the native app. It calls `notifyAppReady()`, reads `https://teens-bible-94271-default-rtdb.firebaseio.com/ota/latest.json`, downloads the newer bundle, and queues it with `next({ id })`. Therefore a newly downloaded OTA becomes active after the app is sent to the background or fully restarted.
+The embedded web bundle checks for an update only when running in the native app. It calls `notifyAppReady()`, reads `https://teens-bible-94271.web.app/ota/latest.json` from Firebase Hosting, downloads the ZIP referenced by that manifest, verifies the checksum, and queues it with `next({ id })`. Therefore a newly downloaded OTA becomes active after the app is sent to the background or fully restarted.
 
-Before TestFlight testing, create the OTA ZIP with `@capgo/cli bundle zip`, publish the CLI-generated checksum to Firebase `latest.json`, and verify that the ZIP has `index.html` at its root. Do not use an arbitrary standard ZIP generator for the production iOS bundle.
+Before TestFlight testing, create the OTA ZIP using the verified staging approach in [`../docs/HANDOFF.md`](../docs/HANDOFF.md): preserve the working ZIP structure, ensure `index.html` is at the ZIP root, calculate the SHA-256 and size from the actual file, and publish those exact values in `app/ota/latest.json`. Do not change the ZIP layout or manifest shape without testing on a real iOS device.
 
 ## Native-versus-OTA rule
 
