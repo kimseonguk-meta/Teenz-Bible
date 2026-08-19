@@ -378,7 +378,13 @@ git log -1 --oneline
 
 ---
 
-## 12. 가장 짧은 시작 문장
+## 12. 새 AI 트러블슈팅과 대화형 작업 규칙
+
+실제 개발 오류를 해결할 때는 [`NEXT_AI_TROUBLESHOOTING.md`](NEXT_AI_TROUBLESHOOTING.md)를 먼저 읽는다. 이 가이드는 깨끗한 clone, PWA 버튼 무반응, OTA 미적용, ZIP checksum, Firebase Rules/Functions, Google·Apple 로그인, CocoaPods/Xcode, iPad viewport/safe-area, Delete Account·Report·Block, App Store 상태 문제를 원인별로 분리한다.
+
+Meta.AI 또는 Project Hatch에 붙여넣을 전문 프롬프트는 [`META_AI_PROJECT_HATCH_CONVERSATIONAL_PROMPT.txt`](META_AI_PROJECT_HATCH_CONVERSATIONAL_PROMPT.txt)다. [`START_SUCCESSOR_AI.command`](../START_SUCCESSOR_AI.command)를 실행하면 이 전문이 `Documents/Teenz_Bible_Next_AI_Prompt.txt`로 복사되고 macOS 클립보드에도 복사된다.
+
+## 13. 가장 짧은 시작 문장
 
 다음 AI가 긴 문서를 읽기 전에 사용할 최소 문장은 다음이다.
 
@@ -395,6 +401,9 @@ Teenz Bible을 이어서 작업해줘. GitHub main의 docs/TEENZ_BIBLE_MASTER_HA
 - [`NEW_DEVELOPER_CHECKLIST.md`](NEW_DEVELOPER_CHECKLIST.md)
 - [`native-ios/README.md`](../native-ios/README.md)
 - [`Teenz_Bible_Handoff_Slides.md`](Teenz_Bible_Handoff_Slides.md)
+- [`NEXT_AI_TROUBLESHOOTING.md`](NEXT_AI_TROUBLESHOOTING.md)
+- [`META_AI_PROJECT_HATCH_CONVERSATIONAL_PROMPT.txt`](META_AI_PROJECT_HATCH_CONVERSATIONAL_PROMPT.txt)
+- [`START_SUCCESSOR_AI.command`](../START_SUCCESSOR_AI.command)
 
 ## References
 
