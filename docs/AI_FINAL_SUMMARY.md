@@ -7,9 +7,12 @@
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
-- 현재 웹/OTA 기준: `1.1.127`
+- 현재 웹/OTA 기준: `1.1.185` — Reader Skin/🎨 Theme trigger 비노출 패치
+- 최신 GitHub 커밋: `1c92969` (`chore: preserve latest native iOS assets and handoff docs`)
 - 현재 iOS App Store 기준: Version `1.2.1`, Build `6`
 - App Store 상태는 시간이 지나면 바뀌므로, 제출·취소·릴리스 전에는 반드시 App Store Connect의 최신 화면을 확인한다.
+- 1.1.185 최종 웹 검증: `/bible/genesis/1` 본문 정상, Error Boundary 없음, 사용자 화면에서 `Reader Skin`·`Dark ✓` 비노출. Profile은 초기 진입이 느릴 수 있으나 이후 본문과 사진 sheet가 정상 표시됐다.
+- 현재 후속 확인 과제: Profile 초기 Loading 지연, Bible AI 실제 질문 응답, Store 구매·적용의 실계정 검증, 영어·한국어 성경 문체/품질 전수 검수.
 
 ## 구조를 이렇게 이해한다
 
