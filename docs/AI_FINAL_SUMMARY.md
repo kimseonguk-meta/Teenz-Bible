@@ -5,8 +5,7 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: 1.1.190 meme close redesign 커밋으로 갱신 예정
-
+- 최신 GitHub 커밋: `6106e73` — `fix: OTA 1.1.190 quiet meme close control`
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
 - 현재 웹/OTA 기준: **1.1.190**
@@ -70,7 +69,7 @@ Report는 `safetyReports`, Block은 `blocks`를 사용한다. Report·Block·Che
 
 ## 다음 작업 시작 순서
 
-1. GitHub `main`에서 최신 커밋 `8767071`을 pull한다.
+1. GitHub `main`에서 최신 커밋 `6106e73`을 pull한다.
 2. 이 문서, `AI_CONTINUITY_GUIDE.md`, `HANDOFF.md`, `ENVIRONMENT.md`, `NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`, 최종 감사 보고서를 읽는다.
 3. `git status --short`로 로컬 변경을 확인한다. 저장소에는 과거 `native-ios/`와 여러 asset·OTA 파일이 untracked 상태로 남아 있을 수 있으므로, 사용자가 요청하지 않은 파일은 일괄 add하지 않는다.
 4. 사용자에게 현재 원하는 변경과 최신 App Store Connect 화면을 요청한다.
