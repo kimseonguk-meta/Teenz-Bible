@@ -14,5 +14,8 @@
 *.mobileprovision
 *.cer
 
+# Private Firebase data exports. Never commit user data to GitHub.
+private-exports/
+
 # Local operating-system metadata.
 .DS_Store

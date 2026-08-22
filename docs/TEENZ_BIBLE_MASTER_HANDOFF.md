@@ -2,13 +2,13 @@
 
 > **이 파일만 먼저 읽어도 된다.** 2026년 8월 23일 이후 Meta.AI, Project Hatch 또는 다른 AI 에이전트가 Teenz Bible을 별도 설명 없이 이어받을 수 있도록 현재 상태·구조·운영 절차·보안 경계·테스트 방법·첫 실행 프롬프트를 한 곳에 모았다.
 
-**최종 기준일:** 2026-08-18 (GMT+8)
+**최종 기준일:** 2026-08-22 (GMT+8)
 **GitHub:** [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible)
 **기준 브랜치:** `main`
 **최근 기준 커밋:** 저장소를 clone한 뒤 `git log -1 --oneline`으로 확인
 **Firebase project:** `teens-bible-94271`
 **Live PWA:** <https://teens-bible-94271.web.app/>
-**현재 웹/OTA 기준:** `1.1.127`
+**현재 웹/OTA 기준:** `1.1.195`
 **현재 iOS 기준:** Version `1.2.1`, Build `6`
 
 ---
@@ -46,7 +46,7 @@ Teenz Bible은 Firebase Hosting에서 제공되는 **복구된 정적 PWA**를 �
 | GitHub | `main`, 최신 커밋은 `git log -1 --oneline`으로 확인 | 소스·문서·설정의 출발점 |
 | Firebase | `teens-bible-94271` | 잘못된 프로젝트 배포 방지 |
 | Web source | `app/` | Firebase Hosting의 canonical source |
-| PWA/OTA | `1.1.127` | 현재 web runtime·manifest·ZIP 기준 |
+| PWA/OTA | `1.1.195` | 현재 web runtime·manifest·ZIP 기준 |
 | iOS App | Version `1.2.1`, Build `6` | 마지막 App Store 제출 binary 기준 |
 | App Store | 2026-08-18 당시 Build 6 재제출 후 `Waiting for Review` | **현재 상태는 App Store Connect에서 재확인** |
 | TestFlight | Build 6를 테스트할 수 있다는 Apple 이메일 수신 | TestFlight 가능과 App Store 승인 상태는 서로 다름 |
@@ -58,10 +58,10 @@ Teenz Bible은 Firebase Hosting에서 제공되는 **복구된 정적 PWA**를 �
 | 작업 목적 | 기준 파일·폴더 | 절대 잊지 말 것 |
 |---|---|---|
 | PWA UI·웹 동작 | `app/` | 새 웹 작업은 여기서 시작 |
-| Versioned runtime | `app/runtime-fixes-1.1.127.js`, `.css` | 새 수정은 새 versioned runtime으로 분리 |
+| Versioned runtime | `app/runtime-fixes-1.1.195.js`, `.css` | 새 수정은 새 versioned runtime으로 분리 |
 | PWA entry | `app/index.html` | 새 JS/CSS version 참조가 맞아야 함 |
 | OTA manifest | `app/ota/latest.json` | ZIP URL·SHA-256·size 일치 필수 |
-| OTA ZIP | `app/ota/1.1.127.zip` | ZIP root에 `index.html` 필요 |
+| OTA ZIP | `app/ota/1.1.195.zip` | ZIP root에 `index.html` 필요 |
 | RTDB Rules | `app/database.rules.json` | Firebase Rules의 원본 기준 |
 | Cloud Functions | `functions/index.js` | Delete Account 서버 logic 포함 |
 | Firebase project mapping | `.firebaserc` | 기본 project `teens-bible-94271` |
@@ -177,7 +177,7 @@ https://teens-bible-94271.web.app/ota/latest.json
 
 새 웹 버전을 배포할 때는 다음 순서를 지킨다.
 
-1. 현재 `1.1.127` runtime을 새 버전으로 복사한다. 예: `1.1.128`.
+1. 현재 `1.1.195` runtime을 새 버전으로 복사한다. 예: `1.1.196`.
 2. 새 JS의 `PATCH_VERSION`을 바꾼다.
 3. `app/index.html`의 runtime JS/CSS 참조를 같은 새 버전으로 바꾼다.
 4. Galaxy PWA에서 실제 touch, modal, overlay, navigation을 테스트한다.
@@ -331,7 +331,7 @@ cat app/ota/latest.json
 git log -1 --oneline
 ```
 
-현재 기준은 Firebase project `teens-bible-94271`, Node 20, OTA 1.1.127, iOS Version 1.2.1 Build 6이다. App Store status는 문서의 기록보다 최신 사용자 화면을 우선한다.
+현재 기준은 Firebase project `teens-bible-94271`, Node 20, OTA 1.1.195, iOS Version 1.2.1 Build 6이다. App Store status는 문서의 기록보다 최신 사용자 화면을 우선한다.
 
 ### 3단계 — 요청 분류
 
@@ -403,6 +403,8 @@ Teenz Bible을 이어서 작업해줘. GitHub main의 docs/TEENZ_BIBLE_MASTER_HA
 - [`Teenz_Bible_Handoff_Slides.md`](Teenz_Bible_Handoff_Slides.md)
 - [`NEXT_AI_TROUBLESHOOTING.md`](NEXT_AI_TROUBLESHOOTING.md)
 - [`META_AI_PROJECT_HATCH_CONVERSATIONAL_PROMPT.txt`](META_AI_PROJECT_HATCH_CONVERSATIONAL_PROMPT.txt)
+- [`APP_STORE_CONNECT_METADATA.md`](APP_STORE_CONNECT_METADATA.md)
+- [`CONVERSATION_DECISIONS.md`](CONVERSATION_DECISIONS.md)
 - [`START_SUCCESSOR_AI.command`](../START_SUCCESSOR_AI.command)
 
 ## References
