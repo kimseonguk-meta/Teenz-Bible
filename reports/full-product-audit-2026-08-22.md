@@ -155,7 +155,7 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 **이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X는 이전 OTA에서 보정되었고, 로그인 카드 UI는 1.1.187에서 조정되었다. Profile 사진 crop 모달의 overlay/panel 겹침·오프셋 문제는 OTA 1.1.189에서 보정되었다. 사용자가 지적한 밈 상세 모달의 과도하게 눈에 띄는 X는 OTA 1.1.190에서 bottom rail에서 분리해 이미지 오른쪽 위의 32px 조용한 아이콘으로 바꾸었고, Share·Save만 동일 폭의 2열 44px 버튼으로 남겼다. 이어서 X가 박스 안에서 어긋나 보이는 문제를 **OTA 1.1.191**에서 버튼과 glyph 모두 grid 중앙 정렬로 보정해 Firebase Hosting에 배포했다.
 
-**프로필 사진 crop 검증:** 공개 웹앱에서 아바타 → Choose from Gallery → 사진 업로드 흐름을 재현했다. crop overlay는 앱 shell 전체를 덮는 fixed host로 표시되고, panel은 shell 중앙에 정렬되며, This Week·Recent Badges 등 배경 카드에는 `visibility:hidden`, `opacity:0`, `pointer-events:none`이 적용된다. 수정 후 측정값은 shell/overlay x=400, width=480, y=0, panel x=424, width=432이며, 1.1.190에도 해당 crop host/overlay 보호 로직이 그대로 보존되었다.
+**프로필 사진 crop 검증:** 공개 웹앱에서 아바타 → Choose from Gallery → 사진 업로드 흐름을 재현했다. crop overlay는 앱 shell 전체를 덮는 fixed host로 표시되고, panel은 shell 중앙에 정렬되며, This Week·Recent Badges 등 배경 카드에는 `visibility:hidden`, `opacity:0`, `pointer-events:none`이 적용된다. 수정 후 측정값은 shell/overlay x=400, width=480, y=0, panel x=424, width=432이며, 1.1.191에도 해당 crop host/overlay 보호 로직이 그대로 보존되었다.
 
 **공개 웹 검증:** cache-busting manifest에서 1.1.191, URL `/ota/1.1.191.zip`, SHA-256 `fe05d22e2c7bfa37261e999c65383ce54af19c2ca1087d1f6a65233bf865c087`, size `68,602,255`을 확인했다. 공개 브라우저 runtime은 1.1.191이며, X 박스는 `[830,300,32,32]`, 버튼 computed style은 `display:grid; place-items:center`, glyph도 grid 중앙 정렬이었다. Share·Save는 각각 `[424,1040,211,44]` 및 `[645,1040,211,44]`로 동일 정렬되었고, 공개 X 클릭 후 모달이 사라졌다. 기존 Profile crop host/overlay selector는 보존했다.
 

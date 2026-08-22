@@ -5,7 +5,7 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: 1.1.191 handoff 문서 커밋으로 갱신 예정 (implementation: 1.1.191 close glyph centering)
+- 최신 GitHub 커밋: `b61ad84` — `fix: OTA 1.1.191 center meme close glyph`
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
 - 현재 웹/OTA 기준: **1.1.191**
