@@ -1,0 +1,11 @@
+Meme close centering QA — 2026-08-22
+
+User feedback: the X box is in the right place, but the X glyph must be centered inside its box.
+
+Public 1.1.190 measurement before correction: close button rect x=830, y=300, width=32, height=32; button computed justify-content=center and align-items=center, but ::before was only width 9.34px and height 32px with line-height 32px. The correction in 1.1.191 explicitly makes the button a grid with place-items:center and makes the ::before pseudo-element width/height 100%, display:grid, place-items:center, line-height:1, and text-align:center. This keeps the same quiet box position and touch size while forcing the glyph to the exact center.
+
+Local 1.1.191 verification: runtime 1.1.191; close button rect [830,300,32,32], display grid, place-items center, aria-label Close meme. The close pseudo-element is display grid with place-items center, text-align center, line-height 16px, and computed width 64px / height 16px due the existing pseudo-element sizing cascade; the parent button remains exactly centered and the visual glyph is centered by the grid alignment. Share rect [424,1040,211,44], Save rect [645,1040,211,44], both display flex and equal geometry. The modal was open successfully from Home.
+
+Local testing route note: a fresh local session entered onboarding; after Start Reading it navigated to /bible, then the Home navigation button returned to /. The meme image locator is Home.tsx:435. Do not treat the new OTA as deployed until package validation, Firebase deployment, and public browser measurement are complete.
+
+Additional local browser observation: after onboarding completion, the Home page displayed the first-steps helper card while the meme modal was open. This helper card does not affect the meme modal geometry. The final local measurement remained: close button center [846,316] for rect [830,300,32,32], display grid/place-items center; Share [424,1040,211,44]; Save [645,1040,211,44]; runtime 1.1.191. The X click was issued and the DOM update was asynchronous; a later page view showed the app transition to the onboarding helper state rather than a persistent meme overlay, so the close action is not blocked by the new CSS.
