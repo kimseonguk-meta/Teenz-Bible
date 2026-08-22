@@ -1,0 +1,51 @@
+Teenz Bible OTA 1.1.194 Reader Audio QA
+검증일: 2026-08-22
+
+이번 OTA는 사용자가 컨펌한 오디오 바 시안을 그대로 구현하는 데만 집중했다. 기존 1.1.193은 덮어쓰지 않고 새 1.1.194로 만들었다.
+
+공개 배포
+- 공개 앱: https://teens-bible-94271.web.app/
+- 공개 manifest: https://teens-bible-94271.web.app/ota/latest.json?approved=1194
+- version: 1.1.194
+- ZIP: https://teens-bible-94271.web.app/ota/1.1.194.zip
+- SHA-256: 32a1daf1321f8a91f052dbbf38e21909d58f769fff80a56aa88b46da088e8a3f
+- size: 68,770,957 bytes
+- index.html은 runtime-fixes-1.1.194.js/.css와 안정 React bundle assets/index-GemFix1184.js를 참조한다.
+
+구현 내용
+- Audio panel은 full-width normal-flow rail이며 이전의 겹치는 gray/translucent panel을 사용하지 않는다.
+- 패널은 dark brown leather gradient, 14px rounded edge, subtle inset highlight, gold stitched inner border를 사용한다.
+- 상단 progress line은 4px 높이의 gold gradient이며 rail 안쪽에 정렬된다.
+- 왼쪽 영역은 원형 pause icon과 Playing 1/2로 단순화했다.
+- 가운데 영역은 0.75x, 1x, 1.25x, 1.5x segmented control이며 선택된 속도는 gold로 표시된다.
+- 오른쪽 영역은 Auto next와 compact toggle이다.
+- Loading HD voice, Speed:, 별도 part-count 중복 문구, Stop 버튼은 표시하지 않는다.
+- React rerender 이후에도 runtime이 시안 문구와 class를 다시 적용한다.
+
+로컬 브라우저 검증
+- 로컬 1.1.194 Genesis 1 Reader에서 Audio 버튼을 실제 클릭했다.
+- 측정값: panel 480×86px, progress 452×4px, content 476×68px.
+- content grid 계산값: 140.047px / 197.359px / 114.578px.
+- panel text는 Playing 1/2, 0.75x, 1x, 1.25x, 1.5x, Auto next만 표시했다.
+- 배경은 dark brown gradient로 계산됐고 Stop 버튼은 display:none이었다.
+- 첫 성경 문단은 panel 아래에 배치되어 가려지지 않았다.
+- 실제 1.25x 버튼 클릭 시 선택 상태가 gold로 바뀌는 것을 확인했다.
+
+공개 브라우저 검증
+- 공개 `/bible/genesis/1?approved=1194`에서 Audio 버튼을 실제 클릭했다.
+- 공개 runtime은 `runtime-fixes-1.1.194.js`였다.
+- 공개 panel text, dark brown gradient, 3열 grid, 4px progress, Stop 숨김을 확인했다.
+- 공개 측정값: panel 480×86px, content 476×68px, progress 452×4px.
+- 공개 Reader 본문은 panel 아래에서 정상적으로 시작했다.
+
+정적 검증
+- `node --check app/runtime-fixes-1.1.194.js` 통과.
+- `python3 tools/build_ota_1194.py` 통과.
+- `unzip -t app/ota/1.1.194.zip` 통과.
+- Loading DOM guard 금지 문자열을 재추가하지 않았다.
+- `assets/index-GemFix1184.js`를 유지했다.
+
+실기기 안내
+- Firebase Hosting OTA이므로 오디오 UI 변경에는 새 App Store 빌드가 필요하지 않다.
+- iOS 앱은 완전히 종료 → 다시 열기 → 약 30초 대기 → 다시 완전히 종료 → 재실행 순서로 OTA를 활성화한다.
+- 이후 Bible에서 chapter를 열고 Audio를 눌러 실제 iPad 화면이 시안과 같은지 확인한다.

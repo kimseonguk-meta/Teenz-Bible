@@ -5,16 +5,16 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: 1.1.193 문서·배포 변경을 포함한 후속 커밋은 이 문서 갱신 후 생성된다.
+- 최신 GitHub 커밋: 1.1.194 문서·배포 변경을 포함한 후속 커밋은 이 문서 갱신 후 생성된다.
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
-- 현재 웹/OTA 기준: **1.1.193 배포 완료**
+- 현재 웹/OTA 기준: **1.1.194 배포 완료**
 - OTA manifest: <https://teens-bible-94271.web.app/ota/latest.json>
-- 1.1.193 SHA-256: `40099108d1ba4c45c6fea5e9fb15c92f23d25860d245a0350d8ec8d533ea6a8d`; ZIP size: `68,713,710` bytes.
+- 1.1.194 SHA-256: `32a1daf1321f8a91f052dbbf38e21909d58f769fff80a56aa88b46da088e8a3f`; ZIP size: `68,770,957` bytes.
 - 현재 iOS App Store 기준: Version `1.2.1`, Build `6`
 - App Store 상태는 시간이 지나면 바뀌므로 제출·취소·릴리스 전에는 반드시 App Store Connect의 최신 화면을 확인한다.
 
-OTA 1.1.186은 Profile의 Reset Progress 확인창, Bible Reader 읽기 제한 모달 X, Home 백업 카드 X를 보정했다. OTA 1.1.187은 Home 상단 Google·Apple 로그인/백업 카드를 다른 콘텐츠 섹션과 구분되는 차분한 녹색 계열로 조정하고, X는 시각적으로 작고 보조적인 `×` 아이콘으로 표시했다. OTA 1.1.188은 오늘의 밈 상세 모달의 닫기·공유·저장 action rail을 균일한 3열로 정렬했다. OTA 1.1.189는 Profile 사진 crop 모달의 실제 DOM loc 1141/1142를 대상으로 수정했다. OTA 1.1.190은 사용자가 거슬린다고 지적한 meme X를 bottom rail에서 분리해 이미지 오른쪽 위의 32×32px 조용한 아이콘으로 바꾸고, Share·Save만 동일한 2열 44px 버튼으로 남겼다. OTA 1.1.191은 X 박스와 glyph 모두 grid 중앙 정렬로 보정했다. **OTA 1.1.192는 Ranking에서 Block을 제거하고 Report를 확인·사유 입력·제출 단계로 분리**했다. More actions를 펼치면 Report this member만 보이며, Continue 후 reason select와 optional details textarea를 거쳐야 제출할 수 있다. 사유 미선택 시 Submit report는 비활성화된다. runtime은 `aria-label="Close meme"`와 `title="Close"`도 설정한다. **1.1.193은 Reader audio를 승인된 slim dark-leather rail로 바꿨다.** 공개 검증값은 panel 480×84px, progress 480×4px, content 3열 grid이며 Stop은 숨겨지고 본문은 가려지지 않는다. 또한 native Capacitor에서만 Profile photo option tap bridge가 설치된다. crop overlay는 Profile.tsx:903의 zero-size relative host 안에 잘못된 fixed 좌표로 남지 않고, shell 크기의 fixed host 안 absolute layer로 표시되어야 한다. crop panel은 shell 중앙에 놓이며 This Week·Recent Badges 같은 배경 Profile surface에는 `tb-photo-modal-background-hidden`이 적용되어야 한다. 이전 photo sheet loc 907/914와 crop loc 1141/1142를 혼동하지 않는다.
+OTA 1.1.186은 Profile의 Reset Progress 확인창, Bible Reader 읽기 제한 모달 X, Home 백업 카드 X를 보정했다. OTA 1.1.187은 Home 상단 Google·Apple 로그인/백업 카드를 다른 콘텐츠 섹션과 구분되는 차분한 녹색 계열로 조정하고, X는 시각적으로 작고 보조적인 `×` 아이콘으로 표시했다. OTA 1.1.188은 오늘의 밈 상세 모달의 닫기·공유·저장 action rail을 균일한 3열로 정렬했다. OTA 1.1.189는 Profile 사진 crop 모달의 실제 DOM loc 1141/1142를 대상으로 수정했다. OTA 1.1.190은 사용자가 거슬린다고 지적한 meme X를 bottom rail에서 분리해 이미지 오른쪽 위의 32×32px 조용한 아이콘으로 바꾸고, Share·Save만 동일한 2열 44px 버튼으로 남겼다. OTA 1.1.191은 X 박스와 glyph 모두 grid 중앙 정렬로 보정했다. **OTA 1.1.192는 Ranking에서 Block을 제거하고 Report를 확인·사유 입력·제출 단계로 분리**했다. More actions를 펼치면 Report this member만 보이며, Continue 후 reason select와 optional details textarea를 거쳐야 제출할 수 있다. 사유 미선택 시 Submit report는 비활성화된다. runtime은 `aria-label="Close meme"`와 `title="Close"`도 설정한다. **1.1.194는 사용자가 승인한 Reader audio를 정확한 slim dark-leather rail로 적용했다.** 공개 검증값은 panel 480×86px, progress 452×4px, content 3열 grid이며 Stop은 숨겨지고 본문은 가려지지 않는다. 문구는 Playing 1/2, 0.75x, 1x, 1.25x, 1.5x, Auto next로 단순화했다. 또한 native Capacitor에서만 Profile photo option tap bridge가 설치된다. crop overlay는 Profile.tsx:903의 zero-size relative host 안에 잘못된 fixed 좌표로 남지 않고, shell 크기의 fixed host 안 absolute layer로 표시되어야 한다. crop panel은 shell 중앙에 놓이며 This Week·Recent Badges 같은 배경 Profile surface에는 `tb-photo-modal-background-hidden`이 적용되어야 한다. 이전 photo sheet loc 907/914와 crop loc 1141/1142를 혼동하지 않는다.
 
 ## 구조를 이렇게 이해한다
 
@@ -56,9 +56,9 @@ Ranking 유저 모달의 기본 액션은 Cheer·More actions·Close다. Block �
 
 Reset Progress, Reading gate X, Home backup X는 React 렌더링에 종속되지 않도록 runtime bridge에서 처리한다. 다만 runtime bridge를 광범위한 MutationObserver로 감싸면 자기 자신이 만든 mutation을 다시 감지하는 무한 루프가 생길 수 있으므로, 제한된 주기와 예외 격리 방식을 유지한다.
 
-## 1.1.193 Profile 사진 bridge 상태
+## 1.1.194 Profile 사진 bridge 상태
 
-Photo sheet의 `Take Photo` 버튼은 Profile.tsx:1101 (`capture=environment`)로, `Choose from Gallery` 버튼은 Profile.tsx:1120으로 연결된다. native Capacitor 환경에서 input은 `display:block`, 1px transparent로 유지되며 capture-phase handler가 현재 사용자 tap 안에서 `input.click()`을 실행한다. 로컬 native-platform simulation은 두 버튼의 bound marker와 mapping을 통과했다. 단, 실제 iPad 카메라 권한·Photos picker presentation은 아직 사용자의 실기기에서 확인해야 한다. iPad에서 실패하면 Camera/photo picker plugin 설치·등록을 조사하고 Build 7 이상 native archive를 검토한다.
+Photo sheet의 `Take Photo` 버튼은 Profile.tsx:1101 (`capture=environment`)로, `Choose from Gallery` 버튼은 Profile.tsx:1120으로 연결된다. 이 1.1.193 photo bridge는 1.1.194에서도 유지된다. native Capacitor 환경에서 input은 `display:block`, 1px transparent로 유지되며 capture-phase handler가 현재 사용자 tap 안에서 `input.click()`을 실행한다. 로컬 native-platform simulation은 두 버튼의 bound marker와 mapping을 통과했다. 단, 실제 iPad 카메라 권한·Photos picker presentation은 아직 사용자의 실기기에서 확인해야 한다. iPad에서 실패하면 Camera/photo picker plugin 설치·등록을 조사하고 Build 7 이상 native archive를 검토한다.
 
 ## 제품 감사에서 남은 우선 과제
 
@@ -67,7 +67,7 @@ Photo sheet의 `Take Photo` 버튼은 Profile.tsx:1101 (`capture=environment`)�
 1. 영어와 한국어 성경 본문 일부에 과도한 구어체·속어·부적절하게 보일 수 있는 표현이 남아 있다. Genesis 1·2, Acts 13, Revelation 1에서 특히 확인되었다. 66권을 무리하게 일괄 치환하지 말고 원문 대조와 장별 콘텐츠 QA를 수행한다.
 2. Quiz 버튼의 보상 표기와 결과 화면의 Gem 보상이 다르게 보이는 사례가 있다. 실제 문제·정답·재시도·보상 상수를 단일 기준으로 정리해야 한다.
 3. Cheer 수신함과 콘페티는 수신 Cheer가 있는 두 계정으로 실제 iPad에서 검증해야 한다. 현재 감사 계정은 익명·수신 데이터 없음 상태였으며, 푸시 알림 기능은 현재 범위가 아니다.
-4. Profile photo는 1.1.193에서 browser sheet와 native simulation까지 통과했지만 실제 iPad에서 Take Photo·Choose from Gallery picker가 나타나는지 확인해야 한다.
+4. Profile photo bridge는 1.1.193·1.1.194에서 browser sheet와 native simulation까지 통과했지만 실제 iPad에서 Take Photo·Choose from Gallery picker가 나타나는지 확인해야 한다.
 5. Ranking Report는 공개 웹에서 Block 제거, More actions, 확인 단계, 사유 선택, 선택적 설명, Submit 활성화 조건까지 검증했다. 실제 신고 전송과 관리자 검토 흐름은 별도 테스트 계정으로 확인해야 한다.
 
 Gem Store의 Reader/Frames/Pets, 구매·소유권·장착 적용은 실제 계정에서 한 번 더 검증한다. Theme 기능은 제품에서 제거된 상태이므로 새 Theme 기능을 추가하지 않는다. Reader Skin trigger도 사용자 화면에 노출하지 않는다.
@@ -80,8 +80,8 @@ Report는 `safetyReports`를 사용한다. 현재 Ranking UI에서는 Block 버�
 
 ## 다음 작업 시작 순서
 
-1. GitHub `main`에서 1.1.193 문서·패키지 커밋을 pull하고 공개 manifest checksum을 대조한다.
-2. 이 문서, `AI_CONTINUITY_GUIDE.md`, `HANDOFF.md`, `ENVIRONMENT.md`, `NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`, `reports/reader-audio-photo-qa-1193.txt`, 최종 감사 보고서를 읽는다.
+1. GitHub `main`에서 1.1.194 문서·패키지 커밋을 pull하고 공개 manifest checksum을 대조한다.
+2. 이 문서, `AI_CONTINUITY_GUIDE.md`, `HANDOFF.md`, `ENVIRONMENT.md`, `NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`, `reports/reader-audio-qa-1193.txt`, `reports/reader-audio-qa-1194.txt`, 최종 감사 보고서를 읽는다.
 3. `git status --short`로 로컬 변경을 확인한다. 저장소에는 과거 `native-ios/`와 여러 asset·OTA 파일이 untracked 상태로 남아 있을 수 있으므로, 사용자가 요청하지 않은 파일은 일괄 add하지 않는다.
 4. 사용자에게 현재 원하는 변경과 최신 App Store Connect 화면을 요청한다.
 5. 요청을 web OTA, Firebase, native iOS, App Store 중 하나로 분류한다.
