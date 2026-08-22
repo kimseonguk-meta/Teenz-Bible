@@ -5,15 +5,15 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: `b61ad84` — `fix: OTA 1.1.191 center meme close glyph`
+- 최신 GitHub 커밋: `b61ad84` — `fix: OTA 1.1.192 ranking report safety flow`
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
-- 현재 웹/OTA 기준: **1.1.191**
+- 현재 웹/OTA 기준: **1.1.192**
 - OTA manifest: <https://teens-bible-94271.web.app/ota/latest.json>
 - 현재 iOS App Store 기준: Version `1.2.1`, Build `6`
 - App Store 상태는 시간이 지나면 바뀌므로 제출·취소·릴리스 전에는 반드시 App Store Connect의 최신 화면을 확인한다.
 
-OTA 1.1.186은 Profile의 Reset Progress 확인창, Bible Reader 읽기 제한 모달 X, Home 백업 카드 X를 보정했다. OTA 1.1.187은 Home 상단 Google·Apple 로그인/백업 카드를 다른 콘텐츠 섹션과 구분되는 차분한 녹색 계열로 조정하고, X는 시각적으로 작고 보조적인 `×` 아이콘으로 표시했다. OTA 1.1.188은 오늘의 밈 상세 모달의 닫기·공유·저장 action rail을 균일한 3열로 정렬했다. OTA 1.1.189는 Profile 사진 crop 모달의 실제 DOM loc 1141/1142를 대상으로 수정했다. OTA 1.1.190은 사용자가 거슬린다고 지적한 meme X를 bottom rail에서 분리해 이미지 오른쪽 위의 32×32px 조용한 아이콘으로 바꾸고, Share·Save만 동일한 2열 44px 버튼으로 남겼다. **OTA 1.1.191은 X 박스와 glyph 모두 grid 중앙 정렬로 보정**했다. runtime은 `aria-label="Close meme"`와 `title="Close"`도 설정한다. crop overlay는 Profile.tsx:903의 zero-size relative host 안에 잘못된 fixed 좌표로 남지 않고, shell 크기의 fixed host 안 absolute layer로 표시되어야 한다. crop panel은 shell 중앙에 놓이며 This Week·Recent Badges 같은 배경 Profile surface에는 `tb-photo-modal-background-hidden`이 적용되어야 한다. 이전 photo sheet loc 907/914와 crop loc 1141/1142를 혼동하지 않는다.
+OTA 1.1.186은 Profile의 Reset Progress 확인창, Bible Reader 읽기 제한 모달 X, Home 백업 카드 X를 보정했다. OTA 1.1.187은 Home 상단 Google·Apple 로그인/백업 카드를 다른 콘텐츠 섹션과 구분되는 차분한 녹색 계열로 조정하고, X는 시각적으로 작고 보조적인 `×` 아이콘으로 표시했다. OTA 1.1.188은 오늘의 밈 상세 모달의 닫기·공유·저장 action rail을 균일한 3열로 정렬했다. OTA 1.1.189는 Profile 사진 crop 모달의 실제 DOM loc 1141/1142를 대상으로 수정했다. OTA 1.1.190은 사용자가 거슬린다고 지적한 meme X를 bottom rail에서 분리해 이미지 오른쪽 위의 32×32px 조용한 아이콘으로 바꾸고, Share·Save만 동일한 2열 44px 버튼으로 남겼다. OTA 1.1.191은 X 박스와 glyph 모두 grid 중앙 정렬로 보정했다. **OTA 1.1.192는 Ranking에서 Block을 제거하고 Report를 확인·사유 입력·제출 단계로 분리**했다. More actions를 펼치면 Report this member만 보이며, Continue 후 reason select와 optional details textarea를 거쳐야 제출할 수 있다. 사유 미선택 시 Submit report는 비활성화된다. runtime은 `aria-label="Close meme"`와 `title="Close"`도 설정한다. crop overlay는 Profile.tsx:903의 zero-size relative host 안에 잘못된 fixed 좌표로 남지 않고, shell 크기의 fixed host 안 absolute layer로 표시되어야 한다. crop panel은 shell 중앙에 놓이며 This Week·Recent Badges 같은 배경 Profile surface에는 `tb-photo-modal-background-hidden`이 적용되어야 한다. 이전 photo sheet loc 907/914와 crop loc 1141/1142를 혼동하지 않는다.
 
 ## 구조를 이렇게 이해한다
 
@@ -45,6 +45,10 @@ Hosting/PWA/OTA, RTDB Rules, Cloud Functions는 서로 별도 배포 대상이�
 - OTA는 ZIP을 받은 즉시 적용되지 않는다. 앱 열기 → 약 30초 대기 → 앱을 완전히 종료 → 다시 열기 순서로 활성화한다.
 - 현재 Build 6 다음 native 업로드는 같은 Version을 유지한다면 Build 7 이상이어야 한다.
 
+## 1.1.192 Ranking 신고 안전 규칙
+
+Ranking 유저 모달의 기본 액션은 Cheer·More actions·Close다. Block 버튼은 현재 active runtime에서 제거되었다. More actions 아래에는 Report this member만 노출된다. Report를 누르면 Are you sure? 확인 단계가 먼저 나오며, Continue 후 신고 사유를 선택하고 선택적으로 최대 500자의 추가 설명을 입력해야 Submit report가 활성화된다. 실제 저장은 기존 `safetyReports.json` 경로를 사용하며 reason과 details를 기록한다. QA에서는 실제 신고 전송을 실행하지 않는다.
+
 ## 1.1.190 안전 규칙
 
 `safeRemoveChild` guard는 유지한다. 검은 화면을 일으킨 Loading DOM guard는 절대 재추가하지 않는다. 금지된 구현 패턴은 `__tbLoadingFallbackGuard`, `tb-native-stale-loading`, `installLoadingFallbackGuard`, `hideStaleFallbacks`, `scheduleHideStaleFallbacks`다.
@@ -58,6 +62,7 @@ Reset Progress, Reading gate X, Home backup X는 React 렌더링에 종속되지
 1. 영어와 한국어 성경 본문 일부에 과도한 구어체·속어·부적절하게 보일 수 있는 표현이 남아 있다. Genesis 1·2, Acts 13, Revelation 1에서 특히 확인되었다. 66권을 무리하게 일괄 치환하지 말고 원문 대조와 장별 콘텐츠 QA를 수행한다.
 2. Quiz 버튼의 보상 표기와 결과 화면의 Gem 보상이 다르게 보이는 사례가 있다. 실제 문제·정답·재시도·보상 상수를 단일 기준으로 정리해야 한다.
 3. Cheer 수신함과 콘페티는 수신 Cheer가 있는 두 계정으로 실제 iPad에서 검증해야 한다. 현재 감사 계정은 익명·수신 데이터 없음 상태였으며, 푸시 알림 기능은 현재 범위가 아니다.
+4. Ranking Report는 공개 웹에서 Block 제거, More actions, 확인 단계, 사유 선택, 선택적 설명, Submit 활성화 조건까지 검증했다. 실제 신고 전송과 관리자 검토 흐름은 별도 테스트 계정으로 확인해야 한다.
 
 Gem Store의 Reader/Frames/Pets, 구매·소유권·장착 적용은 실제 계정에서 한 번 더 검증한다. Theme 기능은 제품에서 제거된 상태이므로 새 Theme 기능을 추가하지 않는다. Reader Skin trigger도 사용자 화면에 노출하지 않는다.
 
@@ -65,11 +70,11 @@ Gem Store의 Reader/Frames/Pets, 구매·소유권·장착 적용은 실제 계�
 
 Delete Account는 체크박스 동의, `DELETE` 직접 입력, 최근 로그인 조건을 통과해야 하며 실제 삭제는 테스트 계정으로만 검증한다. 성공 판단은 버튼 활성화가 아니라 Firebase Auth 삭제와 RTDB data cleanup까지 확인하는 것이다.
 
-Report는 `safetyReports`, Block은 `blocks`를 사용한다. Report·Block·Cheer 차단은 실제 iPad와 Galaxy PWA에서 touch interaction까지 검증한다.
+Report는 `safetyReports`를 사용한다. 현재 Ranking UI에서는 Block 버튼을 제거했지만, 기존 `blocks` 데이터와 backend helper가 저장소에 남아 있을 수 있으므로 후속 작업에서 임의로 Rules나 historical data를 삭제하지 않는다. Report의 확인·사유 입력·제출은 실제 iPad와 Galaxy PWA에서 touch interaction까지 검증한다.
 
 ## 다음 작업 시작 순서
 
-1. GitHub `main`에서 최신 1.1.191 handoff 커밋을 pull한다.
+1. GitHub `main`에서 최신 1.1.192 handoff 커밋을 pull한다.
 2. 이 문서, `AI_CONTINUITY_GUIDE.md`, `HANDOFF.md`, `ENVIRONMENT.md`, `NEW_DEVELOPER_CHECKLIST.md`, `native-ios/README.md`, 최종 감사 보고서를 읽는다.
 3. `git status --short`로 로컬 변경을 확인한다. 저장소에는 과거 `native-ios/`와 여러 asset·OTA 파일이 untracked 상태로 남아 있을 수 있으므로, 사용자가 요청하지 않은 파일은 일괄 add하지 않는다.
 4. 사용자에게 현재 원하는 변경과 최신 App Store Connect 화면을 요청한다.

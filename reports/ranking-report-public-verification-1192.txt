@@ -1,0 +1,31 @@
+# Ranking report public verification — 2026-08-22
+
+Public app: https://teens-bible-94271.web.app/?final=1192-ranking-report
+Public route verified: https://teens-bible-94271.web.app/leaderboard
+Public OTA manifest: https://teens-bible-94271.web.app/ota/latest.json?final=1192-ranking-report
+
+## Browser verification
+
+- Opened a public Ranking member profile and confirmed the action portal is visible.
+- Confirmed the portal contains CHEER, More actions, and Close.
+- Confirmed Block is not present in the portal.
+- Opened More actions and confirmed only Report this member is revealed.
+- Selected Report this member and confirmed an Are you sure? confirmation dialog appears before the report form.
+- The confirmation dialog contains Cancel and Continue; Continue opens the reason form.
+- The reason form contains a required reason selector, optional details textarea, Cancel, and Submit report.
+- With no reason selected, Submit report is disabled.
+- Selecting Harassment or bullying enabled Submit report.
+- No report was submitted during QA; external side effects were intentionally avoided.
+
+## OTA manifest observed
+
+{"version":"1.1.192","url":"https://teens-bible-94271.web.app/ota/1.1.192.zip","checksum":"592ad419960a017cd56e4b76420ba56f392be582c983a91abef445e61d3688ea","size":68657382}
+
+## Scope
+
+Active runtime: app/runtime-fixes-1.1.192.js and app/runtime-fixes-1.1.192.css. Stable React bundle remains assets/index-GemFix1184.js. Existing Profile crop and Reader safety bridges were preserved in the copied runtime.
+
+## User action required
+
+The user should fully close and reopen the iOS app to activate the OTA, then check Ranking on the real iPad. A real-device report submission should only be performed with an intentional test account and a knowingly valid test report.
+
