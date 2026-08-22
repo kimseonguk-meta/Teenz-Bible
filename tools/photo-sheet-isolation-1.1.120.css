@@ -1,0 +1,60 @@
+
+
+/* v1.1.120 — Isolate the profile photo sheet from the Profile scroll/content stacking context. */
+[data-loc="client/src/pages/Profile.tsx:907"] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483646 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 16px max(16px, env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box !important;
+  background: rgba(0, 0, 0, 0.78) !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:912"] {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:914"] {
+  position: fixed !important;
+  z-index: 1 !important;
+  right: auto !important;
+  bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  left: 50% !important;
+  top: auto !important;
+  inset-inline: auto !important;
+  width: min(calc(100vw - 32px), 432px) !important;
+  min-width: 0 !important;
+  max-width: 432px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  margin: 0 !important;
+  padding: 20px 16px max(20px, env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(230, 195, 70, 0.55) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, #2a1b10 0%, #17100b 100%) !important;
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.72), 0 0 24px rgba(230, 195, 70, 0.14) !important;
+  transform: translateX(-50%) !important;
+  animation: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  pointer-events: auto !important;
+}

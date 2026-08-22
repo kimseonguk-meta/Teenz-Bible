@@ -683,25 +683,7 @@
     };
   });
 
-  const readLiveFirebaseSession = async () => {
-    try {
-      const core = await import('/assets/index-CcqAg5kV.js');
-      const auth = typeof core.H === 'function' ? core.H() : null;
-      const user = auth?.currentUser;
-      if (!user) return null;
-      const token = await user.getIdToken(true);
-      if (!token) return null;
-      return { uid: user.uid, token, name: user.displayName || user.email?.split('@')[0] || 'A friend' };
-    } catch (_) {
-      return null;
-    }
-  };
   const getTeenzSession = async () => {
-    const live = await readLiveFirebaseSession();
-    if (live?.uid && live?.token) {
-      cachedTeenzSession = live;
-      return live;
-    }
     if (cachedTeenzSession?.uid && cachedTeenzSession?.token) return cachedTeenzSession;
     cachedTeenzSession = readStoredFirebaseSession() || await readIndexedDbFirebaseSession();
     return cachedTeenzSession;
@@ -805,10 +787,7 @@
         }
       }).catch((error) => {
         console.warn('[Teenz Bible] Cheer was not sent:', error);
-        const message = /401|unauthorized|sign in is required/i.test(error?.message || '')
-          ? 'Your session needs a refresh. Please close and reopen Teenz Bible, then try again.'
-          : 'We could not send your Cheer right now. Please try again.';
-        showCheerFeedback(message, 'error');
+        showCheerFeedback(error.message || 'Could not send your Cheer. Please try again.', 'error');
       }).finally(() => {
         action.dataset.tbSending = '0';
         action.removeAttribute('aria-busy');
@@ -842,65 +821,11 @@
     }
   };
 
-  /* v1.1.91 — direct portal actions for the Ranking member modal */
-  const getRankingMemberModal = () => document.querySelector('[data-tb-ranking-member-modal="1"]')
-    || Array.from(document.querySelectorAll('.fixed.inset-0')).find((overlay) => /CHEER/i.test(overlay.textContent || '') && /CLOSE/i.test(overlay.textContent || ''));
-
-  const removeRankingActionPortal = () => document.getElementById('tb-ranking-action-portal')?.remove();
-
-  const installRankingActionPortal = () => {
-    const modal = getRankingMemberModal();
-    if (!modal) { removeRankingActionPortal(); return; }
-    if (document.getElementById('tb-ranking-action-portal')) return;
-
-    const nativeCheer = modal.querySelector('[data-tb-cheer]') || Array.from(modal.querySelectorAll('button')).find((button) => /CHEER/i.test(button.textContent || ''));
-    const targetUid = nativeCheer?.dataset.tbMemberUid || '';
-    const targetName = nativeCheer?.dataset.tbMemberName || modal.querySelector('h3')?.textContent?.trim() || 'this friend';
-
-    const portal = document.createElement('div');
-    portal.id = 'tb-ranking-action-portal';
-    portal.className = 'tb-ranking-action-portal';
-    portal.innerHTML = '<button type="button" data-tb-portal-close>Close</button><button type="button" data-tb-portal-cheer>⚔️ Cheer</button>';
-    document.body.appendChild(portal);
-
-    const close = () => {
-      const liveModal = getRankingMemberModal();
-      liveModal?.remove();
-      removeRankingActionPortal();
-    };
-    portal.querySelector('[data-tb-portal-close]')?.addEventListener('click', close, { passive: true });
-    portal.querySelector('[data-tb-portal-cheer]')?.addEventListener('click', async (event) => {
-      const button = event.currentTarget;
-      if (!targetUid) { showCheerFeedback('Could not identify this member. Please close and reopen the profile.', 'error'); return; }
-      if (button.dataset.tbSending === '1') return;
-      button.dataset.tbSending = '1';
-      button.textContent = 'Sending…';
-      try {
-        const result = await sendDeliveredCheer({ dataset: { tbMemberUid: targetUid, tbMemberName: targetName } });
-        if (result.status === 'limited') {
-          showCheerFeedback(`You already cheered for ${result.recipientName}. Try again in ${result.hours}h.`, 'info');
-        } else {
-          showCheerFeedback(`Sent! ${result.recipientName} will see your encouragement.`, 'success');
-          window.setTimeout(close, 700);
-        }
-      } catch (error) {
-        console.warn('[Teenz Bible] Portal Cheer was not sent:', error);
-        const message = /401|unauthorized|sign in is required/i.test(error?.message || '')
-          ? 'Your session needs a refresh. Please close and reopen Teenz Bible, then try again.'
-          : 'We could not send your Cheer right now. Please try again.';
-        showCheerFeedback(message, 'error');
-      } finally {
-        button.dataset.tbSending = '0';
-        button.textContent = '⚔️ Cheer';
-      }
-    });
-  };
-
   const applyCompactBibleAi = () => {
     const aiRoot = document.querySelector('[data-loc="client/src/pages/BibleAI.tsx:503"]');
     const aiInput = document.querySelector('[data-loc="client/src/pages/BibleAI.tsx:729"]');
-    const existingBack = document.querySelector('.tb-ai-direct-back');
-    if (!aiRoot) { existingBack?.remove(); return; }
+    document.querySelectorAll('.tb-ai-direct-back').forEach((button) => button.remove());
+    if (!aiRoot) return;
     aiRoot.classList.add('tb-ai-screen', 'tb-ai-compact-layout');
     if (aiInput?.parentElement) aiInput.parentElement.classList.add('tb-ai-compact-composer');
     const source = document.querySelector('.tb-ai-source-strip');
@@ -908,7 +833,6 @@
       source.classList.add('tb-ai-compact-context');
       source.textContent = 'Read John 3 in context';
     }
-    if (existingBack) return;
     const back = document.createElement('button');
     back.type = 'button';
     back.className = 'tb-ai-direct-back';
@@ -924,11 +848,11 @@
   let deliveredUiPasses = 0;
   const deliveredUiTimer = window.setInterval(() => {
     installRankingMemberActions();
-    installRankingActionPortal();
     applyCompactBibleAi();
     if (deliveredUiPasses % 8 === 0) void renderCheerInbox();
     deliveredUiPasses += 1;
-  }, 500);
+    if (deliveredUiPasses >= 80) window.clearInterval(deliveredUiTimer);
+  }, 350);
 
   let rankingPolishPasses = 0;
   const rankingPolishTimer = window.setInterval(() => {

@@ -998,8 +998,6 @@
       pet.querySelectorAll('*').forEach((node) => node.style.setProperty('pointer-events', 'none', 'important'));
     }
 
-    const avatarPropKey = Object.keys(avatar).find((key) => key.startsWith('__reactProps'));
-    const originalAvatarOnClick = avatarPropKey ? avatar[avatarPropKey]?.onClick : null;
     let avatarActionAt = 0;
     const activateAvatar = (event) => {
       const now = Date.now();
@@ -1009,25 +1007,12 @@
         return;
       }
       avatarActionAt = now;
-      try {
-        if (typeof originalAvatarOnClick === 'function') {
-          originalAvatarOnClick({ currentTarget: avatar, target: avatar, preventDefault() {}, stopPropagation() {} });
-        }
-      } catch (_) { /* preserve the original Profile page */ }
-      let attempts = 0;
-      const openChooser = () => {
-        const changePhoto = Array.from(document.querySelectorAll('button')).find((button) => /^Change Photo$/i.test(button.innerText.trim()));
-        if (changePhoto) {
-          changePhoto.click();
-          return;
-        }
-        if (attempts++ < 24) window.setTimeout(openChooser, 50);
-      };
-      window.setTimeout(openChooser, 0);
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      try { avatar.click(); } catch (_) { /* preserve the original Profile page */ }
     };
     avatar.addEventListener('pointerup', activateAvatar, true);
     avatar.addEventListener('touchend', activateAvatar, true);
-    avatar.addEventListener('click', activateAvatar, true);
   };
 
   const installProfileCrewActionBridges = () => {

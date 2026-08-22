@@ -2158,3 +2158,73 @@ nav.fixed {
     overscroll-behavior: contain !important;
   }
 }
+
+
+/* v1.1.117 — Profile photo sheet: restore full viewport overlay and prevent zero-height clipping. */
+@media (max-width: 640px) {
+  [data-loc="client/src/pages/Profile.tsx:907"] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483001 !important;
+    display: flex !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-width: none !important;
+    max-height: 100dvh !important;
+    box-sizing: border-box !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 16px max(16px, env(safe-area-inset-bottom)) !important;
+    transform: none !important;
+    overflow: hidden !important;
+    pointer-events: auto !important;
+  }
+
+  [data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:912"] {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  [data-loc="client/src/pages/Profile.tsx:914"] {
+    position: relative !important;
+    inset: auto !important;
+    width: min(100%, 432px) !important;
+    max-width: 432px !important;
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    animation: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    pointer-events: auto !important;
+  }
+}
+
+[data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:914"] {
+  pointer-events: auto !important;
+}
+.playwright-screenshot [data-loc="client/src/pages/Profile.tsx:907"] { position: fixed !important; }
+
+/* Keep the original avatar click target above decorative artwork. */
+[data-loc="client/src/pages/Profile.tsx:697"] {
+  position: relative !important;
+  z-index: 2147483646 !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:632"],
+[data-loc="client/src/pages/Profile.tsx:633"] {
+  pointer-events: none !important;
+}
+.reduce-motion [data-loc="client/src/pages/Profile.tsx:914"] { animation: none !important; }
+

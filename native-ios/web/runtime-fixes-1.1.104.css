@@ -2089,3 +2089,52 @@ nav.fixed {
   display: none !important;
   pointer-events: none !important;
 }
+
+/* v1.1.105 — keep Profile My Crews Create/Join forms inside the centered modal on mobile. */
+.tb-crew-form-panel {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+  transform-origin: center center !important;
+  overflow: visible !important;
+}
+.tb-crew-form-panel > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+@media (max-width: 640px) {
+  .tb-crew-modal-viewport {
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    overflow: hidden !important;
+  }
+  .tb-crew-modal-viewport > div {
+    box-sizing: border-box !important;
+    width: min(100%, 430px) !important;
+    max-width: 430px !important;
+    max-height: calc(100dvh - max(24px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 24px)) !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .tb-crew-form-panel input,
+  .tb-crew-form-panel button,
+  .tb-crew-form-panel textarea,
+  .tb-crew-form-panel select {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+  }
+}
+@supports not (height: 100dvh) {
+  @media (max-width: 640px) {
+    .tb-crew-modal-viewport > div { max-height: calc(100vh - 24px) !important; }
+  }
+}

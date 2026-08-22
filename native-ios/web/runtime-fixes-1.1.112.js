@@ -1057,8 +1057,34 @@
     };
     const join = Array.from(modal.querySelectorAll('button')).find((button) => /Join Crew/i.test(button.innerText || ''));
     const create = Array.from(modal.querySelectorAll('button')).find((button) => /Create Crew/i.test(button.innerText || ''));
+    const close = Array.from(modal.querySelectorAll('button')).find((button) => /^✕$/.test((button.innerText || '').trim()) || button.getAttribute('data-loc') === 'client/src/pages/Profile.tsx:2159');
     bindReactAction(join, 'join');
     bindReactAction(create, 'create');
+    if (close && close.dataset.tbCloseVisualBridge !== '1') {
+      close.dataset.tbCloseVisualBridge = '1';
+      const hideCrewModal = (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        modal.style.setProperty('display', 'none', 'important');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.removeProperty('overflow');
+      };
+      close.addEventListener('pointerup', hideCrewModal, true);
+      close.addEventListener('touchend', hideCrewModal, true);
+      close.addEventListener('click', hideCrewModal, true);
+    }
+    const manage = Array.from(document.querySelectorAll('[data-loc], button, [role="button"]')).find((node) => /^👥?\s*Manage Crews\s*›$/i.test((node.innerText || '').trim()));
+    if (manage && manage.dataset.tbCrewReopenBridge !== '1') {
+      manage.dataset.tbCrewReopenBridge = '1';
+      manage.addEventListener('pointerup', () => {
+        modal.style.removeProperty('display');
+        modal.removeAttribute('aria-hidden');
+      }, true);
+      manage.addEventListener('touchend', () => {
+        modal.style.removeProperty('display');
+        modal.removeAttribute('aria-hidden');
+      }, true);
+    }
   };
 
   let directPhotoPasses = 0;

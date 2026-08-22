@@ -1021,11 +1021,22 @@
       const handler = propKey ? button[propKey]?.onClick : null;
       if (typeof handler !== 'function') return;
       button.dataset.tbReactActionBridge = actionKey;
-      button.addEventListener('click', (event) => {
+      const activate = (event) => {
+        const now = Date.now();
+        const last = Number(button.dataset.tbReactActionAt || 0);
+        if (now - last < 500) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          return;
+        }
+        button.dataset.tbReactActionAt = String(now);
         event.preventDefault();
         event.stopImmediatePropagation();
-        try { void handler({ preventDefault() {}, stopPropagation() {} }); } catch (_) { /* preserve app state */ }
-      }, true);
+        try { void handler(event); } catch (_) { /* preserve app state */ }
+      };
+      button.addEventListener('pointerup', activate, true);
+      button.addEventListener('touchend', activate, true);
+      button.addEventListener('click', activate, true);
     };
     const join = Array.from(modal.querySelectorAll('button')).find((button) => /Join Crew/i.test(button.innerText || ''));
     const create = Array.from(modal.querySelectorAll('button')).find((button) => /Create Crew/i.test(button.innerText || ''));

@@ -965,11 +965,25 @@
     document.body.appendChild(back);
   };
 
+  const applyProfilePhotoSheetViewport = () => {
+    const title = Array.from(document.querySelectorAll('p')).find((node) => node.textContent?.trim() === 'Change Profile Photo');
+    if (!title) return;
+    const overlay = title.closest('[data-loc="client/src/pages/Profile.tsx:907"]') || title.parentElement?.parentElement?.parentElement;
+    if (!overlay) return;
+    overlay.classList.add('tb-profile-photo-overlay');
+    const sheet = title.closest('[data-loc="client/src/pages/Profile.tsx:914"]') || title.parentElement?.parentElement;
+    if (!sheet) return;
+    sheet.classList.add('tb-profile-photo-sheet');
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-modal', 'true');
+    sheet.setAttribute('aria-label', 'Change Profile Photo');
+  };
   let deliveredUiPasses = 0;
   const deliveredUiTimer = window.setInterval(() => {
     installRankingMemberActions();
     installRankingActionPortal();
     applyCompactBibleAi();
+    applyProfilePhotoSheetViewport();
     if (deliveredUiPasses % 8 === 0) void renderCheerInbox();
     deliveredUiPasses += 1;
   }, 500);

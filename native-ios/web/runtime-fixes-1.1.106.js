@@ -998,6 +998,8 @@
       pet.querySelectorAll('*').forEach((node) => node.style.setProperty('pointer-events', 'none', 'important'));
     }
 
+    const avatarPropKey = Object.keys(avatar).find((key) => key.startsWith('__reactProps'));
+    const originalAvatarOnClick = avatarPropKey ? avatar[avatarPropKey]?.onClick : null;
     let avatarActionAt = 0;
     const activateAvatar = (event) => {
       const now = Date.now();
@@ -1007,6 +1009,11 @@
         return;
       }
       avatarActionAt = now;
+      try {
+        if (typeof originalAvatarOnClick === 'function') {
+          originalAvatarOnClick({ currentTarget: avatar, target: avatar, preventDefault() {}, stopPropagation() {} });
+        }
+      } catch (_) { /* preserve the original Profile page */ }
       let attempts = 0;
       const openChooser = () => {
         const changePhoto = Array.from(document.querySelectorAll('button')).find((button) => /^Change Photo$/i.test(button.innerText.trim()));
@@ -1046,7 +1053,22 @@
         button.dataset.tbReactActionAt = String(now);
         event.preventDefault();
         event.stopImmediatePropagation();
-        try { void handler(event); } catch (_) { /* preserve app state */ }
+        try {
+          void handler({ currentTarget: button, target: button, preventDefault() {}, stopPropagation() {} });
+          if (actionKey === 'close') {
+            window.setTimeout(() => {
+              if (modal.isConnected) {
+                modal.remove();
+                document.body.style.removeProperty('overflow');
+              }
+            }, 120);
+          }
+        } catch (_) {
+          if (actionKey === 'close') {
+            modal.remove();
+            document.body.style.removeProperty('overflow');
+          }
+        }
       };
       button.addEventListener('pointerup', activate, true);
       button.addEventListener('touchend', activate, true);

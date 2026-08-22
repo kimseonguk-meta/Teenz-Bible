@@ -2041,3 +2041,33 @@ nav.fixed {
 @media (prefers-reduced-motion: reduce) {
   .tb-cheer-inbox.is-new, .tb-cheer-confetti__piece { animation: none !important; }
 }
+
+/* v1.1.97 — Keep the Profile photo sheet fully inside the mobile safe area. */
+.tb-profile-photo-overlay {
+  align-items: center !important;
+  box-sizing: border-box !important;
+  min-height: 100dvh !important;
+  padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)) !important;
+  overflow: hidden !important;
+}
+
+.tb-profile-photo-sheet {
+  box-sizing: border-box !important;
+  width: min(100%, 430px) !important;
+  max-height: min(720px, calc(100dvh - max(32px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 32px))) !important;
+  margin: 0 auto !important;
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+@supports not (height: 100dvh) {
+  .tb-profile-photo-overlay { min-height: 100vh !important; }
+  .tb-profile-photo-sheet { max-height: calc(100vh - 32px) !important; }
+}
+
+@media (max-width: 640px) {
+  .tb-profile-photo-sheet { border-radius: 20px !important; }
+}

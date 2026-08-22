@@ -985,106 +985,29 @@
   };
 
   const installDirectProfilePhotoChooser = () => {
+    // Do not intercept avatar pointer/click events. Profile.tsx:697 already owns
+    // the correct React onClick; the previous bridge prevented real mobile clicks.
     ensureProfilePhotoNudgeGuard();
     const avatar = document.querySelector('[data-loc="client/src/pages/Profile.tsx:697"]');
-    if (!avatar || avatar.dataset.tbDirectPhotoBound === '1') return;
-    avatar.dataset.tbDirectPhotoBound = '1';
-    avatar.style.setProperty('position', 'relative', 'important');
-    avatar.style.setProperty('z-index', '2147483646', 'important');
-
+    if (avatar) {
+      avatar.style.setProperty('position', 'relative', 'important');
+      avatar.style.setProperty('z-index', '2147483646', 'important');
+    }
     const pet = document.querySelector('[data-loc="client/src/pages/Profile.tsx:795"]');
     if (pet) {
       pet.style.setProperty('pointer-events', 'none', 'important');
       pet.querySelectorAll('*').forEach((node) => node.style.setProperty('pointer-events', 'none', 'important'));
     }
-
-    let avatarActionAt = 0;
-    const activateAvatar = (event) => {
-      const now = Date.now();
-      if (now - avatarActionAt < 500) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        return;
-      }
-      avatarActionAt = now;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      try { avatar.click(); } catch (_) { /* preserve the original Profile page */ }
-    };
-    avatar.addEventListener('pointerup', activateAvatar, true);
-    avatar.addEventListener('touchend', activateAvatar, true);
   };
 
   const installProfileCrewActionBridges = () => {
+    // Do not intercept any Crew button or close event. Profile.tsx owns all
+    // state transitions; only keep the mobile form layout correction here.
     const modal = Array.from(document.querySelectorAll('[role="dialog"], .fixed.inset-0')).find((node) => /My Crews/i.test(node.innerText || '') && /Join Crew/i.test(node.innerText || ''));
     if (!modal) return;
     const crewFormField = modal.querySelector('input[placeholder="Enter invite code"], input[placeholder="e.g. Bible Crew 2026"]');
     const crewFormPanel = crewFormField?.closest('div.p-3.rounded-xl');
     crewFormPanel?.classList.add('tb-crew-form-panel');
-    const bindReactAction = (button, actionKey) => {
-      if (!button || button.dataset.tbReactActionBridge === actionKey) return;
-      const propKey = Object.keys(button).find((key) => key.startsWith('__reactProps'));
-      const handler = propKey ? button[propKey]?.onClick : null;
-      if (typeof handler !== 'function') return;
-      button.dataset.tbReactActionBridge = actionKey;
-      const activate = (event) => {
-        if (actionKey === 'close' && button.dataset.tbAllowReactClick === '1') {
-          delete button.dataset.tbAllowReactClick;
-          return;
-        }
-        const now = Date.now();
-        const last = Number(button.dataset.tbReactActionAt || 0);
-        if (now - last < 500) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          return;
-        }
-        button.dataset.tbReactActionAt = String(now);
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        if (actionKey === 'close') {
-          button.dataset.tbAllowReactClick = '1';
-          try { button.click(); } catch (_) { delete button.dataset.tbAllowReactClick; }
-          return;
-        }
-        try {
-          void handler({ currentTarget: button, target: button, preventDefault() {}, stopPropagation() {} });
-        } catch (_) { /* preserve the React tree */ }
-      };
-      button.addEventListener('pointerup', activate, true);
-      button.addEventListener('touchend', activate, true);
-      button.addEventListener('click', activate, true);
-    };
-    const join = Array.from(modal.querySelectorAll('button')).find((button) => /Join Crew/i.test(button.innerText || ''));
-    const create = Array.from(modal.querySelectorAll('button')).find((button) => /Create Crew/i.test(button.innerText || ''));
-    const close = Array.from(modal.querySelectorAll('button')).find((button) => /^✕$/.test((button.innerText || '').trim()) || button.getAttribute('data-loc') === 'client/src/pages/Profile.tsx:2159');
-    bindReactAction(join, 'join');
-    bindReactAction(create, 'create');
-    if (close && close.dataset.tbCloseVisualBridge !== '1') {
-      close.dataset.tbCloseVisualBridge = '1';
-      const hideCrewModal = (event) => {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        modal.style.setProperty('display', 'none', 'important');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.removeProperty('overflow');
-      };
-      close.addEventListener('pointerup', hideCrewModal, true);
-      close.addEventListener('touchend', hideCrewModal, true);
-      close.addEventListener('click', hideCrewModal, true);
-    }
-    const manage = Array.from(document.querySelectorAll('[data-loc], button, [role="button"]')).find((node) => /^👥?\s*Manage Crews\s*›$/i.test((node.innerText || '').trim()));
-    if (manage && manage.dataset.tbCrewReopenBridge !== '1') {
-      manage.dataset.tbCrewReopenBridge = '1';
-      manage.addEventListener('pointerup', () => {
-        modal.style.removeProperty('display');
-        modal.removeAttribute('aria-hidden');
-      }, true);
-      manage.addEventListener('touchend', () => {
-        modal.style.removeProperty('display');
-        modal.removeAttribute('aria-hidden');
-      }, true);
-    }
   };
 
   let directPhotoPasses = 0;

@@ -1015,6 +1015,9 @@
   const installProfileCrewActionBridges = () => {
     const modal = Array.from(document.querySelectorAll('[role="dialog"], .fixed.inset-0')).find((node) => /My Crews/i.test(node.innerText || '') && /Join Crew/i.test(node.innerText || ''));
     if (!modal) return;
+    const crewFormField = modal.querySelector('input[placeholder="Enter invite code"], input[placeholder="e.g. Bible Crew 2026"]');
+    const crewFormPanel = crewFormField?.closest('div.p-3.rounded-xl');
+    crewFormPanel?.classList.add('tb-crew-form-panel');
     const bindReactAction = (button, actionKey) => {
       if (!button || button.dataset.tbReactActionBridge === actionKey) return;
       const propKey = Object.keys(button).find((key) => key.startsWith('__reactProps'));

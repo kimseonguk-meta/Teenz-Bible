@@ -1028,6 +1028,10 @@
       if (typeof handler !== 'function') return;
       button.dataset.tbReactActionBridge = actionKey;
       const activate = (event) => {
+        if (actionKey === 'close' && button.dataset.tbAllowReactClick === '1') {
+          delete button.dataset.tbAllowReactClick;
+          return;
+        }
         const now = Date.now();
         const last = Number(button.dataset.tbReactActionAt || 0);
         if (now - last < 500) {
@@ -1038,6 +1042,11 @@
         button.dataset.tbReactActionAt = String(now);
         event.preventDefault();
         event.stopImmediatePropagation();
+        if (actionKey === 'close') {
+          button.dataset.tbAllowReactClick = '1';
+          try { button.click(); } catch (_) { delete button.dataset.tbAllowReactClick; }
+          return;
+        }
         try {
           void handler({ currentTarget: button, target: button, preventDefault() {}, stopPropagation() {} });
         } catch (_) { /* preserve the React tree */ }

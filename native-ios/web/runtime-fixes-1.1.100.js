@@ -965,6 +965,7 @@
     document.body.appendChild(back);
   };
 
+  let profilePhotoNudgeObserver = null;
   const removeBlockingProfilePhotoNudge = () => {
     const candidates = Array.from(document.querySelectorAll('[role="dialog"], .fixed.inset-0, [class*="fixed"][class*="inset-0"]'));
     candidates.forEach((node) => {
@@ -976,8 +977,15 @@
     });
   };
 
-  const installDirectProfilePhotoChooser = () => {
+  const ensureProfilePhotoNudgeGuard = () => {
     removeBlockingProfilePhotoNudge();
+    if (profilePhotoNudgeObserver || !document.body) return;
+    profilePhotoNudgeObserver = new MutationObserver(() => removeBlockingProfilePhotoNudge());
+    profilePhotoNudgeObserver.observe(document.body, { childList: true, subtree: true });
+  };
+
+  const installDirectProfilePhotoChooser = () => {
+    ensureProfilePhotoNudgeGuard();
     const avatar = document.querySelector('[data-loc="client/src/pages/Profile.tsx:697"]');
     if (!avatar || avatar.dataset.tbDirectPhotoBound === '1') return;
     avatar.dataset.tbDirectPhotoBound = '1';
@@ -1004,12 +1012,33 @@
     }, true);
   };
 
+  const installProfileCrewActionBridges = () => {
+    const modal = Array.from(document.querySelectorAll('[role="dialog"], .fixed.inset-0')).find((node) => /My Crews/i.test(node.innerText || '') && /Join Crew/i.test(node.innerText || ''));
+    if (!modal) return;
+    const bindReactAction = (button, actionKey) => {
+      if (!button || button.dataset.tbReactActionBridge === actionKey) return;
+      const propKey = Object.keys(button).find((key) => key.startsWith('__reactProps'));
+      const handler = propKey ? button[propKey]?.onClick : null;
+      if (typeof handler !== 'function') return;
+      button.dataset.tbReactActionBridge = actionKey;
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        try { void handler({ preventDefault() {}, stopPropagation() {} }); } catch (_) { /* preserve app state */ }
+      }, true);
+    };
+    const join = Array.from(modal.querySelectorAll('button')).find((button) => /Join Crew/i.test(button.innerText || ''));
+    const create = Array.from(modal.querySelectorAll('button')).find((button) => /Create Crew/i.test(button.innerText || ''));
+    bindReactAction(join, 'join');
+    bindReactAction(create, 'create');
+  };
+
   let directPhotoPasses = 0;
   const directPhotoTimer = window.setInterval(() => {
-    removeBlockingProfilePhotoNudge();
+    ensureProfilePhotoNudgeGuard();
     installDirectProfilePhotoChooser();
+    installProfileCrewActionBridges();
     directPhotoPasses += 1;
-    if (directPhotoPasses >= 60) window.clearInterval(directPhotoTimer);
   }, 250);
 
   let deliveredUiPasses = 0;

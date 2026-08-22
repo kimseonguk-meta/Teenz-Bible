@@ -1055,20 +1055,7 @@
         event.stopImmediatePropagation();
         try {
           void handler({ currentTarget: button, target: button, preventDefault() {}, stopPropagation() {} });
-          if (actionKey === 'close') {
-            window.setTimeout(() => {
-              if (modal.isConnected) {
-                modal.remove();
-                document.body.style.removeProperty('overflow');
-              }
-            }, 120);
-          }
-        } catch (_) {
-          if (actionKey === 'close') {
-            modal.remove();
-            document.body.style.removeProperty('overflow');
-          }
-        }
+        } catch (_) { /* preserve the React tree */ }
       };
       button.addEventListener('pointerup', activate, true);
       button.addEventListener('touchend', activate, true);

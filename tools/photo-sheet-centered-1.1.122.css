@@ -1,0 +1,19 @@
+
+
+/* v1.1.122 — Remove negative inset resolution and center the photo dialog explicitly. */
+[data-loc="client/src/pages/Profile.tsx:914"] {
+  position: fixed !important;
+  inset: auto !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 50% !important;
+  width: min(calc(100vw - 32px), 432px) !important;
+  max-width: 432px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 32px) !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}

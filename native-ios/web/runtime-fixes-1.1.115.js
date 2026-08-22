@@ -291,9 +291,8 @@
       overlay.classList.add('tb-modal-viewport-safe');
       if (isCrewModal) overlay.classList.add('tb-crew-modal-viewport');
       if (isRankingMemberModal) overlay.classList.add('tb-ranking-member-modal-viewport');
-      // A transformed React parent can make fixed children use document coordinates on iOS.
-      // Portaling the live overlay to body restores true viewport anchoring without changing its actions.
-      if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
+      // Keep the overlay inside the React root. Reparenting a React-managed
+      // subtree to body breaks React's delegated event path on mobile.
     });
   };
 

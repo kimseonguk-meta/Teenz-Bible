@@ -998,7 +998,15 @@
       pet.querySelectorAll('*').forEach((node) => node.style.setProperty('pointer-events', 'none', 'important'));
     }
 
-    avatar.addEventListener('click', () => {
+    let avatarActionAt = 0;
+    const activateAvatar = (event) => {
+      const now = Date.now();
+      if (now - avatarActionAt < 500) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
+      avatarActionAt = now;
       let attempts = 0;
       const openChooser = () => {
         const changePhoto = Array.from(document.querySelectorAll('button')).find((button) => /^Change Photo$/i.test(button.innerText.trim()));
@@ -1009,7 +1017,10 @@
         if (attempts++ < 24) window.setTimeout(openChooser, 50);
       };
       window.setTimeout(openChooser, 0);
-    }, true);
+    };
+    avatar.addEventListener('pointerup', activateAvatar, true);
+    avatar.addEventListener('touchend', activateAvatar, true);
+    avatar.addEventListener('click', activateAvatar, true);
   };
 
   const installProfileCrewActionBridges = () => {
@@ -1043,8 +1054,10 @@
     };
     const join = Array.from(modal.querySelectorAll('button')).find((button) => /Join Crew/i.test(button.innerText || ''));
     const create = Array.from(modal.querySelectorAll('button')).find((button) => /Create Crew/i.test(button.innerText || ''));
+    const close = Array.from(modal.querySelectorAll('button')).find((button) => /^✕$/.test((button.innerText || '').trim()) || button.getAttribute('data-loc') === 'client/src/pages/Profile.tsx:2159');
     bindReactAction(join, 'join');
     bindReactAction(create, 'create');
+    bindReactAction(close, 'close');
   };
 
   let directPhotoPasses = 0;

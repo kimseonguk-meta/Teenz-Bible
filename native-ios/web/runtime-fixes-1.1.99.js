@@ -965,7 +965,19 @@
     document.body.appendChild(back);
   };
 
+  const removeBlockingProfilePhotoNudge = () => {
+    const candidates = Array.from(document.querySelectorAll('[role="dialog"], .fixed.inset-0, [class*="fixed"][class*="inset-0"]'));
+    candidates.forEach((node) => {
+      const text = (node.innerText || '').replace(/\s+/g, ' ').trim();
+      if (/Add a Profile Photo!/i.test(text) && /Let's go|Maybe later/i.test(text)) {
+        const overlay = node.closest('[role="dialog"], .fixed.inset-0, [class*="fixed"][class*="inset-0"]') || node;
+        overlay.remove();
+      }
+    });
+  };
+
   const installDirectProfilePhotoChooser = () => {
+    removeBlockingProfilePhotoNudge();
     const avatar = document.querySelector('[data-loc="client/src/pages/Profile.tsx:697"]');
     if (!avatar || avatar.dataset.tbDirectPhotoBound === '1') return;
     avatar.dataset.tbDirectPhotoBound = '1';
@@ -994,6 +1006,7 @@
 
   let directPhotoPasses = 0;
   const directPhotoTimer = window.setInterval(() => {
+    removeBlockingProfilePhotoNudge();
     installDirectProfilePhotoChooser();
     directPhotoPasses += 1;
     if (directPhotoPasses >= 60) window.clearInterval(directPhotoTimer);

@@ -1060,7 +1060,24 @@
     const close = Array.from(modal.querySelectorAll('button')).find((button) => /^✕$/.test((button.innerText || '').trim()) || button.getAttribute('data-loc') === 'client/src/pages/Profile.tsx:2159');
     bindReactAction(join, 'join');
     bindReactAction(create, 'create');
-    bindReactAction(close, 'close');
+    if (close && close.dataset.tbCloseTouchBridge !== '1') {
+      close.dataset.tbCloseTouchBridge = '1';
+      let closeTouchAt = 0;
+      const activateCloseTouch = (event) => {
+        const now = Date.now();
+        if (now - closeTouchAt < 500) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          return;
+        }
+        closeTouchAt = now;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        try { close.click(); } catch (_) { /* let the original React close handler remain intact */ }
+      };
+      close.addEventListener('pointerup', activateCloseTouch, true);
+      close.addEventListener('touchend', activateCloseTouch, true);
+    }
   };
 
   let directPhotoPasses = 0;
