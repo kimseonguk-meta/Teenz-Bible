@@ -5,7 +5,7 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: 다음 동기화 커밋에서 1.1.189 프로필 사진 crop 수정 및 QA 문서를 포함한다.
+- 최신 GitHub 커밋: `bc9e3d7` — `fix: OTA 1.1.189 isolate profile photo crop modal`
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
 - 현재 웹/OTA 기준: **1.1.189**
