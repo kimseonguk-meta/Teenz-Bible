@@ -9,3 +9,9 @@ Before the final correction, the overlay used a 42px close column plus a 406px a
 The local package was rebuilt and served from `/tmp/teenz-ota-1188-final`. The 1.1.188 build script verified the stable `assets/index-GemFix1184.js`, rejected React 1185–1188 chunk names, and rejected the prohibited Loading DOM guard markers. The package was then deployed to Firebase Hosting. The browser page was later checked again after cache-busting; the live page loaded and exposed the expected meme card and action elements.
 
 The browser session then moved to local first-run state while preparing the next profile-photo audit. This is test-state behavior, not a production code finding.
+
+## OTA 1.1.190 — quiet close redesign
+
+The user rejected the prominent three-column close/share/save rail. In 1.1.190, the close control remains the same React action at `Home.tsx:567`, but is visually demoted to a 32×32px transparent/subtle dark circular target positioned at the upper-right of the meme image. The glyph is rendered as a thin 16px `×`, with no gold border, no embossed panel, and `aria-label="Close meme"` plus `title="Close"` added by the runtime. The close control is no longer part of the bottom action row.
+
+Share and Save remain the only bottom actions in a clean equal two-column row. Public browser verification after deployment reported runtime `1.1.190`, close `[830,300,32,32]`, image `[424,312,432,426]`, rail `[424,1032,432,56]`, Share `[424,1040,211,44]`, and Save `[645,1040,211,44]` at the 1280×1100 browser viewport. Both buttons use the same background, border, height, and width. Clicking the close control was also verified to dismiss the modal. Profile crop isolation selectors and logic from 1.1.189 were retained.
