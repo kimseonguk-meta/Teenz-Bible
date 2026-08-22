@@ -1,0 +1,3210 @@
+/* Teenz Bible 1.1.49 mobile stability and Ranking header redesign patch */
+:root {
+  --tb-visual-viewport-width: 100vw;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+body {
+  min-height: 100dvh;
+  touch-action: pan-y;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* React owns these nodes; hide them without removing them from the DOM. */
+.tb-react-hidden-node {
+  display: none !important;
+}
+
+/* Prevent fixed overlays from following iOS layout viewport instead of visual viewport. */
+.fixed.inset-0,
+[role="dialog"] {
+  max-width: var(--tb-visual-viewport-width);
+}
+
+/* Preserve intentional horizontal card scrollers without allowing the document itself to drift. */
+.overflow-x-auto,
+.overflow-x-scroll {
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep bottom controls above the Home Indicator in the iOS app shell. */
+.safe-bottom,
+.fixed.bottom-0,
+nav.fixed {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* Leaflet needs an explicit stable height in iOS WebView during route transitions. */
+.leaflet-container {
+  max-width: 100%;
+  touch-action: pan-x pan-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Ranking header redesign (phone widths)
+ *
+ * The existing React handlers and state remain unchanged.  This layer only turns
+ * the existing Global/My Crew, Week/All, and multi-crew switcher controls into
+ * a compact title row, a shared segmented-control row, and a disclosure row.
+ */
+@media (max-width: 640px) {
+  [data-loc="client/src/pages/Leaderboard.tsx:752"] {
+    gap: 0.2rem !important;
+  }
+
+  /* Compact title block with a quiet eyebrow instead of a tall decorative banner. */
+  [data-loc="client/src/pages/Leaderboard.tsx:766"] {
+    min-height: 51px;
+    padding: 0.78rem 0.9rem 0.35rem !important;
+    border: 0 !important;
+    border-radius: 0 0 13px 13px;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background-color: #17120d !important;
+    background-image: linear-gradient(180deg, rgba(71, 42, 18, 0.28), transparent 88%) !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:766"]::after {
+    display: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:767"] {
+    position: relative;
+    padding-top: 10px;
+    color: #fae17a !important;
+    font-family: 'Cinzel', serif !important;
+    font-size: 21px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1 !important;
+    text-align: left !important;
+    text-shadow: 0 0 14px rgba(230, 195, 70, 0.2) !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:767"]::before {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    color: rgba(250, 225, 122, 0.6);
+    content: 'TEENZ BIBLE';
+    font-family: 'Nunito', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    line-height: 1;
+  }
+
+  /* Scope and period live on one clean horizontal row. */
+  [data-loc="client/src/pages/Leaderboard.tsx:772"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 128px !important;
+    gap: 8px !important;
+    align-items: start !important;
+    padding: 0.45rem 0.75rem 0.32rem !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:774"],
+  [data-loc="client/src/pages/Leaderboard.tsx:819"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    min-height: 36px;
+    overflow: hidden !important;
+    padding: 3px !important;
+    border: 1px solid rgba(230, 195, 70, 0.24) !important;
+    border-radius: 10px !important;
+    background: rgba(0, 0, 0, 0.22) !important;
+    box-shadow: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:782"],
+  [data-loc="client/src/pages/Leaderboard.tsx:783"],
+  [data-loc="client/src/pages/Leaderboard.tsx:784"],
+  [data-loc="client/src/pages/Leaderboard.tsx:785"],
+  [data-loc="client/src/pages/Leaderboard.tsx:827"],
+  [data-loc="client/src/pages/Leaderboard.tsx:828"],
+  [data-loc="client/src/pages/Leaderboard.tsx:829"],
+  [data-loc="client/src/pages/Leaderboard.tsx:830"],
+  [data-loc="client/src/pages/Leaderboard.tsx:800"],
+  [data-loc="client/src/pages/Leaderboard.tsx:845"] {
+    display: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:786"],
+  [data-loc="client/src/pages/Leaderboard.tsx:801"],
+  [data-loc="client/src/pages/Leaderboard.tsx:831"],
+  [data-loc="client/src/pages/Leaderboard.tsx:846"] {
+    display: grid !important;
+    width: 100% !important;
+    min-width: 0;
+    place-items: center;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    color: rgba(255, 247, 225, 0.58) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    text-shadow: none !important;
+    white-space: nowrap !important;
+  }
+
+  /* Hide the two old decorative scope icons while retaining the original button semantics. */
+  [data-loc="client/src/pages/Leaderboard.tsx:786"],
+  [data-loc="client/src/pages/Leaderboard.tsx:801"] {
+    font-size: 0 !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:786"]::after {
+    content: 'Global';
+    font-size: 11px;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:801"]::after {
+    content: 'My Crew';
+    font-size: 11px;
+  }
+
+  /* React keeps the current selection in the existing inline gold color. */
+  [data-loc="client/src/pages/Leaderboard.tsx:786"][style*="#fae17a"],
+  [data-loc="client/src/pages/Leaderboard.tsx:801"][style*="#fae17a"],
+  [data-loc="client/src/pages/Leaderboard.tsx:831"][style*="#fae17a"],
+  [data-loc="client/src/pages/Leaderboard.tsx:846"][style*="#fae17a"] {
+    color: #211503 !important;
+    background: linear-gradient(180deg, #ffe993, #d5a633) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.45) !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:818"] {
+    display: grid !important;
+    gap: 4px !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:862"] {
+    min-height: 10px;
+    margin-right: 1px;
+    color: rgba(250, 225, 122, 0.44) !important;
+    font-family: 'Nunito', sans-serif;
+    font-size: 8px !important;
+    font-weight: 700 !important;
+    line-height: 1.1;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* The multi-crew switcher becomes a full-width disclosure row. */
+  [data-loc="client/src/pages/Leaderboard.tsx:869"] {
+    display: flex !important;
+    width: auto !important;
+    min-height: 46px;
+    gap: 9px !important;
+    margin: 0 0.75rem !important;
+    padding: 8px 10px !important;
+    border: 1px solid rgba(230, 195, 70, 0.28) !important;
+    border-radius: 10px !important;
+    background: #21170d !important;
+    box-shadow: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:871"],
+  [data-loc="client/src/pages/Leaderboard.tsx:872"] {
+    display: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:873"] {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border-radius: 8px;
+    background: rgba(230, 195, 70, 0.1);
+    font-size: 15px !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:874"] {
+    display: grid !important;
+    min-width: 0;
+    flex: 1;
+    align-content: center;
+    gap: 2px;
+    overflow: hidden;
+    color: #fae17a !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.15;
+    text-shadow: none !important;
+    white-space: nowrap;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:874"]::before {
+    color: rgba(255, 247, 225, 0.52);
+    content: 'VIEWING CREW';
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    line-height: 1;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:876"] {
+    width: 28px;
+    height: 28px;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    color: #fae17a !important;
+    background: transparent !important;
+    font-size: 0 !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:876"]::after {
+    content: '⌄';
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:885"] {
+    top: calc(100% + 6px) !important;
+    right: 0 !important;
+    left: 0 !important;
+    width: auto !important;
+    max-height: 224px !important;
+    margin: 0 !important;
+    padding: 4px !important;
+    border: 1px solid rgba(230, 195, 70, 0.32);
+    border-radius: 10px !important;
+    background: #17120d !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.56) !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:889"] {
+    min-height: 42px;
+    padding: 8px !important;
+    border-radius: 7px !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:912"] {
+    padding-top: 0.3rem !important;
+  }
+}
+
+@media (max-width: 380px) {
+  [data-loc="client/src/pages/Leaderboard.tsx:772"] {
+    grid-template-columns: minmax(0, 1fr) 116px !important;
+    padding-inline: 0.65rem !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:786"]::after,
+  [data-loc="client/src/pages/Leaderboard.tsx:801"]::after {
+    font-size: 10px;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:831"],
+  [data-loc="client/src/pages/Leaderboard.tsx:846"] {
+    font-size: 10px !important;
+  }
+}
+
+/*
+ * Cross-screen centered headers (v1.1.52)
+ *
+ * The runtime adds a small, non-interactive title layer to Home and Profile,
+ * and a real header node to Bible. Existing buttons, status values, and page
+ * content remain in the React tree and retain their original handlers.
+ */
+@media (max-width: 640px) {
+  .tb-centered-header-title,
+  .tb-centered-page-header {
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    gap: 3px;
+    box-sizing: border-box;
+    color: #fae17a;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .tb-centered-header-title {
+    position: absolute;
+    top: 8px;
+    right: 56px;
+    left: 56px;
+  }
+
+  .tb-centered-header-title__eyebrow,
+  .tb-centered-page-header__eyebrow {
+    color: rgba(250, 225, 122, 0.66);
+    font-family: 'Nunito', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    line-height: 1;
+  }
+
+  .tb-centered-header-title__name,
+  .tb-centered-page-header__name {
+    color: #fae17a;
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 0 0 14px rgba(230, 195, 70, 0.24);
+  }
+
+  /* Home: retain the avatar, greeting, reading progress, and streak badge as a compact lower metadata row. */
+  .tb-centered-home-header {
+    position: relative !important;
+    min-height: 88px !important;
+    padding: 37px 12px 8px !important;
+    border: 1px solid rgba(230, 195, 70, 0.34) !important;
+    border-radius: 13px !important;
+    background-position: center !important;
+  }
+
+  .tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:264"] {
+    position: absolute !important;
+    bottom: 7px;
+    left: 50%;
+    z-index: 3;
+    max-width: calc(100% - 112px);
+    transform: translateX(-50%);
+    gap: 7px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:266"] {
+    width: 38px !important;
+    height: 38px !important;
+    padding: 2px !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.34), 0 3px 8px rgba(0, 0, 0, 0.36) !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:277"] {
+    font-size: 18px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:293"] {
+    min-width: 0;
+    text-align: left;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:294"] {
+    overflow: hidden;
+    color: rgba(255, 247, 225, 0.92) !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:295"] {
+    overflow: hidden;
+    color: rgba(255, 247, 225, 0.46) !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:299"] {
+    position: absolute !important;
+    right: 10px;
+    bottom: 12px;
+    z-index: 4;
+    gap: 3px !important;
+    padding: 4px 7px !important;
+    border-radius: 9px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:304"] {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:305"] {
+    font-size: 11px !important;
+  }
+
+  /* Profile: the page title is centered; nickname and gem balance stay accessible as secondary metadata. */
+  .tb-centered-profile-header {
+    position: relative !important;
+    min-height: 78px !important;
+    padding: 37px 54px 8px !important;
+    justify-content: center !important;
+    border: 1px solid rgba(230, 195, 70, 0.34) !important;
+    border-radius: 13px !important;
+    background-position: center !important;
+  }
+
+  .tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:618"] {
+    overflow: hidden;
+    z-index: 3;
+    max-width: 100%;
+    margin: 0 auto;
+    color: rgba(255, 247, 225, 0.72) !important;
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+    text-align: center !important;
+    text-overflow: ellipsis;
+    text-shadow: none !important;
+    white-space: nowrap;
+  }
+
+  .tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:619"] {
+    position: absolute !important;
+    right: 13px;
+    bottom: 10px;
+    z-index: 4;
+    transform: scale(0.82);
+    transform-origin: right bottom;
+  }
+
+  /* Bible had no title band. Add a compact header before the testament selector without changing reader state. */
+  [data-loc="client/src/pages/Bible.tsx:310"] > .tb-centered-page-header {
+    min-height: 54px;
+    margin: -2px 0 2px;
+    padding: 10px 16px 8px;
+    border: 1px solid rgba(230, 195, 70, 0.32);
+    border-radius: 13px;
+    background:
+      linear-gradient(180deg, rgba(71, 42, 18, 0.34), rgba(23, 18, 13, 0.84)),
+      #17120d;
+    box-shadow: inset 0 1px rgba(255, 247, 225, 0.06);
+  }
+
+  [data-loc="client/src/pages/Bible.tsx:310"] > .tb-centered-page-header::before,
+  .tb-centered-home-header::before,
+  .tb-centered-profile-header::before {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    left: 12px;
+    height: 1px;
+    content: '';
+    background: linear-gradient(90deg, transparent, rgba(230, 195, 70, 0.36), transparent);
+  }
+}
+
+@media (max-width: 380px) {
+  .tb-centered-header-title__name,
+  .tb-centered-page-header__name {
+    font-size: 19px;
+  }
+
+  .tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:264"] {
+    max-width: calc(100% - 96px);
+  }
+}
+
+/* Approved design surface system (v1.1.52): visual hierarchy only; existing React actions remain mounted. */
+@media (max-width: 640px) {
+  .tb-approved-home,
+  .tb-approved-bible,
+  .tb-approved-profile {
+    gap: 12px !important;
+  }
+
+  /* Home: clear the first viewport for a primary reading decision and compact supporting status. */
+  .tb-home-backup-surface,
+  .tb-home-editorial-surface {
+    display: none !important;
+  }
+
+  .tb-home-primary-reading {
+    min-height: 172px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(230, 195, 70, 0.52) !important;
+    border-radius: 15px !important;
+    background: linear-gradient(135deg, rgba(90, 51, 16, 0.84), rgba(35, 20, 8, 0.96)) !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42), 0 0 20px rgba(212, 175, 55, 0.10) !important;
+  }
+
+  .tb-home-primary-reading .ornate-corners,
+  .tb-home-ai-surface .ornate-corners,
+  .tb-home-progress-surface .ornate-corners,
+  .tb-profile-identity-surface .ornate-corners,
+  .tb-profile-week-surface .ornate-corners,
+  .tb-profile-badges-surface .ornate-corners,
+  .tb-profile-goal-surface .ornate-corners,
+  .tb-profile-crew-surface .ornate-corners,
+  .tb-profile-reminder-surface .ornate-corners,
+  .tb-profile-settings-surface .ornate-corners {
+    display: none !important;
+  }
+
+  .tb-home-primary-reading::after {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 2;
+    color: rgba(250, 225, 122, 0.64);
+    content: 'TODAY’S JOURNEY';
+    font-family: 'Nunito', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    pointer-events: none;
+  }
+
+  .tb-home-primary-reading [data-loc="client/src/pages/Home.tsx:321"] {
+    display: none !important;
+  }
+
+  .tb-home-primary-reading button {
+    border-radius: 11px !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.36) !important;
+  }
+
+  .tb-home-ai-surface,
+  .tb-home-progress-surface {
+    border: 1px solid rgba(230, 195, 70, 0.24) !important;
+    border-radius: 13px !important;
+    background: linear-gradient(180deg, rgba(57, 37, 18, 0.80), rgba(30, 20, 12, 0.90)) !important;
+    box-shadow: none !important;
+  }
+
+  .tb-home-ai-surface {
+    min-height: 68px !important;
+  }
+
+    .tb-home-progress-surface {
+    position: relative !important;
+    min-height: 114px !important;
+  }
+  .tb-home-progress-surface::before {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    color: rgba(250, 225, 122, 0.68);
+    content: 'YOUR PROGRESS';
+    font-family: 'Nunito', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+        letter-spacing: 0.13em;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .tb-home-progress-surface [data-loc="client/src/pages/Home.tsx:381"] {
+    padding-top: 22px !important;
+  }
+  .tb-home-progress-surface [data-loc="client/src/pages/Home.tsx:384"] {
+    margin-bottom: 5px !important;
+  }
+  /* Bible: add a real entry button that opens the first available book, then simplify existing controls. */
+  .tb-bible-reading-entry {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) 20px;
+    align-items: center;
+    min-height: 104px;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid rgba(230, 195, 70, 0.52);
+    border-radius: 15px;
+    color: #fff7e1;
+    background: linear-gradient(135deg, rgba(91, 53, 17, 0.86), rgba(35, 21, 10, 0.98));
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.40), 0 0 20px rgba(212, 175, 55, 0.10);
+    text-align: left;
+  }
+
+  .tb-bible-reading-entry__icon {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid rgba(250, 225, 122, 0.54);
+    border-radius: 12px;
+    color: #ffe993;
+    background: rgba(26, 16, 7, 0.44);
+    font-size: 22px;
+  }
+
+  .tb-bible-reading-entry__copy {
+    display: grid;
+    min-width: 0;
+    gap: 3px;
+  }
+
+  .tb-bible-reading-entry__eyebrow {
+    color: rgba(250, 225, 122, 0.66);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+
+  .tb-bible-reading-entry__title {
+    color: #fae17a;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .tb-bible-reading-entry__hint {
+    overflow: hidden;
+    color: rgba(255, 247, 225, 0.57);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tb-bible-reading-entry__arrow {
+    color: #fae17a;
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .tb-bible-mode-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px !important;
+    padding: 3px;
+    border: 1px solid rgba(230, 195, 70, 0.22);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.24);
+  }
+
+  .tb-bible-mode-tabs button {
+    display: grid;
+    min-width: 0;
+    min-height: 38px;
+    place-items: center;
+    padding: 0 8px !important;
+    border-radius: 8px !important;
+    font-size: 11px !important;
+  }
+
+  .tb-bible-progress-surface,
+  .tb-bible-catalogue-section [data-loc="client/src/pages/Bible.tsx:388"] {
+    border: 1px solid rgba(230, 195, 70, 0.20) !important;
+    border-radius: 13px !important;
+    box-shadow: none !important;
+  }
+
+  .tb-bible-catalogue-section [data-loc="client/src/pages/Bible.tsx:380"] {
+    gap: 10px !important;
+  }
+
+  .tb-bible-catalogue-section [data-loc="client/src/pages/Bible.tsx:388"] {
+    min-height: 136px !important;
+    padding: 12px !important;
+  }
+
+  /* Profile: center the identity surface and reduce supporting cards to a clean settings rhythm. */
+  .tb-profile-identity-surface {
+    min-height: 190px !important;
+    border: 1px solid rgba(230, 195, 70, 0.38) !important;
+    border-radius: 16px !important;
+    background-position: center !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34) !important;
+  }
+
+  .tb-profile-week-surface,
+  .tb-profile-goal-surface,
+  .tb-profile-crew-surface,
+  .tb-profile-reminder-surface,
+  .tb-profile-settings-surface {
+    border: 1px solid rgba(230, 195, 70, 0.20) !important;
+    border-radius: 13px !important;
+    background: rgba(42, 28, 15, 0.78) !important;
+    box-shadow: none !important;
+  }
+
+  .tb-profile-week-surface {
+    min-height: 124px !important;
+  }
+
+  .tb-profile-badges-surface {
+    border: 1px solid rgba(230, 195, 70, 0.18) !important;
+    border-radius: 13px !important;
+    background: rgba(31, 22, 13, 0.72) !important;
+    box-shadow: none !important;
+  }
+
+  .tb-profile-settings-surface {
+    padding: 12px !important;
+  }
+
+  .tb-profile-settings-surface button,
+  .tb-profile-settings-surface [role="button"] {
+    min-height: 44px;
+    border-radius: 10px !important;
+  }
+}
+
+/* v1.1.53: restore Home discovery content and simplify the Bible AI tool bar. */
+@media (max-width: 640px) {
+  /* Keep backup guidance compact, but never remove the real Bible Meme surface. */
+  .tb-home-backup-surface {
+    display: none !important;
+  }
+
+  .tb-home-editorial-surface,
+  .tb-home-meme-surface {
+    display: block !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(230, 195, 70, 0.24) !important;
+    border-radius: 14px !important;
+    background: linear-gradient(180deg, rgba(52, 33, 17, 0.86), rgba(27, 18, 11, 0.95)) !important;
+  }
+
+  .tb-home-map-surface {
+    display: block !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(230, 195, 70, 0.30) !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, rgba(67, 43, 20, 0.94), rgba(29, 19, 12, 0.98)) !important;
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.32) !important;
+  }
+
+  /* The added eyebrow now has its own dedicated vertical space above the book title. */
+  .tb-home-primary-reading::after {
+    top: 12px !important;
+    left: 16px !important;
+  }
+
+  .tb-home-primary-reading [data-loc="client/src/pages/Home.tsx:317"] {
+    padding: 31px 16px 16px !important;
+  }
+
+  .tb-home-primary-reading [data-loc="client/src/pages/Home.tsx:325"] {
+    line-height: 1.04 !important;
+  }
+
+  /* Bible AI: preserve back, conversations and new-thread actions; remove duplicated title/icon treatment. */
+  .tb-ai-screen {
+    background: #0a0a0a !important;
+  }
+
+  .tb-ai-header {
+    position: relative !important;
+    display: flex !important;
+    min-height: 62px !important;
+    padding: max(8px, env(safe-area-inset-top, 8px)) 12px 8px !important;
+    border-bottom: 1px solid rgba(230, 195, 70, 0.18) !important;
+    background: linear-gradient(180deg, rgba(46, 29, 15, 0.96), rgba(13, 12, 11, 0.98)) !important;
+  }
+
+  .tb-ai-header > [data-loc="client/src/pages/BibleAI.tsx:521"] {
+    display: none !important;
+  }
+
+  .tb-ai-header > [data-loc="client/src/pages/BibleAI.tsx:515"] {
+    position: relative !important;
+    z-index: 3;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(230, 195, 70, 0.24);
+    border-radius: 10px;
+    background: rgba(230, 195, 70, 0.06);
+  }
+
+  .tb-ai-header > [data-loc="client/src/pages/BibleAI.tsx:534"] {
+    position: relative !important;
+    z-index: 3;
+    display: flex !important;
+    margin-left: auto !important;
+    gap: 5px !important;
+  }
+
+  .tb-ai-header > [data-loc="client/src/pages/BibleAI.tsx:534"] button {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 10px !important;
+  }
+
+  .tb-ai-shared-title {
+    position: absolute;
+    top: 9px;
+    right: 60px;
+    left: 60px;
+    z-index: 2;
+    display: grid;
+    gap: 1px;
+    justify-items: center;
+    pointer-events: none;
+    text-align: center;
+  }
+
+  .tb-ai-shared-title__eyebrow {
+    color: rgba(250, 225, 122, 0.58);
+    font-family: 'Nunito', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+  }
+
+  .tb-ai-shared-title__name {
+    color: #fae17a;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  .tb-ai-screen [data-loc="client/src/pages/BibleAI.tsx:577"] {
+    padding: 10px 12px !important;
+    gap: 6px !important;
+    border-bottom: 1px solid rgba(230, 195, 70, 0.08);
+  }
+
+  .tb-ai-screen [data-loc="client/src/pages/BibleAI.tsx:579"] {
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* v1.1.53: all five primary screens share one centered header system. */
+@media (max-width: 640px) {
+  .tb-approved-ranking,
+  .tb-approved-store {
+    gap: 12px !important;
+  }
+
+  .tb-centered-ranking-header,
+  .tb-centered-store-header {
+    position: relative !important;
+    min-height: 72px !important;
+    padding: 37px 54px 8px !important;
+    border: 1px solid rgba(230, 195, 70, 0.34) !important;
+    border-radius: 13px !important;
+    background:
+      linear-gradient(180deg, rgba(71, 42, 18, 0.42), rgba(23, 18, 13, 0.92)) !important,
+      #17120d !important;
+    box-shadow: inset 0 1px rgba(255, 247, 225, 0.06) !important;
+  }
+
+  .tb-centered-ranking-header::before,
+  .tb-centered-store-header::before {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    left: 12px;
+    height: 1px;
+    content: '';
+    background: linear-gradient(90deg, transparent, rgba(230, 195, 70, 0.36), transparent);
+  }
+
+  /* Replace the legacy Ranking title treatment with the shared title layer. */
+  .tb-centered-ranking-header > [data-loc="client/src/pages/Leaderboard.tsx:767"] {
+    padding: 0 !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    text-shadow: none !important;
+  }
+
+  .tb-centered-ranking-header > [data-loc="client/src/pages/Leaderboard.tsx:767"]::before {
+    display: none !important;
+  }
+
+  /* Restore the original descriptive labels instead of pseudo-text-only controls. */
+  [data-loc="client/src/pages/Leaderboard.tsx:786"],
+  [data-loc="client/src/pages/Leaderboard.tsx:801"] {
+    min-height: 32px !important;
+    padding: 0 7px !important;
+    font-size: 12px !important;
+    letter-spacing: -0.02em;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:786"]::after,
+  [data-loc="client/src/pages/Leaderboard.tsx:801"]::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:831"],
+  [data-loc="client/src/pages/Leaderboard.tsx:846"] {
+    min-height: 32px !important;
+    padding: 0 8px !important;
+    font-size: 11px !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:774"],
+  [data-loc="client/src/pages/Leaderboard.tsx:819"] {
+    min-height: 40px !important;
+    padding: 4px !important;
+    border-color: rgba(230, 195, 70, 0.34) !important;
+    background: linear-gradient(180deg, rgba(48, 30, 15, 0.92), rgba(18, 14, 10, 0.96)) !important;
+    box-shadow: inset 0 1px rgba(255, 247, 225, 0.05), 0 3px 8px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:786"][style*="#fae17a"],
+  [data-loc="client/src/pages/Leaderboard.tsx:801"][style*="#fae17a"],
+  [data-loc="client/src/pages/Leaderboard.tsx:831"][style*="#fae17a"],
+  [data-loc="client/src/pages/Leaderboard.tsx:846"][style*="#fae17a"] {
+    font-weight: 900 !important;
+  }
+
+  /* The existing Profile and invite-code workflows are now available even when a crew already exists. */
+  .tb-ranking-crew-hub {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center;
+    gap: 10px !important;
+    margin: 6px 0.75rem 0 !important;
+    padding: 11px 12px !important;
+    border: 1px solid rgba(230, 195, 70, 0.30) !important;
+    border-radius: 13px !important;
+    background: linear-gradient(135deg, rgba(60, 37, 17, 0.94), rgba(24, 17, 11, 0.96)) !important;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28) !important;
+    text-align: left !important;
+  }
+
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:957"] {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(230, 195, 70, 0.10);
+    font-size: 17px !important;
+  }
+
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:958"] {
+    min-width: 0;
+    margin-right: 3px;
+  }
+
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:959"] {
+    color: #fae17a !important;
+    font-family: 'Cinzel', serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+  }
+
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:960"] {
+    max-width: none !important;
+    color: rgba(255, 247, 225, 0.58) !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"],
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] {
+    display: inline-flex !important;
+    min-height: 33px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 9px !important;
+    border: 1px solid rgba(250, 225, 122, 0.38) !important;
+    border-radius: 9px !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    white-space: nowrap;
+  }
+
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"] {
+    color: #221603 !important;
+    background: linear-gradient(180deg, #ffe993, #d5a633) !important;
+  }
+
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:965"] {
+    grid-column: 2 / 4;
+    padding-top: 0 !important;
+  }
+
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] {
+    color: #fae17a !important;
+    background: rgba(230, 195, 70, 0.08) !important;
+  }
+
+  /* Store preserves the live gem balance as the one compact header action. */
+  .tb-centered-store-header > [data-loc="client/src/pages/Store.tsx:413"] {
+    display: none !important;
+  }
+
+  .tb-centered-store-header > [data-loc="client/src/pages/Store.tsx:418"] {
+    position: absolute !important;
+    right: 10px;
+    bottom: 10px;
+    z-index: 6;
+    gap: 4px !important;
+    min-height: 28px;
+    padding: 4px 7px !important;
+    border-radius: 9px !important;
+    transform: scale(0.86);
+    transform-origin: right bottom;
+  }
+
+  .tb-centered-store-header [data-loc="client/src/pages/Store.tsx:428"] {
+    font-size: 14px !important;
+  }
+
+  .tb-centered-store-header [data-loc="client/src/pages/Store.tsx:435"] {
+    font-size: 14px !important;
+  }
+}
+
+/* v1.1.53 follow-up: the legacy Ranking h1 must not compete with the shared title layer. */
+@media (max-width: 640px) {
+  .tb-centered-ranking-header h1 {
+    display: none !important;
+  }
+}
+
+/* v1.1.54: compact shared header rhythm — remove tall empty title cards and duplicate profile identity. */
+@media (max-width: 640px) {
+  .tb-centered-header-title {
+    top: 7px !important;
+    right: 64px !important;
+    left: 64px !important;
+    gap: 2px !important;
+  }
+
+  .tb-centered-header-title__eyebrow,
+  .tb-centered-page-header__eyebrow {
+    font-size: 7px !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .tb-centered-header-title__name,
+  .tb-centered-page-header__name {
+    font-size: 17px !important;
+    line-height: 1 !important;
+  }
+
+  /* Home keeps its greeting as contextual metadata, not a second title treatment. */
+  .tb-centered-home-header {
+    min-height: 72px !important;
+    padding: 28px 58px 6px !important;
+    border-radius: 12px !important;
+  }
+
+  .tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:264"] {
+    bottom: 5px !important;
+    max-width: calc(100% - 120px) !important;
+    gap: 5px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:266"] {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:277"] {
+    font-size: 14px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:294"] {
+    font-size: 10px !important;
+  }
+
+  .tb-centered-home-header [data-loc="client/src/pages/Home.tsx:295"] {
+    font-size: 7px !important;
+  }
+
+  .tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:299"] {
+    right: 8px !important;
+    bottom: 8px !important;
+    transform: scale(0.82);
+    transform-origin: right bottom;
+  }
+
+  /* Profile identity belongs to the profile card below, so do not repeat Seonguk in the title band. */
+  .tb-centered-profile-header {
+    min-height: 54px !important;
+    padding: 28px 62px 5px !important;
+    border-radius: 12px !important;
+  }
+
+  .tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:618"] {
+    display: none !important;
+  }
+
+  .tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:619"] {
+    top: 7px !important;
+    right: 8px !important;
+    bottom: auto !important;
+    transform: scale(0.76) !important;
+    transform-origin: right top !important;
+  }
+
+  /* Ranking and Store now use a title strip, not a large ornamental card. */
+  .tb-centered-ranking-header,
+  .tb-centered-store-header {
+    min-height: 54px !important;
+    padding: 28px 58px 5px !important;
+    border-radius: 12px !important;
+  }
+
+  .tb-centered-store-header > [data-loc="client/src/pages/Store.tsx:418"] {
+    top: 7px !important;
+    right: 8px !important;
+    bottom: auto !important;
+    transform: scale(0.76) !important;
+    transform-origin: right top !important;
+  }
+
+  [data-loc="client/src/pages/Bible.tsx:310"] > .tb-centered-page-header {
+    min-height: 46px !important;
+    margin: -1px 0 2px !important;
+    padding: 8px 14px 6px !important;
+    border-radius: 11px !important;
+  }
+}
+
+/* v1.1.62 — new user clarity, Bible AI context, and Store progression */
+.tb-onboarding-explore-home {
+  position: fixed;
+  z-index: 2147482999;
+  right: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  display: grid;
+  width: min(calc(100vw - 48px), 288px);
+  min-height: 48px;
+  gap: 2px;
+  padding: 9px 14px;
+  border: 1px solid rgba(250, 225, 122, 0.6);
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(53,34,16,.96), rgba(17,12,7,.96));
+  box-shadow: 0 8px 26px rgba(0,0,0,.56), inset 0 1px rgba(255,255,255,.08);
+  color: #fae17a;
+  text-align: center;
+  transform: translateX(50%);
+}
+.tb-onboarding-explore-home strong { font: 900 13px/1.1 Nunito, sans-serif; letter-spacing: .02em; }
+.tb-onboarding-explore-home span { color: rgba(255,247,225,.62); font: 700 9px/1.2 Nunito, sans-serif; }
+.tb-ai-source-strip {
+  display: block;
+  margin: 10px 16px 88px;
+  padding: 10px 12px;
+  border: 1px solid rgba(250, 225, 122, .48);
+  border-radius: 12px;
+  background: rgba(96, 69, 28, .44);
+  color: #fae17a;
+  text-align: center;
+  text-decoration: none;
+  font: 800 12px/1.2 Nunito, sans-serif;
+}
+.tb-store-starter-guide {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 8px 16px 12px;
+  padding: 11px 13px;
+  border: 1px solid rgba(250, 225, 122, .36);
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(112,79,21,.42), rgba(26,18,9,.76));
+  color: rgba(255,255,255,.78);
+  font: 700 12px/1.35 Nunito, sans-serif;
+}
+.tb-store-starter-guide strong { color: #fae17a; font: 900 10px/1.1 Cinzel, serif; letter-spacing: .1em; }
+@media (max-width: 430px) {
+  .tb-ai-screen [data-loc="client/src/pages/BibleAI.tsx:666"] { max-width: 145px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+/* v1.1.63 — first-time guidance in the existing dark-gold visual system */
+.tb-values-overlay, .tb-reflection-overlay { position: fixed; z-index: 2147483000; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(4,3,2,.84); backdrop-filter: blur(9px); }
+.tb-values-dialog, .tb-reflection-dialog { width: min(100%, 342px); max-height: calc(100dvh - 40px); overflow: auto; box-sizing: border-box; padding: 22px 20px 18px; border: 1px solid rgba(250,225,122,.62); border-radius: 20px; background: linear-gradient(155deg, #342111, #15100b 72%); box-shadow: 0 20px 60px rgba(0,0,0,.74), inset 0 1px rgba(255,247,225,.12); color: #fff7e1; text-align: center; font-family: Nunito, sans-serif; }
+.tb-values-crown, .tb-reflection-icon { display: grid; width: 44px; height: 44px; place-items: center; margin: 0 auto 8px; border: 1px solid rgba(250,225,122,.55); border-radius: 14px; background: radial-gradient(circle at 30% 25%, #ffe993, #9e7118 72%); color: #231503; font: 900 23px/1 Cinzel, serif; box-shadow: 0 0 20px rgba(250,225,122,.17); }
+.tb-values-eyebrow, .tb-reflection-eyebrow { color: rgba(250,225,122,.74); font: 900 9px/1.2 Nunito, sans-serif; letter-spacing: .16em; }
+.tb-values-dialog h2, .tb-reflection-dialog h2 { margin: 9px 0 15px; color: #fae17a; font: 700 22px/1.15 Cinzel, serif; letter-spacing: -.02em; }
+.tb-values-list { display: grid; gap: 8px; margin: 0 0 16px; text-align: left; }
+.tb-values-list article { display: flex; gap: 10px; align-items: center; padding: 10px; border: 1px solid rgba(250,225,122,.2); border-radius: 12px; background: rgba(0,0,0,.18); }
+.tb-values-list article > span { display: grid; flex: 0 0 30px; width: 30px; height: 30px; place-items: center; border-radius: 9px; background: rgba(250,225,122,.1); font-size: 16px; }
+.tb-values-list strong { display:block; color:#fff7e1; font: 800 12px/1.1 Nunito,sans-serif; }.tb-values-list p { margin:3px 0 0; color:rgba(255,247,225,.62); font:600 10px/1.25 Nunito,sans-serif; }
+.tb-values-primary, .tb-reflection-actions button { width: 100%; min-height: 43px; border: 0; border-radius: 12px; background: linear-gradient(180deg,#ffe993,#d5a633); color:#281804; font:900 13px/1 Nunito,sans-serif; box-shadow: inset 0 1px rgba(255,255,255,.52),0 3px 12px rgba(0,0,0,.32); }
+.tb-values-skip, .tb-reflection-close { width:100%; margin-top:9px; min-height:32px; border:0; background:transparent; color:rgba(255,247,225,.63); font:800 11px/1 Nunito,sans-serif; }
+.tb-membership-why, .tb-class-crew-explainer { margin: 0 0 12px; padding: 10px 12px; border:1px solid rgba(250,225,122,.28); border-radius:12px; background:rgba(250,225,122,.07); color:rgba(255,247,225,.76); font:700 11px/1.4 Nunito,sans-serif; }
+.tb-class-crew-explainer strong { display:block; color:#fae17a; }.tb-class-crew-explainer span { display:block; margin-top:2px; }
+.tb-first60-card { display:grid; gap:6px; margin:2px 0 12px; padding:12px; border:1px solid rgba(250,225,122,.42); border-radius:15px; background:linear-gradient(135deg,rgba(86,56,17,.56),rgba(25,17,9,.9)); box-shadow: inset 0 1px rgba(255,247,225,.07); }
+.tb-first60-head { display:flex; justify-content:space-between; align-items:baseline; margin:0 2px 3px; }.tb-first60-head strong{color:#fae17a;font:900 9px/1 Cinzel,serif;letter-spacing:.1em}.tb-first60-head span{color:rgba(255,247,225,.52);font:700 9px/1 Nunito,sans-serif;}
+.tb-first60-card button { display:grid; grid-template-columns:22px 1fr 17px; gap:8px; align-items:center; width:100%; min-height:48px; padding:8px; border:1px solid rgba(250,225,122,.18); border-radius:11px; background:rgba(0,0,0,.17); color:#fff7e1; text-align:left; }
+.tb-first60-card i { display:grid; width:22px;height:22px;place-items:center;border-radius:7px;background:rgba(250,225,122,.13);color:#fae17a;font:900 12px/1 Nunito,sans-serif;font-style:normal; }.tb-first60-card b,.tb-first60-card small{display:block}.tb-first60-card b{font:800 11px/1.2 Nunito,sans-serif}.tb-first60-card small{margin-top:2px;color:rgba(255,247,225,.55);font:600 9px/1.2 Nunito,sans-serif}.tb-first60-card em{color:#fae17a;font:900 18px/1 Cinzel,serif;font-style:normal;text-align:right;}
+.tb-reflection-reference{margin:-9px 0 12px;color:rgba(250,225,122,.72);font:800 11px/1 Nunito,sans-serif}.tb-reflection-copy{margin:0 0 16px;color:rgba(255,247,225,.75);font:600 12px/1.45 Nunito,sans-serif}.tb-reflection-actions{display:grid;gap:8px}.tb-reflection-actions button:last-child{background:rgba(250,225,122,.1);border:1px solid rgba(250,225,122,.45);color:#fae17a;box-shadow:none}
+.tb-ai-start-guide { display:grid; gap:3px; margin:8px 16px 6px; padding:9px 11px; border:1px solid rgba(250,225,122,.3); border-radius:11px; background:rgba(86,56,17,.28); color:rgba(255,247,225,.72); font:600 10px/1.35 Nunito,sans-serif; }.tb-ai-start-guide strong{color:#fae17a;font:900 8px/1 Cinzel,serif;letter-spacing:.1em;}
+@media (max-width: 380px){.tb-values-dialog,.tb-reflection-dialog{padding:18px 16px 14px}.tb-values-dialog h2,.tb-reflection-dialog h2{font-size:20px}.tb-first60-head{display:grid;gap:3px}.tb-first60-head span{font-size:8px}}
+
+/* v1.1.63 stable first-60-seconds panel */
+.tb-first60-overlay { position:fixed; z-index:2147482998; inset:0; display:grid; place-items:center; padding:20px; background:rgba(4,3,2,.78); backdrop-filter:blur(7px); }
+.tb-first60-dialog { width:min(100%,342px); box-sizing:border-box; padding:20px 17px 15px; border:1px solid rgba(250,225,122,.62); border-radius:20px; background:linear-gradient(155deg,#342111,#15100b 72%); box-shadow:0 20px 60px rgba(0,0,0,.74),inset 0 1px rgba(255,247,225,.12); color:#fff7e1; text-align:center; font-family:Nunito,sans-serif; }
+.tb-first60-medallion { display:grid; width:40px; height:40px; place-items:center; margin:0 auto 7px; border:1px solid rgba(250,225,122,.55); border-radius:13px; background:radial-gradient(circle at 30% 25%,#ffe993,#9e7118 72%); color:#231503; font:900 21px/1 Cinzel,serif; }
+.tb-first60-dialog h2 { margin:8px 0 13px; color:#fae17a; font:700 21px/1.15 Cinzel,serif; letter-spacing:-.02em; }
+.tb-first60-dialog button:not(.tb-first60-later) { display:grid; grid-template-columns:22px 1fr 17px; gap:8px; align-items:center; width:100%; min-height:50px; margin:6px 0; padding:8px; border:1px solid rgba(250,225,122,.2); border-radius:11px; background:rgba(0,0,0,.18); color:#fff7e1; text-align:left; }
+.tb-first60-dialog i { display:grid; width:22px; height:22px; place-items:center; border-radius:7px; background:rgba(250,225,122,.13); color:#fae17a; font:900 12px/1 Nunito,sans-serif; font-style:normal; }.tb-first60-dialog b,.tb-first60-dialog small{display:block}.tb-first60-dialog b{font:800 11px/1.2 Nunito,sans-serif}.tb-first60-dialog small{margin-top:2px;color:rgba(255,247,225,.55);font:600 9px/1.2 Nunito,sans-serif}.tb-first60-dialog em{color:#fae17a;font:900 18px/1 Cinzel,serif;font-style:normal;text-align:right;}
+.tb-first60-later { width:100%; min-height:32px; margin-top:5px; border:0; background:transparent; color:rgba(255,247,225,.63); font:800 11px/1 Nunito,sans-serif; }
+
+/* v1.1.65 — unified mobile headers and viewport-safe Crew dialogs */
+@media (max-width: 640px) {
+  /* This range also covers 2× DPR phones whose CSS viewport is around 500px. */
+  .tb-centered-header-title,
+  .tb-centered-page-header,
+  .tb-ai-shared-title {
+    display: grid !important;
+    place-items: center !important;
+    gap: 3px !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+  }
+
+  .tb-centered-header-title__eyebrow,
+  .tb-centered-page-header__eyebrow,
+  .tb-ai-shared-title__eyebrow {
+    display: block !important;
+    color: rgba(250, 225, 122, .66) !important;
+    font: 800 7px/1 Nunito, sans-serif !important;
+    letter-spacing: .14em !important;
+  }
+
+  .tb-centered-header-title__name,
+  .tb-centered-page-header__name,
+  .tb-ai-shared-title__name {
+    display: block !important;
+    color: #fae17a !important;
+    font: 700 17px/1 Cinzel, serif !important;
+    letter-spacing: -.02em !important;
+    text-shadow: 0 0 14px rgba(230, 195, 70, .24) !important;
+  }
+
+  /* The React overlays were positioned against a transformed app root on iOS. */
+  .tb-crew-modal-viewport {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483000 !important;
+    display: flex !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-width: none !important;
+    max-height: 100dvh !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)) !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+
+  .tb-crew-modal-viewport > div,
+  .tb-crew-modal-viewport [role="dialog"] {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: min(calc(100vw - 32px), 440px) !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    transform: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* v1.1.66 — header rules must not depend on a narrow phone media query. */
+.tb-centered-home-header,
+.tb-centered-profile-header,
+.tb-centered-ranking-header,
+.tb-centered-store-header {
+  position: relative !important;
+  min-height: 82px !important;
+  box-sizing: border-box !important;
+  padding: 39px 58px 9px !important;
+  border: 1px solid rgba(230, 195, 70, .34) !important;
+  border-radius: 14px !important;
+  background-position: center !important;
+}
+
+.tb-centered-header-title,
+.tb-centered-page-header,
+.tb-ai-shared-title {
+  z-index: 20 !important;
+  display: grid !important;
+  place-items: center !important;
+  gap: 3px !important;
+  box-sizing: border-box !important;
+  color: #fae17a !important;
+  text-align: center !important;
+  pointer-events: none !important;
+}
+
+.tb-centered-header-title {
+  position: absolute !important;
+  top: 9px !important;
+  right: 58px !important;
+  left: 58px !important;
+}
+
+.tb-centered-page-header {
+  min-height: 54px !important;
+  margin: 0 0 10px !important;
+  padding: 11px 18px 9px !important;
+  border: 1px solid rgba(230, 195, 70, .34) !important;
+  border-radius: 14px !important;
+  background: linear-gradient(180deg, rgba(71, 42, 18, .48), rgba(23, 18, 13, .92)) !important;
+}
+
+.tb-centered-header-title__eyebrow,
+.tb-centered-page-header__eyebrow,
+.tb-ai-shared-title__eyebrow {
+  display: block !important;
+  color: rgba(250, 225, 122, .68) !important;
+  font: 800 8px/1 Nunito, sans-serif !important;
+  letter-spacing: .14em !important;
+}
+
+.tb-centered-header-title__name,
+.tb-centered-page-header__name,
+.tb-ai-shared-title__name {
+  display: block !important;
+  color: #fae17a !important;
+  font: 700 clamp(17px, 3vw, 21px)/1 Cinzel, serif !important;
+  letter-spacing: -.02em !important;
+  text-shadow: 0 0 14px rgba(230, 195, 70, .24) !important;
+}
+
+/* Keep live profile data, but make it a lower metadata row rather than a second title. */
+.tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:264"] {
+  position: absolute !important;
+  bottom: 8px !important;
+  left: 50% !important;
+  z-index: 5 !important;
+  max-width: calc(100% - 124px) !important;
+  transform: translateX(-50%) !important;
+}
+
+.tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:299"],
+.tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:619"] {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 10px !important;
+  z-index: 6 !important;
+}
+
+.tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:618"] {
+  overflow: hidden !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  color: rgba(255, 247, 225, .72) !important;
+  font: 800 12px/1.1 Nunito, sans-serif !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Do not render the original page-title nodes alongside the single shared title layer. */
+.tb-centered-ranking-header h1,
+.tb-centered-ranking-header > [data-loc="client/src/pages/Leaderboard.tsx:767"],
+.tb-centered-store-header > [data-loc="client/src/pages/Store.tsx:413"] {
+  display: none !important;
+}
+
+.tb-bible-reading-entry {
+  display: grid !important;
+  grid-template-columns: 38px minmax(0, 1fr) 20px !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 82px !important;
+  gap: 11px !important;
+  margin: 0 0 10px !important;
+  padding: 14px 16px !important;
+  border: 1px solid rgba(230, 195, 70, .38) !important;
+  border-radius: 15px !important;
+  color: #fae17a !important;
+  background: linear-gradient(135deg, rgba(78, 48, 19, .96), rgba(35, 22, 12, .98)) !important;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, .27), inset 0 1px rgba(255, 247, 225, .08) !important;
+  text-align: left !important;
+}
+
+.tb-bible-reading-entry__icon {
+  display: grid !important;
+  width: 38px !important;
+  height: 38px !important;
+  place-items: center !important;
+  border: 1px solid rgba(250, 225, 122, .35) !important;
+  border-radius: 10px !important;
+  background: rgba(230, 195, 70, .09) !important;
+  font-size: 18px !important;
+}
+
+.tb-bible-reading-entry__copy { display: grid !important; gap: 3px !important; min-width: 0 !important; }
+.tb-bible-reading-entry__eyebrow { color: rgba(250, 225, 122, .72) !important; font: 800 8px/1 Nunito, sans-serif !important; letter-spacing: .12em !important; }
+.tb-bible-reading-entry__title { color: #fae17a !important; font: 700 17px/1 Cinzel, serif !important; }
+.tb-bible-reading-entry__hint { color: rgba(255, 247, 225, .58) !important; font: 500 11px/1.2 Nunito, sans-serif !important; }
+.tb-bible-reading-entry__arrow { color: #fae17a !important; font-size: 25px !important; line-height: 1 !important; }
+
+/* The legacy identity rows overlap the shared title on tablet/desktop widths. Profile details remain available in the page body. */
+.tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:264"],
+.tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:618"] {
+  display: none !important;
+}
+
+/* v1.1.67 — one header system: Ranking is the design source of truth. */
+.tb-centered-home-header,
+.tb-centered-profile-header,
+.tb-centered-ranking-header,
+.tb-centered-store-header,
+.tb-ai-header,
+.tb-centered-page-header {
+  position: relative !important;
+  min-height: 62px !important;
+  box-sizing: border-box !important;
+  margin: 0 0 12px !important;
+  padding: 0 58px !important;
+  border: 1px solid rgba(230, 195, 70, .42) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(82, 50, 20, .50), rgba(23, 18, 13, .95)) !important,
+    #17120d !important;
+  box-shadow: inset 0 1px rgba(255, 247, 225, .08), 0 5px 14px rgba(0, 0, 0, .28) !important;
+  overflow: hidden !important;
+}
+
+.tb-centered-home-header::before,
+.tb-centered-profile-header::before,
+.tb-centered-ranking-header::before,
+.tb-centered-store-header::before,
+.tb-ai-header::before,
+.tb-centered-page-header::before {
+  position: absolute !important;
+  top: 0 !important;
+  right: 13px !important;
+  left: 13px !important;
+  height: 1px !important;
+  content: '' !important;
+  background: linear-gradient(90deg, transparent, rgba(250, 225, 122, .72), transparent) !important;
+}
+
+.tb-centered-home-header::after,
+.tb-centered-profile-header::after,
+.tb-centered-ranking-header::after,
+.tb-centered-store-header::after,
+.tb-ai-header::after,
+.tb-centered-page-header::after {
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 8px !important;
+  left: 12px !important;
+  height: 1px !important;
+  content: '' !important;
+  background: linear-gradient(90deg, transparent, rgba(230, 195, 70, .24), transparent) !important;
+}
+
+.tb-centered-header-title,
+.tb-ai-shared-title {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 20 !important;
+  display: grid !important;
+  place-items: center !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 58px !important;
+  text-align: center !important;
+  pointer-events: none !important;
+}
+
+.tb-centered-page-header {
+  z-index: 20 !important;
+  display: grid !important;
+  place-items: center !important;
+  margin-bottom: 12px !important;
+  text-align: center !important;
+}
+
+.tb-centered-header-title__eyebrow,
+.tb-centered-page-header__eyebrow,
+.tb-ai-shared-title__eyebrow {
+  display: none !important;
+}
+
+.tb-centered-header-title__name,
+.tb-centered-page-header__name,
+.tb-ai-shared-title__name {
+  display: block !important;
+  color: #fae17a !important;
+  font: 700 clamp(18px, 3.2vw, 22px)/1 Cinzel, serif !important;
+  letter-spacing: -.02em !important;
+  text-shadow: 0 0 14px rgba(230, 195, 70, .24) !important;
+}
+
+/* The title remains the only header copy: title-height spacing, no legacy metadata row. */
+.tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:264"],
+.tb-centered-home-header > [data-loc="client/src/pages/Home.tsx:299"],
+.tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:618"],
+.tb-centered-profile-header > [data-loc="client/src/pages/Profile.tsx:619"],
+.tb-centered-store-header > [data-loc="client/src/pages/Store.tsx:418"],
+.tb-centered-ranking-header h1,
+.tb-centered-ranking-header > [data-loc="client/src/pages/Leaderboard.tsx:767"],
+.tb-centered-store-header > [data-loc="client/src/pages/Store.tsx:413"] {
+  display: none !important;
+}
+
+/* The Bible reader entry begins after the shared title with the same 12px rhythm. */
+.tb-bible-reading-entry { margin-top: 0 !important; margin-bottom: 12px !important; }
+
+@media (max-width: 420px) {
+  .tb-centered-home-header,
+  .tb-centered-profile-header,
+  .tb-centered-ranking-header,
+  .tb-centered-store-header,
+  .tb-ai-header,
+  .tb-centered-page-header {
+    min-height: 58px !important;
+    margin-bottom: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .tb-centered-header-title,
+  .tb-ai-shared-title { padding-inline: 48px !important; }
+  .tb-centered-header-title__name,
+  .tb-centered-page-header__name,
+  .tb-ai-shared-title__name { font-size: 18px !important; }
+}
+
+/* Equalize the physical frame height as well as the visual language. */
+.tb-centered-home-header,
+.tb-centered-profile-header,
+.tb-centered-ranking-header,
+.tb-centered-store-header,
+.tb-ai-header,
+.tb-centered-page-header {
+  height: 62px !important;
+}
+
+@media (max-width: 420px) {
+  .tb-centered-home-header,
+  .tb-centered-profile-header,
+  .tb-centered-ranking-header,
+  .tb-centered-store-header,
+  .tb-ai-header,
+  .tb-centered-page-header {
+    height: 58px !important;
+  }
+}
+
+/* v1.1.68 — no page headers: start each screen with its first useful action. */
+.tb-page-header-removed {
+  display: none !important;
+}
+
+.tb-centered-page-header,
+.tb-centered-header-title,
+.tb-ai-shared-title,
+.tb-centered-home-header,
+.tb-centered-profile-header,
+.tb-centered-ranking-header,
+.tb-centered-store-header,
+.tb-ai-header {
+  display: none !important;
+}
+
+/* Restore a deliberate, compact rhythm after removing the title bands. */
+.tb-approved-home,
+.tb-approved-bible,
+.tb-approved-profile,
+.tb-approved-ranking,
+.tb-approved-store,
+.tb-ai-screen {
+  padding-top: 2px !important;
+}
+
+.tb-approved-home > :first-child,
+.tb-approved-bible > :first-child,
+.tb-approved-profile > :first-child,
+.tb-approved-ranking > :first-child,
+.tb-approved-store > :first-child,
+.tb-ai-screen > :first-child {
+  margin-top: 0 !important;
+}
+
+.tb-bible-reading-entry {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .tb-approved-home,
+  .tb-approved-bible,
+  .tb-approved-profile,
+  .tb-approved-ranking,
+  .tb-approved-store,
+  .tb-ai-screen {
+    gap: 10px !important;
+    padding-top: 0 !important;
+  }
+}
+
+/* v1.1.69 — viewport-safe modal anchoring for transformed React route containers. */
+.tb-modal-viewport-safe {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  width: 100dvw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+.tb-modal-viewport-safe > * {
+  touch-action: pan-y;
+}
+
+.tb-ranking-member-modal-viewport {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)) !important;
+}
+
+.tb-ranking-member-modal-viewport > [data-loc="client/src/pages/Leaderboard.tsx:119"] {
+  max-height: min(85dvh, calc(100dvh - 32px)) !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 420px) {
+  .tb-ranking-member-modal-viewport {
+    padding: 14px !important;
+  }
+
+  .tb-ranking-member-modal-viewport > [data-loc="client/src/pages/Leaderboard.tsx:119"] {
+    max-height: calc(100dvh - 28px) !important;
+  }
+}
+
+/* Ranking Crew creator: direct Firebase creation, independent of Profile route timing. */
+.tb-ranking-crew-creator { position: fixed; inset: 0; z-index: 10050; display: grid; place-items: center; box-sizing: border-box; min-height: 100dvh; padding: 20px; overflow: auto; overscroll-behavior: contain; background: rgba(8, 5, 2, 0.76); backdrop-filter: blur(7px); }
+.tb-ranking-crew-dialog { position: relative; box-sizing: border-box; width: min(100%, 390px); max-height: min(680px, calc(100dvh - 40px)); overflow: auto; padding: 26px 20px 20px; border: 1px solid rgba(230, 195, 70, 0.56); border-radius: 18px; color: #fff7e1; background: linear-gradient(155deg, #3d250f, #181008 72%); box-shadow: 0 20px 52px rgba(0, 0, 0, 0.62), inset 0 1px rgba(255, 240, 180, 0.15); }
+.tb-ranking-crew-close { position: absolute; top: 10px; right: 12px; display: grid; width: 30px; height: 30px; place-items: center; padding: 0; border: 1px solid rgba(250, 225, 122, 0.22); border-radius: 50%; color: rgba(255, 247, 225, 0.72); background: rgba(0, 0, 0, 0.2); font-size: 22px; line-height: 1; }
+.tb-ranking-crew-eyebrow { margin-bottom: 6px; color: rgba(250, 225, 122, 0.7); font: 800 10px 'Nunito', sans-serif; letter-spacing: 0.14em; }
+.tb-ranking-crew-dialog h2 { margin: 0; color: #ffe993; font: 700 25px/1.15 'Cinzel', serif; }
+.tb-ranking-crew-dialog > p { margin: 9px 0 18px; color: rgba(255, 247, 225, 0.64); font: 500 13px/1.45 'Nunito', sans-serif; }
+.tb-ranking-crew-dialog label { display: grid; gap: 7px; color: rgba(250, 225, 122, 0.72); font: 800 10px/1 'Nunito', sans-serif; letter-spacing: 0.1em; }
+.tb-ranking-crew-dialog input { width: 100%; box-sizing: border-box; min-height: 46px; padding: 0 13px; border: 1px solid rgba(230, 195, 70, 0.28); border-radius: 11px; outline: none; color: #fff7e1; background: rgba(0, 0, 0, 0.32); font: 600 14px 'Nunito', sans-serif; }
+.tb-ranking-crew-dialog input:focus { border-color: rgba(250, 225, 122, 0.76); box-shadow: 0 0 0 3px rgba(230, 195, 70, 0.12); }
+.tb-ranking-crew-visibility { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 14px; }
+.tb-ranking-crew-visibility button { min-height: 70px; padding: 9px; border: 1px solid rgba(255, 247, 225, 0.14); border-radius: 11px; color: rgba(255, 247, 225, 0.6); background: rgba(0, 0, 0, 0.22); font: 800 12px 'Nunito', sans-serif; text-align: left; }
+.tb-ranking-crew-visibility button span { display: block; margin-top: 4px; color: rgba(255, 247, 225, 0.42); font-size: 10px; font-weight: 600; line-height: 1.25; }
+.tb-ranking-crew-visibility button.is-selected { border-color: rgba(230, 195, 70, 0.72); color: #ffe993; background: rgba(212, 175, 55, 0.13); }
+.tb-ranking-crew-error { min-height: 18px; margin: 11px 0 0 !important; color: #ff9c93 !important; font-size: 12px !important; }
+.tb-ranking-crew-submit { width: 100%; min-height: 46px; margin-top: 9px; border: 1px solid rgba(255, 235, 147, 0.65); border-radius: 12px; color: #211503; background: linear-gradient(180deg, #ffe993, #d5a633); box-shadow: 0 4px 13px rgba(0, 0, 0, 0.34), inset 0 1px rgba(255,255,255,0.5); font: 800 14px 'Nunito', sans-serif; }
+.tb-ranking-crew-submit:disabled { opacity: 0.58; }
+
+/* 1.1.80: body-anchored Crew picker; never clipped by Ranking card overflow. */
+.tb-crew-picker { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 18px; box-sizing: border-box; background: rgba(7, 4, 2, .78); backdrop-filter: blur(8px); overscroll-behavior: contain; }
+.tb-crew-picker__dialog { position: relative; width: min(100%, 360px); max-height: min(620px, calc(100dvh - 36px)); overflow: auto; box-sizing: border-box; padding: 24px 16px 16px; border: 1px solid rgba(250,225,122,.6); border-radius: 20px; background: linear-gradient(155deg,#3b240f,#171008 78%); color: #fff7e1; box-shadow: 0 22px 64px rgba(0,0,0,.7), inset 0 1px rgba(255,240,180,.16); }
+.tb-crew-picker__close { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border: 1px solid rgba(250,225,122,.3); border-radius: 50%; color: #ffe993; background: rgba(0,0,0,.26); font-size: 22px; line-height: 1; }
+.tb-crew-picker__eyebrow { color: rgba(250,225,122,.72); font: 800 10px/1 'Nunito',sans-serif; letter-spacing: .16em; }
+.tb-crew-picker__dialog h2 { margin: 7px 38px 4px 0; color: #ffe993; font: 700 24px/1.15 'Cinzel',serif; }
+.tb-crew-picker__hint { margin: 0 0 14px; color: rgba(255,247,225,.62); font: 600 12px/1.4 'Nunito',sans-serif; }
+.tb-crew-picker__list { display: grid; gap: 8px; }
+.tb-crew-picker__option { display: grid; grid-template-columns: 34px 1fr 24px; align-items: center; gap: 9px; width: 100%; min-height: 58px; padding: 9px 10px; box-sizing: border-box; border: 1px solid rgba(250,225,122,.2); border-radius: 13px; color: #fff7e1; background: rgba(0,0,0,.25); text-align: left; }
+.tb-crew-picker__option.is-selected { border-color: rgba(250,225,122,.78); background: rgba(212,175,55,.16); box-shadow: 0 0 0 1px rgba(250,225,122,.1); }
+.tb-crew-picker__icon { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 10px; background: rgba(212,175,55,.16); }
+.tb-crew-picker__option strong { display: block; overflow: hidden; color: #ffe993; font: 800 14px/1.2 'Nunito',sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.tb-crew-picker__option small { display: block; margin-top: 3px; color: rgba(255,247,225,.5); font: 700 10px/1 'Nunito',sans-serif; }
+.tb-crew-picker__check { color: #ffe993; font-size: 19px; text-align: center; }
+.tb-crew-picker__loading, .tb-crew-picker__empty { padding: 22px 8px; color: rgba(255,247,225,.62); font: 700 13px/1.4 'Nunito',sans-serif; text-align: center; }
+@media (max-width: 430px) {
+  .tb-ranking-secondary-invite { display: none !important; }
+  .tb-ranking-crew-hub { margin-top: 8px !important; }
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:960"] { max-width: 210px; font-size: 12px !important; line-height: 1.25 !important; }
+}
+
+@media (max-width: 430px) {
+  /* The Invite strip is secondary once a Crew exists; keep it out of the first viewport. */
+  [data-loc="client/src/pages/Leaderboard.tsx:924"] { display: none !important; }
+  /* Keep Crew Hub as a compact action row, not a second explanatory card. */
+  .tb-ranking-crew-hub { grid-template-columns: minmax(0, 1fr) auto !important; gap: 7px !important; min-height: 54px !important; margin-top: 6px !important; padding: 8px 10px !important; }
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:957"],
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:958"] { display: none !important; }
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"],
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:965"] { grid-column: auto !important; }
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"] { justify-self: end; }
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:965"] { display: block !important; padding: 0 !important; }
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] { min-height: 28px; padding: 0 7px !important; font-size: 9px !important; }
+  /* The original dropdown is clipped by its parent. The visible replacement owns the interaction. */
+  [data-loc="client/src/pages/Leaderboard.tsx:885"] { display: none !important; }
+}
+
+/* 1.1.82: Crew Hub is an even two-action row on mobile. */
+@media (max-width: 430px) {
+  .tb-ranking-crew-hub {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    min-height: 0 !important;
+    gap: 9px !important;
+    padding: 10px !important;
+  }
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"],
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:965"] {
+    display: block !important;
+    grid-column: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"],
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 44px !important;
+    box-sizing: border-box;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+    border-radius: 11px !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    white-space: nowrap;
+  }
+  .tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] { border: 1px solid rgba(250,225,122,.38) !important; }
+}
+
+@media (max-width: 380px) { .tb-ranking-crew-creator { padding: 12px; } .tb-ranking-crew-dialog { padding: 24px 16px 16px; } }
+
+/* 1.1.83: Screen-fixed ornamental corners overlap narrow mobile controls. */
+[data-loc="client/src/components/OrnateCorners.tsx:70"],
+[data-loc="client/src/components/OrnateCorners.tsx:71"],
+[data-loc="client/src/components/OrnateCorners.tsx:72"] {
+  display: none !important;
+}
+
+/* 1.1.84: The app shell can be narrow even on a wide browser. Keep Crew Hub actions balanced at every viewport width. */
+.tb-ranking-crew-hub {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  min-height: 0 !important;
+  gap: 9px !important;
+  padding: 10px !important;
+}
+.tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:957"],
+.tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:958"] {
+  display: none !important;
+}
+.tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"],
+.tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:965"] {
+  display: block !important;
+  grid-column: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-self: stretch !important;
+}
+.tb-ranking-crew-hub > [data-loc="client/src/pages/Leaderboard.tsx:962"],
+.tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 8px !important;
+  border-radius: 11px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+.tb-ranking-crew-hub [data-loc="client/src/pages/Leaderboard.tsx:966"] {
+  border: 1px solid rgba(250,225,122,.38) !important;
+}
+
+/* 1.1.87: Keep the invite-code input and Paste action inside narrow Galaxy dialogs. */
+[data-loc="client/src/pages/Leaderboard.tsx:1275"] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 8px !important;
+}
+[data-loc="client/src/pages/Leaderboard.tsx:1276"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding-right: 10px !important;
+  padding-left: 10px !important;
+  font-size: 16px !important;
+  letter-spacing: .14em !important;
+}
+[data-loc="client/src/pages/Leaderboard.tsx:1287"] {
+  min-width: 58px !important;
+  min-height: 44px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+
+
+/* v1.1.89 — compact Bible AI and delivered Cheer UI */
+.tb-cheer-feedback { position: fixed; z-index: 2147483646; right: 16px; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); max-width: min(330px, calc(100vw - 32px)); padding: 12px 14px; border: 1px solid rgba(250,225,122,.5); border-radius: 13px; background: linear-gradient(135deg,#3d2a14,#1a1109); color: #fff7e1; box-shadow: 0 12px 32px rgba(0,0,0,.48); font: 800 12px/1.35 Nunito,sans-serif; animation: tbCheerIn .2s ease-out; }
+.tb-cheer-feedback.is-error { border-color: rgba(248,113,113,.65); color: #fecaca; }.tb-cheer-feedback.is-info { border-color: rgba(147,197,253,.55); color:#dbeafe; }
+@keyframes tbCheerIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.tb-ranking-member-modal-viewport { touch-action: manipulation !important; pointer-events: auto !important; }
+.tb-ranking-member-modal-viewport [data-loc="client/src/pages/Leaderboard.tsx:119"],
+.tb-ranking-member-modal-viewport [data-tb-cheer],
+.tb-ranking-member-modal-viewport [data-tb-ranking-close] { position: relative !important; pointer-events: auto !important; touch-action: manipulation !important; -webkit-tap-highlight-color: transparent; }
+.tb-ranking-member-modal-viewport [data-tb-cheer], .tb-ranking-member-modal-viewport [data-tb-ranking-close] { z-index: 2147483005 !important; min-height: 44px; }
+.tb-cheer-inbox { display:grid; gap:7px; margin:0 0 12px; padding:12px; border:1px solid rgba(250,225,122,.38); border-radius:14px; background:linear-gradient(135deg,rgba(85,54,18,.56),rgba(25,17,9,.92)); box-shadow:inset 0 1px rgba(255,247,225,.08); color:#fff7e1; }
+.tb-cheer-inbox__head { display:flex; align-items:center; justify-content:space-between; color:#fae17a; font:900 10px/1 Cinzel,serif; letter-spacing:.08em; }.tb-cheer-inbox__head b { padding:4px 6px; border-radius:999px; background:rgba(250,225,122,.13); color:#fae17a; font:900 8px/1 Nunito,sans-serif; }.tb-cheer-inbox p { margin:0; color:rgba(255,247,225,.82); font:700 11px/1.35 Nunito,sans-serif; }.tb-cheer-inbox p span { color:rgba(255,247,225,.5); }
+@media (max-width: 640px) {
+  .tb-ai-compact-layout { padding-top: 0 !important; padding-bottom: 78px !important; }
+  .tb-ai-start-guide { display:flex !important; }
+  .tb-ai-source-strip, .tb-ai-compact-context { position:fixed !important; z-index:2147483004 !important; left:50% !important; bottom:calc(env(safe-area-inset-bottom, 0px) + 66px) !important; display:inline-flex !important; width:auto !important; max-width:calc(100vw - 36px) !important; margin:0 !important; padding:4px 9px !important; transform:translateX(-50%) !important; border:1px solid rgba(250,225,122,.34) !important; border-radius:999px !important; background:rgba(28,18,10,.96) !important; color:#fae17a !important; font:800 10px/1.2 Nunito,sans-serif !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; box-shadow:0 4px 12px rgba(0,0,0,.32) !important; }
+  .tb-ai-compact-composer { position:fixed !important; z-index:2147483003 !important; right:0 !important; bottom:0 !important; left:0 !important; display:flex !important; align-items:center !important; gap:8px !important; min-height:58px !important; height:58px !important; margin:0 !important; padding:8px 12px max(8px, env(safe-area-inset-bottom, 8px)) !important; background:linear-gradient(180deg,rgba(42,25,13,.98),rgba(14,11,9,.99)) !important; border-top:1px solid rgba(250,225,122,.22) !important; box-shadow:0 -8px 22px rgba(0,0,0,.42) !important; }
+  .tb-ai-compact-composer [data-loc="client/src/pages/BibleAI.tsx:729"] { flex:1 1 auto !important; min-width:0 !important; min-height:40px !important; height:40px !important; max-height:40px !important; margin:0 !important; padding:9px 12px !important; border-radius:14px !important; font-size:13px !important; line-height:20px !important; }
+  .tb-ai-compact-composer button { flex:0 0 auto !important; width:40px !important; height:40px !important; min-width:40px !important; min-height:40px !important; margin:0 !important; border-radius:50% !important; }
+  .tb-ai-direct-back { position:fixed !important; z-index:2147483645 !important; top:calc(env(safe-area-inset-top, 0px) + 8px) !important; left:12px !important; display:grid !important; width:40px !important; height:40px !important; place-items:center !important; padding:0 !important; border:1px solid rgba(250,225,122,.55) !important; border-radius:50% !important; background:rgba(17,13,10,.94) !important; color:#fae17a !important; box-shadow:0 4px 14px rgba(0,0,0,.42) !important; font:900 25px/1 Arial,sans-serif !important; touch-action:manipulation !important; }
+}
+
+/* v1.1.91 — body-portal action bar for unambiguous mobile Ranking controls */
+.tb-ranking-action-portal { position:fixed; z-index:2147483646; right:16px; bottom:max(16px,env(safe-area-inset-bottom, 0px)); left:16px; display:grid; grid-template-columns:1fr 1.35fr; gap:10px; pointer-events:auto; touch-action:manipulation; }
+.tb-ranking-action-portal button { min-height:52px; padding:0 16px; border-radius:14px; font:900 13px/1 Cinzel,serif; letter-spacing:.05em; text-transform:uppercase; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+.tb-ranking-action-portal [data-tb-portal-close] { border:1px solid rgba(250,225,122,.48); background:rgba(21,14,10,.97); color:rgba(255,247,225,.82); box-shadow:0 8px 20px rgba(0,0,0,.42); }
+.tb-ranking-action-portal [data-tb-portal-cheer] { border:1px solid rgba(250,225,122,.72); background:linear-gradient(135deg,#6a4715,#27180b); color:#fff0a4; box-shadow:0 8px 24px rgba(0,0,0,.46),inset 0 1px rgba(255,247,225,.16); }
+@media (min-width:641px) { .tb-ranking-action-portal { right:auto; left:50%; width:300px; transform:translateX(-50%); } }
+.tb-ranking-member-modal-viewport [data-tb-cheer], .tb-ranking-member-modal-viewport [data-tb-ranking-close] { display:none !important; }
+
+/* v1.1.91 — cohesive Bible AI composer rebuilt around the real 697/711/727 DOM hierarchy */
+@media (max-width: 640px) {
+  .tb-ai-compact-layout { padding-bottom: 72px !important; }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:510"] { position:relative !important; display:flex !important; min-height:56px !important; height:56px !important; padding:0 12px !important; background:#0b0b0b !important; border-bottom:1px solid rgba(250,225,122,.16) !important; }
+  .tb-ai-direct-back { top:calc(env(safe-area-inset-top, 0px) + 10px) !important; left:14px !important; width:36px !important; height:36px !important; border-color:rgba(250,225,122,.42) !important; background:rgba(20,15,11,.96) !important; font-size:22px !important; }
+  .tb-ai-source-strip, .tb-ai-compact-context { display:none !important; }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:697"] { position:fixed !important; z-index:2147483003 !important; right:0 !important; bottom:0 !important; left:0 !important; box-sizing:border-box !important; min-height:68px !important; height:68px !important; margin:0 !important; padding:10px 12px max(10px, env(safe-area-inset-bottom, 10px)) !important; background:#11100f !important; background-image:none !important; border-top:1px solid rgba(250,225,122,.18) !important; box-shadow:0 -10px 26px rgba(0,0,0,.40) !important; }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] { display:grid !important; grid-template-columns:40px minmax(0,1fr) 40px !important; align-items:center !important; gap:9px !important; width:100% !important; }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] > button { width:40px !important; height:40px !important; min-width:40px !important; min-height:40px !important; margin:0 !important; border-radius:50% !important; }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:727"], .tb-ai-compact-composer { position:static !important; display:flex !important; width:auto !important; min-width:0 !important; height:40px !important; min-height:40px !important; margin:0 !important; padding:0 12px !important; border:1px solid rgba(250,225,122,.24) !important; border-radius:13px !important; background:rgba(255,255,255,.055) !important; box-shadow:none !important; }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:729"] { width:100% !important; min-width:0 !important; height:38px !important; min-height:38px !important; margin:0 !important; padding:0 !important; font-size:13px !important; line-height:38px !important; }
+}
+
+/* v1.1.95: Ranking member rows are interactive surfaces; visual companions must not capture taps. */
+@media (max-width: 640px) {
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"],
+  [data-loc="client/src/pages/Leaderboard.tsx:1114"],
+  [data-loc="client/src/pages/Leaderboard.tsx:1130"],
+  [data-loc="client/src/pages/Leaderboard.tsx:1149"] {
+    position: relative !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] img,
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] svg,
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] [class*="pet" i],
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] [class*="dragon" i],
+  [data-loc="client/src/pages/Leaderboard.tsx:1182"] [class*="decoration" i],
+  [data-loc="client/src/pages/Leaderboard.tsx:1114"] img,
+  [data-loc="client/src/pages/Leaderboard.tsx:1130"] img,
+  [data-loc="client/src/pages/Leaderboard.tsx:1149"] img {
+    pointer-events: none !important;
+    touch-action: none !important;
+  }
+
+  .faithy-pet, .pet-companion, .ranking-pet, .rank-pet, .fire-dragon,
+  [data-tb-ranking-decor], [data-tb-pet-decoration] {
+    pointer-events: none !important;
+    touch-action: none !important;
+  }
+}
+
+/* v1.1.96 — Profile encouragement inbox and gentle new-Cheer celebration */
+.tb-cheer-inbox {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+  margin: 0 0 12px;
+  padding: 13px;
+  border: 1px solid rgba(250, 225, 122, .42);
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 88% -15%, rgba(250, 225, 122, .22), transparent 35%),
+    linear-gradient(135deg, rgba(85, 54, 18, .66), rgba(25, 17, 9, .96));
+  box-shadow: inset 0 1px rgba(255, 247, 225, .09), 0 7px 18px rgba(0, 0, 0, .24);
+  color: #fff7e1;
+}
+.tb-cheer-inbox::before {
+  position: absolute;
+  top: 0;
+  right: 17px;
+  left: 17px;
+  height: 1px;
+  content: '';
+  background: linear-gradient(90deg, transparent, rgba(255, 238, 164, .72), transparent);
+}
+.tb-cheer-inbox.is-new { animation: tb-cheer-inbox-glow 1.2s ease-out both; }
+.tb-cheer-inbox__head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #fae17a;
+  font: 900 10px/1 Cinzel, serif;
+  letter-spacing: .09em;
+}
+.tb-cheer-inbox__head b {
+  padding: 4px 7px;
+  border: 1px solid rgba(250, 225, 122, .19);
+  border-radius: 999px;
+  color: #ffe993;
+  background: rgba(250, 225, 122, .12);
+  font: 900 8px/1 Nunito, sans-serif;
+  letter-spacing: .08em;
+}
+.tb-cheer-inbox__list { position: relative; z-index: 1; display: grid; gap: 7px; }
+.tb-cheer-inbox__item {
+  display: grid;
+  grid-template-columns: 31px minmax(0, 1fr) 15px;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid rgba(255, 247, 225, .07);
+  border-radius: 11px;
+  background: rgba(9, 7, 4, .22);
+}
+.tb-cheer-inbox__avatar {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border: 1px solid rgba(250, 225, 122, .31);
+  border-radius: 10px;
+  color: #fae17a;
+  background: linear-gradient(135deg, rgba(250, 225, 122, .20), rgba(93, 61, 18, .42));
+  font-size: 14px;
+  box-shadow: inset 0 1px rgba(255, 247, 225, .10);
+}
+.tb-cheer-inbox__copy { display: grid; min-width: 0; gap: 2px; }
+.tb-cheer-inbox__copy strong { overflow: hidden; color: #fff7e1; font: 900 11px/1.1 Nunito, sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.tb-cheer-inbox__copy p { margin: 0; color: rgba(255, 247, 225, .74); font: 700 10px/1.18 Nunito, sans-serif; }
+.tb-cheer-inbox__copy p span { color: rgba(250, 225, 122, .72); }
+.tb-cheer-inbox__copy time { color: rgba(255, 247, 225, .40); font: 800 8px/1 Nunito, sans-serif; letter-spacing: .02em; }
+.tb-cheer-inbox__seal { color: rgba(250, 225, 122, .58); font-size: 14px; text-align: center; }
+#tb-cheer-confetti { position: absolute; z-index: 3; inset: 0; overflow: hidden; pointer-events: none; }
+.tb-cheer-confetti__piece {
+  position: absolute;
+  top: 14%;
+  left: var(--x);
+  width: 6px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--color);
+  opacity: 0;
+  transform: translate(-50%, 0) rotate(0deg);
+  animation: tb-cheer-confetti-fall 1.5s cubic-bezier(.16,.71,.34,1) var(--delay) forwards;
+}
+@keyframes tb-cheer-inbox-glow {
+  0% { box-shadow: inset 0 1px rgba(255, 247, 225, .10), 0 0 0 rgba(250, 225, 122, 0); }
+  32% { box-shadow: inset 0 1px rgba(255, 247, 225, .18), 0 0 26px rgba(250, 225, 122, .30); }
+  100% { box-shadow: inset 0 1px rgba(255, 247, 225, .09), 0 7px 18px rgba(0, 0, 0, .24); }
+}
+@keyframes tb-cheer-confetti-fall {
+  0% { opacity: 0; transform: translate(-50%, -7px) rotate(0deg); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 104px) rotate(var(--spin)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tb-cheer-inbox.is-new, .tb-cheer-confetti__piece { animation: none !important; }
+}
+
+/* v1.1.97 — CSS-only positioning correction for the original Profile photo sheet. */
+@media (max-width: 640px) {
+  [data-loc="client/src/pages/Profile.tsx:907"] {
+    box-sizing: border-box !important;
+    align-items: flex-end !important;
+    padding: max(10px, env(safe-area-inset-top, 0px)) 12px max(10px, env(safe-area-inset-bottom, 0px)) !important;
+    overflow: hidden !important;
+  }
+
+  [data-loc="client/src/pages/Profile.tsx:914"] {
+    box-sizing: border-box !important;
+    width: min(100%, 430px) !important;
+    max-height: calc(100dvh - max(24px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 24px)) !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+@supports not (height: 100dvh) {
+  @media (max-width: 640px) {
+    [data-loc="client/src/pages/Profile.tsx:914"] { max-height: calc(100vh - 24px) !important; }
+  }
+}
+
+/* v1.1.97 — restore Profile avatar hit area above decorative progress/camera overlays. */
+[data-loc="client/src/pages/Profile.tsx:697"] {
+  position: relative !important;
+  z-index: 40 !important;
+  pointer-events: auto !important;
+}
+
+[data-loc="client/src/pages/Profile.tsx:779"],
+[data-loc="client/src/pages/Profile.tsx:785"],
+[data-loc="client/src/pages/Profile.tsx:786"],
+[data-loc="client/src/pages/Profile.tsx:788"] {
+  pointer-events: none !important;
+}
+
+/* v1.1.98 — the first-photo nudge must not block the Profile avatar. */
+[data-loc="client/src/pages/Profile.tsx:586"],
+[data-loc="client/src/pages/Profile.tsx:587"] {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* v1.1.105 — keep Profile My Crews Create/Join forms inside the centered modal on mobile. */
+.tb-crew-form-panel {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+  transform-origin: center center !important;
+  overflow: visible !important;
+}
+.tb-crew-form-panel > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+@media (max-width: 640px) {
+  .tb-crew-modal-viewport {
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    overflow: hidden !important;
+  }
+  .tb-crew-modal-viewport > div {
+    box-sizing: border-box !important;
+    width: min(100%, 430px) !important;
+    max-width: 430px !important;
+    max-height: calc(100dvh - max(24px, env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px) + 24px)) !important;
+    margin: 0 auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .tb-crew-form-panel input,
+  .tb-crew-form-panel button,
+  .tb-crew-form-panel textarea,
+  .tb-crew-form-panel select {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+  }
+}
+@supports not (height: 100dvh) {
+  @media (max-width: 640px) {
+    .tb-crew-modal-viewport > div { max-height: calc(100vh - 24px) !important; }
+  }
+}
+
+/* v1.1.115 — allow real mobile touch events inside Crew overlays. */
+.tb-modal-viewport-safe.tb-crew-modal-viewport {
+  touch-action: auto !important;
+}
+.tb-modal-viewport-safe.tb-crew-modal-viewport > *,
+.tb-modal-viewport-safe.tb-crew-modal-viewport button,
+.tb-modal-viewport-safe.tb-crew-modal-viewport input,
+.tb-modal-viewport-safe.tb-crew-modal-viewport textarea,
+.tb-modal-viewport-safe.tb-crew-modal-viewport select {
+  touch-action: manipulation !important;
+}
+.tb-modal-viewport-safe.tb-crew-modal-viewport > div {
+  pointer-events: auto !important;
+}
+@media (max-width: 640px) {
+  .tb-modal-viewport-safe.tb-crew-modal-viewport {
+    overscroll-behavior: contain !important;
+  }
+}
+
+
+/* v1.1.117 — Profile photo sheet: restore full viewport overlay and prevent zero-height clipping. */
+@media (max-width: 640px) {
+  [data-loc="client/src/pages/Profile.tsx:907"] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483001 !important;
+    display: flex !important;
+    width: 100vw !important;
+    min-width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-width: none !important;
+    max-height: 100dvh !important;
+    box-sizing: border-box !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 16px max(16px, env(safe-area-inset-bottom)) !important;
+    transform: none !important;
+    overflow: hidden !important;
+    pointer-events: auto !important;
+  }
+
+  [data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:912"] {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+
+  [data-loc="client/src/pages/Profile.tsx:914"] {
+    position: relative !important;
+    inset: auto !important;
+    width: min(100%, 432px) !important;
+    max-width: 432px !important;
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    animation: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    pointer-events: auto !important;
+  }
+}
+
+[data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:914"] {
+  pointer-events: auto !important;
+}
+.playwright-screenshot [data-loc="client/src/pages/Profile.tsx:907"] { position: fixed !important; }
+
+/* Keep the original avatar click target above decorative artwork. */
+[data-loc="client/src/pages/Profile.tsx:697"] {
+  position: relative !important;
+  z-index: 2147483646 !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:632"],
+[data-loc="client/src/pages/Profile.tsx:633"] {
+  pointer-events: none !important;
+}
+.reduce-motion [data-loc="client/src/pages/Profile.tsx:914"] { animation: none !important; }
+
+
+
+/* v1.1.119 — Apply photo sheet viewport geometry at every viewport size. */
+[data-loc="client/src/pages/Profile.tsx:907"] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483001 !important;
+  display: flex !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-width: none !important;
+  max-height: 100dvh !important;
+  box-sizing: border-box !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 16px max(16px, env(safe-area-inset-bottom)) !important;
+  transform: none !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:912"] {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:914"] {
+  position: relative !important;
+  inset: auto !important;
+  width: min(100%, 432px) !important;
+  max-width: 432px !important;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+  transform: none !important;
+  animation: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  pointer-events: auto !important;
+}
+
+
+/* v1.1.120 — Isolate the profile photo sheet from the Profile scroll/content stacking context. */
+[data-loc="client/src/pages/Profile.tsx:907"] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483646 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 16px max(16px, env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box !important;
+  background: rgba(0, 0, 0, 0.78) !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:907"] > [data-loc="client/src/pages/Profile.tsx:912"] {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  pointer-events: auto !important;
+}
+[data-loc="client/src/pages/Profile.tsx:914"] {
+  position: fixed !important;
+  z-index: 1 !important;
+  right: auto !important;
+  bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  left: 50% !important;
+  top: auto !important;
+  inset-inline: auto !important;
+  width: min(calc(100vw - 32px), 432px) !important;
+  min-width: 0 !important;
+  max-width: 432px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  margin: 0 !important;
+  padding: 20px 16px max(20px, env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(230, 195, 70, 0.55) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, #2a1b10 0%, #17100b 100%) !important;
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.72), 0 0 24px rgba(230, 195, 70, 0.14) !important;
+  transform: translateX(-50%) !important;
+  animation: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  pointer-events: auto !important;
+}
+
+
+/* v1.1.121 — Use explicit inset edges so the sheet dialog stays inside the visual viewport. */
+[data-loc="client/src/pages/Profile.tsx:907"] {
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+[data-loc="client/src/pages/Profile.tsx:914"] {
+  position: fixed !important;
+  inset: auto 16px max(16px, env(safe-area-inset-bottom)) 16px !important;
+  width: auto !important;
+  max-width: 432px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  margin: 0 auto !important;
+  transform: none !important;
+}
+
+
+/* v1.1.122 — Remove negative inset resolution and center the photo dialog explicitly. */
+[data-loc="client/src/pages/Profile.tsx:914"] {
+  position: fixed !important;
+  inset: auto !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 50% !important;
+  width: min(calc(100vw - 32px), 432px) !important;
+  max-width: 432px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 32px) !important;
+  margin: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* v1.1.124 — Android PWA stacking-context isolation for the React-owned photo modal. */
+body.tb-photo-modal-open .tb-photo-modal-background-hidden {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body.tb-photo-modal-open [data-loc="client/src/pages/Profile.tsx:907"],
+body.tb-photo-modal-open [data-loc="client/src/pages/Profile.tsx:914"] {
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* v1.1.126 — guarded account deletion and compact UGC safety controls */
+.tb-secure-account-delete, .tb-safety-report-dialog { position:fixed !important; z-index:2147483646 !important; inset:0 !important; display:grid !important; place-items:center !important; box-sizing:border-box !important; padding:18px !important; background:rgba(4,3,2,.78) !important; backdrop-filter:blur(8px) !important; -webkit-backdrop-filter:blur(8px) !important; }
+.tb-secure-account-delete__card, .tb-safety-report-dialog__card { width:min(100%,430px) !important; max-height:calc(100dvh - 36px) !important; overflow-y:auto !important; box-sizing:border-box !important; padding:24px 20px 20px !important; border:1px solid rgba(250,225,122,.32) !important; border-radius:20px !important; color:#fff7e1 !important; background:linear-gradient(155deg,#31180e,#130d09 74%) !important; box-shadow:0 24px 70px rgba(0,0,0,.64),inset 0 1px rgba(255,244,192,.12) !important; font-family:Nunito,system-ui,sans-serif !important; }
+.tb-secure-account-delete__eyebrow, .tb-safety-report-dialog__eyebrow { margin:0 0 7px !important; color:#f7aa8b !important; font:900 10px/1 Cinzel,serif !important; letter-spacing:.14em !important; }
+.tb-secure-account-delete h2, .tb-safety-report-dialog h2 { margin:0 !important; color:#fff1cb !important; font:800 24px/1.16 Cinzel,serif !important; }
+.tb-secure-account-delete__identity { margin:8px 0 14px !important; color:#fae17a !important; font:800 13px/1.25 Nunito,sans-serif !important; }
+.tb-secure-account-delete__copy, .tb-safety-report-dialog__card>p { margin:0 0 16px !important; color:rgba(255,247,225,.76) !important; font:600 13px/1.5 Nunito,sans-serif !important; }
+.tb-secure-account-delete__ack { display:flex !important; align-items:flex-start !important; gap:10px !important; margin:0 0 14px !important; color:rgba(255,247,225,.9) !important; font:700 12px/1.4 Nunito,sans-serif !important; cursor:pointer !important; }
+.tb-secure-account-delete__ack input { width:18px !important; height:18px !important; margin:0 !important; accent-color:#dc5446 !important; flex:0 0 auto !important; }
+.tb-secure-account-delete__typed, .tb-safety-report-dialog__card label { display:grid !important; gap:7px !important; margin:0 0 13px !important; color:rgba(250,225,122,.82) !important; font:800 11px/1.2 Nunito,sans-serif !important; }
+.tb-secure-account-delete__typed b { color:#fff0a4 !important; letter-spacing:.08em !important; }
+.tb-secure-account-delete__typed input, .tb-safety-report-dialog__card select, .tb-safety-report-dialog__card textarea { width:100% !important; box-sizing:border-box !important; min-height:44px !important; padding:10px 12px !important; border:1px solid rgba(250,225,122,.28) !important; border-radius:11px !important; outline:0 !important; color:#fff7e1 !important; background:rgba(0,0,0,.28) !important; font:700 14px Nunito,sans-serif !important; }
+.tb-safety-report-dialog__card textarea { min-height:82px !important; resize:vertical !important; }
+.tb-secure-account-delete__typed input:focus, .tb-safety-report-dialog__card select:focus, .tb-safety-report-dialog__card textarea:focus { border-color:rgba(250,225,122,.78) !important; box-shadow:0 0 0 3px rgba(250,225,122,.12) !important; }
+.tb-secure-account-delete__hint { margin:3px 0 12px !important; color:rgba(255,247,225,.52) !important; font:600 11px/1.45 Nunito,sans-serif !important; }
+.tb-account-delete-status, .tb-report-status { min-height:17px !important; margin:0 0 12px !important; color:rgba(255,247,225,.65) !important; font:700 11px/1.35 Nunito,sans-serif !important; }
+.tb-account-delete-status.is-error, .tb-report-status.is-error { color:#fca5a5 !important; }
+.tb-account-delete-status.is-success, .tb-report-status.is-success { color:#a7f3d0 !important; }
+.tb-account-delete-status.is-working { color:#fde68a !important; }
+.tb-secure-account-delete__actions, .tb-safety-report-dialog__actions { display:grid !important; grid-template-columns:1fr 1.1fr !important; gap:9px !important; }
+.tb-secure-account-delete__actions button, .tb-safety-report-dialog__actions button { min-height:46px !important; padding:0 10px !important; border-radius:12px !important; font:900 11px/1 Cinzel,serif !important; letter-spacing:.03em !important; touch-action:manipulation !important; }
+.tb-secure-account-delete__actions [data-tb-delete-cancel], .tb-safety-report-dialog__actions [data-tb-report-cancel] { border:1px solid rgba(250,225,122,.38) !important; color:rgba(255,247,225,.86) !important; background:rgba(26,17,11,.92) !important; }
+.tb-secure-account-delete__actions [data-tb-delete-confirm] { border:1px solid rgba(248,113,113,.68) !important; color:#fff1ec !important; background:linear-gradient(135deg,#8a251e,#48100e) !important; }
+.tb-secure-account-delete__actions [data-tb-delete-confirm]:disabled { cursor:not-allowed !important; opacity:.36 !important; }
+.tb-safety-report-dialog__actions [data-tb-report-submit] { border:1px solid rgba(250,225,122,.7) !important; color:#fff0a4 !important; background:linear-gradient(135deg,#654014,#27160a) !important; }
+.tb-ranking-action-portal { display:grid !important; gap:7px !important; }
+.tb-ranking-action-portal__primary, .tb-ranking-action-portal__safety { display:grid !important; gap:9px !important; }
+.tb-ranking-action-portal__primary { grid-template-columns:1fr 1.35fr !important; }
+.tb-ranking-action-portal__safety { grid-template-columns:1fr 1fr !important; }
+.tb-ranking-action-portal__safety button { min-height:32px !important; padding:0 10px !important; border-radius:10px !important; font:800 10px/1 Nunito,sans-serif !important; letter-spacing:.04em !important; }
+.tb-ranking-action-portal [data-tb-portal-report] { border:1px solid rgba(250,225,122,.28) !important; color:rgba(255,247,225,.7) !important; background:rgba(20,14,10,.86) !important; }
+.tb-ranking-action-portal [data-tb-portal-block] { border:1px solid rgba(248,113,113,.36) !important; color:#fca5a5 !important; background:rgba(88,22,18,.72) !important; }
+@media (min-width:641px) { .tb-ranking-action-portal { width:min(360px,calc(100vw - 32px)) !important; } }
+
+
+/* 1.1.127 — visible, touch-safe account deletion control */
+.tb-account-danger-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.28fr) !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: min(100%, 432px) !important;
+  padding: 12px 0 22px !important;
+}
+.tb-account-danger-separator { display: none !important; }
+.tb-reset-progress-action,
+.tb-account-danger-action {
+  min-height: 54px !important;
+  border-radius: 14px !important;
+  font-family: Nunito, system-ui, sans-serif !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.tb-reset-progress-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(255, 198, 74, 0.34) !important;
+  background: rgba(255, 198, 74, 0.08) !important;
+  color: rgba(255, 218, 131, 0.9) !important;
+  font-size: 12px !important;
+  line-height: 1.15 !important;
+}
+.tb-account-danger-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  padding: 8px 13px !important;
+  border: 1px solid rgba(255, 93, 93, 0.76) !important;
+  background: linear-gradient(135deg, rgba(135, 18, 24, 0.74), rgba(62, 8, 13, 0.94)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.13), 0 7px 18px rgba(0,0,0,0.22) !important;
+  color: #fff0f0 !important;
+  text-align: left !important;
+}
+.tb-account-danger-action:active { transform: scale(0.98) !important; }
+.tb-account-danger-action__icon { font-size: 20px; line-height: 1; color: #ffb4b4; }
+.tb-account-danger-action__copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tb-account-danger-action__copy strong { color: #fff4f4; font-size: 14px; font-weight: 800; line-height: 1.1; }
+.tb-account-danger-action__copy small { color: rgba(255, 220, 220, 0.82); font-size: 10px; font-weight: 700; letter-spacing: 0.025em; }
+@media (max-width: 390px) {
+  .tb-account-danger-row { gap: 8px !important; }
+  .tb-account-danger-action { padding-inline: 10px !important; gap: 7px !important; }
+  .tb-account-danger-action__copy strong { font-size: 13px; }
+  .tb-account-danger-action__copy small { font-size: 9px; }
+}
+
+
+/* v1.1.165 — Meta AI-inspired Bible AI first-screen hierarchy */
+@media (max-width: 640px) {
+  .tb-ai-empty-screen .tb-ai-start-guide {
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:8px !important;
+    margin:34px 24px 12px !important;
+    padding:0 !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+  }
+  .tb-ai-empty-screen .tb-ai-start-guide strong {
+    display:block !important;
+    max-width:340px !important;
+    color:#fff7df !important;
+    font:900 29px/1.08 Nunito,sans-serif !important;
+    letter-spacing:-.035em !important;
+  }
+  .tb-ai-empty-screen .tb-ai-start-guide span {
+    display:block !important;
+    color:rgba(255,247,225,.56) !important;
+    font:700 12px/1.35 Nunito,sans-serif !important;
+  }
+  .tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:577"] {
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+    margin:8px 24px 0 !important;
+    padding:0 !important;
+  }
+  .tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:579"] {
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    width:100% !important;
+    min-height:54px !important;
+    margin:0 !important;
+    padding:0 16px !important;
+    border:1px solid rgba(250,225,122,.18) !important;
+    border-radius:17px !important;
+    background:linear-gradient(135deg,rgba(53,34,15,.72),rgba(25,16,9,.82)) !important;
+    color:#fff0af !important;
+    box-shadow:0 6px 16px rgba(0,0,0,.18), inset 0 1px rgba(255,247,225,.08) !important;
+    font:800 13px/1.2 Nunito,sans-serif !important;
+    text-align:left !important;
+  }
+  .tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:579"]::before {
+    content:'✦' !important;
+    display:grid !important;
+    width:30px !important;
+    height:30px !important;
+    margin-right:12px !important;
+    place-items:center !important;
+    border:1px solid rgba(250,225,122,.24) !important;
+    border-radius:10px !important;
+    background:rgba(250,225,122,.08) !important;
+    color:#f7d76e !important;
+    font-size:14px !important;
+  }
+  .tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:596"] {
+    padding-top:12px !important;
+  }
+  .tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:596"] > [data-loc="client/src/pages/BibleAI.tsx:598"]:first-child {
+    display:none !important;
+  }
+  .tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:655"] {
+    display:none !important;
+  }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:697"] {
+    min-height:76px !important;
+    height:76px !important;
+    padding:10px 16px max(10px, env(safe-area-inset-bottom, 10px)) !important;
+    background:linear-gradient(180deg,rgba(38,24,13,.98),rgba(13,10,8,.99)) !important;
+    border-top:1px solid rgba(250,225,122,.22) !important;
+    box-shadow:0 -10px 28px rgba(0,0,0,.46) !important;
+  }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:727"] {
+    height:46px !important;
+    min-height:46px !important;
+    padding:0 15px !important;
+    border:1px solid rgba(250,225,122,.25) !important;
+    border-radius:24px !important;
+    background:rgba(255,247,225,.075) !important;
+  }
+  .tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:729"] {
+    height:44px !important;
+    min-height:44px !important;
+    font-size:14px !important;
+    line-height:44px !important;
+  }
+}
+
+
+/* v1.1.166 — responsive preview parity for the centered 480px app shell */
+.tb-ai-empty-screen .tb-ai-start-guide {
+  display:flex !important; flex-direction:column !important; align-items:flex-start !important;
+  gap:8px !important; margin:34px 24px 12px !important; padding:0 !important;
+  border:0 !important; background:transparent !important; box-shadow:none !important;
+}
+.tb-ai-empty-screen .tb-ai-start-guide strong {
+  display:block !important; max-width:340px !important; color:#fff7df !important;
+  font:900 29px/1.08 Nunito,sans-serif !important; letter-spacing:-.035em !important;
+}
+.tb-ai-empty-screen .tb-ai-start-guide span {
+  display:block !important; color:rgba(255,247,225,.56) !important;
+  font:700 12px/1.35 Nunito,sans-serif !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:577"] {
+  display:grid !important; grid-template-columns:1fr !important; gap:10px !important;
+  margin:8px 24px 0 !important; padding:0 !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:579"] {
+  display:flex !important; align-items:center !important; justify-content:flex-start !important;
+  width:100% !important; min-height:54px !important; margin:0 !important; padding:0 16px !important;
+  border:1px solid rgba(250,225,122,.18) !important; border-radius:17px !important;
+  background:linear-gradient(135deg,rgba(53,34,15,.72),rgba(25,16,9,.82)) !important;
+  color:#fff0af !important; box-shadow:0 6px 16px rgba(0,0,0,.18),inset 0 1px rgba(255,247,225,.08) !important;
+  font:800 13px/1.2 Nunito,sans-serif !important; text-align:left !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:579"]::before {
+  content:'✦' !important; display:grid !important; width:30px !important; height:30px !important;
+  margin-right:12px !important; place-items:center !important; border:1px solid rgba(250,225,122,.24) !important;
+  border-radius:10px !important; background:rgba(250,225,122,.08) !important; color:#f7d76e !important; font-size:14px !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:596"] { padding-top:12px !important; }
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:596"] > [data-loc="client/src/pages/BibleAI.tsx:598"]:first-child { display:none !important; }
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:655"] { display:none !important; }
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:697"] {
+  position:fixed !important; z-index:2147483003 !important; left:50% !important; right:auto !important;
+  bottom:0 !important; width:min(100vw,480px) !important; transform:translateX(-50%) !important;
+  box-sizing:border-box !important; min-height:76px !important; height:76px !important;
+  padding:10px 16px max(10px,env(safe-area-inset-bottom,10px)) !important;
+  background:linear-gradient(180deg,rgba(38,24,13,.98),rgba(13,10,8,.99)) !important;
+  border-top:1px solid rgba(250,225,122,.22) !important; box-shadow:0 -10px 28px rgba(0,0,0,.46) !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] { display:grid !important; grid-template-columns:40px minmax(0,1fr) 40px !important; align-items:center !important; gap:9px !important; width:100% !important; }
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:727"] {
+  position:static !important; display:flex !important; width:auto !important; min-width:0 !important;
+  height:46px !important; min-height:46px !important; margin:0 !important; padding:0 15px !important;
+  border:1px solid rgba(250,225,122,.25) !important; border-radius:24px !important; background:rgba(255,247,225,.075) !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:729"] {
+  width:100% !important; height:44px !important; min-height:44px !important; margin:0 !important;
+  padding:0 !important; font-size:14px !important; line-height:44px !important;
+}
+
+
+/* v1.1.167 — final mobile typography, spacing, and conversation polish */
+.tb-ai-empty-screen .tb-ai-start-guide strong {
+  font-size:clamp(26px,7.3vw,31px) !important;
+  line-height:1.06 !important;
+  letter-spacing:-.04em !important;
+}
+.tb-ai-empty-screen .tb-ai-start-guide span {
+  font-size:clamp(11px,3.2vw,13px) !important;
+  line-height:1.35 !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:577"] {
+  margin:8px clamp(18px,6vw,28px) 0 !important;
+  gap:clamp(8px,2.5vw,11px) !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:579"] {
+  min-height:clamp(50px,14vw,58px) !important;
+  padding:0 clamp(13px,4.2vw,18px) !important;
+  border-radius:clamp(15px,4.5vw,19px) !important;
+  font-size:clamp(12px,3.6vw,14px) !important;
+  line-height:1.25 !important;
+}
+.tb-ai-empty-screen [data-loc="client/src/pages/BibleAI.tsx:579"]::before {
+  width:clamp(28px,8vw,32px) !important;
+  height:clamp(28px,8vw,32px) !important;
+  margin-right:clamp(9px,3vw,13px) !important;
+}
+.tb-ai-compact-layout:not(.tb-ai-empty-screen) .tb-ai-start-guide {
+  display:none !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:596"] {
+  padding-right:clamp(14px,4.5vw,24px) !important;
+  padding-left:clamp(14px,4.5vw,24px) !important;
+  padding-top:clamp(12px,3.5vw,18px) !important;
+  padding-bottom:90px !important;
+  gap:clamp(10px,3vw,16px) !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:608"] {
+  font-size:clamp(13px,3.8vw,15px) !important;
+  line-height:1.52 !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:697"] {
+  min-height:82px !important;
+  height:82px !important;
+  padding:10px clamp(12px,4vw,18px) max(10px,env(safe-area-inset-bottom,10px)) !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] {
+  grid-template-columns:clamp(36px,11vw,42px) minmax(0,1fr) clamp(36px,11vw,42px) !important;
+  gap:clamp(7px,2.5vw,10px) !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:711"] > button {
+  width:clamp(36px,11vw,42px) !important;
+  height:clamp(36px,11vw,42px) !important;
+  min-width:clamp(36px,11vw,42px) !important;
+  min-height:clamp(36px,11vw,42px) !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:727"] {
+  height:clamp(42px,12vw,48px) !important;
+  min-height:clamp(42px,12vw,48px) !important;
+  padding:0 clamp(12px,4vw,16px) !important;
+  border-radius:999px !important;
+}
+.tb-ai-compact-layout [data-loc="client/src/pages/BibleAI.tsx:729"] {
+  height:clamp(40px,11vw,46px) !important;
+  min-height:clamp(40px,11vw,46px) !important;
+  font-size:clamp(13px,3.8vw,15px) !important;
+  line-height:1.25 !important;
+}
+
+
+/* v1.1.168 — compact onboarding Step 3 class dropdown and English labels */
+@media (max-width: 640px) {
+  [data-loc="client/src/components/Onboarding.tsx:533"] {
+    max-width:360px !important;
+    padding-left:20px !important;
+    padding-right:20px !important;
+  }
+  [data-loc="client/src/components/Onboarding.tsx:550"] {
+    margin-top:8px !important;
+    margin-bottom:14px !important;
+    border-radius:14px !important;
+  }
+  [data-loc="client/src/components/Onboarding.tsx:557"] {
+    padding:3px !important;
+  }
+  [data-loc="client/src/components/Onboarding.tsx:558"] {
+    width:100% !important;
+    height:50px !important;
+    min-height:50px !important;
+    padding:0 13px !important;
+    border-radius:11px !important;
+    font-size:14px !important;
+    line-height:1.2 !important;
+  }
+  [data-loc="client/src/components/Onboarding.tsx:597"] {
+    min-height:46px !important;
+    padding:0 16px !important;
+    font-size:16px !important;
+  }
+  [data-loc="client/src/components/Onboarding.tsx:612"] {
+    margin-top:10px !important;
+  }
+}
+
+
+/* v1.1.169 — keep onboarding label normalization active after React re-renders */
+@media (max-width: 640px) {
+  [data-loc="client/src/components/Onboarding.tsx:558"] optgroup {
+    font-size: 13px;
+  }
+}
+
+
+/* v1.1.170 — quiet, modern mobile Bible AI header */
+@media (max-width: 640px) {
+  .tb-ai-modern-header {
+    display:flex !important;
+    align-items:center !important;
+    gap:10px !important;
+    min-height:52px !important;
+    height:52px !important;
+    padding:8px 14px !important;
+    border-bottom:1px solid rgba(250,225,122,.16) !important;
+    background:linear-gradient(180deg, rgba(18,15,12,.98), rgba(18,15,12,.90)) !important;
+    box-shadow:none !important;
+  }
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:515"] {
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+    min-height:34px !important;
+    padding:0 !important;
+    border:1px solid rgba(250,225,122,.48) !important;
+    border-radius:10px !important;
+    background:rgba(255,255,255,.025) !important;
+    box-shadow:none !important;
+    color:#f8e29a !important;
+    font-size:18px !important;
+  }
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:521"] {
+    gap:0 !important;
+    min-width:0 !important;
+  }
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:521"] > [data-loc="client/src/pages/BibleAI.tsx:522"] {
+    display:none !important;
+  }
+  .tb-ai-modern-header [data-loc="client/src/pages/BibleAI.tsx:529"] {
+    display:block !important;
+    min-width:0 !important;
+  }
+  .tb-ai-modern-header [data-loc="client/src/pages/BibleAI.tsx:530"] {
+    color:#f8e29a !important;
+    font-size:16px !important;
+    line-height:1.1 !important;
+    letter-spacing:.01em !important;
+  }
+  .tb-ai-modern-header [data-loc="client/src/pages/BibleAI.tsx:531"] {
+    display:block !important;
+    margin-top:2px !important;
+    color:rgba(255,247,225,.48) !important;
+    font-size:9px !important;
+    line-height:1.1 !important;
+    font-weight:500 !important;
+  }
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] {
+    gap:4px !important;
+    align-items:center !important;
+  }
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:537"],
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:547"],
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:556"] {
+    display:none !important;
+  }
+  .tb-ai-modern-header .tb-ai-more-actions {
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:8px !important;
+    background:transparent !important;
+    color:rgba(255,247,225,.70) !important;
+    font-size:13px !important;
+    letter-spacing:2px !important;
+  }
+  .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:565"] {
+    display:inline-flex !important;
+    align-items:center !important;
+    min-height:30px !important;
+    padding:0 2px !important;
+    border:0 !important;
+    background:transparent !important;
+    color:rgba(255,247,225,.58) !important;
+    font-size:10px !important;
+    font-weight:600 !important;
+  }
+  .tb-ai-actions-popover {
+    position:fixed !important;
+    top:60px !important;
+    right:12px !important;
+    z-index:2147483010 !important;
+    display:none !important;
+    width:148px !important;
+    padding:5px !important;
+    border:1px solid rgba(250,225,122,.24) !important;
+    border-radius:12px !important;
+    background:rgba(26,20,14,.98) !important;
+    box-shadow:0 10px 28px rgba(0,0,0,.42) !important;
+  }
+  .tb-ai-actions-popover.is-open { display:grid !important; gap:2px !important; }
+  .tb-ai-actions-popover button {
+    min-height:34px !important;
+    padding:0 10px !important;
+    border:0 !important;
+    border-radius:8px !important;
+    background:transparent !important;
+    color:#fff7e1 !important;
+    text-align:left !important;
+    font-size:12px !important;
+  }
+  .tb-ai-actions-popover button:active { background:rgba(250,225,122,.12) !important; }
+  .tb-ai-direct-back { display:none !important; }
+}
+
+
+/* v1.1.171 — apply the quiet header to the fixed app shell even when the outer browser viewport is wide */
+.tb-ai-modern-header { display:flex !important; align-items:center !important; gap:10px !important; min-height:52px !important; height:52px !important; padding:8px 14px !important; border-bottom:1px solid rgba(250,225,122,.16) !important; background:linear-gradient(180deg, rgba(18,15,12,.98), rgba(18,15,12,.90)) !important; box-shadow:none !important; }
+.tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:515"] { width:34px !important; height:34px !important; min-width:34px !important; min-height:34px !important; padding:0 !important; border:1px solid rgba(250,225,122,.48) !important; border-radius:10px !important; background:rgba(255,255,255,.025) !important; box-shadow:none !important; color:#f8e29a !important; font-size:18px !important; }
+.tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:521"] { gap:0 !important; min-width:0 !important; }
+.tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:521"] > [data-loc="client/src/pages/BibleAI.tsx:522"] { display:none !important; }
+.tb-ai-modern-header [data-loc="client/src/pages/BibleAI.tsx:529"] { display:block !important; min-width:0 !important; }
+.tb-ai-modern-header [data-loc="client/src/pages/BibleAI.tsx:530"] { color:#f8e29a !important; font-size:16px !important; line-height:1.1 !important; letter-spacing:.01em !important; }
+.tb-ai-modern-header [data-loc="client/src/pages/BibleAI.tsx:531"] { display:block !important; margin-top:2px !important; color:rgba(255,247,225,.48) !important; font-size:9px !important; line-height:1.1 !important; font-weight:500 !important; }
+.tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] { gap:4px !important; align-items:center !important; }
+.tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:537"], .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:547"], .tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:556"] { display:none !important; }
+.tb-ai-modern-header .tb-ai-more-actions { display:inline-flex !important; align-items:center !important; justify-content:center !important; width:30px !important; height:30px !important; min-width:30px !important; padding:0 !important; border:0 !important; border-radius:8px !important; background:transparent !important; color:rgba(255,247,225,.70) !important; font-size:13px !important; letter-spacing:2px !important; }
+.tb-ai-modern-header > [data-loc="client/src/pages/BibleAI.tsx:534"] > [data-loc="client/src/pages/BibleAI.tsx:565"] { display:inline-flex !important; align-items:center !important; min-height:30px !important; padding:0 2px !important; border:0 !important; background:transparent !important; color:rgba(255,247,225,.58) !important; font-size:10px !important; font-weight:600 !important; }
+.tb-ai-actions-popover { position:fixed !important; top:60px !important; right:12px !important; z-index:2147483010 !important; display:none !important; width:148px !important; padding:5px !important; border:1px solid rgba(250,225,122,.24) !important; border-radius:12px !important; background:rgba(26,20,14,.98) !important; box-shadow:0 10px 28px rgba(0,0,0,.42) !important; }
+.tb-ai-actions-popover.is-open { display:grid !important; gap:2px !important; }
+.tb-ai-actions-popover button { min-height:34px !important; padding:0 10px !important; border:0 !important; border-radius:8px !important; background:transparent !important; color:#fff7e1 !important; text-align:left !important; font-size:12px !important; }
+.tb-ai-direct-back { display:none !important; }
+
+
+/* v1.1.180 design pass — compact Meme actions, Cheer-first Ranking sheet, AI follow-ups, and polished Profile photo sheet. */
+@media (max-width: 640px) {
+  /* Meme detail: bring dismiss, share, and save into one compact action rail. */
+  [data-loc="client/src/pages/Home.tsx:567"] {
+    top: auto !important;
+    right: 12px !important;
+    bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 12 !important;
+    width: 42px !important;
+    height: 42px !important;
+    border: 1px solid rgba(250, 225, 122, .58) !important;
+    border-radius: 13px !important;
+    background: rgba(26, 17, 9, .94) !important;
+    color: #fae17a !important;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, .42), inset 0 1px rgba(255, 247, 225, .16) !important;
+  }
+  [data-loc="client/src/pages/Home.tsx:571"] {
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    display: block !important;
+    padding: 10px 66px max(16px, env(safe-area-inset-bottom, 0px)) 12px !important;
+    background: linear-gradient(180deg, transparent, rgba(12, 8, 5, .94) 38%) !important;
+  }
+  [data-loc="client/src/pages/Home.tsx:572"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+  [data-loc="client/src/pages/Home.tsx:573"],
+  [data-loc="client/src/pages/Home.tsx:599"] {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 42px !important;
+    padding: 0 10px !important;
+    border: 1px solid rgba(250, 225, 122, .38) !important;
+    border-radius: 12px !important;
+    background: rgba(62, 39, 15, .88) !important;
+    color: #fff7e1 !important;
+    font: 800 11px/1 Nunito, sans-serif !important;
+    box-shadow: inset 0 1px rgba(255, 247, 225, .12), 0 4px 10px rgba(0, 0, 0, .24) !important;
+  }
+  [data-loc="client/src/pages/Home.tsx:599"] {
+    border-color: rgba(255, 247, 225, .16) !important;
+    background: rgba(31, 24, 18, .90) !important;
+    color: rgba(255, 247, 225, .78) !important;
+  }
+
+  /* Ranking: one clear member-action sheet. Cheer is primary; moderation is quiet. */
+  .tb-ranking-action-portal {
+    right: 12px !important;
+    bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    left: 12px !important;
+    display: grid !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    padding: 13px !important;
+    border: 1px solid rgba(250, 225, 122, .48) !important;
+    border-radius: 19px !important;
+    background: linear-gradient(155deg, rgba(78, 48, 17, .98), rgba(25, 16, 9, .99)) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .62), inset 0 1px rgba(255, 247, 225, .14) !important;
+  }
+  .tb-ranking-action-portal__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 27px;
+    color: rgba(255, 247, 225, .58);
+    font: 900 9px/1 Nunito, sans-serif;
+    letter-spacing: .16em;
+  }
+  .tb-ranking-action-portal__heading [data-tb-portal-close] {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    min-height: 28px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(250, 225, 122, .28);
+    border-radius: 50%;
+    background: rgba(8, 6, 4, .28);
+    color: rgba(255, 247, 225, .78);
+    font: 700 15px/1 Arial, sans-serif;
+  }
+  .tb-ranking-action-portal__cheer {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    min-height: 66px !important;
+    padding: 9px 15px !important;
+    border: 1px solid rgba(255, 239, 143, .84) !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, #e6bd45, #9b641c 55%, #53300f) !important;
+    color: #211303 !important;
+    box-shadow: 0 7px 18px rgba(0, 0, 0, .34), inset 0 1px rgba(255, 255, 255, .48) !important;
+    text-align: left;
+  }
+  .tb-ranking-action-portal__cheer > span { font: 900 16px/1 Cinzel, serif; letter-spacing: .08em; }
+  .tb-ranking-action-portal__cheer > small { grid-column: 2; color: rgba(33, 19, 3, .70); font: 800 9px/1.1 Nunito, sans-serif; }
+  .tb-ranking-action-portal__secondary {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1fr;
+    gap: 7px;
+  }
+  .tb-ranking-action-portal__secondary button {
+    min-height: 37px !important;
+    padding: 0 7px !important;
+    border-radius: 10px !important;
+    background: rgba(12, 9, 6, .40) !important;
+    color: rgba(255, 247, 225, .62) !important;
+    font: 800 9px/1 Nunito, sans-serif !important;
+    letter-spacing: .05em !important;
+  }
+  .tb-ranking-action-portal__secondary [data-tb-portal-close] { border: 1px solid rgba(250, 225, 122, .36) !important; color: rgba(255, 247, 225, .86) !important; }
+  .tb-ranking-action-portal__secondary [data-tb-portal-report] { border: 1px solid rgba(255, 247, 225, .10) !important; color: rgba(255, 247, 225, .42) !important; }
+  .tb-ranking-action-portal__secondary [data-tb-portal-block] { border: 1px solid rgba(196, 95, 76, .20) !important; color: rgba(238, 155, 139, .55) !important; }
+
+  /* Bible AI: hide the initial strip, then show three tap-ready follow-ups after an answer. */
+  .tb-ai-followup-strip.tb-ai-followup-hidden { display: none !important; }
+  .tb-ai-followup-strip.tb-ai-followup-visible {
+    position: fixed !important;
+    z-index: 2147483002 !important;
+    right: 0 !important;
+    bottom: 68px !important;
+    left: 0 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    padding: 7px 12px 6px !important;
+    border-top: 1px solid rgba(250, 225, 122, .12) !important;
+    border-bottom: 0 !important;
+    background: linear-gradient(180deg, rgba(14, 11, 8, .94), rgba(27, 17, 9, .98)) !important;
+  }
+  .tb-ai-followup-strip.tb-ai-followup-visible [data-loc="client/src/pages/BibleAI.tsx:656"] {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+  }
+  .tb-ai-followup-strip.tb-ai-followup-visible [data-loc="client/src/pages/BibleAI.tsx:666"] {
+    min-width: 0 !important;
+    min-height: 35px !important;
+    overflow: hidden !important;
+    padding: 0 6px !important;
+    border: 1px solid rgba(250, 225, 122, .26) !important;
+    border-radius: 10px !important;
+    background: rgba(71, 44, 16, .50) !important;
+    color: rgba(255, 247, 225, .82) !important;
+    font: 800 9px/1.1 Nunito, sans-serif !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+  }
+  .tb-ai-followup-refresh { display: none !important; }
+
+  /* Profile photo sheet: same leather-gold surface language as the main cards. */
+  .tb-photo-modal-overlay {
+    background: rgba(4, 3, 2, .78) !important;
+    backdrop-filter: blur(9px) !important;
+  }
+  .tb-photo-modal-sheet {
+    width: min(calc(100vw - 28px), 430px) !important;
+    padding: 23px 16px 15px !important;
+    border: 1px solid rgba(250, 225, 122, .58) !important;
+    border-radius: 22px !important;
+    background: linear-gradient(180deg, rgba(66, 41, 17, .98), rgba(24, 15, 9, .99)) !important;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .66), inset 0 1px rgba(255, 247, 225, .16) !important;
+  }
+  .tb-photo-modal-sheet::before {
+    display: block;
+    width: 42px;
+    height: 4px;
+    margin: -7px auto 16px;
+    border-radius: 99px;
+    background: rgba(250, 225, 122, .62);
+    content: '';
+  }
+  .tb-photo-modal-sheet button {
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  .tb-photo-modal-sheet .tb-photo-option-camera,
+  .tb-photo-modal-sheet .tb-photo-option-gallery {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 52px !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    margin: 0 0 8px !important;
+    padding: 0 15px !important;
+    border: 1px solid rgba(250, 225, 122, .24) !important;
+    border-radius: 14px !important;
+    background: rgba(33, 22, 12, .64) !important;
+    color: #fff7e1 !important;
+    font: 800 13px/1 Nunito, sans-serif !important;
+  }
+  .tb-photo-modal-sheet .tb-photo-option-camera { border-color: rgba(250, 225, 122, .48) !important; background: linear-gradient(135deg, rgba(111, 72, 19, .66), rgba(44, 27, 12, .82)) !important; }
+  .tb-photo-modal-sheet .tb-photo-avatar-grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; }
+  .tb-photo-modal-sheet .tb-photo-avatar-option { min-height: 88px !important; padding: 7px 4px 6px !important; border: 1px solid rgba(250, 225, 122, .17) !important; border-radius: 12px !important; background: rgba(26, 17, 9, .52) !important; color: rgba(255, 247, 225, .68) !important; font: 700 9px/1.1 Nunito, sans-serif !important; }
+  .tb-photo-modal-sheet .tb-photo-avatar-option img { width: 52px !important; height: 52px !important; margin: 0 auto 4px !important; object-fit: contain !important; }
+  .tb-photo-modal-sheet .tb-photo-cancel { width: 100% !important; min-height: 44px !important; margin-top: 12px !important; border: 1px solid rgba(255, 247, 225, .12) !important; border-radius: 12px !important; background: rgba(8, 6, 4, .34) !important; color: rgba(255, 247, 225, .58) !important; font: 800 11px/1 Nunito, sans-serif !important; }
+}
+@media (min-width: 641px) {
+  .tb-ranking-action-portal { width: 360px !important; padding: 14px !important; border-radius: 20px !important; background: linear-gradient(155deg, rgba(78, 48, 17, .98), rgba(25, 16, 9, .99)) !important; }
+  .tb-ranking-action-portal__secondary { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 7px; }
+  .tb-ranking-action-portal__cheer { min-height: 66px !important; }
+}
+
+.tb-photo-modal-overlay { isolation: isolate !important; }
+.tb-photo-modal-sheet { box-sizing: border-box !important; }
+.tb-photo-modal-sheet .tb-photo-avatar-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tb-photo-modal-sheet .tb-photo-avatar-option img { object-fit: contain !important; }
+.tb-ai-followup-strip.tb-ai-followup-hidden { display: none !important; }
+.tb-ranking-action-portal__cheer { display: grid; }
+.tb-ranking-action-portal__secondary { display: grid; }
+.tb-ranking-action-portal__heading { display: flex; }
+.tb-photo-modal-sheet .tb-photo-option-camera,
+.tb-photo-modal-sheet .tb-photo-option-gallery,
+.tb-photo-modal-sheet .tb-photo-cancel { box-sizing: border-box !important; }
+
+/* Runtime-added semantic classes for the Profile sheet. */
+.tb-photo-modal-sheet .tb-photo-option-camera::first-letter,
+.tb-photo-modal-sheet .tb-photo-option-gallery::first-letter { font-size: 18px; }
+.tb-photo-modal-sheet .tb-photo-avatar-option:active,
+.tb-ranking-action-portal button:active,
+[data-loc="client/src/pages/Home.tsx:573"]:active,
+[data-loc="client/src/pages/Home.tsx:599"]:active { transform: scale(.97); }
+
+/* Keep action sheets below the native safe area without restoring the old huge gaps. */
+@supports (padding: max(0px)) {
+  .tb-ranking-action-portal { margin-bottom: 0; }
+}
+
+
+
+/* v1.1.180 shell-safe overrides: the PWA uses a 480px app shell inside wide iPad/browser viewports. */
+[data-loc="client/src/pages/Home.tsx:567"] {
+  top: auto !important;
+  right: 12px !important;
+  bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 12 !important;
+  width: 42px !important;
+  height: 42px !important;
+  border: 1px solid rgba(250, 225, 122, .58) !important;
+  border-radius: 13px !important;
+  background: rgba(26, 17, 9, .94) !important;
+  color: #fae17a !important;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .42), inset 0 1px rgba(255, 247, 225, .16) !important;
+}
+[data-loc="client/src/pages/Home.tsx:571"] {
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  padding: 10px 66px max(16px, env(safe-area-inset-bottom, 0px)) 12px !important;
+  background: linear-gradient(180deg, transparent, rgba(12, 8, 5, .94) 38%) !important;
+}
+[data-loc="client/src/pages/Home.tsx:572"] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+[data-loc="client/src/pages/Home.tsx:573"],
+[data-loc="client/src/pages/Home.tsx:599"] {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 42px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(250, 225, 122, .38) !important;
+  border-radius: 12px !important;
+  background: rgba(62, 39, 15, .88) !important;
+  color: #fff7e1 !important;
+  font: 800 11px/1 Nunito, sans-serif !important;
+  box-shadow: inset 0 1px rgba(255, 247, 225, .12), 0 4px 10px rgba(0, 0, 0, .24) !important;
+}
+[data-loc="client/src/pages/Home.tsx:599"] { border-color: rgba(255, 247, 225, .16) !important; background: rgba(31, 24, 18, .90) !important; color: rgba(255, 247, 225, .78) !important; }
+
+.tb-ranking-action-portal {
+  right: 12px !important;
+  bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  left: 12px !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  padding: 13px !important;
+  border: 1px solid rgba(250, 225, 122, .48) !important;
+  border-radius: 19px !important;
+  background: linear-gradient(155deg, rgba(78, 48, 17, .98), rgba(25, 16, 9, .99)) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .62), inset 0 1px rgba(255, 247, 225, .14) !important;
+}
+.tb-ranking-action-portal__heading { display: flex !important; align-items: center; justify-content: space-between; min-height: 27px; color: rgba(255, 247, 225, .58); font: 900 9px/1 Nunito, sans-serif; letter-spacing: .16em; }
+.tb-ranking-action-portal__heading [data-tb-portal-close] { display: grid !important; width: 28px !important; height: 28px !important; min-height: 28px !important; place-items: center; padding: 0 !important; border: 1px solid rgba(250, 225, 122, .28) !important; border-radius: 50% !important; background: rgba(8, 6, 4, .28) !important; color: rgba(255, 247, 225, .78) !important; font: 700 15px/1 Arial, sans-serif !important; }
+.tb-ranking-action-portal__cheer { display: grid !important; grid-template-columns: 28px minmax(0, 1fr) !important; grid-template-rows: 1fr 1fr !important; align-items: center; min-height: 66px !important; padding: 9px 15px !important; border: 1px solid rgba(255, 239, 143, .84) !important; border-radius: 14px !important; background: linear-gradient(135deg, #e6bd45, #9b641c 55%, #53300f) !important; color: #211303 !important; text-align: left; }
+.tb-ranking-action-portal__cheer > span { font: 900 16px/1 Cinzel, serif; letter-spacing: .08em; }
+.tb-ranking-action-portal__cheer > small { grid-column: 2; color: rgba(33, 19, 3, .70); font: 800 9px/1.1 Nunito, sans-serif; }
+.tb-ranking-action-portal__secondary { display: grid !important; grid-template-columns: 1.35fr 1fr 1fr; gap: 7px; }
+.tb-ranking-action-portal__secondary button { min-height: 37px !important; padding: 0 7px !important; border-radius: 10px !important; background: rgba(12, 9, 6, .40) !important; color: rgba(255, 247, 225, .62) !important; font: 800 9px/1 Nunito, sans-serif !important; letter-spacing: .05em !important; }
+.tb-ranking-action-portal__secondary [data-tb-portal-close] { border: 1px solid rgba(250, 225, 122, .36) !important; color: rgba(255, 247, 225, .86) !important; }
+.tb-ranking-action-portal__secondary [data-tb-portal-report] { border: 1px solid rgba(255, 247, 225, .10) !important; color: rgba(255, 247, 225, .42) !important; }
+.tb-ranking-action-portal__secondary [data-tb-portal-block] { border: 1px solid rgba(196, 95, 76, .20) !important; color: rgba(238, 155, 139, .55) !important; }
+
+.tb-ai-followup-strip.tb-ai-followup-hidden { display: none !important; }
+.tb-ai-followup-strip.tb-ai-followup-visible { position: fixed !important; z-index: 2147483002 !important; right: 0 !important; bottom: 68px !important; left: 0 !important; display: block !important; box-sizing: border-box !important; padding: 7px 12px 6px !important; border-top: 1px solid rgba(250, 225, 122, .12) !important; background: linear-gradient(180deg, rgba(14, 11, 8, .94), rgba(27, 17, 9, .98)) !important; }
+.tb-ai-followup-strip.tb-ai-followup-visible [data-loc="client/src/pages/BibleAI.tsx:656"] { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 6px !important; min-width: 0 !important; }
+.tb-ai-followup-strip.tb-ai-followup-visible [data-loc="client/src/pages/BibleAI.tsx:666"] { min-width: 0 !important; min-height: 35px !important; overflow: hidden !important; padding: 0 6px !important; border: 1px solid rgba(250, 225, 122, .26) !important; border-radius: 10px !important; background: rgba(71, 44, 16, .50) !important; color: rgba(255, 247, 225, .82) !important; font: 800 9px/1.1 Nunito, sans-serif !important; white-space: normal !important; }
+.tb-ai-followup-refresh { display: none !important; }
+
+.tb-photo-modal-overlay { isolation: isolate !important; background: rgba(4, 3, 2, .78) !important; backdrop-filter: blur(9px) !important; }
+.tb-photo-modal-sheet { box-sizing: border-box !important; width: min(calc(100vw - 28px), 430px) !important; padding: 23px 16px 15px !important; border: 1px solid rgba(250, 225, 122, .58) !important; border-radius: 22px !important; background: linear-gradient(180deg, rgba(66, 41, 17, .98), rgba(24, 15, 9, .99)) !important; box-shadow: 0 18px 50px rgba(0, 0, 0, .66), inset 0 1px rgba(255, 247, 225, .16) !important; }
+.tb-photo-modal-sheet::before { display: block; width: 42px; height: 4px; margin: -7px auto 16px; border-radius: 99px; background: rgba(250, 225, 122, .62); content: ''; }
+.tb-photo-modal-sheet .tb-photo-option-camera, .tb-photo-modal-sheet .tb-photo-option-gallery { display: flex !important; width: 100% !important; min-height: 52px !important; align-items: center !important; justify-content: flex-start !important; gap: 12px !important; margin: 0 0 8px !important; padding: 0 15px !important; border: 1px solid rgba(250, 225, 122, .24) !important; border-radius: 14px !important; background: rgba(33, 22, 12, .64) !important; color: #fff7e1 !important; font: 800 13px/1 Nunito, sans-serif !important; }
+.tb-photo-modal-sheet .tb-photo-option-camera { border-color: rgba(250, 225, 122, .48) !important; background: linear-gradient(135deg, rgba(111, 72, 19, .66), rgba(44, 27, 12, .82)) !important; }
+.tb-photo-modal-sheet .tb-photo-avatar-grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; }
+.tb-photo-modal-sheet .tb-photo-avatar-option { min-height: 88px !important; padding: 7px 4px 6px !important; border: 1px solid rgba(250, 225, 122, .17) !important; border-radius: 12px !important; background: rgba(26, 17, 9, .52) !important; color: rgba(255, 247, 225, .68) !important; font: 700 9px/1.1 Nunito, sans-serif !important; }
+.tb-photo-modal-sheet .tb-photo-avatar-option img { width: 52px !important; height: 52px !important; margin: 0 auto 4px !important; object-fit: contain !important; }
+.tb-photo-modal-sheet .tb-photo-cancel { width: 100% !important; min-height: 44px !important; margin-top: 12px !important; border: 1px solid rgba(255, 247, 225, .12) !important; border-radius: 12px !important; background: rgba(8, 6, 4, .34) !important; color: rgba(255, 247, 225, .58) !important; font: 800 11px/1 Nunito, sans-serif !important; }
+
+
+/* v1.1.180 ranking shell correction: portal is mounted on body, so center it over the app shell. */
+.tb-ranking-action-portal {
+  right: auto !important;
+  left: 50% !important;
+  width: min(440px, calc(100vw - 24px)) !important;
+  max-width: 440px !important;
+  transform: translateX(-50%) !important;
+}
+

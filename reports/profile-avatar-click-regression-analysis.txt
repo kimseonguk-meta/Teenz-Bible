@@ -1,0 +1,7 @@
+Video: /home/ubuntu/upload/KakaoTalk_Video_2026-08-17-16-43-25.mp4
+
+Observed: The user repeatedly taps the panda avatar inside the yellow circular ring. There is no press feedback and no photo/profile menu opens.
+
+Likely cause: The yellow circular progress/decorative ring is positioned above the clickable avatar in the stacking order and still receives pointer events, so it intercepts taps.
+
+Required correction: Apply pointer-events: none to the decorative/progress ring and any non-interactive overlay around the avatar. Preserve the avatar button's original click handler; optionally give the button a higher z-index only if needed. Do not alter the Profile photo modal JavaScript for this fix.

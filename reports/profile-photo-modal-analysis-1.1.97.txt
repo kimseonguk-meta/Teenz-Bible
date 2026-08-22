@@ -1,0 +1,7 @@
+Source video: /home/ubuntu/upload/KakaoTalk_Video_2026-08-17-16-10-15.mp4
+
+Observed issue: The Profile photo-change modal/bottom sheet is positioned too high or extends beyond the visible viewport. Its upper boundary/header can collide with the system safe area, and the modal's rounded top and padding are clipped. The affected interaction is the Profile photo chooser with camera/gallery actions.
+
+Expected correction: Keep the sheet fully within the visible safe area, preserve the rounded dark-gold design, allow internal vertical scrolling when the avatar options exceed the available height, and keep Take Photo / Choose from Gallery tappable. The implementation uses a body-level runtime class on the detected Profile photo overlay/sheet and safe-area-aware max-height, padding, overflow-y scrolling, and reduced-width mobile sizing.
+
+Deployment verification: Live PWA https://teens-bible-94271.web.app/ loads runtime-fixes-1.1.97.js/.css. Live OTA manifest is https://teens-bible-94271.web.app/ota/latest.json and reports version 1.1.97 with checksum 9ea5e056820a438f0ea5f4be39a7b979c7e4d19e5ca263ed80b30ddd38decbf9 and size 70828563. The deployed runtime recognizes both Change Profile Photo and REVEAL THY VISAGE! titles and contains the tb-profile-photo-sheet patch.
