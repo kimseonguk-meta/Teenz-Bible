@@ -1,0 +1,35 @@
+Teenz Bible — Bible Meme Share/Save QA — OTA 1.1.195
+Date: 2026-08-22
+
+Scope
+- Bible Meme Share button must open a share UI instead of silently copying a link.
+- Bible Meme Save button must not show the previous “Could not save meme” error.
+- Existing React bundle index-GemFix1184.js was preserved; the change is runtime-layer OTA only.
+
+Implementation
+- Added installMemeShareSaveBridge() to intercept only the exact Home.tsx Meme action locs 471/573 (Share) and 500/599 (Save).
+- Share opens a dedicated “Share Bible Meme” dialog with image preview, “Share image”, “Copy link”, and “Not now”. Native Capacitor Share is attempted first; Web Share/file and URL-copy fallbacks remain available.
+- Save attempts the optional native SaveToPhotos plugin first. If unavailable or rejected, it uses the native Share sheet with the image URL, Web Share/file fallback, browser download, or direct image opening. The old error toast is not surfaced.
+- Added scoped dark leather/gold dialog and notice CSS.
+
+Local verification
+- 1.1.195 loaded at http://127.0.0.1:4180/.
+- Exact Share button click created [data-tb-meme-share-dialog] with text: “Share Bible Meme / Send this meme to your crew. / Share image / Copy link / Not now”.
+- Exact Save button click produced “Image opened — save it to Photos.” in the local CORS fallback, with no “Could not save meme” text.
+- JavaScript syntax check passed; OTA build and unzip test passed.
+
+Public verification
+- Firebase Hosting deployed successfully.
+- Public runtime reported version 1.1.195.
+- Public exact Share button click created the same Share Bible Meme dialog.
+- Public exact Save button click produced “Meme saved! 📥”.
+- Public DOM check found no “Could not save meme” or “Could not save” error text.
+
+Artifact
+- OTA: app/ota/1.1.195.zip
+- SHA-256: 4b9cd86f583d6b6b22c606c0931f2e99b34ba1f33973613f0d95b716807f2249
+- Size: 68830875 bytes
+- Manifest: version 1.1.195, https://teens-bible-94271.web.app/ota/1.1.195.zip
+
+Native note
+- Public browser verification cannot prove the iPad native share sheet or Photos save presentation. After OTA activation, verify Share image and Save on the real iPad. If SaveToPhotos is not present in the installed native build, Save now routes to the iOS share sheet so the user can choose Save Image instead of receiving the previous error.
