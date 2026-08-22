@@ -5,21 +5,21 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: `8767071` — `docs: update successor summary for OTA 1.1.186` (이전 기능/UI 커밋: `3e6befd`)
+- 최신 GitHub 커밋: 다음 동기화 커밋에서 1.1.189 프로필 사진 crop 수정 및 QA 문서를 포함한다.
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
-- 현재 웹/OTA 기준: **1.1.187**
+- 현재 웹/OTA 기준: **1.1.189**
 - OTA manifest: <https://teens-bible-94271.web.app/ota/latest.json>
 - 현재 iOS App Store 기준: Version `1.2.1`, Build `6`
 - App Store 상태는 시간이 지나면 바뀌므로 제출·취소·릴리스 전에는 반드시 App Store Connect의 최신 화면을 확인한다.
 
-OTA 1.1.186은 Profile의 Reset Progress 확인창, Bible Reader 읽기 제한 모달 X, Home 백업 카드 X를 보정했다. OTA 1.1.187은 Home 상단 Google·Apple 로그인/백업 카드를 다른 콘텐츠 섹션과 구분되는 차분한 녹색 계열로 다시 조정하고, X는 시각적으로 작고 보조적인 `×` 아이콘으로 표시한다. 실제 터치 영역은 유지하며 기존 Google·Apple 버튼과 익명 사용자용 카드 표시를 변경하지 않았다.
+OTA 1.1.186은 Profile의 Reset Progress 확인창, Bible Reader 읽기 제한 모달 X, Home 백업 카드 X를 보정했다. OTA 1.1.187은 Home 상단 Google·Apple 로그인/백업 카드를 다른 콘텐츠 섹션과 구분되는 차분한 녹색 계열로 조정하고, X는 시각적으로 작고 보조적인 `×` 아이콘으로 표시했다. OTA 1.1.188은 오늘의 밈 상세 모달의 닫기·공유·저장 action rail을 균일한 3열로 정렬했다. OTA 1.1.189는 Profile 사진 crop 모달의 실제 DOM loc 1141/1142를 대상으로 수정했다. crop overlay는 Profile.tsx:903의 zero-size relative host 안에 잘못된 fixed 좌표로 남지 않고, shell 크기의 fixed host 안 absolute layer로 표시되어야 한다. crop panel은 shell 중앙에 놓이며 This Week·Recent Badges 같은 배경 Profile surface에는 `tb-photo-modal-background-hidden`이 적용되어야 한다. 이전 photo sheet loc 907/914와 crop loc 1141/1142를 혼동하지 않는다.
 
 ## 구조를 이렇게 이해한다
 
 > **`app/` 웹 원본 → `native-ios/web/` Capacitor base bundle → Xcode `public/` embedded bundle + Firebase Hosting OTA**
 
-새 웹 작업은 항상 `app/`에서 시작한다. 최상위의 오래된 `runtime-fixes-1.1.xx.*`, 과거 ZIP, 복구용 asset은 현재 source of truth가 아니다. 이번 기준 React bundle은 반드시 `app/assets/index-GemFix1184.js`를 유지한다. React main bundle이나 lazy chunk 파일명을 1185·1186·1187 등으로 바꾸면 이전처럼 Error Boundary가 발생할 수 있다.
+새 웹 작업은 항상 `app/`에서 시작한다. 최상위의 오래된 `runtime-fixes-1.1.xx.*`, 과거 ZIP, 복구용 asset은 현재 source of truth가 아니다. 이번 기준 React bundle은 반드시 `app/assets/index-GemFix1184.js`를 유지한다. React main bundle이나 lazy chunk 파일명을 1185·1186·1187·1188·1189 등으로 바꾸면 이전처럼 Error Boundary가 발생할 수 있다.
 
 웹 UI·CSS·runtime JavaScript·문구·웹 데이터 동작은 보통 OTA로 배포하므로 Xcode 재빌드가 필요하지 않다. Swift, Capacitor plugin, Info.plist permission, Apple·Google native authentication, Camera·Photo native integration, icon, entitlement, signing 변경은 새 iOS Archive가 필요하다.
 

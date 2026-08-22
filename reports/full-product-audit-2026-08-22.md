@@ -136,11 +136,11 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 | 파일 | 역할 |
 |---|---|
-| `app/index.html` | runtime 1.1.187과 안정 React 1184 main chunk 참조 |
-| `app/runtime-fixes-1.1.187.js` | OTA 보정 runtime, 안전 DOM 처리, 핵심 bridge |
-| `app/runtime-fixes-1.1.187.css` | Reader Skin trigger 숨김, 모바일 UI, 로그인 카드 표현 |
+| `app/index.html` | runtime 1.1.189과 안정 React 1184 main chunk 참조 |
+| `app/runtime-fixes-1.1.189.js` | OTA 보정 runtime, 안전 DOM 처리, 핵심 bridge 및 crop 모달 host 격리 |
+| `app/runtime-fixes-1.1.189.css` | Reader Skin trigger 숨김, 모바일 UI, 로그인 카드 표현, crop 모달 레이어 |
 | `app/ota/latest.json` | 현재 OTA 버전·URL·SHA-256·크기 |
-| `app/ota/1.1.187.zip` | Firebase Hosting에서 제공되는 OTA 패키지 |
+| `app/ota/1.1.189.zip` | Firebase Hosting에서 제공되는 OTA 패키지 |
 | `app/assets/index-GemFix1184.js` | 이름을 바꾸면 안 되는 검증된 React main bundle |
 | `docs/AI_FINAL_SUMMARY.md` | 후속 AI용 프로젝트 상태와 운영 제약 |
 | `reports/full-product-audit-2026-08-22.md` | 본 최종 제품 감사 보고서 |
@@ -151,9 +151,11 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 **기능 상태:** 주요 탐색·콘텐츠·소셜·스토어·프로필 흐름은 감사 범위에서 대체로 정상이다.
 
-**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X는 OTA 1.1.186에서 보정되었고, 로그인 카드 UI는 OTA 1.1.187에서 추가 조정되어 Firebase Hosting에 배포되었다.
+**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X는 이전 OTA에서 보정되었고, 로그인 카드 UI는 1.1.187에서 조정되었다. 밈 상세 모달의 닫기·공유·저장 버튼 정렬과 Profile 사진 crop 모달의 overlay/panel 겹침·오프셋 문제는 **OTA 1.1.189**에서 수정되어 Firebase Hosting에 배포되었다.
 
-**실기기 상태:** 네이티브 WebView에서 OTA를 실제로 활성화한 뒤의 최종 확인은 사용자의 iPad에서 필요하다. 특히 로그인, Reset Progress, Reader gate X를 직접 눌러야 한다.
+**프로필 사진 crop 검증:** 공개 웹앱에서 아바타 → Choose from Gallery → 사진 업로드 흐름을 재현했다. crop overlay는 앱 shell 전체를 덮는 fixed host로 표시되고, panel은 shell 중앙에 정렬되며, This Week·Recent Badges 등 배경 카드에는 `visibility:hidden`, `opacity:0`, `pointer-events:none`이 적용된다. 수정 후 측정값은 shell/overlay x=400, width=480, y=0, panel x=424, width=432이며, runtime은 1.1.189로 확인되었다.
+
+**실기기 상태:** 네이티브 WebView에서 OTA를 실제로 활성화한 뒤의 최종 확인은 사용자의 iPad에서 필요하다. 특히 로그인, Reset Progress, Reader gate X, 밈 버튼 정렬, Profile 사진 crop 화면을 직접 눌러야 한다.
 
 **출시 차단 가능성이 높은 남은 문제:** 성경 번역 품질과 Quiz 보상 불일치는 콘텐츠·제품 QA 관점에서 여전히 중요하다. UI 수정만으로 이 두 문제를 해결했다고 간주해서는 안 된다.
 
