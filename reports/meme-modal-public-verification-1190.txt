@@ -1,0 +1,21 @@
+Teenz Bible OTA 1.1.190 public verification — 2026-08-22
+
+Manifest: https://teens-bible-94271.web.app/ota/latest.json?final=1190
+Manifest version: 1.1.190
+OTA URL: https://teens-bible-94271.web.app/ota/1.1.190.zip
+SHA-256: ee29d0827559ec5143b0e3c9990d433b34671231042f2f0de4d3e523a4f0048a
+Size: 68548160 bytes
+
+Public browser page: https://teens-bible-94271.web.app/?final=1190
+Runtime detected: 1.1.190
+Viewport: 1280 x 1100; app shell x=400, width=480.
+Meme close button Home.tsx:567: x=830, y=300, width=32, height=32; position absolute; no border; subtle rgba black background; aria-label=Close meme.
+Meme image Home.tsx:569: x=424, y=312, width=432, height=426.
+Action rail Home.tsx:571: x=424, y=1032, width=432, height=56.
+Share Home.tsx:573: x=424, y=1040, width=211, height=44.
+Save Home.tsx:599: x=645, y=1040, width=211, height=44.
+Share and Save have equal geometry and matching quiet styling. Close was clicked in local 1.1.190 and the modal disappeared. Profile crop selectors/logic from 1.1.189 remain present in the 1.1.190 runtime/CSS.
+
+GitHub commits: 6106e73 fix: OTA 1.1.190 quiet meme close control; 6dec4fa docs: record OTA 1.1.190 handoff baseline.
+
+Note: native iPad confirmation is still required. OTA activation requires fully closing and reopening the app after waiting about 30 seconds.

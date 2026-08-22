@@ -5,7 +5,7 @@
 ## 현재 기준선
 
 - GitHub 저장소: [`kimseonguk-meta/Teenz-Bible`](https://github.com/kimseonguk-meta/Teenz-Bible), 기준 브랜치 `main`
-- 최신 GitHub 커밋: `6106e73` — `fix: OTA 1.1.190 quiet meme close control`
+- 최신 GitHub 커밋: `6dec4fa` — `docs: record OTA 1.1.190 handoff baseline` (implementation: `6106e73`)
 - Firebase 프로젝트: `teens-bible-94271`
 - Live PWA: <https://teens-bible-94271.web.app/>
 - 현재 웹/OTA 기준: **1.1.190**
