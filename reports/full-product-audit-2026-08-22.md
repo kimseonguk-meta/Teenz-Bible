@@ -1,34 +1,170 @@
+# Teenz Bible 최종 전수 제품 감사 보고서
 
-## Home 검수
-검수 URL: https://teens-bible-94271.web.app/?audit=1184
-확인 runtime: runtime-fixes-1.1.184.js. 초기 진입 직후 한 프레임 동안 검은 화면이 보였으나 browser_view에서 본문으로 전환됐다. 최종 DOM에서는 Loading... 0개, Error Boundary·Failed to load 문구 0개, root 존재, 하단 탭 Home/Bible/Ranking/Store/Profile 모두 활성 상태였다. Home의 Google·Apple·닫기, Continue Reading, Bible AI, Meme 반응, Share, Save, Location 버튼이 DOM에서 disabled=false로 확인됐다.
+**감사일:** 2026년 8월 22일  
+**감사 대상:** [Teenz Bible 웹/PWA](https://teens-bible-94271.web.app/), Firebase Hosting 배포본 및 OTA 1.1.186 패키지  
+**현재 App Store 빌드:** Version 1.2.1, Build 6  
+**작성자:** Manus AI
 
-## Bible 검수 — P0 후보
-Home에서 Bible 탭으로 이동한 뒤 browser_view 두 차례에 걸쳐 화면이 계속 `Loading Bible... / Preparing chapters & translations` 상태에 머물렀다. 하단 탭은 표시되지만 Bible 본문·언어 선택·챕터 선택 UI는 아직 나타나지 않았다. 같은 세션에서 root는 존재하고 Home·Bible·Ranking·Store·Profile 탭은 보였으며, 추가 console 오류는 현재 출력만으로 확정하지 않았다. 원인은 다음 단계에서 lazy chunk, Firebase/번역 데이터, runtime 및 네트워크 요청으로 분리 확인해야 한다.
+## 1. 감사 목적과 최종 결론
 
-## Bible reader 검수
-Bible 목록은 초기 진입 후 약간의 지연 뒤 정상 표시됐고, Genesis → Chapter 1 전환 및 영어/한국어 전환은 동작했다. 그러나 본문 하단에 `🎨` 버튼이 여전히 노출되고 클릭 시 `📖 Reader Skin / Dark ✓` 패널이 열렸다. 이는 프로젝트 요구사항인 Theme 기능 완전 제거와 직접 충돌하는 P1 문제다. 한국어 Genesis 1 본문에는 `완전 혼돈 그 자체였던 거임`, `빛이 짠 하고 나타난 거임`, `대단한 거지?`, `천국` 등 지나치게 구어체·인터넷식 표현이 남아 있어 성경 품질 기준에서 P1 검토 대상이다. 영어 본문도 `boom`, `awesome`, `totally good`, `Legendary, right?` 등 청소년 친화적 표현은 있으나 신학적·번역 품질 검토가 필요하다. Error Boundary는 보이지 않았다.
+이번 감사는 App Store 배포 이후의 최종 인수인계 단계에서 Home, Bible AI, Bible Map, Bible Reader, Bible 목록, Ranking, Gem Store, Profile의 주요 버튼과 모달을 실제로 열고 눌러 동작을 확인하는 것을 목적으로 진행했다. 단순히 코드가 존재하는지만 확인하지 않고, SPA 재렌더링 이후에도 화면이 유지되는지, 모달의 닫기 동작이 가능한지, 모바일 화면에서 버튼이 눌리는지, 이전에 문제가 되었던 검은 화면과 잘못된 DOM 가드가 재발하지 않는지를 함께 점검했다.
 
-## Bible AI 검수 — P1 후보
-Home의 Bible AI 카드 진입은 동작했고 `/bible-ai` 화면에서 Back 버튼, Clear, 입력창, 마이크 버튼, 전송 버튼이 표시됐다. 그러나 기본 예시 질문 `Who is Jesus?`에 대해 `Bible AI is temporarily unavailable. Please try again in a moment!` 오류 메시지가 이미 표시됐다. 실제 입력창은 존재하며 프로필 사진 유도 문구나 `REVEAL THY VISAGE` 문구는 확인되지 않았다. Back 동작과 실제 질문 입력은 다음 단계에서 별도 확인이 필요하다.
+**최종 결론은 다음과 같다.** 주요 사용자 흐름은 전반적으로 작동한다. 감사 중 발견한 세 가지 UI·기능 결함은 OTA 1.1.186에서 보정했고, Home 상단의 선택적 로그인·백업 카드는 다른 게임 섹션과 구분되는 차분한 녹색 계열로 조정했으며 X 아이콘의 시각적 크기와 강조도를 낮췄다. Firebase Hosting에는 1.1.186이 배포되었고 공개 manifest와 안정 React 1184 번들 참조를 확인했다.
 
-## Ranking 검수
-Ranking 진입과 Global/Week/All 목록은 정상 표시됐다. 유저 카드 클릭 시 상세 profile modal이 열리고 X, `CHEER / SEND ENCOURAGEMENT`, `CLOSE`, `REPORT`, `BLOCK` 버튼이 모두 DOM에 표시됐다. Cheer 버튼은 가장 눈에 띄는 primary 영역으로 보이며, Report·Block은 하단 muted row에 배치됐다. 실제 Cheer 전송은 다른 사용자에게 쓰기 작업이므로 이번 자동 검수에서는 실행하지 않았다. Close·Report·Block의 실제 클릭 동작은 각각 별도 확인이 필요하며, 우선 Close를 비파괴적으로 확인한다.
+성경 본문 품질, 퀴즈 보상 표기 불일치, Reader의 `v.` 버튼 동작은 이번 OTA에서 임의로 건드리지 않았다. 이 항목들은 기능 고장과 UI 보정의 범위를 넘어 콘텐츠·제품 정책을 다시 결정해야 하므로, 다음 개발자가 별도 콘텐츠 QA 작업으로 이어받아야 한다.
 
-## Gem Store 검수 — P0/P1 후보
-Store 진입은 정상이고 My Items/Reader/Frames/Pets 카테고리가 표시됐다. Reader 카테고리에는 `Reader Backgrounds`와 `Dark Mode`, Parchment, Night Sky, Warm Cream, Mint Fresh, Lavender Mist, Ocean Depth, Rose Blush, Forest Floor, Desert Sand, Slate Gray, Peach Glow, Midnight Blue 등 다수의 배경 테마 상품과 Gem 가격 버튼이 그대로 노출됐다. 프로젝트 요구사항은 Theme 기능 완전 제거이므로, Reader Backgrounds 전체와 Dark Mode가 잔존한 것은 명확한 P0/P1 문제다. 현재 검수에서는 구매 버튼을 실제 실행하지 않아 Gem 차감·소유권·적용 여부는 미확인이다. Store의 Frames/Pets 상품 및 가로 스와이프 탭 전환은 다음에 확인한다.
+## 2. 배포 상태
 
-## Gem Store Frames·Pets 검수
-Frames 카테고리는 No Frame, Gold Crown, Fire Ring, Rainbow Glow, Diamond Border, Angel Wings, Emerald Shine, Lightning Bolt, Ocean Wave, Sunset Blaze, Galaxy Swirl, Cherry Blossom, Neon Pulse, Frozen Crystal 및 Gem 구매 버튼을 정상적으로 표시했다. Pets 카테고리는 검색·정렬·희귀도 필터와 Faithy Pet의 `Unequip`, Hope Puppy·Joy Lamb·Brave Lion·Wise Owl·Peace Dove·Soaring Eagle·Swift Fox·Mighty Bear·Gentle Bunny·Jonah's Whale·New Life Butterfly·Fire Dragon·Holy Unicorn 구매 버튼을 표시했다. 현재 보유 Pet은 정상적으로 표시되지만 실제 Gem 구매·차감·구매 후 적용은 이번 검수에서 실행하지 않았다. Reader Backgrounds와 Dark Mode 잔존은 별도 P0/P1로 유지한다.
+| 항목 | 최종 상태 |
+|---|---|
+| 최신 OTA | **1.1.186 배포 완료** |
+| 공개 manifest | `https://teens-bible-94271.web.app/ota/latest.json`에서 1.1.186 확인 |
+| OTA ZIP | `https://teens-bible-94271.web.app/ota/1.1.186.zip` |
+| SHA-256 | `843c01358304bff5a74a1a455a7ff1105265f260ae45b4ea63cb92689416095c` |
+| ZIP 크기 | 68,336,198 bytes |
+| React 메인 번들 | 기존 검증본 `assets/index-GemFix1184.js` 유지 |
+| Loading DOM guard | 재추가하지 않음 |
+| Firebase Hosting | 배포 완료, Hosting URL 응답 확인 |
+| iOS 적용 방식 | 앱을 완전히 종료한 뒤 다시 열어 OTA가 다음 재시작에서 활성화되도록 해야 함 |
 
-## Profile 재확인 결과
-초기 진입은 수십 초 동안 Loading이었으나 이후 Profile 본문이 정상 렌더링됐다. Anonymous, Level 1 Newbie, XP·streak·gem, 11B Crew 카드, badges, Weekly Goal, My Crews, Reading Reminders가 표시됐다. 프로필 아바타 클릭 시 `Change Profile Photo` sheet가 화면 중앙에 열리고 `Take Photo`, `Choose from Gallery`, 아바타 선택, `Cancel`이 보였으며 Cancel을 눌러 정상적으로 닫혔다. `Delete Account — Permanent action`은 별도 버튼으로 표시되므로 destructive 동작은 확인 없이 실행하지 않는다. 단, Profile 첫 진입의 장시간 Loading은 여전히 실사용 리스크로 기록한다.
+배포 후 정적 검증에서 index는 `runtime-fixes-1.1.186.js`, `runtime-fixes-1.1.186.css`, `assets/index-GemFix1184.js`를 참조했다. 따라서 이전에 문제를 일으켰던 React lazy chunk 이름 변경은 발생하지 않았다.
 
-## Reader Skin 최종 확인 — 즉시 수정 대상
-Bible Reader의 🎨 버튼을 실제로 누른 결과 패널 제목이 `📖 Reader Skin`으로 표시되고 `Dark ✓` 선택지가 노출됐다. 이는 사용자가 요청한 Theme 완전 제거 정책과 직접 충돌하므로 허용 가능한 별도 배경 기능이 아니라 제거 대상이다. 버튼 DOM은 `button[data-loc="client/src/pages/Bible.tsx:2881"]`이며 상위 wrapper는 `div[data-loc="client/src/pages/Bible.tsx:2880"]`이다. 기존 React 트리를 건드리지 않고 runtime CSS에서 이 wrapper를 숨기는 방식으로 수정한다.
+## 3. 전수 감사 결과
 
-## OTA 1.1.185 검증 결과
-초기 1.1.185 패키지는 새 React bundle과 lazy chunk 파일명을 전부 1.1.185로 재명명했으나 Hosting 공개 폴더에 일부 lazy chunk가 누락되어 Bible 라우팅에서 Error Boundary가 발생했다. 해당 접근은 즉시 폐기했다. 안정된 1.1.184 React bundle과 lazy chunks는 그대로 보존하고, Reader Skin 숨김 CSS와 runtime만 1.1.185로 버전업한 안전 패키지로 재구성했다. 최종 배포 후 `/bible/genesis/1`은 본문과 하단 컨트롤을 정상 렌더링했고 Error Boundary 문구는 없었다. DOM에는 React 상태 보존을 위해 🎨 버튼 node가 남아 있지만 `display:none !important`로 비노출되며, `Reader Skin`·`Dark ✓` 텍스트는 사용자 화면에 나타나지 않는다. 실제 로드 파일은 `runtime-fixes-1.1.185.js`와 안정된 `assets/index-GemFix1184.js`이다.
+| 영역 | 실제 확인한 흐름 | 결과 |
+|---|---|---|
+| Home | Bible AI 카드, Continue Reading, 오늘의 밈 반응 4종, Share, Save, Location 카드와 Bible Map 진입 | 정상 |
+| Home 로그인 카드 | 익명·신규 사용자에게 Google·Apple 연결 카드 표시, Google·Apple 버튼 존재, X 닫기 동작 | 1.1.186에서 X 보정 완료. 카드 색상·X 시각 강조도도 수정 |
+| Bible AI | 입력, 답변 생성, 후속 추천 질문, Clear, Back, 답변의 성경 문맥 링크 | 입력·답변·Clear·Back 정상. 문맥 링크는 새 탭/about:blank 방식으로 열리는 웹 동작이 남음 |
+| Bible Map | Old/New Testament 필터, Jerusalem, Galilee, Paul's Journeys, Reset view, List view, 장소 상세 팝업, Acts 13 링크 | 정상 |
+| Bible Reader | EN/KR 전환, Aa 글자 크기, Audio 재생·일시정지·속도, My Bookmarks, 이전·다음 챕터, Chapter Complete, Take Quiz, 읽기 제한 안내 | 대부분 정상. 읽기 제한 X는 1.1.186에서 닫힘 bridge 보정 |
+| Bible 목록 | Old/New Testament 전환, Law·History·Poetry·Major Prophets·Minor Prophets·Gospels·Paul's Letters·General Letters·Prophecy 접기·펼치기 | 정상. 카테고리 카드가 접혔다가 다시 복원됨 |
+| Ranking | Day/Week/All, 사용자 프로필 팝업, Join Crew, Create Crew, Cancel | 정상 |
+| Gem Store | Reader/Frames/Pets 탭, 검색, 정렬, rarity 필터, My Items 각 탭, Faithy 장착·해제, 가로 탐색 | 정상. 가로 스와이프가 인접 탭으로 넘어가지 않도록 기존 guard 유지 |
+| Profile | 아바타 요약, Edit, Crew 관리, Sound Effects, Member Ranking, Send Feedback, Reading Reminders, Export My Data, Privacy Policy | 정상 |
+| Profile 보안 작업 | Reset Progress, Delete Account 확인 흐름 | Reset Progress는 1.1.186에서 확인창 보정. Delete Account는 typed confirmation 구조와 취소 흐름 유지 |
+| Cheer 수신함 | Profile 하단 ENCOURAGEMENTS 영역 | 현재 감사 계정은 익명·수신 데이터 없음으로 수신 항목이 표시되지 않음. 두 계정 간 실제 수신·콘페티는 별도 실기기 검증 필요 |
 
-## Profile 검수 — P0 후보
-Profile 탭 진입 후 화면이 장시간 `Loading...` 상태에 머물렀고, 실제 Profile 본문·프로필 사진·Cheer 보관함·Delete Account UI에 도달하지 못했다. DOM에는 Error Boundary 문구는 없었지만, 화면이 계속 로드 중이며 Firebase RTDB `/blocks/<anonymous uid>.json` 요청이 반복되는 상태가 관찰됐다. 따라서 Profile 초기 진입 무한/장시간 Loading은 P0 후보이며, blocks 데이터 fetch가 Profile 렌더링을 막는지 source에서 즉시 추적해야 한다.
+### Bible 목록 카테고리 세부 확인
+
+New Testament에서 Gospels를 접으면 Matthew·Mark·Luke·John 카드가 모두 숨겨지고 다시 펼치면 복원됐다. Paul's Letters도 13개 서신 카드가 숨겨졌다가 복원됐다. General Letters는 Hebrews·James·1/2 Peter·1/2/3 John·Jude 8개 카드가 정상 복원됐다. Prophecy는 Revelation 카드가 접혔다가 복원됐다. Old Testament의 Law·History·Poetry·Major Prophets·Minor Prophets도 목록 전환과 카테고리 표시가 정상 동작했다.
+
+### Profile 하단 세부 확인
+
+Profile 진입 직후 짧은 Loading 지연은 있었지만 이후 Anonymous 프로필, Recent Badges, Weekly Goal, My Crews, Reading Reminders, Sound Effects, Manage Crews, Send Feedback, Export My Data, Privacy Policy, Reset Progress, Delete Account가 정상 렌더링됐다. 하단까지 스크롤해도 `ENCOURAGEMENTS` 또는 Cheer 수신 항목은 표시되지 않았다. 현재 계정이 익명이고 수신 Cheer 데이터가 없기 때문일 가능성이 높으므로, 수신 데이터가 있는 두 계정으로 별도 확인해야 한다.
+
+## 4. 1.1.186에서 수정한 결함
+
+### 4.1 Reset Progress가 아무 반응도 하지 않던 문제 — P1
+
+Profile 하단의 `Reset Progress` 버튼은 표시되지만 기존 배포본에서는 React 상태 전환이나 확인창이 나타나지 않는 경우가 재현됐다. 1.1.186에서는 실제 `data-loc`를 대상으로 별도의 capture 단계 이벤트 bridge를 설치했다. 버튼을 누르면 앱의 진행 데이터, XP, Gems, 북마크, 인벤토리, 장착 상태, Bible AI thread 등 기기 내 진행 상태를 지우기 전에 확인창을 먼저 표시한다. 로그인 정보와 Crew membership은 유지된다는 안내도 포함했다.
+
+로컬 1.1.186 패키지에서 다음 확인창이 실제로 생성되는 것을 확인했다.
+
+> Reset your progress? This clears your reading history, XP, Gems, bookmarks, items, and Bible AI threads on this device. Your sign-in and Crew membership stay safe.
+
+`Cancel`을 누르면 확인창이 닫히고 진행 상태를 삭제하지 않는다. 실제 `Reset everything` 확정 동작은 사용자 데이터 삭제가 수반되므로 자동 검증에서는 실행하지 않았다.
+
+### 4.2 Bible Reader 읽기 제한 모달의 X가 닫히지 않던 문제 — P2
+
+`Whoa! Slow down!` 읽기 제한 모달의 X 버튼은 `client/src/pages/Bible.tsx:2640`에 있으며 기존에는 화면상 버튼을 눌러도 모달이 남는 경우가 재현됐다. 1.1.186에서는 해당 X를 모달 overlay의 닫힘 동작과 연결하는 별도 bridge를 추가했다. 기존의 `Go back & read` 경로는 유지하며, 사용자는 이제 X로도 모달을 닫을 수 있어야 한다.
+
+이 기능은 실제 iOS 기기에서 OTA 활성화 후 한 번 더 확인해야 한다. 자동 브라우저에서는 DOM 위치와 이벤트 연결을 확인했지만 네이티브 WebView의 제스처·안전 영역까지 완전히 대체하지는 않는다.
+
+### 4.3 Home 백업 카드 X가 닫히지 않던 문제 — P2
+
+Home 상단의 `Back up your progress` 카드는 Google·Apple 연결을 권장하는 선택적 안내 카드다. X 버튼은 `client/src/pages/Home.tsx:257`에 있으며 기존에는 눌러도 카드가 사라지지 않는 경우가 있었다. 1.1.186에서는 X를 capture 단계에서 처리하고 사용자가 닫은 상태를 `teenzBibleBackupCardDismissed`에 기록한다. SPA 재렌더링 이후에도 닫힌 카드가 다시 나타나지 않도록 했다.
+
+로컬 1.1.186에서 카드의 X를 직접 클릭한 뒤 카드의 `display`가 `none`이 되고 숨김 상태가 기록되는 것을 확인했다.
+
+### 4.4 Home 상단 로그인·백업 카드 UI 개선
+
+사용자 피드백에 따라 이 카드는 Continue Reading, Bible AI, XP와 같은 게임·콘텐츠 섹션과 성격이 다르다는 점을 시각적으로 드러냈다. 기존 가죽 배경 질감은 유지하되 카드 표면에 차분한 녹색·회색 계열을 섞어 **계정 보안 및 기기 간 진행 저장 안내**라는 성격을 구분했다. X는 커다란 금색 버튼처럼 보이지 않도록 시각적인 원형 아이콘을 작게 만들고 가벼운 `×`로 바꾸었으며, 클릭 영역은 모바일에서 누를 수 있는 정도로 유지했다.
+
+Google·Apple 로그인 버튼은 변경하지 않았다. 따라서 이 카드는 사라지기 전까지 두 연결 버튼을 계속 제공하며, 사용자가 실수로 X를 누르도록 X를 과도하게 강조하지 않는다.
+
+## 5. 재발 방지 확인
+
+| 제약 | 확인 결과 |
+|---|---|
+| Loading DOM guard 재추가 금지 | 금지된 `__tbLoadingFallbackGuard`, `tb-native-stale-loading`, `installLoadingFallbackGuard`, `hideStaleFallbacks`, `scheduleHideStaleFallbacks` 문자열 없음 |
+| React chunk 이름 변경 금지 | `index-GemFix1184.js` 유지, 1185·1186 React chunk 생성 없음 |
+| safeRemoveChild guard 유지 | 기존 안전 guard 보존 |
+| 다른 bridge의 예외가 핵심 기능을 막지 않도록 함 | Reset, Reading gate, Backup card를 독립적인 try/catch 루틴으로 재호출 |
+| React 재렌더링 대응 | 제한된 250ms 주기 보정 루틴으로 카드·모달이 다시 생겨도 selector를 재확인 |
+| 무한 DOM 감시 금지 | 자기 자신이 만든 style/text mutation을 감시하는 위험한 MutationObserver는 제거함 |
+
+배포 전 로컬 검증에서 Home 카드의 스타일 변화를 광범위한 `MutationObserver`로 감시하면 runtime이 스스로 만든 mutation을 다시 감지하여 무한 루프를 만들 수 있는 위험이 확인됐다. 해당 observer는 최종 패키지에서 제거했다. 최종 runtime은 제한된 주기와 예외 격리 방식을 사용한다.
+
+## 6. 남아 있는 품질·제품 이슈
+
+### 6.1 성경 번역 품질 — P1 콘텐츠 QA
+
+영어와 한국어 본문에서 일부 표현이 중학생용 쉬운 언어의 범위를 넘어 지나치게 구어체로 보이는 사례가 확인됐다. Genesis 1·2 영어에는 `for real`, `totally complete`, `just chilled`, `awesome`, `Seriously`, `super deep sleep`, `Whoa, finally!`와 같은 표현이 반복됐다. Acts 13 영어에서도 부적절하게 느껴질 수 있는 표현이 확인됐고, Revelation 1 한국어는 문장 품질이 특히 낮은 부분이 있었다.
+
+Acts 13에서는 영어와 한국어 모두 본문 내용과 맞지 않는 이전 장 성격의 제목이 상단에 함께 노출되는 장·절 매핑 문제도 확인됐다. 이는 단순한 화면 버그가 아니라 앱의 핵심 가치인 **안전하고 이해하기 쉬운 성경 콘텐츠**에 관한 문제다. 다음 개발자는 66권을 한 번에 자동 치환하기보다 원문 대조, 신학적 의미, 중학생 독해 수준, 비속어, 모욕 표현, 과도한 밈 표현을 기준으로 장별 검수를 수행해야 한다. 영어와 한국어 모두 같은 기준으로 검수하고, 수정본은 별도 콘텐츠 버전과 검수 기록을 남겨야 한다.
+
+### 6.2 Quiz 보상 표기 불일치 — P1 제품 QA
+
+Genesis 1에서 버튼에는 `Take Quiz (+10 XP, +3 💎)`가 표시되었지만 결과 화면에는 `+10 XP, +5 💎`가 표시됐다. 또한 질문·선택지를 거치지 않고 즉시 성공 화면으로 이동하는 것처럼 보였다. 이는 사용자 신뢰와 Gem 경제에 영향을 주는 제품 이슈다. 다음 개발자는 실제 퀴즈 문제·정답·재시도·보상 수량을 명확히 정의한 뒤 버튼 문구와 결과 문구를 동일한 단일 상수에서 표시해야 한다.
+
+### 6.3 Reader `v.` 버튼
+
+Genesis 1 Reader에서 `v.` 버튼은 별도 번역본 메뉴가 아니라 절 번호 표시를 켜는 버튼으로 확인됐다. EN/KR 언어 전환은 동작한다. Theme 기능은 제거된 상태이며 Reader Skin trigger도 숨겨져 있다. 다음 개발자는 `v.` 버튼의 이름과 시각적 의미가 사용자에게 명확한지 제품 결정을 내려야 한다.
+
+### 6.4 Cheer 수신함 실사용 확인
+
+Profile 하단의 ENCOURAGEMENTS는 수신 Cheer 데이터가 있을 때 표시되는 흐름으로 설계되어 있다. 이번 감사 계정은 익명 상태이고 수신 Cheer가 없어 실제 수신 카드와 콘페티를 관찰할 수 없었다. 실제 iPad에서 두 계정으로 로그인한 뒤 A 계정이 B 계정에 Cheer를 보내고 B 계정이 Profile을 다시 열어 보낸 사람·시간·콘페티가 나타나는지 확인해야 한다. 현재 푸시 알림 기능은 범위에 포함되지 않는다.
+
+## 7. iOS 실기기에서 남은 최종 확인
+
+OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열어야 한다. 최근 앱 화면에서 Teenz Bible을 위로 밀어 완전히 종료한 뒤 다시 실행하고 다음 항목을 순서대로 확인한다.
+
+| 순서 | 확인 항목 | 기대 결과 |
+|---:|---|---|
+| 1 | Home 상단 로그인 카드 | 기존 가죽 질감은 유지되며 카드 표면이 다른 섹션과 구분되는 차분한 녹색 계열로 보임 |
+| 2 | 로그인 카드 X | 작고 보조적인 `×`로 보이며 누르면 카드만 사라짐 |
+| 3 | Google·Apple 버튼 | 카드가 표시되는 익명·신규 상태에서 두 버튼이 계속 눌림 |
+| 4 | Profile → Reset Progress | 확인창이 열리고 Cancel이 안전하게 닫힘 |
+| 5 | Bible Reader → 읽기 제한 | X를 누르면 모달이 닫히며 본문 화면으로 돌아감 |
+| 6 | Home·Bible AI·Bible Map·Bible·Ranking·Store·Profile | 검은 화면, Error Boundary, 하단 에러 문구가 나타나지 않음 |
+| 7 | 앱 재실행 | OTA 활성화 후 1.1.186 보정이 유지됨 |
+
+## 8. 인수인계 시 반드시 보존할 파일과 규칙
+
+개발자는 다음 파일을 GitHub 저장소에서 우선 확인해야 한다.
+
+| 파일 | 역할 |
+|---|---|
+| `app/index.html` | runtime 1.1.186과 안정 React 1184 main chunk 참조 |
+| `app/runtime-fixes-1.1.186.js` | OTA 보정 runtime, 안전 DOM 처리, 핵심 bridge |
+| `app/runtime-fixes-1.1.186.css` | Reader Skin trigger 숨김, 모바일 UI, 로그인 카드 표현 |
+| `app/ota/latest.json` | 현재 OTA 버전·URL·SHA-256·크기 |
+| `app/ota/1.1.186.zip` | Firebase Hosting에서 제공되는 OTA 패키지 |
+| `app/assets/index-GemFix1184.js` | 이름을 바꾸면 안 되는 검증된 React main bundle |
+| `docs/AI_FINAL_SUMMARY.md` | 후속 AI용 프로젝트 상태와 운영 제약 |
+| `reports/full-product-audit-2026-08-22.md` | 본 최종 제품 감사 보고서 |
+
+다음 수정에서도 React lazy chunk의 이름을 바꾸지 말아야 한다. 검은 화면을 일으켰던 Loading DOM guard를 다시 추가하면 안 된다. 새 runtime을 만들 때는 기존 안정 패키지를 복사한 뒤 runtime JS/CSS만 버전업하고 ZIP checksum, index 참조, 금지 문자열, main chunk 동일성 검사를 먼저 수행해야 한다.
+
+## 9. 최종 인수인계 판단
+
+**기능 상태:** 주요 탐색·콘텐츠·소셜·스토어·프로필 흐름은 감사 범위에서 대체로 정상이다.
+
+**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X, 로그인 카드 UI는 OTA 1.1.186에 반영되어 Firebase Hosting에 배포되었다.
+
+**실기기 상태:** 네이티브 WebView에서 OTA를 실제로 활성화한 뒤의 최종 확인은 사용자의 iPad에서 필요하다. 특히 로그인, Reset Progress, Reader gate X를 직접 눌러야 한다.
+
+**출시 차단 가능성이 높은 남은 문제:** 성경 번역 품질과 Quiz 보상 불일치는 콘텐츠·제품 QA 관점에서 여전히 중요하다. UI 수정만으로 이 두 문제를 해결했다고 간주해서는 안 된다.
+
+**운영 인수인계:** Manus 계정 만료 전 [Manus 데이터 백업 페이지](https://manus.im/backup)에서 반드시 전체 task 데이터를 export해야 한다. 백업은 GitHub 소스 저장소와 별개의 작업이며, GitHub에 소스가 올라가 있어도 Manus 작업 기록·파일 export를 대신하지 않는다.
+
+## References
+
+[1]: https://teens-bible-94271.web.app/ "Teenz Bible Firebase Hosting URL"
+
+[2]: https://teens-bible-94271.web.app/ota/latest.json "Teenz Bible current OTA manifest"
+
+[3]: https://manus.im/backup "Manus data backup page"
+
+[4]: https://firebase.google.com/docs/hosting "Firebase Hosting documentation"
