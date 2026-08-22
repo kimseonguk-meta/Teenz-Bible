@@ -1,7 +1,7 @@
 # Teenz Bible 최종 전수 제품 감사 보고서
 
 **감사일:** 2026년 8월 22일  
-**감사 대상:** [Teenz Bible 웹/PWA](https://teens-bible-94271.web.app/), Firebase Hosting 배포본 및 OTA 1.1.186 패키지  
+**감사 대상:** [Teenz Bible 웹/PWA](https://teens-bible-94271.web.app/), Firebase Hosting 배포본 및 OTA 1.1.187 패키지  
 **현재 App Store 빌드:** Version 1.2.1, Build 6  
 **작성자:** Manus AI
 
@@ -9,7 +9,7 @@
 
 이번 감사는 App Store 배포 이후의 최종 인수인계 단계에서 Home, Bible AI, Bible Map, Bible Reader, Bible 목록, Ranking, Gem Store, Profile의 주요 버튼과 모달을 실제로 열고 눌러 동작을 확인하는 것을 목적으로 진행했다. 단순히 코드가 존재하는지만 확인하지 않고, SPA 재렌더링 이후에도 화면이 유지되는지, 모달의 닫기 동작이 가능한지, 모바일 화면에서 버튼이 눌리는지, 이전에 문제가 되었던 검은 화면과 잘못된 DOM 가드가 재발하지 않는지를 함께 점검했다.
 
-**최종 결론은 다음과 같다.** 주요 사용자 흐름은 전반적으로 작동한다. 감사 중 발견한 세 가지 UI·기능 결함은 OTA 1.1.186에서 보정했고, Home 상단의 선택적 로그인·백업 카드는 다른 게임 섹션과 구분되는 차분한 녹색 계열로 조정했으며 X 아이콘의 시각적 크기와 강조도를 낮췄다. Firebase Hosting에는 1.1.186이 배포되었고 공개 manifest와 안정 React 1184 번들 참조를 확인했다.
+**최종 결론은 다음과 같다.** 주요 사용자 흐름은 전반적으로 작동한다. 감사 중 발견한 세 가지 UI·기능 결함은 OTA 1.1.186에서 보정했고, 추가 피드백에 따른 Home 상단 로그인·백업 카드의 색상·X 아이콘은 OTA 1.1.187에서 다시 다듬었다. Firebase Hosting에는 1.1.187이 배포되었고 공개 manifest와 안정 React 1184 번들 참조를 확인했다.
 
 성경 본문 품질, 퀴즈 보상 표기 불일치, Reader의 `v.` 버튼 동작은 이번 OTA에서 임의로 건드리지 않았다. 이 항목들은 기능 고장과 UI 보정의 범위를 넘어 콘텐츠·제품 정책을 다시 결정해야 하므로, 다음 개발자가 별도 콘텐츠 QA 작업으로 이어받아야 한다.
 
@@ -17,24 +17,24 @@
 
 | 항목 | 최종 상태 |
 |---|---|
-| 최신 OTA | **1.1.186 배포 완료** |
-| 공개 manifest | `https://teens-bible-94271.web.app/ota/latest.json`에서 1.1.186 확인 |
-| OTA ZIP | `https://teens-bible-94271.web.app/ota/1.1.186.zip` |
-| SHA-256 | `843c01358304bff5a74a1a455a7ff1105265f260ae45b4ea63cb92689416095c` |
-| ZIP 크기 | 68,336,198 bytes |
+| 최신 OTA | **1.1.187 배포 완료** |
+| 공개 manifest | `https://teens-bible-94271.web.app/ota/latest.json`에서 1.1.187 확인 |
+| OTA ZIP | `https://teens-bible-94271.web.app/ota/1.1.187.zip` |
+| SHA-256 | `45a88b3152d2111884861ce7cafa41b64bdc275aead400d76acf43c62fa84f91` |
+| ZIP 크기 | 68,388,211 bytes |
 | React 메인 번들 | 기존 검증본 `assets/index-GemFix1184.js` 유지 |
 | Loading DOM guard | 재추가하지 않음 |
 | Firebase Hosting | 배포 완료, Hosting URL 응답 확인 |
 | iOS 적용 방식 | 앱을 완전히 종료한 뒤 다시 열어 OTA가 다음 재시작에서 활성화되도록 해야 함 |
 
-배포 후 정적 검증에서 index는 `runtime-fixes-1.1.186.js`, `runtime-fixes-1.1.186.css`, `assets/index-GemFix1184.js`를 참조했다. 따라서 이전에 문제를 일으켰던 React lazy chunk 이름 변경은 발생하지 않았다.
+배포 후 정적 검증에서 index는 `runtime-fixes-1.1.187.js`, `runtime-fixes-1.1.187.css`, `assets/index-GemFix1184.js`를 참조했다. 따라서 이전에 문제를 일으켰던 React lazy chunk 이름 변경은 발생하지 않았다.
 
 ## 3. 전수 감사 결과
 
 | 영역 | 실제 확인한 흐름 | 결과 |
 |---|---|---|
 | Home | Bible AI 카드, Continue Reading, 오늘의 밈 반응 4종, Share, Save, Location 카드와 Bible Map 진입 | 정상 |
-| Home 로그인 카드 | 익명·신규 사용자에게 Google·Apple 연결 카드 표시, Google·Apple 버튼 존재, X 닫기 동작 | 1.1.186에서 X 보정 완료. 카드 색상·X 시각 강조도도 수정 |
+| Home 로그인 카드 | 익명·신규 사용자에게 Google·Apple 연결 카드 표시, Google·Apple 버튼 존재, X 닫기 동작 | 1.1.186에서 X 닫기 보정, 1.1.187에서 색상·X 시각 강조도 재수정 |
 | Bible AI | 입력, 답변 생성, 후속 추천 질문, Clear, Back, 답변의 성경 문맥 링크 | 입력·답변·Clear·Back 정상. 문맥 링크는 새 탭/about:blank 방식으로 열리는 웹 동작이 남음 |
 | Bible Map | Old/New Testament 필터, Jerusalem, Galilee, Paul's Journeys, Reset view, List view, 장소 상세 팝업, Acts 13 링크 | 정상 |
 | Bible Reader | EN/KR 전환, Aa 글자 크기, Audio 재생·일시정지·속도, My Bookmarks, 이전·다음 챕터, Chapter Complete, Take Quiz, 읽기 제한 안내 | 대부분 정상. 읽기 제한 X는 1.1.186에서 닫힘 bridge 보정 |
@@ -128,7 +128,7 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 | 4 | Profile → Reset Progress | 확인창이 열리고 Cancel이 안전하게 닫힘 |
 | 5 | Bible Reader → 읽기 제한 | X를 누르면 모달이 닫히며 본문 화면으로 돌아감 |
 | 6 | Home·Bible AI·Bible Map·Bible·Ranking·Store·Profile | 검은 화면, Error Boundary, 하단 에러 문구가 나타나지 않음 |
-| 7 | 앱 재실행 | OTA 활성화 후 1.1.186 보정이 유지됨 |
+| 7 | 앱 재실행 | OTA 활성화 후 1.1.187 보정이 유지됨 |
 
 ## 8. 인수인계 시 반드시 보존할 파일과 규칙
 
@@ -136,11 +136,11 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 | 파일 | 역할 |
 |---|---|
-| `app/index.html` | runtime 1.1.186과 안정 React 1184 main chunk 참조 |
-| `app/runtime-fixes-1.1.186.js` | OTA 보정 runtime, 안전 DOM 처리, 핵심 bridge |
-| `app/runtime-fixes-1.1.186.css` | Reader Skin trigger 숨김, 모바일 UI, 로그인 카드 표현 |
+| `app/index.html` | runtime 1.1.187과 안정 React 1184 main chunk 참조 |
+| `app/runtime-fixes-1.1.187.js` | OTA 보정 runtime, 안전 DOM 처리, 핵심 bridge |
+| `app/runtime-fixes-1.1.187.css` | Reader Skin trigger 숨김, 모바일 UI, 로그인 카드 표현 |
 | `app/ota/latest.json` | 현재 OTA 버전·URL·SHA-256·크기 |
-| `app/ota/1.1.186.zip` | Firebase Hosting에서 제공되는 OTA 패키지 |
+| `app/ota/1.1.187.zip` | Firebase Hosting에서 제공되는 OTA 패키지 |
 | `app/assets/index-GemFix1184.js` | 이름을 바꾸면 안 되는 검증된 React main bundle |
 | `docs/AI_FINAL_SUMMARY.md` | 후속 AI용 프로젝트 상태와 운영 제약 |
 | `reports/full-product-audit-2026-08-22.md` | 본 최종 제품 감사 보고서 |
@@ -151,7 +151,7 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 **기능 상태:** 주요 탐색·콘텐츠·소셜·스토어·프로필 흐름은 감사 범위에서 대체로 정상이다.
 
-**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X, 로그인 카드 UI는 OTA 1.1.186에 반영되어 Firebase Hosting에 배포되었다.
+**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X는 OTA 1.1.186에서 보정되었고, 로그인 카드 UI는 OTA 1.1.187에서 추가 조정되어 Firebase Hosting에 배포되었다.
 
 **실기기 상태:** 네이티브 WebView에서 OTA를 실제로 활성화한 뒤의 최종 확인은 사용자의 iPad에서 필요하다. 특히 로그인, Reset Progress, Reader gate X를 직접 눌러야 한다.
 
