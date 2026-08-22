@@ -1,7 +1,7 @@
 # Teenz Bible 최종 전수 제품 감사 보고서
 
 **감사일:** 2026년 8월 22일  
-**감사 대상:** [Teenz Bible 웹/PWA](https://teens-bible-94271.web.app/), Firebase Hosting 배포본 및 OTA 1.1.192 패키지  
+**감사 대상:** [Teenz Bible 웹/PWA](https://teens-bible-94271.web.app/), Firebase Hosting 배포본 및 OTA 1.1.193 패키지  
 **현재 App Store 빌드:** Version 1.2.1, Build 6  
 **작성자:** Manus AI
 
@@ -9,7 +9,7 @@
 
 이번 감사는 App Store 배포 이후의 최종 인수인계 단계에서 Home, Bible AI, Bible Map, Bible Reader, Bible 목록, Ranking, Gem Store, Profile의 주요 버튼과 모달을 실제로 열고 눌러 동작을 확인하는 것을 목적으로 진행했다. 단순히 코드가 존재하는지만 확인하지 않고, SPA 재렌더링 이후에도 화면이 유지되는지, 모달의 닫기 동작이 가능한지, 모바일 화면에서 버튼이 눌리는지, 이전에 문제가 되었던 검은 화면과 잘못된 DOM 가드가 재발하지 않는지를 함께 점검했다.
 
-**최종 결론은 다음과 같다.** 주요 사용자 흐름은 전반적으로 작동한다. 감사 중 발견한 UI·기능 결함은 OTA 1.1.186 이후 단계적으로 보정했고, Home 로그인·백업 카드, Profile crop 모달, meme close, 그리고 Ranking 신고 안전 흐름은 각각 후속 OTA에서 다듬었다. Firebase Hosting에는 1.1.192가 배포되었고 공개 manifest와 안정 React 1184 번들 참조를 확인했다.
+**최종 결론은 다음과 같다.** 주요 사용자 흐름은 전반적으로 작동한다. 감사 중 발견한 UI·기능 결함은 OTA 1.1.186 이후 단계적으로 보정했고, Home 로그인·백업 카드, Profile crop 모달, meme close, 그리고 Ranking 신고 안전 흐름은 각각 후속 OTA에서 다듬었다. Firebase Hosting에는 1.1.193이 배포되었고 공개 manifest, 안정 React 1184 번들 참조, Reader audio redesign을 확인했다. Profile 사진 기능은 브라우저와 native-platform simulation까지 검증했으며 실제 iPad picker 표시는 아직 실기기 확인이 필요하다.
 
 성경 본문 품질, 퀴즈 보상 표기 불일치, Reader의 `v.` 버튼 동작은 이번 OTA에서 임의로 건드리지 않았다. 이 항목들은 기능 고장과 UI 보정의 범위를 넘어 콘텐츠·제품 정책을 다시 결정해야 하므로, 다음 개발자가 별도 콘텐츠 QA 작업으로 이어받아야 한다.
 
@@ -17,17 +17,17 @@
 
 | 항목 | 최종 상태 |
 |---|---|
-| 최신 OTA | **1.1.192 배포 완료** |
-| 공개 manifest | `https://teens-bible-94271.web.app/ota/latest.json`에서 1.1.192 확인 |
-| OTA ZIP | `https://teens-bible-94271.web.app/ota/1.1.192.zip` |
-| SHA-256 | `592ad419960a017cd56e4b76420ba56f392be582c983a91abef445e61d3688ea` |
-| ZIP 크기 | 68,657,382 bytes |
+| 최신 OTA | **1.1.193 배포 완료** |
+| 공개 manifest | `https://teens-bible-94271.web.app/ota/latest.json?final=1193-final`에서 1.1.193 확인 |
+| OTA ZIP | `https://teens-bible-94271.web.app/ota/1.1.193.zip` |
+| SHA-256 | `40099108d1ba4c45c6fea5e9fb15c92f23d25860d245a0350d8ec8d533ea6a8d` |
+| ZIP 크기 | 68,713,710 bytes |
 | React 메인 번들 | 기존 검증본 `assets/index-GemFix1184.js` 유지 |
 | Loading DOM guard | 재추가하지 않음 |
 | Firebase Hosting | 배포 완료, Hosting URL 응답 확인 |
 | iOS 적용 방식 | 앱을 완전히 종료한 뒤 다시 열어 OTA가 다음 재시작에서 활성화되도록 해야 함 |
 
-배포 후 정적 검증에서 index는 `runtime-fixes-1.1.192.js`, `runtime-fixes-1.1.192.css`, `assets/index-GemFix1184.js`를 참조했다. 따라서 이전에 문제를 일으켰던 React lazy chunk 이름 변경은 발생하지 않았다.
+배포 후 정적 검증에서 index는 `runtime-fixes-1.1.193.js`, `runtime-fixes-1.1.193.css`, `assets/index-GemFix1184.js`를 참조했다. 따라서 이전에 문제를 일으켰던 React lazy chunk 이름 변경은 발생하지 않았다.
 
 ## 3. 전수 감사 결과
 
@@ -37,11 +37,11 @@
 | Home 로그인 카드 | 익명·신규 사용자에게 Google·Apple 연결 카드 표시, Google·Apple 버튼 존재, X 닫기 동작 | 1.1.186에서 X 닫기 보정, 1.1.187에서 색상·X 시각 강조도 재수정 |
 | Bible AI | 입력, 답변 생성, 후속 추천 질문, Clear, Back, 답변의 성경 문맥 링크 | 입력·답변·Clear·Back 정상. 문맥 링크는 새 탭/about:blank 방식으로 열리는 웹 동작이 남음 |
 | Bible Map | Old/New Testament 필터, Jerusalem, Galilee, Paul's Journeys, Reset view, List view, 장소 상세 팝업, Acts 13 링크 | 정상 |
-| Bible Reader | EN/KR 전환, Aa 글자 크기, Audio 재생·일시정지·속도, My Bookmarks, 이전·다음 챕터, Chapter Complete, Take Quiz, 읽기 제한 안내 | 대부분 정상. 읽기 제한 X는 1.1.186에서 닫힘 bridge 보정 |
+| Bible Reader | EN/KR 전환, Aa 글자 크기, Audio 재생·일시정지·속도, My Bookmarks, 이전·다음 챕터, Chapter Complete, Take Quiz, 읽기 제한 안내 | 1.1.193에서 승인된 slim leather audio rail 공개 검증. 480×84px normal-flow panel, 4px gold progress line, 3열 status/speed/Auto-next, Stop 숨김, 본문 비가림. 읽기 제한 X는 1.1.186에서 보정 |
 | Bible 목록 | Old/New Testament 전환, Law·History·Poetry·Major Prophets·Minor Prophets·Gospels·Paul's Letters·General Letters·Prophecy 접기·펼치기 | 정상. 카테고리 카드가 접혔다가 다시 복원됨 |
 | Ranking | Day/Week/All, 사용자 프로필 팝업, Join Crew, Create Crew, Cheer, More actions, Report 확인·사유 입력 | 1.1.192 공개 검증 완료. Block 제거 |
 | Gem Store | Reader/Frames/Pets 탭, 검색, 정렬, rarity 필터, My Items 각 탭, Faithy 장착·해제, 가로 탐색 | 정상. 가로 스와이프가 인접 탭으로 넘어가지 않도록 기존 guard 유지 |
-| Profile | 아바타 요약, Edit, Crew 관리, Sound Effects, Member Ranking, Send Feedback, Reading Reminders, Export My Data, Privacy Policy | 정상 |
+| Profile | 아바타 요약, Edit, Crew 관리, Sound Effects, Member Ranking, Send Feedback, Reading Reminders, Export My Data, Privacy Policy | 정상. 사진 sheet는 웹에서 표시되며 1.1.193 native tap bridge 추가 |
 | Profile 보안 작업 | Reset Progress, Delete Account 확인 흐름 | Reset Progress는 1.1.186에서 확인창 보정. Delete Account는 typed confirmation 구조와 취소 흐름 유지 |
 | Cheer 수신함 | Profile 하단 ENCOURAGEMENTS 영역 | 현재 감사 계정은 익명·수신 데이터 없음으로 수신 항목이 표시되지 않음. 두 계정 간 실제 수신·콘페티는 별도 실기기 검증 필요 |
 
@@ -128,7 +128,8 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 | 4 | Profile → Reset Progress | 확인창이 열리고 Cancel이 안전하게 닫힘 |
 | 5 | Bible Reader → 읽기 제한 | X를 누르면 모달이 닫히며 본문 화면으로 돌아감 |
 | 6 | Home·Bible AI·Bible Map·Bible·Ranking·Store·Profile | 검은 화면, Error Boundary, 하단 에러 문구가 나타나지 않음 |
-| 7 | 앱 재실행 | OTA 활성화 후 1.1.187 보정이 유지됨 |
+| 7 | 앱 재실행 | OTA 활성화 후 1.1.193 Reader audio와 Profile photo bridge가 유지됨 |
+| 8 | Profile → avatar → Change Photo | 웹 sheet 표시. native simulation에서 Camera/Gallery가 각각 올바른 input을 호출 | 실제 iPad picker 표시만 실기기 확인 필요 |
 
 ## 8. 인수인계 시 반드시 보존할 파일과 규칙
 
@@ -136,11 +137,11 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 | 파일 | 역할 |
 |---|---|
-| `app/index.html` | runtime 1.1.192와 안정 React 1184 main chunk 참조 |
-| `app/runtime-fixes-1.1.192.js` | OTA 보정 runtime, Ranking Report 안전 흐름, 안전 DOM 처리, 핵심 bridge, crop 모달 host 격리, meme close 접근성 라벨 |
-| `app/runtime-fixes-1.1.192.css` | Reader Skin trigger 숨김, 모바일 UI, 로그인 카드 표현, crop 모달 레이어, meme close 박스 중앙 정렬, Ranking Report UI |
+| `app/index.html` | runtime 1.1.193와 안정 React 1184 main chunk 참조 |
+| `app/runtime-fixes-1.1.193.js` | OTA 보정 runtime, Ranking Report 안전 흐름, Reader audio polish, native photo input tap bridge, 안전 DOM 처리, crop 모달 host 격리 |
+| `app/runtime-fixes-1.1.193.css` | Reader slim leather audio rail, 모바일 UI, 로그인 카드 표현, crop 모달 레이어, meme close 중앙 정렬, Ranking Report UI |
 | `app/ota/latest.json` | 현재 OTA 버전·URL·SHA-256·크기 |
-| `app/ota/1.1.192.zip` | Firebase Hosting에서 제공되는 OTA 패키지 |
+| `app/ota/1.1.193.zip` | Firebase Hosting에서 제공되는 최종 OTA 패키지 |
 | `app/assets/index-GemFix1184.js` | 이름을 바꾸면 안 되는 검증된 React main bundle |
 | `docs/AI_FINAL_SUMMARY.md` | 후속 AI용 프로젝트 상태와 운영 제약 |
 | `reports/full-product-audit-2026-08-22.md` | 본 최종 제품 감사 보고서 |
@@ -169,17 +170,23 @@ OTA 배포 후 iPad 또는 iPhone에서 앱을 완전히 종료하고 다시 열
 
 공개 검증 기록은 [`reports/ranking-report-public-verification-1192.txt`](ranking-report-public-verification-1192.txt)에 저장했다.
 
-## 10. 최종 인수인계 판단
+## 10. OTA 1.1.193 Reader audio 및 Profile photo
+
+1.1.193은 사용자가 승인한 Reader audio redesign을 실제 적용했다. 공개 Reader에서 오디오를 켜면 패널은 본문을 덮는 대형 translucent overlay가 아니라 header 아래 normal-flow의 480×84px dark leather rail로 표시된다. 상단 4px progress line, Playing·part count, segmented speed controls, Auto next chapter를 3열로 정리했고 Stop 버튼은 숨겼다. 공개 계산값과 화면에서 첫 Scripture paragraph가 panel 아래에 배치되는 것을 확인했다.
+
+Profile photo 문제에는 native Capacitor 환경에서만 capture-phase tap bridge를 추가했다. Photo sheet의 `Take Photo`는 Profile.tsx:1101 (`accept=image/*`, `capture=environment`), `Choose from Gallery`는 Profile.tsx:1120으로 연결되며 두 input 모두 native 환경에서 `display:block`·1px transparent로 유지된다. 로컬 simulation에서 두 버튼의 bound marker와 input.click mapping을 확인했지만, 실제 카메라 권한·Photos picker presentation은 브라우저로 증명할 수 없으므로 iPad에서 최종 확인해야 한다.
+
+## 11. 최종 인수인계 판단
 
 **기능 상태:** 주요 탐색·콘텐츠·소셜·스토어·프로필 흐름은 감사 범위에서 대체로 정상이다.
 
-**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X는 이전 OTA에서 보정되었고, 로그인 카드 UI는 1.1.187에서 조정되었다. Profile 사진 crop 모달의 overlay/panel 겹침·오프셋 문제는 OTA 1.1.189에서 보정되었다. 사용자가 지적한 밈 상세 모달의 과도하게 눈에 띄는 X는 OTA 1.1.190에서 bottom rail에서 분리해 이미지 오른쪽 위의 32px 조용한 아이콘으로 바꾸었고, Share·Save만 동일 폭의 2열 44px 버튼으로 남겼다. X가 박스 안에서 어긋나 보이는 문제는 OTA 1.1.191에서 중앙 정렬로 보정했다. 이번 **OTA 1.1.192**에서는 Ranking에서 Block을 제거하고, Report를 확인·사유 입력·제출 단계로 분리했다.
+**이번 릴리스 수정 상태:** Reset Progress 확인창, Reader 읽기 제한 X, Home 백업 카드 X는 이전 OTA에서 보정되었고, 로그인 카드 UI는 1.1.187에서 조정되었다. Profile 사진 crop 모달의 overlay/panel 겹침·오프셋 문제는 OTA 1.1.189에서 보정되었다. 밈 상세 모달 X는 1.1.190·1.1.191에서 보정했다. 1.1.192에서는 Ranking에서 Block을 제거하고 Report를 확인·사유 입력·제출 단계로 분리했다. **1.1.193에서는 승인된 Reader audio rail을 적용하고 native Profile photo input tap bridge의 호출 순서를 보강했다.**
 
 **프로필 사진 crop 검증:** 공개 웹앱에서 아바타 → Choose from Gallery → 사진 업로드 흐름을 재현했다. crop overlay는 앱 shell 전체를 덮는 fixed host로 표시되고, panel은 shell 중앙에 정렬되며, This Week·Recent Badges 등 배경 카드에는 `visibility:hidden`, `opacity:0`, `pointer-events:none`이 적용된다. 수정 후 측정값은 shell/overlay x=400, width=480, y=0, panel x=424, width=432이며, 1.1.191에도 해당 crop host/overlay 보호 로직이 그대로 보존되었다.
 
-**공개 웹 검증:** cache-busting manifest에서 1.1.192, URL `/ota/1.1.192.zip`, SHA-256 `592ad419960a017cd56e4b76420ba56f392be582c983a91abef445e61d3688ea`, size `68,657,382`을 확인했다. 공개 브라우저 runtime은 1.1.192이며, Ranking 유저 모달에서 Block 버튼은 없고 More actions를 펼쳤을 때 Report this member만 표시됐다. Report 클릭 후 확인 대화상자, Continue 후 reason selector와 optional details textarea가 표시되었으며, 사유 미선택 시 Submit report가 비활성화되고 사유 선택 후 활성화되었다. 실제 신고 전송은 QA에서 실행하지 않았다. 기존 Profile crop host/overlay selector, Reader gate X, safeRemoveChild guard, 안정 React 1184 번들은 보존했다.
+**공개 웹 검증:** cache-busting manifest에서 1.1.193, URL `/ota/1.1.193.zip`, SHA-256 `40099108d1ba4c45c6fea5e9fb15c92f23d25860d245a0350d8ec8d533ea6a8d`, size `68,713,710`을 확인했다. 공개 브라우저 runtime은 1.1.193이며, Reader Audio를 실제 클릭해 `HD Playing...` 상태와 slim leather rail을 확인했다. panel은 480×84px, progress는 480×4px, content는 3열 grid였고 Stop은 숨겨졌으며 본문을 가리지 않았다. Ranking Report 안전 흐름과 기존 Profile crop host/overlay selector, Reader gate X, safeRemoveChild guard, 안정 React 1184 번들은 보존했다.
 
-**실기기 상태:** 네이티브 WebView에서 OTA를 실제로 활성화한 뒤의 최종 확인은 사용자의 iPad에서 필요하다. 특히 로그인, Reset Progress, Reader gate X, 밈의 작은 X와 Share·Save, Profile 사진 crop 화면을 직접 눌러야 한다.
+**실기기 상태:** 네이티브 WebView에서 OTA를 실제로 활성화한 뒤의 최종 확인은 사용자의 iPad에서 필요하다. 특히 `Profile → avatar → Take Photo`와 `Choose from Gallery`가 각각 카메라·Photos picker를 표시하는지 직접 눌러야 한다. 브라우저와 native simulation은 통과했지만 실기기 picker 성공을 대신하지 않는다.
 
 **출시 차단 가능성이 높은 남은 문제:** 성경 번역 품질과 Quiz 보상 불일치는 콘텐츠·제품 QA 관점에서 여전히 중요하다. UI 수정만으로 이 두 문제를 해결했다고 간주해서는 안 된다.
 

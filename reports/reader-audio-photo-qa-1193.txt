@@ -1,0 +1,49 @@
+Teenz Bible OTA 1.1.193 Reader Audio / iOS Profile Photo QA
+검증일: 2026-08-22
+
+1. 배포 확인
+- 공개 앱: https://teens-bible-94271.web.app/
+- 공개 manifest: https://teens-bible-94271.web.app/ota/latest.json?final=1193-final
+- version: 1.1.193
+- ZIP: https://teens-bible-94271.web.app/ota/1.1.193.zip
+- SHA-256: 40099108d1ba4c45c6fea5e9fb15c92f23d25860d245a0350d8ec8d533ea6a8d
+- size: 68,713,710 bytes
+- app/index.html은 runtime-fixes-1.1.193.js/.css와 안정 React bundle assets/index-GemFix1184.js를 참조한다.
+
+2. 공개 웹 Reader 검증
+- 공개 `/bible/genesis/1?final=1193-final`에서 실제 Audio 버튼을 눌렀다.
+- `runtime-fixes-1.1.193.js`가 로드되는 것을 확인했다.
+- 오디오 상태가 `HD Playing... (1/2)`로 표시되고 speed 0.75x/1x/1.25x/1.5x와 Auto next chapter가 노출됐다.
+- 패널은 Reader 본문 위를 덮는 overlay가 아니라 normal flow의 relative panel이었다.
+- 측정값: panel 480×84px, progress line 480×4px, content 480×78px.
+- 계산된 panel 배경은 어두운 brown/leather gradient이며, 이전의 큰 회색·반투명 패널이 아니다.
+- content는 `144.375px 194.625px 113px` 3열 grid로 계산됐다.
+- Stop 버튼은 표시되지 않았다.
+- 첫 문단은 패널 아래 별도 위치에 있어 본문을 덮지 않았다.
+- Audio 버튼을 닫는 동작과 하단 Reader toolbar가 별도임을 확인했다.
+
+3. 로컬 네이티브 photo bridge 시뮬레이션
+- 로컬 Profile → avatar → Change Photo sheet를 열었다.
+- 실제 picker는 열지 않도록 `input.click()`만 임시 spy로 대체했다.
+- 임시 `window.Capacitor.isNativePlatform() === true` 환경에서 다음을 확인했다.
+  - Take Photo 버튼: `data-tb-native-photo-input-bound="true"`, Profile.tsx:1101 input 호출, `capture="environment"`, display:block.
+  - Choose from Gallery 버튼: `data-tb-native-photo-input-bound="true"`, Profile.tsx:1120 input 호출, capture 없음, display:block.
+- spy 복구 및 임시 Capacitor 객체 복구를 완료했다.
+- 최종 source에서는 option class 지정 후 bridge를 설치하고, sheet가 열린 경우에도 userInitiated timing에 의존하지 않도록 순서를 보강했다.
+
+4. 브라우저에서 확인할 수 없는 항목
+- 위 시뮬레이션은 실제 iPad 카메라 권한 대화상자나 Photos picker를 열지 않았다.
+- 따라서 iPad에서 OTA를 활성화한 뒤 실제 `Take Photo`와 `Choose from Gallery`를 각각 눌러 picker가 나타나는지 반드시 확인해야 한다.
+- iPad에서 계속 작동하지 않으면 OTA-only 수정의 한계로 보고 Capacitor Camera/photo picker plugin 설치·등록을 조사하고 Build 7 이상 native archive를 검토한다.
+
+5. 안전성
+- node --check 통과.
+- OTA builder assertions 통과.
+- unzip -t 통과.
+- Loading DOM guard 금지 문자열을 재추가하지 않았다.
+- 안정 React 1184 bundle과 safeRemoveChild guard를 유지했다.
+- 실제 사진 선택·업로드와 실제 신고 전송은 QA에서 실행하지 않았다.
+
+판정: Reader audio redesign은 공개 웹에서 확인 가능한 범위까지 배포·검증 완료. Profile 사진 기능은 브라우저 및 native-platform simulation까지 통과했으며, 실제 iPad picker presentation은 사용자 실기기 확인이 남아 있다.
+
+참고: 1.1.193 activation은 iOS 앱을 완전히 종료한 뒤 다시 열고 약 30초 기다린 다음 다시 완전히 종료·재실행해야 한다.
