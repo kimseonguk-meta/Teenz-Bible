@@ -5,7 +5,10 @@ const config: CapacitorConfig = {
   appName: 'Teenz Bible',
   webDir: 'dist/public',
   server: {
-    // For native, we bundle everything. No remote URL.
+    // Load the live PWA so the App Store build always shows the latest web code.
+    // After this one build, PWA deploys reflect in the iOS app with no new binary.
+    url: 'https://teens-bible-94271.web.app',
+    cleartext: false,
     androidScheme: 'https',
     iosScheme: 'https',
   },
