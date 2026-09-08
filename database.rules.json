@@ -81,6 +81,42 @@
       ".read": "auth != null",
       ".write": "auth != null"
     },
+    "rankSnapshots": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "reports": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": [
+        "date",
+        "book",
+        "status"
+      ]
+    },
+    "flaggedChapters": {
+      ".read": true,
+      ".write": true
+    },
+    "notifications": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": [
+        "date"
+      ]
+    },
+    "adminTokens": {
+      ".read": true,
+      ".write": true
+    },
+    "memeReactions": {
+      ".read": true,
+      ".write": true
+    },
+    "memeSubmissions": {
+      ".read": true,
+      ".write": true
+    },
     "userData": {
       ".read": "auth != null",
       ".write": "auth != null"
