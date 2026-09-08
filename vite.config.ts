@@ -1,0 +1,369 @@
+import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import fs from "node:fs";
+import path from "node:path";
+import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import { VitePWA } from "vite-plugin-pwa";
+
+// =============================================================================
+// Manus Debug Collector - Vite Plugin
+// Writes browser logs directly to files, trimmed when exceeding size limit
+// =============================================================================
+
+const PROJECT_ROOT = import.meta.dirname;
+const LOG_DIR = path.join(PROJECT_ROOT, ".manus-logs");
+const MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024; // 1MB per log file
+const TRIM_TARGET_BYTES = Math.floor(MAX_LOG_SIZE_BYTES * 0.6); // Trim to 60% to avoid constant re-trimming
+
+type LogSource = "browserConsole" | "networkRequests" | "sessionReplay";
+
+function ensureLogDir() {
+  if (!fs.existsSync(LOG_DIR)) {
+    fs.mkdirSync(LOG_DIR, { recursive: true });
+  }
+}
+
+function trimLogFile(logPath: string, maxSize: number) {
+  try {
+    if (!fs.existsSync(logPath) || fs.statSync(logPath).size <= maxSize) {
+      return;
+    }
+
+    const lines = fs.readFileSync(logPath, "utf-8").split("\n");
+    const keptLines: string[] = [];
+    let keptBytes = 0;
+
+    // Keep newest lines (from end) that fit within 60% of maxSize
+    const targetSize = TRIM_TARGET_BYTES;
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const lineBytes = Buffer.byteLength(`${lines[i]}\n`, "utf-8");
+      if (keptBytes + lineBytes > targetSize) break;
+      keptLines.unshift(lines[i]);
+      keptBytes += lineBytes;
+    }
+
+    fs.writeFileSync(logPath, keptLines.join("\n"), "utf-8");
+  } catch {
+    /* ignore trim errors */
+  }
+}
+
+function writeToLogFile(source: LogSource, entries: unknown[]) {
+  if (entries.length === 0) return;
+
+  ensureLogDir();
+  const logPath = path.join(LOG_DIR, `${source}.log`);
+
+  // Format entries with timestamps
+  const lines = entries.map((entry) => {
+    const ts = new Date().toISOString();
+    return `[${ts}] ${JSON.stringify(entry)}`;
+  });
+
+  // Append to log file
+  fs.appendFileSync(logPath, `${lines.join("\n")}\n`, "utf-8");
+
+  // Trim if exceeds max size
+  trimLogFile(logPath, MAX_LOG_SIZE_BYTES);
+}
+
+/**
+ * Vite plugin to collect browser debug logs
+ * - POST /__manus__/logs: Browser sends logs, written directly to files
+ * - Files: browserConsole.log, networkRequests.log, sessionReplay.log
+ * - Auto-trimmed when exceeding 1MB (keeps newest entries)
+ */
+function vitePluginManusDebugCollector(): Plugin {
+  return {
+    name: "manus-debug-collector",
+
+    transformIndexHtml(html) {
+      if (process.env.NODE_ENV === "production") {
+        return html;
+      }
+      return {
+        html,
+        tags: [
+          {
+            tag: "script",
+            attrs: {
+              src: "/__manus__/debug-collector.js",
+              defer: true,
+            },
+            injectTo: "head",
+          },
+        ],
+      };
+    },
+
+    configureServer(server: ViteDevServer) {
+      // POST /__manus__/logs: Browser sends logs (written directly to files)
+      server.middlewares.use("/__manus__/logs", (req, res, next) => {
+        if (req.method !== "POST") {
+          return next();
+        }
+
+        const handlePayload = (payload: any) => {
+          // Write logs directly to files
+          if (payload.consoleLogs?.length > 0) {
+            writeToLogFile("browserConsole", payload.consoleLogs);
+          }
+          if (payload.networkRequests?.length > 0) {
+            writeToLogFile("networkRequests", payload.networkRequests);
+          }
+          if (payload.sessionEvents?.length > 0) {
+            writeToLogFile("sessionReplay", payload.sessionEvents);
+          }
+
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: true }));
+        };
+
+        const reqBody = (req as { body?: unknown }).body;
+        if (reqBody && typeof reqBody === "object") {
+          try {
+            handlePayload(reqBody);
+          } catch (e) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, error: String(e) }));
+          }
+          return;
+        }
+
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+
+        req.on("end", () => {
+          try {
+            const payload = JSON.parse(body);
+            handlePayload(payload);
+          } catch (e) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, error: String(e) }));
+          }
+        });
+      });
+    },
+  };
+}
+
+function vitePluginBibleAIProxy(): Plugin {
+  return {
+    name: "bible-ai-proxy",
+    configureServer(server: ViteDevServer) {
+      // Parse JSON body for POST requests to /api/bible-ai
+      server.middlewares.use("/api/bible-ai", async (req, res) => {
+        if (req.method !== "POST") {
+          res.writeHead(405, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Method not allowed" }));
+          return;
+        }
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+          res.writeHead(500, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Gemini API key not configured" }));
+          return;
+        }
+        // Read request body
+        let body = "";
+        req.on("data", (chunk: Buffer) => { body += chunk.toString(); });
+        req.on("end", async () => {
+          try {
+            const { messages, systemPrompt } = JSON.parse(body);
+            const models = ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+            let data: any = null;
+            let lastError = "";
+            for (const model of models) {
+              try {
+                const isThinkingModel = model.includes("2.5");
+                const reqBody = JSON.stringify({
+                  system_instruction: { parts: [{ text: systemPrompt }] },
+                  contents: messages,
+                  generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 8192,
+                    ...(isThinkingModel ? { thinkingConfig: { thinkingBudget: 1024 } } : {}),
+                  },
+                  safetySettings: [
+                    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+                    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+                  ],
+                });
+                const resp = await fetch(
+                  `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+                  { method: "POST", headers: { "Content-Type": "application/json" }, body: reqBody }
+                );
+                data = await resp.json();
+                if (data.candidates?.[0]?.content?.parts?.[0]?.text) break;
+                lastError = data.error ? data.error.message : "No valid response";
+              } catch (e: any) {
+                lastError = e.message;
+              }
+            }
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ data, error: data?.candidates?.[0]?.content?.parts?.[0]?.text ? null : lastError }));
+          } catch (e: any) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: e.message }));
+          }
+        });
+      });
+    },
+  };
+}
+
+function vitePluginStorageProxy(): Plugin {
+  return {
+    name: "manus-storage-proxy",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use("/manus-storage", async (req, res) => {
+        const key = req.url?.replace(/^\//, "");
+        if (!key) {
+          res.writeHead(400, { "Content-Type": "text/plain" });
+          res.end("Missing storage key");
+          return;
+        }
+        const forgeBaseUrl = (process.env.BUILT_IN_FORGE_API_URL || "").replace(/\/+$/, "");
+        const forgeKey = process.env.BUILT_IN_FORGE_API_KEY;
+        if (!forgeBaseUrl || !forgeKey) {
+          res.writeHead(500, { "Content-Type": "text/plain" });
+          res.end("Storage proxy not configured");
+          return;
+        }
+        try {
+          const forgeUrl = new URL("v1/storage/presign/get", forgeBaseUrl + "/");
+          forgeUrl.searchParams.set("path", key);
+          const forgeResp = await fetch(forgeUrl, {
+            headers: { Authorization: `Bearer ${forgeKey}` },
+          });
+          if (!forgeResp.ok) {
+            res.writeHead(502, { "Content-Type": "text/plain" });
+            res.end("Storage backend error");
+            return;
+          }
+          const { url } = (await forgeResp.json()) as { url: string };
+          if (!url) {
+            res.writeHead(502, { "Content-Type": "text/plain" });
+            res.end("Empty signed URL");
+            return;
+          }
+          res.writeHead(307, { Location: url, "Cache-Control": "no-store" });
+          res.end();
+        } catch {
+          res.writeHead(502, { "Content-Type": "text/plain" });
+          res.end("Storage proxy error");
+        }
+      });
+    },
+  };
+}
+
+const isProdBuild = process.env.NODE_ENV === "production";
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  // Dev-only tooling – must not leak into prod build (was causing 366KB index.html bloat)
+  ...(isProdBuild ? [] : [vitePluginManusRuntime(), vitePluginManusDebugCollector()]),
+  vitePluginBibleAIProxy(),
+  vitePluginStorageProxy(),
+  VitePWA({
+    // autoUpdate: silently install new versions in the background so stale
+    // clients (e.g. carrying the Sept 2026 download-loop bug) pick up fixes
+    // on next launch without needing to tap an update banner.
+    registerType: "autoUpdate",
+    // Use existing public/manifest.json (keep it as source of truth)
+    manifest: false,
+    includeAssets: ["icons/*.png", "icons/*.ico", "images/*", "art-assets/*"],
+    workbox: {
+      // SPA fallback for Firebase Hosting rewrites
+      navigateFallback: "/index.html",
+      // Don't precache the huge Bible chunk (10MB) – load it on demand
+      globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+      globIgnores: ["**/Bible-*.js", "**/__manus__/**", "**/debug-collector.js"],
+      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "google-fonts",
+            expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+          },
+        },
+        {
+          urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "gstatic-fonts",
+            expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
+          },
+        },
+        {
+          // Bible huge chunk – cache on first use, not precache
+          urlPattern: ({ request }) =>
+            request.destination === "script" && request.url.includes("Bible"),
+          handler: "CacheFirst",
+          options: {
+            cacheName: "bible-chunks",
+            expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 * 7 },
+          },
+        },
+        {
+          // Images / mem asset CDN
+          urlPattern: /^https:\/\/d2xsxph8kpxj0f\.cloudfront\.net\/.*/i,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "cdn-images",
+            expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
+          },
+        },
+      ],
+    },
+    devOptions: {
+      enabled: false,
+    },
+  }),
+];
+
+export default defineConfig({
+  plugins,
+  define: {},
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    },
+  },
+  envDir: path.resolve(import.meta.dirname),
+  root: path.resolve(import.meta.dirname, "client"),
+  build: {
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    emptyOutDir: true,
+  },
+  server: {
+    port: 3000,
+    strictPort: false, // Will find next available port if 3000 is busy
+    host: true,
+    allowedHosts: [
+      ".manuspre.computer",
+      ".manus.computer",
+      ".manus-asia.computer",
+      ".manuscomputer.ai",
+      ".manusvm.computer",
+      "localhost",
+      "127.0.0.1",
+    ],
+    fs: {
+      strict: true,
+      deny: ["**/.*"],
+    },
+  },
+});

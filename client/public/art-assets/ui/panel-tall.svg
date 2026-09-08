@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 240" preserveAspectRatio="none">
+
+<defs>
+  <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff9c6"/>
+    <stop offset=".18" stop-color="#ffd95d"/>
+    <stop offset=".45" stop-color="#c97a10"/>
+    <stop offset=".7" stop-color="#6a3505"/>
+    <stop offset="1" stop-color="#f5b52a"/>
+  </linearGradient>
+  <linearGradient id="gold2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fff2a0"/>
+    <stop offset=".42" stop-color="#c8790d"/>
+    <stop offset="1" stop-color="#2b1705"/>
+  </linearGradient>
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#30333b"/>
+    <stop offset=".46" stop-color="#171920"/>
+    <stop offset="1" stop-color="#090a0f"/>
+  </linearGradient>
+  <linearGradient id="purple" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d293ff"/>
+    <stop offset=".48" stop-color="#7a2bd1"/>
+    <stop offset="1" stop-color="#32105d"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+    <feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#000" flood-opacity=".7"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ffcf45" flood-opacity=".25"/>
+  </filter>
+  <filter id="innerNoise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" seed="7" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.9 0 0 0 0 0.75 0 0 0 0 0.45 0 0 0 .08 0"/>
+    <feBlend mode="overlay" in2="SourceGraphic"/>
+  </filter>
+</defs>
+
+<rect x="14" y="12" width="152" height="216" rx="18" fill="url(#dark)" stroke="#6b3a08" stroke-width="7" filter="url(#shadow)"/>
+<rect x="25" y="25" width="130" height="190" rx="12" fill="none" stroke="#e8bd55" stroke-width="3" opacity=".65"/>
+<path d="M14 46l34-34h35L46 48v36H14zM166 46l-34-34H97l37 36v36h32zM14 194l34 34h35l-37-36v-36H14zM166 194l-34 34H97l37-36v-36h32z" fill="url(#gold)" stroke="#2d1703" stroke-width="4"/>
+</svg>

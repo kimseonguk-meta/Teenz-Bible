@@ -1,0 +1,744 @@
+/**
+ * Firebase Data Sync Module
+ * 
+ * Syncs all localStorage data to Firebase Realtime DB so that:
+ * 1. Data persists across devices
+ * 2. Data survives browser cache clears
+ * 3. Leaderboard always has up-to-date stats
+ * 
+ * Data synced:
+ * - Profile (nickname, avatar, groupCode, joinedAt)
+ * - XP & Gems
+ * - Chapters read (per book)
+ * - Quiz scores
+ * - Watched videos
+ * - Store inventory & equipped items
+ * - Settings (font size, language)
+ * - Meme reactions
+ */
+
+import { db, ref, get, set, update, remove, serverTimestamp, auth, deleteUser } from "./firebase";
+import { safeParseJSON } from "./safeStorage";
+
+// ─── Types ──────────────────────────────────────────────────────
+interface UserDataSnapshot {
+  // Profile
+  profile: {
+    nickname: string;
+    avatar: string;
+    groupCode: string;
+    joinedAt: number;
+    isNasumMember: boolean;
+  };
+  // Stats
+  stats: {
+    totalXP: number;
+    gems: number;
+    quizTotal: number;
+    quizCorrect: number;
+  };
+  // Reading progress
+  chaptersRead: Record<string, number[]>; // { "Matthew": [1,2,3], "Genesis": [1] }
+  watchedVideos: string[];
+  lastRead: {
+    book: string;
+    chapter: number;
+    chapterIdx: number;
+  } | null;
+  // Store
+  inventory: {
+    ownedItems: string[];
+  };
+  equipped: {
+    theme: string;
+    readerBg: string;
+    frame: string;
+    pet: string | null;
+  };
+  // Settings
+  settings: {
+    readerFontSize: string;
+    readerLang: string;
+    bibleTestament: string;
+  };
+  // Meme reactions
+  memeReactions: Record<string, string>;
+  // Daily streak
+  dailyStreak?: {
+    currentStreak: number;
+    lastClaimDate: string;
+    totalDaysClaimed: number;
+    longestStreak: number;
+  };
+  // Metadata
+  lastSyncedAt: number;
+  version: number;
+}
+
+const SYNC_VERSION = 1;
+
+// ─── Collect all localStorage data into a snapshot ──────────────
+function collectLocalData(): UserDataSnapshot {
+  // Profile
+  let profile = { nickname: "Anonymous", avatar: "😎", groupCode: "GLOBAL", joinedAt: Date.now(), isNasumMember: false };
+  const pRaw = safeParseJSON<any>("teensBibleProfile", {});
+  if (pRaw && Object.keys(pRaw).length > 0) {
+    profile = { ...profile, ...pRaw };
+  }
+
+  // teensBible object (gems, quiz)
+  const teensBible = safeParseJSON<any>("teensBible", {});
+
+  // Stats
+  const stats = {
+    totalXP: parseInt(localStorage.getItem("totalXP") || "0") || 0,
+    gems: teensBible.gems || 0,
+    quizTotal: teensBible.quizTotal || 0,
+    quizCorrect: teensBible.quizCorrect || 0,
+  };
+
+  // Chapters read (dynamic keys: chaptersRead_BookName)
+  const chaptersRead: Record<string, number[]> = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key?.startsWith("chaptersRead_")) {
+      const bookName = key.replace("chaptersRead_", "");
+      chaptersRead[bookName] = safeParseJSON<number[]>(key, []);
+    }
+  }
+
+  // Watched videos
+  const watchedVideos = safeParseJSON<string[]>("watchedVideos", []);
+
+  // Last read position
+  let lastRead: UserDataSnapshot["lastRead"] = null;
+  const lastReadBook = localStorage.getItem("lastReadBook");
+  if (lastReadBook) {
+    lastRead = {
+      book: lastReadBook,
+      chapter: parseInt(localStorage.getItem("lastReadChapter") || "1") || 1,
+      chapterIdx: parseInt(localStorage.getItem("lastReadChapterIdx") || "0") || 0,
+    };
+  }
+
+  // Store inventory
+  const inventory = safeParseJSON<{ ownedItems: string[] }>("teensBibleInventory", { ownedItems: ["theme_twilight", "reader_dark", "frame_none"] });
+
+  // Equipped items
+  const equipped = safeParseJSON<{ theme: string; readerBg: string; frame: string; pet: string | null }>("teensBibleEquipped", { theme: "theme_twilight", readerBg: "reader_dark", frame: "frame_none", pet: null as string | null });
+
+  // Settings
+  const settings = {
+    readerFontSize: localStorage.getItem("readerFontSize") || "16",
+    readerLang: localStorage.getItem("readerLang") || "en",
+    bibleTestament: localStorage.getItem("bibleTestament") || "ot",
+  };
+
+  // Meme reactions
+  const memeReactions: Record<string, string> = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key?.startsWith("memeUserReaction_")) {
+      const memeId = key.replace("memeUserReaction_", "");
+      memeReactions[memeId] = localStorage.getItem(key) || "";
+    }
+  }
+
+  // Daily streak
+  const dailyStreak = safeParseJSON<{ currentStreak: number; lastClaimDate: string; totalDaysClaimed: number; longestStreak: number }>("teensBibleDailyStreak", { currentStreak: 0, lastClaimDate: "", totalDaysClaimed: 0, longestStreak: 0 });
+
+  return {
+    profile,
+    stats,
+    chaptersRead,
+    watchedVideos,
+    lastRead,
+    inventory,
+    equipped,
+    settings,
+    memeReactions,
+    dailyStreak,
+    lastSyncedAt: Date.now(),
+    version: SYNC_VERSION,
+  };
+}
+
+// ─── Apply snapshot data to localStorage ────────────────────────
+function applyDataToLocal(data: UserDataSnapshot) {
+  // Profile
+  if (data.profile) {
+    localStorage.setItem("teensBibleProfile", JSON.stringify(data.profile));
+    localStorage.setItem("playerName", data.profile.nickname);
+    localStorage.setItem("className", data.profile.groupCode);
+  }
+
+  // Stats
+  if (data.stats) {
+    localStorage.setItem("totalXP", String(data.stats.totalXP));
+    // Update teensBible object
+    const teensBible = safeParseJSON<any>("teensBible", {});
+    teensBible.gems = data.stats.gems;
+    teensBible.quizTotal = data.stats.quizTotal;
+    teensBible.quizCorrect = data.stats.quizCorrect;
+    localStorage.setItem("teensBible", JSON.stringify(teensBible));
+  }
+
+  // Chapters read
+  if (data.chaptersRead) {
+    Object.entries(data.chaptersRead).forEach(([book, chapters]) => {
+      localStorage.setItem(`chaptersRead_${book}`, JSON.stringify(chapters));
+    });
+  }
+
+  // Watched videos
+  if (data.watchedVideos) {
+    localStorage.setItem("watchedVideos", JSON.stringify(data.watchedVideos));
+  }
+
+  // Last read
+  if (data.lastRead) {
+    localStorage.setItem("lastReadBook", data.lastRead.book);
+    localStorage.setItem("lastReadChapter", String(data.lastRead.chapter));
+    localStorage.setItem("lastReadChapterIdx", String(data.lastRead.chapterIdx));
+  }
+
+  // Inventory
+  if (data.inventory) {
+    localStorage.setItem("teensBibleInventory", JSON.stringify(data.inventory));
+  }
+
+  // Equipped
+  if (data.equipped) {
+    localStorage.setItem("teensBibleEquipped", JSON.stringify(data.equipped));
+    if (data.equipped.theme) {
+      localStorage.setItem("teensBibleActiveTheme", data.equipped.theme);
+    }
+  }
+
+  // Settings
+  if (data.settings) {
+    // Convert legacy CSS class values ("text-lg") to numeric px values
+    const syncedFontSize = data.settings.readerFontSize;
+    const numericFontSize = isNaN(parseInt(syncedFontSize)) ? "16" : String(parseInt(syncedFontSize));
+    localStorage.setItem("readerFontSize", numericFontSize);
+    localStorage.setItem("readerLang", data.settings.readerLang);
+    localStorage.setItem("bibleTestament", data.settings.bibleTestament);
+  }
+
+  // Meme reactions
+  if (data.memeReactions) {
+    Object.entries(data.memeReactions).forEach(([memeId, reaction]) => {
+      localStorage.setItem(`memeUserReaction_${memeId}`, reaction);
+    });
+  }
+
+  // Daily streak
+  if (data.dailyStreak) {
+    localStorage.setItem("teensBibleDailyStreak", JSON.stringify(data.dailyStreak));
+    // Also update teensBible.streak for leaderboard
+    const teensBible = safeParseJSON<any>("teensBible", {});
+    teensBible.streak = data.dailyStreak.currentStreak;
+    localStorage.setItem("teensBible", JSON.stringify(teensBible));
+  }
+}
+
+// ─── Upload: Push localStorage → Firebase ───────────────────────
+export async function syncToFirebase(): Promise<boolean> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) {
+    console.log("[Sync] No authenticated user, skipping upload");
+    return false;
+  }
+
+  const data = collectLocalData();
+
+  // 🛡️ Corruption guard: if local looks empty but remote has real data, don't overwrite
+  try {
+    const remoteSnap = await get(ref(db, `userData/${uid}`));
+    const remote = remoteSnap.val();
+    if (remote) {
+      const localEmpty = (data.stats.totalXP === 0 && Object.keys(data.chaptersRead).length === 0 && (data.profile.nickname === "Anonymous" || !data.profile.nickname));
+      const remoteHasData = (remote.stats?.totalXP > 0 || Object.keys(remote.chaptersRead || {}).length > 0 || remote.profile?.nickname && remote.profile.nickname !== "Anonymous");
+      if (localEmpty && remoteHasData) {
+        console.warn("[Sync] Local appears empty/corrupted while remote has data – aborting upload to protect remote");
+        return false;
+      }
+    }
+  } catch {}
+
+  try {
+    // Save full user data snapshot
+    await set(ref(db, `userData/${uid}`), data);
+
+    // Also update the leaderboard-facing data (groups + users nodes)
+    const groupCode = data.profile.groupCode || "GLOBAL";
+    const leaderboardData: Record<string, any> = {
+      nickname: data.profile.nickname,
+      avatar: data.profile.avatar,
+      groupCode,
+      xp: data.stats.totalXP,
+      streak: data.dailyStreak?.currentStreak || 0,
+      chaptersRead: Object.values(data.chaptersRead).reduce((sum, arr) => sum + arr.length, 0),
+      quizTotal: data.stats.quizTotal,
+      quizCorrect: data.stats.quizCorrect,
+      joinedAt: data.profile.joinedAt,
+      isNasumMember: data.profile.isNasumMember,
+      lastActive: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    // Include profile photo URL if available locally
+    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto") || null;
+    if (profilePhotoUrl) {
+      leaderboardData.profilePhotoUrl = profilePhotoUrl;
+    } else {
+      // Preserve existing photo from DB
+      try {
+        const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+        const existingUrl = existingSnapshot.val();
+        if (existingUrl) {
+          leaderboardData.profilePhotoUrl = existingUrl;
+          localStorage.setItem("profilePhotoUrl", existingUrl);
+        }
+      } catch {}
+    }
+
+    // Include equipped frame if available
+    try {
+      const equipped = safeParseJSON<any>("teensBibleEquipped", {});
+      if (equipped.frame) {
+        leaderboardData.equippedFrame = equipped.frame;
+      }
+    } catch {}
+
+    await update(ref(db, `users/${uid}`), leaderboardData);
+    await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
+
+    // Also sync to all other groups the user belongs to
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          const groupData = { ...leaderboardData, groupCode: g.groupCode };
+          await update(ref(db, `groups/${g.groupCode}/members/${uid}`), groupData);
+        }
+      }
+    } catch (e) {
+      // Groups module not yet loaded or no groups — skip
+    }
+
+    console.log("[Sync] \u2705 Data uploaded to Firebase");
+    return true;
+  } catch (err) {
+    console.error("[Sync] \u274c Upload failed:", err);
+    return false;
+  }
+}
+
+// \u2500\u2500\u2500 Download: Pull Firebase \u2192 localStorage───────────────
+export async function syncFromFirebase(): Promise<boolean> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) {
+    console.log("[Sync] No authenticated user, skipping download");
+    return false;
+  }
+
+  try {
+    const snapshot = await get(ref(db, `userData/${uid}`));
+    const remoteData = snapshot.val() as UserDataSnapshot | null;
+
+    if (!remoteData) {
+      console.log("[Sync] No remote data found, this is a fresh user");
+      return false;
+    }
+
+    // Compare timestamps: only apply remote data if it's newer
+    const localSyncTime = parseInt(localStorage.getItem("lastSyncedAt") || "0");
+    const remoteSyncTime = remoteData.lastSyncedAt || 0;
+
+    if (remoteSyncTime > localSyncTime) {
+      console.log("[Sync] Remote data is newer, applying to local...");
+      applyDataToLocal(remoteData);
+      localStorage.setItem("lastSyncedAt", String(remoteSyncTime));
+      
+      // Restore profile photo from Firebase
+      await restoreProfilePhotoFromFirebase(uid);
+      
+      return true; // Data was restored
+    } else {
+      // Even if local is newer, merge critical data from remote
+      // This ensures admin-granted items and gems are always picked up
+      let anyMerged = false;
+
+      // Merge inventory items
+      if (remoteData.inventory?.ownedItems) {
+        try {
+          const localInv = safeParseJSON<{ ownedItems: string[] }>("teensBibleInventory", { ownedItems: ["theme_twilight", "reader_dark", "frame_none"] });
+          const localOwned = new Set(localInv.ownedItems || []);
+          const remoteOwned = remoteData.inventory.ownedItems || [];
+          for (const item of remoteOwned) {
+            if (!localOwned.has(item)) {
+              localInv.ownedItems.push(item);
+              anyMerged = true;
+              console.log(`[Sync] Merged missing item from remote: ${item}`);
+            }
+          }
+          if (anyMerged) {
+            localStorage.setItem("teensBibleInventory", JSON.stringify(localInv));
+          }
+        } catch {}
+      }
+
+      // Merge gems: always take the higher value (admin grants increase remote)
+      if (remoteData.stats?.gems !== undefined) {
+        try {
+          const localData = safeParseJSON<any>("teensBible", {});
+          const localGems = localData.gems || 0;
+          const remoteGems = remoteData.stats.gems || 0;
+          if (remoteGems > localGems) {
+            localData.gems = remoteGems;
+            localStorage.setItem("teensBible", JSON.stringify(localData));
+            anyMerged = true;
+            console.log(`[Sync] Merged gems from remote: ${localGems} → ${remoteGems}`);
+            // Dispatch event so UI updates
+            window.dispatchEvent(new CustomEvent("gems-changed", { detail: remoteGems }));
+          }
+        } catch {}
+      }
+
+      // Merge equipped state from remote (in case admin changed it)
+      if (remoteData.equipped) {
+        try {
+          const localEq = safeParseJSON<{ theme: string; readerBg: string; frame: string; pet: string | null }>("teensBibleEquipped", { theme: "theme_twilight", readerBg: "reader_dark", frame: "frame_none", pet: null });
+          // Only apply remote equipped if it references items the user owns
+          const localInv = safeParseJSON<{ ownedItems: string[] }>("teensBibleInventory", { ownedItems: [] });
+          const owned = new Set(localInv.ownedItems || []);
+          let eqChanged = false;
+          if (remoteData.equipped.readerBg && remoteData.equipped.readerBg !== localEq.readerBg && owned.has(remoteData.equipped.readerBg)) {
+            localEq.readerBg = remoteData.equipped.readerBg;
+            eqChanged = true;
+          }
+          if (remoteData.equipped.theme && remoteData.equipped.theme !== localEq.theme && owned.has(remoteData.equipped.theme)) {
+            localEq.theme = remoteData.equipped.theme;
+            eqChanged = true;
+          }
+          if (remoteData.equipped.frame && remoteData.equipped.frame !== localEq.frame && owned.has(remoteData.equipped.frame)) {
+            localEq.frame = remoteData.equipped.frame;
+            eqChanged = true;
+          }
+          if (remoteData.equipped.pet !== undefined && remoteData.equipped.pet !== localEq.pet) {
+            if (remoteData.equipped.pet === null || owned.has(remoteData.equipped.pet)) {
+              localEq.pet = remoteData.equipped.pet;
+              eqChanged = true;
+            }
+          }
+          if (eqChanged) {
+            localStorage.setItem("teensBibleEquipped", JSON.stringify(localEq));
+            anyMerged = true;
+            console.log(`[Sync] Merged equipped state from remote`);
+            window.dispatchEvent(new CustomEvent("equipped-changed", { detail: localEq }));
+          }
+        } catch {}
+      }
+
+      if (anyMerged) {
+        console.log("[Sync] Merged remote data into local (local was newer)");
+      } else {
+        console.log("[Sync] Local data is newer or same, no merge needed");
+      }
+      return false;
+    }
+  } catch (err) {
+    console.error("[Sync] ❌ Download failed:", err);
+    return false;
+  }
+}
+
+// ─── Restore profile photo from Firebase Realtime DB ──────────────────
+async function restoreProfilePhotoFromFirebase(uid: string): Promise<void> {
+  try {
+    // Check if there's a profilePhotoUrl in the DB (base64 or URL)
+    const userSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+    const photoData = userSnapshot.val();
+    
+    if (photoData && typeof photoData === "string") {
+      // Restore to localStorage
+      localStorage.setItem("profilePhotoUrl", photoData);
+      console.log("[Sync] ✅ Profile photo restored from Firebase DB");
+      window.dispatchEvent(new CustomEvent("profile-photo-changed"));
+    }
+  } catch (err: any) {
+    console.log("[Sync] No profile photo to restore");
+  }
+}
+
+// ─── Full sync: Download first, then upload ─────────────────────
+export async function fullSync(): Promise<{ restored: boolean }> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) return { restored: false };
+
+  // Step 1: Check if remote has newer data (e.g., user cleared browser or switched device)
+  const restored = await syncFromFirebase();
+
+  // Step 2: Upload current state, but use smart merge to not overwrite admin-granted data
+  await smartSyncToFirebase();
+
+  return { restored };
+}
+
+// Smart sync: reads remote first, merges admin-granted values, then uploads
+async function smartSyncToFirebase(): Promise<boolean> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) return false;
+
+  try {
+    // Read current remote state
+    const snapshot = await get(ref(db, `userData/${uid}`));
+    const remoteData = snapshot.val() as UserDataSnapshot | null;
+    
+    const localData = collectLocalData();
+
+    // 🛡️ Corruption guard: if local looks empty but remote has real data, abort upload and restore instead
+    if (remoteData) {
+      const localEmpty = (localData.stats.totalXP === 0 && Object.keys(localData.chaptersRead).length === 0 && (localData.profile.nickname === "Anonymous" || !localData.profile.nickname));
+      const remoteHasData = (remoteData.stats?.totalXP > 0 || Object.keys(remoteData.chaptersRead || {}).length > 0 || remoteData.profile?.nickname && remoteData.profile.nickname !== "Anonymous");
+      if (localEmpty && remoteHasData) {
+        console.warn("[Sync] Smart sync: local empty/corrupted while remote has data – restoring remote instead of overwriting");
+        applyDataToLocal(remoteData);
+        localStorage.setItem("lastSyncedAt", String(remoteData.lastSyncedAt || Date.now()));
+        await restoreProfilePhotoFromFirebase(uid);
+        return true;
+      }
+    }
+
+    // If remote has higher gems (admin grant), preserve the higher value
+    if (remoteData?.stats?.gems !== undefined) {
+      const remoteGems = remoteData.stats.gems || 0;
+      if (remoteGems > localData.stats.gems) {
+        localData.stats.gems = remoteGems;
+        // Also update localStorage so UI stays in sync
+        const teensBible = safeParseJSON<any>("teensBible", {});
+        teensBible.gems = remoteGems;
+        localStorage.setItem("teensBible", JSON.stringify(teensBible));
+        console.log(`[Sync] Preserved higher remote gems: ${remoteGems}`);
+        // Notify UI
+        window.dispatchEvent(new CustomEvent("gems-changed", { detail: remoteGems }));
+      }
+    }
+
+    // If remote has inventory items we don't have, merge them
+    if (remoteData?.inventory?.ownedItems) {
+      const localOwned = new Set(localData.inventory.ownedItems);
+      for (const item of remoteData.inventory.ownedItems) {
+        if (!localOwned.has(item)) {
+          localData.inventory.ownedItems.push(item);
+          console.log(`[Sync] Preserved remote inventory item: ${item}`);
+        }
+      }
+    }
+
+    // Now upload the merged data
+    await set(ref(db, `userData/${uid}`), localData);
+
+    // Also update leaderboard-facing data
+    const groupCode = localData.profile.groupCode || "GLOBAL";
+    const leaderboardData: Record<string, any> = {
+      nickname: localData.profile.nickname,
+      avatar: localData.profile.avatar,
+      groupCode,
+      xp: localData.stats.totalXP,
+      streak: localData.dailyStreak?.currentStreak || 0,
+      chaptersRead: Object.values(localData.chaptersRead).reduce((sum, arr) => sum + arr.length, 0),
+      quizTotal: localData.stats.quizTotal,
+      quizCorrect: localData.stats.quizCorrect,
+      joinedAt: localData.profile.joinedAt,
+      isNasumMember: localData.profile.isNasumMember,
+      lastActive: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    // Include profile photo URL if available locally
+    const profilePhotoUrl = localStorage.getItem("profilePhotoUrl") || localStorage.getItem("profilePhoto") || null;
+    if (profilePhotoUrl) {
+      leaderboardData.profilePhotoUrl = profilePhotoUrl;
+    } else {
+      // Preserve existing photo from DB
+      try {
+        const existingSnapshot = await get(ref(db, `users/${uid}/profilePhotoUrl`));
+        const existingUrl = existingSnapshot.val();
+        if (existingUrl) {
+          leaderboardData.profilePhotoUrl = existingUrl;
+          localStorage.setItem("profilePhotoUrl", existingUrl);
+        }
+      } catch {}
+    }
+
+    // Include equipped frame if available
+    try {
+      const equipped = safeParseJSON<any>("teensBibleEquipped", {});
+      if (equipped.frame) {
+        leaderboardData.equippedFrame = equipped.frame;
+      }
+    } catch {}
+
+    await update(ref(db, `users/${uid}`), leaderboardData);
+    await update(ref(db, `groups/${groupCode}/members/${uid}`), leaderboardData);
+
+    // Also sync to all other groups the user belongs to
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          const groupData = { ...leaderboardData, groupCode: g.groupCode };
+          await update(ref(db, `groups/${g.groupCode}/members/${uid}`), groupData);
+        }
+      }
+    } catch (e) {
+      // Groups module not yet loaded or no groups — skip
+    }
+
+    console.log("[Sync] \u2705 Smart sync uploaded to Firebase");   return true;
+  } catch (err) {
+    console.error("[Sync] ❌ Smart sync failed, falling back to regular sync:", err);
+    return syncToFirebase();
+  }
+}
+
+// ─── Delete all user data from Firebase (Account Deletion) ──────
+export async function deleteAllUserData(): Promise<boolean> {
+  const user = auth.currentUser;
+  if (!user) {
+    console.log("[Delete] No authenticated user");
+    return false;
+  }
+
+  const uid = user.uid;
+
+  try {
+    // Get user's group code to clean up group membership
+    let groupCode = "GLOBAL";
+    const profileData = safeParseJSON<any>("teensBibleProfile", {});
+    if (profileData && profileData.groupCode) {
+      groupCode = profileData.groupCode;
+    }
+
+    // 1. Delete user data snapshot
+    await remove(ref(db, `userData/${uid}`));
+    console.log("[Delete] Removed userData/" + uid);
+
+    // 2. Delete from global users node
+    await remove(ref(db, `users/${uid}`));
+    console.log("[Delete] Removed users/" + uid);
+
+    // 3. Delete from group membership (all groups)
+    await remove(ref(db, `groups/${groupCode}/members/${uid}`));
+    console.log("[Delete] Removed groups/" + groupCode + "/members/" + uid);
+
+    // 3b. Delete from all other groups
+    try {
+      const { getLocalGroups } = await import("./groups");
+      const allGroups = getLocalGroups();
+      for (const g of allGroups) {
+        if (g.groupCode !== groupCode) {
+          await remove(ref(db, `groups/${g.groupCode}/members/${uid}`));
+          console.log("[Delete] Removed groups/" + g.groupCode + "/members/" + uid);
+        }
+      }
+      // Delete userGroups node
+      await remove(ref(db, `userGroups/${uid}`));
+      console.log("[Delete] Removed userGroups/" + uid);
+    } catch (e) {
+      // Groups module not loaded — skip
+    }
+
+    // 4. Clear ALL localStorage
+    localStorage.clear();
+    console.log("[Delete] Cleared all localStorage");
+
+    // 5. Delete Firebase Auth account
+    try {
+      await deleteUser(user);
+      console.log("[Delete] Firebase Auth account deleted");
+    } catch (authErr: any) {
+      // If deleteUser fails (e.g., requires recent login), still consider data deletion successful
+      console.warn("[Delete] Auth account deletion failed (may need re-auth):", authErr.message);
+      // Sign out instead
+      await auth.signOut();
+    }
+
+    return true;
+  } catch (err) {
+    console.error("[Delete] ❌ Account deletion failed:", err);
+    return false;
+  }
+}
+
+// ─── Auto-sync: Call after any significant data change ──────────
+let syncTimeout: ReturnType<typeof setTimeout> | null = null;
+
+export function scheduleSyncToFirebase() {
+  // Debounce: wait 2 seconds after last change before syncing
+  if (syncTimeout) clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(() => {
+    smartSyncToFirebase();
+  }, 2000);
+}
+
+// Immediate sync for critical operations (purchases, equips)
+export function immediateSyncToFirebase() {
+  if (syncTimeout) clearTimeout(syncTimeout);
+  smartSyncToFirebase();
+}
+
+// Sync on page unload to prevent data loss
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
+    // Use sendBeacon-style sync or at least attempt sync
+    if (syncTimeout) {
+      clearTimeout(syncTimeout);
+      smartSyncToFirebase();
+    }
+  });
+
+  // Also sync on visibility change (user switches tabs/minimizes)
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden" && syncTimeout) {
+      clearTimeout(syncTimeout);
+      smartSyncToFirebase();
+    }
+  });
+}
+
+// ─── Initialize sync on app load ────────────────────────────────
+export async function initializeSync(): Promise<{ restored: boolean }> {
+  const uid = auth.currentUser?.uid;
+  if (!uid) {
+    // Wait for auth to be ready
+    return new Promise((resolve) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        unsubscribe();
+        if (user) {
+          fullSync().then(async (result) => {
+            // Also sync group memberships from Firebase
+            try {
+              const { syncGroupsFromFirebase } = await import("./groups");
+              await syncGroupsFromFirebase();
+            } catch (e) { /* groups module not loaded */ }
+            resolve(result);
+          });
+        } else {
+          resolve({ restored: false });
+        }
+      });
+    });
+  }
+  const result = await fullSync();
+  // Also sync group memberships from Firebase
+  try {
+    const { syncGroupsFromFirebase } = await import("./groups");
+    await syncGroupsFromFirebase();
+  } catch (e) { /* groups module not loaded */ }
+  return result;
+}

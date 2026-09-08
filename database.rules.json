@@ -1,0 +1,97 @@
+{
+  "rules": {
+    "challenges": {
+      "$cid": {
+        "aggregate": {
+          "$date": {
+            ".read": true,
+            ".write": "auth != null",
+            "doneCount": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+            },
+            "readingCount": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+            },
+            "$other": { ".validate": false }
+          }
+        },
+        "config": {
+          ".read": true,
+          ".write": false
+        },
+        "manual": {
+          "$uid": {
+            "$date": {
+              ".read": "auth != null && auth.uid == $uid",
+              ".write": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+            }
+          },
+          ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+        },
+        "participants": {
+          "$uid": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid",
+            ".validate": "!newData.exists() || (newData.child('role').val() == 'student' && newData.hasChildren(['role', 'name', 'joinedAt']) && (newData.hasChild('rosterNo') || newData.child('kind').val() == 'guest' || newData.child('kind').val() == 'leader'))"
+          },
+          ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+        },
+        "leaderClaims": {
+          "$uid": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid",
+            ".validate": "newData.child('proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val() && newData.hasChildren(['proof', 'name', 'joinedAt'])"
+          }
+        },
+        "encouragements": {
+          "$uid": {
+            "$msgId": {
+              ".read": "auth != null && auth.uid == $uid",
+              ".write": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+            }
+          },
+          ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+        },
+        "progress": {
+          "$uid": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          },
+          ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+        }
+      }
+    },
+    "classConfig": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "feedbacks": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "groupMeta": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "groups": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "leaderboardGlobal": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "userData": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "userGroups": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "users": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
