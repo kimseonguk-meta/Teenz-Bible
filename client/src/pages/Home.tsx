@@ -1,0 +1,745 @@
+import { useState, useEffect, useMemo } from "react";
+import { safeParseJSON } from "@/lib/safeStorage";
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { registerPlugin } from '@capacitor/core';
+import { isNativePlatform } from '@/lib/platform';
+
+// Register the SaveToPhotos native plugin
+interface SaveToPhotosPlugin {
+  savePhoto(options: { url: string }): Promise<{ saved: boolean }>;
+}
+const SaveToPhotos = registerPlugin<SaveToPhotosPlugin>('SaveToPhotos');
+import { useLocation } from "wouter";
+import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
+import { getPetDefaultSprite } from "@/data/petSprites";
+import { queuedToast } from "@/lib/toastQueue";
+import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
+import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
+import { celebrateLogin } from "@/lib/celebration";
+import FantasyIcon from "@/components/FantasyIcon";
+import { LiveStatsRow } from "@/components/StatBadges";
+import ChallengeSection from "@/components/ChallengeHome";
+import {
+  isNativeApp as isNativeAppForReminders,
+  wasReminderAsked,
+  requestReminderPermission,
+  isTodayReadingDone,
+  currentHour,
+  isEveningBannerDismissedToday,
+  dismissEveningBannerToday,
+} from "@/lib/readingReminders";
+
+// ─── Evening reading reminder UI ─────────────────────────────────────
+// Native (iOS app): opt-in card -> system permission -> 6pm/8pm local notifications.
+// Web/PWA: evening banner (no reliable scheduled push on web).
+
+function ReminderOptInCard() {
+  const [visible, setVisible] = useState(() => {
+    try {
+      return isNativeAppForReminders() && !wasReminderAsked();
+    } catch {
+      return false;
+    }
+  });
+  const [busy, setBusy] = useState(false);
+  if (!visible) return null;
+  return (
+    <div className="tb-panel p-4 flex items-center gap-4">
+      <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full text-2xl flex-shrink-0">🔔</div>
+      <div className="flex-1 min-w-0">
+        <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">읽기 알림</p>
+        <p className="text-white/80 text-[13px] font-bold mt-0.5">저녁 6시·8시, 오늘 읽기를 안 했다면 알려드려요</p>
+      </div>
+      <button
+        disabled={busy}
+        className="tb-btn px-4 py-2 text-[13px] flex-shrink-0 disabled:opacity-50"
+        onClick={async () => {
+          setBusy(true);
+          try {
+            await requestReminderPermission();
+          } finally {
+            setVisible(false);
+            setBusy(false);
+          }
+        }}
+      >
+        켜기
+      </button>
+    </div>
+  );
+}
+
+function EveningBanner({ onNavigate }: { onNavigate: (p: string) => void }) {
+  const [visible, setVisible] = useState(() => {
+    try {
+      return (
+        !isNativeAppForReminders() &&
+        currentHour() >= 18 &&
+        !isTodayReadingDone() &&
+        !isEveningBannerDismissedToday()
+      );
+    } catch {
+      return false;
+    }
+  });
+  if (!visible) return null;
+  return (
+    <div className="tb-panel p-4 flex items-center gap-3">
+      <div className="text-2xl flex-shrink-0">🌙</div>
+      <p className="flex-1 min-w-0 text-white/85 text-[13px] font-bold">오늘 성경 읽기, 아직 안 했어요</p>
+      <button className="tb-btn px-4 py-2 text-[13px] flex-shrink-0" onClick={() => onNavigate("/bible")}>
+        지금 읽기
+      </button>
+      <button
+        aria-label="닫기"
+        className="text-white/40 text-lg px-1 flex-shrink-0"
+        onClick={() => {
+          dismissEveningBannerToday();
+          setVisible(false);
+        }}
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+function getPlayerName() { return localStorage.getItem("playerName") || ""; }
+// Standard chapter counts for each Bible book
+const CHAPTER_COUNTS: Record<string, number> = {
+  Genesis:50,Exodus:40,Leviticus:27,Numbers:36,Deuteronomy:34,Joshua:24,Judges:21,Ruth:4,
+  "1 Samuel":31,"2 Samuel":24,"1 Kings":22,"2 Kings":25,"1 Chronicles":29,"2 Chronicles":36,
+  Ezra:10,Nehemiah:13,Esther:10,Job:42,Psalms:150,Proverbs:31,Ecclesiastes:12,"Song of Solomon":8,
+  Isaiah:66,Jeremiah:52,Lamentations:5,Ezekiel:48,Daniel:12,Hosea:14,Joel:3,Amos:9,
+  Obadiah:1,Jonah:4,Micah:7,Nahum:3,Habakkuk:3,Zephaniah:3,Haggai:2,Zechariah:14,Malachi:4,
+  Matthew:28,Mark:16,Luke:24,John:21,Acts:28,Romans:16,"1 Corinthians":16,"2 Corinthians":13,
+  Galatians:6,Ephesians:6,Philippians:4,Colossians:4,"1 Thessalonians":5,"2 Thessalonians":3,
+  "1 Timothy":6,"2 Timothy":4,Titus:3,Philemon:1,Hebrews:13,James:5,"1 Peter":5,"2 Peter":3,
+  "1 John":5,"2 John":1,"3 John":1,Jude:1,Revelation:22
+};
+
+const HOME_BOOK_META: Record<string, { emoji: string; desc: string }> = {
+  Matthew:{emoji:"✝️",desc:"Jesus as the promised King"},Mark:{emoji:"🦁",desc:"Jesus the servant in action"},Luke:{emoji:"📜",desc:"Jesus for all people"},John:{emoji:"🕊️",desc:"Jesus the Son of God"},Acts:{emoji:"🔥",desc:"The Church's explosive beginning"},Romans:{emoji:"⚖️",desc:"The ultimate theology deep-dive"},"1 Corinthians":{emoji:"💌",desc:"Fixing a messy church"},"2 Corinthians":{emoji:"💪",desc:"Strength through weakness"},Galatians:{emoji:"🔓",desc:"Freedom in Christ"},Ephesians:{emoji:"🛡️",desc:"The armor of God"},Philippians:{emoji:"😊",desc:"Joy no matter what"},Colossians:{emoji:"👑",desc:"Jesus above everything"},"1 Thessalonians":{emoji:"⌛",desc:"Hope for the future"},"2 Thessalonians":{emoji:"⚡",desc:"Stand firm till the end"},"1 Timothy":{emoji:"📋",desc:"Leadership 101"},"2 Timothy":{emoji:"🏃",desc:"Finish the race strong"},Titus:{emoji:"🏝️",desc:"Good works that matter"},Philemon:{emoji:"🤝",desc:"Forgiveness in action"},Hebrews:{emoji:"🏛️",desc:"Jesus is better than everything"},James:{emoji:"🔨",desc:"Faith that works"},"1 Peter":{emoji:"🪨",desc:"Hope through suffering"},"2 Peter":{emoji:"🔭",desc:"Watch out for fakes"},"1 John":{emoji:"❤️",desc:"God is love"},"2 John":{emoji:"📝",desc:"Walk in truth and love"},"3 John":{emoji:"🤗",desc:"Support the truth-tellers"},Jude:{emoji:"⚔️",desc:"Fight for the faith"},Revelation:{emoji:"🌟",desc:"The epic finale"},
+  Genesis:{emoji:"🌍",desc:"The beginning"},Exodus:{emoji:"🔥",desc:"The epic escape"},Leviticus:{emoji:"📜",desc:"God's rulebook"},Numbers:{emoji:"🏜️",desc:"Wilderness"},Deuteronomy:{emoji:"📖",desc:"Moses' final speech"},Joshua:{emoji:"⚔️",desc:"Conquering"},Judges:{emoji:"🛡️",desc:"Heroes"},Ruth:{emoji:"💕",desc:"A love story"},"1 Samuel":{emoji:"👑",desc:"First kings"},"2 Samuel":{emoji:"👑",desc:"King David"},"1 Kings":{emoji:"🏛️",desc:"Solomon's glory"},"2 Kings":{emoji:"🏛️",desc:"The fall"},"1 Chronicles":{emoji:"📋",desc:"Israel's history"},"2 Chronicles":{emoji:"📋",desc:"Temple, kings"},Ezra:{emoji:"🏗️",desc:"Rebuilding"},Nehemiah:{emoji:"🧱",desc:"Walls"},Esther:{emoji:"👸",desc:"A queen saves"},Job:{emoji:"💔",desc:"Why suffer?"},Psalms:{emoji:"🎵",desc:"Playlist of prayers"},Proverbs:{emoji:"🧠",desc:"Life hacks"},Ecclesiastes:{emoji:"🤔",desc:"Is anything meaningful?"},"Song of Solomon":{emoji:"❤️",desc:"Love poem"},Isaiah:{emoji:"🕊️",desc:"Warnings, hope"},Jeremiah:{emoji:"😢",desc:"Weeping prophet"},Lamentations:{emoji:"😭",desc:"Crying over Jerusalem"},Ezekiel:{emoji:"👁️",desc:"Wild visions"},Daniel:{emoji:"🦁",desc:"Faith under fire"},Hosea:{emoji:"💍",desc:"Unfailing love"},Joel:{emoji:"🦗",desc:"Day of Lord"},Amos:{emoji:"⚖️",desc:"Justice"},Obadiah:{emoji:"⛰️",desc:"Edom's downfall"},Jonah:{emoji:"🐋",desc:"Ran from God"},Micah:{emoji:"🌾",desc:"What does God want?"},Nahum:{emoji:"🌊",desc:"Nineveh's judgment"},Habakkuk:{emoji:"❓",desc:"Questioning God"},Zephaniah:{emoji:"🌅",desc:"Judgment and restoration"},Haggai:{emoji:"🏠",desc:"Build God's house"},Zechariah:{emoji:"🌟",desc:"Visions of hope"},Malachi:{emoji:"📬",desc:"Final message"},
+};
+
+function getLastRead() {
+  try {
+    const book = localStorage.getItem("lastReadBook");
+    const chapter = localStorage.getItem("lastReadChapter");
+    const chapterIdx = localStorage.getItem("lastReadChapterIdx");
+    if (book && chapter) {
+      const totalChapters = CHAPTER_COUNTS[book] || 1;
+      const readChapters = safeParseJSON<number[]>(`chaptersRead_${book}`, []).length;
+      const progress = Math.round((readChapters / totalChapters) * 100);
+      return { book, chapter: parseInt(chapter), chapterIdx: parseInt(chapterIdx || "0"), progress, totalChapters, readChapters };
+    }
+  } catch {}
+  return null;
+}
+function getTotalXP() { return parseInt(localStorage.getItem("totalXP") || "0") || 0; }
+function getGems() {
+  const data = safeParseJSON<any>("teensBible", {});
+  return data.gems || 0;
+}
+function getChaptersRead() {
+  let total = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key?.startsWith("chaptersRead_")) {
+      const arr = safeParseJSON<number[]>(key, []);
+      total += arr.length;
+    }
+  }
+  return total;
+}
+function getLevel(xp: number) {
+  if (xp >= 5000) return { name: "Master", level: 10, next: 999999 };
+  if (xp >= 3000) return { name: "Champion", level: 8, next: 5000 };
+  if (xp >= 2000) return { name: "Scholar", level: 6, next: 3000 };
+  if (xp >= 1000) return { name: "Explorer", level: 5, next: 2000 };
+  if (xp >= 500) return { name: "Reader", level: 3, next: 1000 };
+  if (xp >= 100) return { name: "Beginner", level: 2, next: 500 };
+  return { name: "Newbie", level: 1, next: 100 };
+}
+
+// Real meme images hosted on Firebase (same as old app)
+const MEME_BASE_URL = "https://teens-bible-94271.web.app/memes/";
+const memeUrls = [
+  "meme_001.jpg","meme_002.jpg","meme_003.jpg","meme_004.jpg","meme_005.jpg",
+  "meme_006.jpg","meme_007.jpg","meme_008.jpg","meme_009.jpg","meme_010.jpg",
+  "meme_011.webp","meme_012.jpg","meme_013.webp","meme_014.jpg","meme_015.jpg",
+  "meme_016.jpg","meme_017.webp","meme_018.jpg","meme_019.webp","meme_020.jpg",
+  "meme_021.jpg","meme_022.jpg","meme_023.jpg","meme_024.jpg","meme_025.jpg",
+  "meme_026.jpg","meme_027.jpeg","meme_028.jpg","meme_029.jpg","meme_030.jpg",
+  "meme_031.jpg","meme_032.jpg","meme_033.jpg","meme_034.webp","meme_035.jpeg",
+  "meme_036.webp","meme_037.jpg","meme_038.jpg","meme_039.jpg","meme_040.jpg",
+  "meme_041.webp","meme_042.jpg","meme_043.jpg","meme_044.jpg","meme_045.jpg",
+  "meme_046.jpeg","meme_047.jpeg","meme_048.png","meme_049.jpg","meme_050.jpg",
+  "meme_051.webp","meme_052.jpg","meme_053.jpeg","meme_054.jpg","meme_055.jpg",
+  "meme_056.jpg","meme_057.jpg","meme_058.jpg","meme_059.jpg","meme_060.jpg",
+  "meme_061.jpg","meme_062.png","meme_063.webp","meme_064.jpg","meme_065.webp",
+  "meme_066.jpg","meme_067.jpg","meme_068.jpg","meme_069.jpg","meme_070.jpg",
+  "meme_071.jpg","meme_072.jpg","meme_073.jpg","meme_074.jpg","meme_075.jpg",
+  "meme_076.jpg","meme_077.jpg","meme_078.jpg","meme_079.jpg","meme_080.jpg",
+  "meme_081.jpeg","meme_082.jpg","meme_083.jpg","meme_084.jpg","meme_085.jpg",
+  "meme_086.jpg","meme_087.jpg","meme_088.jpg","meme_089.jpg","meme_090.jpg",
+  "meme_091.jpg","meme_092.webp","meme_093.jpg","meme_094.jpg","meme_095.jpg",
+  "meme_096.jpg","meme_097.jpg","meme_098.jpg","meme_099.jpg","meme_100.jpg",
+  "meme_101.jpeg","meme_102.jpeg",
+  "meme_103.webp","meme_104.jpg","meme_105.jpg","meme_106.webp",
+];
+
+// Seasonal memes (disabled - no seasonal files currently)
+const seasonalMemes: Record<string, string[]> = {
+};
+
+function getActiveSeason(): string | null {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  if (month === 12 || (month === 1 && day <= 6)) return "christmas";
+  if ((month === 3 && day >= 15) || month === 4) return "easter";
+  if ((month === 2 && day >= 15) || (month === 3 && day < 15)) return "lent";
+  if (month === 11) return "thanksgiving";
+  if ((month === 8 && day >= 15) || (month === 9 && day <= 15)) return "backtoschool";
+  if (month === 2 && day >= 20 && day <= 28) return "backtoschool";
+  return null;
+}
+
+function getDailyMemeUrl(): string {
+  let allMemes = [...memeUrls];
+  const season = getActiveSeason();
+  if (season && seasonalMemes[season]) {
+    allMemes = allMemes.concat(seasonalMemes[season]);
+  }
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+  const idx = dayOfYear % allMemes.length;
+  return MEME_BASE_URL + allMemes[idx];
+}
+
+function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: number; size?: number; strokeWidth?: number }) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress / 100) * circumference;
+  return (
+    <svg width={size} height={size} className="transform -rotate-90">
+      <circle cx={size/2} cy={size/2} r={radius} stroke="rgba(255,215,0,0.15)" strokeWidth={strokeWidth} fill="none" />
+      <circle cx={size/2} cy={size/2} r={radius} stroke="url(#pgr-gold)" strokeWidth={strokeWidth} fill="none"
+        strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="transition-all duration-700" />
+      <defs><linearGradient id="pgr-gold" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#fff0a7"/><stop offset="100%" stopColor="#a15a08"/></linearGradient></defs>
+    </svg>
+  );
+}
+
+// ─── Dynamic Today's Mission Card ───────────────────────────────────────
+function TodaysMissionCard({ onNavigate }: { onNavigate: (p: string) => void }) {
+  const [mission, setMission] = useState(() => {
+    const last = getLastRead();
+    if (last) {
+      return {
+        book: last.book,
+        chapter: last.chapter,
+        total: last.totalChapters,
+        read: last.readChapters,
+        progress: Math.round((last.readChapters / last.totalChapters) * 100),
+        isDefault: false,
+      };
+    }
+    // default Matthew 5
+    const read = safeParseJSON<number[]>(`chaptersRead_Matthew`, []).length;
+    return { book: "Matthew", chapter: 5, total: CHAPTER_COUNTS["Matthew"], read, progress: Math.round((read / CHAPTER_COUNTS["Matthew"]) * 100), isDefault: true };
+  });
+
+  useEffect(() => {
+    const update = () => {
+      const last = getLastRead();
+      if (last) {
+        setMission({
+          book: last.book,
+          chapter: last.chapter,
+          total: last.totalChapters,
+          read: last.readChapters,
+          progress: Math.round((last.readChapters / last.totalChapters) * 100),
+          isDefault: false,
+        });
+      }
+    };
+    window.addEventListener("storage", update);
+    window.addEventListener("teensBibleDataChanged", update as any);
+    const iv = setInterval(update, 2000);
+    return () => { window.removeEventListener("storage", update); window.removeEventListener("teensBibleDataChanged", update as any); clearInterval(iv); };
+  }, []);
+
+  const slug = mission.book.toLowerCase().replace(/\s+/g, "-");
+  const emoji = HOME_BOOK_META[mission.book]?.emoji || "📖";
+  const desc = HOME_BOOK_META[mission.book]?.desc || "Continue your journey";
+
+  return (
+    <div className="tb-panel w-full max-w-[430px] mx-auto drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] p-5 text-left relative overflow-hidden">
+      {/* header */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-5 min-w-0">
+          <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full text-[22px] flex-shrink-0 shadow-[0_0_14px_rgba(255,215,0,0.22)]">
+            {emoji}
+          </div>
+          <div className="min-w-0 pl-1">
+            <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">Today's Mission</p>
+            <h3 className="tb-title text-[18px] truncate" style={{ lineHeight: 1.25 }}>Read {mission.book} {mission.chapter}</h3>
+            <p className="text-white/50 text-[11px] font-bold truncate mt-0.5">{desc}</p>
+          </div>
+        </div>
+        <div className="text-2xl flex-shrink-0 opacity-80">🎯</div>
+      </div>
+
+      {/* progress */}
+      <div className="mt-2 px-3">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-white/55 text-[11px] font-bold">{mission.progress}% complete</span>
+          <span className="tb-gold-text text-[11px] font-black">{mission.read}/{mission.total} chapters</span>
+        </div>
+        <div className="tb-progress">
+          <div className="tb-progress-fill transition-all duration-700" style={{ width: `${mission.progress}%` }} />
+        </div>
+        <div className="mt-2 text-[10px] text-white/45 font-semibold">{mission.isDefault ? "Start with Matthew 5 – The Beatitudes" : `${mission.read} of ${mission.total} chapters in ${mission.book}`}</div>
+      </div>
+
+      {/* CTA */}
+      <button
+        onClick={() => onNavigate(`/bible/${slug}/${mission.chapter}`)}
+        className="mt-4 w-full tb-btn py-3 text-sm font-black rounded-[12px] active:scale-[0.98] transition-transform"
+      >
+        Continue Reading →
+      </button>
+    </div>
+  );
+}
+
+export default function Home() {
+  const [, setLocation] = useLocation();
+  const playerName = getPlayerName();
+  const [totalXP, setTotalXP] = useState(() => getTotalXP());
+  const [chaptersRead, setChaptersRead] = useState(() => getChaptersRead());
+  const [gems, setGems] = useState(() => getGems());
+  const level = getLevel(totalXP);
+  const xpProgress = Math.min(100, (totalXP / level.next) * 100);
+
+  // Keep XP / gems / chapters in sync with storage / game events
+  useEffect(() => {
+    const sync = () => {
+      setTotalXP(getTotalXP());
+      setGems(getGems());
+      setChaptersRead(getChaptersRead());
+    };
+    const onStorage = (e: StorageEvent) => {
+      if (!e.key || e.key.includes("totalXP") || e.key.includes("teensBible") || e.key.startsWith("chaptersRead_")) sync();
+    };
+    window.addEventListener("storage", onStorage as any);
+    window.addEventListener("teensBibleDataChanged", sync as any);
+    window.addEventListener("gems-changed", sync as any);
+    window.addEventListener("xp-changed", sync as any);
+    window.addEventListener("sync-restored", sync as any);
+    const iv = setInterval(sync, 2000);
+    return () => {
+      window.removeEventListener("storage", onStorage as any);
+      window.removeEventListener("teensBibleDataChanged", sync as any);
+      window.removeEventListener("gems-changed", sync as any);
+      window.removeEventListener("xp-changed", sync as any);
+      window.removeEventListener("sync-restored", sync as any);
+      clearInterval(iv);
+    };
+  }, []);
+
+  const memeUrl = getDailyMemeUrl();
+
+  // Meme fullscreen viewer state
+  const [memeFullscreen, setMemeFullscreen] = useState(false);
+
+  // Meme reactions state
+  const [memeLoaded, setMemeLoaded] = useState(false);
+  const [reactions, setReactions] = useState<Record<string, number>>(() => {
+    try { return safeParseJSON<any>("memeReactions", {}); } catch { return {}; }
+  });
+  const [userReaction, setUserReaction] = useState<string | null>(() => localStorage.getItem("memeUserReaction_" + new Date().toISOString().split("T")[0]));
+  const handleReaction = (emoji: string) => {
+    const today = new Date().toISOString().split("T")[0];
+    const newReactions = { ...reactions };
+    if (userReaction) { newReactions[userReaction] = Math.max(0, (newReactions[userReaction] || 1) - 1); }
+    if (userReaction === emoji) { setUserReaction(null); localStorage.removeItem("memeUserReaction_" + today); }
+    else { newReactions[emoji] = (newReactions[emoji] || 0) + 1; setUserReaction(emoji); localStorage.setItem("memeUserReaction_" + today, emoji); }
+    setReactions(newReactions); localStorage.setItem("memeReactions", JSON.stringify(newReactions));
+  };
+
+  const greeting = playerName ? `Hey ${playerName}!` : "Hey there!";
+  const equipped = getEquipped();
+  const equippedPet = PETS.find(p => p.id === equipped.pet);
+  const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
+  const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
+  // Re-check linked status when Firebase auth state resolves or auth-changed event fires
+  useEffect(() => {
+    const checkLinked = () => {
+      if (isLinkedToGoogle() || isLinkedToApple()) setAccountLinked(true);
+    };
+    // Check after short delay for Firebase auth to initialize
+    const t1 = setTimeout(checkLinked, 500);
+    const t2 = setTimeout(checkLinked, 1500);
+    const t3 = setTimeout(checkLinked, 3000);
+    // Listen for auth-changed event (fired after successful Apple/Google sign-in)
+    window.addEventListener("auth-changed", checkLinked);
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
+      window.removeEventListener("auth-changed", checkLinked);
+    };
+  }, []);
+  const [bannerDismissed, setBannerDismissed] = useState(() => {
+    const dismissed = localStorage.getItem("syncBannerDismissed");
+    if (!dismissed) return false;
+    return Date.now() - parseInt(dismissed) < 3 * 24 * 60 * 60 * 1000;
+  });
+  const [linkingGoogle, setLinkingGoogle] = useState(false);
+  const [linkingApple, setLinkingApple] = useState(false);
+
+  // Auto-timeout for connecting modal per fix #7 (5s) - toast above nav (bottom-20 = 5rem), queued
+  // Ensure timer cleanup on unmount and on success, and coordinate with milestone via localStorage flag
+  useEffect(() => {
+    if (linkingGoogle || linkingApple) {
+      localStorage.setItem("authLinking", "1");
+      window.dispatchEvent(new CustomEvent("auth-linking-started"));
+      const t = setTimeout(() => {
+        setLinkingGoogle(false);
+        setLinkingApple(false);
+        localStorage.removeItem("authLinking");
+        window.dispatchEvent(new CustomEvent("auth-linking-ended"));
+        queuedToast.error("Sign-in timed out, please try again", { duration: 2500, style: { bottom: "5rem" } });
+      }, 5000);
+      return () => {
+        clearTimeout(t);
+      };
+    } else {
+      localStorage.removeItem("authLinking");
+      window.dispatchEvent(new CustomEvent("auth-linking-ended"));
+    }
+  }, [linkingGoogle, linkingApple]);
+
+  // Cleanup flag on unmount
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("authLinking");
+    };
+  }, []);
+
+  const handleBannerLinkGoogle = async () => {
+    setLinkingGoogle(true);
+    try {
+      const result = await linkOrSignInWithGoogle();
+      if (result.success) {
+        setAccountLinked(true);
+        celebrateLogin();
+        queuedToast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Google!", { duration: 2500, style: { bottom: "5rem" } });
+      } else {
+        // Don't show error if user cancelled
+        if (result.message && !result.message.toLowerCase().includes("cancel")) {
+          queuedToast.error(result.message || "Failed to link account", { duration: 2500, style: { bottom: "5rem" } });
+        }
+      }
+    } catch {
+      queuedToast.error("Something went wrong", { duration: 2500, style: { bottom: "5rem" } });
+    } finally {
+      setLinkingGoogle(false);
+    }
+  };
+  const handleBannerLinkApple = async () => {
+    setLinkingApple(true);
+    try {
+      const result = await linkOrSignInWithApple();
+      if (result.success) {
+        setAccountLinked(true);
+        celebrateLogin();
+        queuedToast.success(result.type === "linked" ? "Account linked! Your data is now protected." : "Signed in with Apple!", { duration: 2500, style: { bottom: "5rem" } });
+      } else {
+        if (result.message && !result.message.toLowerCase().includes("cancel")) {
+          queuedToast.error(result.message || "Failed to link account", { duration: 2500, style: { bottom: "5rem" } });
+        }
+      }
+    } catch {
+      queuedToast.error("Something went wrong", { duration: 2500, style: { bottom: "5rem" } });
+    } finally {
+      setLinkingApple(false);
+    }
+  };
+  const handleDismissBanner = () => {
+    setBannerDismissed(true);
+    localStorage.setItem("syncBannerDismissed", String(Date.now()));
+  };
+
+  return (
+    <div className="teenz-page space-y-4">
+      {/* Full-screen loading overlay during sign-in */}
+      {(linkingApple || linkingGoogle) && (
+        <div data-auth-linking="true" className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+          <svg className="animate-spin h-10 w-10 tb-gold-text" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+          <p className="text-white text-sm font-medium">
+            {linkingApple ? "Connecting to Apple..." : "Connecting to Google..."}
+          </p>
+          <p className="text-white/60 text-xs">Please wait, this may take a moment</p>
+        </div>
+      )}
+      {/* Account Linking Banner - compact, dismissible, hidden when signed in per fix #2 */}
+      {!accountLinked && !bannerDismissed && (
+        <div className="relative overflow-hidden rounded-[20px] border border-amber-300/25 bg-gradient-to-br from-amber-300/18 via-white/7 to-orange-500/10 p-3.5 shadow-[0_12px_30px_rgba(0,0,0,0.15)] backdrop-blur-xl mb-3">
+          <button onClick={handleDismissBanner} aria-label="Dismiss" className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-black/20 text-white/70 hover:text-white hover:bg-black/30 text-sm leading-none transition-colors">✕</button>
+          <div className="flex items-start gap-3">
+            <div className="text-2xl mt-0.5">⚠️</div>
+            <div className="flex-1 pr-4">
+              <h3 className="text-amber-100 font-black text-sm">Back up your progress</h3>
+              <p className="text-white/65 text-xs mt-1">Link an account to save your Bible journey across devices.</p>
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={handleBannerLinkGoogle}
+                  disabled={linkingGoogle || linkingApple}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white text-gray-800 text-xs font-semibold hover:bg-gray-100 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                  {linkingGoogle ? (
+                    <>
+                      <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                      Signing in...
+                    </>
+                  ) : "Google"}
+                </button>
+                <button
+                  onClick={handleBannerLinkApple}
+                  disabled={linkingGoogle || linkingApple}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-black text-white text-xs font-semibold border border-gray-600/50 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                  {linkingApple ? (
+                    <>
+                      <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                      Signing in...
+                    </>
+                  ) : "Apple"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Live top stats (streak / XP / gems) – real data, not a mockup image */}
+      <LiveStatsRow />
+
+      {/* 제자반 성경읽기 챌린지 — replaces Welcome Back ribbon (approved mockup s1) */}
+      <div className="pt-6 text-center">
+        <ChallengeSection />
+        <h1 className="tb-title mt-5 text-5xl">{playerName || "Adventurer"}</h1>
+        <p className="mt-2 text-base font-extrabold text-white/45 drop-shadow">Continue your journey</p>
+      </div>
+
+      {/* Today's Mission – dynamic */}
+      <TodaysMissionCard onNavigate={setLocation} />
+
+      {/* Evening reading reminders: native opt-in card / web evening banner */}
+      <ReminderOptInCard />
+      <EveningBanner onNavigate={setLocation} />
+
+      {/* Pet and quick actions */}
+      <div className="grid grid-cols-[0.92fr_2fr] items-end gap-3 pt-2">
+        <button onClick={() => setLocation("/profile")} className="active:scale-95 transition-transform">
+          <img src="/art-assets/mockup/pet-luna-card.webp" alt="Luna pet card" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)]" />
+        </button>
+        <div className="relative pb-4">
+          <img src="/art-assets/mockup/home-action-cluster.webp" alt="Quiz, Devotion, Friends" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
+          <div className="absolute inset-0 grid grid-cols-3">
+            <button aria-label="Quiz" onClick={() => {
+              try {
+                const lastBook = localStorage.getItem("lastReadBook");
+                const lastChapter = localStorage.getItem("lastReadChapter");
+                if (lastBook && lastChapter) {
+                  const slug = lastBook.toLowerCase().replace(/\s+/g, "-");
+                  setLocation(`/bible/${slug}/${lastChapter}?view=quiz`);
+                } else {
+                  setLocation("/quiz-stats");
+                }
+              } catch { setLocation("/quiz-stats"); }
+            }} />
+            <button aria-label="Devotion" onClick={() => {
+              try {
+                const lastBook = localStorage.getItem("lastReadBook");
+                const lastChapter = localStorage.getItem("lastReadChapter");
+                if (lastBook && lastChapter) {
+                  const slug = lastBook.toLowerCase().replace(/\s+/g, "-");
+                  setLocation(`/bible/${slug}/${lastChapter}?view=devotion`);
+                } else {
+                  setLocation("/bible?devotion=1");
+                }
+              } catch { setLocation("/bible"); }
+            }} />
+            <button aria-label="Friends" onClick={() => setLocation("/leaderboard")} />
+          </div>
+        </div>
+      </div>
+
+      {/* Bible AI - Prominent Card */}
+      <button
+        onClick={() => setLocation("/bible-ai")}
+        className="w-full tb-panel p-4 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group overflow-hidden"
+      >
+        <div className="tb-gold-panel flex h-14 w-14 items-center justify-center rounded-full text-2xl flex-shrink-0">✨</div>
+        <div className="flex-1 text-left min-w-0">
+          <h3 className="tb-title text-lg leading-tight">Bible AI</h3>
+          <p className="text-white/55 text-xs font-bold mt-0.5 line-clamp-2 leading-relaxed">Ask anything about the Bible</p>
+        </div>
+        <div className="tb-gold-text text-2xl flex-shrink-0 pr-3">›</div>
+      </button>
+
+      {/* XP Bar */}
+      <div className="tb-panel p-4 flex items-center gap-4 overflow-hidden">
+        <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full flex-shrink-0">
+          <span className="text-xs font-black text-white drop-shadow">XP</span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
+            <span className="tb-title text-base">{totalXP.toLocaleString()}</span>
+            <span className="text-white/55 text-xs font-bold">/ {level.next.toLocaleString()} XP</span>
+          </div>
+          <div className="tb-progress">
+            <div className="tb-progress-fill transition-all duration-500" style={{ width: `${xpProgress}%` }} />
+          </div>
+        </div>
+        <div className="text-2xl flex-shrink-0">🏆</div>
+      </div>
+
+      {/* Bible Meme of the Day */}
+      <div className="tb-panel p-4 overflow-hidden">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-white font-bold text-sm leading-relaxed">😂 BIBLE MEME OF THE DAY</span>
+        </div>
+        <div className="rounded-xl overflow-hidden border border-[#8a530f]/30 relative cursor-pointer" onClick={() => setMemeFullscreen(true)}>
+          {!memeLoaded && <div className="w-full h-64 bg-black/40 animate-pulse rounded-xl" />}
+          <img
+            src={memeUrl}
+            alt="Bible Meme of the Day"
+            className={`w-full h-auto rounded-xl ${memeLoaded ? '' : 'absolute opacity-0'}`}
+            loading="lazy"
+            onLoad={() => setMemeLoaded(true)}
+          />
+          {memeLoaded && <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 text-[10px] text-white/70 pointer-events-none"><span>🔍</span> Tap to view</div>}
+        </div>
+        <div className="flex justify-center gap-3 mt-3">
+          {["😂", "🔥", "💀", "🙏"].map(emoji => (
+            <button key={emoji} onClick={() => handleReaction(emoji)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm active:scale-95 transition-all ${userReaction === emoji ? 'tb-btn border-[#fff0a7] scale-110' : 'tb-soft-button'}`}>
+              <span>{emoji}</span>
+              {(reactions[emoji] || 0) > 0 && <span className="text-xs text-white/70">{reactions[emoji]}</span>}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Meme Fullscreen Viewer - compact control bar near image */}
+      {memeFullscreen && (
+        <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center" data-meme-fullscreen="true" onClick={() => setMemeFullscreen(false)}>
+          <div className="flex-1 flex items-center justify-center w-full px-4 pt-4 pb-2 relative" onClick={(e) => e.stopPropagation()}>
+            <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl" />
+          </div>
+          <div className="w-full flex flex-col items-center gap-3 px-4 pb-6 pt-2 relative z-[10000]" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-2 py-2 shadow-lg relative z-[10000]">
+              <button
+                onClick={() => setMemeFullscreen(false)}
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white text-lg transition-all active:scale-95 relative z-[10001]"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+              <div className="w-px h-6 bg-white/15" />
+              <button
+                onClick={async () => {
+                  try {
+                    if (isNativePlatform()) {
+                      const ext = memeUrl.split('.').pop() || 'jpg';
+                      const fileName = `bible-meme-${Date.now()}.${ext}`;
+                      await Filesystem.downloadFile({
+                        url: memeUrl,
+                        path: fileName,
+                        directory: Directory.Cache,
+                      });
+                      const fileUri = await Filesystem.getUri({ path: fileName, directory: Directory.Cache });
+                      await Share.share({
+                        title: '😂 Bible Meme of the Day',
+                        text: 'Check out this Bible meme from Teenz Bible!',
+                        files: [fileUri.uri],
+                      });
+                      queuedToast.success('Shared successfully!', { style: { bottom: "5rem" } });
+                    } else if (navigator.share) {
+                      const response = await fetch(memeUrl);
+                      const blob = await response.blob();
+                      const file = new File([blob], 'bible-meme.jpg', { type: blob.type });
+                      await navigator.share({ title: '😂 Bible Meme of the Day', text: 'Check out this Bible meme from Teenz Bible!', files: [file] });
+                      queuedToast.success('Shared successfully!', { style: { bottom: "5rem" } });
+                    } else {
+                      await navigator.clipboard.writeText(memeUrl);
+                      queuedToast.success('Link copied to clipboard!', { style: { bottom: "5rem" } });
+                    }
+                  } catch (err: any) {
+                    if (err?.name !== 'AbortError') {
+                      try { await navigator.clipboard.writeText(memeUrl); queuedToast.success('Link copied to clipboard!', { style: { bottom: "5rem" } }); } catch { queuedToast.error('Could not share', { style: { bottom: "5rem" } }); }
+                    }
+                  }
+                }}
+                className="px-4 h-10 rounded-full tb-btn text-white font-semibold text-sm flex items-center gap-1.5 transition-all active:scale-95 relative z-[10001]"
+              >
+                <span>📤</span> Share
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    if (isNativePlatform()) {
+                      await SaveToPhotos.savePhoto({ url: memeUrl });
+                      queuedToast.success('Saved to Photos! 📥', { style: { bottom: "5rem" } });
+                    } else {
+                      const response = await fetch(memeUrl);
+                      const blob = await response.blob();
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `bible-meme-${new Date().toISOString().split('T')[0]}.jpg`;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                      URL.revokeObjectURL(url);
+                      queuedToast.success('Meme saved! 📥', { style: { bottom: "5rem" } });
+                    }
+                  } catch (err: any) {
+                    console.error('Save meme error:', err);
+                    queuedToast.error('Could not save meme. Please allow photo access in Settings.', { style: { bottom: "5rem" } });
+                  }
+                }}
+                className="px-4 h-10 rounded-full tb-soft-button text-white font-semibold text-sm flex items-center gap-1.5 transition-all active:scale-95 relative z-[10001]"
+              >
+                <span>💾</span> Save
+              </button>
+            </div>
+            <p className="text-white/40 text-[11px]">Tap outside to close</p>
+          </div>
+        </div>
+      )}
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="tb-panel p-4 text-center overflow-hidden"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1 leading-tight">{chaptersRead}</div><div className="text-[10px] text-white/45 leading-relaxed">Chapters Read</div></div>
+        <div className="tb-panel p-4 text-center overflow-hidden"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1 leading-tight">{gems}</div><div className="text-[10px] text-white/45 leading-relaxed">Gems</div></div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-2 gap-3 pb-24">
+        <button onClick={() => setLocation("/bible")} className="tb-btn p-4 text-center transition-all active:scale-95 overflow-hidden">
+          <span className="text-2xl">📖</span><div className="text-sm font-extrabold text-white mt-1 leading-relaxed line-clamp-2">Start Reading</div>
+        </button>
+        <button onClick={() => setLocation("/bible-map")} className="tb-soft-button p-4 text-center transition-all active:scale-95 overflow-hidden">
+          <span className="text-2xl">🗺️</span><div className="text-sm font-semibold text-[#ffd957] mt-1 leading-relaxed line-clamp-2">Bible Map</div>
+        </button>
+      </div>
+    </div>
+  );
+}

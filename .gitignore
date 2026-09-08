@@ -1,21 +1,6 @@
-# Local environment files. Keep the safe template tracked.
-.env
-.env.*
-!.env.example
-
-# Firebase CLI local state and downloaded service-account credentials.
-.firebase/
-*-firebase-adminsdk-*.json
-*service-account*.json
-
-# Apple signing material and local Xcode provisioning data.
-*.p12
-*.p8
-*.mobileprovision
-*.cer
-
-# Private Firebase data exports. Never commit user data to GitHub.
-private-exports/
-
-# Local operating-system metadata.
+node_modules/
+dist/
+*.log
 .DS_Store
+.env*
+.firebase/

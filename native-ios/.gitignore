@@ -1,9 +1,0 @@
-node_modules/
-.DS_Store
-
-# CocoaPods and Xcode local build outputs
-Pods/
-build/
-DerivedData/
-*.xcuserstate
-xcuserdata/

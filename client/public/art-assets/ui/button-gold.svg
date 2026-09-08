@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 76" preserveAspectRatio="none">
+
+<defs>
+  <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff9c6"/>
+    <stop offset=".18" stop-color="#ffd95d"/>
+    <stop offset=".45" stop-color="#c97a10"/>
+    <stop offset=".7" stop-color="#6a3505"/>
+    <stop offset="1" stop-color="#f5b52a"/>
+  </linearGradient>
+  <linearGradient id="gold2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fff2a0"/>
+    <stop offset=".42" stop-color="#c8790d"/>
+    <stop offset="1" stop-color="#2b1705"/>
+  </linearGradient>
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#30333b"/>
+    <stop offset=".46" stop-color="#171920"/>
+    <stop offset="1" stop-color="#090a0f"/>
+  </linearGradient>
+  <linearGradient id="purple" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d293ff"/>
+    <stop offset=".48" stop-color="#7a2bd1"/>
+    <stop offset="1" stop-color="#32105d"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+    <feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#000" flood-opacity=".7"/>
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ffcf45" flood-opacity=".25"/>
+  </filter>
+  <filter id="innerNoise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" seed="7" result="n"/>
+    <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.9 0 0 0 0 0.75 0 0 0 0 0.45 0 0 0 .08 0"/>
+    <feBlend mode="overlay" in2="SourceGraphic"/>
+  </filter>
+</defs>
+
+<g filter="url(#shadow)">
+  <path d="M24 8h252l16 16v28l-16 16H24L8 52V24z" fill="url(#gold)" stroke="#fff0a0" stroke-width="4"/>
+  <path d="M22 18h256" stroke="#fff8c7" stroke-width="5" opacity=".5"/>
+  <path d="M23 59h254" stroke="#2d1603" stroke-width="5" opacity=".55"/>
+</g>
+</svg>

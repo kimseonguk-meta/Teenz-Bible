@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.teenzbible.app",
+      "sha256_cert_fingerprints":
+        ["FE:AE:98:17:4C:F6:53:44:5A:29:81:A0:62:88:A0:DA:21:BC:AF:A0:8B:71:54:84:BE:80:5B:B5:F5:D6:B2:38"]
+    }
+  }
+]

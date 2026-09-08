@@ -1,89 +1,25 @@
 {
+  "database": {
+    "rules": "database.rules.json"
+  },
   "functions": [
     {
       "source": "functions",
       "codebase": "default"
     }
   ],
-  "database": {
-    "rules": "app/database.rules.json"
-  },
   "hosting": {
     "site": "teens-bible-94271",
-    "public": "app",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "ota/latest-*.json",
-      "ota/*.zip.sha256",
-      "**/*.bak"
+    "public": "dist/public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {"source": "/api/bible-ai", "function": "bibleAi", "region": "us-central1"},
+      {"source": "**", "destination": "/index.html"}
     ],
     "headers": [
-      {
-        "source": "/index.html",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/runtime-fixes-**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/firebase-messaging-sw.js",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/sw.js",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/manifest.json",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "/ota/**",
-        "headers": [
-          {
-            "key": "Access-Control-Allow-Origin",
-            "value": "*"
-          },
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, max-age=0, must-revalidate"
-          }
-        ]
-      }
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
+      {"source": "/index.html", "headers": [{"key": "Cache-Control", "value": "no-cache, no-store, max-age=0, must-revalidate"}]},
+      {"source": "/sw.js", "headers": [{"key": "Cache-Control", "value": "no-cache, no-store, max-age=0, must-revalidate"}]},
+      {"source": "/manifest.json", "headers": [{"key": "Cache-Control", "value": "no-cache, no-store, max-age=0, must-revalidate"}]}
     ]
   }
 }
