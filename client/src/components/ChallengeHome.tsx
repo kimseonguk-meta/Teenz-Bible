@@ -650,14 +650,10 @@ export default function ChallengeSection() {
         ))}
         <button
           onClick={() => setOpen(true)}
-          className="tb-ribbon w-full py-2.5 active:scale-[0.98] transition-transform flex-col"
+          className="tb-ribbon-royal w-full active:scale-[0.98] transition-transform"
           style={{ animation: "challengePulse 2.4s ease-in-out infinite" }}
         >
           <span className="text-xl leading-tight">제자반 성경읽기 챌린지</span>
-          <span className="mt-1 inline-flex items-center gap-1.5 text-[13px] font-extrabold">
-            <span className="inline-block text-[15px]" style={{ animation: "challengePoint 1.4s ease-in-out infinite" }}>👆</span>
-            {participation ? "내 챌린지 보기" : "눌러서 참여하기"}
-          </span>
         </button>
       </div>
       <style>{`

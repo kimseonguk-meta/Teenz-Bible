@@ -45,7 +45,7 @@ function ReminderOptInCard() {
   const [busy, setBusy] = useState(false);
   if (!visible) return null;
   return (
-    <div className="tb-panel p-4 flex items-center gap-4">
+    <div className="tb-panel tb-panel-glow p-4 flex items-center gap-4">
       <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full text-2xl flex-shrink-0">🔔</div>
       <div className="flex-1 min-w-0">
         <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">읽기 알림</p>
@@ -85,7 +85,7 @@ function EveningBanner({ onNavigate }: { onNavigate: (p: string) => void }) {
   });
   if (!visible) return null;
   return (
-    <div className="tb-panel p-4 flex items-center gap-3">
+    <div className="tb-panel tb-panel-glow p-4 flex items-center gap-3">
       <div className="text-2xl flex-shrink-0">🌙</div>
       <p className="flex-1 min-w-0 text-white/85 text-[13px] font-bold">오늘 성경 읽기, 아직 안 했어요</p>
       <button className="tb-btn px-4 py-2 text-[13px] flex-shrink-0" onClick={() => onNavigate("/bible")}>
@@ -277,7 +277,7 @@ function TodaysMissionCard({ onNavigate }: { onNavigate: (p: string) => void }) 
   const desc = HOME_BOOK_META[mission.book]?.desc || "Continue your journey";
 
   return (
-    <div className="tb-panel w-full max-w-[430px] mx-auto drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] p-5 text-left relative overflow-hidden">
+    <div className="tb-panel tb-panel-hero w-full max-w-[430px] mx-auto drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] p-5 text-left relative overflow-hidden">
       {/* header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-5 min-w-0">
@@ -287,10 +287,9 @@ function TodaysMissionCard({ onNavigate }: { onNavigate: (p: string) => void }) 
           <div className="min-w-0 pl-1">
             <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">Today's Mission</p>
             <h3 className="tb-title text-[18px] truncate" style={{ lineHeight: 1.25 }}>Read {mission.book} {mission.chapter}</h3>
-            <p className="text-white/50 text-[11px] font-bold truncate mt-0.5">{desc}</p>
+            <p className="text-white/60 text-[11px] font-bold truncate mt-0.5">{desc}</p>
           </div>
         </div>
-        <div className="text-2xl flex-shrink-0 opacity-80">🎯</div>
       </div>
 
       {/* progress */}
@@ -308,7 +307,7 @@ function TodaysMissionCard({ onNavigate }: { onNavigate: (p: string) => void }) 
       {/* CTA */}
       <button
         onClick={() => onNavigate(`/bible/${slug}/${mission.chapter}`)}
-        className="mt-4 w-full tb-btn py-3 text-sm font-black rounded-[12px] active:scale-[0.98] transition-transform"
+        className="mt-4 w-full tb-btn-flat py-3 text-sm font-black rounded-[12px] active:scale-[0.98] transition-transform"
       >
         Continue Reading →
       </button>
@@ -547,10 +546,10 @@ export default function Home() {
       {/* Pet and quick actions */}
       <div className="grid grid-cols-[0.92fr_2fr] items-end gap-3 pt-2">
         <button onClick={() => setLocation("/profile")} className="active:scale-95 transition-transform">
-          <img src="/art-assets/mockup/pet-luna-card.webp" alt="Luna pet card" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)]" />
+          <img src="/art-assets/mockup/pet-luna-card.webp" alt="Luna pet card" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] drop-shadow-[0_0_16px_rgba(255,190,70,0.45)]" />
         </button>
         <div className="relative pb-4">
-          <img src="/art-assets/mockup/home-action-cluster.webp" alt="Quiz, Devotion, Friends" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]" />
+          <img src="/art-assets/mockup/home-action-cluster.webp" alt="Quiz, Devotion, Friends" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)] drop-shadow-[0_0_16px_rgba(255,190,70,0.45)]" />
           <div className="absolute inset-0 grid grid-cols-3">
             <button aria-label="Quiz" onClick={() => {
               try {
@@ -584,7 +583,7 @@ export default function Home() {
       {/* Bible AI - Prominent Card */}
       <button
         onClick={() => setLocation("/bible-ai")}
-        className="w-full tb-panel p-4 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group overflow-hidden"
+        className="w-full tb-panel tb-panel-glow p-4 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group overflow-hidden"
       >
         <div className="tb-gold-panel flex h-14 w-14 items-center justify-center rounded-full text-2xl flex-shrink-0">✨</div>
         <div className="flex-1 text-left min-w-0">
@@ -595,7 +594,7 @@ export default function Home() {
       </button>
 
       {/* XP Bar */}
-      <div className="tb-panel p-4 flex items-center gap-4 overflow-hidden">
+      <div className="tb-panel tb-panel-glow p-4 flex items-center gap-4 overflow-hidden">
         <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full flex-shrink-0">
           <span className="text-xs font-black text-white drop-shadow">XP</span>
         </div>
@@ -612,7 +611,7 @@ export default function Home() {
       </div>
 
       {/* Bible Meme of the Day */}
-      <div className="tb-panel p-4 overflow-hidden">
+      <div className="tb-panel tb-panel-glow p-4 overflow-hidden">
         <div className="flex items-center justify-between mb-2">
           <span className="text-white font-bold text-sm leading-relaxed">😂 BIBLE MEME OF THE DAY</span>
         </div>
@@ -727,8 +726,8 @@ export default function Home() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="tb-panel p-4 text-center overflow-hidden"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1 leading-tight">{chaptersRead}</div><div className="text-[10px] text-white/45 leading-relaxed">Chapters Read</div></div>
-        <div className="tb-panel p-4 text-center overflow-hidden"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1 leading-tight">{gems}</div><div className="text-[10px] text-white/45 leading-relaxed">Gems</div></div>
+        <div className="tb-panel tb-panel-glow p-4 text-center overflow-hidden"><span className="text-2xl">📖</span><div className="text-xl font-bold text-white mt-1 leading-tight">{chaptersRead}</div><div className="text-[10px] text-white/45 leading-relaxed">Chapters Read</div></div>
+        <div className="tb-panel tb-panel-glow p-4 text-center overflow-hidden"><span className="text-2xl">💎</span><div className="text-xl font-bold text-white mt-1 leading-tight">{gems}</div><div className="text-[10px] text-white/45 leading-relaxed">Gems</div></div>
       </div>
 
       {/* Quick Actions */}

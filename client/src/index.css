@@ -807,3 +807,98 @@
 .xp-badge-pulse {
   animation: xpBadgePulse 2s ease-in-out infinite;
 }
+
+/* ===== Card redesign — approved mockup 2026-09-09 =====
+   Hero cards: thick solid metallic gold band + warm inner glow.
+   Secondary cards: no metal band — the edge itself is golden light.
+   Both share a calm, uncluttered dark interior (no SVG frame, no inner
+   hairline, no corner wedges). Additive only: existing .tb-panel visuals
+   on other screens are untouched until each area is migrated. */
+.tb-panel-hero,
+.tb-panel-glow {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.10), transparent 9rem),
+    linear-gradient(180deg, #23252d 0%, #14161c 55%, #0c0d12 100%);
+}
+.tb-panel-hero::before,
+.tb-panel-hero::after,
+.tb-panel-glow::before,
+.tb-panel-glow::after {
+  content: none;
+}
+
+.tb-panel-hero {
+  border: 5px solid transparent;
+  border-radius: 21px;
+  background:
+    linear-gradient(180deg, #23252d 0%, #14161c 55%, #0c0d12 100%) padding-box,
+    linear-gradient(155deg, #fff3b8 0%, #eec04a 20%, #8a5a10 42%, #f9dc7d 60%, #a06a14 80%, #eec65e 100%) border-box;
+  box-shadow:
+    inset 0 0 26px rgba(255, 190, 60, 0.30),
+    inset 0 0 6px rgba(255, 222, 130, 0.28),
+    0 0 24px rgba(255, 180, 50, 0.35),
+    0 10px 24px rgba(0, 0, 0, 0.55);
+}
+
+.tb-panel-glow {
+  border: 1px solid rgba(255, 214, 120, 0.85);
+  border-radius: 21px;
+  box-shadow:
+    0 0 14px rgba(255, 196, 80, 0.55),
+    0 0 38px rgba(255, 175, 50, 0.28),
+    inset 0 0 18px rgba(255, 190, 70, 0.10),
+    0 8px 20px rgba(0, 0, 0, 0.50);
+}
+
+/* Flatter gold CTA used inside the hero card */
+.tb-btn-flat {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 240, 167, 0.9);
+  background: linear-gradient(180deg, #ffe9a3 0%, #f6bd3f 45%, #d18f1d 100%);
+  color: #fff;
+  font-weight: 950;
+  text-shadow: 0 2px 0 rgba(90, 50, 0, 0.55), 0 0 10px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -3px 6px rgba(120, 65, 0, 0.35),
+    0 0 16px rgba(255, 190, 60, 0.35),
+    0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* ===== Challenge ribbon — royal plaque (approved option 3, 2026-09-09) =====
+   Refined flatter gold band + filigree ends. Single text line only;
+   confetti + float + pulse (in ChallengeHome.tsx) stay as the tap cue. */
+.tb-ribbon-royal {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0.55rem 2.8rem;
+  border-radius: 16px;
+  border: 2px solid #ffedb0;
+  background: linear-gradient(180deg, #ffedb0 0%, #f3bd42 38%, #c07f16 72%, #8a5a10 100%);
+  color: #fff;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 0 rgba(90, 50, 0, 0.6), 0 0 12px rgba(0, 0, 0, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -3px 6px rgba(90, 45, 0, 0.40),
+    0 5px 0 rgba(0, 0, 0, 0.35),
+    0 0 22px rgba(255, 185, 40, 0.30);
+}
+.tb-ribbon-royal::before,
+.tb-ribbon-royal::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  transform: translateY(-50%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%237a4d08' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M8 40 C8 26 16 18 30 18 C37 18 41 14 41 8'/%3E%3Cpath d='M13 40 C13 30 18 25 27 24'/%3E%3C/g%3E%3Ccircle cx='8' cy='40' r='3' fill='%237a4d08'/%3E%3Ccircle cx='41' cy='8' r='2' fill='%237a4d08'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0.85;
+  pointer-events: none;
+}
+.tb-ribbon-royal::before { left: 10px; }
+.tb-ribbon-royal::after { right: 10px; transform: translateY(-50%) scaleX(-1); }
