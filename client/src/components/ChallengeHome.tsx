@@ -146,7 +146,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
   };
 
   return (
-    <div className="tb-panel w-full max-w-[430px] mx-auto p-5 relative overflow-hidden">
+    <div className="tb-panel tb-panel-hero w-full max-w-[430px] mx-auto p-5 relative overflow-hidden">
       <div className="flex items-center gap-4 mb-1">
         <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full text-[22px] flex-shrink-0">
           📖
@@ -308,7 +308,7 @@ function StudentCard({ participation, onLeave, leaveFn }: { participation: Parti
 
   if (!today) {
     return (
-      <div className="tb-panel w-full max-w-[430px] mx-auto p-5">
+      <div className="tb-panel tb-panel-glow w-full max-w-[430px] mx-auto p-5">
         <div className="flex items-center gap-3">
           <div className="tb-gold-panel flex h-11 w-11 items-center justify-center rounded-full text-xl">📖</div>
           <div>
@@ -337,7 +337,7 @@ function StudentCard({ participation, onLeave, leaveFn }: { participation: Parti
   // Done for Today! — approved mockup s8
   if (allDone) {
     return (
-      <div className="tb-panel w-full max-w-[430px] mx-auto p-6 text-center relative overflow-hidden">
+      <div className="tb-panel tb-panel-hero w-full max-w-[430px] mx-auto p-6 text-center relative overflow-hidden">
         <div className="text-5xl mb-3">🎉</div>
         <h3 className="tb-title text-2xl">Done for Today!</h3>
         <p className="text-white/60 text-[13px] font-bold mt-1">
@@ -363,7 +363,7 @@ function StudentCard({ participation, onLeave, leaveFn }: { participation: Parti
   }
 
   return (
-    <div className="tb-panel w-full max-w-[430px] mx-auto p-5 relative overflow-hidden">
+    <div className="tb-panel tb-panel-hero w-full max-w-[430px] mx-auto p-5 relative overflow-hidden">
       {encouragements.length > 0 && (
         <div className="mb-3 space-y-2">
           {encouragements.map((e) => (
@@ -508,7 +508,7 @@ function LeaderCard({ participation, onUpdate }: { participation: Participation;
   };
 
   return (
-    <div className="tb-panel w-full max-w-[430px] mx-auto p-5 relative overflow-hidden">
+    <div className="tb-panel tb-panel-hero w-full max-w-[430px] mx-auto p-5 relative overflow-hidden">
       <div className="flex items-center gap-3 mb-3">
         <div className="tb-gold-panel flex h-11 w-11 items-center justify-center rounded-full text-xl flex-shrink-0">🧭</div>
         <div className="min-w-0">

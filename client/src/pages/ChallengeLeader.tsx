@@ -325,7 +325,7 @@ export default function ChallengeLeader() {
       </div>
 
       {/* 날짜 선택 */}
-      <div className="tb-panel p-3 flex items-center justify-between">
+      <div className="tb-panel tb-panel-glow p-3 flex items-center justify-between">
         <button
           onClick={() => setDateKey(shiftDate(dateKey, -1))}
           className="tb-soft-button w-9 h-9 rounded-full text-lg"
@@ -347,7 +347,7 @@ export default function ChallengeLeader() {
       </div>
 
       {/* 요약 */}
-      <div className="tb-panel p-4">
+      <div className="tb-panel tb-panel-hero p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-white/60 text-[12px] font-bold">39명 중</span>
           <span className="tb-gold-text text-[13px] font-black">
@@ -363,7 +363,7 @@ export default function ChallengeLeader() {
       </div>
 
       {/* 생년/반 필터 — approved mockup t3 */}
-      <div className="tb-panel p-3 space-y-2">
+      <div className="tb-panel tb-panel-glow p-3 space-y-2">
         <div>
           <p className="text-white/45 text-[11px] font-bold mb-1.5">생년</p>
           <div className="flex gap-1.5 flex-wrap">
@@ -415,7 +415,7 @@ export default function ChallengeLeader() {
             const isReading = !isDone && r.progress?.status === "reading";
             const isOpen = expanded === r.no;
             return (
-              <div key={r.no} className="tb-panel px-3 py-2.5">
+              <div key={r.no} className="tb-panel tb-panel-glow px-3 py-2.5">
                 <button
                   onClick={() => setExpanded(isOpen ? null : r.no)}
                   className="w-full flex items-center gap-3 text-left"
@@ -448,7 +448,7 @@ export default function ChallengeLeader() {
 
       {/* 게스트 · 함께 읽는 선생님 — 명단 39명 집계와 분리 */}
       {!loading && extras.length > 0 && (
-        <div className="tb-panel p-4">
+        <div className="tb-panel tb-panel-glow p-4">
           <p className="text-white/60 text-[12px] font-bold mb-2">
             게스트 · 함께 읽는 선생님 <span className="text-white/35 font-medium">(공식 집계 제외)</span>
           </p>

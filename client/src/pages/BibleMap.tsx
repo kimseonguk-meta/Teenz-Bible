@@ -327,7 +327,7 @@ export default function BibleMap() {
       </div>
 
       {/* Leaflet Map – OSM primary */}
-      <div className="tb-panel overflow-hidden rounded-[18px] relative">
+      <div className="tb-panel tb-panel-glow overflow-hidden rounded-[18px] relative">
         <div className="relative w-full h-[280px] bg-[#0f0f0f]">
           <div
             ref={mapContainerRef}
@@ -337,7 +337,7 @@ export default function BibleMap() {
           {/* Friendly offline fallback – replaces gray broken tiles */}
           {mapOffline && (
             <div className="absolute inset-0 z-[400] flex flex-col items-center justify-center gap-3 p-6 bg-[radial-gradient(circle_at_50%_0%,rgba(255,240,167,0.10),transparent_60%),linear-gradient(180deg,#17171a_0%,#0d0d0f_100%)] backdrop-blur-[2px]">
-              <div className="tb-panel px-5 py-4 text-center max-w-[300px]">
+              <div className="tb-panel tb-panel-glow px-5 py-4 text-center max-w-[300px]">
                 <p className="text-[22px] mb-1">🗺️</p>
                 <p className="tb-title text-[13px] mb-1">Map offline</p>
                 <p className="text-[11px] text-zinc-300 leading-snug mb-3">
@@ -373,7 +373,7 @@ export default function BibleMap() {
           totalDist += getDistanceKm(paulLocs[i].lat, paulLocs[i].lng, paulLocs[i + 1].lat, paulLocs[i + 1].lng);
         }
         return (
-          <div className="tb-panel p-3 flex items-center gap-3 border-[2px] border-amber-300/35">
+          <div className="tb-panel tb-panel-glow p-3 flex items-center gap-3 border-[2px] border-amber-300/35">
             <span className="text-2xl">🚀</span>
             <div className="flex-1">
               <p className="tb-gold-text text-[11px] font-black tracking-wide">
@@ -416,7 +416,7 @@ export default function BibleMap() {
             <div
               key={loc.name}
               onClick={() => handleLocClick(loc)}
-              className="tb-panel p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
+              className="tb-panel tb-panel-glow p-2 flex flex-col items-center gap-1.5 active:scale-[0.95] transition-all cursor-pointer"
             >
               <div className="w-full aspect-square rounded-[10px] overflow-hidden relative border border-amber-200/20">
                 <img
@@ -444,7 +444,7 @@ export default function BibleMap() {
             <div
               key={loc.name}
               onClick={() => handleLocClick(loc)}
-              className="tb-panel p-4 active:scale-[0.98] transition-all cursor-pointer"
+              className="tb-panel tb-panel-glow p-4 active:scale-[0.98] transition-all cursor-pointer"
             >
               <div className="flex items-start gap-3">
                 <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-amber-200/20" loading="lazy" />

@@ -687,7 +687,7 @@ export default function Store() {
           </div>
 
           {/* Tips */}
-          <div className="mt-6 p-4 rounded-xl tb-panel border border-[#8a530f]/20">
+          <div className="mt-6 p-4 rounded-xl tb-panel tb-panel-glow border border-[#8a530f]/20">
             <p className="tb-gold-text text-sm font-bold mb-2">💡 Pro Tips</p>
             <ul className="text-gray-400 text-xs space-y-1.5">
               <li>• Read consistently every day to maximize gem earnings</li>

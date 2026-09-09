@@ -769,7 +769,7 @@ export default function Bible() {
         >
           ← Back to {view.book} {view.chapterNum}
         </button>
-        <div className="tb-panel p-6 text-center space-y-4">
+        <div className="tb-panel tb-panel-hero p-6 text-center space-y-4">
           <div className="text-4xl">🙏</div>
           <h1 className="tb-title text-xl">
             {view.book} {view.chapterNum} – Devotion
@@ -876,7 +876,7 @@ export default function Bible() {
       </div>
 
       {/* OT/NT Toggle */}
-      <div className="tb-panel grid grid-cols-2 gap-1 p-1 overflow-hidden">
+      <div className="tb-panel tb-panel-glow grid grid-cols-2 gap-1 p-1 overflow-hidden">
         <button
           onClick={() => setTestament("ot")}
           className={`py-3 rounded-xl text-sm font-black transition-all active:scale-95 ${
@@ -2965,7 +2965,7 @@ function ChapterReader({
           style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
         >
           <div
-            className="tb-panel border-2 border-yellow-500/60 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl"
+            className="tb-panel tb-panel-hero border-2 border-yellow-500/60 rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl"
             style={{
               animation:
                 "celebrationPop 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards",
