@@ -10,7 +10,7 @@ import {
   type PetMood,
 } from "@/data/storeItems";
 import { getPetDialogue, getRandomMessage } from "@/data/petDialogues";
-import { getPetSprite, type PetExpression as SpriteExpression } from "@/data/petSprites";
+import { getPetExpressionArt, type PetExpression as SpriteExpression } from "@/data/petSprites";
 
 // ─── Floating Pet Companion ─────────────────────────────────
 // Simplified: normal wandering pet only, no peek-mode, no text-blocking prank.
@@ -742,9 +742,8 @@ export default function FloatingPet() {
       >
         <div className="pet-alive-container relative">
           {(() => {
-            const petKey = pet.id.replace('pet_', '');
             const spriteExpression: SpriteExpression = isDancing ? 'dance' : (displayExpression as SpriteExpression);
-            const spriteUrl = getPetSprite(petKey, spriteExpression);
+            const spriteUrl = getPetExpressionArt(petKey, spriteExpression);
             return spriteUrl ? (
               <img
                 src={spriteUrl}
