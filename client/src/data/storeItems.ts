@@ -657,11 +657,11 @@ export const PROFILE_FRAMES: StoreItem[] = [
 export const PETS: StoreItem[] = [
   {
     id: "pet_cat",
-    name: "Faithy Pet",
+    name: "Coco Pet",
     category: "pets",
     price: 120,
     emoji: "🐱",
-    description: "A faithful companion",
+    description: "Seonguk's real-life cat",
     rarity: "rare",
     petEmoji: "🐱",
   },

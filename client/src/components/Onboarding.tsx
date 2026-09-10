@@ -133,7 +133,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
         teensBible.gems = (teensBible.gems || 0) + 50;
         localStorage.setItem("teensBible", JSON.stringify(teensBible));
         window.dispatchEvent(new CustomEvent("gems-changed", { detail: teensBible.gems }));
-        // Give free starter pet (Faithy Pet - pet_cat)
+        // Give free starter pet (Coco Pet - pet_cat)
         const inv = getInventory();
         if (!inv.ownedItems.includes("pet_cat")) {
           inv.ownedItems.push("pet_cat");
@@ -607,7 +607,7 @@ export default function Onboarding({ onComplete, onCancel }: OnboardingProps) {
         </p>
         <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border border-purple-500/30">
           <p className="text-yellow-300 text-sm font-bold mb-1">🎁 Welcome Gift!</p>
-          <p className="text-purple-200 text-xs">💎 50 Gems + 🐱 Faithy Pet</p>
+          <p className="text-purple-200 text-xs">💎 50 Gems + 🐱 Coco Pet</p>
         </div>
         <button
           onClick={onComplete}
