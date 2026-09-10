@@ -20,7 +20,7 @@ import {
   type ItemCategory,
   type Rarity,
 } from "@/data/storeItems";
-import { getPetCardArt, getPetSprite, type PetExpression } from "@/data/petSprites";
+import { getPetCardArt, getPetExpressionArt, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import FantasyIcon, { type FantasyIconName } from "@/components/FantasyIcon";
@@ -897,8 +897,8 @@ export default function Store() {
                 <div className="flex justify-around">
                   {(['excited', 'love', 'sleepy', 'cool'] as PetExpression[]).map(expr => (
                     <div key={expr} className="text-center">
-                      {getPetSprite(petId, expr) ? (
-                        <img src={getPetSprite(petId, expr)!} alt={expr} className="w-10 h-10 object-contain mx-auto" />
+                      {getPetExpressionArt(petId, expr) ? (
+                        <img src={getPetExpressionArt(petId, expr)!} alt={expr} className="w-10 h-10 object-contain mx-auto" />
                       ) : (
                         <span className="text-xl">😊</span>
                       )}
