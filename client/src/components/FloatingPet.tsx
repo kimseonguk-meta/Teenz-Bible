@@ -742,6 +742,7 @@ export default function FloatingPet() {
       >
         <div className="pet-alive-container relative">
           {(() => {
+            const petKey = pet.id.replace('pet_', '');
             const spriteExpression: SpriteExpression = isDancing ? 'dance' : (displayExpression as SpriteExpression);
             const spriteUrl = getPetExpressionArt(petKey, spriteExpression);
             return spriteUrl ? (
