@@ -25,6 +25,24 @@ export function getPetSprite(petId: string, expression: PetExpression): string |
   return sprites[expression] || sprites.normal;
 }
 
+// Luna-style portrait card art for store cards / profile (8 pets)
+// High-quality illustrated portraits; lamb reuses the Luna brand icon.
+const PET_CARD_ART: Record<string, string> = {
+  cat: '/art-assets/pets/pet-cat.webp',
+  puppy: '/art-assets/pets/pet-puppy.webp',
+  lamb: '/art-assets/pets/pet-lamb.webp',
+  lion: '/art-assets/pets/pet-lion.webp',
+  owl: '/art-assets/pets/pet-owl.webp',
+  dove: '/art-assets/pets/pet-dove.webp',
+  eagle: '/art-assets/pets/pet-eagle.webp',
+  fox: '/art-assets/pets/pet-fox.webp',
+};
+
+// Helper to get the Luna-style card art for a pet (store cards, profile equipped pet)
+export function getPetCardArt(petId: string): string | null {
+  return PET_CARD_ART[petId] || null;
+}
+
 // Helper to get the normal/default sprite (for store cards)
 export function getPetDefaultSprite(petId: string): string | null {
   const sprites = petSprites[petId];

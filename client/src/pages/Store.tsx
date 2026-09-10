@@ -20,7 +20,7 @@ import {
   type ItemCategory,
   type Rarity,
 } from "@/data/storeItems";
-import { getPetDefaultSprite, getPetSprite, type PetExpression } from "@/data/petSprites";
+import { getPetCardArt, getPetSprite, type PetExpression } from "@/data/petSprites";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import FantasyIcon, { type FantasyIconName } from "@/components/FantasyIcon";
@@ -210,11 +210,11 @@ export default function Store() {
           <RarityBadge rarity={item.rarity} />
         </div>
         <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center h-12" onClick={() => setPreviewItem(item)}>
-          {item.category === 'pets' && getPetDefaultSprite(item.id.replace('pet_', '')) ? (
+          {item.category === 'pets' && getPetCardArt(item.id.replace('pet_', '')) ? (
             <>
               {!imgLoaded[item.id] && <Skeleton className="w-12 h-12 rounded-full" />}
               <img
-                src={getPetDefaultSprite(item.id.replace('pet_', ''))!}
+                src={getPetCardArt(item.id.replace('pet_', ''))!}
                 alt={item.name}
                 className={`w-12 h-12 object-contain transition-opacity duration-200 ${imgLoaded[item.id] ? 'opacity-100' : 'opacity-0 absolute'}`}
                 onLoad={() => setImgLoaded(prev => ({ ...prev, [item.id]: true }))}
@@ -347,8 +347,8 @@ export default function Store() {
                     <RarityBadge rarity={item.rarity} />
                   </div>
                   <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center" onClick={() => setPreviewItem(item)}>
-                    {item.category === 'pets' && getPetDefaultSprite(item.id.replace('pet_', '')) ? (
-                      <img src={getPetDefaultSprite(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
+                    {item.category === 'pets' && getPetCardArt(item.id.replace('pet_', '')) ? (
+                      <img src={getPetCardArt(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
                     ) : (
                       <span className="tb-medallion w-14 h-14 text-2xl">{item.emoji}</span>
                     )}
@@ -835,8 +835,8 @@ export default function Store() {
             <div className="flex flex-col items-center gap-3 max-w-xs w-full" onClick={(e) => e.stopPropagation()}>
               {/* Character image */}
               <div className="w-32 h-32 flex items-center justify-center">
-                {getPetDefaultSprite(petId) ? (
-                  <img src={getPetDefaultSprite(petId)!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
+                {getPetCardArt(petId) ? (
+                  <img src={getPetCardArt(petId)!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
                 ) : (
                   <span className="text-7xl">{previewItem.petEmoji}</span>
                 )}
