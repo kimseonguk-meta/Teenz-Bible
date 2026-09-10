@@ -49,7 +49,7 @@ const mapLocations: Record<string, MapLocation[]> = {
 const TAB_INFO: { key: string; label: string; emoji: string; center: [number, number]; zoom: number }[] = [
   { key: "jerusalem", label: "Jerusalem", emoji: "🏛️", center: [31.7767, 35.2345], zoom: 12 },
   { key: "galilee", label: "Galilee", emoji: "🐟", center: [32.78, 35.45], zoom: 10 },
-  { key: "paul", label: "Paul's Journeys", emoji: "🚀", center: [38.5, 28.0], zoom: 5 },
+  { key: "paul", label: "Paul's Journeys", emoji: "⛵", center: [38.5, 28.0], zoom: 5 },
 ];
 
 type ViewMode = "list" | "grid";
@@ -321,7 +321,7 @@ export default function BibleMap() {
                 : "tb-soft-button text-zinc-300"
             }`}
           >
-            {tab.emoji} {tab.label}
+            <span className="tb-medallion-xs">{tab.emoji}</span>{tab.label}
           </button>
         ))}
       </div>
@@ -374,7 +374,7 @@ export default function BibleMap() {
         }
         return (
           <div className="tb-panel tb-panel-glow p-3 flex items-center gap-3 border-[2px] border-amber-300/35">
-            <span className="text-2xl">🚀</span>
+            <span className="tb-medallion w-11 h-11 text-xl">⛵</span>
             <div className="flex-1">
               <p className="tb-gold-text text-[11px] font-black tracking-wide">
                 Paul's Total Journey
@@ -386,7 +386,7 @@ export default function BibleMap() {
                 {`Across ${paulLocs.length} cities — from Antioch to Rome!`}
               </p>
             </div>
-            <span className="text-2xl">🏛️</span>
+            <span className="tb-medallion w-11 h-11 text-xl">🏛️</span>
           </div>
         );
       })()}
@@ -425,7 +425,7 @@ export default function BibleMap() {
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                <div className="absolute top-1 left-1 bg-black/70 border border-amber-200/30 rounded-full w-7 h-7 flex items-center justify-center text-sm shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
+                <div className="absolute top-1 left-1 tb-medallion w-7 h-7 text-sm">
                   {loc.icon}
                 </div>
               </div>
@@ -449,7 +449,7 @@ export default function BibleMap() {
               <div className="flex items-start gap-3">
                 <img src={loc.photo} alt={loc.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-amber-200/20" loading="lazy" />
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-zinc-100 font-black text-sm">{loc.icon} {lang === "en" ? loc.name : loc.nameKo}</h3>
+                  <h3 className="text-zinc-100 font-black text-sm"><span className="tb-medallion-xs">{loc.icon}</span>{lang === "en" ? loc.name : loc.nameKo}</h3>
                   <p className="text-zinc-400 text-xs mt-1 line-clamp-2">
                     {lang === "en" ? loc.desc : loc.descKo}
                   </p>
@@ -540,7 +540,7 @@ export default function BibleMap() {
             {/* Info */}
             <div className="p-5 space-y-3 -mt-2 relative">
               <div className="flex items-center gap-2">
-                <span className="text-3xl">{modalLoc.icon}</span>
+                <span className="tb-medallion w-12 h-12 text-2xl">{modalLoc.icon}</span>
                 <div>
                   <h3 className="tb-title text-[16px]">{lang === "en" ? modalLoc.name : modalLoc.nameKo}</h3>
                   <p className="text-zinc-400 text-xs">{lang === "en" ? modalLoc.nameKo : modalLoc.name}</p>

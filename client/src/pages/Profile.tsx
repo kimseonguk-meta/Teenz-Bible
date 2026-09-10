@@ -999,19 +999,15 @@ export default function Profile() {
       {/* Badges */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">🏆 Badges</h3>
+          <h3 className="text-base font-bold tb-gold-text">🏆 Badges</h3>
         </div>
         <div className="relative">
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
             {badges.map((badge) => {
               const earned = badge.condition(chaptersRead, totalXP);
               return (
-                <div key={badge.name} className={`flex flex-col items-center min-w-[70px] ${!earned ? 'opacity-40' : ''}`}>
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl ${
-                    earned
-                      ? 'bg-purple-600/30 border-2 border-[#ffd678]/80 shadow-[0_0_14px_rgba(255,196,80,0.55),0_0_30px_rgba(255,175,50,0.25)]'
-                      : 'bg-gray-800/50 border-2 border-gray-700/50'
-                  }`}>
+                <div key={badge.name} className="flex flex-col items-center min-w-[70px]">
+                  <div className={`tb-medallion${earned ? '' : '-dim'} w-14 h-14 text-2xl`}>
                     {badge.icon}
                   </div>
                   <p className="text-white text-[10px] font-medium mt-1 text-center">{badge.name}</p>
@@ -1027,7 +1023,7 @@ export default function Profile() {
       {/* Reading Progress */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">📖 Reading Progress</h3>
+          <h3 className="text-base font-bold tb-gold-text">📖 Reading Progress</h3>
         </div>
         <div className="tb-panel tb-panel-glow p-4">
           <div className="flex items-center justify-between mb-2">
@@ -1044,17 +1040,17 @@ export default function Profile() {
       {/* Equipped Items */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base font-bold text-purple-300">✨ Equipped Items</h3>
+          <h3 className="text-base font-bold tb-gold-text">✨ Equipped Items</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="tb-panel tb-panel-glow p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Theme</p>
-            <div className="text-2xl">{equippedTheme?.emoji || "🌙"}</div>
+            <div className="tb-medallion w-12 h-12 text-2xl mx-auto">{equippedTheme?.emoji || "🌙"}</div>
             <p className="text-white text-xs mt-1">{equippedTheme?.name || "Twilight"}</p>
           </div>
           <div className="tb-panel tb-panel-glow p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Reader BG</p>
-            <div className="text-2xl">{equippedReader?.emoji || "🌑"}</div>
+            <div className="tb-medallion w-12 h-12 text-2xl mx-auto">{equippedReader?.emoji || "🌑"}</div>
             <p className="text-white text-xs mt-1">{equippedReader?.name || "Dark"}</p>
           </div>
           <div className="tb-panel tb-panel-glow p-3 text-center">
@@ -1080,7 +1076,7 @@ export default function Profile() {
 
       {/* ============ SETTINGS SECTION ============ */}
       <div className="pt-4 border-t border-gray-800/60">
-        <h3 className="text-lg font-bold text-purple-300 font-display mb-4">⚙️ Settings</h3>
+        <h3 className="text-lg font-bold tb-gold-text font-display mb-4">⚙️ Settings</h3>
 
         {/* Social Settings */}
         <div className="space-y-3 mb-5">

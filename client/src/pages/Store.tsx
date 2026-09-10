@@ -221,7 +221,7 @@ export default function Store() {
               />
             </>
           ) : (
-            <span className="text-3xl">{item.emoji}</span>
+            <span className="tb-medallion w-12 h-12 text-xl">{item.emoji}</span>
           )}
         </div>
         <p className="text-white text-[11px] sm:text-xs font-medium line-clamp-2 min-h-[2.2em] leading-tight break-words [overflow-wrap:anywhere] hyphens-auto w-full overflow-hidden cursor-pointer" onClick={() => setPreviewItem(item)} title={item.name}>{item.name}</p>
@@ -232,7 +232,7 @@ export default function Store() {
           {!owned && item.price > 0 ? (
             <button
               onClick={() => handlePurchase(item)}
-              className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+              className="w-full py-1.5 rounded-lg tb-btn-flat text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
             >
               {item.price} 💎
             </button>
@@ -350,7 +350,7 @@ export default function Store() {
                     {item.category === 'pets' && getPetDefaultSprite(item.id.replace('pet_', '')) ? (
                       <img src={getPetDefaultSprite(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
                     ) : (
-                      <span className="text-3xl">{item.emoji}</span>
+                      <span className="tb-medallion w-14 h-14 text-2xl">{item.emoji}</span>
                     )}
                   </div>
                   <p className="text-white text-[11px] sm:text-xs font-medium line-clamp-2 min-h-[2.2em] leading-tight break-words [overflow-wrap:anywhere] hyphens-auto w-full overflow-hidden cursor-pointer" onClick={() => setPreviewItem(item)} title={item.name}>{item.name}</p>
@@ -361,7 +361,7 @@ export default function Store() {
                       <>
                         <button
                           onClick={() => handlePurchase(item)}
-                          className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
+                          className="w-full py-1.5 rounded-lg tb-btn-flat text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
                         >
                           {item.price} 💎
                         </button>
@@ -434,7 +434,7 @@ export default function Store() {
                   {!isOwned(item.id) && item.price > 0 ? (
                     <button
                       onClick={() => handlePurchase(item)}
-                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold"
+                      className="w-full py-1.5 rounded-lg tb-btn-flat text-white text-[11px] font-bold"
                     >
                       {item.price} 💎
                     </button>
@@ -489,7 +489,7 @@ export default function Store() {
                   {!isOwned(item.id) && item.price > 0 ? (
                     <button
                       onClick={() => handlePurchase(item)}
-                      className="w-full py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-[11px] font-bold"
+                      className="w-full py-1.5 rounded-lg tb-btn-flat text-white text-[11px] font-bold"
                     >
                       {item.price} 💎
                     </button>
@@ -922,7 +922,7 @@ export default function Store() {
                   handlePurchase(previewItem);
                   setPreviewItem(null);
                 }}
-                className="mt-3 px-6 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold text-sm hover:opacity-90 transition-opacity"
+                className="mt-3 px-6 py-2 rounded-xl tb-btn-flat text-white font-bold text-sm hover:opacity-90 transition-opacity"
               >
                 Buy for {previewItem.price} 💎
               </button>
