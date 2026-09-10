@@ -27,6 +27,27 @@ interface HeartParticle {
 
 type PetExpression = "normal" | "excited" | "sleepy" | "love" | "angry" | "dance" | "cool";
 
+// ─── Die-cut sticker art ────────────────────────────────────
+// Floating pet renders as a die-cut sticker (cat silhouette, no card/frame).
+// Pets without sticker art fall back to the card/expression art.
+const PET_STICKER_ART: Record<string, Partial<Record<PetExpression, string>>> = {
+  cat: {
+    normal: "/art-assets/pets/stickers/pet-cat-sticker-normal.webp",
+    excited: "/art-assets/pets/stickers/pet-cat-sticker-excited.webp",
+    love: "/art-assets/pets/stickers/pet-cat-sticker-love.webp",
+    sleepy: "/art-assets/pets/stickers/pet-cat-sticker-sleepy.webp",
+    cool: "/art-assets/pets/stickers/pet-cat-sticker-cool.webp",
+    angry: "/art-assets/pets/stickers/pet-cat-sticker-angry.webp",
+    dance: "/art-assets/pets/stickers/pet-cat-sticker-dance.webp",
+  },
+};
+
+function getPetStickerArt(petKey: string, expression: PetExpression): string | null {
+  const set = PET_STICKER_ART[petKey];
+  if (!set) return null;
+  return set[expression] ?? set.normal ?? null;
+}
+
 export default function FloatingPet() {
   const [location] = useLocation();
 
@@ -272,10 +293,14 @@ export default function FloatingPet() {
     ];
     const msg = interruptMessages[Math.floor(Math.random() * interruptMessages.length)];
     setReaction(msg);
+    // Match the sticker pose/expression to the interruption
+    const interruptExprs: PetExpression[] = ["excited", "dance", "love"];
+    setExpression(interruptExprs[Math.floor(Math.random() * interruptExprs.length)]);
     setTimeout(() => {
       setWiggle(false);
       setIsInterrupting(false);
       setReaction(null);
+      setExpression("normal");
       setTargetPos(getRandomPosition());
     }, 2500);
   }, [dialogue, getRandomPosition]);
@@ -743,8 +768,9 @@ export default function FloatingPet() {
         <div className="pet-alive-container relative">
           {(() => {
             const petKey = pet.id.replace('pet_', '');
-            const spriteExpression: SpriteExpression = isDancing ? 'dance' : (displayExpression as SpriteExpression);
-            const spriteUrl = getPetExpressionArt(petKey, spriteExpression);
+            const effectiveExpression = (isDancing ? 'dance' : displayExpression) as PetExpression;
+            const stickerUrl = getPetStickerArt(petKey, effectiveExpression);
+            const spriteUrl = stickerUrl ?? getPetExpressionArt(petKey, effectiveExpression as SpriteExpression);
             return spriteUrl ? (
               <img
                 src={spriteUrl}
