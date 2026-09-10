@@ -72,6 +72,9 @@ export default function Store() {
   const [isOpening, setIsOpening] = useState(false);
   const [previewingTheme, setPreviewingTheme] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<StoreItem | null>(null);
+  const [previewExpr, setPreviewExpr] = useState<PetExpression | null>(null);
+  // Reset the selected expression whenever a different item is previewed
+  useEffect(() => { setPreviewExpr(null); }, [previewItem?.id]);
   const [petSort, setPetSort] = useState<'default' | 'price_asc' | 'price_desc'>('default');
   const [petFilter, setPetFilter] = useState<'all' | Rarity>('all');
   const [imgLoaded, setImgLoaded] = useState<Record<string, boolean>>({});
@@ -835,8 +838,8 @@ export default function Store() {
             <div className="flex flex-col items-center gap-3 max-w-xs w-full" onClick={(e) => e.stopPropagation()}>
               {/* Character image */}
               <div className="w-32 h-32 flex items-center justify-center">
-                {getPetCardArt(petId) ? (
-                  <img src={getPetCardArt(petId)!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
+                {getPetExpressionArt(petId, previewExpr ?? 'normal') ? (
+                  <img src={getPetExpressionArt(petId, previewExpr ?? 'normal')!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
                 ) : (
                   <span className="text-7xl">{previewItem.petEmoji}</span>
                 )}
@@ -896,14 +899,15 @@ export default function Store() {
                 <p className="text-gray-400 text-xs text-center mb-2">🎭 표정 변화</p>
                 <div className="flex justify-around">
                   {(['excited', 'love', 'sleepy', 'cool'] as PetExpression[]).map(expr => (
-                    <div key={expr} className="text-center">
+                    <button key={expr} type="button" className={`text-center rounded-lg p-1 transition-all ${previewExpr === expr ? 'ring-2 ring-purple-400 bg-purple-400/10' : 'hover:bg-white/5'}`}
+                      onClick={(e) => { e.stopPropagation(); setPreviewExpr(prev => prev === expr ? null : expr); }}>
                       {getPetExpressionArt(petId, expr) ? (
                         <img src={getPetExpressionArt(petId, expr)!} alt={expr} className="w-10 h-10 object-contain mx-auto" />
                       ) : (
                         <span className="text-xl">😊</span>
                       )}
                       <p className="text-gray-500 text-[9px] mt-0.5">{expr}</p>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
