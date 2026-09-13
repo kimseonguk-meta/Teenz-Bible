@@ -23,22 +23,22 @@
         "When the baby was born, Joseph named him Jesus."
       ],
       "verseRanges": [
-        "1-2",
-        "3",
+        "1",
         null,
-        "4",
         null,
-        "5-6",
+        "17",
         null,
-        "7",
-        "8",
-        "9-10",
-        "11-13",
-        "14-15",
-        "16-18",
-        "19-20",
-        "21-22",
-        "23-24",
+        "17",
+        null,
+        "17",
+        "18-19",
+        "18",
+        "19",
+        "20",
+        "20-21",
+        "22",
+        "23",
+        "24",
         "25"
       ]
     },
@@ -51,21 +51,21 @@
         "Herod secretly met with the scholars and told them, \"Go find the kid. When you do, let me know so I can go 'worship' him too.\" (He actually wanted to assassinate him.)",
         "The scholars followed the star right to the house where Jesus was. They were blown away. They bowed down, worshipped him, and unpacked some incredibly expensive gifts: gold, frankincense, and myrrh. But that night, God warned them in a dream not to trust Herod, so they snuck back to their home country using a different route.",
         "§The Midnight Road Trip",
-        "After the scholars left, an angel woke Joseph up in the middle of the night: \"Get up! Take the baby and his mom and run to Egypt. Herod is sending temple guards. Stay there until I give you the all-clear.\"",
+        "After the scholars left, an angel woke Joseph up in the middle of the night: \"Get up! Take the baby and his mom and run to Egypt. Herod is hunting for this child to kill him. Stay there until I give you the all-clear.\"",
         "Joseph didn't ask questions; he packed up and they fled under the cover of darkness.",
         "When Herod realized the scholars had ghosted him, he went into a blind rage. He ordered his soldiers to go into Bethlehem and kill every baby boy under the age of two. It was an absolute tragedy.",
         "Eventually, Herod died. The angel appeared to Joseph again in Egypt and said, \"It's safe now. You can go back.\" But because Herod's brutal son was now in charge of the southern region (Judea), Joseph took his family north to the region of Galilee. They settled in a tough little town called Nazareth."
       ],
       "verseRanges": [
-        "1-4",
-        "5-7",
-        "8-9",
-        "10-13",
+        "1-2",
+        "3-6",
+        "7-8",
+        "9-12",
         null,
-        "14-16",
-        "17",
-        "18-19",
-        "20-23"
+        "13-14",
+        "14",
+        "16",
+        "19-23"
       ]
     },
     {
@@ -82,9 +82,9 @@
       ],
       "verseRanges": [
         "1-2",
-        "3-7",
-        "8-9",
-        "10-12",
+        "4-6",
+        "7",
+        "7-9",
         "13-14",
         "15",
         "16-17"
@@ -109,16 +109,16 @@
       ],
       "verseRanges": [
         "1-3",
-        "4",
+        "3",
         null,
-        "5-6",
+        "3-4",
         null,
-        "7-8",
+        "5-7",
         null,
-        "9-11",
-        "12",
+        "8-10",
+        "11",
         "13-16",
-        "17-22",
+        "18-22",
         "23-25"
       ]
     },
@@ -173,26 +173,26 @@
         "10",
         "11-13",
         null,
-        "14-15",
-        "16-19",
+        "13",
+        "14-16",
         null,
-        "20-22",
+        "17-18",
+        "19-20",
+        null,
+        "21-22",
         "23-24",
         null,
-        "25-27",
-        "28-29",
+        "27-28",
+        "29-30",
         null,
-        "30-31",
-        "32-33",
+        "31-32",
         null,
-        "34-35",
+        "33-37",
         null,
-        "36-39",
+        "38-42",
         null,
-        "40-42",
-        null,
-        "43-45",
-        "46-47",
+        "43-44",
+        "45",
         "48"
       ]
     },
@@ -253,15 +253,15 @@
         "22-23",
         "22-23",
         "24",
+        "25",
         "25-26",
-        "25-26",
-        "27-29",
-        "27-29",
-        "30-33",
-        "30-33",
-        "30-33",
-        "34",
-        null
+        "26",
+        "27",
+        "28-29",
+        "30",
+        "31-32",
+        "33",
+        "34"
       ]
     },
     {
@@ -293,27 +293,27 @@
       ],
       "verseRanges": [
         null,
-        "7:1-2",
-        "7:3",
-        "7:4-5",
-        "7:6",
-        "7:7",
-        "7:8-9",
-        "7:10-11",
-        "7:12",
+        "1-2",
+        "3",
+        "4-5",
+        "6",
+        "7",
+        "9-10",
+        "11",
+        "12",
         null,
-        "7:13-14",
-        "7:14",
-        "7:15-16",
-        "7:17-20",
-        "7:21",
-        "7:22",
-        "7:23",
-        "7:24",
-        "7:25",
-        "7:26-27",
-        "7:28",
-        "7:29"
+        "13-14",
+        "14",
+        "15-16",
+        "17-20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26-27",
+        "28",
+        "29"
       ]
     },
     {
@@ -479,7 +479,7 @@
       "verseRanges": [
         "1",
         null,
-        "1-4",
+        "2",
         "1-4",
         "5-8",
         "5-8",
@@ -526,7 +526,7 @@
         "\"Are you tired? Worn out? Exhausted from trying to follow all the religious rules perfectly? Come hang with me. I'll show you how to take a real rest. Walk with me and work with me—watch how I do it. Learn the unforced rhythms of grace. I won't lay anything heavy or ill-fitting on you. Keep company with me and you'll learn to live freely and lightly.\""
       ],
       "verseRanges": [
-        "1-3",
+        "2-3",
         "4-6",
         null,
         "7-11",
@@ -736,18 +736,18 @@
         "15-16",
         "17",
         "18",
-        "19-22",
+        "19-21",
         null,
-        "23-25",
-        "26-28",
+        "22-23",
+        "24-27",
+        "27",
+        "28",
         "29",
-        "30",
+        "30-31",
         "31",
         "32-33",
-        "34",
-        "35",
         null,
-        "36"
+        "34-36"
       ]
     },
     {
@@ -764,14 +764,14 @@
         "Jesus then headed back to the lake, healed a bunch more people, and pulled off another massive catering miracle—this time feeding 4,000 men (plus families) using just seven loaves of bread and a few little fish."
       ],
       "verseRanges": [
-        "1-5",
-        "6-10",
-        "11-16",
-        "17-22",
-        "23-28",
-        "29-31",
-        "32-34",
-        "35-39"
+        "1-2",
+        "3-6",
+        "10-11",
+        "21-22",
+        "23-27",
+        "27",
+        "28",
+        "29-39"
       ]
     },
     {
@@ -787,13 +787,13 @@
         "\"If any of you want to follow me, you have to put yourself second. You have to take up your cross and follow my lead. If you spend your life desperately trying to save yourself, you'll lose it. But if you give up your life for me, you'll find true life. What's the point of owning the entire world if it costs you your actual soul?\""
       ],
       "verseRanges": [
-        "1-5",
-        "6-9",
-        "10-14",
+        "1-4",
+        "5-12",
+        "13-14",
         "15-17",
-        "18-23",
+        "21-23",
         "24",
-        "25-28"
+        "24-26"
       ]
     },
     {
@@ -806,10 +806,10 @@
         "Moving Mountains When they got back down to the crowd, a man begged Jesus to heal his son who was having severe, life-threatening seizures caused by a demon. The man said, \"I asked your disciples to heal him, but they couldn't.\" Jesus sighed, healed the boy instantly, and the demon left. Later, the disciples asked Jesus privately, \"Why did we fail?\" Jesus told them straight up: \"Because your faith is too small. If you had faith even the size of a tiny mustard seed, you could tell this mountain to move, and it would move. Nothing would be impossible for you.\""
       ],
       "verseRanges": [
-        "1-2",
-        "3-8",
-        "9-16",
-        "17-27"
+        "1",
+        "2-3",
+        "4-8",
+        "14-20"
       ]
     },
     {
@@ -829,8 +829,8 @@
         "3-4",
         "5-9",
         "10-13",
-        "14-18",
-        "19-25",
+        "21-22",
+        "23-25",
         "26-35"
       ]
     },
@@ -876,16 +876,16 @@
         "15",
         "16",
         "17",
-        "18-19",
-        "20",
+        "18",
+        "19",
         "21",
-        "22",
+        "21",
+        "22-23",
         "23-24",
         "25",
         "26",
         "27",
-        "28-30",
-        null
+        "28-30"
       ]
     },
     {
@@ -899,11 +899,11 @@
         "\"You guys know how the Romans do leadership—they boss people around, flex their power, and make everyone serve them. It is not going to be like that with you. > Whoever wants to be a leader among you must be your servant. Whoever wants to be first must be your slave. I, the Son of Man, didn't come here to be served by you. I came to serve you, and to give my life to buy freedom for many.\""
       ],
       "verseRanges": [
-        "1-6",
-        "7-17",
-        "18-25",
-        "26-28",
-        "29-34"
+        "1-7",
+        "8-16",
+        "17-23",
+        "24",
+        "25-28"
       ]
     },
     {
@@ -921,13 +921,13 @@
       ],
       "verseRanges": [
         "1-5",
-        "6-10",
-        "11-15",
-        "16-21",
-        "22-27",
-        "28-33",
-        "34-38",
-        "39-46"
+        "10-14",
+        "15-17",
+        "18-22",
+        "23-27",
+        "28-32",
+        "33-39",
+        "40-46"
       ]
     },
     {
@@ -945,13 +945,13 @@
       ],
       "verseRanges": [
         "1-3",
-        "4-9",
-        "10-18",
-        "19-24",
-        "25-28",
+        "4-7",
+        "8-14",
+        "15-18",
+        "19-22",
+        "23-28",
         "29-33",
-        "34-39",
-        "40-46"
+        "34-40"
       ]
     },
     {
@@ -966,12 +966,12 @@
         "Finally, Jesus looked out over the city and his heart broke. 'Jerusalem! Jerusalem! You murder the prophets and kill the messengers God sends you! How many times have I wanted to gather you up, like a hen gathers her chicks under her wings, but you wouldn't let me.' His voice was filled with pain. 'Now your city is a ghost town. I'm out of here. You won't see me again until you're ready to say, ‘God has blessed him! He’s come, bringing God’s rule!’'"
       ],
       "verseRanges": [
-        "1-6",
-        "7-13",
-        "14-19",
-        "20-26",
-        "27-33",
-        "34-39"
+        "1-7",
+        "8-12",
+        "13-24",
+        "25-28",
+        "29-36",
+        "37-39"
       ]
     },
     {
@@ -988,14 +988,14 @@
         "'But nobody knows the exact day or hour. Not the angels, not even me. Only the Father knows. My arrival will be like the days of Noah. People were just living their lives—eating, drinking, getting married—right up until the day Noah got on the ark. They had no clue what was coming until the flood hit and swept them all away. That's how it will be when I return. So you have to stay ready. You have no idea when your Master is showing up. Be vigilant, because the Son of Man is coming at an hour you don't expect.'"
       ],
       "verseRanges": [
-        "1-7",
-        "8-12",
-        "13-19",
-        "20-26",
-        "27-32",
-        "33-39",
-        "40-44",
-        "45-51"
+        "1-3",
+        "4-8",
+        "9-14",
+        "15-22",
+        "23-28",
+        "29-31",
+        "32-35",
+        "36-44"
       ]
     },
     {
@@ -1016,10 +1016,10 @@
       "verseRanges": [
         "1-4",
         "5-8",
-        "9-14",
-        "15-19",
-        "20-24",
-        "25-28",
+        "9-13",
+        "14-18",
+        "19-24",
+        "25-30",
         "29-31",
         "32-35",
         "36-38",
@@ -1042,14 +1042,14 @@
       ],
       "verseRanges": [
         "1-5",
-        "6-15",
-        "16-20",
-        "21-26",
-        "27-31",
-        "32-40",
-        "41-48",
-        "49-63",
-        "64-75"
+        "6-13",
+        "14-16",
+        "17-25",
+        "26-28",
+        "36-46",
+        "47-56",
+        "57-68",
+        "69-75"
       ]
     },
     {
@@ -1071,13 +1071,13 @@
       "verseRanges": [
         "1-3",
         "4-10",
-        "11-17",
-        "18-26",
-        "27-32",
-        "33-40",
-        "41-48",
-        "49-56",
-        "45-56",
+        "11-14",
+        "15-23",
+        "24-26",
+        "27-31",
+        "32-38",
+        "39-44",
+        "45-54",
         "57-61",
         "62-66"
       ]
@@ -1096,10 +1096,10 @@
       "verseRanges": [
         "1-4",
         "5-8",
-        "9-11",
-        "12-16",
-        "17-19",
-        "20"
+        "8-10",
+        "11-15",
+        "16-18",
+        "18-20"
       ]
     }
   ],
