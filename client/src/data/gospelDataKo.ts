@@ -2184,18 +2184,18 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       "verseRanges": [
         "1-2",
         null,
-        "3-7",
+        "3-6",
         null,
         "8",
         "9",
         "10-11",
-        "12-14",
+        "13-14",
         "15-16",
         null,
         "17-18",
-        "19-21",
+        "19-20",
         null,
-        "22"
+        "21-22"
       ]
     },
     {
