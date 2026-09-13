@@ -303,7 +303,30 @@ export async function claimLeader(code: string, name: string): Promise<Participa
 
 export async function getDayProgress(dateKey: string, targetUid?: string): Promise<DayProgress | null> {
   const snap = await get(ref(db, `${ROOT}/progress/${targetUid || uid()}/${dateKey}`));
-  return snap.exists() ? (snap.val() as DayProgress) : null;
+  const prog = snap.exists() ? (snap.val() as DayProgress) : null;
+  // 리더 수동 인정 병합 (본인 조회 시): 리더는 타인의 progress에 쓸 수 없으므로(규칙상 본인만 쓰기 가능),
+  // 수동 인정은 manual/ 에만 기록된다. 본인이 읽을 때는 이를 합성해 완료로 취급한다.
+  const me = uid();
+  if (!targetUid || targetUid === me) {
+    try {
+      const m = await get(ref(db, `${ROOT}/manual/${me}/${dateKey}`));
+      const mv = m.val() as { done?: boolean } | null;
+      if (mv?.done) {
+        const day = getChallengeDay(dateKey);
+        const base: DayProgress = prog || ({ chapters: {} } as DayProgress);
+        const chapters: Record<string, ChapterProgress> = { ...(base.chapters || {}) };
+        if (day) {
+          for (const c of day.chapters) {
+            const id = chapterKey(day.book, c);
+            const prevCp = chapters[id] as ChapterProgress | undefined;
+            chapters[id] = { ...(prevCp || {}), manual: true, completedAt: prevCp?.completedAt || Date.now() } as ChapterProgress;
+          }
+        }
+        return { ...base, chapters, status: "done" } as DayProgress;
+      }
+    } catch { /* 수동 기록 읽기 실패 시 기존 진도 그대로 */ }
+  }
+  return prog;
 }
 
 /** 장 진행 상황 저장 (읽기 중 수시 호출 — 호출 측에서 스로틀).
@@ -361,7 +384,15 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
     await update(ref(db, base), { status, updatedAt: serverTimestamp() });
     return;
   }
-  if (counted) {
+  // 리더 수동 인정분은 리더가 이미 aggregate에 반영했으므로 중복 가산 방지
+  let manualCredited = false;
+  if (counted && status === "done" && prev !== "done") {
+    try {
+      const m = await get(ref(db, `${ROOT}/manual/${me}/${dateKey}/done`));
+      manualCredited = m.val() === true;
+    } catch { /* 읽기 실패 시 기존 로직대로 집계 */ }
+  }
+  if (counted && !manualCredited) {
     const aggRef = ref(db, `${ROOT}/aggregate/${dateKey}`);
     await runTransaction(aggRef, (cur: any) => {
       const c = cur || { doneCount: 0, readingCount: 0 };
@@ -522,9 +553,21 @@ export async function setManualOverride(
       byUid: me.uid,
       at: serverTimestamp(),
     });
-    // 해당 일차 전 장을 수동 완료로 표시
+    // 집계: 리더가 인정한 완료도 doneCount에 반영 (리더 쓰기 가능 경로)
+    // 단, 게스트/리더 읽기는 공식 집계에서 제외. 이미 done이면 중복 가산 방지.
+    // 학생 본인의 finalizeDayStatus는 manual 기록을 보고 집계를 건너뛰므로 중복 없음.
+    const targetKindSnap = await get(ref(db, `${ROOT}/participants/${targetUid}/kind`)).catch(() => null);
+    const targetKind = targetKindSnap?.val() as string | undefined;
+    const progSnap = await get(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}/reportedStatus`)).catch(() => null);
+    if (progSnap?.val() !== "done" && targetKind !== "guest" && targetKind !== "leader") {
+      const aggSnap = await get(ref(db, `${ROOT}/aggregate/${dateKey}`));
+      const prev = (aggSnap.val() as any)?.doneCount || 0;
+      await update(ref(db, `${ROOT}/aggregate/${dateKey}`), { doneCount: prev + 1 });
+    }
+    // 해당 일차 전 장을 수동 완료로 표시 — 규칙상 본인 progress만 쓰기 가능하므로 본인에게만 시도.
+    // 타인에 대해서는 manual/ 기록을 학생 본인의 getDayProgress가 합성한다.
     const day = getChallengeDay(dateKey);
-    if (day) {
+    if (day && targetUid === me.uid) {
       const updates: Record<string, any> = {
         status: "done",
         updatedAt: serverTimestamp(),
@@ -534,20 +577,6 @@ export async function setManualOverride(
         updates[`chapters/${chapterKey(day.book, c)}/completedAt`] = serverTimestamp();
       }
       await update(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}`), updates);
-    }
-    // 집계: 리더가 인정한 완료도 doneCount에 반영 (트랜잭션은 본인 경로가 아니므로 직접 읽기 후 조정)
-    // 단, 게스트/리더 읽기는 공식 집계에서 제외
-    const targetKindSnap = await get(ref(db, `${ROOT}/participants/${targetUid}/kind`)).catch(() => null);
-    const targetKind = targetKindSnap?.val() as string | undefined;
-    const aggSnap = await get(ref(db, `${ROOT}/aggregate/${dateKey}`));
-    const prev = (aggSnap.val() as any)?.doneCount || 0;
-    // 중복 방지: 이미 done이면 증가하지 않음
-    const progSnap = await get(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}/reportedStatus`));
-    if (progSnap.val() !== "done" && targetKind !== "guest" && targetKind !== "leader") {
-      await update(ref(db, `${ROOT}/aggregate/${dateKey}`), { doneCount: prev + 1 });
-      await update(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}`), { reportedStatus: "done" });
-    } else if (progSnap.val() !== "done") {
-      await update(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}`), { reportedStatus: "done" });
     }
   } else {
     await update(ref(db, `${ROOT}/manual/${targetUid}/${dateKey}`), {
