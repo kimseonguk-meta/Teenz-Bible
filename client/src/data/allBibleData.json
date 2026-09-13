@@ -4303,7 +4303,6 @@
         "§Saul Meets Jesus",
         "Meanwhile, this guy Saul was still on a rampage, basically a one-man wrecking crew against anyone who followed Jesus. He went to the head priest and got a warrant to go to Damascus. His plan? Find any of Jesus' followers, guys or girls, and drag them back to Jerusalem.",
         "So he's on the road, almost at Damascus, when BAM! A super bright light from the sky flashes all around him. He falls to the ground and hears a voice, \"Saul, Saul, why are you trying to take me down?\"",
-        "§Saul Starts Preaching",
         "Saul, completely stunned, asks, \"Who are you, sir?\"",
         "The voice answers, \"I'm Jesus. The one you're hunting. Now get up, go into the city, and you'll be told what to do next.\"",
         "Saul's buddies just stood there, speechless. They heard the voice but didn't see anyone. When Saul got up, he was completely blind. They had to lead him by the hand into Damascus. For three days, he couldn't see a thing and didn't eat or drink anything.",
@@ -4313,6 +4312,7 @@
         "Ananias was like, \"Uh, Lord, are you serious? I've heard all about this guy and the terrible things he's done to your people in Jerusalem. He's here with a warrant from the head priests to arrest all of us!\"",
         "But Jesus told him, \"Don't worry. Go. I've chosen him to be my chosen instrument, to represent me to everyone—people who aren't Jews, kings, and even the Jews themselves. And I'm going to show him how much he's going to have to go through for me.\"",
         "So Ananias went, found the house, and laid his hands on Saul. \"Brother Saul,\" he said, \"the Lord Jesus, the one you saw on the road, sent me so you can see again and be filled with the Holy Spirit.\" Instantly, something like scales fell from Saul's eyes, and he could see! He got up, was baptized, and then they all had a big meal together.",
+        "§Saul Starts Preaching",
         "Saul hung out with the disciples in Damascus for a few days, and then he got right to it. He went to the synagogues and started telling everyone that Jesus is the Son of God. People were shocked. \"Isn't this the guy who was trying to destroy the believers in Jerusalem?\" they said. \"Didn't he come here to arrest them and take them to the head priests?\"",
         "But Saul just got more and more powerful. He completely out-argued the Jews in Damascus, proving to them that Jesus is the Messiah. After a while, some of them got so mad they plotted to kill him. But Saul found out about their plan. They were watching the city gates 24/7 to catch him. So one night, his new friends helped him escape by lowering him in a basket over the city wall.",
         "When Saul got back to Jerusalem, he tried to join the disciples, but they were all scared of him. They didn't believe he was really a follower now. But then a guy named Barnabas took him under his wing and introduced him to the apostles. He told them how Saul had seen Jesus on the road and how he had boldly preached in Jesus' name in Damascus.",
@@ -4329,7 +4329,6 @@
         null,
         "1-2",
         "3-4",
-        null,
         "5",
         "6",
         "7-8",
@@ -4339,6 +4338,7 @@
         "13-14",
         "15-16",
         "17-19",
+        null,
         "20-22",
         "23-25",
         "26-28",
@@ -26644,6 +26644,7 @@
         "Jeshua",
         "Moladah",
         "Beth Pelet",
+        "Hazar Shual",
         "Beersheba and its suburbs",
         "Ziklag",
         "Meconah and its suburbs",
@@ -26706,7 +26707,8 @@
         "33",
         "34",
         "35",
-        "36"
+        "36",
+        "37"
       ]
     },
     {
@@ -27122,21 +27124,23 @@
         "Mordecai wrote all this down and sent letters to all the Jews in King Xerxes' provinces, no matter how far away. He told them to celebrate the 14th and 15th of Adar every year. This was to remember when the Jews got a break from their enemies, the month their sadness turned into joy, and their mourning turned into a holiday for parties, fun, laughter, and exchanging presents and giving gifts to the poor.",
         "And they actually did it. What started then became a tradition, just like Mordecai had written to them.",
         "Haman, son of Hammedatha, the Agagite, the ultimate enemy of all Jews, had schemed to wipe them all out. He had cast the 'pur' (which means 'lot') to freak them out and destroy them. But when Queen Esther stepped in and talked to the king, he issued a written order that Haman's evil plan should totally backfire on him. He and his sons were hanged on the gallows. That's why these days are called 'Purim,' from the word 'pur' or 'lot.'",
-        "So, because of everything written in this letter and everything they had gone through, the Jews agreed to keep it going. It became a tradition for them, their kids, and anyone who joined them later to remember these two days every year on the exact dates written in the letter. These days are meant to be remembered and celebrated by every generation, every family, every province, and every city. These days of Purim must never be forgotten by the Jews; the memory of them must never fade away."
+        "So, because of everything written in this letter and everything they had gone through, the Jews agreed to keep it going. It became a tradition for them, their kids, and anyone who joined them later to remember these two days every year on the exact dates written in the letter. These days are meant to be remembered and celebrated by every generation, every family, every province, and every city. These days of Purim must never be forgotten by the Jews; the memory of them must never fade away.",
+        "Then Queen Esther—Abihail's daughter—and Mordecai the Jew put their full authority behind a second letter about Purim to make it official. They sent letters to all the Jews in all 127 provinces, with words of peace and truth, locking in these days of Purim exactly on schedule. Esther's decree sealed the deal, and the whole thing was written down in the records."
       ],
       "verseRanges": [
         "1-2",
-        "3-6",
-        "7-9",
+        "2-5",
+        "6-10",
         "10-12",
         "13-14",
+        "14",
         "15",
-        "16",
-        "17-21",
-        "22-24",
-        "25",
-        "26-29",
-        "30-32"
+        "16-19",
+        "20-22",
+        "23",
+        "24-26",
+        "27-28",
+        "29-32"
       ]
     },
     {
