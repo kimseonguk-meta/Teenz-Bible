@@ -1718,11 +1718,11 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         null,
-        "1-7",
+        "1-6",
         null,
-        "8-13",
+        "7-12",
         null,
-        "14-18",
+        "11-12",
         null,
         "19-23"
       ]
