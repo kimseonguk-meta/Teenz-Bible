@@ -1745,18 +1745,18 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "근데 그 술 담당 신하는? 요셉을 완전 까먹었어. 그에 대해 싹 다 잊어버린 거임."
       ],
       "verseRanges": [
-        "1-3",
+        "1-4",
         null,
-        "4-6",
-        "7-8",
+        "5-7",
+        "8",
         null,
         "9-11",
         "12-15",
         null,
-        "16-18",
-        "19-20",
+        "16-17",
+        "18-19",
         null,
-        "21-22",
+        "20-22",
         "23"
       ]
     },
