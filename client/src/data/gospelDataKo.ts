@@ -38312,11 +38312,11 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       "verseRanges": [
         null,
         "1",
-        "2",
-        "3",
-        "4",
+        null,
+        "2-5",
+        "4-5",
         "5-6",
-        "7-8",
+        "7-10",
         "9-10"
       ]
     },
@@ -38338,9 +38338,9 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "3-5",
         "6-8",
         "9-12",
-        "13-14",
-        "15-18",
-        "19-20"
+        "13",
+        "14-16",
+        "17-20"
       ]
     },
     {
@@ -38355,11 +38355,11 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         null,
-        "1-3",
-        "4-6",
-        "7-9",
-        "10-11",
-        "12-13"
+        "1-2",
+        "3-5",
+        "6-8",
+        "9-10",
+        "11-13"
       ]
     },
     {
@@ -38380,17 +38380,17 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         null,
-        "1",
-        "2-4",
-        "5",
+        null,
+        "1-3",
+        "4-5",
         null,
         "6-7",
         "8",
         "9-10",
         "11-12",
-        "13",
-        "14-15",
-        "16-18"
+        null,
+        "13-14",
+        "15-18"
       ]
     },
     {
@@ -38411,16 +38411,16 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         null,
-        "1-4",
-        "5-9",
-        "10-13",
-        "14",
-        "15-16",
-        "17-19",
-        "20-21",
-        "22-23",
-        "24-26",
-        "27",
+        "1-3",
+        "4-8",
+        "9-11",
+        null,
+        "12-13",
+        "13-15",
+        "16-18",
+        "19-22",
+        "23-24",
+        "25-27",
         "28"
       ]
     }
