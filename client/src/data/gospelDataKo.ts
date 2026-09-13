@@ -748,14 +748,14 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         null,
         "1-2",
         null,
-        "3-8",
+        "3-7",
         null,
-        "9-11",
+        "8-10",
         null,
-        "12-14",
+        "11-13",
         null,
-        "15-17",
-        "18"
+        "14-16",
+        "17-18"
       ]
     },
     {
