@@ -24682,8 +24682,8 @@
       "verseRanges": [
         "1-6",
         "7",
-        "8-9",
-        "10-12",
+        "8-10",
+        "11-12",
         "13",
         "14-17"
       ]
@@ -24704,12 +24704,12 @@
       "verseRanges": [
         "1",
         "2",
-        "3-5",
-        "6-11",
-        "12",
-        "13-15",
-        "16-17",
-        "18"
+        "3-4",
+        "5-10",
+        "11",
+        "12-14",
+        "15-16",
+        "17-18"
       ]
     },
     {
@@ -24725,9 +24725,9 @@
       ],
       "verseRanges": [
         "1-4",
-        "5-8",
-        "9-10",
-        "11-13",
+        "4-7",
+        "8-9",
+        "10-13",
         "14",
         "15-17"
       ]
@@ -24772,26 +24772,26 @@
         "8",
         "9",
         "10",
-        "11",
         "11-16",
-        null,
-        "12",
-        "12",
-        "13",
-        "13",
-        "14",
-        "15",
-        "16",
+        "11-16",
+        "11-16",
+        "11-16",
+        "11-16",
+        "11-16",
+        "11-16",
+        "11-16",
+        "11-16",
+        "11-16",
         "16-18",
-        null,
-        "19",
-        null,
-        "19",
-        "19",
-        "20",
-        "21",
-        "22",
-        "22"
+        "19-22",
+        "19-22",
+        "19-22",
+        "19-22",
+        "19-22",
+        "19-22",
+        "19-22",
+        "19-22",
+        "19-22"
       ]
     },
     {
@@ -24807,13 +24807,13 @@
         "Then, a massive cloud filled God's Temple. It was so thick that the priests couldn't even do their jobs because of it. It was the glory of God, for real, filling the entire Temple."
       ],
       "verseRanges": [
-        "1-2",
-        "3-4",
-        "5-6",
+        "1",
+        "2-3",
+        "4-6",
         "7-10",
-        "11-12",
-        "13",
-        "14"
+        "11-13",
+        "11-13",
+        "13-14"
       ]
     },
     {
@@ -24850,34 +24850,34 @@
         "“Let’s go, God! Come to your new resting place, you and your powerful Covenant Chest. Let your priests be clothed in salvation, and let your faithful people celebrate all the good things. And God, please don’t turn your back on your chosen one. Remember the loyal love you promised to your servant David.”"
       ],
       "verseRanges": [
-        "1",
-        "2",
+        "1-2",
+        "1-2",
         "3",
         "4-6",
-        "7-8",
-        "9-10",
-        "11-13",
-        "14-15",
-        "16-17",
-        "18",
-        "19-22",
+        "7-9",
+        "10-11",
+        "12-16",
+        "12-16",
+        "12-16",
+        "17",
+        "18-21",
+        "22",
+        "22",
         "23",
-        "24",
-        "25",
-        "26",
-        "27",
-        "28",
-        "29",
-        "30-31",
-        "32-33",
+        "24-25",
+        "24-25",
+        "26-27",
+        "26-27",
+        "28-31",
+        "28-31",
+        "32",
+        "33",
         "34-35",
-        "36",
-        "37",
-        "38",
-        "39",
+        "34-35",
+        "36-39",
+        "36-39",
         "40",
-        "41",
-        "42"
+        "41-42"
       ]
     },
     {
@@ -24894,11 +24894,11 @@
       ],
       "verseRanges": [
         "1-3",
-        "4",
-        "5-7",
-        "8-11",
-        "12",
-        "13-18",
+        "1-3",
+        "4-6",
+        "7-10",
+        "11",
+        "12-18",
         "19-22"
       ]
     },
@@ -24916,12 +24916,12 @@
         "Then Solomon went to Ezion Geber and Elath on the coast of Edom. King Hiram sent him ships and some veteran sailors. They teamed up with Solomon's guys and sailed to Ophir, loaded up fifteen tons of gold, and brought it all back to King Solomon. Wild."
       ],
       "verseRanges": [
-        "1-4",
-        "5",
-        "6-8",
-        "9-10",
-        "11-12",
-        "13-15",
+        "1-6",
+        "1-6",
+        "7-10",
+        "11",
+        "12-13",
+        "14-15",
         "16",
         "17-18"
       ]
@@ -24944,18 +24944,18 @@
         "If you want to read the rest of Solomon's story, from beginning to end, you can check out the records of Nathan the prophet, the prophecy of Ahijah of Shiloh, and the visions of Iddo the seer about Jeroboam son of Nebat. Solomon ruled over all of Israel from Jerusalem for forty years. Then he died and was buried in the City of David, his father's town. His son Rehoboam took over as the next king."
       ],
       "verseRanges": [
-        "1-5",
-        "6-9",
-        "10-13",
-        "14-15",
-        "16-17",
-        "18-19",
-        "20-21",
-        "22",
-        "23",
-        "24-26",
-        "27-29",
-        "30-31"
+        "1-4",
+        "5-8",
+        "9-11",
+        "12",
+        "13-14",
+        "15-16",
+        "17-19",
+        "20",
+        "21",
+        "22-24",
+        "25-28",
+        "29-31"
       ]
     },
     {
@@ -24984,11 +24984,11 @@
         "7",
         "8-9",
         "10-11",
-        "12-13",
-        "14",
+        "12-14",
         "15",
-        "16",
-        "17",
+        "16-17",
+        "16-17",
+        "16-17",
         "18-19"
       ]
     },
@@ -25004,12 +25004,12 @@
         "Rehoboam was pretty smart, though. He made Abijah, Maacah's son, the head honcho among the brothers, basically making it clear he was next in line to be king. He strategically placed his other sons in charge of all the fortress cities throughout Judah and Benjamin, keeping them well-fed and with plenty of wives to keep them happy."
       ],
       "verseRanges": [
-        "1-2",
-        "3-5",
-        "6-10",
-        "11-16",
-        "17-20",
-        "21-23"
+        "1",
+        "2-4",
+        "5-12",
+        "13-17",
+        "18-21",
+        "22-23"
       ]
     },
     {
@@ -25029,15 +25029,15 @@
       ],
       "verseRanges": [
         "1",
-        "2-3",
-        "4",
+        "2-4",
         "5",
-        "6-7",
-        "8",
-        "9-10",
-        "11",
-        "12-13",
-        "14-16"
+        "6",
+        "7-8",
+        "9",
+        "10-11",
+        "12",
+        "13-14",
+        "15-16"
       ]
     },
     {
@@ -25055,14 +25055,14 @@
         "The rest of Abijah's story, everything he did and said, is all written down in the records of the prophet Iddo."
       ],
       "verseRanges": [
-        "1",
-        "2",
-        "3-6",
-        "7-9",
-        "10-12",
-        "13-14",
-        "15-19",
-        "20-21",
+        "1-2",
+        "2-3",
+        "4-7",
+        "8-9",
+        "10-11",
+        "12",
+        "13-18",
+        "19-21",
         "22"
       ]
     },
@@ -25075,12 +25075,12 @@
         "Asa told his people, 'Look, while things are calm and we have this quiet, let's build up some serious defenses. Let's fortify our cities with walls, towers, gates, and bars. We've got this peace because we actually tried to follow God, and he's given us a break from all our problems.' So they got to building and were living the good life.",
         "Asa had a pretty stacked army: 300,000 guys from Judah with shields and spears, plus another 280,000 from Benjamin who were shield-bearers and archers. They were all legit warriors.",
         "Then this guy, Zerah the Ethiopian, rolled up on Asa with a wild army of a million soldiers and 300 chariots, making it all the way to Mareshah. Asa met him there and got ready to throw down in the Valley of Zephathah. Then Asa prayed to God, saying, 'Yo God, you're not scared of big numbers or a show of force when you decide to help. So, help us, God! We're facing this massive army because we trust you and what you're about. Don't let these mere humans win against you!'",
-        "And boom, God wrecked the Ethiopians right in front of Asa and the army of Judah. The Ethiopians dipped and ran for their lives. Asa and his crew chased them all the way to Gerar. So many Ethiopians got taken out that they had zero fight left in them—it was a total massacre, courtesy of God and his squad. The soldiers from Judah walked away with tons of loot. They wrecked all the towns around Gerar, where the people were basically paralyzed with fear because of God, and they just plundered the whole area. They also jacked the herdsmen's animals and brought back a crazy amount of sheep and camels to Jerusalem."
+        "And boom, God wrecked the Ethiopians right in front of Asa and the army of Judah. The Ethiopians dipped and ran for their lives. Asa and his crew chased them all the way to Gerar. So many Ethiopians got taken out that they had zero fight left in them—it was a total massacre at the hands of God and his troops. The soldiers from Judah walked away with tons of loot. They wrecked all the towns around Gerar, where the people were basically paralyzed with fear because of God, and they just plundered the whole area. They also jacked the herdsmen's animals and brought back a crazy amount of sheep and camels to Jerusalem."
       ],
       "verseRanges": [
         "1",
-        "2-5",
-        "6-7",
+        "2-6",
+        "7",
         "8",
         "9-11",
         "12-15"
@@ -25097,10 +25097,10 @@
         "Asa's cleanup was so intense, he even kicked his own mom, Queen Maacah, off the throne because she'd made this super inappropriate statue of the goddess Asherah. Asa tore it down, smashed it to pieces, and burned it in the Kidron Valley. He didn't manage to get rid of all the local hookup spots that were mixed with religion, which was a bummer. But his heart was in the right place; he was loyal to God, no cap. He took all the gold and silver stuff that he and his dad had dedicated to God and put it back in the Temple. And get this—there was zero war until the thirty-fifth year of Asa's reign."
       ],
       "verseRanges": [
-        "1-5",
-        "6",
-        "7-10",
-        "11-15",
+        "1-6",
+        "7",
+        "8-9",
+        "10-15",
         "16-19"
       ]
     },
@@ -25117,13 +25117,13 @@
         "The rest of Asa's story is all written down in the official records of Judah's kings. In the 39th year of his rule, he got a nasty foot disease. But even then, he didn't ask God for help; he went to the doctors instead. Asa died in the 41st year of his reign. They buried him in a fancy tomb he had built for himself in the City of David, laid him in a crypt filled with perfumes and spices, and had a massive bonfire in his honor."
       ],
       "verseRanges": [
-        "1-2",
-        "3-4",
-        "5-6",
-        "7",
-        "8-11",
-        "12",
-        "13-14"
+        "1",
+        "2-3",
+        "4-5",
+        "6",
+        "7-9",
+        "10",
+        "11-14"
       ]
     },
     {
@@ -25136,10 +25136,10 @@
         "He also had a seriously goated army stationed in Jerusalem. The commanders of the Judah military units, organized by family, were: Captain Adnah with 300,000 soldiers; his second-in-command Captain Jehohanan with 280,000; and his other associate Amasiah son of Zicri, who was a full-on volunteer for God, with 200,000. From the tribe of Benjamin, there was Officer Eliada with 200,000 soldiers armed with bows and shields; and his second was Jehozabad with 180,000 troops ready to fight. These guys were all under the king's direct command, and on top of that, there were all the troops stationed in the fortress cities all over Judah."
       ],
       "verseRanges": [
-        "1-7",
-        "8-10",
-        "11-13",
-        "14-19"
+        "1-6",
+        "7-9",
+        "10-12",
+        "13-19"
       ]
     },
     {
@@ -25183,33 +25183,33 @@
         "1-3",
         "4",
         "5",
+        "5",
         "6",
         "7",
+        "7",
         "8",
-        "9",
-        "10",
-        "11",
+        "9-11",
         "12",
         "13",
         "14",
+        "14",
         "15",
         "16",
+        "16",
         "17",
-        "18",
-        "19",
-        "20",
-        "21",
+        "18-21",
+        "18-21",
         "22",
         "23",
         "24",
-        "25",
-        "26",
+        "25-26",
         "27",
-        "28",
-        "29",
+        "27",
+        "27",
+        "27",
+        "28-29",
         "30",
-        "31",
-        "32",
+        "31-32",
         "33",
         "34"
       ]
@@ -25225,11 +25225,11 @@
         "\"Amariah, the head priest, is in charge of all the cases about worshipping God. Zebadiah, son of Ishmael, who's the leader of the Judah tribe, is in charge of all the regular legal cases. And the Levites will be like the bailiffs, keeping order. So be bold and get it done. And may God be with you as you do your best.\""
       ],
       "verseRanges": [
-        "1-2",
-        "3",
-        "4-5",
-        "6-8",
-        "9-11"
+        "1-3",
+        "4",
+        "5-7",
+        "8-10",
+        "11"
       ]
     },
     {
@@ -25256,22 +25256,22 @@
       ],
       "verseRanges": [
         "1-2",
-        "3",
-        "4-8",
-        "9-11",
-        "12",
-        "13-17",
+        "3-4",
+        "5-9",
+        "10-12",
+        "13",
+        "14-17",
         "18-19",
-        "20-21",
-        "22",
-        "23-24",
-        "25",
-        "26-27",
-        "28-29",
-        "30",
-        "31-32",
-        "33",
-        "34-37"
+        "20",
+        "21",
+        "22-23",
+        "24",
+        "25-26",
+        "27-28",
+        "29-30",
+        "31-33",
+        "34",
+        "35-37"
       ]
     },
     {
@@ -25306,9 +25306,9 @@
         "When Ahaziah's mom, Athaliah, found out her son was dead, she went full-on villain mode. She decided to take power for herself and started by trying to kill off the entire royal family. But Jehosheba, who was King Jehoram's daughter, snatched Ahaziah's baby son, Joash, from the group of princes about to be executed. She hid him and his nanny in a secret room, safe from Athaliah. So Jehosheba, who was not only King Jehoram's daughter and Ahaziah's sister but also married to the priest Jehoiada, saved little Joash from his psycho grandma Athaliah. He stayed hidden with her in the Temple of God for six years, while Athaliah ruled the country, totally clueless that he even existed."
       ],
       "verseRanges": [
-        "1-5",
-        "6-8",
-        "9",
+        "1-6",
+        "7-9",
+        "7-9",
         "10-12"
       ]
     },
@@ -25327,11 +25327,11 @@
         "Jehoiada put the priests and Levites back in charge of God's Temple, just like David had originally set it up. Their job was to offer the proper sacrifices to God as laid out in the laws of Moses, and to lead worship with singing and praise as David had instructed. He also posted guards at the Temple gates so no one who wasn't supposed to be there could just wander in. Then he gathered all the officials and the people and personally escorted the new king down from the Temple, through the main gate, and sat him on the royal throne. The whole city celebrated. And for the first time in a long time, the city was peaceful and quiet—because the tyrant Athaliah was finally gone."
       ],
       "verseRanges": [
-        "1-2",
-        "3-6",
-        "7-9",
-        "10",
-        "11-13",
+        "1-3",
+        "3-7",
+        "8-10",
+        "11",
+        "12-13",
         "14-15",
         "16",
         "17",
@@ -25359,19 +25359,19 @@
       ],
       "verseRanges": [
         "1",
-        "2",
-        "3-4",
-        "5-6",
+        "2-3",
+        "4-6",
         "7",
-        "8",
-        "9-12",
-        "13-14",
-        "15-17",
-        "18-19",
-        "20-21",
-        "22-23",
-        "24-26",
-        "27"
+        "8-9",
+        "10",
+        "11-14",
+        "14-16",
+        "17-19",
+        "20",
+        "21-22",
+        "23-24",
+        "25-27",
+        "25-27"
       ]
     },
     {
@@ -25401,19 +25401,19 @@
         "5-6",
         "7-8",
         "9",
+        "9",
         "10",
-        "11",
-        "12-13",
-        "14",
-        "15-17",
-        "18",
-        "19",
-        "20",
-        "21-23",
-        "24-25",
-        "26",
-        "27",
-        "28"
+        "11-12",
+        "13",
+        "14-15",
+        "16",
+        "16",
+        "17",
+        "18-19",
+        "20-22",
+        "23-24",
+        "25-26",
+        "27-28"
       ]
     },
     {
@@ -25431,15 +25431,15 @@
         "The rest of Uzziah's story, from beginning to end, was written down by the prophet Isaiah, son of Amoz. When Uzziah died, they buried him with his ancestors in a field next to the royal cemetery. Because of his skin disease, he wasn't allowed to be buried in the actual royal tombs. His son Jotham became the next king."
       ],
       "verseRanges": [
-        "1",
-        "2-4",
-        "5-7",
-        "8-9",
-        "10-14",
-        "15-16",
-        "17-18",
-        "19-22",
-        "23"
+        "1-2",
+        "3-5",
+        "6-8",
+        "9-10",
+        "11-15",
+        "16-18",
+        "16-18",
+        "19-21",
+        "22-23"
       ]
     },
     {
@@ -25451,9 +25451,9 @@
         "The rest of Jotham's story, all his wars and everything he did, it's all written down in the official records of the kings of Israel and Judah. He was 25 when he started his reign, and he was king for 16 years in Jerusalem. When Jotham died, they buried him in the City of David, and his son Ahaz took over as the next king."
       ],
       "verseRanges": [
-        "1-3",
-        "4-7",
-        "8-9"
+        "1-2",
+        "3-6",
+        "7-9"
       ]
     },
     {
@@ -25474,8 +25474,8 @@
         "5-8",
         "9-11",
         "12-13",
-        "14-16",
-        "17-21",
+        "14-15",
+        "16-21",
         "22-25",
         "26-27"
       ]
@@ -25497,17 +25497,17 @@
         "Hezekiah and the whole congregation were celebrating like crazy. God had set up a solid foundation for the people's lives—and it all happened so fast!"
       ],
       "verseRanges": [
-        "1",
-        "2-6",
-        "7-8",
-        "9-13",
-        "14-16",
-        "17-21",
-        "22-23",
-        "24-27",
-        "28",
-        "29-34",
-        "35-36"
+        "1-2",
+        "3-9",
+        "10-11",
+        "12-17",
+        "18-19",
+        "20-24",
+        "25-26",
+        "27-30",
+        "31-35",
+        "31-35",
+        "36"
       ]
     },
     {
@@ -25526,14 +25526,14 @@
         "The priests and Levites got the final word. They stood up and blessed the people. And God heard them. The sound of their prayers went all the way up to His holy home in heaven."
       ],
       "verseRanges": [
-        "1-4",
-        "5-9",
+        "1-5",
+        "6-9",
         "10-12",
         "13-17",
         "18-19",
         "20",
         "21-22",
-        "23",
+        "22-23",
         "24-26",
         "27"
       ]
@@ -25554,14 +25554,14 @@
         "Hezekiah made sure this happened all over Judah. He was seriously the best—a good, righteous, and true leader in God's eyes. Everything he did, whether it was for the Temple worship or for following God's laws, he did it with a prayerful heart and totally crushed it. He was a huge success."
       ],
       "verseRanges": [
-        "1-3",
-        "4-5",
-        "6",
-        "7",
-        "8-10",
-        "11",
-        "12",
-        "13-18",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5-7",
+        "8-9",
+        "10",
+        "11-18",
         "19",
         "20-21"
       ]
@@ -25591,19 +25591,19 @@
         "1",
         "2-4",
         "5-6",
-        "7",
-        "8",
+        "6-8",
+        "6-8",
         "9-15",
         "16",
         "17",
-        "18",
-        "19-21",
+        "18-19",
+        "20-21",
         "22-23",
         "24",
         "25-26",
         "27-31",
-        "32",
-        "33"
+        "32-33",
+        "32-33"
       ]
     },
     {
@@ -25621,15 +25621,15 @@
         "In the end, Amon's own servants turned on him and assassinated him right in his own palace. Then, the people of the city went and killed the assassins. After that, they made Josiah, Amon's son, the new king."
       ],
       "verseRanges": [
-        "1-5",
-        "6-8",
+        "1-6",
+        "7-8",
         "9-10",
         "11-13",
-        "14-18",
-        "19-21",
-        "22",
-        "23-24",
-        "25"
+        "14-17",
+        "18-19",
+        "20",
+        "21-23",
+        "24-25"
       ]
     },
     {
@@ -25651,14 +25651,14 @@
       ],
       "verseRanges": [
         "1-2",
-        "3-8",
-        "9-13",
-        "14-16",
-        "17",
-        "18-20",
-        "21-24",
-        "25-27",
-        "28",
+        "3-7",
+        "8-13",
+        "14-17",
+        "18",
+        "19-21",
+        "22-25",
+        "26-28",
+        "26-28",
         "29-31",
         "32",
         "33"
@@ -25686,16 +25686,16 @@
         "1-4",
         "5-6",
         "7-9",
-        "10-12",
-        "13",
-        "14-15",
+        "10-13",
+        "14",
+        "15",
         "16-19",
         "20",
-        "21-22",
-        "23",
-        "24",
-        "25-26",
-        "27"
+        "21",
+        "22-23",
+        "22-23",
+        "24-25",
+        "26"
       ]
     },
     {
@@ -25717,16 +25717,16 @@
         "In the first year of Cyrus, the king of Persia—and this was to make God's message through Jeremiah come true—God prompted King Cyrus to make an official announcement across his whole kingdom. He wrote it down, and this is what it said: 'From Cyrus, king of Persia, a proclamation: God, the God of the heavens, has given me all the kingdoms of the earth. He has also told me to build him a Temple for worship in Jerusalem, which is in Judah. All of you who are God's people are free to go back—and may your God be with you! Let's go!'"
       ],
       "verseRanges": [
-        "1-2",
-        "3",
+        "1-3",
         "4",
         "5",
-        "6",
-        "7",
-        "8-9",
-        "10-12",
-        "13",
-        "14-17",
+        "6-7",
+        "8",
+        "8",
+        "9-10",
+        "11-13",
+        "14",
+        "15-17",
         "18-20",
         "21",
         "22-23"
