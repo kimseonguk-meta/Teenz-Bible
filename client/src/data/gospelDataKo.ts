@@ -3012,10 +3012,10 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "1-4",
         "5-6",
         "7-9",
-        "10-12",
-        "13",
-        "14-15",
-        "16",
+        "9-12",
+        "12",
+        "13-14",
+        "15-16",
         "17-23",
         "24-27"
       ]
