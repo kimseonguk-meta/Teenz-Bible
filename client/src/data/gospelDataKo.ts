@@ -546,14 +546,14 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         "1-3",
-        "4-6",
+        "3-4",
+        "5",
+        "6",
         "7-8",
-        "9",
-        null,
-        "10-13",
+        "9-12",
+        "13",
         "14",
-        "15",
-        "16"
+        "15-16"
       ]
     },
     {
