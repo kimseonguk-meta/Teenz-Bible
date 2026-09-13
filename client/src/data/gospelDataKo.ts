@@ -1088,21 +1088,21 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         null,
-        "1-3",
+        "1-4",
         null,
-        "4-8",
+        "5-10",
         null,
-        "9-11",
-        "12-14",
-        "15-20",
+        "11-13",
+        "14-17",
+        "18-23",
         null,
-        "21-26",
+        "24-29",
         null,
-        "27-36",
+        "30-38",
         null,
-        "37-38",
+        "39-40",
         null,
-        "39-46"
+        "41-46"
       ]
     },
     {
