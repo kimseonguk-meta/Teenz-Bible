@@ -536,7 +536,10 @@ export async function listDayProgress(
   return Object.fromEntries(results);
 }
 
-/** 리더 수동 인정/취소 (사유 필수) */
+/** 리더 수동 인정/취소 (사유 필수).
+ *  멀티 디바이스 대응: 같은 학번(rosterNo)의 모든 참가 기록에 일괄 적용한다.
+ *  리더 화면은 학번당 1행만 보여주므로, 뒤에 숨은 기기별 기록에도 인정이 보여야 한다.
+ *  집계(doneCount)는 학생당 1번만 반영한다. */
 export async function setManualOverride(
   targetUid: string,
   dateKey: string,
@@ -545,21 +548,40 @@ export async function setManualOverride(
 ): Promise<void> {
   await assertLeader();
   const me = auth.currentUser!;
+  // 같은 학번의 모든 기기 entry 찾기
+  const targetSnap = await get(ref(db, `${ROOT}/participants/${targetUid}`)).catch(() => null);
+  const targetVal = targetSnap?.val() as { rosterNo?: number; kind?: string } | null;
+  const rosterNo = targetVal?.rosterNo;
+  let targetUids = [targetUid];
+  if (rosterNo) {
+    const all = await listParticipants().catch(() => [] as { uid: string; p: Participation }[]);
+    const matched = all.filter(({ p }) => p.rosterNo === rosterNo).map(({ uid }) => uid);
+    if (matched.length) targetUids = matched;
+  }
   if (done) {
     if (!reason.trim()) throw new Error("사유를 입력해 주세요");
-    await set(ref(db, `${ROOT}/manual/${targetUid}/${dateKey}`), {
+    const record = {
       done: true,
       reason: reason.trim(),
       byUid: me.uid,
       at: serverTimestamp(),
-    });
+    };
+    for (const u of targetUids) {
+      await set(ref(db, `${ROOT}/manual/${u}/${dateKey}`), record);
+    }
     // 집계: 리더가 인정한 완료도 doneCount에 반영 (리더 쓰기 가능 경로)
-    // 단, 게스트/리더 읽기는 공식 집계에서 제외. 이미 done이면 중복 가산 방지.
+    // 단, 게스트/리더 읽기는 공식 집계에서 제외. 학생당 1번만 가산:
+    // 같은 학번의 어느 기기 기록이라도 이미 done이면 가산하지 않음.
     // 학생 본인의 finalizeDayStatus는 manual 기록을 보고 집계를 건너뛰므로 중복 없음.
-    const targetKindSnap = await get(ref(db, `${ROOT}/participants/${targetUid}/kind`)).catch(() => null);
-    const targetKind = targetKindSnap?.val() as string | undefined;
-    const progSnap = await get(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}/reportedStatus`)).catch(() => null);
-    if (progSnap?.val() !== "done" && targetKind !== "guest" && targetKind !== "leader") {
+    let alreadyDone = false;
+    for (const u of targetUids) {
+      const ps = await get(ref(db, `${ROOT}/progress/${u}/${dateKey}/reportedStatus`)).catch(() => null);
+      if (ps?.val() === "done") {
+        alreadyDone = true;
+        break;
+      }
+    }
+    if (!alreadyDone && targetVal?.kind !== "guest" && targetVal?.kind !== "leader") {
       const aggSnap = await get(ref(db, `${ROOT}/aggregate/${dateKey}`));
       const prev = (aggSnap.val() as any)?.doneCount || 0;
       await update(ref(db, `${ROOT}/aggregate/${dateKey}`), { doneCount: prev + 1 });
@@ -567,7 +589,7 @@ export async function setManualOverride(
     // 해당 일차 전 장을 수동 완료로 표시 — 규칙상 본인 progress만 쓰기 가능하므로 본인에게만 시도.
     // 타인에 대해서는 manual/ 기록을 학생 본인의 getDayProgress가 합성한다.
     const day = getChallengeDay(dateKey);
-    if (day && targetUid === me.uid) {
+    if (day && targetUids.includes(me.uid)) {
       const updates: Record<string, any> = {
         status: "done",
         updatedAt: serverTimestamp(),
@@ -576,15 +598,17 @@ export async function setManualOverride(
         updates[`chapters/${chapterKey(day.book, c)}/manual`] = true;
         updates[`chapters/${chapterKey(day.book, c)}/completedAt`] = serverTimestamp();
       }
-      await update(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}`), updates);
+      await update(ref(db, `${ROOT}/progress/${me.uid}/${dateKey}`), updates);
     }
   } else {
-    await update(ref(db, `${ROOT}/manual/${targetUid}/${dateKey}`), {
-      done: false,
-      reason: reason.trim(),
-      byUid: me.uid,
-      at: serverTimestamp(),
-    });
+    for (const u of targetUids) {
+      await update(ref(db, `${ROOT}/manual/${u}/${dateKey}`), {
+        done: false,
+        reason: reason.trim(),
+        byUid: me.uid,
+        at: serverTimestamp(),
+      });
+    }
   }
 }
 
