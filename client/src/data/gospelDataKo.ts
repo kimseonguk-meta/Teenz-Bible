@@ -447,9 +447,9 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "8-9",
         null,
         "10-12",
-        "13-14",
+        "12-13",
         null,
-        "15-17",
+        "14-17",
         "18"
       ]
     },
