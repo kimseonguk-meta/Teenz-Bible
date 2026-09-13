@@ -32091,7 +32091,7 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         null,
         "1-2",
         "3-9",
-        "10-11",
+        "10-12",
         "13",
         "14-15",
         "16-17",
