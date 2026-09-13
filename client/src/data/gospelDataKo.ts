@@ -32012,8 +32012,8 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "예수님이 대답했어. \"다윗이 배고팠을 때 자기 부하들이랑 뭘 했는지 못 읽어보셨나요? 아비아달 대제사장 시절에 하나님의 집에 들어가서, 제사장 말고는 아무도 먹으면 안 되는 제단 빵을 자기도 먹고 부하들한테도 나눠줬잖아요.\" 그리고 덧붙여 말했어. \"안식일이 우리를 위해 있는 거지, 우리가 안식일을 위해 있는 게 아니에요. 인자는 안식일의 종이 아니라 주인이에요!\""
       ],
       "verseRanges": [
-        "1-2",
-        "3-5",
+        "1-5",
+        "6-7",
         "8-12",
         "13-14",
         "10-13",
@@ -32107,7 +32107,7 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "30-32",
         null,
         "35-38",
-        "39",
+        "39-40",
         "41"
       ]
     },
