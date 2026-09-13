@@ -3378,7 +3378,7 @@
         "John the Baptist said, \"No, no, and no. I'm just the hype man shouting in the desert to get the road ready for the Lord.\"",
         "The very next day, John the Baptist saw Jesus walking toward him. John pointed right at him and yelled to the crowd: \"Look! The Lamb of God, who takes away the sin of the entire world! This is the guy I was talking about. I saw the Holy Spirit come down on him like a dove. He is the Son of God!\"",
         "§Drafting the First Guys",
-        "The next day, two of John the Baptist’s followers (Andrew and John) heard him hype up Jesus again, so they just started following Jesus down the road. Jesus turned around: \"What do you guys want?\"",
+        "The next day, two of John the Baptist’s followers (Andrew and one of his buddies) heard him hype up Jesus again, so they just started following Jesus down the road. Jesus turned around: \"What do you guys want?\"",
         "They were awkward. \"Uh... Rabbi, where are you staying?\"",
         "Jesus smiled. \"Come and see.\" They hung out with him the rest of the day.",
         "Andrew was so excited he immediately ran to find his tough brother, Simon. \"We found the Messiah!\" Andrew brought him to Jesus.",
@@ -3391,31 +3391,31 @@
         "Nathanael was suspicious. \"How do you know me?\"",
         "Jesus dropped a casual flex: \"Before Philip even called you, when you were sitting all by yourself under that fig tree miles away... I saw you.\"",
         "Nathanael’s jaw dropped. \"Rabbi! You are the Son of God! You are the King of Israel!\"",
-        "Jesus laughed. \"You believe just because I said I saw you under a tree? Buckle up, man. You are going to see heaven ripped open and angels going up and down on the Son of Man.\""
+        "Jesus said, \"You believe just because I said I saw you under a tree? Buckle up, man. You are going to see heaven ripped open and angels going up and down on the Son of Man.\""
       ],
       "verseRanges": [
         "1-2",
-        "3-7",
-        "8-10",
+        "3-5",
+        "14",
         null,
-        "11-14",
-        "15-16",
-        "17-22",
-        null,
-        "23-26",
-        "27",
-        "28",
+        "19-23",
+        "21-23",
         "29-31",
-        "32-33",
-        "34",
+        null,
         "35-37",
-        "38-39",
-        "40",
-        "41-42",
+        "38",
+        "39",
+        "40-41",
+        "42",
         "43",
-        "44-46",
-        "47-48",
-        "49-51"
+        "44-45",
+        "46",
+        "46",
+        "47",
+        "48",
+        "48",
+        "49",
+        "50-51"
       ]
     },
     {
@@ -3441,21 +3441,21 @@
       ],
       "verseRanges": [
         "1-2",
-        "3-4",
+        "3",
+        "3",
+        "4",
         "5",
-        "6",
-        "7",
-        "8-9",
-        "10-12",
-        "13",
+        "6-7",
+        "9-10",
+        "11",
         null,
-        "14-16",
-        "17",
-        "18-19",
+        "13-14",
+        "15",
+        "15-16",
+        "18",
+        "19",
         "20",
-        "21",
-        "22",
-        "23-25"
+        "21-25"
       ]
     },
     {
@@ -3514,16 +3514,16 @@
         null,
         "22",
         "23",
-        "24-26",
+        "25-26",
         "27",
         "28-29",
         "29-30",
         "31",
         "32-33",
         "34",
-        "35-36",
-        null,
-        null
+        "34-36",
+        "35",
+        "36"
       ]
     },
     {
@@ -3553,27 +3553,27 @@
         "The dad asked exactly what time the fever broke. The servants said, \"Yesterday at 1:00 PM.\" It was the exact second Jesus had spoken the words. The official and his entire household believed."
       ],
       "verseRanges": [
-        "1-5",
+        "1-4",
+        "4",
         "6-7",
-        "8-12",
-        "13",
-        "14-15",
-        "16-21",
-        "22-23",
-        "24",
+        "7",
+        "9",
+        "10-12",
+        "15",
+        "16",
+        "17",
+        "17-18",
+        "19-20",
+        "21-24",
         "25",
-        "26-28",
-        "29-31",
-        "32-34",
-        "35-36",
-        "37",
-        "38-40",
-        "41-43",
+        "26",
+        "28-30",
+        "39-42",
         null,
-        "44-47",
-        "48-49",
-        "50-52",
-        "53-54"
+        "46-47",
+        "50",
+        "51",
+        "52-53"
       ]
     },
     {
@@ -3591,7 +3591,7 @@
         "The religious police saw the guy carrying his mat and threw a fit: \"It is illegal for you to carry your mat on the Sabbath! You're breaking the rules!\"",
         "The guy panicked. \"The man who healed me told me to pick it up!\"",
         "They demanded, \"Who told you to do that?!\" But the guy didn't even know Jesus's name because Jesus had slipped away into the crowd.",
-        "Later, Jesus found the guy in the Temple and said, \"Look, you are well now. Stop sinning, or something worse may happen to you.\" The guy immediately ran and informered to the Jewish leaders that it was Jesus who healed him.",
+        "Later, Jesus found the guy in the Temple and said, \"Look, you are well now. Stop sinning, or something worse may happen to you.\" The guy immediately ran and informed the Jewish leaders that it was Jesus who healed him.",
         "The leaders tracked Jesus down and started aggressively interrogating him for breaking their Sabbath rules.",
         "Jesus didn't back down. In fact, he doubled down with a claim that made them want to murder him: \"My Father is always at his work to this very day, and I too am working.\"",
         "The leaders absolutely lost their minds. Not only was he breaking the Sabbath, but he was calling God his own personal Father, literally making himself equal with God.",
@@ -3603,25 +3603,25 @@
       ],
       "verseRanges": [
         "1-5",
-        "6-7",
+        "6",
+        "6",
+        "7",
         "8",
-        "9-10",
-        "11-12",
-        "13",
+        "9",
         null,
-        "14",
-        "15-17",
+        "9",
+        "10-11",
+        "12",
+        "13",
+        "14-15",
+        "16",
+        "17-18",
         "18",
+        "19",
         "19-20",
-        "21-24",
-        "25-26",
-        "27-29",
-        "30-32",
-        "33-34",
-        "35-37",
-        "38-40",
-        "41-43",
-        "44-47"
+        "22-23",
+        "25",
+        "39-40"
       ]
     },
     {
@@ -3641,15 +3641,15 @@
       ],
       "verseRanges": [
         "1-4",
-        "5-12",
-        "13-22",
-        "23-26",
+        "5-9",
+        "10-14",
+        "15",
         null,
-        "27-37",
-        "38-47",
-        "48-55",
-        "56-63",
-        "64-71"
+        "16-21",
+        "22-27",
+        "28-34",
+        "52-58",
+        "60-71"
       ]
     },
     {
@@ -3665,13 +3665,13 @@
         "The Temple guards who were sent to arrest him came back to the chief priests empty-handed. \"Why didn't you bring him in?!\" the priests demanded. The tough guards were completely hypnotized: \"No one has ever spoken like this man.\" The Pharisees sneered. \"Did you get fooled too? Do you see any of the leaders believing in him? Only this crowd, who does not know the Law, believes him.\" Nicodemus (the guy who met Jesus at night) tried to defend him: \"Doesn't our law require a fair hearing before we condemn a guy?\" They mocked him. \"Are you from Galilee too? Look into it—no prophet comes out of Galilee.\""
       ],
       "verseRanges": [
-        "1-8",
-        "9-14",
-        "15-25",
-        "26-33",
-        "34-35",
-        "36-41",
-        "42-53"
+        "1-9",
+        "10-13",
+        "14-24",
+        "25-31",
+        "32",
+        "37-39",
+        "45-52"
       ]
     },
     {
@@ -3691,14 +3691,14 @@
         "(Note: \"I AM\" is the sacred, unutterable name of God from the Old Testament. Jesus literally just told them He is the eternal God). The leaders immediately grabbed heavy stones to execute him on the spot, but Jesus hid himself and slipped out of the Temple grounds."
       ],
       "verseRanges": [
-        "1-6",
-        "7-10",
-        "11-16",
-        "17-22",
-        "23-30",
-        "31-33",
-        "34-44",
-        "45-50",
+        "2-6",
+        "7",
+        "7-8",
+        "9-11",
+        "12-20",
+        "21-24",
+        "31-36",
+        "48-51",
         "51",
         "52-55",
         "56-59"
@@ -3719,15 +3719,15 @@
         "Jesus heard they kicked him out and tracked the guy down. \"Do you believe in the Son of Man?\" Jesus asked. \"Who is he, sir?\" the man asked. \"Tell me so I can believe in him.\" Jesus said, \"You have now seen him. In fact, he is the one speaking with you.\" The man dropped to his knees. \"Lord, I believe,\" and he worshipped him."
       ],
       "verseRanges": [
-        "1-4",
-        "5-7",
-        "8-9",
+        "1-5",
+        "6-7",
+        "8",
         "10-12",
-        "13-18",
+        "13-17",
         "19-23",
         "24-30",
-        "31-38",
-        "39-41"
+        "30-34",
+        "35-41"
       ]
     },
     {
@@ -3744,14 +3744,14 @@
         "They lunged to arrest him, but Jesus flawlessly slipped right out of their grasp. He left Jerusalem and crossed back over the Jordan River to the place where John the Baptist had been baptizing, and he stayed there out of their reach. Many people went out to him and believed in him."
       ],
       "verseRanges": [
-        "1-8",
+        "1-6",
         null,
-        "9-18",
-        "19-24",
+        "7-18",
+        "22-24",
         "25-30",
         "31",
-        "32-37",
-        "38-42"
+        "31-33",
+        "39-42"
       ]
     },
     {
@@ -3759,7 +3759,7 @@
       "title": "The Ultimate Flex (Raising the Dead)",
       "paragraphs": [
         "There was a guy named Lazarus who was incredibly sick. He lived in the town of Bethany with his two sisters, Mary and Martha. (This is the same Mary who later poured the expensive perfume on Jesus’s feet).",
-        "The sisters sent an urgent text to Jesus: \"Lord, your absolute best friend is sick.\" When Jesus heard it, he didn't panic. He told his crew, \"This sickness isn't going to end in death. It's happening so that God's glory can be shown, and so the Son of God can be glorified through it.\"",
+        "The sisters sent word to Jesus: \"Lord, the one you love so much is sick.\" When Jesus heard it, he didn't panic. He told his crew, \"This sickness isn't going to end in death. It's happening so that God's glory can be shown, and so the Son of God can be glorified through it.\"",
         "Even though Jesus loved Martha, Mary, and Lazarus deeply, he purposely stayed exactly where he was for two more full days. Finally, he said to his disciples, \"Let's head back to Judea.\" His guys were shocked. \"Rabbi, just a few days ago the religious leaders there were literally trying to stone you to death! And you want to go back?!\" Jesus basically told them that as long as they were walking in the \"light\" (doing God's will), they wouldn't stumble. Then he said, \"Our friend Lazarus has fallen asleep, but I'm going there to wake him up.\" The disciples took it literally: \"Lord, if he's sleeping, he'll get better on his own. Let him rest.\" Jesus had to give it to them straight: \"Lazarus is dead. And for your sake, I'm actually glad I wasn't there, so that you can finally truly believe. Let's go to him.\" Thomas (the pessimist of the group) looked at the rest of the squad and said, \"Well, we might as well go with him so we can all die together.\"",
         "The Confrontation and the Resurrection By the time Jesus arrived, Lazarus had been completely dead and rotting in a stone tomb for four solid days. Since Bethany was only about two miles from Jerusalem, a massive crowd of Jews had come over to comfort Mary and Martha.",
         "When Martha heard Jesus was coming, she ran out to meet him on the road. \"Lord,\" she said, \"if you had been here, my brother wouldn't have died! But I know that even now, God will give you whatever you ask.\" Jesus looked at her. \"Your brother will rise again.\" Martha nodded. \"I know he will rise again in the resurrection at the end of time.\" Jesus dropped one of the most massive, universe-shifting claims in history:",
@@ -3773,17 +3773,17 @@
       ],
       "verseRanges": [
         "1-2",
-        "3-5",
+        "3-4",
         "6-16",
         "17-19",
         "20-24",
         "25-27",
         "28-31",
-        "32-33",
-        "34-37",
-        "38-41",
-        "42-44",
-        "45-57"
+        "33-37",
+        "38-39",
+        "39-41",
+        "43-44",
+        "45-53"
       ]
     },
     {
@@ -3794,7 +3794,7 @@
         "Mary came in carrying a pint jar of pure nard—an incredibly rare, insanely expensive perfume worth an entire year's salary. She cracked it open, poured it all over Jesus's feet, and then humbly wiped his feet with her own hair. The whole house smelled amazing.",
         "But Judas Iscariot—the disciple who was about to betray him—threw a fit. \"Why wasn't this perfume sold for three hundred denarii and the cash given to the poor?!\" (John drops a quick author's note here: Judas didn't actually care about the poor. He was a thief. As the keeper of the team's money bag, he regularly embezzled and stole the cash for himself).",
         "Jesus shut Judas down immediately. \"Leave her alone. It was intended that she should save this perfume for the day of my burial. You will always have the poor among you, but you will not always have me.\"",
-        "Meanwhile, a massive crowd of Jews found out Jesus was at the house. They didn't just come to see Jesus; they wanted to see Lazarus, the walking miracle. Because of this, the chief priests secretly made plans to murder Lazarus too, because he was the walking proof that Jesus was God.",
+        "Meanwhile, a massive crowd of Jews found out Jesus was at the house. They didn't just come to see Jesus; they wanted to see Lazarus, the walking miracle. Because of this, the chief priests secretly made plans to murder Lazarus too, because so many people were starting to believe in Jesus because of him.",
         "The Triumphal Parade The next day, the massive crowds that had come for the Passover festival heard Jesus was heading into Jerusalem. They grabbed palm branches and went out to meet him, screaming at the top of their lungs: \"Hosanna! Blessed is he who comes in the name of the Lord! Blessed is the king of Israel!\"",
         "Jesus found a young donkey and rode it into the city, perfectly fulfilling an ancient prophecy from the Scriptures. At the time, his disciples had no idea what was going on, but after Jesus was glorified, they connected the dots. The Pharisees watched the massive, chaotic parade and threw their hands up in frustration. \"Look! This is getting us nowhere. The entire world has gone after him!\"",
         "The Kernel of Wheat and the Thunder Some Greeks who were in town for the festival tracked down Philip and asked, \"Sir, we want to see Jesus.\" Philip and Andrew went and told Jesus.",
@@ -3805,17 +3805,17 @@
       ],
       "verseRanges": [
         "1-3",
-        "4-6",
-        "7-11",
-        "12-14",
-        "15-18",
-        "19-22",
-        "23-27",
-        "28-29",
-        "30-35",
-        "36-38",
-        "39-46",
-        "47-50"
+        "3",
+        "4-5",
+        "7-8",
+        "9-11",
+        "12-15",
+        "14-16",
+        "20-22",
+        "23-28",
+        "27-28",
+        "29-36",
+        "37-43"
       ]
     },
     {
@@ -3835,15 +3835,15 @@
       ],
       "verseRanges": [
         "1-3",
+        "2",
         "4-5",
         "6-8",
-        "9-11",
-        "12-14",
-        "15-19",
-        "20",
-        "21-29",
-        "30-33",
-        "34-38"
+        "9-10",
+        "12-17",
+        "21",
+        "22-29",
+        "31-33",
+        "36-38"
       ]
     },
     {
@@ -3862,16 +3862,16 @@
         "Peace I leave with you; my own peace I give you. I do not give to you the way the world gives. Do not let your hearts be troubled, and do not be terrified. I have told you this now, before it happens, so that when it does happen, you will believe. I don't have much more time to talk with you. The prince of this world (Satan) is coming. He has no hold over me, but he comes so that the world may learn that I love the Father and do exactly what my Father has commanded me. Come on, let's leave this place.\""
       ],
       "verseRanges": [
-        "1-2",
-        "3-6",
-        "7-8",
-        "9-10",
-        "11-15",
-        "16-18",
-        "19-21",
-        "22-23",
-        "24-27",
-        "28-31"
+        "1",
+        "1-4",
+        "5",
+        "6",
+        "8-11",
+        "12-14",
+        "15-17",
+        "18-21",
+        "22-24",
+        "27-31"
       ]
     },
     {
@@ -3888,10 +3888,10 @@
       ],
       "verseRanges": [
         "1",
-        "2-4",
-        "5-9",
-        "10-16",
-        "17-20",
+        "2",
+        "4-8",
+        "9-14",
+        "18-20",
         "21-25",
         "26-27"
       ]
@@ -3912,14 +3912,14 @@
         "I have told you all these things so that in me you may have peace. In this world you will have trouble, pressure, and pain. But take heart! Stand up straight! I have completely overcome the world.\""
       ],
       "verseRanges": [
-        "1-5",
-        "6-9",
-        "10-12",
-        "13-15",
+        "1-4",
+        "5-7",
+        "12-14",
         "16-18",
-        "19-23",
-        "24-25",
-        "26-28",
+        "19",
+        "20-22",
+        "23-24",
+        "25-28",
         "29-31",
         "32-33"
       ]
@@ -3938,11 +3938,11 @@
       ],
       "verseRanges": [
         "1",
-        "2-6",
-        "7-9",
-        "10-13",
-        "14-17",
-        "18-22",
+        "1-5",
+        "6-8",
+        "9-13",
+        "14-19",
+        "20-23",
         "23-26"
       ]
     },
@@ -3966,15 +3966,15 @@
       ],
       "verseRanges": [
         "1",
-        "2-4",
-        "5-6",
-        "7-10",
-        "11-12",
-        "13-14",
+        "2-3",
+        "4-5",
+        "6-8",
+        "10-11",
+        "12-14",
         "15-18",
         "19-23",
-        "24-26",
-        "27-29",
+        "25-27",
+        "28-29",
         "30-32",
         "33-38",
         "39-40"
@@ -3990,21 +3990,21 @@
         "Pilate desperately tried to set Jesus free, but the Jewish leaders blackmailed him: \"If you let this man go, you are no friend of Caesar! Anyone who claims to be a king opposes the Emperor!\" Hearing that political threat, Pilate completely caved. He sat on the judge's seat. \"Here is your king,\" he said. \"Take him away! Crucify him!\" they shouted. \"Shall I crucify your king?\" Pilate asked. The chief priests committed ultimate treason against God: \"We have no king but Caesar!\" Pilate handed him over to be crucified.",
         "The Skull and The Cross They made Jesus carry his own heavy wooden cross out to a place called The Skull (Golgotha). There, they nailed him to the cross, putting him right in the middle of two other guys. Pilate had a sign fastened to the top of the cross, written in Aramaic, Latin, and Greek: JESUS OF NAZARETH, THE KING OF THE JEWS. The chief priests protested, \"Don't write 'The King of the Jews,' write that this man claimed to be king!\" Pilate shut them down: \"What I have written, I have written.\"",
         "While Jesus was dying, the four Roman soldiers took his clothes and divided them up. But his undergarment was seamless, woven in one piece. They said, \"Let's not tear it. Let's roll dice to see who gets it.\" This fulfilled the ancient prophecy perfectly.",
-        "Jesus's mother, Mary, was standing near the cross with her sister, Mary Magdalene, and Jesus's absolute best friend, John. Even while suffocating in agony, Jesus made sure his mom was taken care of. He looked at her and said, \"Woman, here is your son,\" and looked at John and said, \"Here is your mother.\" From that exact moment, John took her into his own home.",
+        "Jesus's mother, Mary, was standing near the cross with her sister, Mary the wife of Clopas, Mary Magdalene, and Jesus's absolute best friend, John. Even while suffocating in agony, Jesus made sure his mom was taken care of. He looked at her and said, \"Woman, here is your son,\" and looked at John and said, \"Here is your mother.\" From that exact moment, John took her into his own home.",
         "Jesus knew that his massive mission was now completely finished. To fulfill the final Scripture, he said, \"I am thirsty.\" A jar of wine vinegar was there, so they soaked a sponge in it, put it on a stalk of hyssop, and lifted it to his lips. He received the drink, and then shouted his final, world-changing words: \"It is finished.\" He bowed his head and gave up his spirit.",
         "The Blood and the Tomb Because it was the day of Preparation and the Jewish leaders didn't want bodies hanging on crosses during the Sabbath, they asked Pilate to have the legs broken to speed up the deaths. The soldiers shattered the legs of the first two criminals. But when they got to Jesus, they realized he was already dead, so they didn't break his legs (fulfilling another prophecy). Just to be 100% sure, a soldier jammed a massive spear deep into Jesus's side, and a sudden flow of blood and water poured out.",
         "Joseph of Arimathea (a secret disciple) bravely went to Pilate and asked for the body. Nicodemus (the guy who visited Jesus at night in Chapter 3) came with him, bringing a massive, 75-pound mixture of myrrh and aloes. They took Jesus's body, wrapped it tightly in strips of linen with the expensive spices, and laid him in a brand-new stone tomb located in a garden right near where he was crucified. Because the Sabbath was starting at sundown, they rolled the stone closed and left."
       ],
       "verseRanges": [
         "1-3",
-        "4-9",
-        "10-13",
-        "14-18",
-        "19-23",
+        "4-6",
+        "8-11",
+        "12-16",
+        "17-22",
         "24-25",
-        "26-28",
-        "29-32",
-        "33-37",
+        "25-27",
+        "28-30",
+        "31-37",
         "38-42"
       ]
     },
@@ -4024,16 +4024,16 @@
         "(John drops his author's purpose statement here: Jesus performed many other miraculous signs in the presence of his disciples, which are not recorded in this book. But these are written that you may completely believe that Jesus is the Messiah, the Son of God, and that by believing you may have actual life in his name)."
       ],
       "verseRanges": [
-        "1-3",
-        "4-9",
-        "10-11",
+        "1-2",
+        "3-8",
+        "10-12",
         "12-14",
         "15-17",
         null,
-        "18-22",
-        "23-25",
-        "26-30",
-        "31"
+        "19-23",
+        "24-25",
+        "26-29",
+        "30-31"
       ]
     },
     {
@@ -4055,14 +4055,14 @@
       ],
       "verseRanges": [
         "1-2",
-        "3-5",
+        "3-4",
         "6-7",
         "8-10",
-        "11-12",
-        "13",
-        "14",
-        "15-17",
-        "18-20",
+        "15",
+        "15",
+        "16",
+        "17",
+        "18-19",
         "21-23",
         "24",
         "25"
