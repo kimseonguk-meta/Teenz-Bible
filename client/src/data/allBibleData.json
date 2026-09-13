@@ -7852,14 +7852,14 @@
         null,
         "1",
         "2-4",
-        "5-7",
-        "8-11",
+        "5-8",
+        "9-11",
         "12",
-        "13-14",
-        "15-16",
-        "17-19",
-        "20-22",
-        "23-27"
+        "13-15",
+        "16-18",
+        "19-21",
+        "22-25",
+        "26-27"
       ]
     },
     {
@@ -7879,15 +7879,15 @@
       ],
       "verseRanges": [
         null,
-        "1-3",
-        "4-5",
-        "6-8",
-        "9",
-        "10-11",
-        "12",
-        "13-14",
-        "15-16",
-        "17-18"
+        "1-4",
+        "5-7",
+        "8-11",
+        "12-13",
+        "14-17",
+        "18",
+        "19-20",
+        "21-24",
+        "25-26"
       ]
     },
     {
@@ -7903,10 +7903,10 @@
       ],
       "verseRanges": [
         null,
-        "1-3",
-        "4-7",
-        "8-11",
-        "12-15",
+        "1-2",
+        "3-6",
+        "7-10",
+        "13-16",
         "16-18"
       ]
     },
@@ -7914,10 +7914,10 @@
       "num": 4,
       "title": "Quit Being a Salty Hater",
       "paragraphs": [
-        "§Two Kinds of Wisdom",
+        "§Get Serious with God",
         "Hey, where do you think all this drama and fighting comes from? You think it just happens? Nah, man. It's because you're all about what *you* want, and you're ready to throw down for it. You get super salty about what you don't have and you'd even consider taking someone out to get it. You're fiending for what's not yours and will get violent to snatch it.",
         "But you never think to just ask God for it, do you? And you know why? Because you know you're asking for stuff you have no business asking for. You're all a bunch of spoiled brats, each one wanting to be the main character.",
-        "§Submit to God",
+        "§Pick a Side",
         "You're basically two-timing God. If all you care about is your own way, always chasing after what the world thinks is cool, you're making yourself God's opp. And you think God's cool with that? No way. The old saying is true: \"He's a fiercely jealous lover.\" And the stuff He gives you is way better than anything else you'll find. Everyone knows that \"God roasts the proud, but gives an incredible renewal to the humble.\"",
         "So, let God do His thing in you. Tell the devil to go away, and watch him dip. Give a quiet \"bet\" to God, and He'll come close to you in no time. Stop messing around with sin. Clean up your inner life. Quit playing games. It's time to get real. The party's over. Get serious. Bow down to the Boss; it's the only way you'll ever truly grow.",
         "And stop roasting each other, my guys. When you trash-talk your friends, you're basically dissing God's rules. You're supposed to be living out the message, not tagging it with graffiti. God's the one who's the ultimate judge of everyone's story. Who are you to be the judge of someone else's?",
@@ -7927,13 +7927,13 @@
       "verseRanges": [
         null,
         "1-3",
-        "4-5",
+        "2-3",
         null,
-        "6-9",
-        "10-12",
+        "4-6",
+        "7-10",
+        "11-12",
         "13-15",
-        "16-18",
-        "19-20"
+        "16-17"
       ]
     },
     {
@@ -7959,10 +7959,10 @@
         null,
         "7-8",
         "9",
-        "10-12",
-        "13-14",
-        "15-16",
-        "17-19",
+        "10-11",
+        "12-13",
+        "13-15",
+        "16-18",
         "20"
       ]
     }
