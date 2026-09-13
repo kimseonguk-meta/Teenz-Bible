@@ -519,16 +519,16 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "1",
         "2-3",
         "4",
-        "5-6",
+        "5",
+        "6",
+        null,
         "7",
-        null,
         "8",
-        "9",
-        "10",
-        "11-13",
+        "9-10",
+        "10-12",
         null,
-        "14-17",
-        "18-21"
+        "13-16",
+        "17-21"
       ]
     },
     {
