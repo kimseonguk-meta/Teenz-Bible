@@ -29510,10 +29510,10 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         "1",
-        "2",
-        "3-4",
-        "5-13",
-        "14-18",
+        "1",
+        "2-4",
+        "5-14",
+        "15-18",
         "19-21"
       ]
     }
