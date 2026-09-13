@@ -266,13 +266,13 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         "1-5",
-        null,
-        "6-10",
-        "11-14",
-        null,
-        "15-18",
-        "19-21",
-        null,
+        "4-6",
+        "6-9",
+        "10-12",
+        "13-14",
+        "15-17",
+        "18-19",
+        "20-21",
         "22"
       ]
     },
