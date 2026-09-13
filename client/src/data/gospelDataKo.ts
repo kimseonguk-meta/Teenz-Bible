@@ -17504,7 +17504,7 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
         "30",
         "31-36",
         "37",
-        "38",
+        "38-39",
         "40-42",
         "43",
         "44",
