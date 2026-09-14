@@ -40699,7 +40699,7 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       "num": 16,
       "paragraphs": [
         "§일곱 대접",
-        "일곱 재앙을 쏟아붓다",
+        "§일곱 재앙을 쏟아붓다",
         "내가 성전에서 일곱 천사한테 엄청 큰 소리로 명령하는 걸 들었음.\n“시작해! 하나님의 진노가 담긴 일곱 대접을 땅에 쏟아부어라!”",
         "첫 번째 천사가 나가서 땅에 대접을 쏟았더니, 짐승의 표를 받고 그 우상에게 절한 모든 사람들한테 완전 끔찍하고 아픈 종기가 생겨버림.",
         "§대접이 계속된다",
@@ -40714,7 +40714,7 @@ export const gospelDataKo: Record<string, Array<{num: number; title?: string; pa
       ],
       "verseRanges": [
         null,
-        "1",
+        null,
         "1",
         "2",
         null,
