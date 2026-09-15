@@ -262,6 +262,23 @@ export async function joinAsLeaderReader(realName: string): Promise<Participatio
   if (!claimSnap.exists()) throw new Error("리더 권한이 필요합니다");
   const cleanName = (realName || "").replace(/\s+/g, "").slice(0, 20);
   if (!cleanName) throw new Error("실명을 입력해 주세요");
+  // 같은 이름의 리더 읽기 참여가 이미 있으면 중복 등록 차단.
+  // 익명 UID는 기기마다 달라서, 같은 사람이 다른 기기에서 "나도 함께 읽기"를 누르면
+  // 대시보드에 같은 이름이 2개 보이는 문제가 있었음 (2026-09-15 김성욱 중복).
+  const existing = await listParticipants().catch(
+    () => [] as { uid: string; p: Participation }[]
+  );
+  const dupe = existing.find(
+    ({ uid, p }) =>
+      uid !== me &&
+      p.kind === "leader" &&
+      (p.name || "").replace(/\s+/g, "") === cleanName
+  );
+  if (dupe) {
+    throw new Error(
+      `이미 '${cleanName}' 이름으로 함께 읽기 참여 중이에요. 다른 기기에서 등록하셨다면 리더 대시보드의 🗑️로 이전 기록을 지우고 다시 시도해 주세요.`
+    );
+  }
   const entry: Participation = {
     role: "student",
     name: cleanName,
