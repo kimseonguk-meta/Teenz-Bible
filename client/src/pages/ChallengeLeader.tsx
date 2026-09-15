@@ -35,7 +35,9 @@ interface RowState {
   name: string;
   grade: string;
   cls: string;
-  uid: string | null; // 참가 등록한 uid
+  uid: string | null; // 참가 등록한 uid (대표 1개)
+  /** 같은 학번으로 등록된 모든 uid (중복 기기 정리용) */
+  allUids: { uid: string; name: string; progress: DayProgress | null }[];
   progress: DayProgress | null;
   manual: { done: boolean; reason: string } | null;
 }
@@ -76,6 +78,40 @@ function rowStatus(
   if (claim) return claim.status;
   if (day) return realReadingStatus(day, progress);
   return progress?.status || "not-started";
+}
+
+function DupUidRow({
+  name,
+  progress,
+  isMain,
+  onDelete,
+  busy,
+}: {
+  name: string;
+  progress: DayProgress | null;
+  isMain: boolean;
+  onDelete: () => void;
+  busy: boolean;
+}) {
+  const st = progress?.reportedStatus || progress?.status || "not-started";
+  const badge =
+    st === "done" ? "✅ 완료" : st === "reading" ? "📖 읽는 중" : "⚪ 미시작";
+  return (
+    <div className="flex items-center gap-2 bg-black/30 border border-white/10 rounded-lg px-2.5 py-1.5">
+      <span className="flex-1 text-white/80 text-[12px] font-bold truncate">
+        {name}
+        {isMain && <span className="ml-1 text-[10px] text-[#ffd957]">(대표)</span>}
+      </span>
+      <span className="text-[11px] text-white/50">{badge}</span>
+      <button
+        onClick={onDelete}
+        disabled={busy}
+        className="text-[11px] font-bold px-2 py-1 rounded-md border border-red-400/40 text-red-300/90 disabled:opacity-40"
+      >
+        삭제
+      </button>
+    </div>
+  );
 }
 
 function StudentDetail({
@@ -175,6 +211,26 @@ function StudentDetail({
     }
   };
 
+  const handleDeleteUid = async (targetUid: string, targetName: string) => {
+    if (busy) return;
+    if (
+      !window.confirm(
+        `「${targetName}」의 이 기기/계정 기록을 삭제합니다.\n참가 정보·읽기 기록·수동 인정·격려 메시지가 모두 지워지고, 공식 집계에서도 제외됩니다.\n(같은 학번의 다른 기기 기록은 유지됩니다)\n계속할까요?`
+      )
+    )
+      return;
+    setBusy(true);
+    try {
+      await deleteParticipantRecord(targetUid);
+      queuedToast.success("기록을 삭제했어요", { style: { bottom: "5rem" } });
+      onChanged();
+    } catch (e: any) {
+      queuedToast.error(e?.message || "삭제 실패", { style: { bottom: "5rem" } });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const weekLabels = ["월", "화", "수", "목", "금", "토", "일"];
   return (
     <div className="mt-2 bg-black/40 border border-white/10 rounded-xl p-3">
@@ -254,6 +310,28 @@ function StudentDetail({
       {!row.uid && (
         <p className="text-white/40 text-[11px] mt-2">아직 앱에 등록하지 않은 학생이에요</p>
       )}
+      {row.uid && row.allUids.length > 1 && (
+        <div className="mt-3 pt-3 border-t border-white/10">
+          <p className="text-amber-300/90 text-[12px] font-black mb-1">
+            ⚠️ {row.allUids.length}개의 기기/계정으로 등록됨
+          </p>
+          <p className="text-white/40 text-[11px] mb-2">
+            집계는 학번당 1명으로 계산됩니다. 남길 기록 1개만 두고 나머지는 삭제해 주세요.
+          </p>
+          <div className="space-y-1.5">
+            {row.allUids.map((u) => (
+              <DupUidRow
+                key={u.uid}
+                name={u.name}
+                progress={u.progress}
+                isMain={u.uid === row.uid}
+                onDelete={() => handleDeleteUid(u.uid, u.name)}
+                busy={busy}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       {row.uid && (
         <button
           onClick={handleDelete}
@@ -320,13 +398,18 @@ export default function ChallengeLeader() {
     try {
       const parts = await listParticipants();
       const byRoster = new Map<number, { uid: string; p: Participation }>();
+      const byRosterAll = new Map<number, { uid: string; p: Participation }[]>();
       const extraRaw: { uid: string; p: Participation }[] = [];
       for (const { uid, p } of parts) {
-        if (p.role === "student" && p.rosterNo) byRoster.set(p.rosterNo, { uid, p });
-        else if (p.role === "student" && (p.kind === "guest" || p.kind === "leader"))
+        if (p.role === "student" && p.rosterNo) {
+          byRoster.set(p.rosterNo, { uid, p });
+          const arr = byRosterAll.get(p.rosterNo) || [];
+          arr.push({ uid, p });
+          byRosterAll.set(p.rosterNo, arr);
+        } else if (p.role === "student" && (p.kind === "guest" || p.kind === "leader"))
           extraRaw.push({ uid, p });
       }
-      const uids = [...byRoster.values()].map((v) => v.uid);
+      const uids = [...byRosterAll.values()].flat().map((v) => v.uid);
       const progMap = uids.length ? await listDayProgress(dateKey, uids) : {};
       const claimsMap = await getRosterClaims(dateKey).catch(() => ({}));
       setClaims(claimsMap);
@@ -340,12 +423,18 @@ export default function ChallengeLeader() {
       setRows(
         CHALLENGE_ROSTER.map((r) => {
           const hit = byRoster.get(r.no);
+          const all = byRosterAll.get(r.no) || [];
           return {
             no: r.no,
             name: hit?.p.name || "미등록",
             grade: r.grade,
             cls: r.cls,
             uid: hit?.uid || null,
+            allUids: all.map(({ uid, p }) => ({
+              uid,
+              name: p.name || "이름 없음",
+              progress: progMap[uid] || null,
+            })),
             progress: hit ? progMap[hit.uid] || null : null,
             manual: manualMap.get(r.no) || null,
           };

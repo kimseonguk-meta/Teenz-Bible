@@ -66,7 +66,7 @@
             ".read": "auth != null",
             "$rosterNo": {
               ".write": "auth != null",
-              ".validate": "!newData.exists() || (newData.hasChildren(['uid', 'status']) && (newData.child('status').val() == 'reading' || newData.child('status').val() == 'done') && (newData.child('uid').val() == auth.uid || root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()))"
+              ".validate": "((!newData.exists() && (data.child('uid').val() == auth.uid || root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val())) || (newData.exists() && newData.hasChildren(['uid', 'status']) && (newData.child('status').val() == 'reading' || newData.child('status').val() == 'done') && (newData.child('uid').val() == auth.uid || root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val())))"
             }
           }
         }

@@ -962,6 +962,18 @@ export async function setManualOverride(
           reversed = true;
         }
       }
+      if (sawManualClaim || reversed) {
+        // grant 때 세운 primary 표시 레코드도 취소 상태로 변경
+        // (안 하면 대시보드에 ✅가 계속 뜨고 학생 finalize가 manualDone으로 오인한다)
+        await update(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`), {
+          done: false,
+          credited: false,
+          reversed,
+          reason: reason.trim(),
+          byUid: me.uid,
+          at: serverTimestamp(),
+        });
+      }
     } else if (countable) {
       // legacy: rosterNo 없음
       const res = await runTransaction(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`), (cur: unknown) => {
