@@ -1553,8 +1553,8 @@ function ChapterReader({
       if (challengeFinalizedDone.current) return;
       const total = challengeParaTotal.current || 1;
       const exposurePct = (challengeSeen.current.size / total) * 100;
+      // 완료 조건: 노출 80% + 활성 시간 (퀴즈는 선택사항 — isChapterComplete와 동일 기준)
       if (
-        challengeQuizPass.current &&
         exposurePct >= 80 &&
         challengeActiveSec.current >= required
       ) {

@@ -53,7 +53,7 @@ export const CHALLENGE_ROSTER: RosterEntry[] = [
 
 /** 이름 정규화: 앞뒤 공백 제거 + 모든 공백 제거 */
 export function normalizeRosterName(input: string): string {
-  return (input || "").trim().replace(/s+/g, "");
+  return (input || "").trim().replace(/\s+/g, "");
 }
 
 /**
