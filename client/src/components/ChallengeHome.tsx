@@ -15,8 +15,6 @@ import {
   joinAsGuest,
   joinAsLeaderReader,
   claimLeader,
-  leaveChallenge,
-  leaveReading,
   getDayProgress,
   getAggregate,
   getMySummary,
@@ -285,7 +283,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
 
 // ─── 학생: 오늘의 읽기 카드 ────────────────────────────────
 
-function StudentCard({ participation, onLeave, leaveFn }: { participation: Participation; onLeave: () => void; leaveFn?: () => Promise<void> }) {
+function StudentCard({ participation }: { participation: Participation }) {
   const [, setLocation] = useLocation();
   const [today, setToday] = useState<ChallengeDay | null>(() => getTodayChallengeDay());
   const [progress, setProgress] = useState<DayProgress | null>(null);
@@ -488,20 +486,6 @@ function StudentCard({ participation, onLeave, leaveFn }: { participation: Parti
           {participation.kind === "leader" && `${agg.doneCount}명 완료 · 함께 읽는 중 (공식 집계 제외)`}
           {allDone ? " · I'm done ✅" : ""}
         </p>
-        <button
-          onClick={async () => {
-            if (!window.confirm(leaveFn ? "읽기 참여에서 나가시겠어요? 읽기 기록이 삭제됩니다. (리더 자격은 유지돼요)" : "챌린지에서 나가시겠어요? 내 기록이 삭제됩니다.")) return;
-            try {
-              await (leaveFn || leaveChallenge)();
-              onLeave();
-            } catch (e: any) {
-              queuedToast.error(e?.message || "나가기 중 오류", { style: { bottom: "5rem" } });
-            }
-          }}
-          className="mt-2 text-white/25 text-[10px] font-medium underline underline-offset-2"
-        >
-          Leave challenge
-        </button>
       </div>
     </div>
   );
@@ -751,19 +735,6 @@ export default function ChallengeSection() {
               (participation?.role === "leader" && participation.reading)) && (
               <StudentCard
                 participation={participation}
-                onLeave={async () => {
-                  if (participation?.role === "leader") {
-                    // 읽기만 나감 → 리더 자격 유지, 최신 상태 다시 로드
-                    try {
-                      setParticipation(await getMyParticipation());
-                    } catch {
-                      setParticipation({ ...participation, reading: false });
-                    }
-                  } else {
-                    setParticipation(null);
-                  }
-                }}
-                leaveFn={participation?.role === "leader" ? leaveReading : undefined}
               />
             )}
           </div>
