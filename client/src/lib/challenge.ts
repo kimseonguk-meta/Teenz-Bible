@@ -784,19 +784,14 @@ export async function reconcileAggregate(
   const me = auth.currentUser!.uid;
   const day = getChallengeDay(dateKey);
   const parts = await listParticipants();
-  const byRoster = new Map<number, string>();
-  for (const { uid, p } of parts) {
-    if (p.role === "student" && p.rosterNo != null && p.kind !== "guest" && p.kind !== "leader") {
-      byRoster.set(p.rosterNo, uid); // last-wins — 대시보드 행 선택과 동일
-    }
-  }
-  const uids = [...byRoster.values()];
+  const byRoster = pickRosterPrimary(parts);
+  const uids = [...byRoster.values()].map(({ uid }) => uid);
   const progMap = uids.length ? await listDayProgress(dateKey, uids) : {};
   let doneCount = 0;
   let readingCount = 0;
   const claimWrites: { rosterNo: number; claim: RosterClaim }[] = [];
   const claimClears: number[] = [];
-  for (const [rosterNo, u] of byRoster) {
+  for (const [rosterNo, { uid: u }] of byRoster) {
     const prog = progMap[u] || null;
     const m = await getManualOverride(u, dateKey).catch(() => null);
     const manual = m?.done === true;
@@ -847,6 +842,30 @@ export async function listParticipants(): Promise<{ uid: string; p: Participatio
   if (!snap.exists()) return [];
   const v = snap.val() as Record<string, Participation>;
   return Object.entries(v).map(([uid, p]) => ({ uid, p }));
+}
+
+/**
+ * 학번당 대표 UID 선택: 가장 최근에 가입한 기기가 이긴다 (last-wins).
+ * listParticipants()는 UID 사전순으로 반환되므로, 정렬 없이 last-wins를 쓰면
+ * 사전순으로 큰 UID가 뽑히는 버그가 있었음 (2026-09-15 김단아: 구 기기 zQ9…가
+ * 현 기기 bcLb…를 덮어써 claim 39가 통째로 사라지고 대시보드 행도 구 기기를 가리킴).
+ */
+export function pickRosterPrimary(
+  parts: { uid: string; p: Participation }[]
+): Map<number, { uid: string; p: Participation }> {
+  const sorted = [...parts].sort((a, b) => {
+    const ja = a.p.joinedAt || 0;
+    const jb = b.p.joinedAt || 0;
+    if (ja !== jb) return ja - jb;
+    return a.uid < b.uid ? -1 : a.uid > b.uid ? 1 : 0;
+  });
+  const byRoster = new Map<number, { uid: string; p: Participation }>();
+  for (const { uid, p } of sorted) {
+    if (p.role === "student" && p.rosterNo != null && p.kind !== "guest" && p.kind !== "leader") {
+      byRoster.set(p.rosterNo, { uid, p });
+    }
+  }
+  return byRoster;
 }
 
 /** 특정 날짜 전체 학생 진행 상황 (리더만) — 1회성 읽기 */

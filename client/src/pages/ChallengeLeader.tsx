@@ -9,6 +9,7 @@ import { queuedToast } from "@/lib/toastQueue";
 import {
   getMyParticipation,
   listParticipants,
+  pickRosterPrimary,
   listDayProgress,
   getDayProgress,
   setManualOverride,
@@ -397,12 +398,11 @@ export default function ChallengeLeader() {
     setLoading(true);
     try {
       const parts = await listParticipants();
-      const byRoster = new Map<number, { uid: string; p: Participation }>();
+      const byRoster = pickRosterPrimary(parts);
       const byRosterAll = new Map<number, { uid: string; p: Participation }[]>();
       const extraRaw: { uid: string; p: Participation }[] = [];
       for (const { uid, p } of parts) {
         if (p.role === "student" && p.rosterNo) {
-          byRoster.set(p.rosterNo, { uid, p });
           const arr = byRosterAll.get(p.rosterNo) || [];
           arr.push({ uid, p });
           byRosterAll.set(p.rosterNo, arr);
