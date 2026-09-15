@@ -436,16 +436,28 @@ export function getChallengeCtx(
 ): { book: string; chapter: number; dateKey: string } | null {
   try {
     const raw = sessionStorage.getItem("challengeActive");
-    if (!raw) return null;
-    const c = JSON.parse(raw);
-    if (!c.dateKey) return null;
-    if (c.book === book && c.chapter === chapter) return c;
-    // 장 사이를 직접 이동해도 추적되도록: 오늘 읽기 목록에 있으면 추적 대상
-    const day = getChallengeDay(c.dateKey);
-    if (day && day.book === book && day.chapters.includes(chapter)) {
-      return { book, chapter, dateKey: c.dateKey };
+    if (raw) {
+      const c = JSON.parse(raw);
+      if (!c.dateKey) return null;
+      if (c.book === book && c.chapter === chapter) return c;
+      // 장 사이를 직접 이동해도 추적되도록: 오늘 읽기 목록에 있으면 추적 대상
+      const day = getChallengeDay(c.dateKey);
+      if (day && day.book === book && day.chapters.includes(chapter)) {
+        return { book, chapter, dateKey: c.dateKey };
+      }
+      return null;
     }
-    return null;
+    // 폴백: 챌린지 참가자가 성경 탭에서 직접 장을 열었을 때.
+    // 해당 장이 챌린지 일정(오늘 이전 날짜)에 있으면 그 날짜로 추적한다.
+    // (챌린지 카드의 "읽으러 가기"를 거치지 않아도 기록이 남도록)
+    const part = getCachedParticipation();
+    if (!part) return null;
+    const today = sgDateKey();
+    const schedDay = CHALLENGE_SCHEDULE.find(
+      (d) => d.book === book && d.chapters.includes(chapter) && d.date <= today
+    );
+    if (!schedDay) return null;
+    return { book, chapter, dateKey: schedDay.date };
   } catch {
     return null;
   }
