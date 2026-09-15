@@ -103,8 +103,13 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
       setError("이름을 입력해 주세요");
       return;
     }
-    // 실명 확인: 게스트 이름은 선생님들에게 그대로 보인다
-    if (!window.confirm(`"${finalName}" 실명으로 게스트 참여합니다.\n이 이름이 선생님들에게 보여요.`)) return;
+    // 게스트 확정 전 결과 고지: 명단 미노출 + 공식 집계 제외
+    if (
+      !window.confirm(
+        `"${finalName}"(으)로 게스트 참여합니다.\n\n게스트는 39명 명단에 나타나지 않고, 리더님이 보는 공식 집계에도 포함되지 않습니다.\n명단에 있는 학생은 게스트가 아닌 한글 실명으로 다시 입력해 주세요.\n\n계속하시겠습니까?`
+      )
+    )
+      return;
     setBusy(true);
     try {
       const p = await joinAsGuest(finalName);
@@ -125,6 +130,14 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
       setError("이름을 입력해 주세요");
       return;
     }
+    // 한글 실명 검증: 영문 닉네임 오입력(예: Klara) 원천 차단
+    // 명단은 전원 한글 실명 — 한글 없는 입력은 조회 전에 막는다
+    if (role === "student" && !/[가-힣]/.test(finalName)) {
+      setError(
+        "한글 실명을 입력해 주세요. 앱에서 쓰는 영문 닉네임으로는 참가할 수 없습니다."
+      );
+      return;
+    }
     setBusy(true);
     try {
       const p =
@@ -138,8 +151,14 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
       onJoined(p);
     } catch (e: any) {
       const msg = e?.message || "등록 중 오류가 발생했어요";
-      setError(msg);
-      if (msg === "명단에서 이름을 찾지 못했습니다") setNotFound(true);
+      if (msg === "명단에서 이름을 찾지 못했습니다") {
+        setError(
+          `"${finalName}"을(를) 명단에서 찾지 못했습니다. 앱 닉네임이 아닌 한글 실명을 입력했는지 확인해 주세요.`
+        );
+        setNotFound(true);
+      } else {
+        setError(msg);
+      }
     } finally {
       setBusy(false);
     }
@@ -229,7 +248,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
                     {busy ? "등록 중..." : "게스트로 참여하기"}
                   </button>
                   <p className="mt-1.5 text-center text-white/40 text-[11px] font-semibold">
-                    입력한 실명으로 기록돼요 · 공식 집계 제외
+                    명단에 없는 분만 이용해 주세요 · 게스트는 명단에 나타나지 않고 공식 집계에서 제외됩니다
                   </p>
                 </>
               )}
