@@ -1,0 +1,559 @@
+{
+  "book": "1 Chronicles",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "1-4",
+        "2": "1-4",
+        "3": "1-4",
+        "4": "1-4",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9",
+        "10": "9",
+        "11": "10",
+        "12": "11-12",
+        "13": "13-16",
+        "14": "17",
+        "15": "18-19",
+        "16": "20-23",
+        "17": "24-28",
+        "18": "29-31",
+        "19": "32-33",
+        "21": "38-42",
+        "22": "43-51",
+        "23": "43-51",
+        "24": "43-51",
+        "25": "43-51",
+        "26": "43-51",
+        "27": "43-51",
+        "28": "43-51",
+        "29": "43-51",
+        "30": "43-51",
+        "31": "43-51",
+        "32": "51-54"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Adam",
+          "new": "Adam, Seth, and Enosh.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        },
+        {
+          "index": 1,
+          "old": "Mahalalel",
+          "new": "Kenan, Mahalalel, and Jared.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        },
+        {
+          "index": 2,
+          "old": "Methuselah",
+          "new": "Enoch, Methuselah, and Lamech.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        },
+        {
+          "index": 3,
+          "old": "Lamech",
+          "new": "Noah.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "3-9",
+        "2": "10-17",
+        "3": "18-24",
+        "6": "28-29",
+        "7": "28-29",
+        "12": "33",
+        "13": "34-41",
+        "14": "42",
+        "15": "43-44",
+        "16": "45",
+        "17": "46",
+        "18": "47",
+        "19": "48-50",
+        "21": "52-53",
+        "22": "54-55"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "1-3",
+        "2": "1-3",
+        "3": "1-3",
+        "4": "1-3",
+        "5": "1-3",
+        "6": "1-3",
+        "7": "4-9",
+        "8": "4-9",
+        "9": "10-14",
+        "10": "15",
+        "11": "16",
+        "12": "17-18",
+        "13": "19-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-8",
+        "3": "9-10",
+        "4": "11-12",
+        "5": "13",
+        "6": "13",
+        "7": "14",
+        "8": "15",
+        "9": "15",
+        "10": "16",
+        "11": "17-18",
+        "12": "19",
+        "13": "20",
+        "14": "20",
+        "15": "21-23",
+        "16": "24-25",
+        "17": "26",
+        "18": "27-33",
+        "19": "34-40",
+        "20": "40-43"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "2": "4-6",
+        "4": "11-12",
+        "5": "13-15",
+        "6": "16",
+        "7": "17",
+        "8": "18-22",
+        "9": "23-26"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, here's the tea on Reuben's family, Israel's oldest son. Even though Reuben was the firstborn, he totally blew it by hooking up with his own dad's side-chick. Super messed up, right? So, his firstborn rights got handed over to Joseph's sons. He basically got demoted from being the #1 kid in the family tree. And get this, even though Judah's family line became the most powerful and King David came from them, the official 'firstborn' title still went to Joseph's kids.",
+          "new": "So, here's the tea on Reuben's family, Israel's oldest son. Even though Reuben was the firstborn, he totally blew it by hooking up with his dad's concubine. Super messed up, right? So, his firstborn rights got handed over to Joseph's sons. He basically got demoted from being the #1 kid in the family tree. And get this, even though Judah's family line became the most powerful and King David came from them, the official 'firstborn' title still went to Joseph's kids.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "0": "1-14",
+        "1": "15",
+        "2": "16-30",
+        "3": "31-32",
+        "4": "33-38",
+        "5": "39-43",
+        "6": "44-47",
+        "7": "48",
+        "8": "49",
+        "9": "50-53",
+        "10": "54-81"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-12",
+        "2": "13",
+        "3": "14-19",
+        "4": "20-24",
+        "5": "25-29",
+        "6": "30-32",
+        "7": "33-40"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-7",
+        "2": "8-12",
+        "3": "13-28",
+        "4": "29-32",
+        "5": "33-40"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3-6",
+        "7": "19-25",
+        "8": "26-32",
+        "9": "33-34",
+        "10": "35-38"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "1-5",
+        "2": "1-5",
+        "3": "6-7",
+        "4": "8-10",
+        "5": "11-12",
+        "6": "13-14"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "But his guy was too scared and respected him too much, so he wouldn't do it. So Saul just took his own sword and fell on it. Game over. When the armor-bearer saw Saul was dead, he freaked out and did the same thing to himself.",
+          "new": "But his guy was too scared and respected him too much, so he wouldn't do it. So Saul just took his own sword and fell on it. That was the end for Saul. When the armor-bearer saw Saul was dead, he freaked out and did the same thing to himself.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-6",
+        "2": "7-9",
+        "3": "10-11",
+        "4": "10-11",
+        "5": "12-14",
+        "6": "15-19",
+        "7": "20-21",
+        "8": "22-25",
+        "9": "26-47"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "Jashobeam, son of Hacmoni, was the leader of the Thirty. This dude single-handedly took out three hundred guys in one fight. That's lowkey goated.",
+          "new": "Jashobeam, son of Hacmoni, was the leader of the Thirty. This dude single-handedly took out three hundred guys in one fight. No one else came close.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-7",
+        "3": "8-15",
+        "4": "16-17",
+        "5": "18",
+        "7": "18",
+        "8": "19",
+        "9": "20-22",
+        "10": "23-37",
+        "11": "38-40"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "0": "1-14",
+        "1": "1-14",
+        "2": "1-14",
+        "3": "1-14",
+        "4": "1-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "0": "1-7",
+        "1": "8-9",
+        "2": "10",
+        "3": "10",
+        "4": "11-12",
+        "5": "13-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-10",
+        "2": "3-10",
+        "3": "11-13",
+        "4": "14-15",
+        "5": "16",
+        "6": "17-18",
+        "7": "19-22",
+        "8": "23-24",
+        "9": "25-28",
+        "10": "29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "3": "8-19",
+        "4": "20-22",
+        "6": "23-27",
+        "8": "28-29",
+        "10": "30-33",
+        "12": "34-36",
+        "14": "34-36"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 5] Paragraph [5] is an exact duplicate of [4] (confirmed character-identical). Patch format has no paragraph-delete operation; flagged for manual dedup. Kept copy carries the corrected MSG range.",
+        "[para 7] Paragraph [7] is an exact duplicate of [6] (confirmed character-identical). Patch format has no paragraph-delete operation; flagged for manual dedup. Kept copy carries the corrected MSG range.",
+        "[para 9] Paragraph [9] is an exact duplicate of [8] (confirmed character-identical). Patch format has no paragraph-delete operation; flagged for manual dedup. Kept copy carries the corrected MSG range.",
+        "[para 11] Paragraph [11] is an exact duplicate of [10] (confirmed character-identical). Patch format has no paragraph-delete operation; flagged for manual dedup. Kept copy carries the corrected MSG range.",
+        "[para 13] Paragraph [13] is an exact duplicate of [12] (confirmed character-identical). Patch format has no paragraph-delete operation; flagged for manual dedup. Kept copy carries the corrected MSG range."
+      ],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3-6",
+        "3": "7-10",
+        "4": "10-14",
+        "5": "15",
+        "6": "16-27",
+        "7": "16-27",
+        "8": "16-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "3": "5-6",
+        "4": "7-8",
+        "5": "9-11",
+        "6": "12-13",
+        "7": "12-13",
+        "8": "14-17",
+        "9": "14-17",
+        "10": "14-17",
+        "11": "14-17",
+        "12": "14-17",
+        "13": "14-17",
+        "14": "14-17",
+        "15": "14-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4",
+        "3": "5",
+        "4": "6-7",
+        "5": "8",
+        "6": "9-13",
+        "7": "14-15",
+        "8": "14-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "1-3",
+        "2": "4-8",
+        "3": "4-8",
+        "4": "4-8",
+        "5": "4-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "1": "3",
+        "2": "4-7",
+        "4": "9-10",
+        "5": "11-12",
+        "6": "13",
+        "7": "14-15",
+        "10": "18-19",
+        "11": "20-21",
+        "12": "22",
+        "13": "23",
+        "14": "24-27",
+        "15": "28",
+        "16": "29-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "0": "1-4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6",
+        "3": "7-11",
+        "5": "15-17",
+        "6": "18-23",
+        "7": "24",
+        "8": "25-27",
+        "9": "28-31",
+        "10": "32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "1-5",
+        "2": "1-5",
+        "3": "6",
+        "4": "7-18",
+        "5": "19",
+        "6": "20",
+        "7": "20",
+        "8": "21",
+        "9": "22",
+        "10": "23",
+        "11": "24-25",
+        "12": "26-27",
+        "15": "30-31",
+        "16": "30-31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "0": "1-7",
+        "1": "1-7",
+        "2": "8",
+        "3": "9-31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "0": "1-11",
+        "1": "12-16",
+        "2": "16-18",
+        "3": "19",
+        "4": "20-22",
+        "5": "23-28",
+        "6": "29-30",
+        "7": "31-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "13": "16-22",
+        "14": "16-22",
+        "15": "16-22",
+        "16": "16-22",
+        "17": "16-22",
+        "18": "16-22",
+        "19": "16-22",
+        "20": "16-22",
+        "21": "16-22",
+        "22": "16-22",
+        "23": "16-22",
+        "24": "16-22",
+        "25": "16-22",
+        "26": "16-22",
+        "27": "16-22",
+        "34": "30-31",
+        "35": "30-31",
+        "37": "33-34",
+        "38": "33-34"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-7",
+        "2": "8",
+        "3": "9-10",
+        "4": "11-19",
+        "5": "20-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "1": "1-5",
+        "2": "6-8",
+        "3": "9",
+        "4": "10-13",
+        "5": "10-13",
+        "6": "14-19",
+        "7": "20",
+        "8": "21-22",
+        "9": "22-25",
+        "10": "26-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

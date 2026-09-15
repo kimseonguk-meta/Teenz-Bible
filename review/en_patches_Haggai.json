@@ -1,0 +1,48 @@
+{
+  "book": "Haggai",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5",
+        "6": "7",
+        "7": "8",
+        "8": "8-9",
+        "9": "9-11",
+        "10": "12",
+        "11": "13",
+        "12": "14-15"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Paras 3, 5 and 7 are quoted section openers (MSG v5a, v7a, v8a) with no verse content of their own; ranges set to the verse they open."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "3": "4",
+        "4": "5",
+        "5": "6-7",
+        "6": "8",
+        "7": "9",
+        "8": "10-12",
+        "9": "12",
+        "10": "13",
+        "11": "13",
+        "12": "14",
+        "13": "15-17",
+        "14": "18-19",
+        "15": "20-21",
+        "16": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Paras 1-4 are MSG v4's repeated 'Get to work' calls; paras 9-11 are the priest-answer exchange within MSG v12-13. All are legitimate MSG repetitions, ranges set accordingly."
+      ],
+      "ok": false
+    }
+  }
+}

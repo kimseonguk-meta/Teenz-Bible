@@ -1,0 +1,266 @@
+{
+ "fixes": [
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 2,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 하늘에서 완전 대박 쩔고 숨 막히는 또 다른 장면을 봤음. 일곱 천사가 일곱 재앙을 들고 있었는데, 그게",
+   "reason": "Paragraph renders the Rev 15:1 vision: seven angels with the seven last disasters, with whom God's anger is spent (MSG 15:1). No other verse content present."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 3,
+   "old_badge": "3-4",
+   "new_badge": "2",
+   "old_text_start": "2-4 그리고 유리 바다 같은 걸 봤는데, 불빛으로 막 빛나고 있었음. 짐승이랑 그 형상이랑 그 이름의 숫자",
+   "reason": "Paragraph renders only the Rev 15:2 vision: sea of glass shot with fire, the victors standing with harps; it ends with the transitional line that they sang the song of Moses and the Lamb, while the actual song lyrics (MSG 15:3-4) live in the next paragraph. Neither the badge (3-4) nor the in-text '2-4' matches the actual content."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 5,
+   "old_badge": "7-8",
+   "new_badge": "5-8",
+   "old_text_start": "5-8 그 후에 하늘에 있는 성전, 그 증거의 장막 문들이 활짝 열리는 걸 봤음. 일곱 천사가 일곱 재앙을 ",
+   "reason": "Paragraph covers MSG 15:5 (heavenly temple thrown open), 15:6 (seven angels in clean linen with gold sashes), 15:7 (one living creature hands them the seven golden bowls of God's wrath), and 15:8 (smoke fills the temple, no one can enter until the plagues finish)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 2,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 내가 성전에서 일곱 천사한테 엄청 큰 소리로 명령하는 걸 들었음. “시작해! 하나님의 진노가 담긴 일곱 ",
+   "reason": "Paragraph renders MSG 16:1 only: the mega-loud voice from the Temple commanding the seven angels to pour out the seven bowls of God's wrath."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 3,
+   "old_badge": "3",
+   "new_badge": "2",
+   "old_text_start": "2 첫 번째 천사가 나가서 땅에 대접을 쏟았더니, 짐승의 표를 받고 그 우상에게 절한 모든 사람들한테 완전 ",
+   "reason": "Paragraph renders MSG 16:2 only: the first angel pours his bowl on the earth, producing terrible sores on those with the Beast's mark."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 5,
+   "old_badge": "4",
+   "new_badge": "3",
+   "old_text_start": "3 두 번째 천사가 바다에 대접을 쏟으니까, 바다가 피처럼 굳어버리고 그 안에 있던 모든 생물이 다 죽었음.",
+   "reason": "Paragraph renders MSG 16:3 only: the second angel pours his bowl on the sea, which becomes like dead blood, killing every living thing in it."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 6,
+   "old_badge": "5-8",
+   "new_badge": "4-7",
+   "old_text_start": "4-7 세 번째 천사가 강이랑 샘에 대접을 쏟으니까, 물이 피로 변해버린 거야. 그때 물을 다스리는 천사가 ",
+   "reason": "Paragraph covers MSG 16:4 (third bowl on rivers/springs turning them to blood), 16:5-6 (the water-angel's 'you are just' speech about making them drink blood), and 16:7 (the altar's 'yes, true and just are your judgments' response)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 7,
+   "old_badge": "9-10",
+   "new_badge": "8-9",
+   "old_text_start": "8-9 네 번째 천사가 태양에 대접을 쏟으니까, 태양에서 불이 뿜어져 나와서 사람들을 다 태워버렸음. 불에 ",
+   "reason": "Paragraph covers MSG 16:8 (fourth bowl on the sun, scorching heat) and 16:9 (people cursed God for the plagues and refused to repent or give Him glory)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 8,
+   "old_badge": "11-12",
+   "new_badge": "10-11",
+   "old_text_start": "10-11 다섯 번째 천사가 짐승의 왕좌에 대접을 쏟으니까, 순식간에 짐승의 나라 전체가 완전 깜깜해졌음. ",
+   "reason": "Paragraph covers MSG 16:10 (fifth bowl on the Beast's throne, his kingdom goes dark) and 16:11 (people gnawed their tongues in pain, cursed the God of heaven, and refused to repent)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 9,
+   "old_badge": "13-15",
+   "new_badge": "12-14",
+   "old_text_start": "12-14 여섯 번째 천사가 큰 유프라테스 강에 대접을 쏟으니까, 강물이 싹 다 말라버렸음. 그리고 내가 보",
+   "reason": "Paragraph covers MSG 16:12 (sixth bowl dries up the Euphrates for the kings from the East), 16:13 (three frog-like evil spirits from the Dragon, Beast, and False Prophet), and 16:14 (miracle-working demon spirits gathering the kings for the great day of God)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 10,
+   "old_badge": "16-17",
+   "new_badge": "15",
+   "old_text_start": "15 “여러분, 정신 차리세요! 제가 예고 없이 도둑처럼 갈 거예요. 깨어서 옷을 딱 챙겨 입고 저를 맞을 ",
+   "reason": "Paragraph renders only MSG 16:15: the 'thief in the night' interjection — stay awake, keep your clothes on, blessed is the one ready; caught naked is shameful."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 11,
+   "old_badge": "18",
+   "new_badge": "16",
+   "old_text_start": "16 그 개구리 귀신들은 히브리어로 ‘아마겟돈’이라는 곳에 왕들을 전부 다 불러 모았음.",
+   "reason": "Paragraph renders only MSG 16:16: the frog-demons gather the kings at the place called Armageddon in Hebrew."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 12,
+   "old_badge": "19-21",
+   "new_badge": "17-21",
+   "old_text_start": "17-21 일곱 번째 천사가 공중에 대접을 쏟으니까, 성전 안에 있는 왕좌에서 “다 끝났다!” 하는 엄청 큰",
+   "reason": "Paragraph covers MSG 16:17 (seventh bowl poured into the air; 'It is DONE!' from the Temple throne), 16:18 (lightning, thunder, the greatest earthquake ever), 16:19 (the great city split in three, nations' cities crumbled, Babylon given the cup of God's wrath), 16:20 (islands fled, mountains gone), and 16:21 (talent-weight hail, people cursed God for the plague)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 2,
+   "old_badge": "2-3",
+   "new_badge": "1-2",
+   "old_text_start": "1-2 일곱 대접 들고 있던 천사 중 한 명이 나한테 오더니 말했음. “이리 와보세요. 물 많은 곳에 자리 ",
+   "reason": "Paragraph covers MSG 17:1 (one of the seven bowl-angels comes to show the judgment of the great prostitute seated on many waters) and 17:2 (kings committed adultery with her; earth's inhabitants drunk on her wine)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 3,
+   "old_badge": "4-7",
+   "new_badge": "3-6",
+   "old_text_start": "3-6 그 천사가 성령의 힘으로 날 광야로 순간이동 시켰음. 거기서 완전 대단한 걸 봤는데, 어떤 여자가 빨",
+   "reason": "Paragraph covers MSG 17:3 (carried into the wilderness, sees the woman on the scarlet beast with seven heads and ten horns, covered in blasphemous names), 17:4 (purple and scarlet, gold/jewels/pearls, golden cup full of abominations), 17:5 (the forehead name: Babylon the Great, mother of prostitutes), and 17:6 (drunk on the blood of God's people and the martyrs of Jesus)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 4,
+   "old_badge": "8-10",
+   "new_badge": "6-8",
+   "old_text_start": "6-8 완전 소름 돋아서 눈을 비볐음. 너무 놀라서 말이 안 나왔음. 천사가 말했음. “왜 놀라세요? 제가 ",
+   "reason": "Paragraph opens with the tail of MSG 17:6 (John's astonishment — rubbing his eyes in wonder) and then covers 17:7 ('Why are you surprised? I'll tell you the mystery of the woman and the beast') and 17:8 (the beast was, is not, ascends from the Abyss headed for destruction; earth-dwellers not in the Book of Life will be dazzled)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 5,
+   "old_badge": "11-12",
+   "new_badge": "9-11",
+   "old_text_start": "9-11 “그러니까 정신 똑바로 차리고 잘 들으세요. 머리 일곱 개는 그 여자가 앉아 있는 일곱 언덕이기도 ",
+   "reason": "Paragraph covers MSG 17:9 (seven heads are seven mountains where the woman sits, also seven kings), 17:10 (five fallen, one is, one coming briefly), and 17:11 (the beast that was and is not is an eighth king, one of the seven, headed for destruction)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 6,
+   "old_badge": "13-15",
+   "new_badge": "12-14",
+   "old_text_start": "12-14 “여러분이 본 뿔 열 개는 열 명의 왕인데, 아직은 권력을 못 잡았어요. 걔네들은 나중에 그 빨간",
+   "reason": "Paragraph covers MSG 17:12 (ten horns are ten kings not yet in power, ruling one hour with the beast), 17:13 (one mind, handing their power to the beast), and 17:14 (they war against the Lamb; the Lamb conquers as Lord of lords and King of kings, with the called, chosen, faithful)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 7,
+   "old_badge": "16-18",
+   "new_badge": "15-18",
+   "old_text_start": "15-18 천사가 계속해서 설명해 줬음. “여러분이 본 그 음녀가 앉아 있는 물은 수많은 백성들과 나라들, ",
+   "reason": "Paragraph covers MSG 17:15 (the waters are peoples, multitudes, nations, tongues), 17:16 (the ten horns and the beast will hate the prostitute, strip her, devour her flesh, burn her), 17:17 (God put it in their hearts to give their kingdom to the beast until His words are fulfilled), and 17:18 (the woman is the great city reigning over the kings of the earth)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 19,
+   "para_index": 2,
+   "old_badge": "3",
+   "new_badge": "1-3",
+   "old_text_start": "1-3 내가 하늘에서 완전 큰 합창단이 노래하는 소리를 들었는데, 대단한 거었음. \"할렐루야! 구원, 영광,",
+   "reason": "Paragraph covers MSG 19:1 (the massive hallelujah chorus: salvation, glory, power belong to God), 19:2 (His judgments are true and just; He judged the great prostitute and avenged the blood of His servants), and 19:3 (the second 'hallelujah — the smoke from her rises forever and ever')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 19,
+   "para_index": 8,
+   "old_badge": "12-16",
+   "new_badge": "11-16",
+   "old_text_start": "11-16 그 후에 내가 보니까 하늘이 활짝 열리는 거야. 와, 근데 흰 말이랑 그 말을 타신 분이 보이는 ",
+   "reason": "Paragraph covers MSG 19:11 (heaven opened, the white horse; rider Faithful and True judging in righteousness), 19:12 (eyes like fire, many crowns, a secret name), 19:13 (robe dipped in blood; called the Word of God), 19:14 (the armies of heaven on white horses in fine linen), 19:15 (sharp sword from His mouth to strike the nations, iron rod, treading the winepress of Almighty's wrath), and 19:16 (the name on robe and thigh: King of kings, Lord of lords)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 21,
+   "para_index": 2,
+   "old_badge": "2-10",
+   "new_badge": "1-8",
+   "old_text_start": "1 제가 완전 새로운 하늘이랑 땅을 봤는데, 원래 있던 하늘이랑 땅, 바다는 싹 다 사라지고 없었습니다. 2",
+   "reason": "Merged paragraph whose own in-text markers tile 1-8: MSG 21:1 (new heaven and earth, sea gone), 21:2 (new Jerusalem descending like a bride), 21:3-5 (thunder-voice: God moves into the neighborhood, wipes every tear, death/pain gone; 'I'm making everything new — write it down'), 21:6-7 ('It is done, Alpha and Omega, free Water of Life; conquerors inherit'), and 21:8 (cowards, liars, etc. to the lake of fire)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 21,
+   "para_index": 4,
+   "old_badge": "12-27",
+   "new_badge": "9-27",
+   "old_text_start": "9-12 마지막 재앙이 담긴 대접 일곱 개를 들고 있던 천사 중 하나가 저한테 와서 말했습니다. \"이리 와보",
+   "reason": "Merged paragraph whose own in-text sub-ranges tile 9-27: MSG 21:9-10 (bowl-angel shows the Bride, carried to a high mountain, sees the holy city), 21:11-14 (jewel-like glory, twelve gates with the tribes, twelve foundations with the apostles), 21:15-21 (gold measuring rod, 12,000 stadia square, 144-cubit jasper wall, twelve gem foundations, twelve pearl gates, gold street), and 21:22-27 (no temple — God and the Lamb are it; no sun or moon; nations walk in its light; gates never shut; nothing unclean enters, only those in the Lamb's Book of Life)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 3,
+   "old_badge": "7-8",
+   "new_badge": "6-7",
+   "old_text_start": "6-7 천사가 나한테 말했음. \"이건 진짜 뻥 하나도 없고 다 믿을 수 있는 확실한 말이에요. 예언자들한테 ",
+   "reason": "Paragraph covers MSG 22:6 (these words are trustworthy and true; the God of the prophets sent His angel to show His servants what must soon take place) and 22:7 ('I am coming soon; blessed is the one who keeps the words of the prophecy of this book')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 4,
+   "old_badge": "9-10",
+   "new_badge": "8-9",
+   "old_text_start": "8-9 나 요한은 이 모든 걸 내 눈으로 직접 보고 내 귀로 직접 들었음. 이걸 다 보고 들은 순간, 나한테",
+   "reason": "Paragraph covers MSG 22:8 (John saw and heard all this, fell to worship at the angel's feet) and 22:9 (the angel refuses: 'I'm a fellow servant with you and the prophets and all who keep this book's words — worship God!')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 5,
+   "old_badge": "11-12",
+   "new_badge": "10-11",
+   "old_text_start": "10-11 천사가 계속해서 말했어. \"이 책의 예언의 말씀을 봉인하지 마세요. 책장에 던져버려두지 말란 말이",
+   "reason": "Paragraph covers MSG 22:10 ('Do not seal up the words of the prophecy of this book, because the time is near') and 22:11 (let the evildoer keep doing evil, the vile be vile, the righteous keep doing right, the holy be holy)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 6,
+   "old_badge": "13",
+   "new_badge": "12-13",
+   "old_text_start": "12-13 \"그래요, 제가 지금 가고 있습니다! 진짜 곧 갈 거예요! 갈 때 제가 월급 장부 들고 갈 거예요",
+   "reason": "Paragraph covers MSG 22:12 ('Look, I am coming soon! My reward is with me, to give to each according to what he has done') and 22:13 ('I am the Alpha and the Omega, the First and the Last, the Beginning and the End')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 10,
+   "old_badge": "18",
+   "new_badge": "18-19",
+   "old_text_start": "18-19 제가 이 책의 예언의 말씀을 듣는 모든 사람들한테 확실하게 말해두는데요, 만약 누가 이 예언의 말",
+   "reason": "Paragraph covers MSG 22:18 (warning: anyone adding to this book's prophecy gets the book's plagues added to his life) and 22:19 (anyone taking words away loses his share in the Tree of Life and the Holy City)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 11,
+   "old_badge": "19",
+   "new_badge": "20",
+   "old_text_start": "20 이 모든 것을 증언하신 분이 다시 말씀하셨습니다. \"제가 지금 가고 있습니다! 진짜 곧 갈 거예요!\"",
+   "reason": "Paragraph renders MSG 22:20 only: He who testifies to these things says, 'Yes, I am coming soon!'"
+  }
+ ],
+ "suspicious": []
+}

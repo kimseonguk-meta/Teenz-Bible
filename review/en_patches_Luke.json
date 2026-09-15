@@ -1,0 +1,520 @@
+{
+  "book": "Luke",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "0": "5-6",
+        "1": "8-11",
+        "3": "13-17",
+        "5": "19-23",
+        "6": "21-22",
+        "7": "26-28",
+        "8": "28-29",
+        "9": "29-30",
+        "10": "30-33",
+        "11": "34",
+        "12": "35-37",
+        "13": "38",
+        "14": "39-56",
+        "15": "57-61",
+        "16": "62-79"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 1:1-4 (Luke's prologue: writing an orderly account for \"most honorable Theophilus\") has no corresponding paragraph - content appears absent before [0] (vv5-6).",
+        "MSG 1:80 (\"the child grew and became strong in spirit\") has no corresponding paragraph - content appears absent after [16] (vv62-79)."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-7",
+        "4": "10-12"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "3",
+        "2": "7",
+        "3": "7-9",
+        "4": "10-14",
+        "5": "15-17",
+        "6": "21-22",
+        "7": null
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 3:4-6 (Isaiah: \"a voice of one calling in the wilderness ... every valley shall be filled\") has no corresponding paragraph - content appears absent between [1] (v3) and [2] (v7).",
+        "MSG 3:18-20 (John's many other exhortations; Herod adding to his evils by locking John in prison) has no corresponding paragraph - content appears absent between [5] (vv15-17) and [6] (vv21-22)."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "2-4",
+        "2": "5-8",
+        "3": "9-13",
+        "4": "14-16",
+        "5": "17",
+        "6": "18-19",
+        "7": "20-21",
+        "8": "22-27",
+        "9": "28-30",
+        "10": "31-37",
+        "11": "38-39"
+      },
+      "content_fixes": [
+        {
+          "index": 7,
+          "old": "He showed up the scroll, handed it back, and sat down. Every single eye in the room was glued to him. He looked at them and dropped the mic: \"Today, this scripture has come true right while you were listening.\"",
+          "new": "He rolled up the scroll, handed it back, and sat down. Every single eye in the room was glued to him. He looked at them and dropped the mic: \"Today, this scripture has come true right while you were listening.\"",
+          "reason": "Definite typo: \"showed up the scroll\" is wrong; MSG 4:20 says \"He rolled up the scroll, handed it back to the assistant and sat down.\" Corrected verb only, teen voice kept."
+        }
+      ],
+      "flagged": [
+        "MSG 4:40-44 (healings at sunset; demons crying \"You are the Son of God\"; \"I must preach the good news of the kingdom to the other towns too\") has no corresponding paragraph - content appears absent after [11] (vv38-39)."
+      ],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "1": "3",
+        "2": "4-5",
+        "3": "6-7",
+        "4": "8-11",
+        "5": "12-13",
+        "6": "17",
+        "7": "18-19",
+        "8": "20-26",
+        "9": "27-28",
+        "10": "29-32",
+        "11": "33-39"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 5:15-16 (the news spreading; great crowds coming to be healed; Jesus withdrawing to lonely places to pray) has no corresponding paragraph - content appears absent after [5] (vv12-13)."
+      ],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-8",
+        "2": "9-11",
+        "3": "12-16",
+        "4": "17-19",
+        "5": "20",
+        "6": "20-23",
+        "7": "24-26",
+        "8": "27-30",
+        "9": "31-36",
+        "10": "37-42",
+        "11": "43-45",
+        "12": "46-49"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "2": "4-5",
+        "3": "6",
+        "4": "7-9",
+        "5": "9-10",
+        "7": "11-13",
+        "8": "13-14",
+        "9": "14-15",
+        "10": "16-17",
+        "12": "18-20",
+        "13": "21-23",
+        "14": "24-28",
+        "16": "36",
+        "17": "37-38",
+        "18": "39",
+        "19": "40",
+        "20": "40",
+        "21": "41"
+      },
+      "content_fixes": [
+        {
+          "index": 18,
+          "old": "Simon the Pharisee was disgusted. He thought, \"If this guy was a real prophet, he'd know this woman is outcasts and he'd kick her out.\"",
+          "new": "Simon the Pharisee was disgusted. He thought, \"If this guy was a real prophet, he'd know this woman is an outcast and he'd kick her out.\"",
+          "reason": "Definite grammar error: \"this woman is outcasts\" should be \"this woman is an outcast.\" Corrected the noun form only."
+        }
+      ],
+      "flagged": [
+        "MSG 7:29-35 (\"all the people, even the tax collectors, acknowledged that God's way was right\"; the Pharisees rejected God's purpose; this generation like children in the marketplace) has no corresponding paragraph - content appears absent between [14] (vv24-28) and [16] (v36)."
+      ],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "1": "2-3",
+        "4": "4-5",
+        "10": "11-17",
+        "12": "22",
+        "13": "23",
+        "14": "24",
+        "15": "24",
+        "16": "25",
+        "17": "25",
+        "19": "26-27",
+        "20": "28-29",
+        "21": "30",
+        "22": "30",
+        "23": "32-33",
+        "24": "34-39",
+        "26": "40-41",
+        "27": "42-44",
+        "28": "45",
+        "29": "45",
+        "30": "46",
+        "31": "47",
+        "32": "49",
+        "33": "50",
+        "34": "51-52",
+        "35": "54-55"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 8:56 (\"he ordered them not to tell anyone what had happened\") has no corresponding paragraph - content appears absent after [35] (vv54-55)."
+      ],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "4": "10",
+        "5": "12",
+        "6": "13",
+        "9": "16-17",
+        "11": "18-19",
+        "12": "19",
+        "13": "20",
+        "14": "20",
+        "15": "21-22",
+        "16": "23",
+        "17": "23-26",
+        "19": "28-29",
+        "20": "30-31",
+        "21": "32-33",
+        "22": "34-36",
+        "24": "37-38",
+        "25": "41",
+        "26": "42-43",
+        "27": "43-46",
+        "28": "47-48",
+        "30": "57",
+        "31": "58",
+        "32": "59"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 9:27 (\"some who are standing here will not taste death before they see the kingdom of God\") has no corresponding paragraph - content appears absent between [17] (vv23-26) and [19] (vv28-29).",
+        "MSG 9:49-50 (John: \"we saw someone driving out demons in your name and we tried to stop him\") and MSG 9:51-56 (the Samaritan village's rejection; James and John wanting to call down fire from heaven) have no corresponding paragraphs - content appears absent between [28] (vv47-48) and [30] (v57)."
+      ],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-3",
+        "2": "17",
+        "3": "18-20",
+        "5": "25",
+        "6": "26",
+        "7": "27",
+        "8": "28",
+        "9": "29",
+        "10": "30",
+        "11": "30",
+        "12": "31",
+        "13": "31-32",
+        "14": "33-35",
+        "15": "36",
+        "16": "37",
+        "17": "37",
+        "19": "38",
+        "20": "39",
+        "21": "40",
+        "22": "41-42"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 10:4-16 (the seventy-two's mission instructions; woes on Chorazin, Bethsaida and Capernaum) and MSG 10:21-24 (Jesus rejoicing in the Holy Spirit; \"blessed are the eyes that see what you see\") have no corresponding paragraphs - content appears absent."
+      ],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "1": "1",
+        "6": "14-15",
+        "7": "17-20",
+        "14": "37-38",
+        "20": "46"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 11:21-26 (the strong man fully armed; \"whoever is not with me is against me\"; the unclean spirit returning with seven worse spirits) has no corresponding paragraph - content appears absent between [7] (vv17-20) and [9] (vv27-28).",
+        "MSG 11:47-52 (woes on the legal experts: building the prophets' tombs; \"you have taken away the key to knowledge\") has no corresponding paragraph - content appears absent after [20] (v46)."
+      ],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "13": {
+      "range_fixes": {
+        "11": null,
+        "12": "18-21",
+        "13": "23"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 13:22 (\"Then Jesus went through the towns and villages, teaching as he made his way to Jerusalem\") has no corresponding paragraph - content appears absent before [13] (v23)."
+      ],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "2": "8-11",
+        "3": "12-14",
+        "5": "16-20",
+        "6": "21-24",
+        "8": "25-26"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "Jesus told a story: \"A guy threw a massive banquet and invited a ton of important guests. But when the food was ready, every single honored made a lame excuse. One said, 'I just bought a field, I can't come.' Another said, 'I just bought five pairs of oxen, I have to go test them.' Another said, 'I just got married, sorry.'",
+          "new": "Jesus told a story: \"A guy threw a massive banquet and invited a ton of important guests. But when the food was ready, every single honored guest made a lame excuse. One said, 'I just bought a field, I can't come.' Another said, 'I just bought five pairs of oxen, I have to go test them.' Another said, 'I just got married, sorry.'",
+          "reason": "Definite grammar error: \"every single honored made a lame excuse\" is missing the noun - the invited guests are meant. Added \"guest\" only."
+        }
+      ],
+      "flagged": [
+        "MSG 14:27 (\"whoever does not carry their cross and follow me cannot be my disciple\") has no corresponding paragraph - content appears absent between [8] (vv25-26) and [9] (vv28-30)."
+      ],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "4": "7",
+        "5": "8",
+        "6": "9",
+        "7": "10",
+        "8": "11",
+        "9": "12",
+        "10": "13",
+        "11": "14-16",
+        "12": "17-19",
+        "13": "20",
+        "14": "21",
+        "15": "22-24",
+        "16": "25",
+        "17": "26",
+        "18": "28",
+        "19": "29-30",
+        "20": "31-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "4": "14-15",
+        "6": "19-20",
+        "7": "22",
+        "8": "23-24",
+        "9": "25-26",
+        "10": "27-28"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 16:16-18 (\"the Law and the Prophets were proclaimed until John\"; \"everyone is forcing their way into\" the kingdom; the divorce saying) has no corresponding paragraph - content appears absent between [4] (vv14-15) and [6] (vv19-20)."
+      ],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "3-4",
+        "2": "5",
+        "3": "5-6",
+        "5": "12-14",
+        "6": "14",
+        "7": "14",
+        "8": "15-16",
+        "9": "17-19",
+        "10": "20",
+        "11": "20",
+        "12": "21",
+        "13": "22-25",
+        "14": "26-27"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 17:7-10 (the servant plowing or tending sheep; \"we are unworthy servants\") has no corresponding paragraph - content appears absent between [3] (vv5-6) and [5] (vv12-14).",
+        "MSG 17:31-37 (not going back for goods on the housetop; \"remember Lot's wife\"; one taken, one left; \"where, Lord?\") has no corresponding paragraph - content appears absent after [14] (vv26-27)."
+      ],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4-5",
+        "6": "10"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 18:6 (\"And the Lord said, 'Listen to what the unjust judge says!'\") has no corresponding paragraph - content appears absent between [2] (vv4-5) and [3] (vv7-8)."
+      ],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "4": "8",
+        "5": "9-10",
+        "7": "11",
+        "8": "12-13",
+        "9": "14",
+        "10": "15",
+        "11": "16",
+        "12": "17-19",
+        "13": "20-21",
+        "14": "22-27",
+        "15": "26-27",
+        "17": "29-31",
+        "18": "32-36",
+        "19": "39",
+        "20": "40",
+        "21": "41-42",
+        "22": "45-48"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 19:43-44 (the days when enemies will build an embankment against Jerusalem) has no corresponding paragraph - content appears absent between [21] (vv41-42) and [22] (vv45-48)."
+      ],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "13": "20-22",
+        "14": "23-24",
+        "15": "25",
+        "16": "25-26",
+        "17": "27-33",
+        "18": "34-38",
+        "19": "39-40"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 20:41-47 (David's son: \"The Lord said to my Lord\"; \"beware of the teachers of the law\") has no corresponding paragraph - content appears absent after [19] (vv39-40)."
+      ],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "3": "5",
+        "4": "6",
+        "5": "7",
+        "7": "8",
+        "8": "9",
+        "9": "10-11",
+        "10": "12-13",
+        "11": "14-15",
+        "12": "16-19",
+        "14": "20-24",
+        "15": "25-28",
+        "16": "34-36"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 21:29-33 (the fig tree parable: \"when they sprout leaves ... the kingdom of God is near\"; \"this generation will certainly not pass away\") has no corresponding paragraph - content appears absent between [15] (vv25-28) and [16] (vv34-36).",
+        "MSG 21:37-38 (teaching in the temple by day, spending nights on the Mount of Olives) has no corresponding paragraph - content appears absent after [16] (vv34-36)."
+      ],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "3": "7-9",
+        "4": "15",
+        "5": "19",
+        "6": "20",
+        "7": "24",
+        "8": "25-27",
+        "9": "31-32",
+        "10": "33",
+        "11": "34",
+        "13": "39-41",
+        "14": "45-46",
+        "15": "47-48",
+        "16": "48",
+        "17": "49-50",
+        "18": "51",
+        "19": "52-53",
+        "21": "54-55",
+        "22": "56",
+        "23": "57",
+        "24": "58",
+        "25": "58",
+        "26": "59-60",
+        "27": "60",
+        "29": "61-62",
+        "30": "63-65"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 22:16-18 (the Passover: \"I will not eat/drink again until it finds fulfillment in the kingdom of God\") has no corresponding paragraph - content appears absent between [4] (v15) and [5] (v19).",
+        "MSG 22:21-23 (the betrayer's hand on the table; the disciples questioning among themselves) has no corresponding paragraph - content appears absent between [6] (v20) and [7] (v24).",
+        "MSG 22:28-30 (\"you are those who have stood by me\"; assigning a kingdom; eating at my table and sitting on thrones) has no corresponding paragraph - content appears absent between [8] (vv25-27) and [9] (vv31-32).",
+        "MSG 22:35-38 (\"when I sent you without purse, bag or sandals, did you lack anything?\"; \"buy a sword\"; \"it is enough\" at the two swords) has no corresponding paragraph - content appears absent between [11] (v34) and [13] (vv39-41).",
+        "MSG 22:42-44 (the angel strengthening him; anguish and sweat like drops of blood) has no corresponding paragraph - content appears absent between [13] (vv39-41) and [14] (vv45-46)."
+      ],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "10": "26",
+        "11": "27-31",
+        "12": "32-33",
+        "13": "34",
+        "14": "34-35",
+        "16": "39-41",
+        "19": "44-45",
+        "20": "46",
+        "21": "47"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 23:48-49 (the crowds beating their breasts and going away; Jesus' acquaintances watching from a distance) has no corresponding paragraph - content appears absent between [21] (v47) and [22] (vv50-56)."
+      ],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "21": "36-37",
+        "22": "38",
+        "23": "39",
+        "24": "41",
+        "26": "44",
+        "27": "46-48",
+        "28": "50-51",
+        "29": "52-53"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

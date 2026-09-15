@@ -1,0 +1,429 @@
+{
+  "book": "Judges",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "5": "7",
+        "6": "8-10",
+        "7": "11-12",
+        "8": "13",
+        "9": "14-15",
+        "10": "16",
+        "11": "17",
+        "12": "18-19",
+        "13": "20",
+        "14": "21",
+        "15": "22-26",
+        "16": "27-28",
+        "17": "29",
+        "18": "30",
+        "19": "31-32",
+        "20": "33",
+        "21": "34-35"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "2": "4-5",
+        "3": "6-9",
+        "6": "16-17",
+        "7": "18-19"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "3": "9-10",
+        "4": "11",
+        "5": "12-14",
+        "6": "15-19",
+        "7": "19",
+        "8": "20-23"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "But the Israelites went right back to their old habits, doing evil in God's sight. So God powered up Eglon, king of Moab, to go against Israel because they were messing up again. Eglon teamed up with the Ammonites and Amalekites, attacked Israel, and they took over the City of Palms. The Israelites were stuck serving Eglon for fourteen years.",
+          "new": "But the Israelites went right back to their old habits, doing evil in God's sight. So God powered up Eglon, king of Moab, to go against Israel because they were messing up again. Eglon teamed up with the Ammonites and Amalekites, attacked Israel, and they took over the City of Palms. The Israelites were stuck serving Eglon for eighteen years.",
+          "reason": "Factual: MSG Judges 3:14 (and standard texts) say Israel served Eglon king of Moab for eighteen years, not fourteen."
+        }
+      ],
+      "flagged": [
+        "Tone: Eglon mocked for body size (\"super fat dude\", \"massive belly\", \"The fat just swallowed it up\") and \"What a legend\" after violent death. MSG says \"extra-fleshy man\". Consider restrained teen-voice wording; left as flag for judgment."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-7",
+        "2": "8",
+        "3": "9",
+        "4": "10-13",
+        "5": "14",
+        "6": "15-16",
+        "7": "17-20",
+        "8": "21"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "v11 (Heber the Kenite parting from the Kenites / Zelzaim Oak near Kedesh) is not paraphrased; range for [4] recorded as 10-13 with v11 absent."
+      ],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "4": "6-8",
+        "5": "9",
+        "6": "10-11",
+        "7": "11-13",
+        "8": "12",
+        "9": "13-18",
+        "10": "19-23",
+        "11": "24-27",
+        "12": "28-30",
+        "13": "31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "3": "13",
+        "4": "14",
+        "5": "15",
+        "6": "16",
+        "7": "17-18",
+        "8": "18",
+        "9": "19",
+        "10": "20",
+        "11": "21-22",
+        "12": "22",
+        "13": "23",
+        "14": "24",
+        "15": "25-26",
+        "16": "27",
+        "17": "28",
+        "18": "29",
+        "19": "29",
+        "20": "30",
+        "21": "31",
+        "22": "32",
+        "23": "33-35",
+        "24": "36",
+        "25": "37",
+        "26": "38"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "3": "5-6",
+        "4": "7",
+        "5": "8",
+        "6": "9-12",
+        "7": "13",
+        "8": "14",
+        "9": "15",
+        "10": "16-18",
+        "11": "19-22",
+        "12": "23",
+        "13": "24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "2": "3",
+        "3": "4-5",
+        "4": "6",
+        "5": "7",
+        "6": "8-9",
+        "10": "16-17",
+        "11": "18",
+        "21": "27",
+        "22": "28",
+        "23": "29-31",
+        "24": "32",
+        "25": "33-35"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Tone: Succoth leaders mocked with \"LOL\" and Gideon \"taught them a lesson with desert thorns and thistles\" may trivialize punishment of exhausted soldiers. Left for judgment."
+      ],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "4": "7",
+        "5": "8-9",
+        "6": "10-11",
+        "7": "12-13",
+        "8": "14-15",
+        "9": "16-20",
+        "10": "21",
+        "11": "22-24",
+        "12": "25",
+        "13": "26-27",
+        "14": "28-29",
+        "15": "30-33",
+        "16": "34-36",
+        "17": "36",
+        "18": "37",
+        "20": "39-40",
+        "21": "41",
+        "22": "42-45",
+        "23": "46-49",
+        "24": "50-54",
+        "25": "55",
+        "26": "56-57"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6-8",
+        "3": "9",
+        "4": "10",
+        "5": "11-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "1": "4-6",
+        "2": "7",
+        "3": "8",
+        "4": "9-11",
+        "5": "12",
+        "6": "13",
+        "7": "14",
+        "13": "36",
+        "14": "37"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6-7",
+        "3": "8-10",
+        "7": "15-16",
+        "8": "17-18",
+        "9": "19-21",
+        "10": "21-22",
+        "11": "23",
+        "12": "24-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "4": "5-6",
+        "5": "7",
+        "6": "8-9",
+        "7": "10-11",
+        "8": "12",
+        "9": "13",
+        "10": "14",
+        "11": "14-15",
+        "13": "17",
+        "14": "17-18",
+        "15": "18",
+        "16": "18",
+        "17": "19",
+        "18": "18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "3": "4-5",
+        "4": "6",
+        "6": "6",
+        "7": "7-8",
+        "8": "9-10",
+        "9": "11",
+        "14": "15-16",
+        "18": "18-19"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "2": "4-5",
+        "3": "6",
+        "4": "7",
+        "5": "8-9",
+        "6": "10",
+        "7": "11",
+        "8": "12",
+        "9": "13",
+        "10": "13",
+        "11": "14",
+        "12": "15",
+        "13": "16",
+        "14": "17",
+        "15": "18",
+        "16": "19",
+        "17": "20",
+        "18": "21-22",
+        "19": "23",
+        "20": "23",
+        "21": "24",
+        "22": "24",
+        "23": "25",
+        "24": "25-27",
+        "25": "28",
+        "26": "28",
+        "28": "29-30",
+        "29": "31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "1": "2",
+        "3": "5",
+        "4": "6",
+        "7": "9",
+        "8": "10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "7",
+        "7": "8",
+        "8": "9-10",
+        "9": "11-13",
+        "10": "14",
+        "11": "15-18",
+        "12": "19",
+        "13": "20",
+        "14": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "3": "6-7",
+        "4": "8-9",
+        "6": "12-13",
+        "7": "14-15",
+        "8": "15-17",
+        "9": "18",
+        "10": "19-20",
+        "11": "21-22",
+        "12": "23-24",
+        "13": "25-26",
+        "14": "27",
+        "15": "28",
+        "16": "29-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "2": "3",
+        "3": "4-7",
+        "4": "8-11",
+        "5": "12-13",
+        "6": "13-16",
+        "7": "17",
+        "8": "18",
+        "9": "18",
+        "10": "19-21",
+        "11": "22-23",
+        "12": "23",
+        "13": "22",
+        "14": "24-25",
+        "15": "26",
+        "16": "27-28",
+        "17": "28",
+        "18": "29-31",
+        "19": "32",
+        "20": "32-33",
+        "21": "34-36",
+        "22": "36",
+        "23": "37-40",
+        "24": "41-42",
+        "25": "44",
+        "26": "45"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 20:43 (\"They encircled the Benjaminites, chased them from Nohah, and restlessly pressed on until they were east of Gibeah\") has no dedicated paraphrase; [24] ends with \"chasing them east of Gibeah\" which only partly echoes it. Verify against MSG text."
+      ],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "1": "1",
+        "2": "2-3",
+        "3": "4",
+        "4": "5",
+        "5": "6-7",
+        "6": "8",
+        "7": "8-9",
+        "8": "10-12",
+        "9": "12",
+        "10": "13-14",
+        "11": "15",
+        "12": "16-18",
+        "13": "19",
+        "14": "20-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

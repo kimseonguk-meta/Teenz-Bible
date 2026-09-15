@@ -1,0 +1,167 @@
+{
+  "book": "Hosea",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "10": "10-11",
+        "2": "2",
+        "3": "3",
+        "4": "4-5",
+        "5": "4-5",
+        "6": "6-7",
+        "7": "6-7",
+        "8": "8-9",
+        "9": "8-9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "2-13",
+        "2": "14-15",
+        "3": "16-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4-5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "4-10",
+        "2": "11-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-7",
+        "3": "8-9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "7": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-7",
+        "3": "8-9",
+        "4": "10"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "They put on this whole evil circus for the king, and the princes are totally entertained by their acrobatic lies. They're just a bunch of thirsty cheaters, like an oven that stays hot from the moment the dough is kneaded until it rises. On the king's holiday, the princes get wasted on wine, caught up in the craziness of the crowd that's mocking everything. They're like old-school wood stoves, glowing red-hot with lust. Their passion just simmers all night, and then in the morning, it explodes into hungry flames. They're murderous and explosive, burning through their own rulers. Their kings keep falling, one after another, and not a single person even thinks to look my way.",
+          "new": "They put on this whole evil circus for the king, and the princes are totally entertained by their acrobatic lies. They're just a bunch of thirsty cheaters, like an oven that stays hot from the moment the dough is kneaded until it rises.",
+          "reason": "Duplicate of paragraph 0 resolved by splitting MSG 3-7: this paragraph keeps the v3-4 'evil circus / oven' half; paragraph 2 now carries the v5-7 half."
+        },
+        {
+          "index": 2,
+          "old": "They put on this whole evil circus for the king, and the princes are totally entertained by their acrobatic lies. They're just a bunch of thirsty cheaters, like an oven that stays hot from the moment the dough is kneaded until it rises. On the king's holiday, the princes get wasted on wine, caught up in the craziness of the crowd that's mocking everything. They're like old-school wood stoves, glowing red-hot with lust. Their passion just simmers all night, and then in the morning, it explodes into hungry flames. They're murderous and explosive, burning through their own rulers. Their kings keep falling, one after another, and not a single person even thinks to look my way.",
+          "new": "On the king's holiday, the princes get wasted on wine, caught up in the craziness of the mocking crowd. They're like old-school wood stoves, glowing red-hot with lust. Their passion just simmers all night, then explodes into hungry flames in the morning. They're murderous and explosive, burning through their own rulers. Their kings keep falling, one after another, and not a single person even thinks to look my way.",
+          "reason": "Exact duplicate of paragraph 0. Replaced with the MSG 5-7 half (royal holiday drunkenness, wood-stove lust, murdered rulers) so all of MSG 3-7 is covered with no duplication."
+        },
+        {
+          "index": 3,
+          "old": "Ephraim is mixing in with people who don't know God, just wasting his potential. Ephraim is like a pancake that's only cooked on one side—totally half-baked. Strangers are draining his strength, and he doesn't even have a clue. He's getting old and weak, and he doesn't notice that either. His arrogance is a huge, public embarrassment. Israel just stumbles around, completely oblivious to God, ignoring all the warning signs and paying God no attention.",
+          "new": "Ephraim is mixing in with people who don't know God, just wasting his potential. Ephraim is like a pancake that's only cooked on one side—totally half-baked. Strangers are draining his strength, and he doesn't even have a clue. He's getting old and weak, and he doesn't notice that either.",
+          "reason": "Duplicate of paragraph 3 resolved by splitting MSG 8-10: this paragraph keeps the v8-9 'half-baked / strangers drain him' half; paragraph 4 now carries v10."
+        },
+        {
+          "index": 4,
+          "old": "Ephraim is mixing in with people who don't know God, just wasting his potential. Ephraim is like a pancake that's only cooked on one side—totally half-baked. Strangers are draining his strength, and he doesn't even have a clue. He's getting old and weak, and he doesn't notice that either. His arrogance is a huge, public embarrassment. Israel just stumbles around, completely oblivious to God, ignoring all the warning signs and paying God no attention.",
+          "new": "His arrogance is a huge, public embarrassment. Israel just stumbles around, completely oblivious to God, ignoring all the warning signs and paying God no attention.",
+          "reason": "Exact duplicate of paragraph 2. Replaced with MSG v10 content (arrogance / oblivious to God) so all of MSG 8-10 is covered with no duplication."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-10",
+        "2": "11-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6",
+        "3": "7-9",
+        "4": "10-11"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-6"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "12": {
+      "range_fixes": {
+        "3": "7-8",
+        "4": "9-11",
+        "5": "12-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-6",
+        "2": "7-12",
+        "3": "13-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "1": "4-8",
+        "2": "9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

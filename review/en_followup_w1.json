@@ -1,0 +1,106 @@
+{
+  "fixes": [
+    {
+      "book": "Deuteronomy",
+      "chapter": 7,
+      "para_index": 6,
+      "type": "content",
+      "old": "Why? Because you're a special crew, set apart for God, your God. He literally chose you out of everyone on Earth to be His personal treasure. That's some HONORED treatment right there.",
+      "new": "Why? Because you're a special crew, set apart for God, your God. He literally chose you out of everyone on Earth to be His personal treasure. That's some HOLY treatment right there.",
+      "message_ref": "MSG Deut 7:6: 'Do this because you are a people set apart as holy to God, your God. God, your God, chose you out of all the people on Earth for himself as a cherished, personal treasure.'",
+      "reason": "The Message says 'holy', not honored. EN's caps-lock 'HONORED treatment' is exactly the holy→honored mistranslation. Restored 'HOLY' in the same teen-voice sentence."
+    },
+    {
+      "book": "1 Kings",
+      "chapter": 8,
+      "para_index": 14,
+      "type": "content",
+      "old": "\"But for real, is God actually going to move into our neighborhood? I mean, the whole universe isn't big enough for you, let alone this Temple I've built. But still, I'm bold enough to ask: please pay attention to my prayers, the ones for everyone and the ones just for me, O God, my God. Listen to my passionate prayers that I'm laying out before you right now. Keep your eyes on this Temple day and night, this place you said 'My Name will be honored there,' and listen to the prayers I pray here.",
+      "new": "\"But for real, is God actually going to move into our neighborhood? I mean, the whole universe isn't big enough for you, let alone this Temple I've built. But still, I'm bold enough to ask: please pay attention to my prayers, the ones for everyone and the ones just for me, O God, my God. Listen to my passionate prayers that I'm laying out before you right now. Keep your eyes on this Temple day and night, this place you said 'My Name will be there,' and listen to the prayers I pray here.",
+      "message_ref": "MSG 1 Kgs 8:29: 'May you watch over this Temple night and day, this place where you have said, \\'My name will be there.\\''",
+      "reason": "The Message says God's name will be THERE (dwelling presence), not 'honored'. 'Honored' misstates Solomon's request. Restored MSG wording."
+    }
+  ],
+  "checked_kept": [
+    {
+      "book": "Genesis",
+      "chapter": 12,
+      "para_index": 8,
+      "text": "Because of her, Abram was treated like an honored guest.",
+      "message_ref": "MSG Gen 12:16: 'Because of her, Abram got along very well'.",
+      "reason": "No 'holy' in MSG; 'treated like an honored guest' is a fair teen-voice gloss of 'got along very well' / being treated well by Pharaoh. Not misleading."
+    },
+    {
+      "book": "Genesis",
+      "chapter": 49,
+      "para_index": 2,
+      "text": "You were supposed to be the strongest, the most honored, and the most powerful.",
+      "message_ref": "MSG Gen 49:3-4: 'Reuben, you're my firstborn, my strength, first proof of my manhood, at the top in honor and at the top in power'.",
+      "reason": "The Message itself says 'at the top in honor'. EN's 'the most honored' directly matches MSG."
+    },
+    {
+      "book": "Exodus",
+      "chapter": 1,
+      "para_index": 11,
+      "text": "And because the midwives honored God, He gave them their own families.",
+      "message_ref": "MSG Ex 1:20-21: 'And because the midwives honored God, God gave them families of their own.'",
+      "reason": "The Message literally says 'honored God'. EN matches verbatim."
+    },
+    {
+      "book": "Deuteronomy",
+      "chapter": 16,
+      "para_index": 0,
+      "text": "You gotta bring your Passover sacrifice to the special place God chooses for his name to be honored.",
+      "message_ref": "MSG Deut 16:2: 'Offer the Passover-Sacrifice to God, your God, at the place God chooses to be worshiped by establishing his name there.'",
+      "reason": "No 'holy' in MSG here. 'For his name to be honored' is a fair loose teen paraphrase of 'establishing his name there' (also the NLT rendering). Not broken or misleading."
+    },
+    {
+      "book": "1 Samuel",
+      "chapter": 23,
+      "para_index": 14,
+      "text": "So whenever you're ready to come down, we'd be honored to hand him over to the king.\"",
+      "message_ref": "MSG 1 Sam 23:20: 'we'd count it an honor to hand him over to the king.'",
+      "reason": "The Message itself uses 'honor'; EN's 'we'd be honored' matches it nearly verbatim."
+    },
+    {
+      "book": "1 Kings",
+      "chapter": 8,
+      "para_index": 0,
+      "text": "Alright, so to get this massive project to the finish line, King Solomon called in all the honored ones of Israel—we're talking all the tribe leaders and the he",
+      "message_ref": "MSG 1 Kgs 8:1-2: 'King Solomon called in the leaders of Israel, all the heads of the tribes and the family patriarchs'.",
+      "reason": "No 'holy' in MSG. 'The honored ones of Israel' is a fair teen-voice paraphrase of the elders/tribe leaders/family patriarchs. Not misleading."
+    },
+    {
+      "book": "1 Kings",
+      "chapter": 15,
+      "para_index": 0,
+      "text": "Because David, for real, lived a life that honored God, almost always following God's directions (except for that one time with Uriah the Hittite, which was a m",
+      "message_ref": "MSG 1 Kgs 15:5: 'For David had lived an exemplary life before GOD all his days, not going off on his own in willful defiance of GOD's clear directions (except for that time with Uriah the Hittite).'",
+      "reason": "No 'holy' in MSG. 'Lived a life that honored God' is a fair loose teen paraphrase of 'lived an exemplary life before GOD'. Not misleading."
+    },
+    {
+      "book": "2 Kings",
+      "chapter": 22,
+      "para_index": 0,
+      "text": "He genuinely tried to live in a way that honored God, following the path of his ancestor David without messing up.",
+      "message_ref": "MSG 2 Kgs 22:2: 'He lived the way God wanted. He kept straight on the path blazed by his ancestor David, not one step to either left or right.'",
+      "reason": "No 'holy' in MSG. 'Live in a way that honored God' is a fair loose teen paraphrase of 'lived the way God wanted'. Not misleading."
+    },
+    {
+      "book": "2 Kings",
+      "chapter": 23,
+      "para_index": 0,
+      "text": "Then, he headed straight for God's Temple with his whole crew—we're talking priests, prophets, and basically everyone, from the honored ones to the nobodies.",
+      "message_ref": "MSG has no 'holy' in 2 Kgs 23:1-3 (NIV: 'all the people from the least to the greatest'; MSG renders the same 'small and great' spread).",
+      "reason": "'From the honored ones to the nobodies' is a natural teen paraphrase of 'from the least to the greatest'. Not misleading."
+    },
+    {
+      "book": "Esther",
+      "chapter": 8,
+      "para_index": 7,
+      "text": "For the Jews, it was a time for celebration, laughter, and being honored.",
+      "message_ref": "MSG Est 8:16-17: 'For Jews it was all good times and laughter: they celebrated, they were honored.'",
+      "reason": "The Message itself says 'they were honored'. EN's 'being honored' matches directly."
+    }
+  ]
+}

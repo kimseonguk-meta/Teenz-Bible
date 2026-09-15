@@ -1,0 +1,173 @@
+{
+  "book": "Hebrews",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "7-8",
+        "4": "10-12",
+        "5": "13-14"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "And for the record, God never said to an angel, \"Come chill with me on my throne until I make your enemies your footstool.\" It's pretty clear that angels are just the support crew, the temple guards sent to help out everyone who's getting saved.",
+          "new": "And for the record, God never said to an angel, \"Come chill with me on my throne until I make your enemies your footstool.\" It's pretty clear that angels are just the support crew, sent to help out everyone who's getting saved.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-9",
+        "3": "10-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "3": "12-14",
+        "4": "15-19"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "3-7",
+        "3": "8-10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "6": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "4-8",
+        "3": "7-8",
+        "4": "9-12",
+        "5": "13-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "4-7",
+        "3": "8-10",
+        "4": "11-12",
+        "5": "15-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "3": "6-10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "1": "1-5",
+        "2": "6-10",
+        "3": "11-14",
+        "4": "16-17",
+        "5": "18-22",
+        "6": "23-26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-7",
+        "3": "8-10",
+        "4": "11-14",
+        "5": "15-18",
+        "6": "19-21",
+        "8": "26-31",
+        "9": "32-35"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "3": "4-6",
+        "4": "5-7",
+        "5": "7-10",
+        "6": "8-12",
+        "7": "11-12",
+        "8": "13-16",
+        "9": "17-19",
+        "10": "20-22",
+        "11": "23-26",
+        "12": "29-31",
+        "13": "32-34",
+        "14": "35-38",
+        "15": "39-40"
+      },
+      "content_fixes": [
+        {
+          "index": 11,
+          "old": "Moses' parents hid him for three months after he was born because they saw he was a special kid and weren't scared of the king's temple guards. When Moses grew up, he refused to be called a prince of Egypt. He chose to suffer with God's people rather than live a cushy life of sin. He knew that sticking with the Messiah was worth more than all the treasure in Egypt. He wasn't scared of the king's rage because he kept his eyes on the God no one can see.",
+          "new": "Moses' parents hid him for three months after he was born because they saw he was a special kid and weren't scared of the king's orders. When Moses grew up, he refused to be called a prince of Egypt. He chose to suffer with God's people rather than live a cushy life of sin. He knew that sticking with the Messiah was worth more than all the treasure in Egypt. He wasn't scared of the king's rage because he kept his eyes on the God no one can see.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "2-6",
+        "4": "4-13",
+        "5": "14-17",
+        "6": "18-24",
+        "7": "25-27",
+        "8": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "1": "1-3",
+        "5": "10-12",
+        "6": "14-16",
+        "7": "17",
+        "8": "18-19",
+        "9": "20-21",
+        "10": "22-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

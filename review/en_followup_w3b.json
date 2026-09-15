@@ -1,0 +1,530 @@
+{
+  "fixes": [
+    {
+      "book": "Matthew",
+      "chapter": 14,
+      "para_index": 2,
+      "type": "content",
+      "old": "But at his birthday celebration, he got his chance. Herodias's daughter danced for the guests. She swept Herod away. In his drunken enthusiasm, he promised her on oath anything she wanted. Already coached by her mother, she was ready: \"Give me, served up on a platter, the head of John the Baptist.\" That sobered the king up fast. Unwilling to lose face with his honored guests, he did it—ordered John's head cut off and presented to the girl on a platter. She in turn gave it to her mother. Later, John's disciples got the body, gave it a reverent burial, and reported to Jesus.",
+      "new": "But at his birthday celebration, he got his chance. Herodias's daughter danced for the guests. She swept Herod away. In his drunken enthusiasm, he promised her on oath anything she wanted. Already coached by her mother, she was ready: \"Give me, served up on a platter, the head of John the Baptist.\" That sobered the king up fast. Unwilling to lose face with his guests, he did it—ordered John's head cut off and presented to the girl on a platter. She in turn gave it to her mother. Later, John's disciples got the body, gave it a reverent burial, and reported to Jesus.",
+      "message_ref": "MSG Matthew 14:6-11",
+      "reason": "MSG 14:6-12 says 'unwilling to lose face with his guests'; 'honored' was invented and added to the plain guests."
+    },
+    {
+      "book": "Matthew",
+      "chapter": 22,
+      "para_index": 0,
+      "type": "content",
+      "old": "Jesus dropped another parable on them. He said, \"God's kingdom is like a king who planned this epic wedding for his son. He sent out the invites to all the honored guests, but they totally ghosted him. Can you believe it? They just wouldn't come!\"",
+      "new": "Jesus dropped another parable on them. He said, \"God's kingdom is like a king who planned this epic wedding for his son. He sent out the invites to all his guests, but they totally ghosted him. Can you believe it? They just wouldn't come!\"",
+      "message_ref": "MSG Matthew 22:1-3",
+      "reason": "MSG 22:1-3 says 'invited guests'; 'honored guests' shifts the meaning, making the invited group sound like VIPs the story never describes."
+    },
+    {
+      "book": "Luke",
+      "chapter": 1,
+      "para_index": 1,
+      "type": "content",
+      "old": "The Temple Shock Back when Herod was king of Judea, there was a priest named Zechariah. He and his wife, Elizabeth, were good, rule-following people who honored God. But they had a massive heartbreak in their lives: they couldn't have kids, and now they were practically senior citizens.",
+      "new": "The Temple Shock Back when Herod was king of Judea, there was a priest named Zechariah. He and his wife, Elizabeth, were good, rule-following people living honorably before God. But they had a massive heartbreak in their lives: they couldn't have kids, and now they were practically senior citizens.",
+      "message_ref": "MSG Luke 1:5-6",
+      "reason": "MSG 1:5-6 says 'together they lived honorably before God'; the current wording changed the sense into 'people who honored God', so restore the MSG sense."
+    },
+    {
+      "book": "Luke",
+      "chapter": 5,
+      "para_index": 11,
+      "type": "content",
+      "old": "Levi was so excited he threw a massive honored banquet at his house for Jesus. A huge crowd of tax collectors and other shady characters were there eating with them. The stuck-up Pharisees complained to Jesus's disciples: \"Why are you guys eating and drinking with outcasts?\" Jesus answered them directly: \"Healthy people don't need a doctor—sick people do. I didn't come to invite the rule-followers to change their lives; I came to invite the misfits.\"",
+      "new": "Levi was so excited he threw a massive banquet at his house for Jesus. A huge crowd of tax collectors and other shady characters were there eating with them. The stuck-up Pharisees complained to Jesus's disciples: \"Why are you guys eating and drinking with outcasts?\" Jesus answered them directly: \"Healthy people don't need a doctor—sick people do. I didn't come to invite the rule-followers to change their lives; I came to invite the misfits.\"",
+      "message_ref": "MSG Luke 5:29-32",
+      "reason": "MSG 5:29-32 says 'Levi gave a large dinner'; 'honored banquet' is broken wording that changes what happened."
+    },
+    {
+      "book": "Luke",
+      "chapter": 14,
+      "para_index": 5,
+      "type": "content",
+      "old": "Jesus told a story: \"A guy threw a massive banquet and invited a ton of important guests. But when the food was ready, every single honored guest made a lame excuse. One said, 'I just bought a field, I can't come.' Another said, 'I just bought five pairs of oxen, I have to go test them.' Another said, 'I just got married, sorry.'",
+      "new": "Jesus told a story: \"A guy threw a massive banquet and invited a ton of important guests. But when the food was ready, every single guest made a lame excuse. One said, 'I just bought a field, I can't come.' Another said, 'I just bought five pairs of oxen, I have to go test them.' Another said, 'I just got married, sorry.'",
+      "message_ref": "MSG Luke 14:16-20",
+      "reason": "MSG 14:16-24 describes a 'great dinner party' with 'invited guests'; 'honored guest' is unsupported and contradicts the plain invited-guest wording."
+    },
+    {
+      "book": "Acts",
+      "chapter": 2,
+      "para_index": 7,
+      "type": "content",
+      "old": "That day, about 3,000 people joined the Jesus fan club. They were all about learning from the apostles, hanging out together, sharing meals, and praying. It was like the ultimate honored community. They even sold their stuff and shared the money with anyone who needed it. They were all in, and God kept adding more and more people to their crew every day.",
+      "new": "That day, about 3,000 people joined the Jesus fan club. They were all about learning from the apostles, hanging out together, sharing meals, and praying. It was the most awesome community, living in pure harmony. They even sold their stuff and shared the money with anyone who needed it. They were all in, and God kept adding more and more people to their crew every day.",
+      "message_ref": "MSG Acts 2:42-47",
+      "reason": "MSG 2:41-47 speaks of 'wonderful harmony'; 'ultimate honored community' was invented and says nothing the passage says."
+    },
+    {
+      "book": "Acts",
+      "chapter": 6,
+      "para_index": 8,
+      "type": "content",
+      "old": "So, they decided to play dirty. They secretly paid off some guys to lie and say, \"We heard him cursing Moses and God!\" That got everyone riled up—the regular folks, the religious leaders, and the Bible experts. They grabbed Stephen and dragged him in front of the High Council, the honored ones of the religious world.",
+      "new": "So, they decided to play dirty. They secretly paid off some guys to lie and say, \"We heard him cursing Moses and God!\" That got everyone riled up—the regular folks, the religious leaders, and the Bible experts. They grabbed Stephen and dragged him in front of the High Council, the religious leaders and Bible experts.",
+      "message_ref": "MSG Acts 6:11-12",
+      "reason": "MSG 6:11-15 mentions the High Council, religious leaders and scholars; 'the honored ones of the religious world' was invented."
+    },
+    {
+      "book": "Acts",
+      "chapter": 10,
+      "para_index": 15,
+      "type": "content",
+      "old": "Peter is so stoked. He's like, \"Whoa, this is for real! God doesn't have an honored one list. It doesn't matter who you are or where you're from. If you're into God and do what's right, you're in. He sent a message to the people of Israel, and that message is that through Jesus, everything is getting put back together. And he's not just doing it for the Jews; he's doing it for everyone.\"",
+      "new": "Peter is so stoked. He's like, \"Whoa, this is for real! God doesn't have a favorites list. It doesn't matter who you are or where you're from. If you're into God and do what's right, you're in. He sent a message to the people of Israel, and that message is that through Jesus, everything is getting put back together. And he's not just doing it for the Jews; he's doing it for everyone.\"",
+      "message_ref": "MSG Acts 10:34-35",
+      "reason": "MSG 10:34-36 says 'God plays no favorites!'; the concept is right but 'honored one list' is unnatural wording, so restore the favorites wording."
+    },
+    {
+      "book": "Acts",
+      "chapter": 11,
+      "para_index": 3,
+      "type": "content",
+      "old": "Right after that, three guys from Caesarea showed up looking for me. The Holy Spirit was like, 'Go with them, don't sweat the details.' So I took six of my boys and we went. The guy who sent for me told us this insane story about an angel just appearing in his house, telling him to send for me and that I'd have a message that would give him and his whole family a miraculous transformation. So I started talking, and I barely got a few words out before the Holy Spirit just showed up and hit them, just like it did for us at the beginning. It reminded me of what Jesus said: 'John just got you wet, but you're gonna be baptized by the Holy Spirit.' So, for real, if God is giving them the same honored gift he gave us when we started believing, who am I to get in God's way?\"",
+      "new": "Right after that, three guys from Caesarea showed up looking for me. The Holy Spirit was like, 'Go with them, don't sweat the details.' So I took six of my boys and we went. The guy who sent for me told us this insane story about an angel just appearing in his house, telling him to send for me and that I'd have a message that would give him and his whole family a miraculous transformation. So I started talking, and I barely got a few words out before the Holy Spirit just showed up and hit them, just like it did for us at the beginning. It reminded me of what Jesus said: 'John just got you wet, but you're gonna be baptized by the Holy Spirit.' So, for real, if God is giving them the same exact gift he gave us when we started believing, who am I to get in God's way?\"",
+      "message_ref": "MSG Acts 11:7-15",
+      "reason": "MSG 11:15-17 speaks of the 'same exact gift'; 'honored gift' adds a word the passage never says."
+    },
+    {
+      "book": "Acts",
+      "chapter": 15,
+      "para_index": 3,
+      "type": "content",
+      "old": "When they got to Jerusalem, the whole church, including the honored apostles and leaders, gave them a warm welcome. Paul and Barnabas told them all about their epic journey and how God was opening doors for people who weren't Jewish. But then, some of the believers who used to be Pharisees, the super-strict rule-followers, stood up and said, \"Hold up! These new guys have to be circumcised and follow all of Moses' laws!\" They were trying to put everyone in a spiritual straitjacket.",
+      "new": "When they got to Jerusalem, the whole church, including the apostles and leaders, gave them a warm welcome. Paul and Barnabas told them all about their epic journey and how God was opening doors for people who weren't Jewish. But then, some of the believers who used to be Pharisees, the super-strict rule-followers, stood up and said, \"Hold up! These new guys have to be circumcised and follow all of Moses' laws!\" They were trying to put everyone in a spiritual straitjacket.",
+      "message_ref": "MSG Acts 15:6-9",
+      "reason": "MSG 15:6-9 says 'apostles and leaders'; the 'honored' adjective was added."
+    },
+    {
+      "book": "Acts",
+      "chapter": 17,
+      "para_index": 2,
+      "type": "content",
+      "old": "Some people were totally convinced and joined Paul and Silas's squad, including a bunch of Greeks who were into God and even some honored ladies. But the old-school religious leaders were seriously salty about all the new followers. They got super jealous, hired a mob of random thugs, and started a riot, trying to hunt down Paul and Silas.",
+      "new": "Some people were totally convinced and joined Paul and Silas's squad, including a bunch of Greeks who were into God and even some prominent women. But the old-school religious leaders were seriously salty about all the new followers. They got super jealous, hired a mob of random thugs, and started a riot, trying to hunt down Paul and Silas.",
+      "message_ref": "MSG Acts 17:4-6",
+      "reason": "MSG 17:4-5 speaks of 'women from the aristocracy'; 'prominent women' is the natural fair paraphrase."
+    },
+    {
+      "book": "Acts",
+      "chapter": 20,
+      "para_index": 2,
+      "type": "content",
+      "old": "He hung out in Greece for three months, but just when he was about to sail to Syria, some haters tried to pull a fast one. So Paul was like, \"Nah,\" and dipped out, taking the scenic route through Macedonia to dodge them. He rolled with his squad: Sopater, Aristarchus, Secundus, Gaius, Timothy, and his boys from Asia, Tychicus and Trophimus. Talk about an honored one list!",
+      "new": "He hung out in Greece for three months, but just when he was about to sail to Syria, some haters tried to pull a fast one. So Paul was like, \"Nah,\" and dipped out, taking the scenic route through Macedonia to dodge them. He rolled with his squad: Sopater, Aristarchus, Secundus, Gaius, Timothy, and his boys from Asia, Tychicus and Trophimus.",
+      "message_ref": "MSG Acts 20:3-6",
+      "reason": "MSG 20:3-6 lists the traveling companions; the commentary 'Talk about an honored one list!' was invented, so remove it."
+    },
+    {
+      "book": "Acts",
+      "chapter": 21,
+      "para_index": 9,
+      "type": "content",
+      "old": "In Jerusalem, our friends were stoked to see us and gave us a huge welcome. The next morning, we took Paul to see James, the head honcho of the Jerusalem church. All the other honored ones were there too. After catching up, Paul told them everything, play-by-play, about how God had been working among the non-Jews through his ministry. They were totally blown away and gave God a massive shout-out.",
+      "new": "In Jerusalem, our friends were stoked to see us and gave us a huge welcome. The next morning, we took Paul to see James, the head honcho of the Jerusalem church. All the church leaders were there too. After catching up, Paul told them everything, play-by-play, about how God had been working among the non-Jews through his ministry. They were totally blown away and gave God a massive shout-out.",
+      "message_ref": "MSG Acts 21:17-19",
+      "reason": "MSG 21:17-19 says 'all the church leaders were there'; 'the other honored ones' mislabels them."
+    },
+    {
+      "book": "2 Corinthians",
+      "chapter": 5,
+      "para_index": 7,
+      "type": "content",
+      "old": "How? It's all through Christ. God put all the wrong on him, who never did anything wrong, so that we could be made right with God. He took the fall for us so we could have an honored place on God's good side.",
+      "new": "How? It's all through Christ. God put all the wrong on him, who never did anything wrong, so that we could be made right with God. He took the fall for us so we could be put right with God.",
+      "message_ref": "MSG 2 Corinthians 5:21",
+      "reason": "MSG 5:21 says 'put right with God'; the extra 'honored place on God's good side' is unsupported."
+    },
+    {
+      "book": "2 Corinthians",
+      "chapter": 7,
+      "para_index": 7,
+      "type": "content",
+      "old": "And when we saw how hyped Titus was about your response, our joy just doubled. He was so pumped by how you handled everything. I had been telling him how awesome you were, and you totally proved me right. He saw that I wasn't just gassing you up. Now he can't stop talking about how you guys stepped up and showed him major respect. He was totally blown away. And honestly, I couldn't be prouder. You guys are truly honored.",
+      "new": "And when we saw how hyped Titus was about your response, our joy just doubled. He was so pumped by how you handled everything. I had been telling him how awesome you were, and you totally proved me right. He saw that I wasn't just gassing you up. Now he can't stop talking about how you guys stepped up and showed him major respect. He was totally blown away. And honestly, I couldn't be prouder. I'm so confident and proud of you.",
+      "message_ref": "MSG 2 Corinthians 7:13-16",
+      "reason": "MSG 7:13-16 says 'I'm so confident and proud of you'; 'You guys are truly honored' was invented."
+    },
+    {
+      "book": "2 Corinthians",
+      "chapter": 12,
+      "para_index": 1,
+      "type": "content",
+      "old": "You guys are really making me do this, and honestly, it feels a bit weird to brag. But since you're pushing me, I'll tell you about some insane visions and secret info God gave me. Like, I know this guy who, fourteen years ago, got totally snatched up by Christ and went to the highest level of heaven. No clue if he was actually there in person or just his spirit, only God knows that. This same guy got an honored entry to paradise. Again, no idea if it was a physical trip or a spiritual one. God's the only one with the deets. He heard some top-secret stuff, but was told to keep it on the down-low. That's the guy I'm willing to talk about. But me? I'm not going to say anything about myself, except for the stuff that makes me look weak.",
+      "new": "You guys are really making me do this, and honestly, it feels a bit weird to brag. But since you're pushing me, I'll tell you about some insane visions and secret info God gave me. Like, I know this guy who, fourteen years ago, got totally snatched up by Christ and went to the highest level of heaven. No clue if he was actually there in person or just his spirit, only God knows that. This same guy got taken up to paradise. Again, no idea if it was a physical trip or a spiritual one. God's the only one with the deets. He heard some top-secret stuff, but was told to keep it on the down-low. That's the guy I'm willing to talk about. But me? I'm not going to say anything about myself, except for the stuff that makes me look weak.",
+      "message_ref": "MSG 2 Corinthians 12:1-4",
+      "reason": "MSG 12:2-4 says he was 'snatched up' to paradise; 'honored entry' adds a word the passage never says."
+    },
+    {
+      "book": "Galatians",
+      "chapter": 3,
+      "para_index": 4,
+      "type": "content",
+      "old": "Isn't it obvious? The real honored ones are the ones who trust in Christ, not the ones who are all about following rules. They're the true children of Abraham. The scriptures called it way back, saying God would make things right with everyone else through faith. It was promised to Abraham: “The whole world will be blessed because of you.”",
+      "new": "Isn't it obvious? The real children of faith are the ones who trust in Christ, not the ones who are all about following rules. They're the true children of Abraham. The scriptures called it way back, saying God would make things right with everyone else through faith. It was promised to Abraham: “The whole world will be blessed because of you.”",
+      "message_ref": "MSG Galatians 3:6-8",
+      "reason": "MSG 3:7-8 says people who trust Christ are 'like Abraham: children of faith'; 'the real honored ones' was invented."
+    },
+    {
+      "book": "Galatians",
+      "chapter": 4,
+      "para_index": 2,
+      "type": "content",
+      "old": "But then, right on schedule, God sent his Son. He was born just like us, a regular guy living under the same rules we were. But he came to bail us out, to free us from being trapped by all that religious red tape. Because of him, we got a powerful shift. We're not just following orders anymore; we're part of the family. And you know it's real because God sent the Spirit of his Son into our hearts, letting us call out to him like, \"Dad!\" That's some serious honored access. It proves we're not slaves anymore; we're his kids. And if we're his kids, that means we get the full inheritance, no strings attached.",
+      "new": "But then, right on schedule, God sent his Son. He was born just like us, a regular guy living under the same rules we were. But he came to bail us out, to free us from being trapped by all that religious red tape. Because of him, we got a powerful shift. We're not just following orders anymore; we're part of the family. And you know it's real because God sent the Spirit of his Son into our hearts, letting us call out to him like, \"Dad!\" That's some serious family access. It proves we're not slaves anymore; we're his kids. And if we're his kids, that means we get the full inheritance, no strings attached.",
+      "message_ref": "MSG Galatians 4:4-7",
+      "reason": "MSG 4:4-7 speaks of adoption, being children and heirs; 'honored access' misses the point, which is family access."
+    },
+    {
+      "book": "Galatians",
+      "chapter": 5,
+      "para_index": 1,
+      "type": "content",
+      "old": "Hey, listen up. Christ totally set us free so we could live a free life. So stand your ground and don't ever let anyone chain you up with a bunch of rules again. Seriously, I'm not playing. The second you get caught up in some rule-following contest, you're basically throwing away the awesome freedom Christ bought for you. It's like trading in an honored pass for a list of chores. Lame.",
+      "new": "Hey, listen up. Christ totally set us free so we could live a free life. So stand your ground and don't ever let anyone chain you up with a bunch of rules again. Seriously, I'm not playing. The second you get caught up in some rule-following contest, you're basically throwing away the awesome freedom Christ bought for you. It's like trading in the hard-won gift of freedom Christ bought for you for a list of chores. Lame.",
+      "message_ref": "MSG Galatians 5:1-3",
+      "reason": "MSG 5:1-3 speaks of the 'hard-won gift of freedom'; 'honored pass' was invented."
+    },
+    {
+      "book": "Ephesians",
+      "chapter": 2,
+      "para_index": 2,
+      "type": "content",
+      "old": "But instead, God, who's loaded with mercy and has this insane love for us, just pulled us into a huge hug. He took our dead-end lives and gave us an amazing change in Christ. And here's the thing—He did it all himself. We didn't do a thing to help! Then He gave us the ultimate honored upgrade, seating us in the best spot in heaven right next to Jesus.",
+      "new": "But instead, God, who's loaded with mercy and has this insane love for us, just pulled us into a huge hug. He took our dead-end lives and gave us an amazing change in Christ. And here's the thing—He did it all himself. We didn't do a thing to help! Then He gave us the ultimate upgrade, raising us up and seating us with Jesus in the best spot in heaven.",
+      "message_ref": "MSG Ephesians 2:4-5",
+      "reason": "MSG 2:4-5 says God 'picked us up and set us down in highest heaven in company with Jesus'; 'honored upgrade' was invented wording."
+    },
+    {
+      "book": "Ephesians",
+      "chapter": 5,
+      "para_index": 3,
+      "type": "content",
+      "old": "And for real, if you're just using people, or even God, to get what you want, you're going to end up with nothing. That's a one-way ticket to nowhere near God's honored section. Don't fall for those fakes who talk a big game about God but don't actually care. God roasts those guys. Seriously, don't even hang with people like that.",
+      "new": "And for real, if you're just using people, or even God, to get what you want, you're going to end up with nothing. That's a one-way ticket to nowhere near the kingdom of Christ and God. Don't fall for those fakes who talk a big game about God but don't actually care. God roasts those guys. Seriously, don't even hang with people like that.",
+      "message_ref": "MSG Ephesians 5:5-7",
+      "reason": "MSG 5:5-7 speaks of the kingdom of Christ and God; 'God's honored section' was invented."
+    },
+    {
+      "book": "Ephesians",
+      "chapter": 6,
+      "para_index": 2,
+      "type": "content",
+      "old": "Dads, don't be that guy who sets up impossible standards for your kids. Don't make them give up in frustration. Instead, be their guide, show them how to follow the real honored one, Jesus.",
+      "new": "Dads, don't be that guy who sets up impossible standards for your kids. Don't make them give up in frustration. Instead, be their guide, show them how to follow the real one, Jesus.",
+      "message_ref": "MSG Ephesians 6:4",
+      "reason": "MSG 6:4 says to train children in the way of the Master; 'the real honored one' was invented framing."
+    },
+    {
+      "book": "Philippians",
+      "chapter": 2,
+      "para_index": 1,
+      "type": "content",
+      "old": "So, if you've gotten anything good out of following Jesus, if His love has actually changed you, if being part of our squad means anything, and if you guys have any heart at all—do me a solid. Get on the same page, love each other, and be true ride-or-die friends. Don't be that person who's always trying to be the main character. Don't try to sweet-talk your way into the honored section. Instead, be humble and hype up your friends. Don't just look out for number one. Forget about yourself for a minute and help someone else out.",
+      "new": "So, if you've gotten anything good out of following Jesus, if His love has actually changed you, if being part of our squad means anything, and if you guys have any heart at all—do me a solid. Get on the same page, love each other, and be true ride-or-die friends. Don't be that person who's always trying to be the main character. Don't try to sweet-talk your way to the top. Instead, be humble and hype up your friends. Don't just look out for number one. Forget about yourself for a minute and help someone else out.",
+      "message_ref": "MSG Philippians 2:1-4",
+      "reason": "MSG 2:3 says 'don't sweet-talk your way to the top'; 'the honored section' was invented."
+    },
+    {
+      "book": "Philippians",
+      "chapter": 3,
+      "para_index": 1,
+      "type": "content",
+      "old": "Alright, guys, let's wrap this up. The main thing is to be stoked about God! I know I sound like a broken record, but it's super important, so I'm gonna say it again: watch out for the haters. I'm talking about those super-religious show-offs who are all talk. They're obsessed with outward stuff, like old-school rituals, but they're missing the point. We're the real deal because we're powered by God's Spirit, and we're all about hyping up Christ. We know we can't do this on our own, even though my resume is pretty stacked. Seriously, I was born into the right family, part of the honored tribe of Benjamin, a rule-following expert, and I was so hardcore I even went after the church. I was basically a straight-A student in the rulebook.",
+      "new": "Alright, guys, let's wrap this up. The main thing is to be stoked about God! I know I sound like a broken record, but it's super important, so I'm gonna say it again: watch out for the haters. I'm talking about those super-religious show-offs who are all talk. They're obsessed with outward stuff, like old-school rituals, but they're missing the point. We're the real deal because we're powered by God's Spirit, and we're all about hyping up Christ. We know we can't do this on our own, even though my resume is pretty stacked. Seriously, I was born into the right family, part of the tribe of Benjamin, a rule-following expert, and I was so hardcore I even went after the church. I was basically a straight-A student in the rulebook.",
+      "message_ref": "MSG Philippians 3:1-4",
+      "reason": "MSG 3:5 identifies Paul as a Benjaminite; 'the honored tribe' was invented."
+    },
+    {
+      "book": "Philippians",
+      "chapter": 4,
+      "para_index": 1,
+      "type": "content",
+      "old": "Alright, listen up, my crew. You guys are the best, seriously. I'm so proud of you, so just keep doing what you're doing and stay solid with God. And hey, Euodia and Syntyche, you two need to squash your beef and make up. It's not a good look. My man Syzygus, I need you to be the ref and help them sort it out. These ladies were total rockstars for the cause, right there with me and the rest of the OG squad. They're honored ones in God's book, so they need to act like it.",
+      "new": "Alright, listen up, my crew. You guys are the best, seriously. I'm so proud of you, so just keep doing what you're doing and stay solid with God. And hey, Euodia and Syntyche, you two need to squash your beef and make up. It's not a good look. My man Syzygus, I need you to be the ref and help them sort it out. These ladies were total rockstars for the cause, right there with me and the rest of the OG squad. Their names are in God's Book of Life, so they need to act like it.",
+      "message_ref": "MSG Philippians 4:1-3",
+      "reason": "MSG 4:1-3 says their names are in God's Book of Life; 'honored ones' was invented."
+    },
+    {
+      "book": "Colossians",
+      "chapter": 1,
+      "para_index": 7,
+      "type": "content",
+      "old": "He was the top dog from the very beginning, and he's the honored in the end, leading the resurrection parade. From start to finish, he's the main event, way above everyone and everything. He's so huge that all of God fits perfectly in him with room to spare. And here's the thing: all the broken, messed-up parts of the universe—people, things, you name it—get fixed and put back together in perfect harmony because of his death, because of the blood he shed on the cross.",
+      "new": "He was the top dog from the very beginning, and he's supreme in the end, leading the resurrection parade. From start to finish, he's the main event, way above everyone and everything. He's so huge that all of God fits perfectly in him with room to spare. And here's the thing: all the broken, messed-up parts of the universe—people, things, you name it—get fixed and put back together in perfect harmony because of his death, because of the blood he shed on the cross.",
+      "message_ref": "MSG Colossians 1:17-20",
+      "reason": "MSG 1:18-20 says he is 'supreme in the end'; 'he's the honored' is broken grammar that drops the real word."
+    },
+    {
+      "book": "Colossians",
+      "chapter": 3,
+      "para_index": 6,
+      "type": "content",
+      "old": "So, since you're God's chosen honored ones for this new life of love, you gotta dress the part. God picked out this outfit for you: be compassionate, be kind, be humble, be strong but quiet, and have self-control. Be chill, be cool with not being first, and be quick to forgive when someone messes up. Forgive them as fast and as completely as the Boss forgave you. And no matter what else you wear, always wear love. It's your go-to, everyday gear. Never leave home without it.",
+      "new": "So, since you're chosen by God for this new life of love, you gotta dress the part. God picked out this outfit for you: be compassionate, be kind, be humble, be strong but quiet, and have self-control. Be chill, be cool with not being first, and be quick to forgive when someone messes up. Forgive them as fast and as completely as the Boss forgave you. And no matter what else you wear, always wear love. It's your go-to, everyday gear. Never leave home without it.",
+      "message_ref": "MSG Colossians 3:12-14",
+      "reason": "MSG 3:12 says 'chosen by God for this new life of love'; 'chosen honored ones' replaced the real 'chosen' wording."
+    },
+    {
+      "book": "1 Thessalonians",
+      "chapter": 4,
+      "para_index": 4,
+      "type": "content",
+      "old": "And if you just ghost this advice, you’re not just dissing us, you’re straight-up rejecting God. And He’s the one giving you His Holy Spirit, which is a pretty honored gift. So yeah, don't do that.",
+      "new": "And if you just ghost this advice, you’re not just dissing us, you’re straight-up rejecting God. And He’s the one giving you His Holy Spirit, which is honestly the best gift ever. So yeah, don't do that.",
+      "message_ref": "MSG 1 Thessalonians 4:7-8",
+      "reason": "MSG 4:7-8 says God is 'making you a gift of his Holy Spirit'; 'honored gift' is invented wording, and the gift itself is the point."
+    },
+    {
+      "book": "1 Thessalonians",
+      "chapter": 4,
+      "para_index": 8,
+      "type": "content",
+      "old": "And get this—this is straight from the Master, so it’s legit. When Jesus comes back to get us, those of us who are still around won’t get to cut the line. The ones who already died? They’re the honored ones who go first. The Master Himself will give the signal—it’ll be like an archangel’s thunder and a massive trumpet blast. He’ll come down from heaven, and the dead who believed in Christ will rise up first. Then, the rest of us still here will get beamed up into the clouds with them to meet the Master. We’ll literally be walking on air! It’s gonna be one epic family reunion with Jesus. So, when you’re feeling down, just remember that and cheer each other up.",
+      "new": "And get this—this is straight from the Master, so it’s legit. When Jesus comes back to get us, those of us who are still around won’t get to cut the line. The ones who already died? The dead who believed in Christ are the ones who go first. The Master Himself will give the signal—it’ll be like an archangel’s thunder and a massive trumpet blast. He’ll come down from heaven, and the dead who believed in Christ will rise up first. Then, the rest of us still here will get beamed up into the clouds with them to meet the Master. We’ll literally be walking on air! It’s gonna be one epic family reunion with Jesus. So, when you’re feeling down, just remember that and cheer each other up.",
+      "message_ref": "MSG 1 Thessalonians 4:15-18",
+      "reason": "MSG 4:15-18 says 'the dead in Christ will rise first'; 'the honored ones' mislabels them."
+    },
+    {
+      "book": "1 Thessalonians",
+      "chapter": 5,
+      "para_index": 2,
+      "type": "content",
+      "old": "But you guys are in the loop, so you won't be caught off guard. You're the real honored ones, the kids of the light. We're living in the open, we know what's up. So, let's not be like those other people, sleepwalking through life. Let's stay woke and be smart. They're the ones who are all about late-night partying and getting ruined. That's not our scene. We're all about the daylight, so let's act like it. Let's be clear-headed, rocking our faith, love, and the hope that we're saved.",
+      "new": "But you guys are in the loop, so you won't be caught off guard. You're the real deal, the kids of the light. We're living in the open, we know what's up. So, let's not be like those other people, sleepwalking through life. Let's stay woke and be smart. They're the ones who are all about late-night partying and getting ruined. That's not our scene. We're all about the daylight, so let's act like it. Let's be clear-headed, rocking our faith, love, and the hope that we're saved.",
+      "message_ref": "MSG 1 Thessalonians 5:4-8",
+      "reason": "MSG 5:5 says they are 'children of Light'; 'the real honored ones' was invented."
+    },
+    {
+      "book": "2 Thessalonians",
+      "chapter": 2,
+      "para_index": 5,
+      "type": "content",
+      "old": "But you guys? We're always thanking God for you. You're the real honored ones, chosen by God from the very beginning. He picked you to be saved because you kept it real and believed the truth. He invited you into this awesome life through the message we shared, so you could get in on the glory of our Master, Jesus Christ.",
+      "new": "But you guys? We're always thanking God for you. You're so loved by God, and He picked you out as His from the very beginning. He picked you to be saved because you kept it real and believed the truth. He invited you into this awesome life through the message we shared, so you could get in on the glory of our Master, Jesus Christ.",
+      "message_ref": "MSG 2 Thessalonians 2:13-14",
+      "reason": "MSG 2:13-14 says 'so loved by God' and 'God picked you out as his'; 'the real honored ones' was invented."
+    },
+    {
+      "book": "1 Timothy",
+      "chapter": 2,
+      "para_index": 2,
+      "type": "content",
+      "old": "God wants to save, like, literally everyone. He wants everyone to get the real scoop: there's only one God, and only one guy who connects us to Him—Jesus. He was the most honored one who put himself on the line to bust us out of the trap of sin. The news is getting out there, and that's my main gig: telling people who've never heard about God what's up, and how to get in on it through simple faith.",
+      "new": "God wants to save, like, literally everyone. He wants everyone to get the real scoop: there's only one God, and only one guy who connects us to Him—Jesus. He was the one who put himself on the line, offering himself as a sacrifice to bust us out of the trap of sin. The news is getting out there, and that's my main gig: telling people who've never heard about God what's up, and how to get in on it through simple faith.",
+      "message_ref": "MSG 1 Timothy 2:4-7",
+      "reason": "MSG 2:5-6 says he 'offered himself as a sacrifice to free us all'; 'the most honored one' was invented."
+    },
+    {
+      "book": "1 Timothy",
+      "chapter": 6,
+      "para_index": 6,
+      "type": "content",
+      "old": "I'm giving you a serious mission, in front of God who gives life and Jesus who stood his ground and didn't back down from Pilate: Stick to the plan. Don't slack off. Our main man, Jesus, is coming back right on schedule. His return is guaranteed by the most honored one, the King of all kings and Lord of all lords. He's the only one who can't be defeated by death, shining so bright you can't even look at him. No one has ever seen him, 'cause he's on another level. All honor and power to him forever! You know it.",
+      "new": "I'm giving you a serious mission, in front of God who gives life and Jesus who stood his ground and didn't back down from Pilate: Stick to the plan. Don't slack off. Our main man, Jesus, is coming back right on schedule. His return is guaranteed by the Blessed and Undisputed Ruler, the King of all kings and Lord of all lords. He's the only one who can't be defeated by death, shining so bright you can't even look at him. No one has ever seen him, 'cause he's on another level. All honor and power to him forever! You know it.",
+      "message_ref": "MSG 1 Timothy 6:13-16",
+      "reason": "MSG 6:13-16 calls him the 'Blessed and Undisputed Ruler, High King, High God'; 'the most honored one' weakened the actual title."
+    },
+    {
+      "book": "2 Timothy",
+      "chapter": 1,
+      "para_index": 4,
+      "type": "content",
+      "old": "So, don't you dare be ashamed to talk about our boss, Jesus, or about me being locked up for him. You gotta take your hits for the cause, just like the rest of us. The only way we can do this is with God's power. He's the one who saved us and gave us this honored access to a holy life. It wasn't because we were so awesome; it was his master plan from the beginning. He had this gift waiting for us in Jesus before we even existed. And now, since our Savior showed up, it's crystal clear: Jesus totally wrecked death and put life on full blast for everyone to see.",
+      "new": "So, don't you dare be ashamed to talk about our boss, Jesus, or about me being locked up for him. You gotta take your hits for the cause, just like the rest of us. The only way we can do this is with God's power. He's the one who saved us and called us to a holy life. It wasn't because we were so awesome; it was his master plan from the beginning. He had this gift waiting for us in Jesus before we even existed. And now, since our Savior showed up, it's crystal clear: Jesus totally wrecked death and put life on full blast for everyone to see.",
+      "message_ref": "MSG 2 Timothy 1:7-10",
+      "reason": "MSG 1:7-10 says God 'called us to a holy life'; 'honored access' replaced the real 'called' wording."
+    },
+    {
+      "book": "2 Timothy",
+      "chapter": 2,
+      "para_index": 2,
+      "type": "content",
+      "old": "Never forget—here's the thing: Jesus, from the legendary family of David, came back from the dead. That's the core message. That's why I'm in the slammer right now. But you can't lock up God's message! That's why I'm toughing it out, so everyone God's calling can get their transformation in Christ. And this is 100% legit: If we die with him, we get to live with him. If we stick with him through the hard times, we'll be honored ones with him. If we ghost him, he'll ghost us. But if we fail him, he'll never fail us. He's gotta be true to himself, you know?",
+      "new": "Never forget—here's the thing: Jesus, from the legendary family of David, came back from the dead. That's the core message. That's why I'm in the slammer right now. But you can't lock up God's message! That's why I'm toughing it out, so everyone God's calling can get their transformation in Christ. And this is 100% legit: If we die with him, we get to live with him. If we stick with him through the hard times, we'll rule with him. If we ghost him, he'll ghost us. But if we fail him, he'll never fail us. He's gotta be true to himself, you know?",
+      "message_ref": "MSG 2 Timothy 2:7-13",
+      "reason": "MSG 2:11-12 says 'if we stick with him, we'll rule with him'; 'honored ones' replaced the real promise."
+    },
+    {
+      "book": "James",
+      "chapter": 1,
+      "para_index": 2,
+      "type": "content",
+      "old": "Hey, when life throws shade and you're getting hit from all sides, consider it an amazing change opportunity. It's like growing your faith game. Don't try to quit early. Let it cook so you can become a real one, not a noob. You'll be an honored person, a true pro, ready for anything.",
+      "new": "Hey, when life throws shade and you're getting hit from all sides, consider it an amazing change opportunity. It's like growing your faith game. Don't try to quit early. Let it cook so you can become a real one, not a noob. You'll end up mature and solid, a true pro, ready for anything.",
+      "message_ref": "MSG James 1:2-4",
+      "reason": "MSG 1:2-4 says trials make you 'mature and well-developed, not deficient in any way'; 'an honored person' was invented."
+    },
+    {
+      "book": "James",
+      "chapter": 1,
+      "para_index": 7,
+      "type": "content",
+      "old": "So for real, my guys, don't get played. All the good stuff comes from God. He's the OG, and He doesn't switch up. He made us with his true Word, and we're his honored ones, the best of all he created.",
+      "new": "So for real, my guys, don't get played. All the good stuff comes from God. He's the OG, and He doesn't switch up. He made us with his true Word, and we're the crown of all he created.",
+      "message_ref": "MSG James 1:16-18",
+      "reason": "MSG 1:16-18 says we are 'the crown of all his creatures'; 'his honored ones' was invented."
+    },
+    {
+      "book": "James",
+      "chapter": 2,
+      "para_index": 2,
+      "type": "content",
+      "old": "God's not like that at all. He rolls with the underdogs and makes them honored in his kingdom. This kingdom is for anyone who loves God. But here you are, dissing the very people God chose! And who are the ones making your life hard? The rich and powerful, that's who. They're the ones dragging you to court and making fun of you for being a Christian.",
+      "new": "God's not like that at all. He rolls with the underdogs and makes them first citizens of his kingdom, with full rights and privileges. This kingdom is for anyone who loves God. But here you are, dissing the very people God chose! And who are the ones making your life hard? The rich and powerful, that's who. They're the ones dragging you to court and making fun of you for being a Christian.",
+      "message_ref": "MSG James 2:5-7",
+      "reason": "MSG 2:5-7 says the poor are 'the kingdom's first citizens, with full rights and privileges'; 'makes them honored' was imprecise."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 2,
+      "para_index": 2,
+      "type": "content",
+      "old": "Check it out, you're now part of something epic. Think of Jesus as the 'living Stone,' the source of all life. Some haters, like a bunch of clumsy construction workers, took one look at him and said, 'Nah, this stone is trash,' and tossed it. But God, the master builder, picked up that same stone and made it the most important one of all—the cornerstone. Now, you guys are like living stones, too. God is using you to build a super cool, spiritual house. And you're the priests in this house, living lives that get a thumbs-up from Christ. The old scrolls even talked about this: 'Look! I'm putting a special stone in Zion, an honored one cornerstone. Whoever trusts in this stone will never be sorry.' For you guys who trust him, this Stone is your pride and joy. But for the haters who ghosted him, that same stone they rejected is now the main event. For them, it's a stumbling block, a rock that trips them up. They stumble and fall because they refuse to listen, which was the plan all along.",
+      "new": "Check it out, you're now part of something epic. Think of Jesus as the 'living Stone,' the source of all life. Some haters, like a bunch of clumsy construction workers, took one look at him and said, 'Nah, this stone is trash,' and tossed it. But God, the master builder, picked up that same stone and made it the most important one of all—the cornerstone. Now, you guys are like living stones, too. God is using you to build a super cool, spiritual house. And you're the priests in this house, living lives that get a thumbs-up from Christ. The old scrolls even talked about this: 'Look! I'm putting a special stone in Zion, a cornerstone in the place of honor. Whoever trusts in this stone will never be sorry.' For you guys who trust him, this Stone is your pride and joy. But for the haters who ghosted him, that same stone they rejected is now the main event. For them, it's a stumbling block, a rock that trips them up. They stumble and fall because they refuse to listen, which was the plan all along.",
+      "message_ref": "MSG 1 Peter 2:4-8",
+      "reason": "MSG 2:4-8 quotes the scripture as 'a cornerstone in the place of honor'; 'an honored one cornerstone' is broken grammar that garbled the real wording."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 2,
+      "para_index": 3,
+      "type": "content",
+      "old": "But you guys are different. You're God's chosen crew, his honored ones. You're a holy nation, a holy priesthood, chosen to tell everyone about the amazing things he's done. He took you from being nobodies and made you somebodies. He took you from being rejected and made you accepted. This world isn't your permanent home, so don't get too comfortable. Don't let your ego run wild and mess up your soul. Live such good lives that when people see you, all their wrong ideas about you will be proven wrong. They'll be so impressed that they'll end up on God's side, ready to party when he shows up.",
+      "new": "But you guys are different. You're God's chosen crew, his holy people. You're a holy nation, a holy priesthood, chosen to tell everyone about the amazing things he's done. He took you from being nobodies and made you somebodies. He took you from being rejected and made you accepted. This world isn't your permanent home, so don't get too comfortable. Don't let your ego run wild and mess up your soul. Live such good lives that when people see you, all their wrong ideas about you will be proven wrong. They'll be so impressed that they'll end up on God's side, ready to party when he shows up.",
+      "message_ref": "MSG 1 Peter 2:9-12",
+      "reason": "MSG 2:9-12 says believers are 'chosen by God' and 'a holy people'; 'his honored ones' displaced the real 'holy people' wording."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 3,
+      "para_index": 3,
+      "type": "content",
+      "old": "And for you husbands, don't think you're off the hook. Be good to your wives. Show them honor and be stoked about them. Yeah, you might have some advantages, but in God's new kingdom, you're equals. So treat your wives like the honored ones they are, so your prayers don't get ghosted.",
+      "new": "And for you husbands, don't think you're off the hook. Be good to your wives. Show them honor and be stoked about them. Yeah, you might have some advantages, but in God's new kingdom, you're equals. So treat your wives with honor, so your prayers don't get ghosted.",
+      "message_ref": "MSG 1 Peter 3:7",
+      "reason": "MSG 3:7 tells husbands to honor their wives, but 'the honored ones they are' is awkward and invented; restore the plain honor wording."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 4,
+      "para_index": 4,
+      "type": "content",
+      "old": "The world is about to have its season finale, so don't take anything for granted. Stay alert and pray. Most importantly, love each other like your life depends on it. Love pretty much fixes everything. If someone's hungry, get them a burger. If they need a place to crash, let them crash at your place. And do it with a smile. God gave you all sorts of cool stuff, so share it! If you're good with words, use them to say what God would say. If you're good at helping, then help with all your heart. That way, everyone will see how awesome God is, and Jesus will get all the credit. He's the honored, forever and ever. Amen!",
+      "new": "The world is about to have its season finale, so don't take anything for granted. Stay alert and pray. Most importantly, love each other like your life depends on it. Love pretty much fixes everything. If someone's hungry, get them a burger. If they need a place to crash, let them crash at your place. And do it with a smile. God gave you all sorts of cool stuff, so share it! If you're good with words, use them to say what God would say. If you're good at helping, then help with all your heart. That way, everyone will see how awesome God is, and Jesus will get all the credit as the One mighty in everything, forever and ever. Amen!",
+      "message_ref": "MSG 1 Peter 4:7-11",
+      "reason": "MSG 4:7-11 says 'he'll get all the credit as the One mighty in everything'; 'He's the honored' is broken wording that dropped the real phrase."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 5,
+      "para_index": 2,
+      "type": "content",
+      "old": "When God, the most honored one, shows up, he’s gonna see you’ve been a real one and give you a major shout-out. And for all you younger guys, you gotta respect your leaders. But for real, everyone, leaders and followers, just be chill with each other. Because God totally roasts the fakes and the proud, but he’s all about the humble, real-deal people.",
+      "new": "When God, the best shepherd of all, shows up, he’s gonna see you’ve been a real one and give you a major shout-out. And for all you younger guys, you gotta respect your leaders. But for real, everyone, leaders and followers, just be chill with each other. Because God totally roasts the fakes and the proud, but he’s all about the humble, real-deal people.",
+      "message_ref": "MSG 1 Peter 5:4-7",
+      "reason": "MSG 5:4-7 says God is 'the best shepherd of all'; 'the most honored one' was invented and replaced the real description."
+    },
+    {
+      "book": "1 John",
+      "chapter": 4,
+      "para_index": 4,
+      "type": "content",
+      "old": "But listen up, you guys are from God, you’re honored ones. You’ve already totally owned those fake teachers because the Spirit inside you is way more powerful than any of the nonsense in the world. Those guys just talk about worldly stuff, and the world eats it up. But we’re on a different level. Anyone who’s tight with God gets us. If someone doesn’t, they’re not on our wavelength. That’s how you can tell who’s speaking truth and who’s just capping.",
+      "new": "But listen up, you guys are from God—you belong to Him. You’ve already totally owned those fake teachers because the Spirit inside you is way more powerful than any of the nonsense in the world. Those guys just talk about worldly stuff, and the world eats it up. But we’re on a different level. Anyone who’s tight with God gets us. If someone doesn’t, they’re not on our wavelength. That’s how you can tell who’s speaking truth and who’s just capping.",
+      "message_ref": "MSG 1 John 4:4-6",
+      "reason": "MSG 4:4-6 says 'you come from God and belong to God'; 'you're honored ones' was invented."
+    },
+    {
+      "book": "2 John",
+      "chapter": 1,
+      "para_index": 2,
+      "type": "content",
+      "old": "Wishing you all the good stuff—grace, mercy, and peace. It's all coming straight from the big boss, God the Father, and his Son, Jesus Christ. Total honored treatment.",
+      "new": "Wishing you all the good stuff—grace, mercy, and peace. It's all coming straight from the big boss, God the Father, and his Son, Jesus Christ. That's how much He loves you.",
+      "message_ref": "MSG 2 John 1:3",
+      "reason": "MSG 2 John 3 speaks of grace, mercy and peace from God the Father and Jesus Christ; 'Total honored treatment' is invented slang."
+    },
+    {
+      "book": "Jude",
+      "chapter": 1,
+      "para_index": 1,
+      "type": "content",
+      "old": "Hey, what up? It's Jude, a servant of Jesus Christ and brother of James. I'm writing this to all of you who are loved by God the Father and kept safe by Jesus. You're the honored ones. So chill, everything's gonna be alright. Open your hearts, 'cause love is on the way!",
+      "new": "Hey, what up? It's Jude, a servant of Jesus Christ and brother of James. I'm writing this to all of you who are loved by God the Father and kept safe by Jesus. You're the ones God loves and Jesus keeps safe. So chill, everything's gonna be alright. Open your hearts, 'cause love is on the way!",
+      "message_ref": "MSG Jude 1:1-2",
+      "reason": "MSG Jude 1-2 addresses those 'loved by God the Father and kept safe by Jesus'; 'the honored ones' was invented."
+    }
+  ],
+  "checked_kept": [
+    {
+      "book": "Matthew",
+      "chapter": 20,
+      "para_index": 2,
+      "text": "A Mom's Ambitious Request As they got closer to Jerusalem, the mother of James and John (two of the disciples) came up to Jesus and kneeled down. \"When you become King, promise me that my two boys can be your right-hand and left-hand men.\" Jesus looked at the brothers. \"You have no idea what you're asking. Can you drink from the cup of suffering I'm about to drink from?\" They confidently said, \"We can handle it.\" Jesus said, \"You will suffer like me, but I don't assign the honored seats. My Father does.\"",
+      "message_ref": "MSG Matthew 20:17-23",
+      "reason": "MSG 20:20-23 speaks of 'highest places of honor' / 'awarding places of honor'; 'honored seats' is a natural fair loose paraphrase."
+    },
+    {
+      "book": "Matthew",
+      "chapter": 23,
+      "para_index": 0,
+      "text": "Jesus gathered his crew and the huge crowd and dropped a bomb. He called out the religious leaders, the so-called experts in God's Law. 'Listen, these guys know the rules, but they don't play by 'em. They talk a good game, but their lives are a total mess. It's all for show, like a perpetual parade. They love the honored seats at banquets and getting called 'Doctor' or 'Reverend.' Don't be like them. They're fakes.",
+      "message_ref": "MSG Matthew 23:1-7",
+      "reason": "MSG 23:4-7 describes the leaders' love of the head table and prominent positions; 'honored seats at banquets' is a natural fair loose paraphrase."
+    },
+    {
+      "book": "Luke",
+      "chapter": 11,
+      "para_index": 19,
+      "text": "\"You love getting the honored seats at the synagogue and having people treat you like celebrities in the marketplace. You're like unmarked graves—people walk over you and get spiritually contaminated without even knowing it!\"",
+      "message_ref": "MSG Luke 11:43-44",
+      "reason": "MSG 11:43-44 describes the Pharisees' love of the head table and public flattery; 'honored seats at the synagogue' is a natural fair loose paraphrase."
+    },
+    {
+      "book": "Luke",
+      "chapter": 14,
+      "para_index": 1,
+      "text": "Then he noticed how all the honored guests were fighting over the best, most honorable seats at the dinner table. He dropped some savage life advice:",
+      "message_ref": "MSG Luke 14:5-6",
+      "reason": "MSG 14:7-11 repeatedly speaks of the 'place of honor' at the table; 'best, most honorable seats' is a natural fair loose paraphrase."
+    },
+    {
+      "book": "Luke",
+      "chapter": 14,
+      "para_index": 2,
+      "text": "\"When you get invited to a massive wedding, don't sit in the honored seat. If someone more important than you shows up, the host is going to make you get up and move to the back in front of everyone. It's humiliating. Instead, go sit in the absolute worst, lowest seat. Then the host will come and say, 'Friend, move up to a better seat!' You'll look like a boss in front of everyone. Because everyone who flexes will be humbled, and the one who humbles himself will be elevated.\"",
+      "message_ref": "MSG Luke 14:8-11",
+      "reason": "MSG 14:7-11 speaks of the 'place of honor'; 'honored seat' is a natural fair loose paraphrase."
+    },
+    {
+      "book": "Galatians",
+      "chapter": 2,
+      "para_index": 1,
+      "text": "So, fourteen years later, I went back to Jerusalem with my boy Barnabas, and we brought our guy Titus with us. I had to go and make sure the head honchos in Jerusalem were on the same page with the message I was preaching to the non-Jews. I met with the honored leaders in private, so we wouldn't cause a big public scene and have all my hard work go down the drain. And get this, Titus, who wasn't even Jewish, didn't have to get circumcised. That was a huge deal!",
+      "message_ref": "MSG Galatians 2:1-3",
+      "reason": "MSG 2:1-5 describes the leaders as 'those held in esteem by the church'; 'honored leaders' is a natural fair loose paraphrase."
+    },
+    {
+      "book": "Ephesians",
+      "chapter": 1,
+      "para_index": 7,
+      "text": "And all this power comes from Christ. God showed his power by raising Jesus from the dead and giving Him the honored seat in heaven. He put Him in charge of literally everything in the universe, from galaxies to governments. No one and nothing is more powerful than Him, not now, not ever. He's the ultimate authority, the one with the last word on everything. And right in the middle of it all, Christ is the head of the church. The church isn't just some afterthought; the world is an afterthought to the church. The church is Christ's body, how He speaks and acts, and how He fills everything, everywhere, with His presence.",
+      "message_ref": "MSG Ephesians 1:20-23",
+      "reason": "MSG 1:20-23 says God 'set him on a throne in deep heaven'; 'the honored seat in heaven' is a natural fair loose paraphrase of the throne wording."
+    },
+    {
+      "book": "Philippians",
+      "chapter": 2,
+      "para_index": 4,
+      "text": "Because He was so obedient, God gave Him the ultimate transformation and honored Him more than anyone or anything, ever. So now, everyone in heaven, on earth, and even the ghosts of people long gone, will bow down and worship Jesus. They'll all shout out that He's the boss, bringing major props to God the Father.",
+      "message_ref": "MSG Philippians 2:9-11",
+      "reason": "MSG 2:9-11 says God 'lifted him high and honored him far beyond anyone or anything, ever'; the current wording closely follows MSG."
+    }
+  ]
+}

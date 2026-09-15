@@ -1,0 +1,15 @@
+{
+  "book": "2 John",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "5": "8-9",
+        "6": "10-11",
+        "7": "12-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

@@ -1,0 +1,495 @@
+{
+  "fixes": [
+    {
+      "book": "Romans",
+      "chapter": 1,
+      "para_index": 1,
+      "type": "content",
+      "old": "This is Paul, and I'm on a mission for Jesus Christ. He's the real MVP, and I'm part of his religious leaders, chosen to spread the word about God's awesome power. I'm writing this to all of you in Rome who are on God's team—you're the real honored ones.",
+      "new": "This is Paul, and I'm on a mission for Jesus Christ. He's the real MVP, and I'm his hand-picked messenger, chosen to spread the word about God's awesome power. I'm writing this to all of you in Rome who are on God's team—you belong to Jesus because he called you.",
+      "message_ref": "MSG Romans 1:6-7: \"You are who you are through this gift and call of Jesus Christ!\" / \"God's love has poured out on you\" — belonging/calling, not an 'honored' rank.",
+      "reason": "MSG grounds the greeting in gift/call, not an 'honored' status; also fixed the garbled 'part of his religious leaders' phrasing."
+    },
+    {
+      "book": "Romans",
+      "chapter": 2,
+      "para_index": 4,
+      "type": "content",
+      "old": "If you mess up, you're gonna get splinters, no matter where you're from or who your parents are. But if you roll with God, you'll get awesome rewards, no matter your background. Being a Jew doesn't give you an honored pass. God doesn't care what other people say about you; he makes up his own mind.",
+      "new": "If you mess up, you're gonna get splinters, no matter where you're from or who your parents are. But if you roll with God, you'll get awesome rewards, no matter your background. Being a Jew doesn't give you an automatic stamp of approval. God doesn't care what other people say about you; he makes up his own mind.",
+      "message_ref": "MSG Romans 2:11: \"Being a Jew won't give you an automatic stamp of approval.\"",
+      "reason": "MSG's 'automatic stamp of approval' replaces the misleading 'honored pass'; rest matches MSG (splinters)."
+    },
+    {
+      "book": "Romans",
+      "chapter": 3,
+      "para_index": 1,
+      "type": "content",
+      "old": "So, what's the big deal about being a Jew? Does it give you some kind of honored pass with God? Well, yeah, it's a pretty big deal, but not in the way you think. God trusted them to write down his words, the Holy Scriptures. But what if some of them bailed on their mission? Does that mean God ghosted them? No way! God always keeps his promises, even when everyone else is being fake. Like the Scriptures say, \"Your words are always true, even when people reject you.\"",
+      "new": "So, what's the big deal about being a Jew? Does it give you some special status with God? Well, yeah, it's a pretty big deal, but not in the way you think. God trusted them to write down his words, the Holy Scriptures. But what if some of them bailed on their mission? Does that mean God ghosted them? No way! God always keeps his promises, even when everyone else is being fake. Like the Scriptures say, \"Your words are always true, even when people reject you.\"",
+      "message_ref": "MSG Romans 3:1-2: \"So what difference does it make who's a Jew and who isn't...? Well, it makes a huge difference. First of all, because it was the Jews to whom God's message was entrusted.\"",
+      "reason": "MSG asks whether being a Jew is a difference/special advantage — 'honored pass' is wrong."
+    },
+    {
+      "book": "Romans",
+      "chapter": 4,
+      "para_index": 7,
+      "type": "content",
+      "old": "Now, is this honored status only for the religious insiders, the ones who follow all the rules? Or can anyone get in on this? We all know Abraham was considered legit by God because he trusted God's plan, right?",
+      "new": "Now, is this blessing only for the religious insiders, the ones who follow all the rules? Or can anyone get in on this? We all know Abraham was considered legit by God because he trusted God's plan, right?",
+      "message_ref": "MSG Romans 4:6,9: \"This blessing...\" / \"this blessing\" is what David and Paul call Abraham's righteousness-by-faith.",
+      "reason": "MSG names it 'this blessing', not 'honored status'."
+    },
+    {
+      "book": "Romans",
+      "chapter": 5,
+      "para_index": 1,
+      "type": "content",
+      "old": "So, check it. Because we have faith, God's made us right with him. It's like we've leveled up our friendship with God, all thanks to our main man, Jesus. And it gets even better. We can now just walk right up to God, and he's already there with open arms. We're finally in the honored section of God's grace and glory, standing tall and shouting out his praises.",
+      "new": "So, check it. Because we have faith, God's made us right with him. It's like we've leveled up our friendship with God, all thanks to our main man, Jesus. And it gets even better. We can now just walk right up to God, and he's already there with open arms. We're out in the wide-open spaces of God's grace and glory, standing tall and shouting out his praises.",
+      "message_ref": "MSG Romans 5:2: \"out in the wide open spaces of God's grace and glory, standing tall and shouting our praise.\"",
+      "reason": "MSG's wording restored verbatim; 'honored section' is not MSG."
+    },
+    {
+      "book": "Romans",
+      "chapter": 6,
+      "para_index": 4,
+      "type": "content",
+      "old": "Let me break it down even more. Our old, cringey self was basically crucified with Christ. That whole miserable life where sin was calling the shots? It's over. Canceled. We're not stuck with its demands anymore. Here's the core belief: if we were part of Christ's death that totally owned sin, we're also part of his resurrection that gives us life. We know that when Jesus came back from the dead, it was the ultimate mic drop on death itself. Death doesn't get the final say anymore. When Jesus died, he took sin down with him. But now that he's alive, he connects us directly to God. So from now on, think of it like this: sin is a dead language, it's totally irrelevant to you. But God? He's speaking your language, and you should be hanging on every word. You're done with sin and totally alive for God. That's the honored treatment Jesus gives you.",
+      "new": "Let me break it down even more. Our old, cringey self was basically crucified with Christ. That whole miserable life where sin was calling the shots? It's over. Canceled. We're not stuck with its demands anymore. Here's the core belief: if we were part of Christ's death that totally owned sin, we're also part of his resurrection that gives us life. We know that when Jesus came back from the dead, it was the ultimate mic drop on death itself. Death doesn't get the final say anymore. When Jesus died, he took sin down with him. But now that he's alive, he connects us directly to God. So from now on, think of it like this: sin is a dead language, it's totally irrelevant to you. But God? He's speaking your language, and you should be hanging on every word. You're done with sin and totally alive for God. That's the life Jesus gives you—dead to sin and alive to God.",
+      "message_ref": "MSG Romans 6:11: \"You are dead to sin and alive to God. That's what Jesus did.\"",
+      "reason": "'Honored treatment' is not MSG; the paragraph already teaches dead-to-sin/alive-to-God, so the closer lands it."
+    },
+    {
+      "book": "Romans",
+      "chapter": 8,
+      "para_index": 4,
+      "type": "content",
+      "old": "But if God is living in you, you're not thinking about yourself all the time. If someone doesn't have the Spirit of Christ, they're not on the team. But for you honored ones who have the Spirit, even though you still mess up, you're living on God's terms. And if the same God who brought Jesus back from the dead is living in you, he's going to give you a powerful shift and bring you to life too. With his Spirit in you, you're as alive as Christ!",
+      "new": "But if God is living in you, you're not thinking about yourself all the time. If someone doesn't have the Spirit of Christ, they're not on the team. But for you who have the Spirit, even though you still mess up, you're living on God's terms. And if the same God who brought Jesus back from the dead is living in you, he's going to give you a powerful shift and bring you to life too. With his Spirit in you, you're as alive as Christ!",
+      "message_ref": "MSG Romans 8:9: \"But for you who welcome him, in whom he dwells—even though you still experience all the limitations of sin—you yourself experience life on God's terms.\"",
+      "reason": "MSG says 'for you who welcome him', not 'you honored ones'."
+    },
+    {
+      "book": "Romans",
+      "chapter": 9,
+      "para_index": 1,
+      "type": "content",
+      "old": "For real, I gotta tell you something that’s been weighing on me heavy. I’m not even capping, Jesus and the Holy Spirit know I’m telling the truth. I’m super bummed about my people, the Israelites. I’d totally take a massive L for them if it meant they could get a W with the Messiah. They’re my crew, my family. They had all the perks—the inside scoop on God, the promises, the sickest family tree that even led to Jesus, who is God over everything. Total honored status.",
+      "new": "For real, I gotta tell you something that’s been weighing on me heavy. I’m not even capping, Jesus and the Holy Spirit know I’m telling the truth. I’m super bummed about my people, the Israelites. I’d totally take a massive L for them if it meant they could get a W with the Messiah. They’re my crew, my family. They had all the perks—the inside scoop on God, the promises, the sickest family tree that even led to Jesus, who is God over everything. They had everything going for them.",
+      "message_ref": "MSG Romans 9:4-5: \"They had everything going for them—family, glory, covenants, revelation, worship, promises, to say nothing of being the race that produced the Messiah, the Christ, who is God over everything.\"",
+      "reason": "MSG lists the actual privileges ('everything going for them'), not 'total honored status'."
+    },
+    {
+      "book": "Romans",
+      "chapter": 9,
+      "para_index": 2,
+      "type": "content",
+      "old": "But don't get it twisted and think God's plan glitched or something. This has been the deal for a minute. Just 'cause you were born an Israelite doesn't mean you're automatically on God's honored list. It was never about your bloodline, but about God's promise. Remember Abraham? God chose Isaac to be the one to carry on the family legacy, not just any of his kids. It was a God-pick, not a blood-pick. God was like, \"Next year, Sarah's having a son, and he's the one.\"",
+      "new": "But don't get it twisted and think God's plan glitched or something. This has been the deal for a minute. Just 'cause you were born an Israelite doesn't mean you're automatically in God's inner circle. It was never about your bloodline, but about God's promise. Remember Abraham? God chose Isaac to be the one to carry on the family legacy, not just any of his kids. It was a God-pick, not a blood-pick. God was like, \"Next year, Sarah's having a son, and he's the one.\"",
+      "message_ref": "MSG Romans 9:6-8: \"Not all Israelites of the flesh were Israelites of the spirit... God-determined by promise, not by physical descent.\"",
+      "reason": "MSG's point is promise, not an 'honored list'."
+    },
+    {
+      "book": "Romans",
+      "chapter": 14,
+      "para_index": 2,
+      "type": "content",
+      "old": "For real, some people who've been around for a bit are like, \"I can eat whatever I want, it's all good.\" Then you've got others who are like, \"Nah, I'm sticking to veggies only.\" And you know what? Both are cool. They're both God's honored ones. It would be super lame to start hating on what someone else is or isn't eating. God invited them, so who are you to kick them out? If they need to learn some manners, God's got it covered. He doesn't need your help to be the hall monitor.",
+      "new": "For real, some people who've been around for a bit are like, \"I can eat whatever I want, it's all good.\" Then you've got others who are like, \"Nah, I'm sticking to veggies only.\" And you know what? Both are cool. They're both guests at Christ's table. It would be super lame to start hating on what someone else is or isn't eating. God invited them, so who are you to kick them out? If they need to learn some manners, God's got it covered. He doesn't need your help to be the hall monitor.",
+      "message_ref": "MSG Romans 14:3-4: \"Both are guests at Christ's table, and God, their host, has invited them both.\"",
+      "reason": "MSG's table-guest language restored; 'honored ones' is not MSG."
+    },
+    {
+      "book": "Romans",
+      "chapter": 16,
+      "para_index": 10,
+      "type": "content",
+      "old": "Say hi to Rufus, a real honored one chosen by the Master himself, and to his mom, who's been like a second mom to me.",
+      "new": "Say hi to Rufus—a really good choice by the Master—and to his mom, who's been like a second mom to me.",
+      "message_ref": "MSG Romans 16:13: \"Hello to Rufus—a good choice by the Master!—and his mother; she has been a mother to me too.\"",
+      "reason": "MSG's wording restored nearly verbatim in teen voice."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 1,
+      "para_index": 1,
+      "type": "content",
+      "old": "What's up, guys? It's Paul, and I'm writing this with my buddy Sosthenes. Jesus himself, the Messiah, hand-picked me for this gig. This letter is for the church crew in Corinth, all of you who've been given a fresh start by Jesus and are on this awesome journey with God. And a shout-out to everyone, everywhere, who's on Team Jesus. He's our boss, our honored.",
+      "new": "What's up, guys? It's Paul, and I'm writing this with my buddy Sosthenes. Jesus himself, the Messiah, hand-picked me for this gig. This letter is for the church crew in Corinth, all of you who've been given a fresh start by Jesus and are on this awesome journey with God. And a shout-out to everyone, everywhere, who's on Team Jesus. He's their Master as well as ours!",
+      "message_ref": "MSG 1 Corinthians 1:2-3: \"...all who call out to God and call Jesus Christ Master. He's their Master as well as ours!\"",
+      "reason": "'Our honored' is broken English and not MSG; MSG's shared-Master line restored."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 2,
+      "para_index": 3,
+      "type": "content",
+      "old": "Once you're solid in your faith, we've got some next-level wisdom to share. This isn't the kind of stuff you hear from so-called experts that's trending one day and cringe the next. God's wisdom is like a secret level in a video game; it's deep and has been around forever. It's God's ultimate strategy to help us have a miraculous transformation. The so-called 'experts' of our time? They were clueless. If they had any idea, they wouldn't have taken out the honored of God's plan. It's like the old-school verse says: 'No one has ever seen, heard, or even imagined the awesome stuff God has lined up for those who are on his team.' But you guys? You get the inside scoop because God's Spirit reveals it all.",
+      "new": "Once you're solid in your faith, we've got some next-level wisdom to share. This isn't the kind of stuff you hear from so-called experts that's trending one day and cringe the next. God's wisdom is like a secret level in a video game; it's deep and has been around forever. It's God's ultimate strategy to help us have a miraculous transformation. The so-called 'experts' of our time? They were clueless. If they had any idea, they wouldn't have killed the Master of the God-designed life. It's like the old-school verse says: 'No one has ever seen, heard, or even imagined the awesome stuff God has lined up for those who are on his team.' But you guys? You get the inside scoop because God's Spirit reveals it all.",
+      "message_ref": "MSG 1 Corinthians 2:8: \"If they had, they wouldn't have killed the Master of the God-designed life.\"",
+      "reason": "EN omitted Jesus entirely and was garbled; MSG's 'Master of the God-designed life' restored."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 3,
+      "para_index": 6,
+      "type": "content",
+      "old": "So I don't want to hear any of you flexing about yourselves or anyone else. Everything is already yours. Paul, Apollos, Peter, the world, life, death, now, the future—it's all yours. And you're honored ones with Christ, who's tight with God.",
+      "new": "So I don't want to hear any of you flexing about yourselves or anyone else. Everything is already yours. Paul, Apollos, Peter, the world, life, death, now, the future—it's all yours. And you're privileged to be in union with Christ, who's tight with God.",
+      "message_ref": "MSG 1 Corinthians 3:23: \"All of you are privileged to be in union with Christ, who is in union with God.\"",
+      "reason": "'Honored ones' is not MSG; 'privileged to be in union with Christ' restored."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 4,
+      "para_index": 1,
+      "type": "content",
+      "old": "Alright, so here's the deal. Don't get it twisted and think we're some big-shot honored ones. We're just servants of Christ, like his roadies, setting up the stage for his big show. We're the ones who hold the keys to God's secret playbook, not some high-and-mighty security guards. And what's the number one rule for a roadie? Be reliable and know your stuff. Honestly, I couldn't care less what you guys think of me, or where I rank on your popularity contest. I don't even rank myself. It's pointless. I know I'm not perfect, but that's not for me to decide. The only one who gets to judge me is the big boss, God himself.",
+      "new": "Alright, so here's the deal. Don't get it twisted and think we're some big-shot masters. We're just servants of Christ, like his roadies, setting up the stage for his big show. We're the ones who hold the keys to God's secret playbook, not some high-and-mighty security guards. And what's the number one rule for a roadie? Be reliable and know your stuff. Honestly, I couldn't care less what you guys think of me, or where I rank on your popularity contest. I don't even rank myself. It's pointless. I know I'm not perfect, but that's not for me to decide. The only one who gets to judge me is the big boss, God himself.",
+      "message_ref": "MSG 1 Corinthians 4:1: \"We are servants of Christ, not his masters.\"",
+      "reason": "MSG's servants-not-masters contrast restored; the 'big-shot honored ones' strawman replaced."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 6,
+      "para_index": 4,
+      "type": "content",
+      "old": "Don't you get it? People who are all about themselves and don't care about God aren't getting into his honored club. The people who just use and abuse others, who are messed up with sex, and trash the planet—they're not on the guest list for God's kingdom. Some of you used to be on that list, so you know what I'm talking about. But you got a miraculous transformation. You've been cleaned up and given a fresh start by Jesus, our boss, and by God's Spirit living in us.",
+      "new": "Don't you get it? People who are all about themselves and don't care about God won't be joining his kingdom. The people who just use and abuse others, who are messed up with sex, and trash the planet—they're not on the guest list for God's kingdom. Some of you used to be on that list, so you know what I'm talking about. But you got a miraculous transformation. You've been cleaned up and given a fresh start by Jesus, our boss, and by God's Spirit living in us.",
+      "message_ref": "MSG 1 Corinthians 6:9-10: \"Unjust people who don't care about God will not be joining in his kingdom... you can't... get away with it.\" / \"No one who... abuses... will get into God's kingdom.\"",
+      "reason": "'Honored club' trivializes and misreads MSG; 'kingdom' restored."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 8,
+      "para_index": 2,
+      "type": "content",
+      "old": "Look, we all know those idols are just statues, basically lawn ornaments. They're not real. Everyone knows there's only one true God, the Father. He's the one who made everything, and we're living for him. And there's one honored, our main man Jesus, who made it all happen for us. That's a fact. Seriously.",
+      "new": "Look, we all know those idols are just statues, basically lawn ornaments. They're not real. Everyone knows there's only one true God, the Father. He's the one who made everything, and we're living for him. And there's one Master, our main man Jesus, and everything is for his sake, including us. That's a fact. Seriously.",
+      "message_ref": "MSG 1 Corinthians 8:6: \"there is one Master—Jesus the Messiah—and... everything is for his sake, including us.\"",
+      "reason": "'One honored' is broken and un-MSG; MSG's 'one Master—Jesus' restored in teen voice."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 11,
+      "para_index": 2,
+      "type": "content",
+      "old": "So, let's get the lineup straight. God is the head honcho, Jesus reports to God, and in a family, the husband is the team lead for the wife. It's all about respecting the chain of command. If a guy is praying or talking about God but acting like he's the boss instead of Jesus, he's totally disrespecting the real honored. Same goes for a wife who publicly disses her husband's role—it makes them both look bad. It's just an terrible look, like a girl who has to shave her head. That's basically why we have these customs: guys take their hats off to show respect to Jesus, and women wear a covering to show they're part of the team structure. It's a visual way of saying, 'We're not fighting for control; we're all under God's ultimate authority.'",
+      "new": "So, let's get the lineup straight. God is the head honcho, Jesus reports to God, and in a family, the husband is the team lead for the wife. It's all about respecting the chain of command. If a guy is praying or talking about God but acting like he's the boss instead of Jesus, he's totally disrespecting Christ. Same goes for a wife who publicly disses her husband's role—it makes them both look bad. It's just a terrible look, like a girl who has to shave her head. That's basically why we have these customs: guys take their hats off to show respect to Jesus, and women wear a covering to show they're part of the team structure. It's a visual way of saying, 'We're not fighting for control; we're all under God's ultimate authority.'",
+      "message_ref": "MSG 1 Corinthians 11:4: \"Any man who speaks with God or about God in a way that shows a lack of respect for the authority of Christ, dishonors Christ.\"",
+      "reason": "'The real honored' is garbled and not MSG; MSG's 'dishonors Christ' restored; also fixed 'an terrible look' grammar."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 15,
+      "para_index": 2,
+      "type": "content",
+      "old": "First things first, I told you what was super important: that Jesus, the real MVP, died for all our misfits, just like the old scrolls said he would. He was buried, and then on the third day, he came back to life, again, just like the scrolls predicted. He showed up to Peter, then to his whole squad, and later to a massive crowd of over 500 people at once! Most of them are still around to tell the tale, though some have since passed away. Then he hung out with James and the rest of the honored ones he chose to spread his message. And, believe it or not, he showed up to me last. It's kinda fitting, really. I don't even deserve to be in the inner circle, especially since I spent so much time trying to cancel the church.",
+      "new": "First things first, I told you what was super important: that Jesus, the real MVP, died for all our misfits, just like the old scrolls said he would. He was buried, and then on the third day, he came back to life, again, just like the scrolls predicted. He showed up to Peter, then to his whole squad, and later to a massive crowd of over 500 people at once! Most of them are still around to tell the tale, though some have since passed away. Then he hung out with James and the rest of the team he commissioned to rep him. And, believe it or not, he showed up to me last. It's kinda fitting, really. I don't even deserve to be in the inner circle, especially since I spent so much time trying to cancel the church.",
+      "message_ref": "MSG 1 Corinthians 15:7: \"spent time with James and the rest of those he commissioned to represent him.\"",
+      "reason": "'Honored ones' is not MSG; MSG's commissioned-team language restored."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 16,
+      "para_index": 3,
+      "type": "content",
+      "old": "If my boy Timothy shows up, make sure you treat him like an honored one. He's grinding for the Lord just as hard as I am, so make him feel at home. Don't let anyone roast him or look down on him. When he's ready to leave, send him off with your blessing. I'm expecting him and any friends he brings along.",
+      "new": "If my boy Timothy shows up, make sure you take good care of him. He's grinding for the Lord just as hard as I am, so make him feel at home. Don't let anyone roast him or look down on him. When he's ready to leave, send him off with your blessing. I'm expecting him and any friends he brings along.",
+      "message_ref": "MSG 1 Corinthians 16:10-11: \"If Timothy shows up, take good care of him... Make him feel completely at home.\"",
+      "reason": "MSG's care/welcome instruction restored; 'treat him like an honored one' is not MSG."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 16,
+      "para_index": 11,
+      "type": "content",
+      "old": "If anyone doesn't have love for the Lord, kick 'em out. Make room for the real honored, the Master!",
+      "new": "If anyone doesn't have love for the Lord, kick 'em out. Make room for the Master!",
+      "message_ref": "MSG 1 Corinthians 16:22: \"If anyone doesn't love the Master, let him be cursed! Make room for the Master!\"",
+      "reason": "'The real honored' is redundant and not MSG; MSG's cry restored."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 1,
+      "para_index": 2,
+      "type": "content",
+      "old": "So after he dealt with everyone's misfits, the Son got the ultimate promotion. He's now sitting right next to God in the honored section of heaven, way above any angel. I mean, did God ever say to an angel, \"You're my boy, I'm so proud of you\"? Nah. When he brings out his Son, it's like a world premiere, and he tells all the angels, \"You better bow down to him.\"",
+      "new": "So after he dealt with everyone's misfits, the Son got the ultimate promotion. He's now sitting in his honored place high in the heavens, right alongside God, way above any angel. I mean, did God ever say to an angel, \"You're my boy, I'm so proud of you\"? Nah. When he brings out his Son, it's like a world premiere, and he tells all the angels, \"You better bow down to him.\"",
+      "message_ref": "MSG Hebrews 1:3: \"the Son took his honored place high in the heavens right alongside God.\"",
+      "reason": "MSG's 'honored place high in the heavens' restored; 'honored section of heaven' is garbled."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 4,
+      "para_index": 5,
+      "type": "content",
+      "old": "And the best part? We’ve got Jesus, our awesome High Priest who has honored access to God. So let’s not let this opportunity slip. He’s not some out-of-touch leader; He gets what we’re going through. He’s faced all the same struggles and tests we do, but He never messed up. So we can walk right up to God with confidence and get the mercy and help we need, because He’s totally ready to give it. Just take it.",
+      "new": "And the best part? We’ve got Jesus, our awesome High Priest with ready access to God. So let’s not let this opportunity slip. He’s not some out-of-touch leader; He gets what we’re going through. He’s faced all the same struggles and tests we do, but He never messed up. So we can walk right up to God with confidence and get the mercy and help we need, because He’s totally ready to give it. Just take it.",
+      "message_ref": "MSG Hebrews 4:14-16: \"Jesus... with ready access to God... let's walk right up to him... Take the mercy, accept the help.\"",
+      "reason": "MSG says 'ready access', not 'honored access'."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 5,
+      "para_index": 1,
+      "type": "content",
+      "old": "Alright, so check it. Every head priest, the honored picked to rep people in front of God and handle the sacrifices for when they mess up, has to be chill with everyone's slip-ups. Why? Because he's been there, done that, and gets it. But that also means he's gotta offer up sacrifices for his own blunders, not just for everyone else.",
+      "new": "Alright, so check it. Every head priest, picked to rep people in front of God and handle the sacrifices for when they mess up, has to be chill with everyone's slip-ups. Why? Because he's been there, done that, and gets it. But that also means he's gotta offer up sacrifices for his own blunders, not just for everyone else.",
+      "message_ref": "MSG Hebrews 5:1: \"Every high priest selected to represent men and women before God...\" (MSG 5:4-6 also calls it \"this honored position,\" but EN's 'the honored picked' construction is broken English.)",
+      "reason": "'The honored picked' is ungrammatical; MSG's 'selected to represent' restored."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 6,
+      "para_index": 6,
+      "type": "content",
+      "old": "So for us, who are running to God for safety, we can grab onto that hope and never let go. It's like a spiritual lifeline that goes right into God's honored place, where Jesus is already hanging out. He's our High Priest, our inside guy, making a way for us. He's the ultimate wingman.",
+      "new": "So for us, who are running to God for safety, we can grab onto that hope and never let go. It's like a spiritual lifeline that goes right into the very presence of God, where Jesus is already hanging out. He's our High Priest, our inside guy, making a way for us. He's the ultimate wingman.",
+      "message_ref": "MSG Hebrews 6:19-20: \"an unbreakable spiritual lifeline, reaching past all appearances right to the very presence of God where Jesus... has taken up his permanent post as high priest.\"",
+      "reason": "MSG says 'the very presence of God', not 'God's honored place'."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 7,
+      "para_index": 2,
+      "type": "content",
+      "old": "You can tell Melchizedek was a total honored because even Father Abraham, the guy who started it all, gave him a ten percent cut of his winnings. Think about it: the priests from Levi's tribe, who are all related to Abraham, have a rule to collect a tenth from their own people. But this Melchizedek guy, a total outsider, collects it from Abraham and even blesses him—the guy who got all the promises from God! And everyone knows, when someone gives a blessing, the one giving it is the greater one.",
+      "new": "You can tell Melchizedek was a big deal because even Father Abraham, the guy who started it all, gave him a ten percent cut of his winnings. Think about it: the priests from Levi's tribe, who are all related to Abraham, have a rule to collect a tenth from their own people. But this Melchizedek guy, a total outsider, collects it from Abraham and even blesses him—the guy who got all the promises from God! And everyone knows, when someone gives a blessing, the one giving it is the greater one.",
+      "message_ref": "MSG Hebrews 7:4-7: \"You realize just how great Melchizedek is... the lesser is blessed by the greater.\"",
+      "reason": "'A total honored' is broken English and not MSG; MSG's greatness language restored."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 9,
+      "para_index": 1,
+      "type": "content",
+      "old": "Alright, so check it. The first deal God had with his people had a whole bunch of rules for how to worship and a special place to do it. They set up this big tent, and in the main room, they had a lamp, a table, and some special bread. They called it the \"Holy Place.\" But then there was another, even more exclusive room behind a curtain, called the \"Holy of Holies.\" This was the real honored place. Inside, they had a gold altar for incense, and the Ark of the Covenant, which was covered in gold and held some crazy important stuff: a gold jar of manna (that magic bread from the desert), Aaron's staff that grew leaves, and the stone tablets with the Ten Commandments. And on top of the Ark were these awesome angel-wing statues. It was a pretty legit setup.",
+      "new": "Alright, so check it. The first deal God had with his people had a whole bunch of rules for how to worship and a special place to do it. They set up this big tent, and in the main room, they had a lamp, a table, and some special bread. They called it the \"Holy Place.\" But then there was another, even more exclusive room behind a curtain, called the \"Holy of Holies.\" Inside, they had a gold altar for incense, and the Ark of the Covenant, which was covered in gold and held some crazy important stuff: a gold jar of manna (that magic bread from the desert), Aaron's staff that grew leaves, and the stone tablets with the Ten Commandments. And on top of the Ark were these awesome angel-wing statues. It was a pretty legit setup.",
+      "message_ref": "MSG Hebrews 9:2-3: \"They called it the 'Holy Place.' Behind the second curtain was the room called the 'Holy of Holies.'\"",
+      "reason": "MSG explicitly names them 'Holy Place' and 'Holy of Holies'; the redundant 'This was the real honored place' removed and 'Holy' restored."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 9,
+      "para_index": 2,
+      "type": "content",
+      "old": "So, the regular priests would go into the main tent to do their jobs, but only the head priest could go into the super-exclusive honored room, and only once a year. And when he did, he had to bring a blood sacrifice to cover his own mistakes and all the stuff the people had messed up. The Holy Spirit was basically showing them that as long as this old system was in place, nobody could just walk up to God. It was like a beta test. The gifts and sacrifices they offered couldn't really fix what was wrong on the inside or make people feel truly clean. It was all just a temporary fix until the real upgrade came along.",
+      "new": "So, the regular priests would go into the main tent to do their jobs, but only the head priest could go into the inner room, the Holy of Holies, and only once a year. And when he did, he had to bring a blood sacrifice to cover his own mistakes and all the stuff the people had messed up. The Holy Spirit was basically showing them that as long as this old system was in place, nobody could just walk up to God. It was like a beta test. The gifts and sacrifices they offered couldn't really fix what was wrong on the inside or make people feel truly clean. It was all just a temporary fix until the real upgrade came along.",
+      "message_ref": "MSG Hebrews 9:6-7: \"The priests regularly went into the outside tent... But only the high priest entered the smaller, inside tent...\" (MSG 9:3 identifies it as the \"Holy of Holies\".)",
+      "reason": "'Super-exclusive honored room' is not MSG; 'the inner room, the Holy of Holies' restored."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 10,
+      "para_index": 6,
+      "type": "content",
+      "old": "So, my guys, because of Jesus’ sacrifice, we can walk right up to God, into the honored section, with no hesitation. Jesus cleared the way for us. The curtain that used to block us from God’s presence? That’s Jesus’ body.",
+      "new": "So, my guys, because of Jesus’ sacrifice, we can walk right up to God, into the Holy Place, with no hesitation. Jesus cleared the way for us. The curtain that used to block us from God’s presence? That’s Jesus’ body.",
+      "message_ref": "MSG Hebrews 10:19-20: \"we can walk right up to God, into 'the Holy Place'... The 'curtain' into God's presence is his body.\"",
+      "reason": "MSG's 'the Holy Place' restored; 'honored section' is not MSG."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 11,
+      "para_index": 4,
+      "type": "content",
+      "old": "Then there's Enoch. This guy had so much faith he literally just vanished—God took him. Before he bounced, everyone knew he was one of God's honored ones. You can't impress God without faith. Why? Because if you want to get close to God, you have to believe he's real and that he'll actually listen to you.",
+      "new": "Then there's Enoch. This guy had so much faith he literally just vanished—God took him. Before he bounced, everyone knew he pleased God. You can't impress God without faith. Why? Because if you want to get close to God, you have to believe he's real and that he'll actually listen to you.",
+      "message_ref": "MSG Hebrews 11:5-6: \"By an act of faith, Enoch skipped death altogether... his appointment with God was long in advance... It's impossible to please God apart from faith.\"",
+      "reason": "MSG's ground is 'pleased God', not 'God's honored ones'."
+    },
+    {
+      "book": "Hebrews",
+      "chapter": 12,
+      "para_index": 2,
+      "type": "content",
+      "old": "Keep your eyes locked on the ultimate coach, Jesus. He invented this race, and he's the one who crossed the finish line to show us how it's done. Just think about his gameplay. He never lost focus on the epic win waiting for him—that awesome victory party with God. That's why he could handle all the crazy stuff they threw at him: the cross, people totally dissing him, you name it. And now? He's chilling in the honored section, right next to God. So, whenever you feel like your faith is running on low battery and you're about to give up, just replay his highlight reel. Remember all the haters and the tough times he pushed through. That'll give you the adrenaline shot you need to get back in the game.",
+      "new": "Keep your eyes locked on the ultimate coach, Jesus. He invented this race, and he's the one who crossed the finish line to show us how it's done. Just think about his gameplay. He never lost focus on the epic win waiting for him—that awesome victory party with God. That's why he could handle all the crazy stuff they threw at him: the cross, people totally dissing him, you name it. And now? He's chilling in the place of honor, right next to God. So, whenever you feel like your faith is running on low battery and you're about to give up, just replay his highlight reel. Remember all the haters and the tough times he pushed through. That'll give you the adrenaline shot you need to get back in the game.",
+      "message_ref": "MSG Hebrews 12:2-3: \"he... is now in the place of honor, right alongside God.\"",
+      "reason": "MSG's 'the place of honor' restored; 'honored section' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 1,
+      "para_index": 3,
+      "type": "content",
+      "old": "What up, it's your boy John, writing to the seven churches out in Asia. Shout out to you from God, the one who's always been, who is, and who's coming back. And from the seven spirits chilling before his throne. And, of course, from Jesus Christ, the ultimate ride-or-die, the first to have a miraculous transformation from the dead, and the king of all kings on Earth. All the props and power to Jesus, who loves us so much he took the fall for our mistakes, washing us clean. He made us a kingdom, like his honored ones, priests for his Dad, forever. And get this, he's on his way back! He's gonna roll in on the clouds, and everyone will see him, even the haters who ghosted him and the ones who took him out. People from everywhere are gonna be panicking. You better believe it.",
+      "new": "What up, it's your boy John, writing to the seven churches out in Asia. Shout out to you from God, the one who's always been, who is, and who's coming back. And from the seven spirits chilling before his throne. And, of course, from Jesus Christ, the ultimate ride-or-die, the first to have a miraculous transformation from the dead, and the king of all kings on Earth. All the props and power to Jesus, who loves us so much he took the fall for our mistakes, washing us clean. He made us a kingdom, priests for his Dad, forever. And get this, he's on his way back! He's gonna roll in on the clouds, and everyone will see him, even the haters who ghosted him and the ones who took him out. People from everywhere are gonna be panicking. You better believe it.",
+      "message_ref": "MSG Revelation 1:5-6: \"Who made us a Kingdom, Priests for his Father.\"",
+      "reason": "'Like his honored ones' is not MSG; MSG's 'a Kingdom, Priests for his Father' restored in teen voice."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 4,
+      "para_index": 2,
+      "type": "content",
+      "old": "Instantly, I was in this crazy awesome worship mode. And here's the thing—there was a throne in heaven, and someone was sitting on it. He was shining with colors like amber and fire, with a glowing green halo. Around the main throne, there were 24 other thrones, with 24 elders sitting on them, all decked out in white robes and gold crowns. It was like the honored section of heaven. Lightning and thunder were booming from the throne, and seven blazing torches, which are the seven spirits of God, were right in front. And in front of the throne, there was something that looked like a sea made of crystal. Super clear.",
+      "new": "Instantly, I was in this crazy awesome worship mode. And here's the thing—there was a throne in heaven, and someone was sitting on it. He was shining with colors like amber and fire, with a glowing green halo. Around the main throne, there were 24 other thrones, with 24 elders sitting on them, all decked out in white robes and gold crowns. It was the ultimate throne room of heaven. Lightning and thunder were booming from the throne, and seven blazing torches, which are the seven spirits of God, were right in front. And in front of the throne, there was something that looked like a sea made of crystal. Super clear.",
+      "message_ref": "MSG Revelation 4:2-4: \"a Throne set in Heaven... Twenty-four thrones encircled him, and twenty-four Elders seated...\"",
+      "reason": "'The honored section of heaven' is not MSG; the throne-room scene language restored."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 5,
+      "para_index": 3,
+      "type": "content",
+      "old": "Then one of the honored elders tells me, \"Chill out, don't cry. Look, the Lion from the tribe of Judah, the OG from David's line, he's the champion. He's earned the right to open the scroll and its seven seals.\"",
+      "new": "Then one of the elders tells me, \"Chill out, don't cry. Look, the Lion from the tribe of Judah, the OG from David's line, he's the champion. He's earned the right to open the scroll and its seven seals.\"",
+      "message_ref": "MSG Revelation 5:5: \"One of the Elders said, 'Don't weep. Look—the Lion from Tribe Judah, the Root of David's Tree, has conquered.'\"",
+      "reason": "MSG just says 'One of the Elders'; 'honored elders' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 6,
+      "para_index": 6,
+      "type": "content",
+      "old": "Then I watched as he tore open the sixth seal. The whole earth just gets rocked by a massive earthquake. The sun goes pitch black, the moon turns blood-red, and stars start falling from the sky like when you shake a fig tree super hard. The sky itself just rolls up like a scroll. Mountains and islands are sliding all over the place. It's absolute chaos. Everyone, from the honored ones like kings and generals to the regular folks, is running for their lives. They're hiding in caves and under rocks, yelling at the mountains, \"Fall on us! Hide us from the guy on the throne and from the Lamb's anger! The big day of their rage is here, and who can even handle it?\"",
+      "new": "Then I watched as he tore open the sixth seal. The whole earth just gets rocked by a massive earthquake. The sun goes pitch black, the moon turns blood-red, and stars start falling from the sky like when you shake a fig tree super hard. The sky itself just rolls up like a scroll. Mountains and islands are sliding all over the place. It's absolute chaos. Then pandemonium—kings, princes, generals, rich and strong, along with everyone else, slave or free, running for cover. They're hiding in caves and under rocks, yelling at the mountains, \"Fall on us! Hide us from the guy on the throne and from the Lamb's anger! The big day of their rage is here, and who can even handle it?\"",
+      "message_ref": "MSG Revelation 6:15-16: \"pandemonium, everyone and his dog running for cover—kings, princes, generals, rich and strong, along with every commoner, slave or free.\"",
+      "reason": "MSG's list restored nearly verbatim; 'honored ones like kings and generals' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 8,
+      "para_index": 2,
+      "type": "content",
+      "old": "Then I saw the seven top angels, God's honored ones, and they each got a trumpet. Another angel showed up with a gold pot for incense and stood by the altar. He got a ton of incense to mix with the prayers from all of God's crew and offered it up on the golden altar right in front of the throne. The smoke from the prayers, all mixed with the incense, floated up to God from the angel's hand. It was like sending a super-powered DM straight to the big guy.",
+      "new": "Then I saw the seven angels who are always in readiness before God, and they each got a trumpet. Another angel showed up with a gold pot for incense and stood by the altar. He got a ton of incense to mix with the prayers from all of God's crew and offered it up on the golden altar right in front of the throne. The smoke from the prayers, all mixed with the incense, floated up to God from the angel's hand. It was like sending a super-powered DM straight to the big guy.",
+      "message_ref": "MSG Revelation 8:2: \"I saw the Seven Angels who are always in readiness before God handed seven trumpets...\"",
+      "reason": "MSG's 'Seven Angels who are always in readiness before God' restored; 'God's honored ones' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 9,
+      "para_index": 2,
+      "type": "content",
+      "old": "Then, out of the smoke, these gnarly locust-scorpion things start crawling out. They get their marching orders: 'Don't mess with the plants, just go after the people who don't have God's honored seal on their foreheads.' Their mission wasn't to kill, but to torture them for five straight months. The pain was supposed to be like a scorpion sting, which is seriously no joke. It's so bad that people will be begging to die, but death just ghosts them.",
+      "new": "Then, out of the smoke, these gnarly locust-scorpion things start crawling out. They get their marching orders: 'Don't mess with the plants, just go after the people who don't have the seal of God on their foreheads.' Their mission wasn't to kill, but to torture them for five straight months. The pain was supposed to be like a scorpion sting, which is seriously no joke. It's so bad that people will be begging to die, but death just ghosts them.",
+      "message_ref": "MSG Revelation 9:4: \"those who lack the seal of God on their foreheads.\"",
+      "reason": "'The seal of God' restored; 'God's honored seal' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 11,
+      "para_index": 1,
+      "type": "content",
+      "old": "So, here's the thing about this stick, right? And this voice is like, \"Hey, go measure God's Temple, the altar, and count the honored ones worshiping inside. But don't even bother with the outer court. That place is getting wrecked. It's been handed over to the outsiders, and they're gonna wreck the Holy City for 42 months straight.\"",
+      "new": "So, here's the thing about this stick, right? And this voice is like, \"Hey, go measure God's Temple, the altar, and count everyone worshiping inside.\" But don't even bother with the outer court. That place is getting wrecked. It's been handed over to the outsiders, and they're gonna wreck the Holy City for 42 months straight.\"",
+      "message_ref": "MSG Revelation 11:1-2: \"Go and measure God's Temple and Altar and everyone worshiping in it. Exclude the outside court.\"",
+      "reason": "MSG says 'everyone worshiping in it', not 'the honored ones worshiping'; also closed the dangling quotation mark."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 13,
+      "para_index": 3,
+      "type": "content",
+      "old": "This Beast has a super loud mouth and is always bragging and saying messed-up things about God. For 42 months, it can do whatever it wants. It's constantly roasting God, his name, and his followers, especially the ones already in heaven. It gets permission to go after God's people and totally owns them. It's got power over every single person on Earth. Basically, anyone who isn't on God's honored list from the very beginning is going to end up worshipping this Beast.",
+      "new": "This Beast has a super loud mouth and is always bragging and saying messed-up things about God. For 42 months, it can do whatever it wants. It's constantly roasting God, his name, and his followers, especially the ones already in heaven. It gets permission to go after God's people and totally owns them. It's got power over every single person on Earth. Basically, anyone whose name wasn't written from the world's foundation in the slaughtered Lamb's Book of Life is going to end up worshiping this Beast.",
+      "message_ref": "MSG Revelation 13:8: \"Everyone on earth whose name was not written from the world's foundation in the slaughtered Lamb's Book of Life will worship the Beast.\"",
+      "reason": "'God's honored list' is not MSG; MSG's 'Lamb's Book of Life' restored."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 14,
+      "para_index": 1,
+      "type": "content",
+      "old": "Whoa, you won't believe what I saw next. It was insane! The Lamb was just chilling on Mount Zion, and with him was this massive crew, like 144,000 people. These weren't just any randos; they were God's honored ones, and they had His and the Lamb's names written right on their foreheads, like a permanent backstage pass. Then this sound booms from the sky, super loud like a waterfall and thunder combined, but it was also music. A bunch of harpists were playing this brand-new song for the Throne, the four crazy-looking creatures, and the Elders. But here's the kicker: only the 144,000 could even learn the song. They were the real deal, totally loyal to God, no fakes in the bunch. They followed the Lamb everywhere, no questions asked. They were like the first and best of humanity, a perfect gift to God.",
+      "new": "Whoa, you won't believe what I saw next. It was insane! The Lamb was just chilling on Mount Zion, and with him was this massive crew, like 144,000 people. These weren't just any randos; they were bought from the earth, firstfruits of the harvest for God and the Lamb, and they had His and the Lamb's names written right on their foreheads, like a permanent backstage pass. Then this sound booms from the sky, super loud like a waterfall and thunder combined, but it was also music. A bunch of harpists were playing this brand-new song for the Throne, the four crazy-looking creatures, and the Elders. But here's the kicker: only the 144,000 could even learn the song. They were the real deal, totally loyal to God, no fakes in the bunch. They followed the Lamb everywhere, no questions asked. They were like the first and best of humanity, a perfect gift to God.",
+      "message_ref": "MSG Revelation 14:2-4: \"Only the 144,000 could learn to sing the song... They were bought from humankind, firstfruits of the harvest for God and the Lamb.\"",
+      "reason": "MSG's 'bought from humankind, firstfruits' restored; 'God's honored ones' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 15,
+      "para_index": 2,
+      "type": "content",
+      "old": "Then, I saw something that looked like a sea made of glass, glowing with fire. Standing on this fiery glass sea were all the people who had totally owned the Beast and his statue and his whole brand. They were the honored ones who had won, and they were holding harps from God. They started singing this epic victory song, like a remix of a classic hit by Moses and a new track from the Lamb.",
+      "new": "Then, I saw something that looked like a sea made of glass, glowing with fire. Standing on this fiery glass sea were all the people who had totally owned the Beast and his statue and his whole brand. They were the saved ones who had won, carrying harps from God, totally triumphant over the Beast, his statue, and the number of his name. They started singing this epic victory song, like a remix of a classic hit by Moses and a new track from the Lamb.",
+      "message_ref": "MSG Revelation 15:2: \"Carrying harps of God, triumphant over the Beast, its image, and the number of its name, the saved ones stood on the sea of glass.\"",
+      "reason": "MSG's 'the saved ones... triumphant over the Beast' restored; 'the honored ones who had won' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 16,
+      "para_index": 1,
+      "type": "content",
+      "old": "Then I heard this mega-loud voice from the honored room in the sky, shouting at the seven angels, \"Alright, let's do this! Go dump the seven bowls of God's fury on the world!\"",
+      "new": "Then I heard this mega-loud voice from the Temple in heaven, shouting at the seven angels, \"Alright, let's do this! Go dump the seven bowls of God's fury on the world!\"",
+      "message_ref": "MSG Revelation 16:1: \"a shout of command from the Temple to the Seven Angels...\"",
+      "reason": "'The honored room in the sky' is not MSG; MSG's 'the Temple' restored."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 17,
+      "para_index": 3,
+      "type": "content",
+      "old": "I realized she was ruined, but not on booze. She was drunk on the blood of God's people, the ones who stood up for Jesus. I was totally floored, just staring in disbelief. The angel then said, \"Why are you so shocked? Let me break down the mystery of this woman and the seven-headed, ten-horned beast she's riding. That beast you saw? It was a big deal once, then it got ghosted, but it's about to make a comeback from the underworld, only to get totally wrecked. Everyone on Earth who isn't on God's honored list is gonna be mind-blown when they see this beast that was, wasn't, and then is again.\"",
+      "new": "I realized she was ruined, but not on booze. She was drunk on the blood of God's people, the ones who stood up for Jesus. I was totally floored, just staring in disbelief. The angel then said, \"Why are you so shocked? Let me break down the mystery of this woman and the seven-headed, ten-horned beast she's riding. That beast you saw? It was a big deal once, then it got ghosted, but it's about to make a comeback from the underworld, only to get totally wrecked. Everyone on earth whose names weren't written in the Book of Life from the foundation of the world is gonna be mind-blown when they see this beast that once was, is no longer, and is to come.\"",
+      "message_ref": "MSG Revelation 17:8: \"Earth dwellers whose names weren't written in the Book of Life from the foundation of the world will be dazzled when they see the Beast that once was, is no longer, and is to come.\"",
+      "reason": "'God's honored list' is not MSG; MSG's 'Book of Life' wording restored."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 18,
+      "para_index": 1,
+      "type": "content",
+      "old": "Then I saw another angel, a real honored, coming down from heaven. He was so powerful, his transformation lit up the whole earth. His voice was like thunder, and he yelled, \"It's over! Babylon the Great is completely wrecked! It's nothing but a ghost town, a hangout for demons and all kinds of awful spirits and horrible birds.",
+      "new": "Then I saw another angel coming down from heaven. He was so powerful, his glory lit up the whole earth. His voice was like thunder, and he yelled, \"It's over! Babylon the Great is completely wrecked! It's nothing but a ghost town, a hangout for demons and all kinds of awful spirits and horrible birds.",
+      "message_ref": "MSG Revelation 18:1-2: \"Following this I saw another Angel descend from Heaven. His authority was immense, his glory flooded earth with brightness, his voice thunderous...\"",
+      "reason": "'A real honored' is not MSG; MSG's angel description restored; also fixed the garbled 'his transformation lit up'."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 19,
+      "para_index": 4,
+      "type": "content",
+      "old": "Then a voice boomed from the throne, saying, \"Everyone, give it up for our God! All of you in his squad, from the honored ones to the nobodies, show him some respect!\"",
+      "new": "Then a voice boomed from the throne, saying, \"Everyone, give it up for our God! All of you in his squad, small and great, show him some respect!\"",
+      "message_ref": "MSG Revelation 19:5: \"From the Throne came a shout, a command: Praise our God, all you his servants, All you who fear him, small and great!\"",
+      "reason": "MSG's 'small and great' restored; 'honored ones to nobodies' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 20,
+      "para_index": 2,
+      "type": "content",
+      "old": "Then I saw a bunch of thrones, and the people sitting on them were the judges. I also saw the souls of the real MVPs who got taken out because they stood up for Jesus and God's word. These were the ones who refused to worship the Beast or his statue and didn't get his mark on their foreheads or hands. They came back to life and got to be honored ones with Christ for that whole thousand years. The rest of the dead had to wait until the thousand years were done. This was the first wave of the transformation, and everyone in it was super blessed and holy. They get to skip the second death and become priests for God and Christ, ruling with him for the millennium.",
+      "new": "Then I saw a bunch of thrones, and the people sitting on them were the judges. I also saw the souls of the real MVPs who got taken out because they stood up for Jesus and God's word. These were the ones who refused to worship the Beast or his statue and didn't get his mark on their foreheads or hands. They came back to life and reigned with Christ for that whole thousand years. The rest of the dead had to wait until the thousand years were done. This was the first wave of the transformation, and everyone in it was super blessed and holy. They get to skip the second death and become priests for God and Christ, ruling with him for the millennium.",
+      "message_ref": "MSG Revelation 20:4-6: \"they lived and reigned with Christ for a thousand years!... They’re priests of God and Christ; they’ll reign with him a thousand years.\"",
+      "reason": "'Honored ones with Christ' is not MSG; MSG's 'lived and reigned with Christ' restored."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 20,
+      "para_index": 4,
+      "type": "content",
+      "old": "Finally, I saw this huge, glowing white throne with God sitting on it. Everything in heaven and on earth just vanished in His presence; nothing could handle it. Then I saw everyone who had ever died, from the most famous honored ones to the total nobodies, all standing in front of the throne. A bunch of books were opened, and then another book, the Book of Life, was opened. Everyone was judged based on what was written in those books, on everything they had ever done. The sea gave up its dead, and Death and Hell coughed up theirs. Every single person was judged for their life's story. Then Death and Hell themselves got chucked into the lake of fire. This is the second death—the lake of fire. And if your name wasn't written in the Book of Life, you got thrown in there too.",
+      "new": "Finally, I saw this huge, glowing white throne with God sitting on it. Everything in heaven and on earth just vanished in His presence; nothing could handle it. Then I saw everyone who had ever died, great and small, all standing in front of the throne. A bunch of books were opened, and then another book, the Book of Life, was opened. Everyone was judged based on what was written in those books, on everything they had ever done. The sea gave up its dead, and Death and Hell turned in theirs. Every single person was judged for their life's story. Then Death and Hell themselves got chucked into the lake of fire. This is the second death—the lake of fire. And if your name wasn't written in the Book of Life, you got thrown in there too.",
+      "message_ref": "MSG Revelation 20:11-12: \"I saw a Great White Throne and the One Enthroned... And then I saw all the dead, great and small, standing there—before the Throne!\"",
+      "reason": "MSG's 'all the dead, great and small' restored; also fixed 'coughed up theirs' to MSG's 'turned in their dead'."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 21,
+      "para_index": 7,
+      "type": "content",
+      "old": "The main street of the city was pure gold, clear as glass. I didn't see a temple in the city, because the Lord God Almighty and the Lamb are the temple. The city doesn't need the sun or the moon to light it up, because God's glory is its light, and the Lamb is its lamp. All the nations will walk in its light, and the kings of the earth will bring their bling into it. Its gates will never be shut during the day, and there's no night there. The glory and honor of the nations will be brought into it. Nothing dirty will ever get in, and no one who is fake or tells lies. Only the honored ones whose names are written in the Lamb's Book of Life get in.",
+      "new": "The main street of the city was pure gold, clear as glass. I didn't see a temple in the city, because the Lord God Almighty and the Lamb are the temple. The city doesn't need the sun or the moon to light it up, because God's glory is its light, and the Lamb is its lamp. All the nations will walk in its light, and the kings of the earth will bring their bling into it. Its gates will never be shut during the day, and there's no night there. The glory and honor of the nations will be brought into it. Nothing dirty will ever get in, and no one who is fake or tells lies. Only those whose names are written in the Lamb's Book of Life get in.",
+      "message_ref": "MSG Revelation 21:27: \"Only those whose names are written in the Lamb's Book of Life will get in.\"",
+      "reason": "MSG's wording restored nearly verbatim; 'the honored ones' is not MSG."
+    },
+    {
+      "book": "Revelation",
+      "chapter": 22,
+      "para_index": 1,
+      "type": "content",
+      "old": "Then, an angel showed me this insane river, the Water-of-Life, sparkling and crystal clear. It flowed right from the throne of God and the Lamb, straight down the middle of the main street. On each side of the river, the Tree of Life was popping off, growing twelve different kinds of fruit, a new one every month. The leaves of this tree were like a super-potion for healing all the nations. Nothing would ever be cursed or messed up again. The throne of God and the Lamb was the center of everything, the ultimate honored spot. God's crew would be there, worshiping him 24/7. They'd get to see him face-to-face, and they'd be so connected to him it would be like they were glowing with his awesomeness. There was no night, so no need for lamps or even the sun. God's own light was so bright, it was all anyone needed. And they'd get to rule with him forever. Talk about a miraculous transformation.",
+      "new": "Then, an angel showed me this insane river, the Water-of-Life, sparkling and crystal clear. It flowed right from the throne of God and the Lamb, straight down the middle of the main street. On each side of the river, the Tree of Life was popping off, growing twelve different kinds of fruit, a new one every month. The leaves of this tree were like a super-potion for healing all the nations. Nothing would ever be cursed or messed up again. The throne of God and the Lamb was the center of everything. God's crew would be there, worshiping him 24/7. They'd get to see him face-to-face, and they'd be so connected to him it would be like they were glowing with his awesomeness. There was no night, so no need for lamps or even the sun. God's own light was so bright, it was all anyone needed. And they'd get to rule with him forever. Talk about a miraculous transformation.",
+      "message_ref": "MSG Revelation 22:3-4: \"The Throne of God and of the Lamb is at the center. His servants will offer God service—worshiping...\"",
+      "reason": "'The ultimate honored spot' is not MSG; MSG's 'at the center' restored."
+    }
+  ],
+  "checked_kept": []
+}

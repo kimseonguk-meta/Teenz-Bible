@@ -1,0 +1,83 @@
+{
+  "book": "James",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "3": "5-8",
+        "4": "9-11",
+        "6": "13-15",
+        "7": "16-18",
+        "8": "19-21",
+        "9": "22-25",
+        "10": "26-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-7",
+        "3": "8-11",
+        "4": "12-13",
+        "5": "14-17",
+        "6": "18",
+        "7": "19-20",
+        "8": "21-24",
+        "9": "25-26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-6",
+        "3": "7-10",
+        "4": "13-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "2": "2-3",
+        "4": "4-6",
+        "5": "7-10",
+        "6": "11-12",
+        "7": "13-15",
+        "8": "16-17"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Two Kinds of Wisdom",
+          "new": "§Get Serious with God",
+          "reason": "'Two Kinds of Wisdom' describes 3:13-18; ch4 is quarrels and getting serious with God (4:1-10)."
+        },
+        {
+          "index": 3,
+          "old": "§Submit to God",
+          "new": "§Pick a Side",
+          "reason": "'Submit to God' (4:7-10's topic) sits before 4:4-6 (friendship with the world); retitled to fit position."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "6": "10-11",
+        "7": "12-13",
+        "8": "13-15",
+        "9": "16-18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

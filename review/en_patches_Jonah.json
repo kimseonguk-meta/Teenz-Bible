@@ -1,0 +1,43 @@
+{
+  "book": "Jonah",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "3": "5-6",
+        "4": "7"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "1-9",
+        "2": "2-9"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Para 1 ('He prayed:') is the MSG section opener with no verse content of its own; ranged '1-9' with the prayer it introduces."
+      ],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "4": "5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

@@ -1,0 +1,463 @@
+{
+  "book": "2 Kings",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "3-4",
+        "12": "13-14",
+        "13": "13-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "1-2",
+        "15": "11-14",
+        "16": "11-14",
+        "17": "11-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "4-7",
+        "2": "4-7",
+        "3": "7-8",
+        "9": "14-15",
+        "10": "14-15",
+        "11": "16-19",
+        "12": "16-19",
+        "13": "21-22",
+        "14": "21-22",
+        "15": "24-25",
+        "16": "24-25",
+        "17": "26-27"
+      },
+      "content_fixes": [
+        {
+          "index": 17,
+          "old": "When the king of Moab saw that he was losing, he took seven hundred swordsmen to try and break through the king of Edom's line, but they failed. Then he took his oldest son, the one who was supposed to be the next king, and sacrificed him on the city wall. This made God furious with Israel. So Israel pulled back and went home.",
+          "new": "When the king of Moab saw that he was losing, he took seven hundred swordsmen to try and break through the king of Edom's line, but they failed. Then he took his oldest son, the one who was supposed to be the next king, and sacrificed him on the city wall. This set off furious anger against Israel. So Israel pulled back and went home.",
+          "reason": "MSG 3:27 says \"set off furious anger against Israel\", not specifically God's anger; source over-identifies the anger as God's"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "4": "5-6",
+        "5": "5-6",
+        "6": "5-6",
+        "20": "18-19",
+        "21": "18-19",
+        "22": "20",
+        "27": "24-25",
+        "28": "24-25",
+        "29": "25-26",
+        "45": "42"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "5": "7",
+        "7": "11-12",
+        "8": "11-12",
+        "13": "17-18",
+        "14": "17-18",
+        "15": "19-21",
+        "16": "19-21",
+        "17": "19-21",
+        "22": "26-27",
+        "23": "26-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "1-2",
+        "2": "1-2",
+        "5": "4-5",
+        "6": "4-5",
+        "9": "6",
+        "33": "28-29",
+        "35": "30-31",
+        "36": "32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "3-4",
+        "4": "5-8",
+        "6": "11-12",
+        "7": "11-12",
+        "12": "18-20",
+        "13": "18-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "7": "10-11",
+        "10": "16-19",
+        "11": "16-19",
+        "12": "16-19",
+        "13": "16-19",
+        "14": "20-21",
+        "15": "16-19",
+        "16": "23-24",
+        "17": "25-27",
+        "18": "25-27",
+        "19": "25-27",
+        "20": "28-29",
+        "21": "28-29"
+      },
+      "content_fixes": [
+        {
+          "index": 14,
+          "old": "But the very next day, Hazael took a thick blanket, soaked it in water, and held it over the king's face until he suffocated. And just like that, Hazael became king.",
+          "new": "But the very next day, Someone took a thick blanket, soaked it in water, and held it over the king's face until he suffocated. And just like that, Hazael became king.",
+          "reason": "MSG 8:15 says \"someone\" suffocated Ben-Hadad, not Hazael directly; source overstates Hazael's personal involvement"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "2": "6-10",
+        "3": "6-10",
+        "10": "14-15",
+        "31": "35-36",
+        "32": "35-36"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 4] Section marker \"§Jehu Becomes King\" with no verse range; not content, should be removed",
+        "[para 17] Section marker \"§Joram and Ahaziah Killed\" with no verse range; not content, should be removed",
+        "[para 25] Section marker \"§Jezebel Killed\" with no verse range; not content, should be removed"
+      ],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "1-2",
+        "2": "1-2",
+        "3": "2-3",
+        "6": "6-7",
+        "7": "6-7",
+        "9": "9-10",
+        "10": "9-10",
+        "12": "12-13",
+        "13": "12-13",
+        "18": "18-19",
+        "19": "18-19",
+        "23": "23-24",
+        "24": "23-24",
+        "25": "25-27",
+        "26": "25-27",
+        "27": "25-27",
+        "32": "32-33",
+        "33": "32-33",
+        "34": "34-36",
+        "35": "34-36",
+        "36": "34-36"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "5-8",
+        "2": "5-8",
+        "3": "9-11",
+        "4": "9-11",
+        "5": "13-14",
+        "6": "15-16",
+        "7": "15-16",
+        "9": "18-20",
+        "10": "21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "4": "7",
+        "5": "9-16",
+        "6": "9-16",
+        "7": "17-18",
+        "8": "19-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "3": "8-9",
+        "4": "10-11",
+        "5": "10-11",
+        "6": "12-13",
+        "7": "12-13",
+        "14": "20-21",
+        "15": "20-21",
+        "16": "22-24",
+        "17": "22-24",
+        "18": "22-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "2": "5-6",
+        "4": "9-10",
+        "5": "9-10",
+        "6": "13-14",
+        "7": "13-14",
+        "10": "19-20",
+        "11": "19-20",
+        "12": "21-22",
+        "13": "23-25",
+        "14": "26-27",
+        "15": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "1-5",
+        "9": "16",
+        "10": "17-18",
+        "11": "19-20",
+        "12": "21-22",
+        "14": "25",
+        "15": "27-28",
+        "16": "27-28",
+        "17": "29",
+        "18": "32-35",
+        "19": "32-35",
+        "20": "32-35",
+        "21": "36-38"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "6": "12-14",
+        "7": "15"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "The Assyrian king was like, \"Aight, bet.\" He went and attacked Damascus, captured it, and deported all the people to Kir as exiles. And as for King Rezin? He had him killed.",
+          "new": "The Assyrian king was like, \"Aight, bet.\" He went and attacked Damascus, captured it, and deported all the people to Nineveh as exiles. And as for King Rezin? He had him killed.",
+          "reason": "MSG 16:9 says the people were deported to Nineveh, not Kir"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "3": "7-12",
+        "4": "13",
+        "6": "16-17",
+        "7": "18-20",
+        "8": "21-23",
+        "9": "24-25",
+        "12": "29-31",
+        "13": "29-31",
+        "14": "29-31",
+        "15": "32-33",
+        "16": "32-33",
+        "17": "34-39",
+        "18": "34-39",
+        "19": "34-39",
+        "20": "34-39",
+        "21": "34-39",
+        "22": "40-41"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "0": "1-4",
+        "2": "9-11",
+        "3": "9-11",
+        "5": "13-14",
+        "6": "14-16",
+        "7": "19-22",
+        "8": "18-22",
+        "9": "23-24",
+        "11": "28-32",
+        "12": "28-32",
+        "13": "28-32",
+        "14": "32-35"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "1-3",
+        "2": "1-3",
+        "5": "6-7",
+        "6": "6-7",
+        "7": "8-13",
+        "8": "8-13",
+        "9": "8-13",
+        "10": "14-15",
+        "11": "14-15",
+        "12": "16-19",
+        "13": "16-19",
+        "14": "20-21",
+        "15": "20-21",
+        "16": "22-24",
+        "17": "22-24",
+        "18": "25-28",
+        "19": "29-31",
+        "20": "29-31",
+        "21": "32-34",
+        "22": "32-34",
+        "23": "32-34",
+        "25": "36-37",
+        "26": "36-37"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "2-3",
+        "3": "4-6",
+        "4": "4-6",
+        "9": "12-13",
+        "10": "12-13",
+        "13": "16-18",
+        "14": "16-18",
+        "15": "16-18",
+        "17": "20-21",
+        "18": "20-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "0": "1-6",
+        "1": "7-8",
+        "2": "10-12",
+        "3": "10-12",
+        "4": "13-15",
+        "5": "16",
+        "6": "19-22",
+        "7": "19-22",
+        "8": "23-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "1": "3-7",
+        "2": "8",
+        "5": "11-13",
+        "6": "14-17",
+        "7": "18-20",
+        "8": "18-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-9",
+        "2": "12-15",
+        "3": "12-15",
+        "4": "16",
+        "5": "19-20",
+        "7": "22-23",
+        "8": "19-20",
+        "11": "28-30",
+        "12": "28-30",
+        "15": "33-34",
+        "16": "33-34",
+        "18": "36-37",
+        "19": "36-37"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-4",
+        "4": "10-12",
+        "5": "10-12",
+        "6": "12-14",
+        "7": "15-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "1": "8-12",
+        "2": "13-15",
+        "3": "16-17",
+        "4": "18-21",
+        "5": "18-21",
+        "6": "22-23",
+        "7": "24",
+        "8": "25",
+        "9": "27-30",
+        "10": "27-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

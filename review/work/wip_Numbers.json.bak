@@ -1,0 +1,540 @@
+{
+ "1": {
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-5",
+   "1": "6-15",
+   "10": "13",
+   "11": "14",
+   "12": "15",
+   "13": "15",
+   "14": "15",
+   "15": "16",
+   "16": "17-19",
+   "17": "20-21",
+   "18": "22-23",
+   "19": "24-25",
+   "2": "6",
+   "20": "26-27",
+   "21": "28-29",
+   "22": "30-31",
+   "23": "32-33",
+   "24": "34-35",
+   "25": "36-37",
+   "26": "38-39",
+   "27": "40-41",
+   "28": "42-43",
+   "29": "44-46",
+   "3": "7",
+   "30": "47-51",
+   "31": "52-53",
+   "32": "54",
+   "4": "8",
+   "5": "9",
+   "6": "10",
+   "7": "11",
+   "8": "11",
+   "9": "12"
+  },
+  "edits": [
+   {
+    "index": 18,
+    "find": "시므온 지파의 수는 59,300명. 놀라울 정도로 많네.",
+    "replace": "시므온 지파의 수는 59,300명이었음.",
+    "reason": "KO added '놀라울 정도로 많네' with no EN basis; EN just 'clocked in at 59,300'"
+   }
+  ]
+ },
+ "2": {
+  "fixes": [],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-2",
+   "1": "3-4",
+   "10": "18-19",
+   "11": "20-21",
+   "12": "22-23",
+   "13": "24",
+   "14": "25-26",
+   "15": "27-28",
+   "16": "29-30",
+   "17": "31",
+   "18": "32-33",
+   "19": "34",
+   "2": "5-6",
+   "3": "7-8",
+   "4": "9",
+   "5": "10-11",
+   "6": "12-13",
+   "7": "14-15",
+   "8": "16",
+   "9": "17"
+  }
+ },
+ "3": {
+  "flagged": [
+   "EN 27-32 (EN 11) omits v32 content: 'Eleazar son of Aaron the priest was the chief leader of the Levites, appointed over those responsible for the sanctuary' (민 3:32). KO also lacks it. EN-side omission; needs EN fix, not KO patchable."
+  ]
+ },
+ "4": {
+  "fixes": [],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-3",
+   "1": "4",
+   "10": "17-20",
+   "11": "21-23",
+   "12": "24-28",
+   "13": "29-30",
+   "14": "31-33",
+   "15": "34-37",
+   "16": "38-41",
+   "17": "42-45",
+   "2": "5-6",
+   "3": "7-8",
+   "8": "15",
+   "9": "16"
+  }
+ },
+ "5": {
+  "fixes": [],
+  "flagged": [],
+  "range_fixes": {
+   "2": "5-10",
+   "3": "11-15",
+   "6": "23-28"
+  }
+ },
+ "6": {
+  "fixes": [],
+  "flagged": [],
+  "range_fixes": {
+   "0": "2-4",
+   "1": "5",
+   "10": "22-23",
+   "11": "24-26",
+   "12": "27",
+   "2": "6-7",
+   "3": "8",
+   "4": "9-12",
+   "5": "13-18",
+   "6": "18",
+   "7": "19-20",
+   "8": "20",
+   "9": "21"
+  }
+ },
+ "7": {
+  "edits": [
+   {
+    "find": "모세가 성막 세우는 걸 다 끝내고, 거기에 기름을 부어서 거룩하게 구별했대. 성막에 딸린 모든 기구에도 그렇게 했고, 제단이랑 제단 기구들도 다 똑같이 기름 부어서 거룩하게 한 거임.",
+    "index": 0,
+    "reason": "KO adds '기름을 부어서' (anointing with oil) not in EN ('he blessed it and made it sacred'); KO is a translation of the teen EN",
+    "replace": "모세가 성막 세우는 걸 다 끝내고, 거룩하게 구별했대. 성막에 딸린 모든 기구에도 그렇게 했고, 제단이랑 제단 기구들도 다 똑같이 거룩하게 한 거임."
+   }
+  ]
+ },
+ "8": {
+  "flagged": [],
+  "range_fixes": {},
+  "edits": [
+   {
+    "index": 1,
+    "find": "하나님이 모세한테 보여준 디자인이랑 완전 똑같이 만들었대. 놀라운 일이야.",
+    "replace": "하나님이 모세한테 보여준 디자인이랑 완전 똑같이 만들었대.",
+    "reason": "KO added '놀라운 일이야' with no EN basis; EN ends at 'perfect copy of the design'"
+   }
+  ]
+ },
+ "9": {
+  "fixes": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "10": {
+  "edits": [
+   {
+    "find": "걔네가 도착할 때쯤이면 성막이 이미 세워져 있었대. 타이밍이 대단했지.",
+    "index": 5,
+    "reason": "KO added '타이밍이 대단했지' with no EN basis; EN ends at 'set up by the time they got there'",
+    "replace": "걔네가 도착할 때쯤이면 성막이 이미 세워져 있었대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "11": {
+  "edits": [
+   {
+    "find": "너무 힘들다고 개징징대기 시작한 거임",
+    "index": 0,
+    "reason": "KO '개징징대기' (개-intensifier, crude) → '엄청 징징대기'; EN 'complaining big time'",
+    "replace": "너무 힘들다고 엄청 징징대기 시작한 거임"
+   },
+   {
+    "find": "저 진짜 볼 꼴 못 볼 꼴 다 봤고, 이제 지쳤어요.",
+    "index": 4,
+    "reason": "KO added idiom '볼 꼴 못 볼 꼴 다 봤고' with no EN basis; EN 'I'm so done'",
+    "replace": "저 진짜 지쳤어요."
+   },
+   {
+    "find": "\"주인님, 모세여! 그들을 막으소서!\"",
+    "index": 12,
+    "reason": "KO formal/churchy tone clashes with EN 'Moses, my dude, you gotta stop them!'; teen-natural replacement",
+    "replace": "\"모세님, 걔네 좀 막아주세요!\""
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "12": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "13": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "14": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "15": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "16": {
+  "edits": [
+   {
+    "find": "저놈들의 제물은 받지 마세요",
+    "index": 6,
+    "reason": "KO '저놈들' (demeaning) → '걔네'; EN neutral 'their offering'",
+    "replace": "걔네 제물은 받지 마세요"
+   },
+   {
+    "find": "땅이 입을 벌려서 저놈들을 산 채로 삼켜버려서 무덤으로 떨어지게 하면, 그때는 너네가 이놈들이 하나님을 무시했다는 걸 알게 될 거다.",
+    "index": 15,
+    "reason": "KO '저놈들'/'이놈들' (demeaning) → neutral; EN 'these men'",
+    "replace": "땅이 입을 벌려서 저 사람들을 산 채로 삼켜버려서 무덤으로 떨어지게 하면, 그때는 너네가 이 사람들이 하나님을 무시했다는 걸 알게 될 거다."
+   },
+   {
+    "find": "땅이 입을 벌려서 그놈들이랑 그 가족들, 고라한테 속한 모든 사람들이랑 재산까지 한입에 꿀꺽 삼켜버린 거임",
+    "index": 16,
+    "reason": "KO '그놈들' (demeaning) → '그 사람들'; '한입에 꿀꺽' (playful, trivializes death) → '통째로'; EN 'swallowed them whole'",
+    "replace": "땅이 입을 벌려서 그 사람들이랑 그 가족들, 고라한테 속한 모든 사람들이랑 재산까지 통째로 삼켜버린 거임"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "17": {
+  "edits": [
+   {
+    "find": "반역하는 놈들한테 보여주는 표시다",
+    "index": 3,
+    "reason": "KO '반역하는 놈들' (demeaning) → '반역하는 사람들'; EN 'all the rebels'",
+    "replace": "반역하는 사람들한테 보여주는 표시다"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "18": {
+  "edits": [
+   {
+    "find": "그걸 되사는 속전(贖錢)을 받는 거임",
+    "index": 4,
+    "reason": "KO added hanja gloss '(贖錢)' with no EN basis; removed",
+    "replace": "그걸 되사는 속전을 받는 거임"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "19": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "20": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "21": {
+  "edits": [],
+  "flagged": [
+   "DELETE paragraph indices 17 and 19 — each is byte-identical to the preceding paragraph (16 and 18) with a shifted range badge ('29' vs '28', '31' vs '30'); EN has each stanza once (EN 16 rng 28, EN 17 rng 30); keep 16 and 18 (indices refer to pre-deletion numbering)"
+  ],
+  "range_fixes": {}
+ },
+ "22": {
+  "edits": [
+   {
+    "find": "\"야, 이놈들이 우리를 싹 쓸어버릴 것 같아.",
+    "index": 2,
+    "reason": "KO '이놈들' (demeaning) → '이 무리들'; EN 'this massive crew'",
+    "replace": "\"야, 이 무리들이 우리를 싹 쓸어버릴 것 같아."
+   },
+   {
+    "find": "이집트에서 나온 웬 백성이 있는데",
+    "index": 4,
+    "reason": "KO added dismissive '웬' with no EN basis; EN 'A whole nation of people came out of Egypt'",
+    "replace": "이집트에서 나온 백성이 있는데"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "23": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "24": {
+  "edits": [
+   {
+    "find": "마치 거친 들소처럼 날뛰면서 적들을 고기처럼 삼키고 뼈를 부수고 화살을 꺾어버렸대",
+    "index": 2,
+    "reason": "KO added '고기처럼 삼키고' with no EN basis; EN 'plowing through your enemies'",
+    "replace": "마치 거친 들소처럼 날뛰면서 적들을 쓸어버리고 뼈를 부수고 화살을 꺾어버렸대"
+   },
+   {
+    "find": "모압의 우두머리들과 시끄러운 허풍쟁이들의 머리통을 다 부숴버릴 거래",
+    "index": 5,
+    "reason": "KO '머리통을 다 부숴버릴' (crude) → '완전히 무너뜨릴'; EN 'crush the leaders'",
+    "replace": "모압의 우두머리들과 시끄러운 허풍쟁이들을 완전히 무너뜨릴 거래"
+   },
+   {
+    "find": "그래도 앗수르가 너네를 포로로 잡아갈 때 보면 완전 바보 같을걸.",
+    "index": 9,
+    "reason": "KO added mocking '완전 바보 같을걸' with no EN basis",
+    "replace": "그래도 앗수르가 너네를 포로로 잡아갈 거래."
+   },
+   {
+    "find": "바다 건너온 해적들이 앗수르랑 에벨을 괴롭히겠지만",
+    "index": 11,
+    "reason": "KO '해적들' (pirates — invented, not in EN) → '사람들'; EN 'People from across the sea'",
+    "replace": "바다 건너온 사람들이 앗수르랑 에벨을 괴롭히겠지만"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "25": {
+  "edits": [
+   {
+    "find": "너네 각자 자기 구역에서 바알 브올 섬긴 놈들 다 처형해라.",
+    "index": 2,
+    "reason": "KO '놈들' (demeaning) → '자들'; EN neutral 'the men in your group'",
+    "replace": "너네 각자 자기 구역에서 바알 브올 섬긴 자들 다 처형해라."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "26": {
+  "edits": [
+   {
+    "find": "그 대박 전염병이 지나가고 나서",
+    "index": 0,
+    "reason": "KO '대박 전염병' lightens 24,000 deaths; EN 'devastating plague'",
+    "replace": "그 끔찍한 전염병이 지나가고 나서"
+   },
+   {
+    "find": "고라 패거리랑 같이 모세랑 아론한테 개겼던 애들인 거임",
+    "index": 10,
+    "reason": "KO '개겼던' (crude slang) → '반역했던'; EN 'rebelled against Moses and Aaron'",
+    "replace": "고라 패거리랑 같이 모세랑 아론한테 반역했던 애들인 거임"
+   },
+   {
+    "find": "무려 76,500명이나 됐대. ㄷㄷ",
+    "index": 34,
+    "reason": "KO added 'ㄷㄷ' with no EN basis",
+    "replace": "무려 76,500명이나 됐대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "27": {
+  "edits": [
+   {
+    "find": "모세가 이 사건을 하나님한테 가져가서 여쭤봤음.",
+    "index": 2,
+    "reason": "KO omits EN 'Moses was like, Good point' — Moses' agreement before asking God",
+    "replace": "모세가 듣고 보니 맞는 말 같았음. 그래서 이 사건을 하나님한테 가져가서 여쭤봤음."
+   },
+   {
+    "find": "이건 너네가 신 광야에서 백성들이랑 다툴 때, 그 므리바 물 사건에서 내 거룩함을 사람들 앞에서 드러내지 않았기 때문이다.",
+    "index": 5,
+    "reason": "KO omits EN 'You didn't trust me' before 'show them I was holy'",
+    "replace": "이건 너네가 신 광야에서 백성들이랑 다툴 때, 그 므리바 물 사건에서 나를 믿지 않고 내 거룩함을 사람들 앞에서 드러내지 않았기 때문이다."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "28": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "1": "9-10",
+   "10": "30-31",
+   "2": "11",
+   "3": "12-14",
+   "4": "15",
+   "5": "16-17",
+   "6": "18-22",
+   "7": "23-24",
+   "8": "25",
+   "9": "26-30"
+  }
+ },
+ "29": {
+  "edits": [
+   {
+    "find": "일곱 번째 달 15일에는 다 같이 모여서 거룩하게 예배 드리고, 평소 하던 일은 노노.",
+    "index": 4,
+    "reason": "KO '노노' (baby talk) → '하지 말고'; EN 'No regular work'",
+    "replace": "일곱 번째 달 15일에는 다 같이 모여서 거룩하게 예배 드리고, 평소 하던 일은 하지 말고."
+   }
+  ]
+ },
+ "30": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "31": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "10": "32",
+   "11": "32",
+   "12": "33",
+   "13": "34",
+   "14": "35",
+   "15": "36",
+   "16": "37",
+   "17": "38",
+   "18": "39",
+   "19": "40",
+   "20": "41",
+   "21": "42",
+   "22": "43",
+   "23": "44",
+   "24": "45",
+   "25": "46",
+   "26": "47",
+   "27": "48-52",
+   "28": "53-54",
+   "3": "7-12",
+   "4": "13-18",
+   "5": "19-20",
+   "6": "21-24",
+   "7": "25-27",
+   "8": "28-30",
+   "9": "31"
+  }
+ },
+ "32": {
+  "edits": [
+   {
+    "find": "그래서 하나님이 개화나셨지. 진짜 완전 화나셨어.",
+    "index": 2,
+    "reason": "KO '개화나셨지' (crude intensifier on God's anger) → '진짜 화나셨지'; EN 'God was furious. Like, seriously mad'",
+    "replace": "그래서 하나님이 진짜 화나셨지. 완전 화나셨어."
+   },
+   {
+    "find": "'이집트에서 나온 놈들 중에 스무 살 넘은 놈들은 내가 아브라함, 이삭, 야곱한테 약속한 땅 절대 못 볼 거다.",
+    "index": 2,
+    "reason": "KO '놈들' x2 (demeaning) → '사람들'; EN 'None of the people who came out of Egypt, twenty years or older'",
+    "replace": "'이집트에서 나온 사람들 중에 스무 살 넘은 사람들은 내가 아브라함, 이삭, 야곱한테 약속한 땅 절대 못 볼 거다."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "33": {
+  "edits": [
+   {
+    "find": "모세랑 아론이 군대처럼 애들 지휘하고 있었고.",
+    "index": 0,
+    "reason": "KO '애들' (dismissive) → '사람들을'; EN 'Moses and Aaron were leading the squad, military-style'",
+    "replace": "모세랑 아론이 군대처럼 사람들을 지휘하고 있었고."
+   },
+   {
+    "find": "거기 살던 원주민들 다 쫓아내. 걔네가 조각해서 만든 우상들 다 부수고, 금속으로 만든 신상들도 다 부수고, 걔네가 제사 지내던 산당들도 다 밀어버려.",
+    "index": 45,
+    "reason": "KO '걔네' ×2 (dismissive) → '그들'; EN 'Destroy all their carved idols and metal statues, and tear down all their sacred places'",
+    "replace": "거기 살던 원주민들 다 쫓아내. 그들이 조각해서 만든 우상들 다 부수고, 금속으로 만든 신상들도 다 부수고, 그들이 제사 지내던 산당들도 다 밀어버려."
+   },
+   {
+    "find": "너희가 남겨둔 걔네들이 전부 너희 눈의 가시, 발의 못 같은 존재가 될 거다. 너희 땅 바로 옆에서 끝도 없이 너희를 괴롭힐 거라고. 그럼 내가 원래 걔네한테 하려던 걸 너희한테 똑같이 하게 될 거다.\"",
+    "index": 47,
+    "reason": "KO '걔네' ×2 (dismissive) → '그들'; EN 'every single one you let stay... what I was planning to do to them'",
+    "replace": "너희가 남겨둔 그들이 전부 너희 눈의 가시, 발의 못 같은 존재가 될 거다. 너희 땅 바로 옆에서 끝도 없이 너희를 괴롭힐 거라고. 그럼 내가 원래 그들한테 하려던 걸 너희한테 똑같이 하게 될 거다.\""
+   }
+  ]
+ },
+ "34": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "1": "3-5",
+   "2": "6",
+   "3": "7-9",
+   "4": "10-12",
+   "5": "13",
+   "6": "13-15",
+   "7": "16-18"
+  }
+ },
+ "35": {
+  "edits": [
+   {
+    "find": "복수하는 사람이 그놈을 잡으면 죽일 권리가 있는 거임.",
+    "index": 8,
+    "reason": "KO '그놈' (demeaning) → '그 사람'; EN 'The avenger has the right to kill them'",
+    "replace": "복수하는 사람이 그 사람을 잡으면 죽일 권리가 있는 거임."
+   },
+   {
+    "find": "그러니까 대제사장이 죽을 때까지는 도피성에 꼼짝없이 있어야 하는 게 개중요함.",
+    "index": 10,
+    "reason": "KO '개중요함' (개-intensifier, crude) → '진짜 중요함'; EN 'it's super important'",
+    "replace": "그러니까 대제사장이 죽을 때까지는 도피성에 꼼짝없이 있어야 하는 게 진짜 중요함."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "25-28",
+   "11": "29",
+   "12": "30",
+   "13": "31",
+   "14": "32",
+   "15": "33",
+   "16": "34",
+   "3": "9-15",
+   "4": "16",
+   "5": "17",
+   "6": "18",
+   "7": "19",
+   "8": "20-21",
+   "9": "22-27"
+  }
+ },
+ "36": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "1": "2-4",
+   "2": "5-9",
+   "3": "10-12"
+  }
+ }
+}

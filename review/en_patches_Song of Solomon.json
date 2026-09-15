@@ -1,0 +1,65 @@
+{
+  "book": "Song of Solomon",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Systematic range shifts after p1. Verify against MSG."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "3": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "p0 likely omits the \"do not awaken love\" refrain (3:5); p1 compresses 6-11 and may omit procession details. Verify against MSG."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Range labels shift from p2 onward. p5 contains crude sexual wording (\"it was kinda turning me on\") requiring tone review."
+      ],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "p9 likely omits the sixty queens/eighty concubines material (6:8). Verify against MSG."
+      ],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "p0 contains potentially crude wording (\"I'm gonna get my hands on that fruit\"). Review for unnecessary crudeness."
+      ],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Range labels likely shift from p3 onward. Verify against MSG."
+      ],
+      "ok": false
+    }
+  }
+}

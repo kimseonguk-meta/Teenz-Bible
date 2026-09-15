@@ -1,0 +1,222 @@
+{
+  "book": "2 Corinthians",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "4": "8-11",
+        "5": "12-14",
+        "6": "15-17",
+        "7": "17-19",
+        "8": "20-22"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[9] badge 22: paragraph content is 2:1 ('when I come to you again') - chapter-boundary error; move to ch2 or re-badge."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "3": "7-8",
+        "4": "12-13",
+        "5": "15-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-4",
+        "3": "5-6",
+        "4": "7-12",
+        "5": "13-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "2": "6-8",
+        "3": "9-10",
+        "4": "10-11",
+        "6": "16-19"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Treasure in Jars of Clay",
+          "new": "§Ambassadors for Christ",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "2": "2-4",
+        "4": "6-10",
+        "5": "11-13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Our Heavenly Home",
+          "new": "§Don't Be Mismatched",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 3,
+          "old": "§Ambassadors for Christ",
+          "new": "§Through Thick and Thin",
+          "reason": "'Ambassadors for Christ' describes 5:11-21; this header sits before 6:4-10 (hardships)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "3": "5-7",
+        "6": "12",
+        "7": "13-16"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Don't Be Mismatched",
+          "new": "§Paul's Joy",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "3": "8-10",
+        "4": "10-12",
+        "5": "16-19",
+        "6": "18-22",
+        "7": "23-24"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Paul's Joy",
+          "new": "§Generous Giving",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "4": "8-10",
+        "5": "12-13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Generous Giving",
+          "new": "§Cheerful Givers",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "2": "3-6",
+        "3": "7-8",
+        "4": "10-11",
+        "5": "12-13",
+        "6": "13-15",
+        "7": "15-16"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Cheerful Givers",
+          "new": "§Paul Defends His Ministry",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "7-9",
+        "4": "10-12",
+        "5": "16-18",
+        "6": "21-23",
+        "7": "23-27",
+        "8": "28-29",
+        "9": "30-31"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Paul Defends His Ministry",
+          "new": "§Paul's Sufferings",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "2": "6",
+        "3": "7-8",
+        "8": "19",
+        "9": "20-21"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Paul's Sufferings",
+          "new": "§Paul's Vision and Thorn",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-4",
+        "3": "5-9",
+        "6": "10-11",
+        "7": "11"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Paul's Vision and Thorn",
+          "new": "§Examine Yourselves",
+          "reason": "'Paul's Vision and Thorn' describes ch12; ch13 is final self-examination before Paul's visit (13:5)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

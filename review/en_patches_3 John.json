@@ -1,0 +1,18 @@
+{
+  "book": "3 John",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "§Model the Good",
+          "new": "§Support the Travelers",
+          "reason": "'Model the Good' is v11's topic ('imitate good'); this header sits before vv5-6 (supporting traveling teachers)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

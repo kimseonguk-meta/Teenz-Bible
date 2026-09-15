@@ -1,0 +1,448 @@
+{
+  "book": "Genesis",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {
+        "4": "8-9",
+        "5": "10-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "1",
+        "2": "2-3",
+        "3": "4-5",
+        "5": "6"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "6": {
+      "range_fixes": {
+        "3": "4",
+        "5": "5-6"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "So, people started spreading all over the planet, and a ton of girls were born. Then, the \"sons of God\" saw how hot the human girls were and just started picking out wives for themselves.",
+          "new": "So, people started spreading all over the planet, and a ton of girls were born. Then, the \"sons of God\" saw how beautiful the human girls were and just started picking out wives for themselves.",
+          "reason": "\"hot\" is crude/objectifying slang for women; The Message says the girls were \"attractive\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "8": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "10": {
+      "range_fixes": {
+        "13": "26-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "12": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "God hit up Abram and was like, \"Yo, you gotta leave your country, your fam, and your dad's place for a land that I'm gonna show you. I'm gonna make you into a huge nation and bless you big time. I'll make you famous, and you'll be a major blessing to everyone. I'll have your back—anyone who blesses you, I'll bless them. Anyone who messes with you, I'll curse them. Seriously, every family on Earth is gonna be blessed because of you.\"",
+          "new": "God told Abram, \"Yo, you gotta leave your country, your fam, and your dad's place for a land that I'm gonna show you. I'm gonna make you into a huge nation and bless you big time. I'll make you famous, and you'll be a major blessing to everyone. I'll have your back—anyone who blesses you, I'll bless them. Anyone who messes with you, I'll curse them. Seriously, every family on Earth is gonna be blessed because of you.\"",
+          "reason": "\"hit up\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        },
+        {
+          "index": 7,
+          "old": "When Abram got to Egypt, the Egyptians took one look at his wife and were like, \"OMG, she's a total smoke-show.\" The Pharaoh's officials were raving about her to him, and next thing you know, she was taken to live in Pharaoh's palace.",
+          "new": "When Abram got to Egypt, the Egyptians took one look at his wife and were like, \"OMG, she's absolutely stunning.\" The Pharaoh's officials were raving about her to him, and next thing you know, she was taken to live in Pharaoh's palace.",
+          "reason": "\"smoke-show\" is crude/objectifying slang; The Message says Sarai was \"stunningly beautiful\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "14": {
+      "range_fixes": {
+        "2": "3-4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "[para 0] Section header reads \"§ God's Pinky Promise\". \"Pinky promise\" trivializes the solemn covenant God makes with Abram in this chapter; suggest \"God's Covenant Promise\" or similar. Left for your decision since it is a structural header, not a verse paragraph."
+      ],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "17": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 11,
+          "old": "Then God finished talking with Abraham and bounced.",
+          "new": "Then God finished talking with Abraham and left.",
+          "reason": "\"bounced\" is flippant slang for God departing."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "24": "29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "Before they could even go to bed, a huge mob of guys from all over Sodom, young and old, surrounded the house. They were yelling at Lot, “Where are the dudes who are staying with you tonight? Bring them out so we can have some ‘fun’ with them!”",
+          "new": "Before they could even go to bed, a huge mob of guys from all over Sodom, young and old, surrounded the house. They were yelling at Lot, “Where are the dudes who are staying with you tonight? Bring them out so we can have sex with them!”",
+          "reason": "\"have some 'fun'\" obscures the threatened sexual assault; The Message is explicit (\"have sex with them\")."
+        },
+        {
+          "index": 26,
+          "old": "So that night, they got their father wasted. The older daughter went in and slept with him, and he was so out of it he had no idea what happened. The next morning, the older sister told the younger one, “Okay, I slept with Dad last night. Tonight, it’s your turn. We’ll get him drunk again, and you go sleep with him. That way, we’ll both have a kid through our dad and our family won’t die out.”",
+          "new": "So that night, they got their father drunk. The older daughter went in and slept with him, and he was so out of it he had no idea what happened. The next morning, the older sister told the younger one, “Okay, I slept with Dad last night. Tonight, it’s your turn. We’ll get him drunk again, and you go sleep with him. That way, we’ll both have a kid through our dad and our family won’t die out.”",
+          "reason": "\"wasted\" is slang that makes light of the act; surrounding paragraphs use \"drunk\" (MSG: \"get our father drunk\")."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "21": {
+      "range_fixes": {
+        "1": "1-5",
+        "8": "17-18",
+        "16": "27-28",
+        "19": "31-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "3": "3-5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "24": {
+      "range_fixes": {
+        "3": "6-9",
+        "8": "17-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "2": "7-11"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "13": "17-18",
+        "14": "19-21",
+        "19": "26-27",
+        "20": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "28": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "29": {
+      "range_fixes": {
+        "1": "1-3",
+        "14": "14-15",
+        "20": "22-24",
+        "24": "27-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "31": {
+      "range_fixes": {
+        "11": "26-30",
+        "12": "31-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {
+        "10": "19-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "34": {
+      "range_fixes": {
+        "1": "1-4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "35": {
+      "range_fixes": {
+        "16": "21-22"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "God hit up Jacob and said, \"Yo, head back to Bethel. Settle down there and build an altar for the God who showed up for you when you were running from your brother Esau.\"",
+          "new": "God told Jacob, \"Yo, head back to Bethel. Settle down there and build an altar for the God who showed up for you when you were running from your brother Esau.\"",
+          "reason": "\"hit up\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "37": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "38": {
+      "range_fixes": {
+        "1": "1-5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "39": {
+      "range_fixes": {
+        "3": "7-10",
+        "5": "11-15",
+        "7": "16-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "40": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "41": {
+      "range_fixes": {
+        "6": "9-11",
+        "7": "12-13",
+        "18": "28-31",
+        "33": "50-52"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "42": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-5",
+        "6": "8-9",
+        "7": "10-11",
+        "8": "12",
+        "9": "13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "43": {
+      "range_fixes": {
+        "11": "17-18",
+        "14": "24-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "44": {
+      "range_fixes": {
+        "2": "3-5",
+        "14": "21-22",
+        "15": "23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "45": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "46": {
+      "range_fixes": {
+        "5": "5-7",
+        "18": "19-21",
+        "19": "22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "47": {
+      "range_fixes": {
+        "6": "9-10",
+        "7": "11-12",
+        "20": "27-28"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "48": {
+      "range_fixes": {
+        "2": "3-7",
+        "7": "12-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "49": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§ Judah\n“Judah, you're the man. Your brothers are all gonna look up to you. You'll have your enemies in a chokehold while your own family bows down. You're like a young lion, coming back after a big win. Who would dare mess with a lion just chilling? A true king. The leadership will always belong to your family line. You'll be in charge until the ultimate ruler shows up, and everyone will follow him. You'll be so rich you'll tie your donkey to a fancy grapevine and wash your clothes in wine. Your eyes will be darker than wine, and your teeth whiter than milk. Total stud.”",
+          "new": "§ Judah\n“Judah, you're the man. Your brothers are all gonna look up to you. You'll have your enemies in a chokehold while your own family bows down. You're like a young lion, coming back after a big win. Who would dare mess with a lion just chilling? A true king. The leadership will always belong to your family line. You'll be in charge until the ultimate ruler shows up, and everyone will follow him. You'll be so rich you'll tie your donkey to a fancy grapevine and wash your clothes in wine. Your eyes will be darker than wine, and your teeth whiter than milk. An absolute legend.”",
+          "reason": "\"stud\" is crude/objectifying slang; keeps the celebratory teen tone without the sexual edge."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "50": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

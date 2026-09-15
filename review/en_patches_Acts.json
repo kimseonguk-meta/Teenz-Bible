@@ -1,0 +1,577 @@
+{
+  "book": "Acts",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "4",
+        "3": "6-7",
+        "4": "8-9",
+        "5": "10-13",
+        "7": "15",
+        "8": "16-18",
+        "9": "19-20",
+        "10": "21-26"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 1:3 and 1:5 (the forty days of resurrection appearances, and baptism with the Holy Spirit) are absent between [1] (vv1-2) and [2] (v4)."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-13",
+        "3": "14-21",
+        "5": "22-33",
+        "6": "34-41",
+        "7": "42-47"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "4-7",
+        "6": "12-16",
+        "7": "17-23",
+        "8": "24-26"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 3:11 (the crowd gathering at Solomon's Colonnade) is absent between [4] (v10) and [6] (vv12-16)."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-8",
+        "3": "9-12",
+        "5": "13-14",
+        "6": "15-17",
+        "7": "18-22",
+        "8": "23-31",
+        "9": "31-32",
+        "10": "32-37"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§The Believers Share Everything",
+          "new": "§Told to Shut Up",
+          "reason": "Definite heading misplacement: sits between [3] (Peter's defense, vv9-12) and [5] (the council deliberating, vv15-17), but 'The Believers Share Everything' describes [9]-[10] (vv31-37). The paragraphs it actually introduces ([5]-[8], vv13-22) are the council ordering Peter and John to stop speaking."
+        }
+      ],
+      "flagged": [
+        "The believers-sharing-everything material at [9]-[10] (vv31-37) has no section heading; the heading '§The Believers Share Everything' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "10": "15-16",
+        "11": "17-20",
+        "16": "27-29",
+        "18": "33-34",
+        "19": "35-39"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5-6",
+        "5": "7",
+        "6": "8-10"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Stephen Gets Arrested",
+          "new": "§Stephen Shines",
+          "reason": "Definite heading misplacement: sits between [3] (the seven chosen, vv5-6) and [5] (the word spreading, v7), but Stephen is not arrested until [7] (vv11-12). The paragraphs it actually introduces ([5]-[6], vv7-10) describe the word spreading and Stephen's grace-filled ministry."
+        }
+      ],
+      "flagged": [
+        "The Stephen-arrest narrative at [7]-[9] (vv11-15) has no section heading; the heading '§Stephen Gets Arrested' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "4": "5-8",
+        "5": "8-9",
+        "6": "9-10",
+        "7": "11-16",
+        "8": "15-16",
+        "11": "23-25",
+        "12": "26-29",
+        "13": "30-31",
+        "14": "32-34",
+        "15": "35-38",
+        "16": "39-41",
+        "17": "42-43",
+        "18": "44-46",
+        "19": "47-50"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "§Stephen Is Killed",
+          "new": "§God's Promise to Abraham",
+          "reason": "Definite heading misplacement: sits between [2] (vv2-4) and [4] (vv5-8), but Stephen's killing is at [21]-[23] (vv54-60). The paragraphs it actually introduces ([4]-[5], vv5-11) are God's promise and covenant with Abraham."
+        },
+        {
+          "index": 23,
+          "old": "As they were stoning him, Stephen prayed, “Jesus, my man, take my life.” Then he knelt down and yelled, “Master, don’t hold this against them.” And with that, he died.",
+          "new": "As they were stoning him, Stephen prayed, “Jesus, take my life.” Then he knelt down and yelled, “Master, don’t hold this against them.” And with that, he died.",
+          "reason": "\"my man\" is overly familiar slang addressed to Jesus in a martyr's dying prayer; MSG has \"Master Jesus, take my life.\" Removed the flippant familiarity while keeping teen voice."
+        }
+      ],
+      "flagged": [
+        "Tone: [2] calls Abraham 'our great-great-great-grandpappy' — silly teen slang for a patriarch; may strike some readers as flippant toward Abraham. Borderline; left as teen voice.",
+        "The stoning narrative at [21]-[23] (vv54-60) has no section heading; the heading '§Stephen Is Killed' was misplaced at [3] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "2": "4-8",
+        "3": "9-12",
+        "4": "14-16",
+        "8": "25",
+        "9": "26-28"
+      },
+      "content_fixes": [
+        {
+          "index": 6,
+          "old": "§Philip and the Ethiopian",
+          "new": "§Simon's Big Mistake",
+          "reason": "Definite heading misplacement: sits between [5] (vv17-19) and [7] (vv20-23), but Philip meets the Ethiopian at [9] (vv26-28). The paragraphs it actually introduces ([7]-[8], vv20-25) are Peter's rebuke of Simon."
+        }
+      ],
+      "flagged": [
+        "MSG 8:24 (Simon's plea, 'Pray for me, won't you?') is absent between [7] (vv20-23) and [8] (v25).",
+        "The Philip-and-the-Ethiopian episode at [9]-[14] (vv26-40) has no section heading; the heading '§Philip and the Ethiopian' was misplaced at [6] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "6": "10",
+        "7": "11",
+        "13": "19-22",
+        "17": "31-34",
+        "20": "36-38",
+        "22": "40",
+        "23": "42-43"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 9:9 (three days without sight, food, or drink) is absent between [5] (vv7-8) and [6] (v10)."
+      ],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-4",
+        "3": "4",
+        "5": "4-5",
+        "6": "7",
+        "7": "9-12",
+        "8": "13-14",
+        "9": "15-16",
+        "10": "17-20",
+        "11": "21",
+        "12": "22",
+        "13": "23-24",
+        "14": "25-28",
+        "15": "30-32",
+        "16": "34-35",
+        "17": "36-38",
+        "18": "39-43",
+        "19": "44-46",
+        "20": "47-48"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Peter at Cornelius's House",
+          "new": "§Peter's Vision",
+          "reason": "Definite heading misplacement: sits between [3] (v4) and [5] (vv4-5), but Peter does not reach Cornelius's house until [13] (vv23-24). The paragraphs it actually introduces ([5]-[12], vv4-22) are the angel's message to Cornelius and Peter's rooftop vision."
+        }
+      ],
+      "flagged": [
+        "MSG 10:29 (Peter asking, 'why did you send for me?') is absent between [14] (vv25-28) and [15] (vv30-32).",
+        "Peter's arrival at Cornelius's house at [13]-[20] (vv23-48) has no section heading; the heading '§Peter at Cornelius\\'s House' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "7-15"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 11:18 (the Jerusalem church's response: God has given even the Gentiles repentance unto life) is absent between [5] (vv16-17) and [6] (vv19-21)."
+      ],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "5": "12-13",
+        "6": "13-17"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Peter's Miraculous Escape",
+          "new": "§Peter Knocks at Mary's Door",
+          "reason": "Definite heading misplacement: sits between [3] (the escape, vv9-11) and [5] (Mary's house, vv12-13), i.e. after the escape already happened. The paragraphs it actually introduces ([5]-[6], vv12-17) are Peter knocking at Mary's door."
+        }
+      ],
+      "flagged": [
+        "MSG 12:23's 'eaten by worms' detail is softened: [8] says Herod 'got super sick and died a pretty gnarly death' where MSG specifies an angel striking him down and worms consuming him.",
+        "The escape narrative at [2]-[3] (vv5-11) has no section heading; the heading '§Peter\\'s Miraculous Escape' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "5": "6-8",
+        "6": "9-11",
+        "7": "12",
+        "8": "13",
+        "9": "14-15",
+        "10": "16-17",
+        "11": "17-22",
+        "12": "23-25",
+        "13": "26-31",
+        "17": "38-41",
+        "18": "42-43",
+        "19": "44-45",
+        "20": "46-48",
+        "21": "48",
+        "22": "49-52"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Preaching in Antioch",
+          "new": "§Elymas the Sorcerer",
+          "reason": "Definite heading misplacement: sits between [3] (vv3-6) and [5] (vv6-8, Paphos), but the Pisidian Antioch sermon starts at [9] (vv14-15). The paragraphs it actually introduces ([5]-[7], vv6-12) are the Elymas confrontation."
+        }
+      ],
+      "flagged": [
+        "The Pisidian Antioch sermon at [9]-[22] (vv14-52) has no section heading; the heading '§Preaching in Antioch' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "1": "1-2",
+        "6": "14-15",
+        "7": "15-18"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Back to Home Base",
+          "new": "§Mistaken for Gods",
+          "reason": "Definite heading misplacement: sits between [3] (vv8-10) and [5] (vv11-13), but the return journey ('back to home base') is at [9]-[11] (vv21-28). The paragraphs it actually introduces ([5]-[8], vv11-20) are the Lystra crowd mistaking Paul and Barnabas for gods."
+        }
+      ],
+      "flagged": [
+        "MSG 14:3-4 (the long stay with confirming signs; the city divided) is absent between [1] (vv1-2) and [2] (vv5-7).",
+        "Tone: [9] renders MSG 14:22's 'through many persecutions we must enter the kingdom of God' as 'No pain, no gain' — a gym slogan that trivializes persecution/suffering. Borderline; flagged, not fixed.",
+        "The return journey at [9]-[11] (vv21-28) has no section heading; the heading '§Back to Home Base' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "5": "7-11",
+        "6": "11",
+        "7": "12",
+        "8": "13-14",
+        "9": "19-21",
+        "10": "22",
+        "11": "23-24",
+        "13": "30-32",
+        "16": "36-39"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 15:15-18 (James quoting Amos: 'I will rebuild David's fallen tent') is absent between [8] (vv13-14) and [9] (vv19-21).",
+        "MSG 15:26-27 (Judas and Silas named as letter-bearers who 'have risked their lives for the name of our Lord Jesus Christ') is absent between [10] (v22) and [11] (vv23-24)."
+      ],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "1": "1-5",
+        "2": "6-11",
+        "5": "16-19",
+        "6": "20-24"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§The Philippian Jailer",
+          "new": "§The Slave Girl",
+          "reason": "Definite heading misplacement: sits between [3] (vv12-16) and [5] (vv16-19), but the Philippian jailer appears at [7] (vv25-28). The paragraphs it actually introduces ([5]-[6], vv16-24) are the slave girl episode."
+        }
+      ],
+      "flagged": [
+        "The Philippian jailer episode at [7]-[9] (vv25-40) has no section heading; the heading '§The Philippian Jailer' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "9": "19-21"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Paul in Athens",
+          "new": "§Trouble in Berea",
+          "reason": "Definite heading misplacement: sits between [3] (vv7-9) and [5] (v10, Berea), but Paul reaches Athens at [8] (vv16-19). The paragraphs it actually introduces ([5]-[7], vv10-15) are the trouble in Berea."
+        }
+      ],
+      "flagged": [
+        "The Athens material at [8]-[13] (vv16-34) has no section heading; the heading '§Paul in Athens' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "2": "5-6",
+        "3": "7-11",
+        "5": "12-14",
+        "8": "19-21"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Back to Antioch",
+          "new": "§Paul Before Gallio",
+          "reason": "Definite heading misplacement: sits between [3] (vv7-11) and [5] (vv12-14), but the return to Antioch is at [9] (vv22-23). The paragraphs it actually introduces ([5]-[6], vv12-17) are Paul's trial before Gallio."
+        }
+      ],
+      "flagged": [
+        "The return-to-Antioch material at [9] (vv22-23) has no section heading; the heading '§Back to Antioch' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "7": "6-7",
+        "8": "8-10",
+        "9": "11-12",
+        "10": "13-16",
+        "11": "17-20",
+        "12": "21-22",
+        "13": "23-24",
+        "14": "25-27",
+        "15": "28-29",
+        "16": "32-34",
+        "17": "35-37",
+        "18": "38-41"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§The Riot",
+          "new": "§Baptized in Jesus' Name",
+          "reason": "Definite heading misplacement: sits between [3] (v4) and [5] (v5), but the riot breaks out at [13] (vv23-24). The paragraphs it actually introduces ([5]-[7], vv5-7) are the Ephesian disciples baptized in Jesus' name."
+        }
+      ],
+      "flagged": [
+        "MSG 19:30-31 (Paul's friends and the Asiarchs keeping him out of the theater) is absent between [15] (vv28-29) and [16] (vv32-34).",
+        "The riot narrative at [13]-[18] (vv23-41) has no section heading; the heading '§The Riot' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "6": "10-12",
+        "8": "17-21",
+        "9": "22-24",
+        "10": "25-28"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "§Paul's Farewell Speech",
+          "new": "§The Kid Who Fell Out the Window",
+          "reason": "Definite heading misplacement: sits between [4] (vv9-12) and [6] (vv10-12, Eutychus), but Paul's Miletus farewell speech starts at [8] (vv17-21). The paragraphs it actually introduces ([6]-[7], vv9-15) are the Eutychus episode."
+        }
+      ],
+      "flagged": [
+        "The Miletus farewell speech at [8]-[13] (vv17-38) has no section heading; the heading '§Paul\\'s Farewell Speech' was misplaced at [5] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "4-6",
+        "3": "7-9",
+        "5": "10-11",
+        "10": "20-21",
+        "11": "22-25",
+        "12": "26",
+        "13": "26-27",
+        "14": "27-29",
+        "15": "30-32",
+        "16": "33-35"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§Paul Arrested",
+          "new": "§Agabus's Warning",
+          "reason": "Definite heading misplacement: sits between [3] (vv7-9) and [5] (vv10-11), but Paul is arrested at [14] (vv27-29). The paragraphs it actually introduces ([5]-[6], vv10-14) are Agabus's prophetic warning."
+        }
+      ],
+      "flagged": [
+        "The arrest narrative at [14]-[21] (vv27-40) has no section heading; the heading '§Paul Arrested' was misplaced at [4] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "3": "4-5",
+        "5": "6-7",
+        "10": "13-14",
+        "11": "14-16",
+        "12": "17",
+        "13": "19-20"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§To: His Excellency, Governor Felix",
+          "new": "§Blinded by the Light",
+          "reason": "Definite heading misplacement: the commander's letter to Governor Felix belongs to Acts 23 ([13]-[18], vv25-30); here it interrupts Paul's Damascus-road account between [3] (vv4-5) and [5] (vv6-7). The paragraphs it actually introduces ([5]-[9], vv6-11) are Paul blinded by the light."
+        }
+      ],
+      "flagged": [
+        "MSG 22:18 (the Lord's 'Hurry! Leave Jerusalem immediately, because they will not accept your testimony about me') is absent between [12] (v17) and [13] (vv19-20)."
+      ],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "3": "6",
+        "4": "7-11",
+        "6": "11",
+        "7": "12-15",
+        "8": "16",
+        "9": "17-18",
+        "10": "19-21",
+        "11": "22",
+        "12": "23-24",
+        "13": "25",
+        "14": "26",
+        "16": "26",
+        "17": "27-28",
+        "18": "29-30",
+        "19": "31",
+        "20": "33-35"
+      },
+      "content_fixes": [
+        {
+          "index": 15,
+          "old": "§Plot to Kill Paul",
+          "new": "§The Commander's Letter",
+          "reason": "Definite heading misplacement: 'Plot to Kill Paul' sits between [14] (v26) and [16] (v26, 'Greetings!'), splitting the commander's letter, while the assassination plot is at [7]-[11] (vv12-25). The paragraphs it actually sits among ([13]-[18], vv25-30) are the commander's letter to Felix."
+        }
+      ],
+      "flagged": [
+        "MSG 23:32 (the foot soldiers returning to the barracks while the horsemen go on alone) is absent between [19] (v31) and [20] (vv33-35).",
+        "The assassination-plot narrative at [7]-[11] (vv12-25) has no section heading; the heading '§Plot to Kill Paul' was misplaced at [15] and has been reassigned to fit its actual position."
+      ],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "2": "2-4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "1": "1-5",
+        "2": "6",
+        "4": "10-12",
+        "6": "13-16",
+        "7": "17-20",
+        "8": "22",
+        "9": "23-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "7": "16-18",
+        "8": "19-21",
+        "9": "21-23",
+        "10": "24",
+        "11": "25",
+        "12": "28",
+        "13": "29",
+        "14": "30-31"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 26:26-27 ('The king is familiar with these things'; 'King Agrippa, do you believe the prophets? I know you do') is absent between [9] (vv21-23) and [10] (v24)."
+      ],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "2": "3-6",
+        "3": "7-9",
+        "4": "9-12",
+        "5": "13",
+        "6": "14-15",
+        "7": "16-17",
+        "8": "18-20",
+        "9": "20-21",
+        "10": "21-22",
+        "11": "23-26",
+        "12": "27-29",
+        "13": "30-32",
+        "14": "33-35",
+        "15": "35-37"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "4": "11-13",
+        "6": "14-16"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "v29 is a textual variant omitted by MSG (modern textual tradition places it as a Western-text addition). Do not insert."
+      ],
+      "ok": false
+    }
+  }
+}

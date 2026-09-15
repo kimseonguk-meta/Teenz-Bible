@@ -1,0 +1,842 @@
+{
+ "1": {
+  "edits": [
+   {
+    "find": "네가 이 백성을 이끌고 내가 걔네 조상들한테 주기로 맹세한 땅을 차지하게 할 거니까.",
+    "index": 1,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'the land I swore to their ancestors'",
+    "replace": "네가 이 백성을 이끌고 내가 그들 조상들한테 주기로 맹세한 땅을 차지하게 할 거니까."
+   },
+   {
+    "find": "걔네도 하나님이 주시는 땅을 차지하게 될 거임.",
+    "index": 3,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"They'll also take over the land\"",
+    "replace": "그들도 하나님이 주시는 땅을 차지하게 될 거임."
+   },
+   {
+    "find": "명령하신 모든 것을 저희가 다 하겠습니다. 어디로 보내시든 가겠습니다. 저희가 모세에게 완전히 복종했던 것처럼, 당신에게도 복종하겠습니다. 오직 당신의 하나님이 모세와 함께하셨던 것처럼 당신과도 함께하시기를 기도할 뿐입니다. 누구든지 당신의 말에 의문을 제기하고 당신이 명령하는 것을 거부하는 자는 죽임을 당할 것입니다. 힘내시고 용기를 내십시오!",
+    "index": 4,
+    "reason": "KO overly formal speech clashes with EN casual 'Whatever you say, we'll do...' → natural polite teen voice",
+    "replace": "시키는 대로 다 할게요. 어디로 보내시든 갈게요. 모세한테 완전히 복종했던 것처럼 당신한테도 복종할게요. 모세랑 함께하셨던 것처럼 당신과도 함께하시길 기도할게요. 누구든지 당신 말에 의문 제기하고 명령 거부하는 사람은 죽을 거예요. 힘내세요, 용기 내세요!"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "2-9",
+   "3": "12-15"
+  }
+ },
+ "2": {
+  "edits": [
+   {
+    "find": "그래서 걔네가 출발해서 라합이라는 창녀의 집에 도착해서 거기 묵게 된 거임.",
+    "index": 0,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'So they bounced'",
+    "replace": "그래서 그들이 출발해서 라합이라는 창녀의 집에 도착해서 거기 묵게 된 거임."
+   },
+   {
+    "find": "오늘 밤에 이스라엘 백성 중에서 몇 놈이 이 땅을 정탐하러 왔답니다",
+    "index": 1,
+    "reason": "KO '몇 놈' (demeaning) → '몇 명'; EN 'some Israelite guys'",
+    "replace": "오늘 밤에 이스라엘 백성 중에서 몇 명이 이 땅을 정탐하러 왔답니다"
+   },
+   {
+    "find": "걔네는 이 나라 전체를 정탐하러 온 스파이들이다",
+    "index": 2,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"They're spies, here to scope out the whole country\"",
+    "replace": "그들은 이 나라 전체를 정탐하러 온 스파이들이다"
+   },
+   {
+    "find": "(사실은 옥상에 있는 삼대 묶음 아래에 숨겨줬음ㅋ)",
+    "index": 3,
+    "reason": "KO adds laughter marker 'ㅋ' not in EN ('Plot twist: she had actually taken them up to the roof and hidden them under a pile of flax')",
+    "replace": "(사실은 옥상에 있는 삼대 묶음 아래에 숨겨줬음)"
+   },
+   {
+    "find": "왕의 부하들이 요르단 강 나루터 쪽 길로 걔네를 쫓아갔고,",
+    "index": 3,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"The king's men chased them\"",
+    "replace": "왕의 부하들이 요르단 강 나루터 쪽 길로 그들을 쫓아갔고,"
+   },
+   {
+    "find": "요르단 강 동쪽에 있던 아모리 왕 시혼이랑 옥을 어떻게 개발살내셨는지 다 들었어요.",
+    "index": 4,
+    "reason": "KO '개발살내다' (개-intensifier, crude) → '완전히 멸망시키다'; EN 'you completely destroyed them'",
+    "replace": "요르단 강 동쪽에 있던 아모리 왕 시혼이랑 옥을 어떻게 완전히 멸망시키셨는지 다 들었어요."
+   },
+   {
+    "find": "걔네가 돌아올 때까지 3일 동안 숨어 있다가 갈 길 가세요.",
+    "index": 7,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'until they get back'",
+    "replace": "그들이 돌아올 때까지 3일 동안 숨어 있다가 갈 길 가세요."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "3": "5-7",
+   "4": "9-11",
+   "5": "12-13",
+   "6": "14-15",
+   "7": "16",
+   "8": "17-20"
+  }
+ },
+ "3": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-4",
+   "1": "5",
+   "2": "6",
+   "3": "7-8",
+   "4": "9-13",
+   "5": "14-16"
+  }
+ },
+ "4": {
+  "edits": [
+   {
+    "find": "그리고 걔네한테 이렇게 말해줘.",
+    "index": 0,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'Tell them'",
+    "replace": "그리고 그들한테 이렇게 말해줘."
+   },
+   {
+    "find": "그리고 걔네한테 지시를 내렸지.",
+    "index": 1,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'He gave them the game plan'",
+    "replace": "그리고 그들한테 지시를 내렸지."
+   },
+   {
+    "find": "그래서 백성들은 모세를 평생 두려워했던 것처럼 여호수아도 두려워하게 됐지.",
+    "index": 5,
+    "reason": "KO '두려워했던' vs EN 'They had major respect for him, just like they had for Moses his whole life' → '존중했던'",
+    "replace": "그래서 백성들은 모세를 평생 존중했던 것처럼 여호수아도 존중하게 됐지."
+   },
+   {
+    "find": "요단강에서 올라오너라.",
+    "index": 7,
+    "reason": "KO '오너라' (archaic imperative) → '올라와'; EN 'Come on up out of the Jordan'",
+    "replace": "요단강에서 올라와."
+   },
+   {
+    "find": "요단강 물이 다시 원래대로 흘러서 강둑까지 넘실거렸대. 완전 신기하지.",
+    "index": 8,
+    "reason": "KO adds '강둑까지 넘실거렸대' (overflowing the banks) not in EN ('started flowing again, right back to normal like nothing happened')",
+    "replace": "요단강 물이 다시 원래대로 흘렀대. 완전 신기하지."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "4-7",
+   "10": "23-24",
+   "2": "8-10",
+   "3": "10-11",
+   "4": "12-13",
+   "6": "15",
+   "7": "16",
+   "8": "17",
+   "9": "19-21"
+  }
+ },
+ "5": {
+  "edits": [
+   {
+    "find": "웬 남자가 칼을 빼 들고 자기 앞에 서 있는 거야.",
+    "index": 7,
+    "reason": "KO '웬' (dismissive) → '어떤'; EN 'a man standing in front of him with his sword drawn'",
+    "replace": "어떤 남자가 칼을 빼 들고 자기 앞에 서 있는 거야."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1",
+   "1": "2-3",
+   "6": "11-12",
+   "7": "13",
+   "8": "14",
+   "9": "15"
+  }
+ },
+ "6": {
+  "edits": [
+   {
+    "find": "그래서 눈의 아들 여호수아가 제사장들을 불러서 말했어. “언약궤를 메세요. 그리고 제사장 일곱 분은 양 나팔 일곱 개를 들고 하나님의 궤 앞에서 가세요.”",
+    "index": 2,
+    "reason": "KO overly formal '세요/분' clashes with EN casual 'Okay, grab the Ark... And seven of you priests, you get the seven ram's horn trumpets'",
+    "replace": "그래서 눈의 아들 여호수아가 제사장들을 불러서 말했어. “언약궤를 메. 그리고 제사장 일곱 명은 양 나팔 일곱 개를 들고 하나님의 궤 앞에서 가.”"
+   },
+   {
+    "find": "그래서 젊은 정탐꾼들이 들어가서 라합과 그의 아버지, 어머니, 형제들, 그리고 그와 관련된 모든 사람들을 데리고 나왔어.",
+    "index": 14,
+    "reason": "KO wrong pronoun '그의/그와' for Rahab (female); EN 'her father, mother, brothers—her whole crew'",
+    "replace": "그래서 젊은 정탐꾼들이 들어가서 라합과 그녀의 아버지, 어머니, 형제들, 그리고 그녀와 관련된 모든 사람들을 데리고 나왔어."
+   },
+   {
+    "find": "하지만 여호수아는 기생 라합을 살려줬어. 라합이랑 그의 아버지 집안, 그리고 그와 관련된 모든 사람들을.",
+    "index": 15,
+    "reason": "KO wrong pronoun '그의/그와' for Rahab (female); EN \"her and her father's family and everyone connected to her\"",
+    "replace": "하지만 여호수아는 기생 라합을 살려줬어. 라합이랑 그녀의 아버지 집안, 그리고 그녀와 관련된 모든 사람들을."
+   },
+   {
+    "find": "누구든지 이 여리고 성을 다시 세우려고 하는 자는 하나님 앞에서 저주를 받을 것이다. 기초를 놓을 때에는 맏아들을 잃을 것이고, 성문을 세울 때에는 막내아들을 잃을 것이다.",
+    "index": 17,
+    "reason": "KO formal '것이다' register clashes with EN casual 'Cursed by God is the person who tries to rebuild this city'",
+    "replace": "누구든지 이 여리고 성을 다시 세우려고 하면 하나님 앞에서 저주를 받을 거야. 기초를 놓을 때는 맏아들을 잃을 거고, 성문을 세울 때는 막내아들을 잃을 거야."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "7": {
+  "edits": [
+   {
+    "find": "정찰병들이 여호수아한테 돌아와서 보고했어. “백성 다 보낼 필요 ㄴㄴ요. 한 2-3천 명만 올라가도 아이 성은 그냥 이길 듯요. 걔네 얼마 없어서 우리 군대 다 보낼 필요 없어요.",
+    "index": 2,
+    "reason": "KO 'ㄴㄴ' (chat slang) → '없어요'; KO '걔네' (dismissive) → '그들'; EN \"Don't send the whole army... there aren't even that many people there\"",
+    "replace": "정찰병들이 여호수아한테 돌아와서 보고했어. “백성 다 보낼 필요 없어요. 한 2-3천 명만 올라가도 아이 성은 그냥 이길 듯요. 그들 얼마 없어서 우리 군대 다 보낼 필요 없어요."
+   },
+   {
+    "find": "그래서 한 3천 명쯤 올라갔는데… 아이 성 사람들한테 역으로 털려서 도망친 거임!",
+    "index": 3,
+    "reason": "KO '역으로 털려서' (slang for getting beaten/robbed) → '쫓겨서'; EN 'they ended up getting chased away by the men of Ai'",
+    "replace": "그래서 한 3천 명쯤 올라갔는데… 아이 성 사람들한테 쫓겨서 도망친 거임!"
+   },
+   {
+    "find": "여호수아가 화가 나서 자기 옷을 찢고 하나님의 궤 앞에서 땅에 얼굴을 대고 엎드렸대.",
+    "index": 4,
+    "reason": "KO adds '화가 나서' (got angry) not in EN ('Joshua tore his clothes and fell face down'); he tore clothes in grief",
+    "replace": "여호수아가 자기 옷을 찢고 하나님의 궤 앞에서 땅에 얼굴을 대고 엎드렸대."
+   },
+   {
+    "find": "걔네 자체가 저주받은 존재가 됐거든.",
+    "index": 6,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"they've become cursed themselves\"",
+    "replace": "그들 자체가 저주받은 존재가 됐거든."
+   },
+   {
+    "find": "전리품 중에서 시날 산의 비싼 외투 한 벌이랑 은 200세겔,",
+    "index": 11,
+    "reason": "KO '시날 산의' (mountain of Shinar) is wrong; EN 'a beautiful robe from Babylonia'",
+    "replace": "전리품 중에서 바빌로니아산 비싼 외투 한 벌이랑 은 200세겔,"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "13": "24"
+  }
+ },
+ "8": {
+  "edits": [
+   {
+    "find": "나랑 내 부대는 정면으로 쳐들어갈게. 걔네가 저번처럼 우리랑 싸우려고 나오면, 우린 도망가는 척할 거야. 그럼 걔네는 우리 쫓아오느라 성을 비우겠지. 우리가 막 도망가고 있으면 걔네는 '저것들 저번처럼 또 튀네'라고 할걸?",
+    "index": 2,
+    "reason": "KO '걔네' ×3 (dismissive) → '그들'; EN 'When they come out to fight us like last time... They'll chase us... They'll be thinking'",
+    "replace": "나랑 내 부대는 정면으로 쳐들어갈게. 그들이 저번처럼 우리랑 싸우려고 나오면, 우린 도망가는 척할 거야. 그럼 그들은 우리 쫓아오느라 성을 비우겠지. 우리가 막 도망가고 있으면 그들은 '저것들 저번처럼 또 튀네'라고 할걸?"
+   },
+   {
+    "find": "여호수아가 그들을 보내니까, 걔네는 벧엘이랑 아이 사이, 아이 성 서쪽에 가서 숨어서 기다렸대.",
+    "index": 3,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'They set up their ambush and waited'",
+    "replace": "여호수아가 그들을 보내니까, 그들은 벧엘이랑 아이 사이, 아이 성 서쪽에 가서 숨어서 기다렸대."
+   },
+   {
+    "find": "아이 성 왕만 빼고. 걔는 산 채로 잡아서 여호수아한테 끌고 갔어.",
+    "index": 9,
+    "reason": "KO '걔' (dismissive) → '그'; EN 'they captured him alive'",
+    "replace": "아이 성 왕만 빼고. 그는 산 채로 잡아서 여호수아한테 끌고 갔어."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "24-25",
+   "11": "26",
+   "12": "26-28",
+   "13": "29-30",
+   "14": "31-32",
+   "15": "33-35",
+   "7": "18",
+   "8": "19-21",
+   "9": "22-23"
+  }
+ },
+ "10": {
+  "edits": [
+   {
+    "find": "'빨리 와서 나 좀 도와줘. 기브온 놈들 치자. 걔네가 여호수아랑 이스라엘 백성이랑 한패 먹었어.'",
+    "index": 1,
+    "reason": "KO '놈들'/'걔네' (dismissive/crude) → '기브온을'/'그들이'; EN \"Let's go attack Gibeon. They've teamed up with Joshua and the Israelites\"",
+    "replace": "'빨리 와서 나 좀 도와줘. 기브온을 치자. 그들이 여호수아랑 이스라엘 백성이랑 한패 먹었어.'"
+   },
+   {
+    "find": "하나님이 여호수아한테 말했대. '쫄지 마. 내가 걔네들 다 네 손에 넘겨줬으니까.",
+    "index": 4,
+    "reason": "KO '걔네들' (dismissive) → '그들'; EN \"I've already handed them to you\"",
+    "replace": "하나님이 여호수아한테 말했대. '쫄지 마. 내가 그들 다 네 손에 넘겨줬으니까."
+   },
+   {
+    "find": "(이거 야살의 책에 진짜로 적혀있는 내용임. 구라 아님.)",
+    "index": 8,
+    "reason": "KO '구라' (crude slang for lie) → '거짓말'; EN 'no cap'",
+    "replace": "(이거 야살의 책에 진짜로 적혀있는 내용임. 거짓말 아님.)"
+   },
+   {
+    "find": "여호수아가 말했어. '동굴 입구에 큰 돌들을 굴려 막고, 파수꾼을 세워서 지키게 해라. 근데 너희들은 거기 있지 말고, 적들을 계속 추격해. 놈들이 자기들 성으로 못 돌아가게 퇴로를 차단해. 하나님이 걔네들을 너희 손에 넘겨주셨다.'",
+    "index": 11,
+    "reason": "KO '놈들이'/'걔네들을' (dismissive/crude) → '그들이'/'그들을'; EN 'Cut them off before they can get back to their cities. God has given them to you'",
+    "replace": "여호수아가 말했어. '동굴 입구에 큰 돌들을 굴려 막고, 파수꾼을 세워서 지키게 해라. 근데 너희들은 거기 있지 말고, 적들을 계속 추격해. 그들이 자기들 성으로 못 돌아가게 퇴로를 차단해. 하나님이 그들을 너희 손에 넘겨주셨다.'"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "16-17",
+   "11": "18-19",
+   "12": "20-21",
+   "13": "22",
+   "14": "23",
+   "15": "24",
+   "16": "24",
+   "17": "25",
+   "18": "26-27",
+   "19": "28",
+   "20": "29-30",
+   "21": "31-32",
+   "22": "33",
+   "23": "34-35",
+   "24": "36-37",
+   "25": "38-39",
+   "26": "40-42",
+   "6": "12",
+   "7": "12-13",
+   "8": "13-14",
+   "9": "15"
+  }
+ },
+ "11": {
+  "edits": [
+   {
+    "find": "서쪽 언덕이랑 나봇 돌에 있는 왕들",
+    "index": 0,
+    "reason": "KO '나봇 돌' reads as 'Naboth's stone'; EN 'Naphoth Dor' → '나폿돌'",
+    "replace": "서쪽 언덕이랑 나폿돌에 있는 왕들"
+   },
+   {
+    "find": "얘네들이 군대를 싹 다 끌고 나왔는데,",
+    "index": 1,
+    "reason": "KO '얘네들이' (dismissive) → '그들이'; EN 'They all showed up, bringing their entire armies'",
+    "replace": "그들이 군대를 싹 다 끌고 나왔는데,"
+   },
+   {
+    "find": "\"쟤네들 보고 쫄지 마셈. 내일 이맘때쯤이면 내가 쟤네 싹 다 죽여서 이스라엘한테 넘겨줄 거임. 너는 쟤네 말 뒷다리 힘줄을 끊어버리고, 전차는 불태워버려.\"",
+    "index": 2,
+    "reason": "KO '쟤네들'/'쟤네' ×3 (dismissive) → '그들'; KO '마셈' (archaic command) → '마'; EN \"Yo, don't even worry about them... You're going to hamstring their horses\"",
+    "replace": "\"그들 보고 쫄지 마. 내일 이맘때쯤이면 내가 그들 싹 다 죽여서 이스라엘한테 넘겨줄 거임. 너는 그들 말 뒷다리 힘줄을 끊어버리고, 전차는 불태워버려.\""
+   },
+   {
+    "find": "여호수아는 자기 군대 전부를 데리고 메롬 물가에서 쟤네들을 기습 공격했어. 하나님이 이스라엘 편을 들어줘서, 이스라엘이 쟤네들을 박살 내고 시돈 라바,",
+    "index": 3,
+    "reason": "KO '쟤네들을' ×2 (dismissive) → '그들을'; EN 'catching them off guard... They crushed them'",
+    "replace": "여호수아는 자기 군대 전부를 데리고 메롬 물가에서 그들을 기습 공격했어. 하나님이 이스라엘 편을 들어줘서, 이스라엘이 그들을 박살 내고 시돈 라바,"
+   },
+   {
+    "find": "쟤네들이 고집부리면서 이스라엘한테 끝까지 싸우려 했던 건,",
+    "index": 7,
+    "reason": "KO '쟤네들이' (dismissive) → '그들이'; EN 'It was actually God's plan for them to be stubborn'",
+    "replace": "그들이 고집부리면서 이스라엘한테 끝까지 싸우려 했던 건,"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "8": "21-22",
+   "9": "23"
+  }
+ },
+ "9": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "12": {
+  "edits": [
+   {
+    "find": "그리고 바산 왕 옥도 있었는데, 이 사람은 르바임 족속의 마지막 후예 중 하나였대.",
+    "index": 2,
+    "reason": "KO omits 'giants'; EN 'one of the last of the Rephaim giants, for real'",
+    "replace": "그리고 바산 왕 옥도 있었는데, 이 사람은 르바임 거인 족속의 마지막 후예 중 하나였대."
+   },
+   {
+    "find": "돌의 높은 곳의 돌 왕 한 명, 길갈의 고임 왕 한 명,",
+    "index": 5,
+    "reason": "KO '돌의 높은 곳의 돌 왕' is garbled; EN 'The king of Dor (Naphoth Dor), one'",
+    "replace": "돌(나폿돌) 왕 한 명, 길갈의 고임 왕 한 명,"
+   },
+   {
+    "find": "싹 다 합쳐서 서른한 명의 왕이었던 거임. 굉장한다.",
+    "index": 6,
+    "reason": "KO '굉장한다' (awkward/formal ending) → '진짜 대단하지'; EN \"That's a grand total of thirty-one kings. No cap\"",
+    "replace": "싹 다 합쳐서 서른한 명의 왕이었던 거임. 진짜 대단하지."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "2-3",
+   "2": "4-5",
+   "3": "6",
+   "4": "7-8",
+   "5": "9-23"
+  }
+ },
+ "13": {
+  "edits": [
+   {
+    "find": "'내가 이스라엘 백성 앞에서 걔네들 다 쫓아내 줄게.",
+    "index": 2,
+    "reason": "KO '걔네들' (dismissive) → '그들'; EN \"'I'll personally kick them out for the Israelites\"",
+    "replace": "'내가 이스라엘 백성 앞에서 그들 다 쫓아내 줄게."
+   },
+   {
+    "find": "그는 르바임 족속의 마지막 생존자 중 한 명이었는데, 모세가 그들을 쳐부수고 땅을 빼앗았던 거임. 근데 이스라엘 백성은 그술 사람이랑 마아갓 사람은 결국 못 쫓아내서, 걔네들은 아직도 이스라엘 안에서 같이 살고 있대.",
+    "index": 4,
+    "reason": "KO '걔네들' (dismissive) → '그들'; KO omits 'giants'; EN \"He was one of the last of the Rephaim giants... they're still living in Israel to this day\"",
+    "replace": "그는 르바임 거인 족속의 마지막 생존자 중 한 명이었는데, 모세가 그들을 쳐부수고 땅을 빼앗았던 거임. 근데 이스라엘 백성은 그술 사람이랑 마아갓 사람은 결국 못 쫓아내서, 그들은 아직도 이스라엘 안에서 같이 살고 있대."
+   },
+   {
+    "find": "걔네들은 다 시혼의 꼭두각시들이었대.",
+    "index": 9,
+    "reason": "KO '걔네들' (dismissive) → '그들'; EN 'who were all Sihon's puppets'",
+    "replace": "그들은 다 시혼의 꼭두각시들이었대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "2-6",
+   "10": "23",
+   "11": "24",
+   "12": "25",
+   "13": "26",
+   "14": "27",
+   "15": "28",
+   "16": "29",
+   "18": "30",
+   "19": "31",
+   "2": "6-7",
+   "20": "32-33",
+   "3": "8",
+   "4": "9-13",
+   "5": "14",
+   "6": "15",
+   "7": "16",
+   "8": "17",
+   "9": "18-22"
+  }
+ },
+ "14": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "3": "6-7",
+   "4": "13-14",
+   "5": "15",
+   "6": "15"
+  }
+ },
+ "15": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "3": "6-7",
+   "4": "13-14",
+   "45": "47",
+   "5": "15",
+   "6": "15"
+  }
+ },
+ "16": {
+  "edits": [
+   {
+    "find": "걔네 상속지의 경계는 동쪽 아다롯앗달에서 시작해서 윗 벧호론까지 갔다가",
+    "index": 3,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'Their inheritance boundary started at Ataroth Addar'",
+    "replace": "그들 상속지의 경계는 동쪽 아다롯앗달에서 시작해서 윗 벧호론까지 갔다가"
+   },
+   {
+    "find": "근데 좀 엄청난 게, 걔네가 게셀에 살고 있던 가나안 사람들을 쫓아내지는 않았대.",
+    "index": 4,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"they didn't actually kick out the Canaanites\"",
+    "replace": "근데 좀 엄청난 게, 그들이 게셀에 살고 있던 가나안 사람들을 쫓아내지는 않았대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "17": {
+  "edits": [
+   {
+    "find": "(길르앗이랑 바산은 므낫세의 맏아들이자 길르앗의 아버지인 마길한테 이미 줬었대. 왜냐면 그 아저씨가 진짜 싸움을 개잘했거든.) 그래서 나머지 므낫세 자손들, 그러니까 아비에셀, 헬렉, 아스리엘, 세겜, 헤펠, 세미다 가문들이 남은 땅을 받은 거임. 얘네가 다 요셉 아들 므낫세의 후손들인 거지.",
+    "index": 0,
+    "reason": "KO '개잘' (crude intensifier) → '진짜 괴물'; KO '얘네' (dismissive) → '그들'; EN 'a total beast in battle... These were the main family lines of Manasseh'",
+    "replace": "(길르앗이랑 바산은 므낫세의 맏아들이자 길르앗의 아버지인 마길한테 이미 줬었대. 왜냐면 그 아저씨가 싸움의 진짜 괴물이었거든.) 그래서 나머지 므낫세 자손들, 그러니까 아비에셀, 헬렉, 아스리엘, 세겜, 헤펠, 세미다 가문들이 남은 땅을 받은 거임. 그들이 다 요셉 아들 므낫세의 후손들인 거지."
+   },
+   {
+    "find": "그랬더니 여호수아가 ㅇㅋ 하고 하나님이 명령한 대로 진짜로 삼촌들 몫이랑 똑같이 땅을 떼어줬대.",
+    "index": 1,
+    "reason": "KO 'ㅇㅋ' (chat slang) → '알겠다고'; EN 'And Joshua, being a real one, did exactly what God commanded'",
+    "replace": "그랬더니 여호수아가 알겠다고 하고 하나님이 명령한 대로 진짜로 삼촌들 몫이랑 똑같이 땅을 떼어줬대."
+   },
+   {
+    "find": "세 번째 목록은 나봇임.",
+    "index": 4,
+    "reason": "KO '나봇' (reads as the person Naboth); EN 'Naphoth' → '나폿'",
+    "replace": "세 번째 목록은 나폿임."
+   },
+   {
+    "find": "벧스안이랑 이스르엘 골짜기에 사는 애들 다요. 그거 완전 사기템이라 우리가 못 이겨요.'",
+    "index": 8,
+    "reason": "KO '애들' (dismissive) → '사람들'; EN \"They're in Beth Shan and the Jezreel Valley\"",
+    "replace": "벧스안이랑 이스르엘 골짜기에 사는 사람들 다요. 그거 완전 사기템이라 우리가 못 이겨요.'"
+   },
+   {
+    "find": "그리고 가나안 족속? 걔네가 철 전차를 가졌든 얼마나 세든 너네한테 상대도 안 될 거야. 쫄지 마.'",
+    "index": 9,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"don't even trip about the Canaanites... they won't stand a chance against you\"",
+    "replace": "그리고 가나안 족속? 그들이 철 전차를 가졌든 얼마나 세든 너네한테 상대도 안 될 거야. 쫄지 마.'"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "5": "12-13",
+   "6": "14",
+   "7": "15",
+   "8": "16"
+  }
+ },
+ "18": {
+  "edits": [
+   {
+    "find": "이제 그 땅은 거의 다 정복했는데, 대단한 건 아직도 일곱 지파나 자기 땅을 못 받고 뻐기고 있었다는 거.",
+    "index": 1,
+    "reason": "KO '뻐기고' (dismissive slang for slacking) not in EN ('there were still seven Israelite tribes that hadn't gotten their own piece of land yet')",
+    "replace": "이제 그 땅은 거의 다 정복했는데, 대단한 건 아직도 일곱 지파나 자기 땅을 못 받고 있었다는 거."
+   },
+   {
+    "find": "내가 임무를 줄 테니까. 걔네들이 가서 땅을 싹 둘러보고, 각 지파가 받을 땅을 지도에 그려서 나한테 보고하게 할 거야.",
+    "index": 2,
+    "reason": "KO '걔네들이' (dismissive) → '그들이'; EN \"They're gonna survey the land, map it out\"",
+    "replace": "내가 임무를 줄 테니까. 그들이 가서 땅을 싹 둘러보고, 각 지파가 받을 땅을 지도에 그려서 나한테 보고하게 할 거야."
+   },
+   {
+    "find": "\"아, 그리고 레위 사람들은 너네 중에 땅을 못 받아. 왜냐면 하나님의 제사장 직분이 걔네 유산이거든.",
+    "index": 4,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'their inheritance is serving as God's priests'",
+    "replace": "\"아, 그리고 레위 사람들은 너네 중에 땅을 못 받아. 왜냐면 하나님의 제사장 직분이 그들 유산이거든."
+   },
+   {
+    "find": "그래서 그 남자들이 진짜 떠난 거임. 걔네가 그 땅을 다 돌아다니면서, 마을별로 나라를 두루마리에 그렸대.",
+    "index": 6,
+    "reason": "KO '걔네가' (dismissive) → '그들이'; EN 'They went through the whole area and drew a map'",
+    "replace": "그래서 그 남자들이 진짜 떠난 거임. 그들이 그 땅을 다 돌아다니면서, 마을별로 나라를 두루마리에 그렸대."
+   },
+   {
+    "find": "바로 거기서 여호수아가 이스라엘 백성들한테 각 지파별로 땅을 나눠준 거임. 진짜 대단한.",
+    "index": 7,
+    "reason": "KO '진짜 대단한.' is an incomplete fragment sentence",
+    "replace": "바로 거기서 여호수아가 이스라엘 백성들한테 각 지파별로 땅을 나눠준 거임. 진짜 대단했지."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "14",
+   "11": "15-19",
+   "12": "20",
+   "13": "20",
+   "14": "21",
+   "15": "21-28",
+   "16": "21-28",
+   "17": "21-28",
+   "18": "21-28",
+   "19": "21-28",
+   "2": "3-5",
+   "20": "21-28",
+   "21": "21-28",
+   "22": "21-28",
+   "23": "21-28",
+   "24": "21-28",
+   "25": "21-28",
+   "3": "6",
+   "4": "7",
+   "5": "8",
+   "6": "9",
+   "7": "10",
+   "8": "11",
+   "9": "12-13"
+  }
+ },
+ "19": {
+  "edits": [
+   {
+    "find": "두 번째 제비는 시므온 지파의 가문들에게 돌아갔대. 근데 얘네 상속지는 유다 지파 영토 안에 있었던 거임. 걔네가 받은 땅은",
+    "index": 0,
+    "reason": "KO '얘네'/'걔네' (dismissive) → '그들'; EN 'Their inheritance was actually located within the territory of Judah. They received'",
+    "replace": "두 번째 제비는 시므온 지파의 가문들에게 돌아갔대. 근데 그들 상속지는 유다 지파 영토 안에 있었던 거임. 그들이 받은 땅은"
+   },
+   {
+    "find": "네 번째 제비는 잇사갈 지파가 가문별로 뽑았는데, 걔네 영토는",
+    "index": 4,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'Their territory included'",
+    "replace": "네 번째 제비는 잇사갈 지파가 가문별로 뽑았는데, 그들 영토는"
+   },
+   {
+    "find": "다섯 번째 제비는 아셀 지파가 가문별로 뽑았어. 걔네 영토는",
+    "index": 6,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'Their territory included'",
+    "replace": "다섯 번째 제비는 아셀 지파가 가문별로 뽑았어. 그들 영토는"
+   },
+   {
+    "find": "여섯 번째 제비는 납달리 지파와 그 가문들에게 돌아갔어. 걔네 경계는",
+    "index": 8,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'Their border started from Heleph'",
+    "replace": "여섯 번째 제비는 납달리 지파와 그 가문들에게 돌아갔어. 그들 경계는"
+   },
+   {
+    "find": "일곱 번째 제비는 단 지파에게 돌아갔어. 걔네 상속 영토는",
+    "index": 10,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'The territory of their inheritance included'",
+    "replace": "일곱 번째 제비는 단 지파에게 돌아갔어. 그들 상속 영토는"
+   },
+   {
+    "find": "아모리 족속이 걔네를 평야에 못 들어오게 막아서 땅이 부족했던 거임.",
+    "index": 11,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'The Amorites kept them out of the plains'",
+    "replace": "아모리 족속이 그들을 평야에 못 들어오게 막아서 땅이 부족했던 거임."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-8",
+   "1": "9",
+   "10": "40-46",
+   "11": "47",
+   "12": "48",
+   "13": "49-50",
+   "14": "51",
+   "3": "16",
+   "4": "18-22",
+   "5": "23",
+   "6": "24-30",
+   "7": "31",
+   "8": "32-38",
+   "9": "39"
+  }
+ },
+ "20": {
+  "edits": [
+   {
+    "find": "'이스라엘 백성들한테 모세한테 말했던 대로 도피성을 만들라고 해. 실수로 사람 죽인 애들은 거기로 튀면 복수하려는 사람한테서 안전할 수 있다고.'",
+    "index": 0,
+    "reason": "KO '애들은' (dismissive) → '사람들은'; EN 'If someone accidentally kills a person'",
+    "replace": "'이스라엘 백성들한테 모세한테 말했던 대로 도피성을 만들라고 해. 실수로 사람 죽인 사람들은 거기로 튀면 복수하려는 사람한테서 안전할 수 있다고.'"
+   },
+   {
+    "find": "그럼 장로들이 걔를 성 안으로 들여보내주고 살 곳도 마련해줘야 한다는 거임.",
+    "index": 1,
+    "reason": "KO '걔' (dismissive) → '그'; EN 'They have to let you in and give you a place to crash'",
+    "replace": "그럼 장로들이 그를 성 안으로 들여보내주고 살 곳도 마련해줘야 한다는 거임."
+   },
+   {
+    "find": "걔는 그 성에서 재판을 받고, 지금 있는 대제사장이 죽을 때까지 머물 수 있었대.",
+    "index": 2,
+    "reason": "KO '걔' (dismissive) → '그'; EN 'You can stay there until you have your trial'",
+    "replace": "그는 그 성에서 재판을 받고, 지금 있는 대제사장이 죽을 때까지 머물 수 있었대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "2-3",
+   "1": "4",
+   "2": "5-6",
+   "3": "7",
+   "4": "8-9"
+  }
+ },
+ "21": {
+  "edits": [
+   {
+    "find": "하나님이 이스라엘 집에 하신 모든 좋은 말씀 중에 하나도 실패한 게 없었어. 모든 게 다 그대로 이루어진 거임. 대박.",
+    "index": 26,
+    "reason": "KO adds '대박' (wow) not in EN ('Everything came true')",
+    "replace": "하나님이 이스라엘 집에 하신 모든 좋은 말씀 중에 하나도 실패한 게 없었어. 모든 게 다 그대로 이루어진 거임."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-2",
+   "1": "3",
+   "11": "21-22",
+   "12": "23-24",
+   "15": "27",
+   "16": "28-29",
+   "17": "30-31",
+   "18": "32",
+   "19": "33",
+   "2": "4-5",
+   "20": "34-35",
+   "21": "36-37",
+   "22": "38-39",
+   "23": "40",
+   "24": "41-42",
+   "25": "43-44",
+   "26": "45",
+   "3": "6",
+   "4": "7",
+   "5": "8",
+   "6": "9-10",
+   "7": "11-12",
+   "8": "13-16",
+   "9": "17-19"
+  }
+ },
+ "22": {
+  "edits": [
+   {
+    "find": "그러고 나서 여호수아가 그들을 축복하고 보내줬대. 그래서 걔네는 집으로 갔지.",
+    "index": 2,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'They headed home'",
+    "replace": "그러고 나서 여호수아가 그들을 축복하고 보내줬대. 그래서 그들은 집으로 갔지."
+   },
+   {
+    "find": "걔네가 가나안 땅 근처 요단강 가의 길르앗에 도착했을 때였어.",
+    "index": 5,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'When they got to Geliloth'",
+    "replace": "그들이 가나안 땅 근처 요단강 가의 길르앗에 도착했을 때였어."
+   },
+   {
+    "find": "걔 혼자만 자기 죄 때문에 죽은 게 아니었어.",
+    "index": 9,
+    "reason": "KO '걔' (dismissive) → '그'; EN \"He wasn't the only one who died for his sin\"",
+    "replace": "그 혼자만 자기 죄 때문에 죽은 게 아니었어."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-3",
+   "1": "4-5",
+   "10": "22",
+   "11": "22",
+   "12": "23",
+   "13": "24-25",
+   "14": "26",
+   "15": "27",
+   "16": "28",
+   "17": "29",
+   "18": "30",
+   "19": "31",
+   "2": "6-7",
+   "20": "32-33",
+   "21": "34",
+   "22": "34",
+   "3": "8",
+   "6": "11-13",
+   "7": "14-18",
+   "8": "19-20",
+   "9": "21"
+  }
+ },
+ "23": {
+  "edits": [
+   {
+    "find": "아직 주변에 남아있는 다른 민족들이랑 어울리지 마. 걔네 신들 이름조차 부르지 말고, 그 이름으로 맹세도 하지 마. 그리고 당연히 걔네한테 절하거나 예배해서도 안 돼.",
+    "index": 3,
+    "reason": "KO '걔네' ×2 (dismissive) → '그들'; EN \"Don't say their gods' names... do not worship or pray to them\"",
+    "replace": "아직 주변에 남아있는 다른 민족들이랑 어울리지 마. 그들 신들 이름조차 부르지 말고, 그 이름으로 맹세도 하지 마. 그리고 당연히 그들한테 절하거나 예배해서도 안 돼."
+   },
+   {
+    "find": "걔네들은 너네한테 완전 골칫거리가 될 거라고.",
+    "index": 5,
+    "reason": "KO '걔네들' (dismissive) → '그들'; EN \"They'll become a total nightmare\"",
+    "replace": "그들은 너네한테 완전 골칫거리가 될 거라고."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "2-3",
+   "3": "6-8",
+   "4": "9-10",
+   "5": "11-13",
+   "6": "14"
+  }
+ },
+ "24": {
+  "edits": [
+   {
+    "find": "이집트 애들이 전차랑 기병을 끌고 홍해까지 맹렬하게 쫓아온 거임!",
+    "index": 1,
+    "reason": "KO '애들' (dismissive) → '사람들'; EN 'the Egyptians were right on your tail with chariots and cavalry'",
+    "replace": "이집트 사람들이 전차랑 기병을 끌고 홍해까지 맹렬하게 쫓아온 거임!"
+   },
+   {
+    "find": "그랬더니 하나님이 너네랑 이집트 군대 사이에 구름을 둬서 막아주고, 바닷물을 그놈들한테 쏟아부어서 다 빠뜨려 죽였어.",
+    "index": 2,
+    "reason": "KO '그놈들' (crude/dismissive) → '그들'; EN 'let the sea crash down on them'",
+    "replace": "그랬더니 하나님이 너네랑 이집트 군대 사이에 구름을 둬서 막아주고, 바닷물을 그들한테 쏟아부어서 다 빠뜨려 죽였어."
+   },
+   {
+    "find": "내가 너네를 요단강 동쪽에 사는 아모리 족속의 땅으로 데려왔는데, 걔네가 너네한테 덤볐어. 근데 내가 너네 편에서 싸워서 너네가 그 땅을 차지하게 해줬지. 내가 걔네를 너네 앞에서 싹 쓸어버렸어.",
+    "index": 3,
+    "reason": "KO '걔네' ×2 (dismissive) → '그들'; EN 'they tried to fight you... I totally wiped them out for you'",
+    "replace": "내가 너네를 요단강 동쪽에 사는 아모리 족속의 땅으로 데려왔는데, 그들이 너네한테 덤볐어. 근데 내가 너네 편에서 싸워서 너네가 그 땅을 차지하게 해줬지. 내가 그들을 너네 앞에서 싹 쓸어버렸어."
+   },
+   {
+    "find": "근데 내가 발람 말을 안 들어줬고, 오히려 걔가 너네를 계속 축복하게 만들었지! 내가 걔한테서 너네를 구해준 거야.",
+    "index": 3,
+    "reason": "KO '걔' ×2 (dismissive) → '그'; EN 'he ended up blessing you like crazy instead! I saved you from him'",
+    "replace": "근데 내가 발람 말을 안 들어줬고, 오히려 그가 너네를 계속 축복하게 만들었지! 내가 그한테서 너네를 구해준 거야."
+   },
+   {
+    "find": "여리고 백성이랑 아모리, 브리스, 가나안, 헷, 기르가스, 히위, 여부스 족속이 다 너네한테 한꺼번에 덤볐는데, 내가 걔네를 싹 다 너네 손에 넘겨줬지.",
+    "index": 4,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'I handed them all over to you'",
+    "replace": "여리고 백성이랑 아모리, 브리스, 가나안, 헷, 기르가스, 히위, 여부스 족속이 다 너네한테 한꺼번에 덤볐는데, 내가 그들을 싹 다 너네 손에 넘겨줬지."
+   },
+   {
+    "find": "너네 조상들이 강 저편이랑 이집트에서 섬겼던 그딴 신들은 다 갖다 버려.",
+    "index": 7,
+    "reason": "KO '그딴' (crude dismissive) → '가짜'; EN 'Get rid of all the fake gods'",
+    "replace": "너네 조상들이 강 저편이랑 이집트에서 섬겼던 가짜 신들은 다 갖다 버려."
+   },
+   {
+    "find": "\"우리는 하나님을 섬기겠습니다. 그분이 말씀하시는 대로 다 할게요.\"",
+    "index": 17,
+    "reason": "KO '섬기겠습니다' (formal register) clashes with EN casual 'We will serve God'",
+    "replace": "\"우리는 하나님을 섬길 거예요. 그분이 말씀하시는 대로 다 할게요.\""
+   },
+   {
+    "find": "사람들은 그를 그의 땅인 디므낫 세라에 묻었는데,",
+    "index": 21,
+    "reason": "KO '디므낫 세라' typo; EN 'Timnath Serah' (KO ch19 has '딤낫 세라')",
+    "replace": "사람들은 그를 그의 땅인 딤낫 세라에 묻었는데,"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "17-18",
+   "11": "18",
+   "12": "19-20",
+   "13": "21",
+   "14": "22",
+   "15": "22",
+   "16": "23",
+   "17": "24",
+   "18": "25-26",
+   "19": "27",
+   "20": "28",
+   "21": "29-30",
+   "3": "7-10",
+   "4": "11",
+   "5": "12",
+   "6": "13",
+   "7": "14-15",
+   "8": "15",
+   "9": "16"
+  }
+ }
+}

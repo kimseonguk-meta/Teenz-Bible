@@ -1,0 +1,1 @@
+{"book": "Philemon", "chapters": {"1": {"range_fixes": {"2": "4-7", "3": null, "4": "8-9", "5": "10-14", "6": "15-16", "7": "17-20", "8": "21-22", "9": "23-25"}, "content_fixes": [{"index": 3, "old": "[노예가 친구가 됨]", "new": "§노예가 친구가 됨", "reason": "subtitle paragraph: use § convention like other titles"}], "flagged": [], "ok": false}}}

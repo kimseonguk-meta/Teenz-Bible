@@ -1,0 +1,88 @@
+{
+  "book": "1 Peter",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-5",
+        "3": "6-7",
+        "4": "8-9",
+        "5": "10-12",
+        "6": "13-14",
+        "7": "17",
+        "8": "18-19",
+        "9": "22-23",
+        "11": "24",
+        "13": "25"
+      },
+      "content_fixes": [
+        {
+          "index": 10,
+          "old": "§> The old life is like grass,",
+          "new": "> The old life is like grass,",
+          "reason": "Formatting error: stray '§' heading marker on a blockquote continuation line (1:24)."
+        },
+        {
+          "index": 12,
+          "old": "§> The grass dries up, and the flowers wilt,",
+          "new": "> The grass dries up, and the flowers wilt,",
+          "reason": "Formatting error: stray '§' heading marker on a blockquote continuation line (1:24)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "2": "4-8",
+        "3": "9-12"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "But you guys are different. You're God's chosen crew, his honored ones. You're a holy nation, a temple guard for God, chosen to tell everyone about the amazing things he's done. He took you from being nobodies and made you somebodies. He took you from being rejected and made you accepted. This world isn't your permanent home, so don't get too comfortable. Don't let your ego run wild and mess up your soul. Live such good lives that when people see you, all their wrong ideas about you will be proven wrong. They'll be so impressed that they'll end up on God's side, ready to party when he shows up.",
+          "new": "But you guys are different. You're God's chosen crew, his honored ones. You're a holy nation, a holy priesthood, chosen to tell everyone about the amazing things he's done. He took you from being nobodies and made you somebodies. He took you from being rejected and made you accepted. This world isn't your permanent home, so don't get too comfortable. Don't let your ego run wild and mess up your soul. Live such good lives that when people see you, all their wrong ideas about you will be proven wrong. They'll be so impressed that they'll end up on God's side, ready to party when he shows up.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-6",
+        "3": "7",
+        "4": "8-9",
+        "6": "13-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-4",
+        "3": "6",
+        "4": "7-11",
+        "5": "12-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "4-7",
+        "3": "5-7",
+        "5": "12",
+        "6": "12-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

@@ -1,0 +1,1433 @@
+{
+  "book": "Isaiah",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "1": "2-4",
+        "2": "5-9",
+        "3": "10",
+        "4": "11-12",
+        "5": "13-17",
+        "6": "18-20",
+        "7": "21-23",
+        "8": "24-31"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "God's laying out his case, and he's calling on heaven and earth to be the jury. He's like, \"Yo, I raised these kids, gave them everything, and they just straight up turned on me. Even an ox knows its owner, and a donkey knows who feeds it, but Israel? My own people? They're clueless. It's a total shame. These guys are God-dropouts, just weighed down by their own baggage of bad choices. A whole crew of villains, a gang of vandals. My people have ghosted me, their God, turned their backs on the Holy One of Israel, and just walked away without a second thought.",
+          "new": "God's laying out his case, and he's calling on heaven and earth to be the jury. He's like, \"Listen, I raised these kids, gave them everything, and they just straight up turned on me. Even an ox knows its owner, and a donkey knows who feeds it, but Israel? My own people? They're clueless. It's a total shame. These guys are God-dropouts, just weighed down by their own baggage of bad choices. A whole crew of villains, a gang of vandals. My people have ghosted me, their God, turned their backs on the Holy One of Israel, and just walked away without a second thought.",
+          "reason": "remove slang opener; MSG 1:2 \"I raised them to adulthood\""
+        },
+        {
+          "index": 2,
+          "old": "\"Honestly, why do I even bother trying with you guys? You're so stubborn. It's like you're intentionally running into brick walls. Your whole being is fighting against you. From your feet to your head, nothing is right. You're covered in wounds, bruises, and nasty sores that are just left there—no one's cleaning them, no one's bandaging them up. Your country is a wreck, your cities are burned to the ground. Foreigners are taking over your land right in front of you, and it's just a pile of rubble left by barbarians. Daughter Zion is all alone, like a beat-up shack on a dead-end road, like a rundown shanty on the wrong side of town, or a sinking ship everyone's bailed on. Lowkey, if God of the Angel Armies hadn't left a few of us, we'd be totally wiped out like Sodom, completely doomed like Gomorrah.",
+          "new": "\"Honestly, why do I even bother trying with you guys? You're so stubborn. It's like you're intentionally running into brick walls. Your whole being is fighting against you. From your feet to your head, nothing is right. You're covered in wounds, bruises, and nasty sores that are just left there—no one's cleaning them, no one's bandaging them up. Your country is a wreck, your cities are burned to the ground. Foreigners are taking over your land right in front of you, and it's just a pile of rubble left by barbarians. Daughter Zion is all alone, like a beat-up shack on a dead-end road, like a rundown shanty on the wrong side of town, or a sinking ship everyone's bailed on. Honestly, if God-of-the-Angel-Armies hadn’t left a few of us, we'd be totally wiped out like Sodom, completely doomed like Gomorrah.",
+          "reason": "remove \"lowkey\"; MSG 1:9 name form"
+        },
+        {
+          "index": 6,
+          "old": "\"Come on. Sit down. Let's talk this through.\" This is God's message: \"If your sins are as red as blood, they'll be as white as snow. If they're crimson red, they'll be like wool. If you're willing to listen and obey, you'll live like kings. But if you're stubborn and refuse, you'll be devoured by the sword.\" No cap. God said it.",
+          "new": "\"Come on. Sit down. Let's talk this through.\" This is God's message: \"If your sins are as red as blood, they'll be as white as snow. If they're crimson red, they'll be like wool. If you're willing to listen and obey, you'll live like kings. But if you're stubborn and refuse, you’ll be devoured by the sword.\" God said it.",
+          "reason": "remove \"no cap\"; MSG 1:20"
+        },
+        {
+          "index": 7,
+          "old": "OMG, can you even believe this? The city that was once so pure has become a total sellout! It used to be all about justice, everyone was a good neighbor, and now they're all at each other's throats. Your money is fake. Your wine is watered down. Your leaders are traitors who hang out with criminals. They'll do anything for money and take whatever they can get. They never stand up for the homeless or defend those who need help.",
+          "new": "Can you even believe this? The city that was once so pure has become a total sellout! It used to be all about justice, everyone was a good neighbor, and now they're all at each other's throats. Your money is fake. Your wine is watered down. Your leaders are traitors who hang out with criminals. They'll do anything for money and take whatever they can get. They never stand up for the homeless or defend those who need help.",
+          "reason": "remove \"OMG\"; MSG 1:21 \"Oh! Can you believe it?\""
+        },
+        {
+          "index": 8,
+          "old": "So, this is the official decree from the Master, God-of-the-Angel-Armies, the Strong One of Israel: \"That's it! I'm gonna get these oppressors off my back. I'm getting back at my enemies. I'm about to lay down the law, get all the junk out of your life, and clean you up. I'm going to set up honest judges and wise counselors for you, just like it was in the good old days. Then you'll be called 'The City That Does Right' and 'The Real-Deal City.'\" God's right ways will make Zion right again. His right actions will bring back his lost kids. But it's game over for the rebels and God-traitors, a dead end for anyone who walks out on God. \"All your messing around in those sacred tree groves is gonna make you look so dumb, and all that fooling around in those god and goddess gardens you thought was so cool. You'll end up like an oak tree losing all its leaves, like a garden with no water, all withered and brown. The 'Strong Man' will turn out to be nothing but dead twigs, and his 'great work' will be the spark that starts a fire that burns it all down to nothing but smoke.\"",
+          "new": "So, this is the official decree from the Master, God-of-the-Angel-Armies, the Strong One of Israel: \"That's it! I'm gonna get these oppressors off my back. I'm getting back at my enemies. I'm about to lay down the law, get all the junk out of your life, and clean you up. I'm going to set up honest judges and wise counselors for you, just like it was in the good old days. Then you'll be called 'The City That Does Right' and 'The Real-Deal City.'\" God's right ways will make Zion right again. His right actions will bring back his lost kids. But it's game over for the rebels and God-traitors, a dead end for anyone who walks out on God. \"All your messing around in those sacred tree groves is gonna make you look so foolish, and all that fooling around in those god and goddess gardens you thought was so cool. You'll end up like an oak tree losing all its leaves, like a garden with no water, all withered and brown. The 'Strong Man' will turn out to be nothing but dead twigs, and his 'great work' will be the spark that starts a fire that burns it all down to nothing but smoke.\"",
+          "reason": "remove mockery \"look so dumb\"; MSG 1:29"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6-9",
+        "3": "10",
+        "4": "11-17",
+        "5": "18",
+        "6": "19",
+        "7": "20-21"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Okay, so check it. A day is coming when the mountain with God's house on it will be THE mountain, like, towering over all the others. People from every country will be streaming towards it. They'll be like, 'Yo, let's go up to God's mountain, to the house of Jacob's God. He'll teach us his ways so we can live how we're supposed to.' The real tea is gonna come from Zion; God's message is gonna broadcast from Jerusalem. He'll sort out all the drama between countries and make things fair for everyone. They'll trade their swords for garden tools and their spears for farming equipment. No more country-on-country beef; they won't even train for war anymore. So let's go, fam of Jacob, let's live in God's light.",
+          "new": "Okay, so check it. A day is coming when the mountain with God's house on it will be THE mountain, like, towering over all the others. People from every country will be streaming towards it. They'll be like, 'Yo, let's go up to God's mountain, to the house of Jacob's God. He'll teach us his ways so we can live how we're supposed to.' The real message is gonna come from Zion; God's message is gonna broadcast from Jerusalem. He'll sort out all the drama between countries and make things fair for everyone. They'll trade their swords for garden tools and their spears for farming equipment. No more country-on-country beef; they won't even train for war anymore. So let's go, fam of Jacob, let's live in God's light.",
+          "reason": "remove \"tea\" slang; MSG 2:3 \"The Message comes from Zion\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "8-9",
+        "2": "10-11",
+        "3": "12",
+        "4": "13-15",
+        "5": "16-17",
+        "6": "18-23",
+        "7": "24",
+        "8": "25-26"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Jerusalem is on its last legs, for real. Judah is about to get knocked out. Everything they say and do is basically a middle finger to God, a total slap in His face. They're not even trying to hide their messed-up lives; they're flaunting their sins like they're proud of it, just like the people of Sodom. They're so screwed. They made their bed, and now they gotta lie in it.",
+          "new": "Jerusalem is on its last legs, for real. Judah is about to get knocked out. Everything they say and do is basically a slap in the face to God. They're not even trying to hide their messed-up lives; they're flaunting their sins like they're proud of it, just like the people of Sodom. They're so screwed. They made their bed, and now they gotta lie in it.",
+          "reason": "remove crude \"middle finger\"; MSG 3:8 \"a slap in my face\""
+        },
+        {
+          "index": 1,
+          "old": "Jerusalem is on its last legs, for real. Judah is about to get knocked out. Everything they say and do is basically a middle finger to God, a total slap in His face. They're not even trying to hide their messed-up lives; they're flaunting their sins like they're proud of it, just like the people of Sodom. They're so screwed. They made their bed, and now they gotta lie in it.",
+          "new": "Jerusalem is on its last legs, for real. Judah is about to get knocked out. Everything they say and do is basically a middle finger to God, a total slap in His face. They're not even trying to hide their messed-up lives; they're flaunting their sins like they're proud of it, just like the people of Sodom. Doom to them. They made their bed, and now they gotta lie in it.",
+          "reason": "remove \"so screwed\"; MSG 3:9 \"Doom to them!\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "But then, BAM! God's special Branch will shoot up, all green and awesome. The land will be so fruitful, and the survivors in Israel will finally have something to brag about. They'll be walking tall, for real. All the people left in Zion, even the ones who felt like outcasts in Jerusalem, will be called 'holy'—because they're alive, and that's what matters. God's gonna give the ladies of Zion a major spa day, scrubbing away all the violence and nastiness from the city. He's gonna clean house with a fiery judgment, like a total reset.",
+          "new": "But then God’s special Branch will shoot up, all green and awesome. The land will be so fruitful, and the survivors in Israel will finally have something to brag about. They'll be walking tall, for real. All the people left in Zion, even the ones who felt like outcasts in Jerusalem, will be called 'holy'—because they're alive, and that's what matters. God's gonna give the ladies of Zion a major spa day, scrubbing away all the violence and nastiness from the city. He's gonna clean house with a fiery judgment, like a total reset.",
+          "reason": "remove \"BAM\"; MSG 4:2"
+        },
+        {
+          "index": 1,
+          "old": "But then, BAM! God's special Branch will shoot up, all green and awesome. The land will be so fruitful, and the survivors in Israel will finally have something to brag about. They'll be walking tall, for real. All the people left in Zion, even the ones who felt like outcasts in Jerusalem, will be called 'holy'—because they're alive, and that's what matters. God's gonna give the ladies of Zion a major spa day, scrubbing away all the violence and nastiness from the city. He's gonna clean house with a fiery judgment, like a total reset.",
+          "new": "But then, BAM! God's special Branch will shoot up, all green and awesome. The land will be so fruitful, and the survivors in Israel will finally have something to brag about. They'll be walking tall, for real. All the people left in Zion, even the ones who felt like outcasts in Jerusalem, will be called 'holy'—because they're alive, and that's what matters. God’s gonna wash the ladies of Zion clean, scrubbing away all the violence and nastiness from the city. He's gonna clean house with a fiery judgment, like a total reset.",
+          "reason": "remove trivializing \"spa day\"; MSG 4:4 \"scrub the filth clean\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "3": "7",
+        "4": "8-10",
+        "5": "11-17",
+        "8": "21-23",
+        "9": "24"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, let me drop a track for my main man, a love song about his vineyard. My guy had this awesome vineyard on a perfect hill. He worked the ground, cleared the rocks, and planted the best vines you could find. He even built a watchtower and a winepress, super proud of it. He was expecting a killer harvest of grapes, but after all that work, he just got a bunch of nasty, sour ones.",
+          "new": "Let me sing a love song for my friend, about his vineyard. My guy had this awesome vineyard on a perfect hill. He worked the ground, cleared the rocks, and planted the best vines you could find. He even built a watchtower and a winepress, super proud of it. He was expecting a killer harvest of grapes, but after all that work, he just got a bunch of nasty, sour ones.",
+          "reason": "remove \"drop a track\"/\"main man\"; MSG 5:1 \"I’ll sing a song to my friend, a love song concerning his vineyard\""
+        },
+        {
+          "index": 0,
+          "old": "Yo, let me drop a track for my main man, a love song about his vineyard. My guy had this awesome vineyard on a perfect hill. He worked the ground, cleared the rocks, and planted the best vines you could find. He even built a watchtower and a winepress, super proud of it. He was expecting a killer harvest of grapes, but after all that work, he just got a bunch of nasty, sour ones.",
+          "new": "Yo, let me drop a track for my main man, a love song about his vineyard. My guy had this awesome vineyard on a perfect hill. He worked the ground, cleared the rocks, and planted the best vines you could find. He even built a watchtower and a winepress, super proud of it. He was expecting a great harvest of grapes, but after all that work, he just got a bunch of nasty, sour ones.",
+          "reason": "remove \"killer\"; MSG 5:2"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, the year King Uzziah died, I had this insane vision. I saw the Lord, and He was sitting on this massive throne, like, way up high. His robe was so huge it filled the entire Temple. These crazy cool angels called seraphs were flying above Him. Each one had six wings. They used two to cover their faces, two to cover their feet, and the other two to fly around. And they were all shouting to each other,",
+          "new": "So, the year King Uzziah died, I had this amazing vision. I saw the Lord, and He was sitting on this massive throne, like, way up high. His robe was so huge it filled the entire Temple. These crazy cool angels called seraphs were flying above Him. Each one had six wings. They used two to cover their faces, two to cover their feet, and the other two to fly around. And they were all shouting to each other,",
+          "reason": "remove \"insane\"; MSG 6:1"
+        },
+        {
+          "index": 0,
+          "old": "So, the year King Uzziah died, I had this insane vision. I saw the Lord, and He was sitting on this massive throne, like, way up high. His robe was so huge it filled the entire Temple. These crazy cool angels called seraphs were flying above Him. Each one had six wings. They used two to cover their faces, two to cover their feet, and the other two to fly around. And they were all shouting to each other,",
+          "new": "So, the year King Uzziah died, I had this insane vision. I saw the Lord, and He was sitting on this massive throne, like, way up high. His robe was so huge it filled the entire Temple. These amazing angels called seraphs were flying above Him. Each one had six wings. They used two to cover their faces, two to cover their feet, and the other two to fly around. And they were all shouting to each other,",
+          "reason": "remove \"crazy cool\"; MSG 6:2"
+        },
+        {
+          "index": 9,
+          "old": "I was shook and asked, 'And Master, how long is this gonna go on?' He said, 'Until the cities are totally empty, not a single person left in them—houses empty, countryside empty. Until I, God, get rid of everyone, sending them away, and the land is completely deserted. And even if a few people are left, like a tenth of them, the destruction will just start all over again. The country will look like a forest where every single tree has been chopped down—just a huge field of stumps. But there’s a holy seed in those stumps.'",
+          "new": "I was shaken and asked, 'And Master, how long is this gonna go on?' He said, 'Until the cities are totally empty, not a single person left in them—houses empty, countryside empty. Until I, God, get rid of everyone, sending them away, and the land is completely deserted. And even if a few people are left, like a tenth of them, the destruction will just start all over again. The country will look like a forest where every single tree has been chopped down—just a huge field of stumps. But there’s a holy seed in those stumps.'",
+          "reason": "remove \"shook\"; MSG 6:11"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-6",
+        "2": "7-9",
+        "3": "10-11",
+        "5": "13-17",
+        "6": "18-19",
+        "9": "23-25"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, get this: while Ahaz was king of Judah, two other kings, Rezin of Aram and Pekah of Israel, tried to attack Jerusalem, but their plan totally failed. When King Ahaz and his people heard that Aram had teamed up with Israel, they were seriously shook. Like, shaking like leaves in the wind, no cap.",
+          "new": "So, get this: while Ahaz was king of Judah, two other kings, Rezin of Aram and Pekah of Israel, tried to attack Jerusalem, but their plan totally failed. When King Ahaz and his people heard that Aram had teamed up with Israel, they were seriously shaken. Like, shaking like leaves in the wind.",
+          "reason": "remove \"shook\"/\"no cap\"; MSG 7:2"
+        },
+        {
+          "index": 1,
+          "old": "Then God told the prophet Isaiah, “Yo, go meet Ahaz. Take your son Shear-jashub with you. You'll find him at the end of the aqueduct by the public laundry road. Tell him, ‘Listen, you need to chill. Don’t be scared. And don’t panic over these two washed-up kings, Rezin and Pekah. They talk a big game, but they’ve got nothing. Aram and Israel have plotted to mess you up, saying, ‘Let’s go destroy Judah, take it for ourselves, and make some random dude king.’",
+          "new": "Then God told the prophet Isaiah, “Go meet Ahaz. Take your son Shear-jashub with you. You'll find him at the end of the aqueduct by the public laundry road. Tell him, ‘Listen, you need to chill. Don’t be scared. And don’t panic over these two washed-up kings, Rezin and Pekah. They talk a big game, but they’ve got nothing. Aram and Israel have plotted to mess you up, saying, ‘Let’s go destroy Judah, take it for ourselves, and make some random dude king.’",
+          "reason": "remove \"Yo\"; MSG 7:3"
+        },
+        {
+          "index": 1,
+          "old": "Then God told the prophet Isaiah, “Yo, go meet Ahaz. Take your son Shear-jashub with you. You'll find him at the end of the aqueduct by the public laundry road. Tell him, ‘Listen, you need to chill. Don’t be scared. And don’t panic over these two washed-up kings, Rezin and Pekah. They talk a big game, but they’ve got nothing. Aram and Israel have plotted to mess you up, saying, ‘Let’s go destroy Judah, take it for ourselves, and make some random dude king.’",
+          "new": "Then God told the prophet Isaiah, “Yo, go meet Ahaz. Take your son Shear-jashub with you. You'll find him at the end of the aqueduct by the public laundry road. Tell him, ‘Listen, you need to chill. Don’t be scared. And don’t panic over these two burnt-out kings, Rezin and Pekah. They talk a big game, but they’ve got nothing. Aram and Israel have plotted to mess you up, saying, ‘Let’s go destroy Judah, take it for ourselves, and make some random dude king.’",
+          "reason": "remove \"washed-up\"; MSG 7:4 \"two smoldering stubs\""
+        },
+        {
+          "index": 6,
+          "old": "So Isaiah told him, “Okay, listen up, house of David. It’s bad enough you’re annoying everyone with your fake piety, but now you’re making God tired. So the Lord himself is gonna give you a sign anyway. Watch this: a young woman who’s a virgin will get pregnant. She’ll have a son and name him Immanuel, which means ‘God-With-Us.’ By the time he’s old enough to know right from wrong, the threat of war will be long gone. So relax, those two kings you’re so worried about will be history. But here’s the tea: God is about to bring a disaster on you, your people, and your government that’s worse than anything since the kingdom split up. The king of Assyria is coming!”",
+          "new": "So Isaiah told him, “Okay, listen up, house of David. It’s bad enough you’re annoying everyone with your fake piety, but now you’re making God tired. So the Lord himself is gonna give you a sign anyway. Watch this: a young woman who’s a virgin will get pregnant. She’ll have a son and name him Immanuel, which means ‘God-With-Us.’ By the time he’s old enough to know right from wrong, the threat of war will be long gone. So relax, those two kings you’re so worried about will be history. But here’s the deal: God is about to bring a disaster on you, your people, and your government that’s worse than anything since the kingdom split up. The king of Assyria is coming!”",
+          "reason": "remove \"tea\" slang; MSG 7:17"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "3-4",
+        "3": "5",
+        "4": "6-8",
+        "5": "9-10",
+        "8": "16-18",
+        "9": "19-22"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Paras 1 ('2-3') and 2 ('3-4') legitimately overlap at v3: para 1 covers the witnessing/birth, para 2 the naming speech."
+      ],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-7",
+        "2": "8-10",
+        "3": "11-12",
+        "4": "13-17",
+        "5": "18-21"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "The people who were stumbling around in the dark? They’ve seen a massive light. For those living in a land of deep shadows—bam! Light! Sunbursts of it! You made the nation huge again, and cranked up its joy. Oh, they’re so hyped in your presence! It’s a full-on festival vibe! Like the joy of a massive party, sharing awesome gifts and warm hellos. The abuse from oppressors and the cruelty of tyrants—all their whips and clubs and curses—it's all gone, finished. It was a rescue as surprising and sudden as Gideon’s legendary victory over Midian. The boots of all those invading soldiers, and their uniforms soaked in innocent blood, will be piled up and set on fire—a blaze that will burn for days! Because a child has been born—for us! The gift of a son—for us! He’s gonna take over running the world. His names are gonna be insane: Amazing Counselor, Mighty God, Everlasting Father, Prince of Peace. His government will just keep growing, and the peace he brings will have no end. He’ll rule from the historic throne of David over that promised kingdom. He’ll make that kingdom solid and keep it going with fairness and justice, starting right now and lasting forever. The passion of the God of Angel Armies will make all this happen.",
+          "new": "The people who were stumbling around in the dark? They’ve seen a massive light. For those living in a land of deep shadows—Light! Sunbursts of it! You made the nation huge again, and cranked up its joy. Oh, they’re so hyped in your presence! It’s a full-on festival vibe! Like the joy of a massive party, sharing awesome gifts and warm hellos. The abuse from oppressors and the cruelty of tyrants—all their whips and clubs and curses—it's all gone, finished. It was a rescue as surprising and sudden as Gideon’s legendary victory over Midian. The boots of all those invading soldiers, and their uniforms soaked in innocent blood, will be piled up and set on fire—a blaze that will burn for days! Because a child has been born—for us! The gift of a son—for us! He’s gonna take over running the world. His names are gonna be insane: Amazing Counselor, Mighty God, Everlasting Father, Prince of Peace. His government will just keep growing, and the peace he brings will have no end. He’ll rule from the historic throne of David over that promised kingdom. He’ll make that kingdom solid and keep it going with fairness and justice, starting right now and lasting forever. The passion of the God of Angel Armies will make all this happen.",
+          "reason": "remove \"bam\"; MSG 9:2 \"light! sunbursts of light!\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "1": "5-11",
+        "2": "12-13",
+        "3": "13-14",
+        "4": "15-19",
+        "5": "20-23",
+        "6": "24-27",
+        "7": "28-32",
+        "8": "33-34"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Big yikes for you guys who make messed-up laws, the kind that totally screw people over. Laws that make life a nightmare for the poor, that steal their last bit of dignity. You're out here taking advantage of widows and homeless kids? Seriously? What are you gonna say when it's Judgement Day and everything hits the fan? Who's gonna have your back then? You think your money can save you? Nah. You'll be a sad sight, either locked up with the other prisoners or just another body in a pile on the street. And even after all that, God's still ticked off, ready to throw down again.",
+          "new": "Doom to you guys who make messed-up laws, the kind that totally screw people over. Laws that make life a nightmare for the poor, that steal their last bit of dignity. You're out here taking advantage of widows and homeless kids? Seriously? What are you gonna say when it's Judgement Day and everything hits the fan? Who's gonna have your back then? You think your money can save you? Nah. You'll be a sad sight, either locked up with the other prisoners or just another body in a pile on the street. And even after all that, God's still ticked off, ready to throw down again.",
+          "reason": "remove \"Big yikes\"; MSG 10:1 \"Doom to you\""
+        },
+        {
+          "index": 1,
+          "old": "“And shoutout to Assyria, you're my weapon of choice right now. My anger is the club you're swinging. I'm sending you after a nation that's totally forgotten me, the people I'm so mad at. I'm telling you to go in, take everything they have, and just wreck the place. But Assyria? He's got his own plans. He's thinking bigger. He wants to completely wipe out as many nations as possible. He's out here bragging, 'Aren't my commanders basically kings? Don't they do whatever they want? I wrecked Calno and Carchemish. I took down Hamath and Arpad. I leveled Samaria just like I did with Damascus. I've taken out kingdoms with way more impressive gods than anything in Jerusalem and Samaria. So, for real, what's stopping me from doing the exact same thing to Jerusalem and all its little idols?'”",
+          "new": "\"Doom to Assyria, my weapon of anger right now. My anger is the club you're swinging. I'm sending you after a nation that's totally forgotten me, the people I'm so mad at. I'm telling you to go in, take everything they have, and just wreck the place. But Assyria? He's got his own plans. He's thinking bigger. He wants to completely wipe out as many nations as possible. He's out here bragging, 'Aren't my commanders basically kings? Don't they do whatever they want? I wrecked Calno and Carchemish. I took down Hamath and Arpad. I leveled Samaria just like I did with Damascus. I've taken out kingdoms with way more impressive gods than anything in Jerusalem and Samaria. So, for real, what's stopping me from doing the exact same thing to Jerusalem and all its little idols?'”",
+          "reason": "remove \"shoutout\"; MSG 10:5 \"Doom to Assyria, weapon of my anger\""
+        },
+        {
+          "index": 5,
+          "old": "And on that day, the leftovers of Israel, the survivors of Jacob's crew, will finally stop simping for abusive Assyria. They'll lean on God, the Holy One—for real this time. The small group that's left, the remnant of Jacob, will come back to the Strong God. Your people, Israel, were once as many as the grains of sand on the beach, but only a few will make it back. Destruction is coming, and it's overflowing with justice. Because the Master, God-of-the-Angel-Armies, is gonna finish what he started, right here and all over the world.",
+          "new": "And on that day, the leftovers of Israel, the survivors of Jacob's crew, will finally stop leaning on abusive Assyria. They'll lean on God, the Holy One—for real this time. The small group that's left, the remnant of Jacob, will come back to the Strong God. Your people, Israel, were once as many as the grains of sand on the beach, but only a few will make it back. Destruction is coming, and it's overflowing with justice. Because the Master, God-of-the-Angel-Armies, is gonna finish what he started, right here and all over the world.",
+          "reason": "remove \"simping\"; MSG 10:20 \"will no longer lean on\""
+        }
+      ],
+      "flagged": [
+        "Para 2 ('12-13') ends with the king's speech lead-in; para 3 ('13-14') is the boast itself starting at v13. Overlap is a legitimate speech split."
+      ],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-9",
+        "2": "10",
+        "3": "11",
+        "4": "12-16"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "On that day, this descendant of Jesse will be like a huge banner, raised up for everyone to see. People from all over the world will flock to him, and his home base will be absolutely epic.",
+          "new": "On that day, this descendant of Jesse will be like a huge banner, raised up for everyone to see. People from all over the world will flock to him, and his home base will be absolutely glorious.",
+          "reason": "remove \"epic\"; MSG 11:10 \"His headquarters will be glorious\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "“No cap—God is my salvation. I’m gonna trust him, and I won’t be afraid. God, yeah, GOD himself, is my strength and my hype song. Best of all, he’s my salvation!”",
+          "new": "\"Yes—God is my salvation. I’m gonna trust him, and I won’t be afraid. God, yeah, GOD himself, is my strength and my hype song. Best of all, he’s my salvation!”",
+          "reason": "remove \"No cap\"; MSG 12:2 \"Yes, indeed—God is my salvation\""
+        },
+        {
+          "index": 1,
+          "old": "“No cap—God is my salvation. I’m gonna trust him, and I won’t be afraid. God, yeah, GOD himself, is my strength and my hype song. Best of all, he’s my salvation!”",
+          "new": "“No cap—God is my salvation. I’m gonna trust him, and I won’t be afraid. God, yeah, GOD himself, is my strength and my song. Best of all, he’s my salvation!”",
+          "reason": "remove \"hype song\"; MSG 12:2 \"my strength and song\""
+        },
+        {
+          "index": 3,
+          "old": "“Sing praise songs to God. He’s done it all! Let the whole world know what he’s done! Raise the roof! Sing your hearts out, Zion! The GOAT lives among you: the Holy One of Israel.”",
+          "new": "“Sing praise songs to God. He’s done it all! Let the whole world know what he’s done! Raise the roof! Sing your hearts out, Zion! The Greatest lives among you: the Holy One of Israel.”",
+          "reason": "remove \"GOAT\"; MSG 12:6 \"The Greatest lives among you\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "5": "17-21"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "\"Yo, put a flag up on a bare hill. Shout out, get their attention. Wave them over, get them in formation, and send them straight to the heart of the powerful city. I've personally gathered my special crew, my elite squad. They're super hyped and ready to unleash my anger.\"",
+          "new": "\"Put a flag up on a bare hill. Shout out, get their attention. Wave them over, get them in formation, and send them straight to the heart of the powerful city. I've personally gathered my special crew, my elite squad. They're super hyped and ready to unleash my anger.\"",
+          "reason": "remove \"Yo\"; MSG 13:2 \"Raise a flag on a bare hill\""
+        },
+        {
+          "index": 4,
+          "old": "\"Alright, check it. The LORD's judgment day is on its way. It's gonna be brutal, a day of pure rage and anger. A day to totally trash the earth and get rid of all the sinners. The stars, even the coolest constellations, will just be black holes in the sky. The sun will rise as a black circle, and the moon will be a total blank. I'm gonna end all the evil in the world, shut down all the wicked stuff people do. I'm gonna silence all the arrogant people—not another word from them—and take down all the proud tyrants, leaving them face down in the dirt. Humans are gonna become super rare, like, rarer than a limited-edition sneaker drop. And yeah, I'm even gonna make the sky tremble and the earth shake to its core because of the anger of the LORD of Heaven's Armies on his day of intense rage. People will scatter and try to find their own little groups, like scared deer or lost sheep without a shepherd. They'll run for any shelter they can find. But it's bad news for anyone left behind—they'll be killed right where they stand, their throats slit and their stomachs cut open. Babies will be smashed against rocks while their parents watch, houses will be robbed, and wives will be assaulted.\"",
+          "new": "\"Alright, check it. The LORD's judgment day is on its way. It's gonna be brutal, a day of pure rage and anger. A day to totally trash the earth and get rid of all the sinners. The stars, even the coolest constellations, will just be black holes in the sky. The sun will rise as a black circle, and the moon will be a total blank. I'm gonna end all the evil in the world, shut down all the wicked stuff people do. I'm gonna silence all the arrogant people—not another word from them—and take down all the proud tyrants, leaving them face down in the dirt. Humans are gonna become super rare, rarer than pure gold. And yeah, I'm even gonna make the sky tremble and the earth shake to its core because of the anger of the LORD of Heaven's Armies on his day of intense rage. People will scatter and try to find their own little groups, like scared deer or lost sheep without a shepherd. They'll run for any shelter they can find. But it's bad news for anyone left behind—they'll be killed right where they stand, their throats slit and their stomachs cut open. Babies will be smashed against rocks while their parents watch, houses will be robbed, and wives will be assaulted.\"",
+          "reason": "remove sneaker-drop analogy trivializing judgment; MSG 13:12 \"rarer than gold\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Once God gives you a break from all the drama, the trouble, and the rough life you had to live, you can throw some shade at the king of Babylon with this diss track:",
+          "new": "Once God gives you a break from all the drama, the trouble, and the rough life you had to live, you can taunt the king of Babylon with this song:",
+          "reason": "remove \"diss track\"/\"throw shade\"; MSG 14:4 \"sing this song to the king of Babylon\""
+        },
+        {
+          "index": 5,
+          "old": "Dude, you had such a big fall from the top, O Babylon! You, the 'morning star,' the 'son of the dawn.' Now you're face down in the mud of the underworld, the same guy who used to flatten whole nations.",
+          "new": "What a fall from the top, O Babylon! You, the 'morning star,' the 'son of the dawn.' Now you're face down in the mud of the underworld, the same guy who used to flatten whole nations.",
+          "reason": "remove \"Dude\"; MSG 14:12 \"What a comedown this, O Babylon!\""
+        },
+        {
+          "index": 8,
+          "old": "Other kings get a nice funeral, with people saying good things about them and putting them in a fancy tomb. But you? You get tossed in a ditch like a dead animal, covered in rotting bodies. No fancy funeral for you! You ruined your own country and killed so many people. Nobody's even gonna remember your evil kids. They're cancelled.",
+          "new": "Other kings get a nice funeral, with people saying good things about them and putting them in a fancy tomb. But you? You get tossed in a ditch like a dead animal, covered in rotting bodies. No fancy funeral for you! You ruined your own country and killed so many people. Nobody's even gonna remember your evil kids. They’re done for.",
+          "reason": "remove \"cancelled\"; MSG 14:20"
+        },
+        {
+          "index": 14,
+          "old": "Yo, Philistines, don't get too excited just because your mean boss is gone. From that dead snake, a way worse snake is gonna come, and from that one, an even worse one. The poor people won't have to stress, and the needy will be safe. But you Philistines are gonna get hit with a famine, and whoever doesn't starve, God will take out. So cry and scream, you proud city! Freak out, Philistia! Look north, there's smoke from burning cities. A super tough and disciplined army is on its way.",
+          "new": "Philistines, don’t get too excited just because your mean boss is gone. From that dead snake, a way worse snake is gonna come, and from that one, an even worse one. The poor people won't have to stress, and the needy will be safe. But you Philistines are gonna get hit with a famine, and whoever doesn't starve, God will take out. So cry and scream, you proud city! Freak out, Philistia! Look north, there's smoke from burning cities. A super tough and disciplined army is on its way.",
+          "reason": "remove \"Yo\"; MSG 14:29"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5-9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "Okay, so we've all heard about Moab's pride. Lowkey, they're world-famous for it—super arrogant, think they're all that, just unbearable and full of hot air. So now it's Moab's turn to cry about it for a change, with all the neighbors throwing shade. What a shame! So tragic! No more of those fancy fruitcakes and Kir-hareseth candies. All those amazing fields in Heshbon are dried up, and the awesome vineyards in Sibmah are dead. Some foreign thugs came in and just wrecked the famous grapevines that used to stretch all the way to Jazer, right to the edge of the desert. They ripped up crops everywhere, as far as you can see. I'm gonna cry too. I'll cry with Jazer for the Sibmah vineyards. And yeah, Heshbon and Elealeh, I'm crying with you guys. The happy harvest parties are gone. Instead of singing and celebrating, it's just dead silent. No more laughing in the orchards, no more singing while you work in the vineyards. Instead of all the noise of good work being done, it's just silence—a super creepy, dead silence. My heart is breaking for Moab, my soul feels for sad Kir-heres. When Moab drags himself to the shrine to pray, it's a total waste of time and energy. Going to the sanctuary and praying for help is pointless. Nothing happens.",
+          "new": "Okay, so we've all heard about Moab's pride. They’re world-famous for it—super arrogant, think they're all that, just unbearable and full of hot air. So now it's Moab's turn to cry about it for a change, with all the neighbors throwing shade. What a shame! So tragic! No more of those fancy fruitcakes and Kir-hareseth candies. All those amazing fields in Heshbon are dried up, and the awesome vineyards in Sibmah are dead. Some foreign thugs came in and just wrecked the famous grapevines that used to stretch all the way to Jazer, right to the edge of the desert. They ripped up crops everywhere, as far as you can see. I'm gonna cry too. I'll cry with Jazer for the Sibmah vineyards. And yeah, Heshbon and Elealeh, I'm crying with you guys. The happy harvest parties are gone. Instead of singing and celebrating, it's just dead silent. No more laughing in the orchards, no more singing while you work in the vineyards. Instead of all the noise of good work being done, it's just silence—a super creepy, dead silence. My heart is breaking for Moab, my soul feels for sad Kir-heres. When Moab drags himself to the shrine to pray, it's a total waste of time and energy. Going to the sanctuary and praying for help is pointless. Nothing happens.",
+          "reason": "remove \"Lowkey\"; MSG 16:6"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, check this out: Damascus is about to get wrecked. Like, totally leveled, just a pile of dust. All its towns will be ghost towns. Sheep and goats are gonna move in and act like they own the place... which, lowkey, they will. Ephraim's defenses? Gone. Damascus's government? Poof, vanished. And what's left of Aram will be the same as what's left of Israel—basically nothing. That's the word from the God of Heaven's Armies.",
+          "new": "Check this out: Damascus is about to get wrecked. Like, totally leveled, just a pile of dust. All its towns will be ghost towns. Sheep and goats are gonna move in and act like they own the place... which, lowkey, they will. Ephraim's defenses? Gone. Damascus's government? Poof, vanished. And what's left of Aram will be the same as what's left of Israel—basically nothing. That's the word from the God of Heaven's Armies.",
+          "reason": "remove \"Yo\"; MSG 17:1"
+        },
+        {
+          "index": 0,
+          "old": "Yo, check this out: Damascus is about to get wrecked. Like, totally leveled, just a pile of dust. All its towns will be ghost towns. Sheep and goats are gonna move in and act like they own the place... which, lowkey, they will. Ephraim's defenses? Gone. Damascus's government? Poof, vanished. And what's left of Aram will be the same as what's left of Israel—basically nothing. That's the word from the God of Heaven's Armies.",
+          "new": "Yo, check this out: Damascus is about to get wrecked. Like, totally leveled, just a pile of dust. All its towns will be ghost towns. Sheep and goats are gonna move in and act like they own the place... which they will. Ephraim's defenses? Gone. Damascus's government? Poof, vanished. And what's left of Aram will be the same as what's left of Israel—basically nothing. That's the word from the God of Heaven's Armies.",
+          "reason": "remove \"lowkey\"; MSG 17:2"
+        },
+        {
+          "index": 4,
+          "old": "And why's all this happening? Because you forgot about God, your Savior. You didn't remember the Rock who's your safe place. So, even though you're super religious, planting all these special gardens for your fake gods, and even though you get them to grow like crazy, with buds and flowers everywhere, it's all for nothing. Instead of a harvest, you're just gonna get a whole lot of pain and suffering. Big yikes.",
+          "new": "And why's all this happening? Because you forgot about God, your Savior. You didn't remember the Rock who's your safe place. So, even though you're super religious, planting all these special gardens for your fake gods, and even though you get them to grow like crazy, with buds and flowers everywhere, it's all for nothing. Instead of a harvest, you're just gonna get a whole lot of pain and suffering. That’s rough.",
+          "reason": "remove \"Big yikes\"; MSG 17:11"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Alright, so check it. There's this land way out past Ethiopia, buzzing with bugs, and they're sending messengers all over the place, crossing rivers and oceans.",
+          "new": "Listen: there’s this land way out past Ethiopia, buzzing with bugs, and they're sending messengers all over the place, crossing rivers and oceans.",
+          "reason": "remove filler opener; MSG 18:1"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "7": "19-22"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Yo, check this out! God is rolling up on Egypt, riding a super-fast cloud. All of Egypt's fake gods are shaking in their boots, and the people are totally freaking out.",
+          "new": "Check this out! God is rolling up on Egypt, riding a super-fast cloud. All of Egypt's fake gods are shaking in their boots, and the people are totally freaking out.",
+          "reason": "remove \"Yo\"; MSG 19:1"
+        },
+        {
+          "index": 4,
+          "old": "The leaders of Zoan are a bunch of fools, and Pharaoh's advisors are just plain stupid. How can any of you even say to Pharaoh, 'Trust me, I'm smart, I know what's up. I come from a long line of wise Egyptians'? There's not a single wise person left in the whole country. If there were, they'd tell you what God-of-the-Angel-Armies has planned for Egypt. But nope, the leaders of Zoan are clueless, and the leaders of Memphis are idiots. The so-called 'pillars' of your society have led Egypt down a dead-end street. God has totally messed with their heads, and now Egypt is like a drunk person falling in their own puke. Egypt is a lost cause, a hopeless old fool.",
+          "new": "The leaders of Zoan are a bunch of fools, and Pharaoh's advisors are just plain stupid. How can any of you even say to Pharaoh, 'Trust me, I'm smart, I know what's up. I come from a long line of wise Egyptians'? There's not a single wise person left in the whole country. If there were, they'd tell you what God-of-the-Angel-Armies has planned for Egypt. But nope, the leaders of Zoan are clueless, and the leaders of Memphis are idiots. The so-called 'pillars' of your society have led Egypt down a dead-end street. God has totally messed with their heads, and now Egypt is like a drunk person stumbling in their own vomit. Egypt is a lost cause, a hopeless old fool.",
+          "reason": "remove crude \"puke\"; MSG 19:14 \"drunk, vomiting\""
+        },
+        {
+          "index": 7,
+          "old": "On that day, there will be a church for God right in the middle of Egypt and a monument to him at the border. It will be a sign of how God-of-the-Angel-Armies helped the Egyptians. When they cry out to God because of their problems, he'll send a savior to rescue and protect them. God will reveal himself to the Egyptians, and they will finally get to know him. They'll worship him for real, with sacrifices and offerings. They'll make promises to God and actually keep them. God will strike Egypt, but then he'll heal them. Egypt will come back to God, and he will hear their prayers and heal them completely.",
+          "new": "On that day, there will be a place of worship to God right in the middle of Egypt and a monument to him at the border. It will be a sign of how God-of-the-Angel-Armies helped the Egyptians. When they cry out to God because of their problems, he'll send a savior to rescue and protect them. God will reveal himself to the Egyptians, and they will finally get to know him. They'll worship him for real, with sacrifices and offerings. They'll make promises to God and actually keep them. God will strike Egypt, but then he'll heal them. Egypt will come back to God, and he will hear their prayers and heal them completely.",
+          "reason": "factual wording: MSG 19:19 \"a place of worship to God\", not \"church\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Then God explained, \"Just like my servant Isaiah has been walking around naked and barefoot for three years as a huge warning sign to Egypt and Ethiopia, the king of Assyria is about to roll in and do the same to them. He's going to take the Egyptians as captives and the Ethiopians as exiles. He’ll march everyone out, young and old, totally naked and barefoot, for everyone to see and mock—like, Egypt's bare butt on full display. Super embarrassing.",
+          "new": "Then God explained, \"Just like my servant Isaiah has been walking around naked and barefoot for three years as a huge warning sign to Egypt and Ethiopia, the king of Assyria is about to roll in and do the same to them. He's going to take the Egyptians as captives and the Ethiopians as exiles. He’ll march everyone out, young and old, totally naked and barefoot, for everyone to see—Egypt exposed and shamed.",
+          "reason": "remove mocking \"bare butt... Super embarrassing\"; MSG 20:4 \"exposed to the world\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "1": "1-4",
+        "2": "5",
+        "3": "6-9",
+        "4": "10",
+        "5": "11",
+        "6": "11-12",
+        "7": "13",
+        "8": "13-15",
+        "9": "16-17"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Paras 5 ('11') and 7 ('13') are the standalone oracle headings ('A message about Dumah/Arabia'); content follows in paras 6 ('11-12') and 8 ('13-15')."
+      ],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "1": "1-4"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "The Boss, God-of-the-Angel-Armies, called for that Day to be a day of crying and repentance, a day to wear sad, mourning clothes. But what did you do? You threw a party! Eating, drinking, and dancing in the streets! You're grilling up bulls and sheep and having a massive feast—huge slabs of meat, barrels of beer. “YOLO! Eat and drink! We're all gonna die tomorrow anyway!”",
+          "new": "The Boss, God-of-the-Angel-Armies, called for that Day to be a day of crying and repentance, a day to wear sad, mourning clothes. But what did you do? You threw a party! Eating, drinking, and dancing in the streets! You're grilling up bulls and sheep and having a massive feast—huge slabs of meat, barrels of beer. \"Eat and drink! We're all gonna die tomorrow anyway!\"",
+          "reason": "remove \"YOLO\"; MSG 22:13"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, ships of Tarshish, you better cry it out, 'cause your home ports are completely wrecked. When the ships sailed back from Cyprus, they saw the total chaos. And you merchants from Sidon, living by the coast? Just be quiet. Your crews were out there on the ocean, hustling, making bank on grain from Egypt, like some global mega-corporation. But now, Sidon, you should be seriously embarrassed. The ocean itself is speaking up, like, 'I've never been a mom, never had kids, never watched them grow up. It was all just business, all about the money, the profits and losses.'",
+          "new": "Wail, ships of Tarshish, you better cry it out, 'cause your home ports are completely wrecked. When the ships sailed back from Cyprus, they saw the total chaos. And you merchants from Sidon, living by the coast? Just be quiet. Your crews were out there on the ocean, hustling, making bank on grain from Egypt, like some global mega-corporation. But now, Sidon, you should be seriously embarrassed. The ocean itself is speaking up, like, 'I've never been a mom, never had kids, never watched them grow up. It was all just business, all about the money, the profits and losses.'",
+          "reason": "remove \"Yo\"; MSG 23:1 \"Wail, you ships of Tarshish\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Para 3 ('14-16') ends with the praise song; para 4 ('16-20') opens with the prophet's 'doom' reply at v16. Legitimate overlap."
+      ],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6-8"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God, you're my God. I'm here to hype you up and give you all the praise. You've done some seriously amazing things, plans that were perfectly thought out and are 100% solid.",
+          "new": "God, you're my God. I’m here to celebrate you and praise your name. You've done some seriously amazing things, plans that were perfectly thought out and are 100% solid.",
+          "reason": "remove \"hype\"; MSG 25:1 \"I celebrate you. I praise your name\""
+        },
+        {
+          "index": 2,
+          "old": "And right here on this mountain, the God-of-the-Angel-Armies is gonna throw a wild feast for everyone in the world. A feast with the best food, the best-aged wines, like a seven-course meal that's super fancy with gourmet desserts. And on this mountain, God's gonna get rid of that dark cloud of doom that's hanging over everyone, that shadow of death that's on all the nations. Yeah, he's gonna cancel death forever. And God will wipe away every single tear from every face. He'll take away all the shame and disgrace from his people, no matter where they are. For real! God said so!",
+          "new": "And right here on this mountain, the God-of-the-Angel-Armies is gonna throw a wild feast for everyone in the world. A feast with the best food, the best-aged wines, like a seven-course meal that's super fancy with gourmet desserts. And on this mountain, God's gonna get rid of that dark cloud of doom that's hanging over everyone, that shadow of death that's on all the nations. Yeah, he’s gonna banish death forever. And God will wipe away every single tear from every face. He'll take away all the shame and disgrace from his people, no matter where they are. For real! God said so!",
+          "reason": "MSG 25:8 \"He’ll banish death forever\""
+        },
+        {
+          "index": 4,
+          "old": "But as for the Moabites, they're gonna get treated like actual garbage, like waste getting shoveled into a toilet. They can struggle all they want, like a swimmer trying not to drown, but they'll just sink in the sewage. Their own pride will drag them down. Their famous strong walls will totally crumble, those huge walls will just turn to dust.",
+          "new": "But as for the Moabites, they're gonna get treated like actual garbage, like straw getting trampled into a manure pile. They can struggle all they want, like a swimmer trying not to drown, but they'll just sink in the sewage. Their own pride will drag them down. Their famous strong walls will totally crumble, those huge walls will just turn to dust.",
+          "reason": "remove crude \"toilet\"; MSG 25:10 \"straw trampled into a manure pile\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "On that day, everyone in Judah will be singing this banger: We've got this super strong city, basically 'Salvation City,' and its walls are made of, you guessed it, salvation. So open up the gates for all the good and real ones to come in. The people who keep their minds focused on you, God, you keep them totally secure and steady. They're not giving up, because they know they can count on you. Seriously, just trust God and keep going, because with God, it's a sure thing. All those arrogant people who thought they were all that? God knocked them right off their high horse. He took their fancy city on a hill and turned it into a swamp. And now, all the people who were stepped on and left out are building their new lives on that same land.",
+          "new": "On that day, everyone in Judah will be singing this song: We've got this super strong city, basically 'Salvation City,' and its walls are made of, you guessed it, salvation. So open up the gates for all the good and real ones to come in. The people who keep their minds focused on you, God, you keep them totally secure and steady. They're not giving up, because they know they can count on you. Seriously, just trust God and keep going, because with God, it's a sure thing. All those arrogant people who thought they were all that? God knocked them right off their high horse. He took their fancy city on a hill and turned it into a swamp. And now, all the people who were stepped on and left out are building their new lives on that same land.",
+          "reason": "remove \"banger\"; MSG 26:1 \"this song will be sung\""
+        },
+        {
+          "index": 1,
+          "old": "The path for people doing the right thing is totally smooth. God, the ultimate Leveler, makes the road even for them. We're not in a rush, God. We're cool with just chilling in the path you've laid out for us. Who you are and what you've done is literally all we could ever want. All night, my soul is just longing for you. Deep down, my spirit is reaching out for you. When your judgments are out there for everyone to see, people actually learn how to live right. But if you show grace to the wicked, they just don't get it. Even in a land of good vibes, they keep doing wrong, totally blind to how awesome you are, God.",
+          "new": "The path for people doing the right thing is totally smooth. God, the ultimate Leveler, makes the road even for them. We're not in a rush, God. We're cool with just chilling in the path you've laid out for us. Who you are and what you've done is literally all we could ever want. All night, my soul is just longing for you. Deep down, my spirit is reaching out for you. When your judgments are out there for everyone to see, people actually learn how to live right. But if you show grace to the wicked, they just don't get it. Even in a land of right living, they keep doing wrong, totally blind to how awesome you are, God.",
+          "reason": "remove \"good vibes\"; MSG 26:10 \"In a land of right living\""
+        },
+        {
+          "index": 2,
+          "old": "You're holding your hand up high, God, but they're not even seeing it. Open their eyes to what you're doing, let them see the passionate love you have for your people. Make them feel ashamed. Light a fire under them. Get the attention of these haters of yours. God, please bring us a life that's peaceful and whole, because everything we've ever accomplished, you were the one who did it for us. Oh God, our God, we've had other 'masters' trying to rule us, but you're the only one we'll ever claim. The dead don't talk, and their ghosts don't haunt, because you basically said, 'Game over, that's it for you,' and just deleted them from existence. But the living? You make them larger than life. The more life you give, the more your glory shines, and you expand the borders to make room for even more life!",
+          "new": "You're holding your hand up high, God, but they're not even seeing it. Open their eyes to what you're doing, let them see the passionate love you have for your people. Make them feel ashamed. Light a fire under them. Get the attention of these haters of yours. God, please bring us a life that's peaceful and whole, because everything we've ever accomplished, you were the one who did it for us. Oh God, our God, we've had other 'masters' trying to rule us, but you're the only one we'll ever claim. The dead don't talk, and their ghosts don't haunt, because you basically said, 'Enough—that's all for you,' and just deleted them from existence. But the living? You make them larger than life. The more life you give, the more your glory shines, and you expand the borders to make room for even more life!",
+          "reason": "remove \"Game over\"; MSG 26:14 \"Enough—that’s all for you\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6",
+        "3": "7-11"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "At the same time, this awesome vineyard will show up. It's something to get hyped about! God says, 'I'm the one taking care of it, making sure it has enough water. I'm watching over it so nothing can mess it up. I'm not mad at it. I actually care. Even if it grows some weeds, I'll just pull them out and get rid of them. This vine should hold on to me to be safe, to have a real and full life with me.'",
+          "new": "At the same time, this awesome vineyard will show up. Sing about it! God says, 'I'm the one taking care of it, making sure it has enough water. I'm watching over it so nothing can mess it up. I'm not mad at it. I actually care. Even if it grows some weeds, I'll just pull them out and get rid of them. This vine should hold on to me to be safe, to have a real and full life with me.'",
+          "reason": "remove \"hyped\"; MSG 27:2 \"Sing!\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "But for the people who are left, God of the Angel Armies will be like a sick crown on their heads. He'll give wisdom and a sense of what's right to the leaders making the calls, and he'll give strength and skill to the ones protecting everyone.",
+          "new": "But for the people who are left, God of the Angel Armies will be a beautiful crown on their heads. He'll give wisdom and a sense of what's right to the leaders making the calls, and he'll give strength and skill to the ones protecting everyone.",
+          "reason": "remove \"sick\"; MSG 28:5 \"a beautiful crown\""
+        },
+        {
+          "index": 2,
+          "old": "And get this, even the priests and prophets are wasted. They're stumbling around, totally drunk off their faces. So drunk on wine and whiskey they can't see straight or even talk right. Literally every table is covered in puke. They're living in their own filth. It's nasty.",
+          "new": "And get this, even the priests and prophets are wasted. They’re stumbling around, completely drunk. So drunk on wine and whiskey they can't see straight or even talk right. Literally every table is covered in puke. They're living in their own filth. It's nasty.",
+          "reason": "remove \"drunk off their faces\"; MSG 28:7 \"stagger from drink\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5-8",
+        "4": "13-14",
+        "5": "15-16",
+        "6": "17-21",
+        "7": "22-24"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Big yikes for Ariel, the same city where King David set up his base. Go ahead, let the years pass, celebrate your holidays, but I'm about to bring the pain to Jerusalem. It's gonna be all moans and groans. To me, Jerusalem is an 'Ariel'—a lion of God, and I'm surrounding you just like David did. I'm setting up a siege, building towers, and rolling in the heavy artillery. You'll be so beat down, you'll be whispering from the dirt. Your voice will sound like a ghost's, mumbling from the dust.",
+          "new": "Doom to Ariel, the same city where King David set up his base. Go ahead, let the years pass, celebrate your holidays, but I'm about to bring the pain to Jerusalem. It's gonna be all moans and groans. To me, Jerusalem is an 'Ariel'—a lion of God, and I'm surrounding you just like David did. I'm setting up a siege, building towers, and rolling in the heavy artillery. You'll be so beat down, you'll be whispering from the dirt. Your voice will sound like a ghost's, mumbling from the dust.",
+          "reason": "remove \"Big yikes\"; MSG 29:1 \"Doom, Ariel!\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-7",
+        "2": "8-11",
+        "3": "12-14",
+        "4": "15-17",
+        "5": "18",
+        "6": "19-22",
+        "7": "23-26",
+        "8": "27-28",
+        "9": "29-33"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "“Y'all are in deep trouble, you rebel kids,” God says. “You're making your own plans, not mine. You're shaking on deals that have nothing to do with my Spirit. You're just stacking up mistakes, one on top of the other, running off to Egypt without even checking with me first, thinking Pharaoh's got your back, that you can just chill in Egypt. Yeah, right. Like Pharaoh's gonna protect you. Like Egypt is some safe house. Sure, they talk a big game, with their officials posted up in Zoan and Hanes, but it's all for show. Anyone who actually falls for it is gonna look like a total fool. It's all hype, no substance. Lowkey embarrassing.”",
+          "new": "“Y'all are in deep trouble, you rebel kids,” God says. “You're making your own plans, not mine. You're shaking on deals that have nothing to do with my Spirit. You're just stacking up mistakes, one on top of the other, running off to Egypt without even checking with me first, thinking Pharaoh's got your back, that you can just chill in Egypt. Yeah, right. Like Pharaoh's gonna protect you. Like Egypt is some safe house. Sure, they talk a big game, with their officials posted up in Zoan and Hanes, but it's all for show. Anyone who actually falls for it is gonna look like a total fool. It’s all hype, no substance—a total embarrassment.”",
+          "reason": "remove \"Lowkey\"; MSG 30:3-5"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {
+        "2": "4-5",
+        "3": "6-7"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "It’s a total disaster for anyone running to Egypt for backup, thinking their horses and chariots are the answer. They’re all hyped about the size of the army but won’t even give a second glance to the Holy God of Israel or bother with a single prayer. But here's the deal: God is legit wise and knows exactly what He's doing. He can unleash chaos when He wants and He doesn't bluff. He steps in to shut down evil plans and stands up to anyone causing trouble. Remember, Egyptians are just people, not God. Their horses are just flesh and blood, not some divine spirit. When God decides to act, both the so-called helpers and those they're trying to help will all go down together and end up in the same dirt pile.",
+          "new": "It’s a total disaster for anyone running to Egypt for backup, thinking their horses and chariots are the answer. They’re all hyped about the size of the army but won’t even give a second glance to the Holy God of Israel or bother with a single prayer. But here's the deal: God is truly wise and knows exactly what he’s doing. He can unleash chaos when He wants and He doesn't bluff. He steps in to shut down evil plans and stands up to anyone causing trouble. Remember, Egyptians are just people, not God. Their horses are just flesh and blood, not some divine spirit. When God decides to act, both the so-called helpers and those they're trying to help will all go down together and end up in the same dirt pile.",
+          "reason": "remove \"legit\"; MSG 31:2 \"God is also wise\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, check it out! A legit king is gonna rule the right way, and his crew will make sure things are fair. Each of them will be like a shield from the crazy winds, a safe spot when the storms hit. They'll be like a cool stream in a dry desert, or a huge rock giving shade when it's blazing hot. Anyone who looks will actually see, and anyone who listens will actually hear. The impulsive peeps will start making smart choices, and those who stumble over their words will speak like they're giving a TED Talk. No more will idiots get famous, or cheaters get all the credit. 'Cause fools are just fools, always cooking up new ways to cause trouble. They mess up people's lives and spread lies about God, totally ignoring the homeless and hungry, and not caring about those who are thirsty. And the crooks? They're sneaky and always finding new ways to sin and create drama, taking advantage of the poor with their scams and lies, not even batting an eye at the people they're hurting. But the real ones, the noble ones, they make good plans and always stand for what's right.",
+          "new": "Check it out! A legit king is gonna rule the right way, and his crew will make sure things are fair. Each of them will be like a shield from the crazy winds, a safe spot when the storms hit. They'll be like a cool stream in a dry desert, or a huge rock giving shade when it's blazing hot. Anyone who looks will actually see, and anyone who listens will actually hear. The impulsive peeps will start making smart choices, and those who stumble over their words will speak like they're giving a TED Talk. No more will idiots get famous, or cheaters get all the credit. 'Cause fools are just fools, always cooking up new ways to cause trouble. They mess up people's lives and spread lies about God, totally ignoring the homeless and hungry, and not caring about those who are thirsty. And the crooks? They're sneaky and always finding new ways to sin and create drama, taking advantage of the poor with their scams and lies, not even batting an eye at the people they're hurting. But the real ones, the noble ones, they make good plans and always stand for what's right.",
+          "reason": "remove \"Yo\"; MSG 32:1"
+        },
+        {
+          "index": 0,
+          "old": "Yo, check it out! A legit king is gonna rule the right way, and his crew will make sure things are fair. Each of them will be like a shield from the crazy winds, a safe spot when the storms hit. They'll be like a cool stream in a dry desert, or a huge rock giving shade when it's blazing hot. Anyone who looks will actually see, and anyone who listens will actually hear. The impulsive peeps will start making smart choices, and those who stumble over their words will speak like they're giving a TED Talk. No more will idiots get famous, or cheaters get all the credit. 'Cause fools are just fools, always cooking up new ways to cause trouble. They mess up people's lives and spread lies about God, totally ignoring the homeless and hungry, and not caring about those who are thirsty. And the crooks? They're sneaky and always finding new ways to sin and create drama, taking advantage of the poor with their scams and lies, not even batting an eye at the people they're hurting. But the real ones, the noble ones, they make good plans and always stand for what's right.",
+          "new": "Yo, check it out! A legit king is gonna rule the right way, and his crew will make sure things are fair. Each of them will be like a shield from the crazy winds, a safe spot when the storms hit. They'll be like a cool stream in a dry desert, or a huge rock giving shade when it's blazing hot. Anyone who looks will actually see, and anyone who listens will actually hear. The impulsive peeps will start making smart choices, and those who stumble over their words will speak clearly and well. No more will idiots get famous, or cheaters get all the credit. 'Cause fools are just fools, always cooking up new ways to cause trouble. They mess up people's lives and spread lies about God, totally ignoring the homeless and hungry, and not caring about those who are thirsty. And the crooks? They're sneaky and always finding new ways to sin and create drama, taking advantage of the poor with their scams and lies, not even batting an eye at the people they're hurting. But the real ones, the noble ones, they make good plans and always stand for what's right.",
+          "reason": "remove TED Talk anachronism; MSG 32:4 \"will speak out plainly\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {
+        "4": "10-12",
+        "5": "13-14"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "\"Alright, I'm stepping in now,\" God says. \"From now on, I'm in charge. No more playing nice. Now you'll see how powerful I am. You guys are nothing. You think you're making something big, but it's just useless fluff. You're full of hot air and you're just gonna self-destruct. You're only good for being fertilizer and firewood. Dust to dust—and the sooner, the better.",
+          "new": "\"Alright, I'm stepping in now,\" God says. \"From now on, I'm in charge. No more playing nice. Now you'll see how powerful I am. You guys are nothing. You think you're making something big, but it's just useless fluff. You're full of hot air and you're just gonna self-destruct. You’re only good for being fertilizer and firewood.",
+          "reason": "remove flippant added sentence; MSG 33:11-12"
+        },
+        {
+          "index": 5,
+          "old": "\"If you're far away, check the receipts on what I've done. And if you're close by, pay attention to my track record. The sinners in Zion are freaking out, and for good reason. The godless are at their breaking point, like, 'Who can even survive this crazy fire? Who can get through this purge alive?'\"",
+          "new": "\"If you're far away, take note of what I’ve done. And if you're close by, pay attention to my track record. The sinners in Zion are freaking out, and for good reason. The godless are at their breaking point, like, 'Who can even survive this crazy fire? Who can get through this purge alive?'\"",
+          "reason": "remove \"receipts\"; MSG 33:13 \"take note of what I’ve done\""
+        },
+        {
+          "index": 6,
+          "old": "The answer is lowkey simple: Live right, tell the truth, hate it when people get taken advantage of, say no to bribes, reject violence, and stay away from trashy entertainment. That's how you level up your life! A safe and stable way to live. A fulfilling and satisfying way to live.",
+          "new": "The answer is actually simple: Live right, tell the truth, hate it when people get taken advantage of, say no to bribes, reject violence, and stay away from trashy entertainment. That's how you level up your life! A safe and stable way to live. A fulfilling and satisfying way to live.",
+          "reason": "remove \"lowkey\"; MSG 33:15 \"The answer’s simple\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "34": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "And here's the tea: God is seriously ticked off at all the nations. He's so mad at their armies that He's about to just delete them from the planet. Their bodies will be piled up and smell worse than a landfill in August, and their blood will be flowing down mountains like a crazy spring flood. The stars are gonna fall out of the sky like old, mushy fruit, and the sky itself will get folded up and stored away. That whole army of stars? Gone. Just like dead leaves in the fall.",
+          "new": "And here’s the deal: God is seriously ticked off at all the nations. He's so mad at their armies that He's about to just delete them from the planet. Their bodies will be piled up and smell worse than a landfill in August, and their blood will be flowing down mountains like a crazy spring flood. The stars are gonna fall out of the sky like old, mushy fruit, and the sky itself will get folded up and stored away. That whole army of stars? Gone. Just like dead leaves in the fall.",
+          "reason": "remove \"tea\"; MSG 34:2"
+        },
+        {
+          "index": 3,
+          "old": "This is God's official time for payback, the year He settles all of Zion's scores. Edom's rivers will get all thick and nasty with pollution, and the ground will be poisoned and useless. The whole country will be a smoking, stinking garbage fire that never goes out, day or night. It'll be a wasteland for generations—nobody's gonna be traveling through there anymore. Vultures and skunks will be running the streets, and owls and crows will move in. God's gonna hit the undo button on creation. Total chaos. No more life. Just emptiness. Their leaders will have no one to rule over. They'll call it 'No Kingdom Here,' a place where all the royalty is out of a job. Weeds will take over the castles, and wild dogs will roam the ruins. Wildcats and hyenas will team up to hunt, and demons will be having dance parties all night. The demon Lilith will even set up her permanent home there. It's gonna be a breeding ground for all kinds of creepy, evil stuff.",
+          "new": "This is God's official time for payback, the year He settles all of Zion's scores. Edom's rivers will get all thick and nasty with pollution, and the ground will be poisoned and useless. The whole country will be a smoking, stinking garbage fire that never goes out, day or night. It'll be a wasteland for generations—nobody's gonna be traveling through there anymore. Vultures and skunks will be running the streets, and owls and crows will move in. God's gonna hit the undo button on creation. Total chaos. No more life. Just emptiness. Their leaders will have no one to rule over. They'll call it 'No Kingdom Here,' a place where all the royalty is out of a job. Weeds will take over the castles, and wild dogs will roam the ruins. Wildcats and hyenas will team up to hunt, and demons and devils will dance through the night. The demon Lilith will even set up her permanent home there. It's gonna be a breeding ground for all kinds of creepy, evil stuff.",
+          "reason": "remove flippant \"dance parties\"; MSG 34:14 \"demons and devils dance through the night\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "35": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "When He shows up, it's gonna be wild. People who were blind will be able to see, and those who were deaf will hear everything. People who couldn't walk will be jumping around like deer, and those who couldn't speak will be singing their hearts out. Water will start flowing in the driest places, turning hot sand into a cool, refreshing oasis. Even the wild animals will have plenty to drink, and the dead grasslands will become super lush.",
+          "new": "When He shows up, it’s gonna be amazing. People who were blind will be able to see, and those who were deaf will hear everything. People who couldn't walk will be jumping around like deer, and those who couldn't speak will be singing their hearts out. Water will start flowing in the driest places, turning hot sand into a cool, refreshing oasis. Even the wild animals will have plenty to drink, and the dead grasslands will become super lush.",
+          "reason": "remove \"wild\"; MSG 35:5-6"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {
+        "8": "21",
+        "9": "22"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, in King Hezekiah's fourteenth year, King Sennacherib of Assyria rolled up on all of Judah's fortified cities and just took them. Then the Assyrian king sent his top general, the 'Rabshekah,' with a massive army from Lachish to Jerusalem to confront King Hezekiah. The general posted up at the aqueduct by the upper pool, right on the road to the laundromat, lol. Three of Hezekiah's guys went out to meet him: Eliakim, who was in charge of the palace; Shebna, the secretary; and Joah, the official historian.",
+          "new": "So, in King Hezekiah's fourteenth year, King Sennacherib of Assyria rolled up on all of Judah's fortified cities and just took them. Then the Assyrian king sent his top general, the 'Rabshekah,' with a massive army from Lachish to Jerusalem to confront King Hezekiah. The general posted up at the aqueduct by the upper pool, right on the road to the public laundry. Three of Hezekiah's guys went out to meet him: Eliakim, who was in charge of the palace; Shebna, the secretary; and Joah, the official historian.",
+          "reason": "remove \"lol\"; MSG 36:2 \"the road to the public laundry\""
+        },
+        {
+          "index": 1,
+          "old": "The Rabshekah told them, 'Go tell Hezekiah that the Great King, the king of Assyria, is asking: ‘Who do you think is gonna have your back against me? You're all talk, and I'm calling you out. Your words are nothing against my army. Who's your backup now that you've decided to rebel? Egypt? LMAO. Trusting Egypt is like leaning on a wet noodle. You'll just end up on the ground. That's all Pharaoh is to anyone who trusts him. And if you're about to say, ‘We’re trusting in our God,’ isn't it a little late for that? Didn't Hezekiah just tear down all the worship spots, telling everyone, ‘You have to worship at *this* altar’?'",
+          "new": "The Rabshekah told them, 'Go tell Hezekiah that the Great King, the king of Assyria, is asking: ‘Who do you think is gonna have your back against me? You're all talk, and I'm calling you out. Your words are nothing against my army. Who's your backup now that you've decided to rebel? Egypt? Ha. Trusting Egypt is like leaning on a wet noodle. You'll just end up on the ground. That's all Pharaoh is to anyone who trusts him. And if you're about to say, ‘We’re trusting in our God,’ isn't it a little late for that? Didn't Hezekiah just tear down all the worship spots, telling everyone, ‘You have to worship at *this* altar’?'",
+          "reason": "remove \"LMAO\"; MSG 36:6"
+        },
+        {
+          "index": 5,
+          "old": "But the Rabshekah shot back, 'You think my master sent me to talk to just you and your boss? Nah, this message is for everyone sitting on that wall. They're the ones who are gonna end up eating their own poop and drinking their own pee.'",
+          "new": "But the Rabshekah shot back, 'You think my master sent me to talk to just you and your boss? Nah, this message is for everyone sitting on that wall. They're the ones who are gonna end up eating their own excrement and drinking their own urine.'",
+          "reason": "remove crude \"poop/pee\"; MSG 36:12 \"eating their own excrement and drinking their own urine\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "37": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Para 15 ('33') is the 'here is God's word on Assyria' lead-in; para 16 ('33-35') is the word itself. Legitimate overlap."
+      ],
+      "ok": false
+    },
+    "38": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-3",
+        "2": "4-6"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "“‘And here’s the sign to prove that I, God, will do exactly what I promised. Watch this: You see the shadow on the sundial of Ahaz? I’m going to make it go backward ten steps.’” And that’s exactly what happened. The shadow from the setting sun actually went back ten notches on the dial. Wild.",
+          "new": "“‘And here’s the sign to prove that I, God, will do exactly what I promised. Watch this: You see the shadow on the sundial of Ahaz? I’m going to make it go backward ten steps.’” And that’s exactly what happened. The shadow from the setting sun actually went back ten notches on the dial.",
+          "reason": "remove \"Wild\"; MSG 38:8"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "39": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 8,
+          "old": "Hezekiah just replied to Isaiah, “Cool. If God says so, it’s cool.” But lowkey, he was thinking to himself, “But for sure nothing bad will happen while I'm alive. I'll get to enjoy peace and quiet for the rest of my life.”",
+          "new": "Hezekiah replied to Isaiah, “If God says so, that’s fine.” But lowkey, he was thinking to himself, “But for sure nothing bad will happen while I'm alive. I'll get to enjoy peace and quiet for the rest of my life.”",
+          "reason": "remove flippant \"Cool... it’s cool\"; MSG 39:8 \"If God says so, fine\""
+        }
+      ],
+      "flagged": [
+        "Paras 2-5 split the Isaiah/Hezekiah dialogue across MSG 39:3-4: each question and answer kept as its own paragraph."
+      ],
+      "ok": false
+    },
+    "40": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6",
+        "3": "6-8",
+        "4": "9-11"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "\"Yo, chill out. Seriously, comfort my people,\" says your God. \"Talk to Jerusalem real gentle and sweet, but also make it super clear that her time-out is over. Her mess-ups? All taken care of—totally forgiven! She’s been through enough, like, way more than enough, and now it's all good.\"",
+          "new": "\"Comfort, oh comfort my people,\" says your God. \"Talk to Jerusalem real gentle and sweet, but also make it super clear that her time-out is over. Her mess-ups? All taken care of—totally forgiven! She’s been through enough, like, way more than enough, and now it's all good.\"",
+          "reason": "remove \"Yo, chill out\"; MSG 40:1 \"Comfort, oh comfort my people\""
+        },
+        {
+          "index": 1,
+          "old": "A voice booms in the middle of nowhere! \"Get ready for God's entrance! Make the road straight and smooth, a highway fit for our God. Fill in the low spots, flatten the hills, smooth out the bumps, and get rid of the rocks. Then God's awesome glory will shine for everyone to see. No cap. God said it, so it's happening.\"",
+          "new": "A voice booms in the middle of nowhere! \"Get ready for God's entrance! Make the road straight and smooth, a highway fit for our God. Fill in the low spots, flatten the hills, smooth out the bumps, and get rid of the rocks. Then God's awesome glory will shine for everyone to see. God said it, so it’s happening.\"",
+          "reason": "remove \"No cap\"; MSG 40:5"
+        },
+        {
+          "index": 5,
+          "old": "Who do you think scooped up the whole ocean in his hands, or measured the sky with his fingers? Who put all the dirt on earth in a single basket, and weighed every mountain and hill? Who could ever tell God what to do or give him pointers? What expert would he need to ask for advice? What school would he go to to learn about justice? What other god could have possibly taught him what he knows, or showed him how everything works? Lowkey, all the nations are just a drop in a bucket, like a smudge on a window. Watch him sweep up islands like they're just dust on the floor! There aren't enough trees in Lebanon or enough animals in those huge forests to even be a decent offering for him. All the nations together are basically nothing to him—less than nothing, actually. A total minus.",
+          "new": "Who do you think scooped up the whole ocean in his hands, or measured the sky with his fingers? Who put all the dirt on earth in a single basket, and weighed every mountain and hill? Who could ever tell God what to do or give him pointers? What expert would he need to ask for advice? What school would he go to to learn about justice? What other god could have possibly taught him what he knows, or showed him how everything works? Honestly, all the nations are just a drop in a bucket, like a smudge on a window. Watch him sweep up islands like they're just dust on the floor! There aren't enough trees in Lebanon or enough animals in those huge forests to even be a decent offering for him. All the nations together are basically nothing to him—less than nothing, actually. A total minus.",
+          "reason": "remove \"Lowkey\"; MSG 40:15"
+        }
+      ],
+      "flagged": [
+        "Para 2 ('6') is the 'Shout!'/'Shout what?' exchange; para 3 ('6-8') is the grass/flowers answer. Legitimate dialogue overlap at v6."
+      ],
+      "ok": false
+    },
+    "41": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "“All the faraway islands see what's happening and they're freaking out. The whole world is shook. They're all huddled up, scared, making up fake news in the dark. The idol-makers are working overtime, cranking out new fake gods, telling each other, ‘Sick design!’ ‘Looks awesome!’ and nailing them down so they don't fall over.",
+          "new": "“All the faraway islands see what's happening and they're freaking out. The whole world is shook. They're all huddled up, scared, running around asking, ‘What’s going to happen?’ The idol-makers are working overtime, cranking out new fake gods, telling each other, ‘Sick design!’ ‘Looks awesome!’ and nailing them down so they don't fall over.",
+          "reason": "remove \"fake news\"; MSG 41:5 \"running around saying, ‘What’s going to happen?’\""
+        },
+        {
+          "index": 3,
+          "old": "“All the faraway islands see what's happening and they're freaking out. The whole world is shook. They're all huddled up, scared, making up fake news in the dark. The idol-makers are working overtime, cranking out new fake gods, telling each other, ‘Sick design!’ ‘Looks awesome!’ and nailing them down so they don't fall over.",
+          "new": "“All the faraway islands see what's happening and they're freaking out. The whole world is shook. They're all huddled up, scared, making up fake news in the dark. The idol-makers are working overtime, cranking out new fake gods, telling each other, ‘Nice work!’ ‘Beautiful!’ and nailing them down so they don't fall over.",
+          "reason": "MSG 41:6-7 \"Nice work!\" \"Beautiful!\""
+        },
+        {
+          "index": 4,
+          "old": "“But you, Israel, you're my crew. You're Jacob, my number one pick, the family of my good friend Abraham. I found you all over the world, called you from the darkest places, and told you, ‘You're my servant, you're on my team. I chose you. I'm not gonna ghost you.’ So don't freak out. I'm with you. No need to be scared, because I'm your God. I'll make you strong. I'll help you out. I'll keep you steady and hold on tight.",
+          "new": "“But you, Israel, you're my crew. You're Jacob, my number one pick, the family of my good friend Abraham. I found you all over the world, called you from the darkest places, and told you, ‘You're my servant, you're on my team. I chose you. I’m not going to abandon you.’ So don't freak out. I'm with you. No need to be scared, because I'm your God. I'll make you strong. I'll help you out. I'll keep you steady and hold on tight.",
+          "reason": "remove \"ghost\"; MSG 41:9 \"I chose you and didn’t reject you\""
+        },
+        {
+          "index": 6,
+          "old": "“Feeling lowkey like a worm, Jacob? Don't be scared. Feeling fragile like a bug, Israel? I got you. I, God, want to make sure you know. The God who saves you, the Holy One of Israel. I'm giving you a major glow-up, from a worm to a tractor, from a bug to solid iron. You'll be like a beast of a machine, smoothing out mountains and turning tough hills into soft dirt. You'll tear up the rough ground, exposing it to the sun, wind, and rain. And you'll be feeling yourself, confident and hyped, living it up in the Holy of Israel!",
+          "new": "\"Feeling like a worm, Jacob? Don't be scared. Feeling fragile like a bug, Israel? I got you. I, God, want to make sure you know. The God who saves you, the Holy One of Israel. I'm giving you a major glow-up, from a worm to a tractor, from a bug to solid iron. You'll be like a beast of a machine, smoothing out mountains and turning tough hills into soft dirt. You'll tear up the rough ground, exposing it to the sun, wind, and rain. And you'll be feeling yourself, confident and hyped, living it up in the Holy of Israel!",
+          "reason": "remove \"lowkey\"; MSG 41:14 \"you worm, Jacob\""
+        },
+        {
+          "index": 6,
+          "old": "“Feeling lowkey like a worm, Jacob? Don't be scared. Feeling fragile like a bug, Israel? I got you. I, God, want to make sure you know. The God who saves you, the Holy One of Israel. I'm giving you a major glow-up, from a worm to a tractor, from a bug to solid iron. You'll be like a beast of a machine, smoothing out mountains and turning tough hills into soft dirt. You'll tear up the rough ground, exposing it to the sun, wind, and rain. And you'll be feeling yourself, confident and hyped, living it up in the Holy of Israel!",
+          "new": "“Feeling lowkey like a worm, Jacob? Don't be scared. Feeling fragile like a bug, Israel? I got you. I, God, want to make sure you know. The God who saves you, the Holy One of Israel. I'm giving you a major glow-up, from a worm to a tractor, from a bug to solid iron. You'll be like a beast of a machine, smoothing out mountains and turning tough hills into soft dirt. You'll tear up the rough ground, exposing it to the sun, wind, and rain. And you’ll exult in God, glorying in the Holy of Israel!",
+          "reason": "remove slang; MSG 41:16 \"You’ll exult in God, glory in the Holy of Israel\""
+        },
+        {
+          "index": 7,
+          "old": "“The poor and needy are desperate for water, their mouths are dry and there's none to be found. But I'm there for them, and I, the God of Israel, won't leave them hanging. I'll make rivers flow on dry hills and springs in the valleys. I'll turn the desert into a swimming pool and the dry land into a water park. I'll plant all kinds of trees in the wasteland—cedar, acacia, myrtle, and olive. I'll put cypress, oak, and pine trees in the desert. Everyone will see it. It'll be super obvious, no-doubt-about-it proof that I, God, did this myself. It's all created and signed by the Holy One of Israel.",
+          "new": "“The poor and needy are desperate for water, their mouths are dry and there's none to be found. But I'm there for them, and I, the God of Israel, won't leave them hanging. I'll make rivers flow on dry hills and springs in the valleys. I’ll turn the desert into pools of water and the dry land into springs. I'll plant all kinds of trees in the wasteland—cedar, acacia, myrtle, and olive. I'll put cypress, oak, and pine trees in the desert. Everyone will see it. It'll be super obvious, no-doubt-about-it proof that I, God, did this myself. It's all created and signed by the Holy One of Israel.",
+          "reason": "remove \"swimming pool/water park\"; MSG 41:18 \"a pool of water... springs\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "42": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "“Yo, check out my special guy. I've got his back 100%. He's my chosen one, and I'm super proud of him. I've filled him with my Spirit, my very life. He's gonna make everything right for everyone, no cap. He's not gonna be loud or showy about it. He won't ignore the broken or the hurting, and he won't diss the small and unimportant. He'll just keep on, steady and strong, making things right. He won't get tired and give up. He won't stop until he's done what he came to do - to fix things on earth. Even far-off islands are waiting to hear what he has to say.”",
+          "new": "\"Look at my special guy. I've got his back 100%. He's my chosen one, and I'm super proud of him. I've filled him with my Spirit, my very life. He's gonna make everything right for everyone, no cap. He's not gonna be loud or showy about it. He won't ignore the broken or the hurting, and he won't diss the small and unimportant. He'll just keep on, steady and strong, making things right. He won't get tired and give up. He won't stop until he's done what he came to do - to fix things on earth. Even far-off islands are waiting to hear what he has to say.”",
+          "reason": "remove \"Yo\"; MSG 42:1 \"Look at my Servant\""
+        },
+        {
+          "index": 0,
+          "old": "“Yo, check out my special guy. I've got his back 100%. He's my chosen one, and I'm super proud of him. I've filled him with my Spirit, my very life. He's gonna make everything right for everyone, no cap. He's not gonna be loud or showy about it. He won't ignore the broken or the hurting, and he won't diss the small and unimportant. He'll just keep on, steady and strong, making things right. He won't get tired and give up. He won't stop until he's done what he came to do - to fix things on earth. Even far-off islands are waiting to hear what he has to say.”",
+          "new": "“Yo, check out my special guy. I've got his back 100%. He's my chosen one, and I'm super proud of him. I've filled him with my Spirit, my very life. He’s gonna establish justice in the nations. He's not gonna be loud or showy about it. He won't ignore the broken or the hurting, and he won't diss the small and unimportant. He'll just keep on, steady and strong, making things right. He won't get tired and give up. He won't stop until he's done what he came to do - to fix things on earth. Even far-off islands are waiting to hear what he has to say.”",
+          "reason": "remove \"no cap\"; MSG 42:1 \"he’ll establish justice in the nations\""
+        },
+        {
+          "index": 3,
+          "old": "“But for those who trusted in fake gods, it's game over - they're totally broke.”",
+          "new": "\"But for those who invested in fake gods, it's the end—they're totally broke.\"",
+          "reason": "\"game over\" -> MSG 42:17 \"are bankrupt—dead broke\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "43": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "But listen up, this is God talking. The God who literally created you, Jacob, the one who made you, Israel. He's saying: 'Don't even trip, I got you. I've called you by your name. You're my person. When you feel like you're drowning, I'll be right there with you. When you're going through some rough stuff, you won't get taken out. When you're stuck between a rock and a hard place, it's not game over. Why? Because I'm God, *your* God, the Holy One of Israel, your personal Savior. I paid a crazy price for you—like, all of Egypt, plus the super-rich Cush and Seba. That's how much you're worth to me. That's how much I mess with you. I'd literally trade the whole world to get you back, the entire universe just for you.'",
+          "new": "But listen up, this is God talking. The God who literally created you, Jacob, the one who made you, Israel. He's saying: 'Don't even trip, I got you. I've called you by your name. You're my person. When you feel like you're drowning, I'll be right there with you. When you're going through some rough stuff, you won't get taken out. When you're stuck between a rock and a hard place, it's not game over. Why? Because I'm God, *your* God, the Holy One of Israel, your personal Savior. I paid a crazy price for you—like, all of Egypt, plus the super-rich Cush and Seba. That's how much you're worth to me. That’s how much I love you. I'd literally trade the whole world to get you back, the entire universe just for you.'",
+          "reason": "remove \"mess with\"; MSG 43:4 \"That’s how much I love you\""
+        },
+        {
+          "index": 5,
+          "old": "'But you, Jacob, you didn't pay any attention to me. You got tired of me so fast, Israel. You didn't even bring me sheep for worship. You couldn't be bothered with sacrifices. It's not like I was asking for a lot. I didn't expect crazy expensive gifts. But you didn't even do the bare minimum—you were so stingy with me. But when it came to your sins, you weren't stingy at all. You were super generous with those—and I'm so over it.'",
+          "new": "'But you, Jacob, you didn't pay any attention to me. You got tired of me so fast, Israel. You didn't even bring me sheep for worship. You couldn't be bothered with sacrifices. It's not like I was asking for a lot. I didn't expect crazy expensive gifts. But you didn't even do the bare minimum—you were so stingy with me. But when it came to your sins, you weren't stingy at all. You were super generous with those—and I'm worn out by it.'",
+          "reason": "remove \"so over it\"; MSG 43:24 \"You’re a weariness\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "44": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "5",
+        "2": "6-8",
+        "5": "13-17",
+        "6": "18-19",
+        "7": "20",
+        "8": "21-22",
+        "9": "23",
+        "10": "24",
+        "11": "25-28"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "One person will say, ‘I’m with God,’ and another will be like, ‘Team Jacob.’ Someone else will get ‘God’s Property’ tatted on their hand and be proud to be called Israel.”",
+          "new": "One person will say, ‘I’m with God,’ and another will be like, ‘Team Jacob.’ Someone else will write ‘God’s Property’ on their hand and be proud to be called Israel.”",
+          "reason": "remove \"tatted\"; MSG 44:5 \"write ‘God’s Property’ on that person’s hand\""
+        },
+        {
+          "index": 5,
+          "old": "The woodworker draws up a plan for his fake god, traces it on some wood. He carves it with his tools, making it look like a person—a hot girl or a handsome guy—and puts it in a shrine. First, he cuts down a cedar, or maybe a pine or an oak, and lets it get strong in the forest, drinking up the rain. Then he uses it for two things: part of it for firewood to stay warm and bake bread, and the other part to make a god he worships. He carves it into a god-shape and prays to it. With half, he makes a fire to warm up and cook his dinner. He eats until he’s full and then kicks back, happy with a full stomach and warm feet, thinking, “Ah, this is the life.” And he still has the other half left for a god, a custom-made fake god to worship whenever he feels like it. Whenever he needs something, he prays to it, “Save me. You’re my god.”",
+          "new": "The woodworker draws up a plan for his fake god, traces it on some wood. He carves it with his tools, making it look like a person—a beautiful human—and puts it in a shrine. First, he cuts down a cedar, or maybe a pine or an oak, and lets it get strong in the forest, drinking up the rain. Then he uses it for two things: part of it for firewood to stay warm and bake bread, and the other part to make a god he worships. He carves it into a god-shape and prays to it. With half, he makes a fire to warm up and cook his dinner. He eats until he’s full and then kicks back, happy with a full stomach and warm feet, thinking, “Ah, this is the life.” And he still has the other half left for a god, a custom-made fake god to worship whenever he feels like it. Whenever he needs something, he prays to it, “Save me. You’re my god.”",
+          "reason": "remove sexualized \"hot girl\"; MSG 44:13 \"a beautiful human\""
+        },
+        {
+          "index": 6,
+          "old": "So dumb, right? Like, do they not have eyes? Are their brains even on? Does it not hit them to say, “I used half of this tree for firewood, baked bread, and cooked meat. And now I used the rest to make this gross fake god. I’m literally praying to a piece of wood!”",
+          "new": "Pretty stupid, right? Don’t they have eyes in their heads? Are their brains even working? Does it not hit them to say, “I used half of this tree for firewood, baked bread, and cooked meat. And now I used the rest to make this gross fake god. I’m literally praying to a piece of wood!”",
+          "reason": "MSG 44:18 \"Don’t they have eyes in their heads? Are their brains working at all?\""
+        },
+        {
+          "index": 7,
+          "old": "This dude who loves nothing is so out of touch with reality, so far gone, that he can’t even see what he’s doing. He can’t even look at the fake god, the piece of wood in his hand, and say, “This is wild.”",
+          "new": "This lover of emptiness is so out of touch with reality, so far gone, that he can’t even see what he’s doing. He can’t even look at the fake god, the piece of wood in his hand, and say, “This is wild.”",
+          "reason": "remove \"dude\"; MSG 44:20 \"This lover of emptiness, of nothing\""
+        }
+      ],
+      "flagged": [
+        "Para 0 ('1-5') and para 1 ('5') overlap at v5: para 1 is the 'write God's Property' response inside the v5 unit."
+      ],
+      "ok": false
+    },
+    "45": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "\"I'll go ahead of you, smoothing out the road. I'll smash through bronze city gates, break open padlocks, and kick down any barred doors. I'll lead you to secret stashes of treasure and hidden valuables. This is all to prove that it's really me, God, the God of Israel, who's calling you by your name. It's all for my boy Jacob, my chosen people Israel, that I've picked you out, called you by name, and given you this awesome gig. And you don't even know who I am! I'm God, the one and only. There are no other real gods besides me. I'm the one who geared you up for this, even though you don't know me, so that everyone, from sunrise to sunset, will know I have no competition. I am God, the only one. I create light and I make darkness; I bring peace and I cause chaos. I, God, do all of this.",
+          "new": "\"I'll go ahead of you, smoothing out the road. I'll smash through bronze city gates, break open padlocks, and kick down any barred doors. I'll lead you to secret stashes of treasure and hidden valuables. This is all to prove that it's really me, God, the God of Israel, who's calling you by your name. It’s all for Jacob, my servant, my chosen people Israel, that I've picked you out, called you by name, and given you this awesome gig. And you don't even know who I am! I'm God, the one and only. There are no other real gods besides me. I'm the one who geared you up for this, even though you don't know me, so that everyone, from sunrise to sunset, will know I have no competition. I am God, the only one. I create light and I make darkness; I bring peace and I cause chaos. I, God, do all of this.",
+          "reason": "remove \"my boy\"; MSG 45:4 \"for the sake of Jacob, my servant, Israel, my chosen\""
+        },
+        {
+          "index": 1,
+          "old": "\"I'll go ahead of you, smoothing out the road. I'll smash through bronze city gates, break open padlocks, and kick down any barred doors. I'll lead you to secret stashes of treasure and hidden valuables. This is all to prove that it's really me, God, the God of Israel, who's calling you by your name. It's all for my boy Jacob, my chosen people Israel, that I've picked you out, called you by name, and given you this awesome gig. And you don't even know who I am! I'm God, the one and only. There are no other real gods besides me. I'm the one who geared you up for this, even though you don't know me, so that everyone, from sunrise to sunset, will know I have no competition. I am God, the only one. I create light and I make darkness; I bring peace and I cause chaos. I, God, do all of this.",
+          "new": "\"I'll go ahead of you, smoothing out the road. I'll smash through bronze city gates, break open padlocks, and kick down any barred doors. I'll lead you to secret stashes of treasure and hidden valuables. This is all to prove that it's really me, God, the God of Israel, who's calling you by your name. It's all for my boy Jacob, my chosen people Israel, that I've picked you out, called you by name, and given you this great work. And you don't even know who I am! I'm God, the one and only. There are no other real gods besides me. I'm the one who geared you up for this, even though you don't know me, so that everyone, from sunrise to sunset, will know I have no competition. I am God, the only one. I create light and I make darkness; I bring peace and I cause chaos. I, God, do all of this.",
+          "reason": "remove \"awesome gig\"; MSG 45:4"
+        },
+        {
+          "index": 5,
+          "old": "\"The workers from Egypt, the merchants from Ethiopia, and those tall Sabeans will all come over to you—they'll be all yours. They'll follow you in chains, super chill about it, bowing down and praying to you, saying, 'Wow, God is really with you! There's no other God—not a single one.'\"",
+          "new": "\"The workers from Egypt, the merchants from Ethiopia, and those tall Sabeans will all come over to you—they'll be all yours. They’ll follow you in chains, bowing down and praying to you, saying, 'Wow, God is really with you! There's no other God—not a single one.'\"",
+          "reason": "remove \"super chill\"; MSG 45:14"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "46": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "47": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Our Redeemer, the one they call the God-of-the-Angel-Armies, the Holy One of Israel, says: “Shut up and get out of the way, daughter of Chaldeans. You’re not gonna be called ‘First Lady of the Kingdoms’ anymore.” I was so done with my people, legit disgusted with them. I handed them over to you, but you showed zero compassion. You made the elderly do cruel, hard labor. You were all like, ‘I’m the First Lady. I’ll always be the pampered darling.’ You didn't take anything seriously, never really thought about the consequences. Well, start thinking, party girl. You act like you're the center of the universe, smugly thinking, ‘I’m Number One. There’s no one else but me. I’ll never be a widow, I’ll never lose my kids.’ But BAM, those two things are gonna hit you at the same time, out of nowhere, on the same day: your husband and kids, gone. A total loss, no matter how many magic tricks and charms you have. You were so confident in your messed-up life, thinking, ‘No one sees me.’ You thought you were so smart, had it all figured out. What a joke! So smug, telling yourself, ‘I’m Number One. There’s nobody but me.’ But ruin is coming, and you can't charm it away. Disaster's gonna strike, and you can't use a spell to get rid of it. It'll be a total catastrophe, and you'll be completely lost, totally bewildered. But hey, don't give up. You've got a whole bunch of enchantments, right? There must be one you haven't tried. You've been doing this for a long time. Surely something will work. I know you're exhausted from trying all your little remedies, but don't give up. Call in your astrologers and stargazers. They're good at this stuff. Surely they can cook something up!",
+          "new": "Our Redeemer, the one they call the God-of-the-Angel-Armies, the Holy One of Israel, says: “Shut up and get out of the way, daughter of Chaldeans. You’re not gonna be called ‘First Lady of the Kingdoms’ anymore.” I was so done with my people, legit disgusted with them. I handed them over to you, but you showed zero compassion. You made the elderly do cruel, hard labor. You were all like, ‘I’m the First Lady. I’ll always be the pampered darling.’ You didn't take anything seriously, never really thought about the consequences. Well, start thinking, playgirl. You act like you're the center of the universe, smugly thinking, ‘I’m Number One. There’s no one else but me. I’ll never be a widow, I’ll never lose my kids.’ But BAM, those two things are gonna hit you at the same time, out of nowhere, on the same day: your husband and kids, gone. A total loss, no matter how many magic tricks and charms you have. You were so confident in your messed-up life, thinking, ‘No one sees me.’ You thought you were so smart, had it all figured out. What a joke! So smug, telling yourself, ‘I’m Number One. There’s nobody but me.’ But ruin is coming, and you can't charm it away. Disaster's gonna strike, and you can't use a spell to get rid of it. It'll be a total catastrophe, and you'll be completely lost, totally bewildered. But hey, don't give up. You've got a whole bunch of enchantments, right? There must be one you haven't tried. You've been doing this for a long time. Surely something will work. I know you're exhausted from trying all your little remedies, but don't give up. Call in your astrologers and stargazers. They're good at this stuff. Surely they can cook something up!",
+          "reason": "MSG 47:8 \"playgirl\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "48": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "49": {
+      "range_fixes": {
+        "4": "8",
+        "5": "8-12",
+        "6": "13",
+        "7": "14",
+        "8": "15-18",
+        "9": "19-21",
+        "10": "22",
+        "11": "22-23",
+        "12": "24-26"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Ayo, listen up, all you people from far away! God basically hired me before I was even born. The second I came into the world, He knew my name. He gave me a voice that’s sharp and gets right to the point. He’s always had my back, keeping me safe. He treated me like his secret weapon, his best arrow, kept hidden until the right time. He told me, “You’re my special servant, Israel, and I’m going to show my greatness through you.”",
+          "new": "Listen up, all you people from far away! God basically hired me before I was even born. The second I came into the world, He knew my name. He gave me a voice that’s sharp and gets right to the point. He’s always had my back, keeping me safe. He treated me like his secret weapon, his best arrow, kept hidden until the right time. He told me, “You’re my special servant, Israel, and I’m going to show my greatness through you.”",
+          "reason": "remove \"Ayo\"; MSG 49:1 \"Listen, far-flung islands\""
+        },
+        {
+          "index": 2,
+          "old": "And now, God is speaking—the same God who shaped me from birth to be his servant, to bring his people, Jacob and Israel, back to him. It’s a huge honor, for real, and God is my strength. He says, “Yo, just bringing back the tribes of Jacob and the lost people of Israel? That’s not a big enough job for you. I’m making you a light for all the nations, so my salvation can go global!”",
+          "new": "And now, God is speaking—the same God who shaped me from birth to be his servant, to bring his people, Jacob and Israel, back to him. It’s a huge honor, for real, and God is my strength. He says, “Just bringing back the tribes of Jacob and the lost people of Israel? That’s not a big enough job for you. I’m making you a light for all the nations, so my salvation can go global!”",
+          "reason": "remove \"Yo\"; MSG 49:6"
+        }
+      ],
+      "flagged": [
+        "Para 4 ('8') is the 'God also says' lead-in; para 5 ('8-12') is the speech. Legitimate overlap."
+      ],
+      "ok": false
+    },
+    "50": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God's like, 'Yo, where are the papers? Show me the receipts. You think I just divorced your mom, your nation, for no reason? You think I sold you off like some old video game? Nah. The truth is, you guys messed up. Your sins are what got you into this mess, your wrongs are why you got shipped out. I showed up, ready to help, but nobody was home. I called, and all I got was voicemail. You think I'm washed up? That I can't do anything? I'm the same God who can turn the sea into a desert with a single word, leaving fish to rot in the sun. I can literally turn off the lights in the sky.'",
+          "new": "God's like, 'Where are the divorce papers? Show me the evidence. You think I just divorced your mom, your nation, for no reason? You think I sold you off like some old video game? Nah. The truth is, you guys messed up. Your sins are what got you into this mess, your wrongs are why you got shipped out. I showed up, ready to help, but nobody was home. I called, and all I got was voicemail. You think I'm washed up? That I can't do anything? I'm the same God who can turn the sea into a desert with a single word, leaving fish to rot in the sun. I can literally turn off the lights in the sky.'",
+          "reason": "remove \"Yo\"; MSG 50:1 \"Can you produce your mother’s divorce papers\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "51": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "“Yo, for real, listen up. If you’re serious about living a good life and you’re actually trying to connect with God, think about where you came from. Think about the rock you were cut from, the quarry you were dug out of. Yeah, think about your ancestor Abraham, and Sarah who gave birth to you. It’s wild, right? I called him when he was just one dude, but I blessed him and he became a whole nation. In the same way, I, God, am gonna comfort Zion and all its broken-down places. I’m gonna turn its dead ground into a new Eden, its empty landscape into my own garden. It’ll be a place full of hype and laughter, with people singing thank-you songs and jamming out.",
+          "new": "\"Listen, yes listen. If you’re serious about living a good life and you’re actually trying to connect with God, think about where you came from. Think about the rock you were cut from, the quarry you were dug out of. Yeah, think about your ancestor Abraham, and Sarah who gave birth to you. It’s wild, right? I called him when he was just one dude, but I blessed him and he became a whole nation. In the same way, I, God, am gonna comfort Zion and all its broken-down places. I’m gonna turn its dead ground into a new Eden, its empty landscape into my own garden. It’ll be a place full of hype and laughter, with people singing thank-you songs and jamming out.",
+          "reason": "remove \"Yo, for real\"; MSG 51:1 \"Listen, yes listen\""
+        },
+        {
+          "index": 4,
+          "old": "“It’s me. I’m the one comforting you. So why are you so scared? Of some person who’s just gonna die anyway? Some poor human who’s gonna turn to dust? You totally forgot about me, your God, the one who made you, who stretched out the heavens and laid the foundations of the earth. And now you’re here, shaking like a leaf because some bully is throwing a fit and thinks he can destroy the world. But what’s gonna happen to his tantrums? Nothing. The prisoners will be set free before you know it. They’re not gonna die. They won’t even go hungry. Because I am God, your God, the one who stirs up the sea and makes the waves crash. My name is the Lord of Angel Armies. I give you the words to say, and I personally protect you, even while I’m creating new heavens, setting the earth on a firm foundation, and telling Zion, ‘Yo, you’re my people!’”",
+          "new": "“It’s me. I’m the one comforting you. So why are you so scared? Of some person who’s just gonna die anyway? Some poor human who’s gonna turn to dust? You totally forgot about me, your God, the one who made you, who stretched out the heavens and laid the foundations of the earth. And now you’re here, shaking like a leaf because some bully is throwing a fit and thinks he can destroy the world. But what’s gonna happen to his tantrums? Nothing. The prisoners will be set free before you know it. They’re not gonna die. They won’t even go hungry. Because I am God, your God, the one who stirs up the sea and makes the waves crash. My name is the Lord of Angel Armies. I give you the words to say, and I personally protect you, even while I’m creating new heavens, setting the earth on a firm foundation, and telling Zion, ‘You’re my people!’\"",
+          "reason": "remove \"Yo\"; MSG 51:16 \"You’re my people!\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "52": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, wake up! Let's go, Zion! Get your best 'fit on, Jerusalem, you're the holy city! All the haters who aren't about God have been kicked out. They're not part of this journey. So get up, brush off the dust, captive Jerusalem! Break free from your chains, daughter of Zion!",
+          "new": "Wake up! Wake up, Zion! Get dressed in your best clothes, Jerusalem, you're the holy city! All the haters who aren't about God have been kicked out. They're not part of this journey. So get up, brush off the dust, captive Jerusalem! Break free from your chains, daughter of Zion!",
+          "reason": "remove \"Yo\"/\"fit\"; MSG 52:1 \"Wake up! Wake up! Pull on your clothes, Zion!\""
+        },
+        {
+          "index": 3,
+          "old": "How awesome is it to see the messenger's feet on the mountains, bringing the good news, telling everyone that it's all good, that good times are coming, announcing salvation, and telling Zion, \"Your God is in charge!\" Listen! Your lookouts are shouting, like a massive thunderclap, all in sync. They're literally seeing with their own eyes God returning to Zion. So break out in song! Even the ruins of Jerusalem should be booming, \"God has comforted his people! He's redeemed Jerusalem!\" God has rolled up his sleeves, and all the nations can see his holy, jacked arm. Everyone, from one end of the earth to the other, is seeing him do his thing, his salvation work.",
+          "new": "How awesome is it to see the messenger's feet on the mountains, bringing the good news, telling everyone that it's all good, that good times are coming, announcing salvation, and telling Zion, \"Your God is in charge!\" Listen! Your lookouts are shouting, like a massive thunderclap, all in sync. They're literally seeing with their own eyes God returning to Zion. So break out in song! Even the ruins of Jerusalem should be booming, \"God has comforted his people! He's redeemed Jerusalem!\" God has rolled up his sleeves, and all the nations can see his holy, muscled arm. Everyone, from one end of the earth to the other, is seeing him do his thing, his salvation work.",
+          "reason": "remove \"jacked\"; MSG 52:10 \"his holy, muscled arm\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "53": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "54": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, even if you feel totally left out and like you've got nothing, it's time to celebrate! Start singing, even if you've never had a reason to before. God's saying you're about to have more blessings than you can even handle, way more than the people who seem to have it all. So get ready! Make space for all the good stuff coming your way. Think bigger! You're gonna need way more room for your crew 'cause it's about to get huge. You're gonna be so influential, taking over places and rebuilding what was broken. Don't even stress, you're not gonna be embarrassed. Don't hold back, you won't fail. You'll forget all the cringey stuff from when you were younger, and the pain of being alone will just fade away. Because the one who made you? He's basically your forever person, and his name is God, the commander of all the angel armies! The one who saves you is the Holy One of Israel, and he's the God of the whole world. You felt like you got ghosted, totally heartbroken, but God's welcoming you back with open arms. Like someone who got married young and then got left, but now you're wanted back,\" says your God.",
+          "new": "Sing out, even if you feel totally left out and like you've got nothing, it's time to celebrate! Start singing, even if you've never had a reason to before. God's saying you're about to have more blessings than you can even handle, way more than the people who seem to have it all. So get ready! Make space for all the good stuff coming your way. Think bigger! You're gonna need way more room for your crew 'cause it's about to get huge. You're gonna be so influential, taking over places and rebuilding what was broken. Don't even stress, you're not gonna be embarrassed. Don't hold back, you won't fail. You'll forget all the cringey stuff from when you were younger, and the pain of being alone will just fade away. Because the one who made you? He's basically your forever person, and his name is God, the commander of all the angel armies! The one who saves you is the Holy One of Israel, and he's the God of the whole world. You felt like you got ghosted, totally heartbroken, but God's welcoming you back with open arms. Like someone who got married young and then got left, but now you're wanted back,\" says your God.",
+          "reason": "remove \"Yo\"; MSG 54:1 \"Sing, barren woman\""
+        },
+        {
+          "index": 0,
+          "old": "Yo, even if you feel totally left out and like you've got nothing, it's time to celebrate! Start singing, even if you've never had a reason to before. God's saying you're about to have more blessings than you can even handle, way more than the people who seem to have it all. So get ready! Make space for all the good stuff coming your way. Think bigger! You're gonna need way more room for your crew 'cause it's about to get huge. You're gonna be so influential, taking over places and rebuilding what was broken. Don't even stress, you're not gonna be embarrassed. Don't hold back, you won't fail. You'll forget all the cringey stuff from when you were younger, and the pain of being alone will just fade away. Because the one who made you? He's basically your forever person, and his name is God, the commander of all the angel armies! The one who saves you is the Holy One of Israel, and he's the God of the whole world. You felt like you got ghosted, totally heartbroken, but God's welcoming you back with open arms. Like someone who got married young and then got left, but now you're wanted back,\" says your God.",
+          "new": "Yo, even if you feel totally left out and like you've got nothing, it's time to celebrate! Start singing, even if you've never had a reason to before. God's saying you're about to have more blessings than you can even handle, way more than the people who seem to have it all. So get ready! Make space for all the good stuff coming your way. Think bigger! You're gonna need way more room for your crew 'cause it's about to get huge. You're gonna be so influential, taking over places and rebuilding what was broken. Don't even stress, you're not gonna be embarrassed. Don't hold back, you won't fail. You'll forget all the cringey stuff from when you were younger, and the pain of being alone will just fade away. Because the one who made you? He's your husband, and his name is God, the commander of all the angel armies! The one who saves you is the Holy One of Israel, and he's the God of the whole world. You felt like you got ghosted, totally heartbroken, but God's welcoming you back with open arms. Like someone who got married young and then got left, but now you're wanted back,\" says your God.",
+          "reason": "remove \"forever person\"; MSG 54:5 \"your Maker is your bridegroom\""
+        },
+        {
+          "index": 0,
+          "old": "Yo, even if you feel totally left out and like you've got nothing, it's time to celebrate! Start singing, even if you've never had a reason to before. God's saying you're about to have more blessings than you can even handle, way more than the people who seem to have it all. So get ready! Make space for all the good stuff coming your way. Think bigger! You're gonna need way more room for your crew 'cause it's about to get huge. You're gonna be so influential, taking over places and rebuilding what was broken. Don't even stress, you're not gonna be embarrassed. Don't hold back, you won't fail. You'll forget all the cringey stuff from when you were younger, and the pain of being alone will just fade away. Because the one who made you? He's basically your forever person, and his name is God, the commander of all the angel armies! The one who saves you is the Holy One of Israel, and he's the God of the whole world. You felt like you got ghosted, totally heartbroken, but God's welcoming you back with open arms. Like someone who got married young and then got left, but now you're wanted back,\" says your God.",
+          "new": "Yo, even if you feel totally left out and like you've got nothing, it's time to celebrate! Start singing, even if you've never had a reason to before. God's saying you're about to have more blessings than you can even handle, way more than the people who seem to have it all. So get ready! Make space for all the good stuff coming your way. Think bigger! You're gonna need way more room for your crew 'cause it's about to get huge. You're gonna be so influential, taking over places and rebuilding what was broken. Don't even stress, you're not gonna be embarrassed. Don't hold back, you won't fail. You'll forget all the cringey stuff from when you were younger, and the pain of being alone will just fade away. Because the one who made you? He's basically your forever person, and his name is God, the commander of all the angel armies! The one who saves you is the Holy One of Israel, and he's the God of the whole world. You felt like you were abandoned, totally heartbroken, but God's welcoming you back with open arms. Like someone who got married young and then got left, but now you're wanted back,\" says your God.",
+          "reason": "remove \"ghosted\"; MSG 54:6 \"like an abandoned wife\""
+        },
+        {
+          "index": 4,
+          "old": "\"To the city that's been through it, beat down by storms and feeling low-key ignored: I'm about to give you a major glow-up. I'm rebuilding you with turquoise stones, your foundations with sapphires, your towers with rubies, your gates with jewels, and all your walls with precious stones. All your kids will be taught by God himself—like, what a GOATed mentor, right? You'll be built strong, on a foundation of what's right. You'll be safe from any trouble—nothing to be scared of! No terror will even get close. If anyone tries to start beef with you, don't think for a second that I sent them. And if they do attack, it's not gonna work. I'm the one who created the blacksmith who makes weapons, and I'm also the one who created the destroyer. But no weapon that could hurt you has ever been made. Anyone who tries to call you out in court will be exposed as a liar. This is the inheritance for God's crew. I'll make sure everything works out for you in the end.\" That's a decree from God himself.",
+          "new": "\"To the city that's been through it, beat down by storms and feeling forgotten: I'm about to give you a major glow-up. I'm rebuilding you with turquoise stones, your foundations with sapphires, your towers with rubies, your gates with jewels, and all your walls with precious stones. All your kids will be taught by God himself—like, what a GOATed mentor, right? You'll be built strong, on a foundation of what's right. You'll be safe from any trouble—nothing to be scared of! No terror will even get close. If anyone tries to start beef with you, don't think for a second that I sent them. And if they do attack, it's not gonna work. I'm the one who created the blacksmith who makes weapons, and I'm also the one who created the destroyer. But no weapon that could hurt you has ever been made. Anyone who tries to call you out in court will be exposed as a liar. This is the inheritance for God's crew. I'll make sure everything works out for you in the end.\" That's a decree from God himself.",
+          "reason": "remove \"low-key\"; MSG 54:11 \"storm-battered, unpitied\""
+        },
+        {
+          "index": 4,
+          "old": "\"To the city that's been through it, beat down by storms and feeling low-key ignored: I'm about to give you a major glow-up. I'm rebuilding you with turquoise stones, your foundations with sapphires, your towers with rubies, your gates with jewels, and all your walls with precious stones. All your kids will be taught by God himself—like, what a GOATed mentor, right? You'll be built strong, on a foundation of what's right. You'll be safe from any trouble—nothing to be scared of! No terror will even get close. If anyone tries to start beef with you, don't think for a second that I sent them. And if they do attack, it's not gonna work. I'm the one who created the blacksmith who makes weapons, and I'm also the one who created the destroyer. But no weapon that could hurt you has ever been made. Anyone who tries to call you out in court will be exposed as a liar. This is the inheritance for God's crew. I'll make sure everything works out for you in the end.\" That's a decree from God himself.",
+          "new": "\"To the city that's been through it, beat down by storms and feeling low-key ignored: I'm about to give you a major glow-up. I'm rebuilding you with turquoise stones, your foundations with sapphires, your towers with rubies, your gates with jewels, and all your walls with precious stones. All your kids will be taught by God himself—what a mentor! You'll be built strong, on a foundation of what's right. You'll be safe from any trouble—nothing to be scared of! No terror will even get close. If anyone tries to start beef with you, don't think for a second that I sent them. And if they do attack, it's not gonna work. I'm the one who created the blacksmith who makes weapons, and I'm also the one who created the destroyer. But no weapon that could hurt you has ever been made. Anyone who tries to call you out in court will be exposed as a liar. This is the inheritance for God's crew. I'll make sure everything works out for you in the end.\" That's a decree from God himself.",
+          "reason": "remove \"GOATed\"; MSG 54:13 \"what a mentor for your children!\""
+        },
+        {
+          "index": 4,
+          "old": "\"To the city that's been through it, beat down by storms and feeling low-key ignored: I'm about to give you a major glow-up. I'm rebuilding you with turquoise stones, your foundations with sapphires, your towers with rubies, your gates with jewels, and all your walls with precious stones. All your kids will be taught by God himself—like, what a GOATed mentor, right? You'll be built strong, on a foundation of what's right. You'll be safe from any trouble—nothing to be scared of! No terror will even get close. If anyone tries to start beef with you, don't think for a second that I sent them. And if they do attack, it's not gonna work. I'm the one who created the blacksmith who makes weapons, and I'm also the one who created the destroyer. But no weapon that could hurt you has ever been made. Anyone who tries to call you out in court will be exposed as a liar. This is the inheritance for God's crew. I'll make sure everything works out for you in the end.\" That's a decree from God himself.",
+          "new": "\"To the city that's been through it, beat down by storms and feeling low-key ignored: I'm about to give you a major glow-up. I'm rebuilding you with turquoise stones, your foundations with sapphires, your towers with rubies, your gates with jewels, and all your walls with precious stones. All your kids will be taught by God himself—like, what a GOATed mentor, right? You'll be built strong, on a foundation of what's right. You'll be safe from any trouble—nothing to be scared of! No terror will even get close. If anyone tries to fight you, don't think for a second that I sent them. And if they do attack, it's not gonna work. I'm the one who created the blacksmith who makes weapons, and I'm also the one who created the destroyer. But no weapon that could hurt you has ever been made. Anyone who tries to call you out in court will be exposed as a liar. This is the inheritance for God's crew. I'll make sure everything works out for you in the end.\" That's a decree from God himself.",
+          "reason": "remove \"start beef\"; MSG 54:15 \"If anyone attacks you\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "55": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "\"Yo, anyone who's thirsty, come get some water! You broke? No worries, come on and get some food! Seriously, get your drinks, wine, milk—it's all on the house, no money needed! Why are you wasting your cash on junk food and stuff that doesn't even last? Just listen up, for real: eat the good stuff, the best stuff. Pay attention, come here, and listen to what I'm saying, 'cause these words will give you life. I'm making a promise to you that'll last forever, the same kind of solid, real love I showed David. I made him a big deal, a leader for all the nations, and now it's your turn. You're gonna call over nations you don't even know, and they'll come running to you because of me, your God, 'cause the Holy One of Israel thinks you're awesome.\"",
+          "new": "\"Hey, anyone who’s thirsty, come get some water! You broke? No worries, come on and get some food! Seriously, get your drinks, wine, milk—it's all on the house, no money needed! Why are you wasting your cash on junk food and stuff that doesn't even last? Just listen up, for real: eat the good stuff, the best stuff. Pay attention, come here, and listen to what I'm saying, 'cause these words will give you life. I'm making a promise to you that'll last forever, the same kind of solid, real love I showed David. I made him a big deal, a leader for all the nations, and now it's your turn. You're gonna call over nations you don't even know, and they'll come running to you because of me, your God, 'cause the Holy One of Israel thinks you're awesome.\"",
+          "reason": "remove \"Yo\"; MSG 55:1 \"Hey there! All who are thirsty\""
+        },
+        {
+          "index": 1,
+          "old": "\"Look for God while He's around, pray to Him while He's close. If you're doing bad stuff, just stop. If you're thinking bad thoughts, change your mind. Come back to God, 'cause He's super merciful. Come back to our God, 'cause He's always ready to forgive, no cap.\"",
+          "new": "\"Look for God while He's around, pray to Him while He's close. If you're doing bad stuff, just stop. If you're thinking bad thoughts, change your mind. Come back to God, 'cause He's super merciful. Come back to our God, 'cause He's always ready to forgive.\"",
+          "reason": "remove \"no cap\"; MSG 55:7"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "56": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "'Yo, look out for each other. Do the right thing, and do it for the right reasons, 'cause my rescue mission is about to drop. You're super blessed if you're in on this, if you're all about it. That means respecting the Sabbath, not messing it up, and just, like, not doing messed-up stuff. And for real, don't ever let anyone who's not from around here but is trying to follow God feel like they're second-rate, like they don't belong. And anyone who's been through some physical stuff, don't let them think they're 'damaged goods' and can't be part of this.'",
+          "new": "\"Guard what's right. Look out for each other. Do the right thing, and do it for the right reasons, 'cause my rescue mission is about to drop. You're super blessed if you're in on this, if you're all about it. That means respecting the Sabbath, not messing it up, and just, like, not doing messed-up stuff. And for real, don't ever let anyone who's not from around here but is trying to follow God feel like they're second-rate, like they don't belong. And anyone who's been through some physical stuff, don't let them think they're 'damaged goods' and can't be part of this.'",
+          "reason": "remove \"Yo\"; MSG 56:1 \"Guard my common good\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "57": {
+      "range_fixes": {
+        "1": "3-13",
+        "2": "11-13",
+        "3": "13",
+        "4": "14",
+        "5": "15-21"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "But you guys... children of a witch, for real... come over here. You sons of a shameless woman, daughters of a unfaithful one. What gives you the right to be mocking people, sneering, and sticking your tongue out? Do you even get how messed up you've become? A whole generation of rebels and liars. You're out there satisfying your desires wherever you find a bit of shade, doing whatever you want. You're sacrificing your own kids in any random spot—any cave or crack in the rock is good enough for you. You grab stones from the creek to set up your weird sex-and-religion shrines. You've basically chosen your own downfall. Your so-called 'worship' is gonna be what ruins you. You've climbed up high mountains to do your gross sex-and-death rituals. Behind closed doors, you've got your collection of precious little gods and goddesses. You've totally abandoned me, gone all out, stripped down, and made your bed a place of worship. You've hopped into bed with so-called 'sacred' prostitutes and loved every second of it, obsessing over their naked bodies. You pour fancy oils on your king-god and load up on perfumes for yourselves. You send people out to find the newest religious trend, sending them all the way to hell and back. You completely wear yourselves out trying every new and different thing, and you never realize what a total waste it is. You always seem to find the energy for the latest fad, never getting tired of trying out new religions.",
+          "new": "But you guys... children of a witch, for real... come over here. You sons of a shameless woman, daughters of an unfaithful one. What gives you the right to be mocking people, sneering, and sticking your tongue out? Do you even get how messed up you've become? A whole generation of rebels and liars. You're out there satisfying your desires wherever you find a bit of shade, doing whatever you want. You're sacrificing your own kids in any random spot—any cave or crack in the rock is good enough for you. You grab stones from the creek to set up your weird sex-and-religion shrines. You've basically chosen your own downfall. Your so-called 'worship' is gonna be what ruins you. You've climbed up high mountains to do your gross sex-and-death rituals. Behind closed doors, you've got your collection of precious little gods and goddesses. You've totally abandoned me, gone all out, stripped down, and made your bed a place of worship. You've hopped into bed with so-called 'sacred' prostitutes and loved every second of it, obsessing over their naked bodies. You pour fancy oils on your king-god and load up on perfumes for yourselves. You send people out to find the newest religious trend, sending them all the way to hell and back. You completely wear yourselves out trying every new and different thing, and you never realize what a total waste it is. You always seem to find the energy for the latest fad, never getting tired of trying out new religions.",
+          "reason": "grammar fix; MSG 57:3"
+        }
+      ],
+      "flagged": [
+        "Para 2 ('11-13') ends with the wind/idols warning; para 3 ('13') is the 'whoever takes refuge in me' promise at v13."
+      ],
+      "ok": false
+    },
+    "58": {
+      "range_fixes": {
+        "0": "1-4",
+        "4": "9-12",
+        "5": "13-14"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "“Yo, shout it out! Don't hold back, make it loud like a trumpet blast! Tell my people what they're doing wrong, confront my family, Jacob, with their sins. They're always busy with worship and love learning about me. They look like a nation of good people, following the law and honoring God. They ask me, ‘What’s the right thing to do?’ and love having me on their side. But they also complain, ‘Why do we fast and you don’t see it? Why do we humble ourselves and you don’t even notice?’",
+          "new": "\"Shout it out! Don't hold back, make it loud like a trumpet blast! Tell my people what they're doing wrong, confront my family, Jacob, with their sins. They're always busy with worship and love learning about me. They look like a nation of good people, following the law and honoring God. They ask me, ‘What’s the right thing to do?’ and love having me on their side. But they also complain, ‘Why do we fast and you don’t see it? Why do we humble ourselves and you don’t even notice?’",
+          "reason": "remove \"Yo\"; MSG 58:1 \"Shout! A full-throated shout!\""
+        },
+        {
+          "index": 1,
+          "old": "“Well, here’s the tea:",
+          "new": "\"Well, here’s the deal:",
+          "reason": "remove \"tea\"; MSG 58:4 \"Well, here’s why\""
+        }
+      ],
+      "flagged": [
+        "Para 1 ('4') is the v4 lead-in ('Well, here's the deal:'); para 4 ('9-12') starts at v9 where para 3 ('7-9') ended. Legitimate overlaps."
+      ],
+      "ok": false
+    },
+    "59": {
+      "range_fixes": {
+        "0": "1-8",
+        "1": "9-11",
+        "2": "12-15",
+        "3": "15-19",
+        "4": "19-20",
+        "5": "21"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, for real, God isn't weak. He can totally still save you. And He's not ignoring you; He can still hear. The issue isn't God, it's you. Your messed-up choices created this huge gap between you and God. Your sins are basically blocking His reception so He can't hear you. Your hands are literally covered in blood, your fingers are dripping with guilt. You're constantly lying, and your tongue is always muttering messed-up stuff. Nobody stands up for what's right, and no one plays fair. You all trust in empty illusions, you tell lies, you cook up trouble and end up with more sin. It's like you're hatching snake eggs and weaving spider webs. Eat one of those eggs and you die; crack one open and a snake pops out. Those spider webs are useless for making clothes. You can't wear that stuff! All you do is weave wickedness and hatch violence. You're all racing to do evil, trying to be the first to murder someone. You plan and breathe evil, leaving a trail of wrecked lives behind you. You know nothing about peace and even less about justice. The paths you're on are all twisted and jacked up. There's no peace for anyone who walks down those roads.",
+          "new": "Look! Listen! God isn’t weak. He can totally still save you. And He's not ignoring you; He can still hear. The issue isn't God, it's you. Your messed-up choices created this huge gap between you and God. Your sins are basically blocking His reception so He can't hear you. Your hands are literally covered in blood, your fingers are dripping with guilt. You're constantly lying, and your tongue is always muttering messed-up stuff. Nobody stands up for what's right, and no one plays fair. You all trust in empty illusions, you tell lies, you cook up trouble and end up with more sin. It's like you're hatching snake eggs and weaving spider webs. Eat one of those eggs and you die; crack one open and a snake pops out. Those spider webs are useless for making clothes. You can't wear that stuff! All you do is weave wickedness and hatch violence. You're all racing to do evil, trying to be the first to murder someone. You plan and breathe evil, leaving a trail of wrecked lives behind you. You know nothing about peace and even less about justice. The paths you're on are all twisted and jacked up. There's no peace for anyone who walks down those roads.",
+          "reason": "remove \"Yo, for real\"; MSG 59:1 \"Look! Listen!\""
+        },
+        {
+          "index": 2,
+          "old": "Our screw-ups are piled up right in front of you, God, and our sins are calling us out. Our wrongdoings are staring us in the face; we know exactly what we've done: dissing and denying God, not following our God, spreading fake news, starting drama, being full of lies, and whispering malicious things. Justice gets shut down, and righteousness is kicked to the curb. Truth is tripping up in the streets, and honesty is nowhere to be found. Goodness is MIA. Anyone who tries to stop doing evil just gets beat up and robbed.",
+          "new": "Our screw-ups are piled up right in front of you, God, and our sins are calling us out. Our wrongdoings are staring us in the face; we know exactly what we've done: dissing and denying God, not following our God, spreading lies, starting drama, being full of lies, and whispering malicious things. Justice gets shut down, and righteousness is kicked to the curb. Truth is tripping up in the streets, and honesty is nowhere to be found. Goodness is MIA. Anyone who tries to stop doing evil just gets beat up and robbed.",
+          "reason": "remove \"fake news\"; MSG 59:13 \"Spreading lies, stirring up strife\""
+        }
+      ],
+      "flagged": [
+        "Para 2 ('12-15') and para 3 ('15-19') overlap at v15: para 3 opens God's response at v15."
+      ],
+      "ok": false
+    },
+    "60": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, Jerusalem, get out of bed! Time to wake up and catch some rays. God's glory is seriously shining on you. The rest of the world is basically in airplane mode, total darkness, but God's light is hitting you like a sunrise. Nations are gonna flock to your light, and kings will be drawn to your brightness. Just look up and look around! Watch everyone gathering and coming to you: your sons from miles away, and your daughters getting a ride from their nannies. Seeing them will make you smile so big, your heart will feel like it's gonna burst. All your people are coming home from overseas for a huge reunion, a massive harvest of exiles from all over. And you'll see endless camel caravans, young camels from Midian and Ephah, rolling in from Sheba with tons of gold and frankincense, telling everyone how great God is. Plus, a ton of flocks from Kedar and Nebaioth will be brought as offerings to my altar, making my amazing Temple look even more epic.",
+          "new": "Jerusalem, get out of bed! Time to wake up and catch some rays. God's glory is seriously shining on you. The rest of the world is basically in airplane mode, total darkness, but God's light is hitting you like a sunrise. Nations are gonna flock to your light, and kings will be drawn to your brightness. Just look up and look around! Watch everyone gathering and coming to you: your sons from miles away, and your daughters getting a ride from their nannies. Seeing them will make you smile so big, your heart will feel like it's gonna burst. All your people are coming home from overseas for a huge reunion, a massive harvest of exiles from all over. And you'll see endless camel caravans, young camels from Midian and Ephah, rolling in from Sheba with tons of gold and frankincense, telling everyone how great God is. Plus, a ton of flocks from Kedar and Nebaioth will be brought as offerings to my altar, making my amazing Temple look even more epic.",
+          "reason": "remove \"Yo\"; MSG 60:1 \"Get out of bed, Jerusalem!\""
+        },
+        {
+          "index": 0,
+          "old": "Yo, Jerusalem, get out of bed! Time to wake up and catch some rays. God's glory is seriously shining on you. The rest of the world is basically in airplane mode, total darkness, but God's light is hitting you like a sunrise. Nations are gonna flock to your light, and kings will be drawn to your brightness. Just look up and look around! Watch everyone gathering and coming to you: your sons from miles away, and your daughters getting a ride from their nannies. Seeing them will make you smile so big, your heart will feel like it's gonna burst. All your people are coming home from overseas for a huge reunion, a massive harvest of exiles from all over. And you'll see endless camel caravans, young camels from Midian and Ephah, rolling in from Sheba with tons of gold and frankincense, telling everyone how great God is. Plus, a ton of flocks from Kedar and Nebaioth will be brought as offerings to my altar, making my amazing Temple look even more epic.",
+          "new": "Yo, Jerusalem, get out of bed! Time to wake up and catch some rays. God's glory is seriously shining on you. The rest of the world is in total darkness, but God's light is hitting you like a sunrise. Nations are gonna flock to your light, and kings will be drawn to your brightness. Just look up and look around! Watch everyone gathering and coming to you: your sons from miles away, and your daughters getting a ride from their nannies. Seeing them will make you smile so big, your heart will feel like it's gonna burst. All your people are coming home from overseas for a huge reunion, a massive harvest of exiles from all over. And you'll see endless camel caravans, young camels from Midian and Ephah, rolling in from Sheba with tons of gold and frankincense, telling everyone how great God is. Plus, a ton of flocks from Kedar and Nebaioth will be brought as offerings to my altar, making my amazing Temple look even more epic.",
+          "reason": "remove \"airplane mode\"; MSG 60:2 \"wrapped in darkness\""
+        },
+        {
+          "index": 0,
+          "old": "Yo, Jerusalem, get out of bed! Time to wake up and catch some rays. God's glory is seriously shining on you. The rest of the world is basically in airplane mode, total darkness, but God's light is hitting you like a sunrise. Nations are gonna flock to your light, and kings will be drawn to your brightness. Just look up and look around! Watch everyone gathering and coming to you: your sons from miles away, and your daughters getting a ride from their nannies. Seeing them will make you smile so big, your heart will feel like it's gonna burst. All your people are coming home from overseas for a huge reunion, a massive harvest of exiles from all over. And you'll see endless camel caravans, young camels from Midian and Ephah, rolling in from Sheba with tons of gold and frankincense, telling everyone how great God is. Plus, a ton of flocks from Kedar and Nebaioth will be brought as offerings to my altar, making my amazing Temple look even more epic.",
+          "new": "Yo, Jerusalem, get out of bed! Time to wake up and catch some rays. God's glory is seriously shining on you. The rest of the world is basically in airplane mode, total darkness, but God's light is hitting you like a sunrise. Nations are gonna flock to your light, and kings will be drawn to your brightness. Just look up and look around! Watch everyone gathering and coming to you: your sons from miles away, and your daughters getting a ride from their nannies. Seeing them will make you smile so big, your heart will feel like it's gonna burst. All your people are coming home from overseas for a huge reunion, a massive harvest of exiles from all over. And you'll see endless camel caravans, young camels from Midian and Ephah, rolling in from Sheba with tons of gold and frankincense, telling everyone how great God is. Plus, a ton of flocks from Kedar and Nebaioth will be brought as offerings to my altar, making my beautiful Sanctuary even more glorious.",
+          "reason": "remove \"epic\"; MSG 60:7 \"beautify my Sanctuary\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "61": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "62": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, when it comes to Zion, I just can't stay quiet. For Jerusalem, I'm not holding back until her goodness shines like the sun and her rescue is like a blazing torch. All the other nations will see how good you are, and their leaders will see your glory. You're gonna get a new name directly from God. You'll be like a sick crown in God's hand, a super fancy cup held up by your God. Nobody's gonna call you 'Rejected' anymore, and your home won't be called 'Ruined' either. You'll be 'Hephzibah' (which means 'My Delight'), and your land will be 'Beulah' (meaning 'Married'). That's because God is super into you, and your land is gonna be like a huge wedding party. Just like a guy marries his girl, your creator is marrying you. And just like a groom is stoked about his bride, your God is so happy with you.",
+          "new": "When it comes to Zion, I just can't stay quiet. For Jerusalem, I'm not holding back until her goodness shines like the sun and her rescue is like a blazing torch. All the other nations will see how good you are, and their leaders will see your glory. You're gonna get a new name directly from God. You'll be like a sick crown in God's hand, a super fancy cup held up by your God. Nobody's gonna call you 'Rejected' anymore, and your home won't be called 'Ruined' either. You'll be 'Hephzibah' (which means 'My Delight'), and your land will be 'Beulah' (meaning 'Married'). That's because God is super into you, and your land is gonna be like a huge wedding party. Just like a guy marries his girl, your creator is marrying you. And just like a groom is stoked about his bride, your God is so happy with you.",
+          "reason": "remove \"Yo\"; MSG 62:1"
+        },
+        {
+          "index": 0,
+          "old": "Yo, when it comes to Zion, I just can't stay quiet. For Jerusalem, I'm not holding back until her goodness shines like the sun and her rescue is like a blazing torch. All the other nations will see how good you are, and their leaders will see your glory. You're gonna get a new name directly from God. You'll be like a sick crown in God's hand, a super fancy cup held up by your God. Nobody's gonna call you 'Rejected' anymore, and your home won't be called 'Ruined' either. You'll be 'Hephzibah' (which means 'My Delight'), and your land will be 'Beulah' (meaning 'Married'). That's because God is super into you, and your land is gonna be like a huge wedding party. Just like a guy marries his girl, your creator is marrying you. And just like a groom is stoked about his bride, your God is so happy with you.",
+          "new": "Yo, when it comes to Zion, I just can't stay quiet. For Jerusalem, I'm not holding back until her goodness shines like the sun and her rescue is like a blazing torch. All the other nations will see how good you are, and their leaders will see your glory. You're gonna get a new name directly from God. You’ll be like a stunning crown in God’s hand, a jeweled cup held high by your God. Nobody's gonna call you 'Rejected' anymore, and your home won't be called 'Ruined' either. You'll be 'Hephzibah' (which means 'My Delight'), and your land will be 'Beulah' (meaning 'Married'). That's because God is super into you, and your land is gonna be like a huge wedding party. Just like a guy marries his girl, your creator is marrying you. And just like a groom is stoked about his bride, your God is so happy with you.",
+          "reason": "remove \"sick\"; MSG 62:3 \"a stunning crown... a jeweled gold cup\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "63": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "The watchmen are like, “Yo, who’s that coming from Edom? From Bozrah, with the drip all dyed red? Who are you, looking so fire, walking in with all that power?”",
+          "new": "Someone asks, “Who’s that coming from Edom? From Bozrah, with clothes all dyed red? Who are you, robed in splendor, striding forward in all that power?”",
+          "reason": "remove \"Yo\"/\"drip\"/\"fire\"; MSG 63:1"
+        },
+        {
+          "index": 1,
+          "old": "“It’s me. I say what’s real, and I’m a beast at saving people.”",
+          "new": "\"It’s me. I announce victory, and I’m mighty to save.\"",
+          "reason": "remove \"beast at saving\"; MSG 63:1 \"proclaiming victory, mighty to save\""
+        },
+        {
+          "index": 2,
+          "old": "“Aight, but for real, why are your clothes so red? Like you’ve been stomping on grapes or something?”",
+          "new": "\"Okay, but why are your clothes so red? Like you’ve been treading a winepress or something?\"",
+          "reason": "remove \"Aight\"; MSG 63:2 \"like those of one treading the winepress\""
+        },
+        {
+          "index": 3,
+          "old": "“I’ve been doing this all by myself. No one was there to back me up. I was so mad, I stomped on them like grapes; I was raging, I trampled them. Their blood went everywhere, my clothes are soaked. I was out for revenge. It was time to set things right. I looked for someone to help, but there was no one. I was shook, not a single person stepped up. So I just did it myself, my anger was my fuel. I trampled people because I was so mad, crushed them in my rage, and their blood just soaked the ground.”",
+          "new": "“I’ve been doing this all by myself. No one was there to back me up. I was so mad, I stomped on them like grapes; I was raging, I trampled them. Their blood went everywhere, my clothes are soaked. I was out for revenge. It was time to set things right. I looked for someone to help, but there was no one. I was appalled—not a single person stepped up. So I just did it myself, my anger was my fuel. I trampled people because I was so mad, crushed them in my rage, and their blood just soaked the ground.”",
+          "reason": "remove \"shook\"; MSG 63:5 \"I was appalled\""
+        },
+        {
+          "index": 4,
+          "old": "I’m gonna list out all the awesome things God has done, all the stuff He deserves praise for. All the crazy generous things God’s done, His major goodness to Israel—He showed so much compassion, His love was on another level. He was like, “For sure, these are my people, my kids who would never do me dirty.” So He became their Savior. In all their struggles, He was struggling too. He didn’t send some rando to help them. He did it Himself, in person. Out of His own love and pity, He saved them. He rescued them and carried them for a super long time.",
+          "new": "I’m gonna list out all the awesome things God has done, all the stuff He deserves praise for. All the crazy generous things God’s done, His major goodness to Israel—He showed so much compassion, His love was on another level. He was like, “For sure, these are my people, my kids who would never do me dirty.” So He became their Savior. In all their struggles, He was struggling too. He didn’t send some stranger to help them. He did it Himself, in person. Out of His own love and pity, He saved them. He rescued them and carried them for a super long time.",
+          "reason": "remove \"rando\"; MSG 63:9"
+        }
+      ],
+      "flagged": [
+        "Paras 0-2 are the watchman dialogue exchanges within MSG 63:1-2; ranges reflect speakers, not verse coverage."
+      ],
+      "ok": false
+    },
+    "64": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Yo, God, if you would just rip open the sky and come down, the mountains would totally shake. Like when a forest fire starts, or when water starts boiling like crazy. Your enemies would be shook and every country would be trembling. You've done some wild things we never saw coming, came down and made the mountains quake. Seriously, since the beginning of time, nobody has ever seen or heard of a God like you who shows up for those who wait for you. You connect with people who are actually happy to do the right thing and remember how you work. But you've been so mad at us. We messed up and just kept messing up for way too long. Is there even any hope for us? Can we be saved? We're all infected with sin, totally contaminated. Even our best tries are like dirty, greasy rags. We're like dried-up leaves in the fall, just blown away by the wind because of our sin. Nobody's even trying to pray to you or reach out, because you've turned your back on us and left us to deal with our own mess.",
+          "new": "God, if you would just rip open the sky and come down, the mountains would totally shake. Like when a forest fire starts, or when water starts boiling like crazy. Your enemies would be shook and every country would be trembling. You've done some wild things we never saw coming, came down and made the mountains quake. Seriously, since the beginning of time, nobody has ever seen or heard of a God like you who shows up for those who wait for you. You connect with people who are actually happy to do the right thing and remember how you work. But you've been so mad at us. We messed up and just kept messing up for way too long. Is there even any hope for us? Can we be saved? We're all infected with sin, totally contaminated. Even our best tries are like dirty, greasy rags. We're like dried-up leaves in the fall, just blown away by the wind because of our sin. Nobody's even trying to pray to you or reach out, because you've turned your back on us and left us to deal with our own mess.",
+          "reason": "remove \"Yo\"; MSG 64:1"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "65": {
+      "range_fixes": {
+        "2": "8-12",
+        "3": "13-15",
+        "4": "16"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "I’ve been making myself available to people who weren’t even asking, ready to be found by those who didn’t even look. I kept saying, ‘Here I am, right here!’ to a nation that was straight up ignoring me. I reached out day after day to a crew that turned their backs on me, people who were constantly making wrong turns and insisting on doing things their own way. They get on my last nerve, being rude to my face 24/7, inventing their own DIY, potluck-style religion. They hang out in tombs overnight trying to get messages from the dead, eat forbidden food, and drink some sketchy witch’s brew. Then they have the nerve to say, ‘Keep your distance. Don’t touch me. I’m holier than you.’ These people are so cringe, I can’t stand their vibe. Look, I’ve got the receipts—their sins are all written down in front of me. I’m done with this. I’m going to pay them what they’ve earned for their sins. And for their parents’ sins lumped in? That’s a bonus,” says God. “Because they’ve been practicing their blasphemous worship, mocking me at their hillside shrines, I’m about to unleash the consequences and pay them back in full for their actions.",
+          "new": "I’ve been making myself available to people who weren’t even asking, ready to be found by those who didn’t even look. I kept saying, ‘Here I am, right here!’ to a nation that was straight up ignoring me. I reached out day after day to a crew that turned their backs on me, people who were constantly making wrong turns and insisting on doing things their own way. They get on my last nerve, being rude to my face 24/7, inventing their own DIY, potluck-style religion. They hang out in tombs overnight trying to get messages from the dead, eat forbidden food, and drink some sketchy witch’s brew. Then they have the nerve to say, ‘Keep your distance. Don’t touch me. I’m holier than you.’ These people gag me. I can’t stand their stench. Look, I’ve got the receipts—their sins are all written down in front of me. I’m done with this. I’m going to pay them what they’ve earned for their sins. And for their parents’ sins lumped in? That’s a bonus,” says God. “Because they’ve been practicing their blasphemous worship, mocking me at their hillside shrines, I’m about to unleash the consequences and pay them back in full for their actions.",
+          "reason": "MSG 65:5 \"These people gag me. I can’t stand their stench\""
+        },
+        {
+          "index": 3,
+          "old": "“But as for you who ghosted me, your God, who forgot about the holy mountains, who throw dinner parties for Lady Luck and host cocktail hours for Sir Fate… well, you played yourselves. Your fate? It’s death. Because when I invited you, you left me on read; when I spoke, you tuned me out. You did the very things I said were evil and chose what I hate.”",
+          "new": "“But as for you who ghosted me, your God, who forgot about the holy mountains, who throw dinner parties for Lady Luck and host cocktail hours for Sir Fate… well, you asked for it. Your fate? It’s death. Because when I invited you, you left me on read; when I spoke, you tuned me out. You did the very things I said were evil and chose what I hate.”",
+          "reason": "remove \"played yourselves\"; MSG 65:12 \"Well, you asked for it\""
+        },
+        {
+          "index": 3,
+          "old": "“But as for you who ghosted me, your God, who forgot about the holy mountains, who throw dinner parties for Lady Luck and host cocktail hours for Sir Fate… well, you played yourselves. Your fate? It’s death. Because when I invited you, you left me on read; when I spoke, you tuned me out. You did the very things I said were evil and chose what I hate.”",
+          "new": "“But as for you who ghosted me, your God, who forgot about the holy mountains, who throw dinner parties for Lady Luck and host cocktail hours for Sir Fate… well, you played yourselves. Your fate? It’s death. Because when I invited you, you ignored me; when I spoke, you brushed me off. You did the very things I said were evil and chose what I hate.”",
+          "reason": "remove \"left me on read\"; MSG 65:12 \"you ignored me... you brushed me off\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "66": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-4",
+        "3": "5",
+        "4": "6",
+        "5": "7-9",
+        "6": "10-11",
+        "7": "12",
+        "8": "12-13",
+        "9": "14-16",
+        "10": "17",
+        "11": "18-21",
+        "12": "22-23"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "\"Yo, heaven is my throne, and the whole earth is just my footstool. So what kind of house could you possibly build for me? What kind of vacation spot could you set aside for me? I made all of this! I own it all!\" says God. \"But here's what I'm actually looking for: someone who is humble and simple, who takes what I say seriously and respectfully.",
+          "new": "\"Heaven is my throne, and the whole earth is just my footstool. So what kind of house could you possibly build for me? What kind of vacation spot could you set aside for me? I made all of this! I own it all!\" says God. \"But here's what I'm actually looking for: someone who is humble and simple, who takes what I say seriously and respectfully.",
+          "reason": "remove \"Yo\"; MSG 66:1 \"Heaven’s my throne\""
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

@@ -1,0 +1,888 @@
+{
+  "book": "Ezekiel",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "4-9",
+        "3": "10-12",
+        "4": "13-14",
+        "5": "15-16",
+        "6": "17-21",
+        "7": "22-24",
+        "8": "25-28"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "(Just to be clear, it was the fifth day of the month, in the fifth year since King Jehoiachin got exiled. That's when God's word came straight to me, Ezekiel, son of Buzi the priest, right there on the banks of the Kebar River in Babylon. God's power just hit me that day, no cap.)",
+          "new": "(Just to be clear, it was the fifth day of the month, in the fifth year since King Jehoiachin got exiled. That's when God's word came straight to me, Ezekiel, son of Buzi the priest, right there on the banks of the Kebar River in Babylon. God's power just hit me that day.)",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "2": "3-7",
+        "3": "8",
+        "4": "9-10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "4": "6",
+        "5": "7-8",
+        "6": "9",
+        "7": "10-11",
+        "8": "12",
+        "9": "13-15",
+        "10": "16-17",
+        "11": "18",
+        "12": "19",
+        "13": "20-21",
+        "14": "22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "4": "9-12",
+        "5": "13",
+        "6": "14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "“Alright, my guy, God says to take a sharp sword and use it like a razor to shave your head and your beard. Then, get some scales and divide the hair into three equal parts. When the siege is finally over, you’re gonna take one-third of the hair and burn it right in the middle of the city. Take the second third, chop it up with that sword, and sprinkle it all around the city. The last third, you’re just gonna throw it to the wind. And then I’m gonna come after them with a sword.",
+          "new": "“Alright, God says to take a sharp sword and use it like a razor to shave your head and your beard. Then, get some scales and divide the hair into three equal parts. When the siege is finally over, you’re gonna take one-third of the hair and burn it right in the middle of the city. Take the second third, chop it up with that sword, and sprinkle it all around the city. The last third, you’re just gonna throw it to the wind. And then I’m gonna come after them with a sword.",
+          "reason": "God addressing the prophet as 'my guy' is irreverently familiar for divine speech."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "0": "1-7",
+        "1": "8-10",
+        "2": "11-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6-10",
+        "3": "11-15",
+        "4": "16-18",
+        "5": "19-20",
+        "6": "21-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5-6",
+        "5": "8",
+        "6": "9",
+        "7": "10-11",
+        "8": "12",
+        "9": "13",
+        "10": "14-15",
+        "11": "16",
+        "12": "17-18"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, picture this: It's the sixth year, sixth month, fifth day. I'm just chilling at my place, having a meeting with the leaders of Judah, when BAM! The hand of God just grabs me. I look up, and I'm shook. There's this figure that looks like a dude—fiery from the waist down and like super shiny bronze from the waist up. He reaches out a hand, grabs me by the hair (wild, right?), and the Spirit just yeets me into the air. Next thing I know, I'm in a vision, flying to Jerusalem. I land right at the north gate of the Temple's inner court, where they'd set up this statue of a pagan goddess that totally ticks God off. And right there in front of me is the Glory of God, just like I saw it on the plain. It was insane.",
+          "new": "So, picture this: It's the sixth year, sixth month, fifth day. I'm just chilling at my place, having a meeting with the leaders of Judah, when BAM! The hand of God just grabs me. I look up, and I'm shook. There's this figure that looks like a dude—fiery from the waist down and like super shiny bronze from the waist up. He reaches out a hand, grabs me by the hair (wild, right?), and the Spirit just swept me up into the air. Next thing I know, I'm in a vision, flying to Jerusalem. I land right at the north gate of the Temple's inner court, where they'd set up this statue of a pagan goddess that totally ticks God off. And right there in front of me is the Glory of God, just like I saw it on the plain. It was insane.",
+          "reason": "MSG 8:3; 'yeet' is a distracting meme verb for the Spirit's action."
+        },
+        {
+          "index": 7,
+          "old": "I went in and, no cap, I couldn't believe what I was seeing. The walls were covered in paintings of reptiles, animals, and monsters—basically the whole squad of Egyptian gods—and the Israelites were worshiping them. In the middle of the room were seventy of Israel's leaders, with this guy Jaazaniah son of Shaphan front and center. They were all holding these incense things, and the smoke was just rising up in a cloud.",
+          "new": "I went in and I couldn't believe what I was seeing. The walls were covered in paintings of reptiles, animals, and monsters—basically the whole squad of Egyptian gods—and the Israelites were worshiping them. In the middle of the room were seventy of Israel's leaders, with this guy Jaazaniah son of Shaphan front and center. They were all holding these incense things, and the smoke was just rising up in a cloud.",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "7": "10-11"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "2": "3-5",
+        "3": "6-8",
+        "4": "9-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "6": "15",
+        "7": "16-20",
+        "8": "21",
+        "9": "22-23",
+        "10": "24-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "0": "1-6",
+        "1": "7",
+        "2": "8-10",
+        "3": "11",
+        "4": "12-15",
+        "5": "16",
+        "6": "17-20",
+        "7": "21-22",
+        "8": "23",
+        "9": "24-25",
+        "10": "26-28"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-7",
+        "2": "8-9",
+        "3": "10-12",
+        "4": "13-14",
+        "5": "15-16",
+        "6": "17-20",
+        "7": "21-22",
+        "8": "23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-8",
+        "2": "9-11",
+        "3": "12-14",
+        "4": "15-16",
+        "5": "17-18",
+        "6": "19-20",
+        "7": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Ayo, listen up. God hit me with this message: \"My guy, for real, how does a grapevine's wood stack up against any random tree branch in the forest? You ever see anyone build something with vine wood? Or use it to make a peg to hang stuff on?",
+          "new": "Listen up. God hit me with this message: \"For real, how does a grapevine's wood stack up against any random tree branch in the forest? You ever see anyone build something with vine wood? Or use it to make a peg to hang stuff on?",
+          "reason": "'Ayo'/'my guy' address the prophet with irreverent familiarity in divine speech."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-5",
+        "2": "6-7",
+        "3": "8-14",
+        "9": "25-26",
+        "10": "27-28",
+        "11": "29-30",
+        "12": "31-32",
+        "13": "33-36",
+        "14": "37-39",
+        "15": "40-41",
+        "16": "42",
+        "17": "43-44",
+        "18": "45-47",
+        "19": "48-49",
+        "20": "50-51",
+        "21": "52-57",
+        "22": "58-63"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "'So I came by again and saw you were ready for love. I took you under my wing, gave you clothes, and kept you safe. I promised to love you and we got married—a covenant. I, the LORD God, gave you my word. You became mine. I gave you a good bath, washed off all that old blood, and put some nice-smelling oils on you. I hooked you up with a colorful dress and some leather sandals. I gave you linen shirts and a whole wardrobe of expensive clothes. I decked you out in jewelry: bracelets, a necklace, emerald rings, sapphire earrings, and a diamond crown. You had all the best and most beautiful things: amazing clothes and gourmet food, with honey and oil. You were drop-dead gorgeous. A queen! You got famous worldwide, a legendary beauty, all because of the drip I gave you. That's a decree from the LORD God.",
+          "new": "'So I came by again and saw you were ready for love. I took you under my wing, gave you clothes, and kept you safe. I promised to love you and we got married—a covenant. I, the LORD God, gave you my word. You became mine. I gave you a good bath, washed off all that old blood, and put some nice-smelling oils on you. I hooked you up with a colorful dress and some leather sandals. I gave you linen shirts and a whole wardrobe of expensive clothes. I decked you out in jewelry: bracelets, a necklace, emerald rings, sapphire earrings, and a diamond crown. You had all the best and most beautiful things: amazing clothes and gourmet food, with honey and oil. You were drop-dead gorgeous. A queen! You got famous worldwide, a legendary beauty, all because of the beauty I gave you. That's a decree from the LORD God.",
+          "reason": "MSG 16:14 'because of the splendor I gave you'; 'drip' is distracting meme slang."
+        },
+        {
+          "index": 4,
+          "old": "'But all that beauty went straight to your head. You used your fame to become an immoral woman, just grabbing any guy who walked by and sleeping with him. You took the nice clothes I gave you and made little hookup tents out of them, turning them into brothels. That kind of thing should never, ever happen.",
+          "new": "'But all that beauty went straight to your head. You used your fame to become an immoral woman, just grabbing any guy who walked by and sleeping with him. You took the nice clothes I gave you and made little pagan shrine-tents out of them, turning them into brothels. That kind of thing should never, ever happen.",
+          "reason": "MSG 16:16; 'hookup tents' is sexually crude wording."
+        },
+        {
+          "index": 5,
+          "old": "'And then you took the beautiful jewelry I gave you, my gold and my silver, and you made these gross pornographic idols for your brothels. You decorated your beds with fancy silks and used my special oils and incense to make them smell good. Then you took the amazing food I gave you—the fresh bread, fruit, and all the good spices—and you served it up like a fancy meal in your pagan shrines. That's what you did, says the LORD God.",
+          "new": "'And then you took the beautiful jewelry I gave you, my gold and my silver, and you made these gross male idols for your shrines. You decorated your beds with fancy silks and used my special oils and incense to make them smell good. Then you took the amazing food I gave you—the fresh bread, fruit, and all the good spices—and you served it up like a fancy meal in your pagan shrines. That's what you did, says the LORD God.",
+          "reason": "MSG 16:17 'made male idols'; 'pornographic' is gratuitously crude."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-6",
+        "2": "7-8",
+        "3": "9-10",
+        "5": "11-12",
+        "6": "13-15",
+        "7": "16",
+        "8": "17-19",
+        "9": "20-22",
+        "10": "23-24",
+        "4": "9-10"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Paras 3/4 are near-duplicate paraphrases of the same MSG 17:9-10 oracle ('Will it thrive?...') in slightly different teen wording (source data issue, not biblical repetition). Both carry the full MSG range 9-10; recommend deleting para 4 as accidental repetition."
+      ],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "2": "5-9",
+        "3": "10-13",
+        "4": "14-17",
+        "5": "18-19",
+        "7": "23-24",
+        "8": "25-27",
+        "9": "28-29",
+        "10": "30-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "2": "5-9",
+        "3": "10-14"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Man, your mom was like this total boss lioness. She hung out with a whole crew of lions, and her cubs got super strong. She raised one of them to be this absolute unit of a lion. He learned to hunt and, no cap, he started hunting people. Other countries freaked out and set a trap. They caught him, put hooks in him, and dragged him all the way to Egypt.",
+          "new": "Man, your mom was like this total boss lioness. She hung out with a whole crew of lions, and her cubs got super strong. She raised one of them to be this absolute unit of a lion. He learned to hunt and he started hunting people. Other countries freaked out and set a trap. They caught him, put hooks in him, and dragged him all the way to Egypt.",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "5": "8-9",
+        "6": "10-11",
+        "7": "12-16",
+        "8": "17-18",
+        "9": "19-20",
+        "10": "21-23",
+        "11": "24-26",
+        "12": "27-28",
+        "13": "29",
+        "14": "30",
+        "15": "31-33",
+        "16": "34-36",
+        "17": "37",
+        "18": "38-43",
+        "19": "44",
+        "20": "45-46"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "3": "8-9",
+        "4": "9-10",
+        "9": "14-16",
+        "10": "17-21",
+        "11": "22",
+        "12": "23-24"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "“So, my guy, you gotta start groaning. Like, double over in pain and make a huge scene!",
+          "new": "“So you gotta start groaning. Like, double over in pain and make a huge scene!",
+          "reason": "God addressing the prophet as 'my guy' is irreverently familiar for divine speech."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "1": "6-12",
+        "2": "12",
+        "3": "13-14",
+        "4": "15",
+        "6": "22-24",
+        "7": "25-28"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "0": "1-4",
+        "4": "11-17",
+        "5": "18-21",
+        "6": "22-26",
+        "7": "27-29",
+        "8": "30",
+        "9": "31",
+        "10": "32-34",
+        "11": "35",
+        "12": "36-39",
+        "13": "40-42",
+        "14": "43-44",
+        "15": "45",
+        "16": "46-47",
+        "17": "48-49"
+      },
+      "content_fixes": [
+        {
+          "index": 13,
+          "old": "\"On top of that, they sent out special messengers to invite guys from far away—and of course, they came. The sisters got all dolled up, put on makeup and sexy clothes. They lounged on a fancy bed, with incense and oils burning—my incense and my oils! A whole crowd gathered, a rowdy, drunk mob. They put bracelets on the sisters' arms and crowns on their heads.",
+          "new": "\"On top of that, they sent out special messengers to invite guys from far away—and of course, they came. The sisters got all dolled up, put on makeup and their finest clothes. They lounged on a fancy bed, with incense and oils burning—my incense and my oils! A whole crowd gathered, a rowdy, drunk mob. They put bracelets on the sisters' arms and crowns on their heads.",
+          "reason": "MSG 23:40; 'sexy clothes' is sexually crude wording for the adultery metaphor."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-6",
+        "2": "7",
+        "3": "8",
+        "4": "9-10",
+        "5": "11",
+        "6": "12-15",
+        "7": "16-17",
+        "8": "18-20",
+        "9": "21",
+        "10": "22",
+        "11": "23",
+        "12": "24-25",
+        "13": "25",
+        "14": "26-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6-7",
+        "3": "8-11",
+        "4": "12-14",
+        "5": "15-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "0": "1-2",
+        "4": "7-14",
+        "5": "15",
+        "6": "16"
+      },
+      "content_fixes": [
+        {
+          "index": 8,
+          "old": "\"The Lord GOD says: 'When I make you a ghost town, a city with no one left, and when I bring the deep ocean waters to cover you, I'm gonna send you down to the pit with those who died a long, long time ago. I'll make you live down there, in those ancient ruins with the dead. You'll never see the world of the living again. I'll bring terrifying things on you, and that's it for you. People will search for you, but you'll be gone forever. No cap.' This is the decree of the Lord GOD.\"",
+          "new": "\"The Lord GOD says: 'When I make you a ghost town, a city with no one left, and when I bring the deep ocean waters to cover you, I'm gonna send you down to the pit with those who died a long, long time ago. I'll make you live down there, in those ancient ruins with the dead. You'll never see the world of the living again. I'll bring terrifying things on you, and that's it for you. People will search for you, but you'll be gone forever.' This is the decree of the Lord GOD.\"",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-9",
+        "2": "10-11",
+        "3": "12",
+        "4": "13",
+        "5": "14",
+        "6": "15",
+        "7": "16",
+        "8": "17",
+        "9": "18",
+        "10": "19",
+        "11": "20",
+        "12": "21",
+        "13": "22",
+        "14": "23-24",
+        "15": "25",
+        "16": "26-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "2-6",
+        "2": "7",
+        "4": "11-12",
+        "5": "13-19",
+        "6": "20-22",
+        "7": "23-24",
+        "8": "25",
+        "9": "26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "0": "1-3",
+        "3": "9-11"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "2-5",
+        "2": "6",
+        "3": "7-8"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "\"'When that goes down, I’ll send messengers by ship to sound the alarm for the super chill Ethiopians. They’ll be totally freaked out. Egypt is doomed! Judgment is coming, no cap.",
+          "new": "\"'When that goes down, I’ll send messengers by ship to sound the alarm for the super chill Ethiopians. They’ll be totally freaked out. Egypt is doomed! Judgment is coming.",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-9",
+        "2": "10-13",
+        "3": "14",
+        "4": "15-16",
+        "5": "17",
+        "6": "18"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "In the eleventh year, on the first day of the third month, God's message hit me. He said, \"Son of man, go tell Pharaoh, the king of Egypt, that arrogant old goat:",
+          "new": "In the eleventh year, on the first day of the third month, God's message hit me. He said, \"Son of man, go tell Pharaoh, the king of Egypt, arrogant as he is:",
+          "reason": "MSG 31; 'old goat' mockingly degrades Pharaoh."
+        },
+        {
+          "index": 6,
+          "old": "\"'This is about Pharaoh, that arrogant old goat.'",
+          "new": "\"'This is about Pharaoh, arrogant as he is.'",
+          "reason": "MSG 31:18; 'old goat' mockingly degrades Pharaoh."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {
+        "0": "1-2",
+        "3": "3-10",
+        "10": "22-23",
+        "11": "24-25"
+      },
+      "content_fixes": [
+        {
+          "index": 16,
+          "old": "“Pharaoh will see them all and, being the arrogant old goat he is, will actually feel better seeing all the company he has—Pharaoh and his whole slaughtered army. A decree from the Lord GOD.",
+          "new": "“Pharaoh will see them all and, arrogant as he is, will actually feel better seeing all the company he has—Pharaoh and his whole slaughtered army. A decree from the Lord GOD.",
+          "reason": "MSG 32:31 'arrogant as he is'; 'old goat' mockingly degrades Pharaoh."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6",
+        "2": "7-9",
+        "3": "10",
+        "4": "11",
+        "5": "12-13",
+        "6": "14-16",
+        "7": "17-18",
+        "8": "19-20",
+        "9": "21",
+        "10": "22",
+        "11": "23-24",
+        "12": "25-26",
+        "13": "27-29",
+        "14": "29",
+        "15": "30-32",
+        "16": "33"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "34": {
+      "range_fixes": {
+        "0": "1-6",
+        "1": "7-9",
+        "2": "10",
+        "3": "11-16",
+        "4": "17-19",
+        "5": "20-22",
+        "6": "23-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "35": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "2": "5-9",
+        "3": "10-13",
+        "4": "14-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-7",
+        "2": "8-12",
+        "3": "13-15",
+        "4": "16-21",
+        "5": "22-23",
+        "6": "24-28",
+        "7": "29-30",
+        "8": "31",
+        "9": "32",
+        "10": "33-36",
+        "11": "37-38"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "37": {
+      "range_fixes": {
+        "3": "4",
+        "4": "5-6",
+        "5": "7-8",
+        "6": "9",
+        "7": "10",
+        "8": "11",
+        "9": "12-14",
+        "10": "15-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "38": {
+      "range_fixes": {
+        "0": "1-6",
+        "1": "7-9",
+        "2": "10-13",
+        "3": "13",
+        "4": "14-16",
+        "5": "17-22",
+        "6": "23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "39": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6",
+        "2": "7",
+        "3": "8",
+        "4": "9-10",
+        "5": "11",
+        "6": "12-16",
+        "8": "21-24",
+        "9": "25-29"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "“Alright, my guy, go prophesy against Gog. Tell him, ‘This is a message from the one and only God, the Master: I’m so against you, Gog, you leader of Meshech and Tubal. I’m about to turn you around, drag you all the way from the far north, and bring you down hard on the mountains of Israel. Then I’ll smack that bow right out of your left hand and the arrows from your right. You and your whole crew, and everyone with you, are gonna get taken out on the mountains of Israel. I’m gonna serve you up as a feast for all the scavenger birds and wild animals. You’ll fall in the middle of an open field. I’ve said it, and it’s gonna happen. That’s a decree from God, the Master.’",
+          "new": "“Alright, go prophesy against Gog. Tell him, ‘This is a message from the one and only God, the Master: I’m so against you, Gog, you leader of Meshech and Tubal. I’m about to turn you around, drag you all the way from the far north, and bring you down hard on the mountains of Israel. Then I’ll smack that bow right out of your left hand and the arrows from your right. You and your whole crew, and everyone with you, are gonna get taken out on the mountains of Israel. I’m gonna serve you up as a feast for all the scavenger birds and wild animals. You’ll fall in the middle of an open field. I’ve said it, and it’s gonna happen. That’s a decree from God, the Master.’",
+          "reason": "God addressing the prophet as 'my guy' is irreverently familiar for divine speech."
+        },
+        {
+          "index": 7,
+          "old": "“Alright, my guy, God, the Master, says this: Call all the birds! Call all the wild animals! Tell them, ‘Get over here! Gather around for this crazy sacrificial meal I’m cooking up for you on the mountains of Israel. You’re gonna eat meat and drink blood. You’ll be feasting on the bodies of absolute legends and drinking the blood of world-famous princes like they were a bunch of rams, lambs, goats, and bulls—the best of the best. At this sacrificial meal I’m making, you’ll eat fat until you’re stuffed and drink blood until you’re wasted. You’ll chow down on horses and their riders, heroes and all kinds of warriors at the table I’m setting for you.’ That’s a decree from God, the Master.",
+          "new": "“Alright, God, the Master, says this: Call all the birds! Call all the wild animals! Tell them, ‘Get over here! Gather around for this crazy sacrificial meal I’m cooking up for you on the mountains of Israel. You’re gonna eat meat and drink blood. You’ll be feasting on the bodies of absolute legends and drinking the blood of world-famous princes like they were a bunch of rams, lambs, goats, and bulls—the best of the best. At this sacrificial meal I’m making, you’ll eat fat until you’re stuffed and drink blood until you’re wasted. You’ll chow down on horses and their riders, heroes and all kinds of warriors at the table I’m setting for you.’ That’s a decree from God, the Master.",
+          "reason": "God addressing the prophet as 'my guy' is irreverently familiar for divine speech."
+        },
+        {
+          "index": 9,
+          "old": "“But now, I’m bringing Jacob back from exile. I’m going to have compassion on all the people of Israel, and I’ll be super protective of my holy name. The memory of their shame and all the times they betrayed me will eventually fade away, especially when they’re living securely in their own land, totally safe and without fear. Once I’ve brought them back from other countries and gathered them from enemy lands, I’ll use them to show how holy I am for all the nations to see. Then they’ll know, no cap, that I am their God. Because even though I sent them away into exile, I’m gonna gather them all back to their own land, not leaving a single person behind. After I pour my Spirit on Israel and fill them with my life, I’ll never turn away from them again. I’ll look them right in the face. That’s a decree from God, the Master.”",
+          "new": "“But now, I’m bringing Jacob back from exile. I’m going to have compassion on all the people of Israel, and I’ll be super protective of my holy name. The memory of their shame and all the times they betrayed me will eventually fade away, especially when they’re living securely in their own land, totally safe and without fear. Once I’ve brought them back from other countries and gathered them from enemy lands, I’ll use them to show how holy I am for all the nations to see. Then they’ll know that I am their God. Because even though I sent them away into exile, I’m gonna gather them all back to their own land, not leaving a single person behind. After I pour my Spirit on Israel and fill them with my life, I’ll never turn away from them again. I’ll look them right in the face. That’s a decree from God, the Master.”",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "40": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5",
+        "3": "6-7",
+        "4": "8-9",
+        "5": "10",
+        "6": "11",
+        "7": "12",
+        "8": "13",
+        "9": "14",
+        "10": "15",
+        "11": "16",
+        "12": "17-19",
+        "13": "20-23",
+        "14": "24-27",
+        "15": "28-31",
+        "16": "32-34",
+        "17": "35-37",
+        "18": "38-43",
+        "19": "44-46",
+        "20": "47",
+        "21": "48-49"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "41": {
+      "range_fixes": {
+        "1": "2",
+        "2": "3-4",
+        "3": "5-7",
+        "4": "8-11",
+        "5": "12-13",
+        "6": "13-15",
+        "7": "15-20",
+        "8": "19-21",
+        "9": "22",
+        "10": "23-26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "42": {
+      "range_fixes": {
+        "1": "10-12",
+        "2": "13-14",
+        "3": "15-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "43": {
+      "range_fixes": {
+        "1": "4-5",
+        "2": "6-9",
+        "3": "10-11",
+        "4": "12",
+        "5": "13",
+        "6": "14-16",
+        "7": "16-17",
+        "8": "17",
+        "9": "18",
+        "10": "19-21",
+        "11": "22-24",
+        "12": "25",
+        "13": "26-27"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "The amazing glory of God streamed into the Temple through the east gate. The Spirit lifted me to my feet and led me into the inner courtyard, and—no cap—the Temple was filled with the radiant glory of God!",
+          "new": "The amazing glory of God streamed into the Temple through the east gate. The Spirit lifted me to my feet and led me into the inner courtyard, and the Temple was filled with the radiant glory of God!",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "44": {
+      "range_fixes": {
+        "3": "5",
+        "4": "6-9",
+        "5": "10-14",
+        "6": "15-16",
+        "7": "17-19",
+        "8": "20",
+        "9": "21",
+        "10": "22",
+        "11": "23",
+        "12": "24",
+        "13": "25-27",
+        "14": "28-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "45": {
+      "range_fixes": {
+        "5": "13-15",
+        "6": "16-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "46": {
+      "range_fixes": {
+        "4": "9-10",
+        "5": "11",
+        "6": "12",
+        "7": "13-15",
+        "8": "16-18",
+        "9": "19-20",
+        "10": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "47": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-5",
+        "2": "6",
+        "3": "7",
+        "4": "8-10",
+        "5": "11",
+        "6": "12",
+        "7": "13-14",
+        "8": "15",
+        "9": "15-17",
+        "10": "18",
+        "11": "19",
+        "12": "20",
+        "13": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "48": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9-12",
+        "10": "13-14",
+        "11": "15-19",
+        "12": "20",
+        "13": "21",
+        "14": "22",
+        "15": "23",
+        "16": "24",
+        "17": "25",
+        "18": "26",
+        "19": "27",
+        "20": "28",
+        "21": "29",
+        "22": "30-31",
+        "23": "32",
+        "24": "33",
+        "25": "34",
+        "26": "35",
+        "27": "35"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

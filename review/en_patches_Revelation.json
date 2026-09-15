@@ -1,0 +1,430 @@
+{
+  "book": "Revelation",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "4": "8",
+        "5": "9-11",
+        "6": "12-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "2": "2-3",
+        "3": "4-5",
+        "4": "6",
+        "5": "7",
+        "6": "8",
+        "7": "9-10",
+        "8": "10-11",
+        "9": "11",
+        "10": "12",
+        "11": "13",
+        "12": "14-15",
+        "13": "15-16",
+        "14": "17",
+        "15": "18",
+        "16": "19",
+        "17": "20-23",
+        "18": "24-25",
+        "19": "26-27",
+        "20": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "2": "1-3",
+        "3": "4-6",
+        "5": "7-9",
+        "6": "9-13",
+        "8": "14-15",
+        "9": "17-20",
+        "10": "20-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "2": "2-4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "2": "2-4",
+        "3": "5",
+        "4": "6-7",
+        "5": "7-8",
+        "6": "9-10",
+        "7": "11",
+        "8": "12",
+        "9": "13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Seven Seals",
+          "new": "§The Lamb and the Scroll",
+          "reason": "'The Seven Seals' describes ch6; ch5 is the scroll and the Lamb (5:1-14)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "3": "5-6",
+        "4": "7-8",
+        "5": "9-11",
+        "6": "12-17"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Sealed Servants",
+          "new": "§The Six Seals",
+          "reason": "'The Sealed Servants' describes ch7; ch6 is the six seals (6:1-17)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "2-3",
+        "3": "4-8",
+        "4": "9-10",
+        "7": "14-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Two Witnesses",
+          "new": "§The Seventh Seal and the Trumpets",
+          "reason": "'The Two Witnesses' describes ch11; ch8 is the seventh seal and the first four trumpets."
+        },
+        {
+          "index": 4,
+          "old": "The temple guards of seven angels with the trumpets got ready to play. The first one let it rip, and bam! Hail and fire mixed with blood rained down. A third of the planet got torched. A third of all the trees and every single blade of grass? Burnt to a crisp. Total wipeout.",
+          "new": "The seven angels with the trumpets got ready to play. The first one let it rip, and bam! Hail and fire mixed with blood rained down. A third of the planet got torched. A third of all the trees and every single blade of grass? Burnt to a crisp. Total wipeout.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-6",
+        "3": "7-11"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Woman and the Dragon",
+          "new": "§The Fifth and Sixth Trumpets",
+          "reason": "'The Woman and the Dragon' describes ch12; ch9 is the fifth and sixth trumpets."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "2": "5-7",
+        "3": "8-11"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Two Beasts",
+          "new": "§The Little Book",
+          "reason": "'The Two Beasts' describes ch13; ch10 is the mighty angel and the little book."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "3": "7-11",
+        "4": "11-14",
+        "5": "14",
+        "6": "15-18"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Lamb's Army",
+          "new": "§The Two Witnesses",
+          "reason": "'The Lamb's Army' is mislabeled; ch11 is the two witnesses (11:3-13) and the seventh trumpet."
+        },
+        {
+          "index": 2,
+          "old": "Then God says, \"But check it, I'm sending in my two-man temple guards. They'll be dressed in rags, but they'll be spitting truth for 1,260 days. These guys are like the two olive trees and lampstands you hear about, total bosses for God on earth. And get this: if anyone tries to mess with them, they literally breathe fire and roast the haters. Poof! They can also stop the rain, turn all the water to blood, and basically unleash any disaster they want, whenever they want. They're not playing.\"",
+          "new": "Then God says, \"But check it, I'm sending in my two witnesses. They'll be dressed in rags, but they'll be spitting truth for 1,260 days. These guys are like the two olive trees and lampstands you hear about, total bosses for God on earth. And get this: if anyone tries to mess with them, they literally breathe fire and roast the haters. Poof! They can also stop the rain, turn all the water to blood, and basically unleash any disaster they want, whenever they want. They're not playing.\"",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5-6",
+        "4": "7-9",
+        "5": "10-12",
+        "6": "13-17"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Seven Bowls",
+          "new": "§The Woman and the Dragon",
+          "reason": "'The Seven Bowls' describes ch16; ch12 is the woman and the dragon."
+        },
+        {
+          "index": 4,
+          "old": "Then, an all-out war breaks out in heaven. It's Michael and his angel squad versus the dragon and his crew. The dragon's team fought back hard, but they were no match for Michael's temple guards. They got totally owned and kicked out of heaven for good. This huge dragon, the OG snake, the one they call the Devil and Satan, who's been tricking the whole world, got thrown down to Earth, and his whole crew got tossed out with him.",
+          "new": "Then, an all-out war breaks out in heaven. It's Michael and his angel squad versus the dragon and his crew. The dragon's team fought back hard, but they were no match for Michael and his angels. They got totally owned and kicked out of heaven for good. This huge dragon, the OG snake, the one they call the Devil and Satan, who's been tricking the whole world, got thrown down to Earth, and his whole crew got tossed out with him.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5-8"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Babylon Falls",
+          "new": "§The Two Beasts",
+          "reason": "'Babylon Falls' describes ch17-18; ch13 is the two beasts."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Babylon's Destruction",
+          "new": "§The Lamb and the Harvest",
+          "reason": "'Babylon's Destruction' describes ch18; ch14 is the Lamb on Mount Zion and the harvest."
+        },
+        {
+          "index": 2,
+          "old": "Then I see this angel flying across the sky, and he's got a message for literally everyone on Earth. He's yelling, \"Hey, respect God and give him props! It's judgment day, people! Worship the one who made everything—the sky, the dirt, the oceans, all of it!\" Right after him, another angel shows up, shouting, \"It's over for Babylon! That place is toast! They got everyone hooked on their messed-up lifestyle, and now it's all coming down!\" Then a *third* angel flies by, and this one is screaming a serious warning: \"If you worship that Beast or its statue, or get its mark on you, you're in for a world of hurt. You're gonna have to drink God's anger straight, no chaser, and get roasted in fire right in front of the holy angels and the Lamb. The smoke from that party will go up forever. There's no break, no time-out, for anyone who sided with the Beast.\"",
+          "new": "Then I see this angel flying across the sky, and he's got a message for literally everyone on Earth. He's yelling, \"Hey, respect God and give him props! It's judgment day, people! Worship the one who made everything—the sky, the dirt, the oceans, all of it!\" Right after him, another angel shows up, shouting, \"It's over for Babylon! That place is toast! They got everyone hooked on their messed-up lifestyle, and now it's all coming down!\" Then a *third* angel flies by, and this one is screaming a serious warning: \"If you worship that Beast or its statue, or get its mark on you, you're in for a world of hurt. You're gonna have to drink God's anger straight, no chaser, and get roasted in fire right in front of the holy angels and the Lamb. The smoke from their torment will rise forever. There's no break, no time-out, for anyone who sided with the Beast.\"",
+          "reason": "Mockery of suffering: 'smoke from that party' for the torment of the condemned; The Message 14:11 'smoke from their torment.'"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "2": "2-4",
+        "3": "3-4",
+        "4": "5-8"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Rider on the White Horse",
+          "new": "§The Seven Last Plagues",
+          "reason": "'The Rider on the White Horse' describes ch19; ch15 is the seven last plagues."
+        },
+        {
+          "index": 1,
+          "old": "So, I looked up and saw another wild sight in the sky, totally mind-blowing. There were seven angels, and they were basically God's temple guards, carrying the seven final disasters. This was it, the big finale for God's righteous anger. No more messing around.",
+          "new": "So, I looked up and saw another wild sight in the sky, totally mind-blowing. There were seven angels, and they were seven of God's angels, carrying the seven final disasters. This was it, the big finale for God's righteous anger. No more messing around.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "10": "16",
+        "11": "17-21"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Thousand Years",
+          "new": "§The Seven Bowls",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 3,
+          "old": "§Final Judgment",
+          "new": "§The Bowls Keep Coming",
+          "reason": "'Final Judgment' misplaced mid-bowls; this header sits between 16:2 and 16:3."
+        },
+        {
+          "index": 6,
+          "old": "The fourth angel poured his bowl on the sun, and it started blasting the world with insane heat, totally roasting people. They were getting torched, but instead of saying sorry and giving God some respect, they just cursed Him for the disasters.",
+          "new": "The fourth angel poured his bowl on the sun, and it started blasting the world with insane heat, totally scorching people. They were getting torched, but instead of saying sorry and giving God some respect, they just cursed Him for the disasters.",
+          "reason": "'Roasting people' mocks plague-suffering; The Message 16:8-9 'scorched.'"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "4": "9-12",
+        "5": "12-15"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§New Heaven and New Earth",
+          "new": "§The Woman on the Beast",
+          "reason": "'New Heaven and New Earth' describes ch21; ch17 is the woman on the beast (Babylon)."
+        },
+        {
+          "index": 5,
+          "old": "\"Those ten horns you saw are ten kings who haven't gotten their power yet. They'll get to rule for a little bit with the beast, like super short-lived temple guards. They'll all agree to give their power to the beast and team up to fight the Lamb. But the Lamb is gonna totally own them, proving he's the King of all kings. And his crew? They're the chosen ones, the real MVPs.\"",
+          "new": "\"Those ten horns you saw are ten kings who haven't gotten their power yet. They'll get to rule for a little bit with the beast, like super short-lived kings. They'll all agree to give their power to the beast and team up to fight the Lamb. But the Lamb is gonna totally own them, proving he's the King of all kings. And his crew? They're the chosen ones, the real MVPs.\"",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 11,
+          "old": "Then a super-strong angel picked up a huge rock, like a giant millstone, and threw it into the sea. He said, \"This is what's going to happen to Babylon. She's gonna be thrown down and ghosted, never to be seen again. No more music, no more parties, no more work, no more anything. No more lights, no more weddings. Her businessmen were like temple guards, robbing the whole world. She tricked everyone with her evil magic. The only thing left of her is the blood of the prophets and saints she murdered.\"",
+          "new": "Then a super-strong angel picked up a huge rock, like a giant millstone, and threw it into the sea. He said, \"This is what's going to happen to Babylon. She's gonna be thrown down and ghosted, never to be seen again. No more music, no more parties, no more work, no more anything. No more lights, no more weddings. Her businessmen were like the biggest tycoons, robbing the whole world. She tricked everyone with her evil magic. The only thing left of her is the blood of the prophets and saints she murdered.\"",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [
+        "chapter has no opening § header paragraph (every other chapter has one); header is missing and needs insertion - left for the consumer rather than shifting indices."
+      ],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "7": "10",
+        "8": "11-16"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Jesus Is Coming Soon",
+          "new": "§The Rider on the White Horse",
+          "reason": "'Jesus Is Coming Soon' describes ch22; ch19 is the rider on the white horse (19:11-16)."
+        },
+        {
+          "index": 10,
+          "old": "Then I saw the Beast, and he had all the world's leaders and their temple guards assembled, ready to throw down with the Rider on the horse and his army. But the Beast got captured, and so did his sidekick, the False Prophet, who had been doing all those fake miracles to trick people into getting the Beast's mark and worshiping his statue. Those two were thrown alive into the fiery lake of burning sulfur. The rest of them were taken out by the sword that came from the mouth of the Rider on the horse. And all the birds had a massive feast on them.",
+          "new": "Then I saw the Beast, and he had all the world's leaders and their armies assembled, ready to throw down with the Rider on the horse and his army. But the Beast got captured, and so did his sidekick, the False Prophet, who had been doing all those fake miracles to trick people into getting the Beast's mark and worshiping his statue. Those two were thrown alive into the fiery lake of burning sulfur. The rest of them were taken out by the sword that came from the mouth of the Rider on the horse. And all the birds had a massive feast on them.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "7-10"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Alpha and Omega",
+          "new": "§The Thousand Years",
+          "reason": "'The Alpha and Omega' is 22:13's title; ch20 is the thousand years."
+        },
+        {
+          "index": 3,
+          "old": "When the thousand years are up, Satan gets let out of his cell. He goes right back to his old tricks, rounding up temple guards from every corner of the globe—even places like Gog and Magog. He convinces them to go to war and gathers this absolutely massive army, like, millions of soldiers. They swarm across the planet and surround the camp of God's people, the city He loves. But right when they get there, fire just rains down from heaven and roasts them all. And the Devil, the ultimate troll who tricked them, gets tossed into the lake of fire and brimstone. He joins the Beast and the False Prophet, and the three of them get tormented 24/7, forever and ever.",
+          "new": "When the thousand years are up, Satan gets let out of his cell. He goes right back to his old tricks, rounding up nations from every corner of the globe—even places like Gog and Magog. He convinces them to go to war and gathers this absolutely massive army, like, millions of soldiers. They swarm across the planet and surround the camp of God's people, the city He loves. But right when they get there, fire just rains down from heaven and roasts them all. And the Devil, the ultimate troll who tricked them, gets tossed into the lake of fire and brimstone. He joins the Beast and the False Prophet, and the three of them get tormented 24/7, forever and ever.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5-8",
+        "4": "9-11",
+        "5": "11-14",
+        "6": "15-21",
+        "7": "21-27"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Come, Lord Jesus",
+          "new": "§New Heaven and New Earth",
+          "reason": "'Come, Lord Jesus' is 22:20's cry; ch21 is the new heaven and new earth."
+        },
+        {
+          "index": 4,
+          "old": "One of the seven angels from the temple guards with the seven last plagues came up to me and said, \"Hey, come here. I'm gonna show you the Bride, the Lamb's wife.\" He took me in the Spirit to this huge mountain and showed me the holy city, Jerusalem, coming down from God out of heaven, shining with God's glory.",
+          "new": "One of the seven angels with the seven last plagues came up to me and said, \"Hey, come here. I'm gonna show you the Bride, the Lamb's wife.\" He took me in the Spirit to this huge mountain and showed me the holy city, Jerusalem, coming down from God out of heaven, shining with God's glory.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "1": "1-5",
+        "2": "6-7",
+        "3": "8-9",
+        "4": "10-11",
+        "5": "12-13",
+        "9": "20",
+        "10": "21"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Final Blessing",
+          "new": "§Jesus Is Coming Soon",
+          "reason": "'The Final Blessing' is vague; ch22's refrain is 'I am coming soon' (22:7,12,20)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

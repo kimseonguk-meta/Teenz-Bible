@@ -1,0 +1,27 @@
+{
+  "book": "Titus",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {
+        "2": "6-8",
+        "3": "9-10",
+        "4": "11-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

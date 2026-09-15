@@ -1,0 +1,532 @@
+{
+  "book": "Numbers",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "5-15",
+        "2": "5",
+        "3": "6",
+        "4": "7",
+        "5": "8",
+        "6": "9",
+        "7": "10",
+        "8": "10",
+        "9": "10",
+        "10": "12",
+        "11": "13",
+        "12": "14",
+        "13": "15",
+        "14": "16",
+        "15": "16",
+        "16": "17-19",
+        "17": "20-21",
+        "18": "22-23",
+        "19": "24-25",
+        "20": "26-27",
+        "21": "28-29",
+        "22": "30-31",
+        "23": "32-33",
+        "24": "34-35",
+        "25": "36-37",
+        "26": "38-39",
+        "27": "40-41",
+        "28": "42-43",
+        "29": "44-46",
+        "30": "47-51",
+        "31": "52-53"
+      },
+      "content_fixes": [
+        {
+          "index": 30,
+          "old": "The Levites, though, were a different story. They weren't counted with the others. God had told Moses, “The tribe of Levi is an exception. Don't register them or include them in the main count of the Israelites. Instead, put the Levites in charge of the Dwelling of the Testimony—all its furniture and everything that goes with it. Their job is to carry the Dwelling and all its stuff, take care of it, and camp around it. When it's time to move the Dwelling, the Levites will take it down, and when it's time to set it up, they'll do that too. And no cap, anyone else who even gets near it will be executed.",
+          "new": "The Levites, though, were a different story. They weren't counted with the others. God had told Moses, “The tribe of Levi is an exception. Don't register them or include them in the main count of the Israelites. Instead, put the Levites in charge of the Dwelling of the Testimony—all its furniture and everything that goes with it. Their job is to carry the Dwelling and all its stuff, take care of it, and camp around it. When it's time to move the Dwelling, the Levites will take it down, and when it's time to set it up, they'll do that too. And for real, anyone else who even gets near it will be executed.",
+          "reason": "'no cap' is flippant slang attached to a death-penalty command."
+        }
+      ],
+      "flagged": [
+        "[para 2] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 3] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 4] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 5] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 6] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 7] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 8] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 9] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 10] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 11] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 12] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 13] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed.",
+        "[para 14] Fragmentary single-verse split duplicating paragraph 1's full twelve-leader list (MSG v5-16); verse range corrected to the single verse. No deletion operation exists, so the duplication is flagged rather than removed."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-6",
+        "3": "7-8",
+        "4": "9",
+        "6": "12-13",
+        "7": "14-15",
+        "8": "16",
+        "9": "17",
+        "11": "20-21",
+        "12": "22-23",
+        "13": "24",
+        "14": "25-26",
+        "15": "27-28",
+        "16": "29-30",
+        "17": "31",
+        "18": "32-33",
+        "19": "34"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "2-4",
+        "2": "6-10",
+        "3": "11-13",
+        "4": "14-16",
+        "6": "18",
+        "7": "19",
+        "8": "20",
+        "9": "17-20",
+        "10": "21-26",
+        "11": "27-32",
+        "13": "38",
+        "14": "39",
+        "15": "40-41",
+        "16": "42-43",
+        "17": "44-51",
+        "18": "49-51",
+        "5": "17"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "God hit up Moses and was like, “Yo, bring the tribe of Levi over to Aaron. They’re gonna be his support crew. They’ll work for him and the whole community at the main tent, doing all the hands-on work for The Dwelling. Their whole gig is to manage all the furniture and equipment, basically running the place while the Israelites come to do their thing. Just hand the Levites over to Aaron and his sons; they're the designated full-time crew. Make sure Aaron and his sons are the only ones doing priest stuff. Anyone else who tries to jump in on that action will be taken out. No cap.”",
+          "new": "God hit up Moses and was like, “Yo, bring the tribe of Levi over to Aaron. They’re gonna be his support crew. They’ll work for him and the whole community at the main tent, doing all the hands-on work for The Dwelling. Their whole gig is to manage all the furniture and equipment, basically running the place while the Israelites come to do their thing. Just hand the Levites over to Aaron and his sons; they're the designated full-time crew. Make sure Aaron and his sons are the only ones doing priest stuff. Anyone else who tries to jump in on that action will be taken out. For real.”",
+          "reason": "'No cap' is flippant slang attached to a death-penalty command."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5-6",
+        "8": "15",
+        "9": "16",
+        "10": "17-20",
+        "11": "21-23",
+        "12": "24-28",
+        "13": "29-30",
+        "14": "31-33",
+        "15": "34-37",
+        "16": "38-41",
+        "17": "42-45"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "0": "1-4",
+        "2": "5-10",
+        "3": "11-15",
+        "5": "22",
+        "6": "23-29",
+        "7": "29-31"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God hit up Moses and said, “Tell the Israelites to kick anyone out of the camp who has a nasty skin disease, a weird discharge, or has touched a dead body and gotten spiritually grimy. Doesn't matter if they're a guy or a girl, send them out. I'm living in your camp, and I don't want it getting all defiled.”",
+          "new": "God hit up Moses and said, “Tell the Israelites to kick anyone out of the camp who has a serious skin disease, a bodily discharge, or has touched a dead body and become ritually unclean. Doesn't matter if they're a guy or a girl, send them out. I'm living in your camp, and I don't want it getting all defiled.”",
+          "reason": "'nasty skin disease', 'weird discharge', 'spiritually grimy' are crude/mocking terms for medical and ritual conditions; MSG v2 'an infectious skin disease or a discharge... ritually unclean'."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5",
+        "2": "6-7",
+        "3": "8",
+        "4": "9-12",
+        "5": "13-21",
+        "7": "19-20",
+        "8": "20",
+        "9": "21",
+        "10": "22-23",
+        "11": "24-26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "8": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "9": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "10": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "11": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "12": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "13": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "14": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "15": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "16": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "17": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "18": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "19": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "20": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "21": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "[para 16] Exact duplicate of paragraph 17 (badge '28', Song of Heshbon portion, MSG v27-30); verse range is correct. No deletion operation exists, so flagged rather than removed.",
+        "[para 18] Exact duplicate of paragraph 19 (badge '30', Song of Heshbon portion, MSG v27-30); verse range is correct. No deletion operation exists, so flagged rather than removed."
+      ],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "23": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "24": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 9,
+          "old": "Your crib is in a sweet, safe spot, like a nest on a cliff. But you're still gonna look pretty dumb when Assyria comes and takes you prisoner.",
+          "new": "Your home is in a sweet, safe spot, like a nest on a cliff. But you're still gonna get swept away when Assyria comes and takes you prisoner.",
+          "reason": "MSG v21-22 says the Kenites will be led off to Assyria as captives; 'look pretty dumb' mocks the people being prophesied against."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "But then, get this: while everyone was crying and repenting at the main tent, this one Israelite guy, with no shame at all, brings a Midianite woman into his tent right in front of Moses and everyone. Phinehas, the grandson of Aaron the priest, saw this go down, grabbed his spear, and followed them into the tent. With one move, he speared both of them, the Israelite guy and the woman, right through their stomachs. That finally stopped the plague that was spreading through Israel. But not before 24,000 people had already died. It was a whole disaster.",
+          "new": "But then, right in the middle of all the weeping and repenting at the entrance of the main tent, one Israelite man brazenly brought a Midianite woman into his tent, right in front of Moses and everyone. Phinehas, the grandson of Aaron the priest, saw it, grabbed his spear, and followed them into the tent. He drove the spear through both of them—the Israelite man and the woman—through their bodies. That finally stopped the plague spreading through Israel. But not before 24,000 people had died. It was devastating.",
+          "reason": "The original's flippant tone ('get this', 'no shame at all', 'With one move', 'whole disaster') trivializes a double killing and a plague that killed 24,000; rewritten with sober teen voice preserving all MSG v6-9 substance."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "97": "53-56"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Alright, so after that gnarly plague, God hit up Moses and Eleazar, Aaron's priest son, and was like, “Yo, I need a headcount of the entire Israelite community. Go family by family and count everyone twenty and up who’s able to fight in the army.”",
+          "new": "Alright, so after that devastating plague, God hit up Moses and Eleazar, Aaron's priest son, and was like, “Yo, I need a headcount of the entire Israelite community. Go family by family and count everyone twenty and up who’s able to fight in the army.”",
+          "reason": "'gnarly plague' is flippant slang for the plague that killed 24,000 Israelites (MSG v1 'After the plague')."
+        },
+        {
+          "index": 110,
+          "old": "So these are the people counted by Moses and Eleazar the priest, the People of Israel who were tallied up on the Plains of Moab at Jordan-Jericho. And get this: not a single one of them was from the group that Moses and Aaron had counted in the first census in the Sinai Wilderness. Because God had said about them, “They’ll all die in the wilderness.” And they did. Not one was left, except for Caleb son of Jephunneh and Joshua son of Nun. No cap.",
+          "new": "So these are the people counted by Moses and Eleazar the priest, the People of Israel who were tallied up on the Plains of Moab at Jordan-Jericho. And get this: not a single one of them was from the group that Moses and Aaron had counted in the first census in the Sinai Wilderness. Because God had said about them, “They’ll all die in the wilderness.” And they did. Not one was left, except for Caleb son of Jephunneh and Joshua son of Nun. For real.",
+          "reason": "'No cap' is flippant slang attached to the verdict that a whole generation died in the wilderness."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "28": {
+      "range_fixes": {
+        "1": "9-10",
+        "2": "11",
+        "3": "12-14",
+        "4": "15",
+        "5": "16-17",
+        "6": "18-22",
+        "7": "23-24",
+        "8": "25",
+        "9": "26-30",
+        "10": "30-31"
+      },
+      "content_fixes": [
+        {
+          "index": 10,
+          "old": "These are all extra, on top of the daily Burnt-Offering and its Grain-Offering and the Drink-Offering. And remember, the animals have to be healthy, no cap.",
+          "new": "These are all extra, on top of the daily Burnt-Offering and its Grain-Offering and the Drink-Offering. And remember, the animals have to be healthy, for real.",
+          "reason": "'no cap' is flippant slang in a sacrificial instruction."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "0": "1-6",
+        "1": "6",
+        "2": "7",
+        "3": "8-11",
+        "4": "12-16",
+        "5": "17-19",
+        "6": "20-22",
+        "7": "23-25",
+        "8": "26-28",
+        "9": "29-31",
+        "10": "32-34",
+        "11": "35-38",
+        "12": "39"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "31": {
+      "range_fixes": {
+        "3": "7-12",
+        "4": "13-18",
+        "5": "19-20",
+        "6": "21-24",
+        "7": "25-27",
+        "8": "28-30",
+        "9": "31",
+        "10": "32",
+        "11": "32",
+        "12": "33",
+        "13": "34",
+        "14": "35",
+        "15": "36",
+        "16": "37",
+        "17": "38",
+        "18": "39",
+        "19": "40",
+        "20": "41",
+        "21": "42",
+        "22": "43",
+        "23": "44",
+        "24": "45",
+        "25": "46",
+        "26": "47",
+        "27": "48-52",
+        "28": "53-54"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "33": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "2": "5",
+        "3": "5",
+        "4": "6",
+        "5": "7",
+        "6": "8",
+        "7": "9",
+        "8": "10",
+        "9": "11",
+        "10": "12",
+        "11": "13",
+        "12": "14",
+        "13": "15",
+        "14": "16",
+        "15": "17",
+        "16": "18",
+        "17": "19",
+        "18": "20",
+        "19": "21",
+        "20": "22",
+        "21": "23",
+        "22": "24",
+        "23": "25",
+        "24": "26",
+        "25": "27",
+        "26": "28",
+        "27": "29",
+        "28": "30",
+        "29": "31",
+        "30": "32",
+        "31": "33",
+        "32": "34",
+        "33": "35",
+        "34": "36",
+        "35": "37-39",
+        "37": "41",
+        "38": "42",
+        "39": "43",
+        "40": "44",
+        "41": "45",
+        "42": "46",
+        "43": "47",
+        "44": "48-49",
+        "45": "50-53",
+        "46": "54",
+        "47": "55-56",
+        "36": "40"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "34": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6",
+        "3": "7-9",
+        "4": "10-12",
+        "5": "13",
+        "6": "13-15",
+        "7": "16-18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "35": {
+      "range_fixes": {
+        "3": "9-15",
+        "4": "16",
+        "5": "17",
+        "6": "18",
+        "7": "19",
+        "8": "20-21",
+        "9": "22-27",
+        "10": "25-28",
+        "11": "29",
+        "12": "30",
+        "13": "31",
+        "14": "32",
+        "15": "33",
+        "16": "34"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "“But, for real, if the killer used something made of iron, that’s straight-up murder. He’s a murderer, no cap, and he has to be executed.",
+          "new": "“But, for real, if the killer used something made of iron, that’s straight-up murder. He’s a murderer, for real, and he has to be executed.",
+          "reason": "'no cap' is flippant slang in a murder-law ruling."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {
+        "1": "2-4",
+        "2": "5-9",
+        "3": "10-12"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

@@ -1,0 +1,992 @@
+{
+ "meta": {
+  "total_targets": 108,
+  "fixes": 109,
+  "suspicious": 0,
+  "note": "108 = 38 (W1 Rev 1-7) + 26 (W2 Rev 10-14) + 29 (W3 Rev 15-22) + 15 (W4 non-Rev). Plus 1 coordinator-verified bonus fix (Rev 15:4). In-text range prefixes are stripped separately by the parent pipeline; these decisions are badge-only."
+ },
+ "fixes": [
+  {
+   "book": "Revelation",
+   "chapter": 1,
+   "para_index": 3,
+   "old_badge": "4-5",
+   "new_badge": "4-5",
+   "old_text_start": "4-7 나 요한은 아시아에 있는 일곱 교회에 이 편지를 써. 지금도 계시고 전에도 계셨고 앞으로 오실 하나님",
+   "reason": "Badge already correct; keep 4-5. Paragraph covers only the greeting from God/seven spirits/Jesus the faithful witness, firstborn from the dead, ruler of kings (The Message v4-5). The in-text range '4-7' is stale/wrong: vv6-7 (doxology, coming with clouds) are not in the text."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 1,
+   "para_index": 5,
+   "old_badge": "9",
+   "new_badge": "8",
+   "old_text_start": "8 주님이 딱 말씀하셨어. \"나는 처음이고 마지막이야. 나는 지금도 있고, 전에도 있었고, 앞으로 올 하나님",
+   "reason": "Paragraph is the Alpha-and-Omega declaration ('나는 처음이고 마지막이야... 나는 지금도 있고, 전에도 있었고, 앞으로 올 하나님이야'), i.e. The Message v8 ('I am the A to Z... the God Who Is, the God Who Was, and the God About to Arrive'), matching EN para 4 (badge '8'). v9's Patmos narrative lives in KO para 6, not here."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 1,
+   "para_index": 6,
+   "old_badge": "10-11",
+   "new_badge": "9-10",
+   "old_text_start": "9-17 예수님 안에서 너희랑 같이 시련도 겪고, 그 나라랑 뜨거운 인내에도 함께하고 있는 나 요한은, 하나",
+   "reason": "Covers John's exile on Patmos for the word of God and Jesus' testimony (The Message v9) plus the Lord's-day trumpet-like voice (v10). v11's 'write to the seven churches' list is absent, so neither badge '10-11' nor in-text '9-17' is right; true coverage is 9-10."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 2,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 에베소 교회 천사한테 이렇게 편지 써라.\n오른손에 별 일곱 개를 쥐고, 황금 촛대 일곱 개 사이를 거니시",
+   "reason": "Letter address to the Ephesus angel describing the holder of seven stars walking among the lampstands (The Message v1); v2's 'I know your works' is not present. Badge '2' stale; in-text '1' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 3,
+   "old_badge": "3-4",
+   "new_badge": "2-3",
+   "old_text_start": "2-3 \"나는 너희가 한 일을 다 알아. 수고도 마다하지 않고, 가다가 포기하는 법도 없었지. 악한 건 그냥",
+   "reason": "Covers the commendation for toil, endurance, rejecting evil and exposing false apostles (The Message v2-3). v4's lost-first-love rebuke begins in the next paragraph. In-text '2-3' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 4,
+   "old_badge": "5-6",
+   "new_badge": "4-5",
+   "old_text_start": "4-5 그런데 너희는 첫사랑을 버렸어. 어쩌다 그렇게 됐어? 너희가 얼마나 멀리 갔는지 알아? 완전 루시퍼급",
+   "reason": "Covers the lost first love, the fall, and the warning to repent or have the lampstand removed (The Message v4-5); v6's Nicolaitans note is the next paragraph. In-text '4-5' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 5,
+   "old_badge": "7",
+   "new_badge": "6",
+   "old_text_start": "6 그래도 이건 잘했어. 너희가 니골라파가 하는 짓을 싫어하는 거 말이야. 나도 그걸 완전 싫어하거든.",
+   "reason": "Covers only the hatred of the Nicolaitans' deeds (The Message v6); v7's conqueror promise is the next paragraph. In-text '6' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 6,
+   "old_badge": "8",
+   "new_badge": "7",
+   "old_text_start": "7 귀 있는 사람은 잘 들어. 성령님이 교회들에게 하시는 말씀을 들어야 해. 이기는 사람은 내가 하나님의 과",
+   "reason": "Covers only the ear-to-hear call and the Tree of Life promise to the conqueror (The Message v7); v8's Smyrna address starts the next paragraph. In-text '7' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 8,
+   "old_badge": "10",
+   "new_badge": "8",
+   "old_text_start": "8 서머나 교회 천사한테 이렇게 편지 써라.\n처음이자 마지막이신 분, 죽었다가 다시 살아나신 분이 말씀하신다",
+   "reason": "Letter address to the Smyrna angel, the first and last who died and came to life (The Message v8). Badge '10' stale; in-text '8' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 9,
+   "old_badge": "11-12",
+   "new_badge": "9",
+   "old_text_start": "9 \"나는 너희의 고통이랑 가난을 다 알아. 진짜 끝도 없는 고통에 완전 가난한 거 말이야. 근데 사실 너희",
+   "reason": "Covers tribulation, poverty-yet-rich, and the blasphemy of false Jews, synagogue of Satan (The Message v9); v10's ten-days warning is the next paragraph. In-text '9' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 10,
+   "old_badge": "13-14",
+   "new_badge": "10",
+   "old_text_start": "10 앞으로 겪을 일 무서워하지 마. 정신 바짝 차려! 마귀가 너희를 감옥에 던져 넣을 건데, 그 시험은 열",
+   "reason": "Covers do-not-fear, the devil's ten-day imprisonment test, faithfulness unto death, and the crown of life (The Message v10). In-text '10' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 11,
+   "old_badge": "15",
+   "new_badge": "11",
+   "old_text_start": "11 귀 있는 사람은 잘 들어. 성령님이 교회들에게 하시는 말씀을 들어야 해. 그리스도에게 붙어서 이기는 사",
+   "reason": "Covers only the ear-to-hear call and the conqueror safe from the second death (The Message v11). In-text '11' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 13,
+   "old_badge": "17",
+   "new_badge": "12",
+   "old_text_start": "12 버가모 교회 천사한테 이렇게 편지 써라.\n날카로운 칼을 가지신 분이 칼을 빼 들고 말씀하신다. 그 입에",
+   "reason": "Letter address to the Pergamum angel, the sharp two-edged sword (The Message v12). Badge '17' stale; in-text '12' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 14,
+   "old_badge": "18-19",
+   "new_badge": "13",
+   "old_text_start": "13 \"나는 너희가 어디 사는지 알아. 완전 사탄의 본거지 바로 밑에 살고 있잖아. 근데도 너희는 용감하게 ",
+   "reason": "Covers dwelling where Satan's throne is, holding fast the name, and faithful Antipas killed (The Message v13). In-text '13' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 15,
+   "old_badge": "20",
+   "new_badge": "14-15",
+   "old_text_start": "14-15 근데 왜 발람을 따르는 사람들을 받아줘? 발람이 우리 원수였던 거 기억 안 나? 그가 발락을 꼬드",
+   "reason": "Covers the Balaam/Balak stumbling block and tolerating the Nicolaitans (The Message v14-15); v16's repent-or-sword warning is the next paragraph. In-text '14-15' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 16,
+   "old_badge": "21",
+   "new_badge": "16",
+   "old_text_start": "16 이제 그만해! 더 이상 걔네를 냅두지 마. 내가 곧 갈 거야. 걔네는 진짜 너무 싫어. 내 말씀의 칼로",
+   "reason": "Covers only 'repent, or I will come and war against them with the sword of my mouth' (The Message v16). In-text '16' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 17,
+   "old_badge": "22",
+   "new_badge": "17",
+   "old_text_start": "17 귀 있는 사람은 잘 들어. 성령님이 교회들에게 하시는 말씀을 들어야 해. 이기는 사람에게는 내가 거룩한",
+   "reason": "Covers only the ear-to-hear call, hidden manna, and the white stone with the new secret name (The Message v17). In-text '17' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 19,
+   "old_badge": "24",
+   "new_badge": "18",
+   "old_text_start": "18 두아디라 교회 천사한테 이렇게 편지 써라.\n눈은 불꽃 같고 발은 용광로에서 달군 놋 같은 하나님의 아들",
+   "reason": "Letter address to the Thyatira angel, the Son of God with eyes like fire and feet like bronze (The Message v18). Badge '24' stale; in-text '18' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 20,
+   "old_badge": "25",
+   "new_badge": "19",
+   "old_text_start": "19 \"나는 너희가 나를 위해 하는 일을 다 알아. 그 사랑, 믿음, 봉사, 끈기 완전 인상적이야! 진짜 대",
+   "reason": "Covers love, faith, service, endurance, and works greater at the end (The Message v19). In-text '19' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 21,
+   "old_badge": "26",
+   "new_badge": "20-23",
+   "old_text_start": "20-23 근데 왜 자칭 예언자라는 이세벨이 내 소중한 종들을 꼬드겨서 십자가를 배신하고 자기들 좋은 대로 ",
+   "reason": "Covers tolerating Jezebel the false prophetess, her refused repentance, the sickbed judgment on her and her children, and God searching minds/hearts to repay works (The Message v20-23). In-text '20-23' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 22,
+   "old_badge": "27",
+   "new_badge": "24-25",
+   "old_text_start": "24-25 너희 나머지 두아디라 사람들, 이런 불법적인 짓이랑 상관없고, 뭐 대단한 것처럼 포장하는 마귀 장",
+   "reason": "Covers the remnant in Thyatira untouched by the 'deep things of Satan', no added burden, hold fast until I come (The Message v24-25). In-text '24-25' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 2,
+   "para_index": 23,
+   "old_badge": "28",
+   "new_badge": "26-28",
+   "old_text_start": "26-28 이기는 모든 사람, 끝까지 포기 안 하는 모든 사람에게 내가 줄 보상은 이거야. 너희는 민족들을 ",
+   "reason": "Covers authority over the nations with an iron rod, clay-pot shattering, and the morning star for the conquering endurer (The Message v26-28); v29's ear-to-hear is not in the text. In-text '26-28' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 3,
+   "para_index": 1,
+   "old_badge": "1-7",
+   "new_badge": "1-6",
+   "old_text_start": "1 사데 교회 천사한테 이렇게 써서 보내래. 한 손으로는 하나님이 부리는 일곱 영을 꽉 잡고 있고, 다른 손",
+   "reason": "Covers the Sardis letter end-to-end: the seven-spirits/seven-stars address (v1), wake-up/thief warning (v2-3), the undefiled few (v4), white garments and the Book of Life (v5), and the ear-to-hear close (v6). v7's Philadelphia address is not present; true coverage 1-6."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 3,
+   "para_index": 2,
+   "old_badge": "8-14",
+   "new_badge": "7-13",
+   "old_text_start": "7 빌라델비아 교회 천사한테 이렇게 써서 보내래. 거룩하고, 진짜배기이고, 다윗의 열쇠를 손에 쥐고 계신 분",
+   "reason": "Covers the Philadelphia letter end-to-end: holy-true-Key-of-David address (v7), open door and little strength (v8), synagogue-of-Satan exposure (v9), kept from the hour of trial (v10), hold fast your crown (v11), pillar with God's name/new Jerusalem/new name (v12), ear-to-hear close (v13). True coverage 7-13."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 3,
+   "para_index": 3,
+   "old_badge": "15-22",
+   "new_badge": "14-22",
+   "old_text_start": "14 라오디게아 교회 천사한테 이렇게 써서 보내래. 하나님의 '네'이신 분, 진짜 믿을 수 있는 증인이신 분",
+   "reason": "Covers the Laodicea letter end-to-end: the Amen/faithful witness address (v14), lukewarm rebuke and wretched-blind-naked exposure (v15-17), buy gold/white garments/eye salve (v18), rebuke of those loved (v19), standing at the door knocking (v20), throne seat for conquerors (v21), ear-to-hear close (v22). True coverage 14-22."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 4,
+   "para_index": 1,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 그 뒤에 보니까, 와! 하늘에 문이 하나 열려있는 거야. 완전 나팔소리 같은 목소리, 저번 환상 때 들었",
+   "reason": "Covers only the open door in heaven and the trumpet voice saying 'come up here, I will show you what must take place' (The Message v1). Badge '2' stale; in-text '1' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 4,
+   "para_index": 2,
+   "old_badge": "3-5",
+   "new_badge": "2-6",
+   "old_text_start": "2-6 그러자마자 나는 완전 깊은 예배 모드에 들어갔고, 정신 차려보니 하늘에 옥좌가 하나 있고 거기에 누가",
+   "reason": "Covers the throne and the One seated (v2), jasper/carnelian with emerald rainbow (v3), 24 thrones/elders in white with gold crowns (v4), lightning/thunder and seven torches as the seven spirits (v5), and the sea of glass like crystal (v6a). The four living creatures (v6b) are not included; true coverage 2-6."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 6,
+   "para_index": 1,
+   "old_badge": "2-4",
+   "new_badge": "1-2",
+   "old_text_start": "1-2 내가 어린양이 일곱 개 봉인 중에 첫 번째 봉인을 떼는 걸 보고 있었어. 그랬더니 네 생물 중 하나가",
+   "reason": "Covers the first seal and the white horse: bow, crown given, conquering onward (The Message v1-2). Badge '2-4' stale; in-text '1-2' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 6,
+   "para_index": 2,
+   "old_badge": "5-6",
+   "new_badge": "3-4",
+   "old_text_start": "3-4 어린양이 두 번째 봉인을 떼니까, 두 번째 생물이 \"나와!\" 하고 소리쳤어. 이번에는 웬 붉은 말이 ",
+   "reason": "Covers the second seal and the red horse: peace taken from earth, men slaying one another, great sword (The Message v3-4). In-text '3-4' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 6,
+   "para_index": 3,
+   "old_badge": "7-8",
+   "new_badge": "5-6",
+   "old_text_start": "5-6 어린양이 세 번째 봉인을 떼니까, 세 번째 생물이 \"나와!\" 하고 외쳤어. 보니까 이번에는 검은 말이",
+   "reason": "Covers the third seal and the black horse: rider with scales, the voice among the living creatures pricing wheat/barley and sparing oil and wine (The Message v5-6). In-text '5-6' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 6,
+   "para_index": 4,
+   "old_badge": "9-10",
+   "new_badge": "7-8",
+   "old_text_start": "7-8 어린양이 네 번째 봉인을 떼니까, 네 번째 생물이 \"나와!\" 하고 외쳤어. 내가 보니까 완전 핏기 하",
+   "reason": "Covers the fourth seal and the pale horse: Death with Hades following, authority over a fourth of the earth by sword, famine, pestilence, wild beasts (The Message v7-8). In-text '7-8' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 6,
+   "para_index": 5,
+   "old_badge": "11-13",
+   "new_badge": "9-11",
+   "old_text_start": "9-11 어린양이 다섯 번째 봉인을 떼니까, 하나님의 말씀을 전하다가 죽은 사람들의 영혼이 보였어. 그들은 ",
+   "reason": "Covers the fifth seal: souls of the slain under the altar crying 'how long', given white robes, told to rest until their fellow servants are complete (The Message v9-11). In-text '9-11' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 6,
+   "para_index": 6,
+   "old_badge": "14-17",
+   "new_badge": "12-17",
+   "old_text_start": "12-17 내가 어린양이 여섯 번째 봉인을 떼는 걸 보고 있었는데, 갑자기 땅이 완전 뒤집어지는 지진이 일어",
+   "reason": "Covers the sixth seal end-to-end: great earthquake, sun black, moon like blood, falling stars, receding sky, moved islands/mountains, kings and all classes hiding in caves crying 'hide us from the face of him on the throne and the wrath of the Lamb' (The Message v12-17). In-text '12-17' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 7,
+   "para_index": 1,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 그 뒤에 내가 보니까, 천사 네 명이 땅 네 귀퉁이에 딱 서 있는 거야. 얘네들이 바람을 완전 꽉 잡고 ",
+   "reason": "Covers only the four angels at the four corners holding the four winds so no wind blows on earth, sea, or tree (The Message v1). Badge '2' stale; in-text '1' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 7,
+   "para_index": 2,
+   "old_badge": "3-4",
+   "new_badge": "2-3",
+   "old_text_start": "2-3 그리고 다른 천사 한 명이 또 나타났는데, 살아계신 하나님의 도장을 들고 동쪽에서 촥 올라오는 거야.",
+   "reason": "Covers the angel from the east with the seal of the living God crying to the four angels: do not harm earth, sea, or trees until God's servants are sealed (The Message v2-3). In-text '2-3' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 7,
+   "para_index": 3,
+   "old_badge": "5-7",
+   "new_badge": "4-8",
+   "old_text_start": "4-8 그래서 도장 받은 사람이 총 몇 명인지 들어보니까, 144,000명! 이 사람들은 이스라엘의 각 지파",
+   "reason": "Covers the 144,000 sealed from every tribe of Israel, listing all twelve tribes at 12,000 each (The Message v4-8). Badge '5-7' stale; in-text '4-8' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 7,
+   "para_index": 4,
+   "old_badge": "8-9",
+   "new_badge": "9-10",
+   "old_text_start": "9-12 그리고 내가 또 뭘 봤냐면, 진짜 어마어마하게 많은 사람들이 모여 있는 거야. 이건 뭐 셀 수도 없",
+   "reason": "Covers the uncountable multitude from every nation/tribe/people/language in white robes with palm branches before the throne and the Lamb, crying out with full voice (The Message v9-10). v11-12's angelic worship is absent, so in-text '9-12' overreaches; true coverage 9-10."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 7,
+   "para_index": 9,
+   "old_badge": "15-17",
+   "new_badge": "14-17",
+   "old_text_start": "14-17 그러자 그 장로가 말해줬어. \"쟤네들은 진짜 대박 큰 환난을 겪고 살아남은 사람들이야. 어린양의 ",
+   "reason": "Covers the elder's answer: those coming out of the great tribulation with robes washed in the Lamb's blood (v14), serving before the throne day and night under God's shelter (v15), no hunger/thirst/scorching sun (v16), the Lamb shepherding to living-water springs and God wiping every tear (v17). In-text '14-17' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 10,
+   "new_badge": "5-7",
+   "old_badge": "5-6",
+   "old_text_start": "5-7 그 후에 내가 본 그 바다와 땅을 밟고 서 있는 천사가 오른손을 하늘로 들더니, 하",
+   "para_index": 2,
+   "reason": "Paragraph covers the angel's oath by God (v5), that the time of delay is over (v6), and that when the seventh angel sounds, the mystery of God to the prophets will be fulfilled (v7) — matching The Message vv5-7. The in-text '5-7' was correct; badge was stale."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 10,
+   "new_badge": "8-11",
+   "old_badge": "7-11",
+   "old_text_start": "8-11 하늘에서 들려오던 그 목소리가 다시 나한테 말했음. \"가서 바다와 땅을 밟고 서 있는",
+   "para_index": 3,
+   "reason": "Covers the voice's command to take the open book (v8), eating it — sweet in mouth, bitter in stomach (vv9-10) — and the commission to prophesy again to many peoples/nations/languages/kings (v11). Per The Message, v7 belongs to the previous paragraph's oath scene; badge '7-11' was one verse too wide."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 11,
+   "new_badge": "1-2",
+   "old_badge": "2-3",
+   "old_text_start": "1-2 나한테 측량자처럼 쓸 수 있는 막대기 하나가 주어졌는데, 이런 말이 들리는 거야. \"너희, 일",
+   "para_index": 2,
+   "reason": "Covers being given the measuring rod and told to measure the Temple, altar, and worshipers (v1), and to leave out the outer court given to the nations who will trample the holy city 42 months (v2). In-text '1-2' correct; badge '2-3' was shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 11,
+   "new_badge": "3-6",
+   "old_badge": "4-6",
+   "old_text_start": "3-6 그동안 나는 내 두 증인을 준비시킬 거야. 얘네는 거친 베옷을 입고 1,260일 동안 예언할 거",
+   "para_index": 3,
+   "reason": "Covers the two witnesses prophesying 1,260 days in sackcloth (v3), the two olive trees/lampstands (v4), fire from their mouths devouring enemies (v5), and their power to shut the sky, turn water to blood, and strike plagues (v6) — The Message vv3-6. Badge '4-6' dropped v3."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 11,
+   "new_badge": "12-13",
+   "old_badge": "12",
+   "old_text_start": "12-13 그때 하늘에서 완전 큰 목소리가 들렸어. \"이리로 올라와!\" 그러자 두 예언자는 적들이 다 ",
+   "para_index": 6,
+   "reason": "Covers the voice calling them up and their ascent in the cloud (v12), plus the great earthquake destroying a tenth of the city, killing 7,000, and the survivors giving glory to God (v13). Badge '12' omitted v13."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 11,
+   "new_badge": "14",
+   "old_badge": "13",
+   "old_text_start": "14 두 번째 재앙이 끝났고, 이제 세 번째 재앙이 바로 뒤따라와.",
+   "para_index": 7,
+   "reason": "The single sentence 'the second woe has passed; the third woe is coming soon' is verbatim The Message v14. Badge '13' was off by one; in-text '14' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 11,
+   "new_badge": "15",
+   "old_badge": "15",
+   "old_text_start": "15-18 일곱 번째 천사가 나팔을 불었어. 그러자 하늘에서 점점 커지는 노랫소리가 터져 나왔어.",
+   "para_index": 9,
+   "reason": "This paragraph's content is only the seventh trumpet blast and the loud voices in heaven (v15a) — per The Message v15. Here the badge '15' is RIGHT and the in-text '15-18' is WRONG: vv16-18 (elders' worship and thanksgiving song) are covered by the following Korean paragraphs (P10-P12). No badge change needed."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 12,
+   "new_badge": "1-2",
+   "old_badge": "2-3",
+   "old_text_start": "1-2 하늘에 정말 대단한 신기한 장면이 펼쳐졌어. 어떤 여자가 완전 햇빛으로 옷을 쫙 빼입고, 발",
+   "para_index": 2,
+   "reason": "Covers the great sign: the woman clothed with the sun, moon under feet, crown of twelve stars (v1), crying out in birth pangs (v2). In-text '1-2' correct; badge '2-3' shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 12,
+   "new_badge": "3-4",
+   "old_badge": "4-6",
+   "old_text_start": "3-4 그리고 좀 있다가, 첫 번째 장면만큼이나 쇼킹한 두 번째 장면이 나타났는데, 완전 불타는 거대한",
+   "para_index": 3,
+   "reason": "Covers the second sign: the fiery dragon with seven heads, ten horns, seven crowns (v3), sweeping a third of the stars to earth and standing before the woman to devour her child (v4). Badge '4-6' was two verses too wide."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 12,
+   "new_badge": "5-6",
+   "old_badge": "7-8",
+   "old_text_start": "5-6 드디어 여자가 아들을 낳았는데, 이 아들은 나중에 쇠 지팡이로 모든 나라를 다스릴 짱짱맨이 될",
+   "para_index": 4,
+   "reason": "Covers the woman bearing a son destined to rule all nations with an iron scepter, snatched up to God's throne (v5), and the woman fleeing to the desert for 1,260 days (v6). Badge '7-8' was wrong; the war in heaven (v7+) comes in the next paragraph."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 12,
+   "new_badge": "7-9",
+   "old_badge": "9-10",
+   "old_text_start": "7-12 그러다 하늘에서 전쟁이 터졌어. 미카엘이랑 그의 천사들이 그 용이랑 한판 붙은 거야. 용이랑 ",
+   "para_index": 5,
+   "reason": "Covers the war in heaven: Michael vs the dragon (vv7-8), and the great dragon — ancient serpent, Devil, Satan, deceiver of the world — hurled to earth with his angels (v9), matching The Message vv7-9. The loud voice of v10 ('Salvation and power...') is covered in the NEXT Korean paragraph (P6), so both the badge '9-10' and the in-text '7-12' are wrong; true coverage is 7-9."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 12,
+   "new_badge": "13-17",
+   "old_badge": "15-17",
+   "old_text_start": "13-17 그 용은 자기가 땅으로 쫓겨난 걸 알고 나서, 남자 아기를 낳은 그 여자를 막 쫓아다니기 시작했어",
+   "para_index": 7,
+   "reason": "Covers the dragon pursuing the woman (v13), the eagle's wings and her flight to the desert for a time, times, half a time (v14), the serpent's river of water and the earth swallowing it (vv15-16), and the dragon's war against her offspring who keep God's commands and hold Jesus' testimony (v17). Badge '15-17' dropped vv13-14."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 13,
+   "new_badge": "3-4",
+   "old_badge": "4-5",
+   "old_text_start": "3-4 그 짐승 머리 중 하나는 완전 치명상을 입었다가 나은 것처럼 보였어. 온 세상이 완전 넋이 나",
+   "para_index": 2,
+   "reason": "Covers the head with the fatal wound that healed (v3), the world's amazement, and the worship of the dragon and the Beast with 'who is like the beast, who can fight against it?' (v4). In-text '3-4' correct; badge '4-5' shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 13,
+   "new_badge": "5-8",
+   "old_badge": "6-9",
+   "old_text_start": "5-8 그 짐승은 완전 시끄럽게 떠들고 자기 자랑하면서 하나님 욕하는 말을 막 쏟아냈어. 마흔두 달 동안",
+   "para_index": 3,
+   "reason": "Covers the boastful blasphemous mouth for 42 months (v5), blasphemy against God, his name, and heaven's dwellers (v6), war against the saints and authority over every tribe (v7), and worship by all not written in the Lamb's book of life (v8). Badge '6-9' missed v5 and invented v9."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 13,
+   "new_badge": "9-10",
+   "old_badge": "10-11",
+   "old_text_start": "9-10 야, 듣고 있어? 뿌린 대로 거두는 거야. 감옥 갈 짓 한 사람은 감옥에 갈 거고, 칼 쓰는 사람은 ",
+   "para_index": 4,
+   "reason": "Opens with '야, 듣고 있어?' = 'Are you listening to me?' (v9), then the prison/sword recompense and the saints' patient endurance (v10) per The Message. In-text '9-10' correct; badge '10-11' was shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 13,
+   "new_badge": "13-17",
+   "old_badge": "14-17",
+   "old_text_start": "13-17 이 두 번째 짐승은 막 마법 같은 걸 보여줬는데, 하늘에서 불이 내려오게 해서 사람들 정신을 쏙 빼",
+   "para_index": 6,
+   "reason": "Covers the second Beast's great signs including fire from heaven (v13), deceiving earth-dwellers into making the image of the Beast (v14), giving the image breath and killing non-worshipers (v15), forcing the mark on right hand or forehead (v16), and barring buying/selling without the mark (v17). Badge '14-17' dropped v13."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "1-2",
+   "old_badge": "2-3",
+   "old_text_start": "1-2 와, 진짜 엄청난 광경을 봤어. 어린양이 시온 산에 서 있는 거야. 그 옆에는 14만 4천 명이 같이 서",
+   "para_index": 2,
+   "reason": "Covers the Lamb on Mount Zion with the 144,000 having his and the Father's names on their foreheads (v1), and the voice from heaven like rushing waters and thunder (v2). In-text '1-2' correct; badge '2-3' shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "2-5",
+   "old_badge": "4-6",
+   "old_text_start": "2-5 그리고 하프 연주 소리도 들렸는데, 연주자들이 보좌랑 네 생물이랑 장로들 앞에서 새로운 노래를 부르고",
+   "para_index": 3,
+   "reason": "Picks up the harp music (v2), the new song before the throne/beasts/elders that only the 144,000 can learn (v3), their purity and following the Lamb (v4), as firstfruits with no lie in their mouths (v5) — The Message vv2-5. Badge '4-6' was shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "6-7",
+   "old_badge": "8-9",
+   "old_text_start": "6-7 그리고 또 다른 천사가 하늘 한가운데를 휙 날아가는 걸 봤는데, 땅에 사는 모든 사람, 모든 민족, 모든",
+   "para_index": 5,
+   "reason": "Covers the angel flying mid-heaven with the eternal gospel for every nation (v6) proclaiming 'fear God... the hour of his judgment has come... worship the Creator' (v7). In-text '6-7' correct; badge '8-9' jumped two verses ahead."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "8",
+   "old_badge": "10",
+   "old_text_start": "8 두 번째 천사가 바로 뒤따라오면서 소리쳤어. \"무너졌어, 무너졌어! 저 큰 바빌론이 부서졌어! 온 나",
+   "para_index": 6,
+   "reason": "The second angel's 'Fallen, fallen is Babylon' proclamation is The Message v8. Badge '10' was two verses off; in-text '8' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "9-11",
+   "old_badge": "11-13",
+   "old_text_start": "9-11 세 번째 천사가 또 뒤따라오면서 완전 열심히 경고해. \"얘들아, 누구든지 그 짐승이랑 짐승 우상한테 ",
+   "para_index": 7,
+   "reason": "Covers the third angel's warning against worshiping the Beast and taking its mark (v9), drinking unmixed wine of God's wrath and torment with fire and brimstone (v10), and the smoke of their torment rising forever with no rest (v11). Badge '11-13' was shifted."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "12",
+   "old_badge": "14",
+   "old_text_start": "12 근데 성도들은 하나님의 계명 지키고 예수님한테 끝까지 충성하면서, 완전 끈기있게 버티는 거야.",
+   "para_index": 8,
+   "reason": "The saints' patient endurance keeping God's commands and Jesus' faith is The Message v12. Badge '14' was two verses off; in-text '12' correct."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "13",
+   "old_badge": "15-16",
+   "old_text_start": "13 하늘에서 또 목소리가 들렸어. \"이렇게 기록해. 지금부터 주님 안에서 죽는 사람들은 복 받은 거야. 진",
+   "para_index": 9,
+   "reason": "Covers the voice's 'blessed are the dead who die in the Lord' and the Spirit's 'they rest from their labor, their works follow them' — The Message v13 only. In-text '13' correct; badge '15-16' belonged to the grain harvest two paragraphs later."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "14-16",
+   "old_badge": "18",
+   "old_text_start": "14-16 내가 위를 딱 쳐다봤는데, 와, 숨멎. 흰 구름이 보이고 그 위에 사람의 아들 같은 분이 앉아 계셨어.",
+   "para_index": 11,
+   "reason": "Covers the Son of Man on the white cloud with gold crown and sharp sickle (v14), the angel from the Temple commanding 'swing your sickle... the harvest of the earth is ripe' (v15), and the harvesting (v16). In-text '14-16' correct; badge '18' pointed at the grape harvest two paragraphs later."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "17-18",
+   "old_badge": "19",
+   "old_text_start": "17-18 그러자 또 다른 천사가 하늘에 있는 성전에서 나왔는데, 걔도 날카로운 낫을 들고 있었어. 그리고 불",
+   "para_index": 12,
+   "reason": "Covers the angel from the Temple with a sharp sickle (v17) and the angel over the fire from the altar commanding 'gather the clusters of the vine of the earth' (v18). In-text '17-18' correct; badge '19' was one verse ahead."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 14,
+   "new_badge": "19-20",
+   "old_badge": "20",
+   "old_text_start": "19-20 그 천사가 낫을 휘둘러서 땅의 포도를 싹 거둬서, 하나님의 진노의 포도주 틀에 던져 넣었어. 그 포도",
+   "para_index": 13,
+   "reason": "Covers gathering the grapes into God's great winepress of wrath (v19) and trampling it outside the city with blood to the horses' bridles for ~1,600 stadia (v20). Badge '20' omitted v19."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 2,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 하늘에서 완전 대박 쩔고 숨 막히는 또 다른 장면을 봤음. 일곱 천사가 일곱 재앙을 들고 있었는데, 그게",
+   "reason": "Paragraph renders the Rev 15:1 vision: seven angels with the seven last disasters, with whom God's anger is spent (MSG 15:1). No other verse content present."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 3,
+   "old_badge": "3-4",
+   "new_badge": "2",
+   "old_text_start": "2-4 그리고 유리 바다 같은 걸 봤는데, 불빛으로 막 빛나고 있었음. 짐승이랑 그 형상이랑 그 이름의 숫자",
+   "reason": "Paragraph renders only the Rev 15:2 vision: sea of glass shot with fire, the victors standing with harps; it ends with the transitional line that they sang the song of Moses and the Lamb, while the actual song lyrics (MSG 15:3-4) live in the next paragraph. Neither the badge (3-4) nor the in-text '2-4' matches the actual content."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 5,
+   "old_badge": "7-8",
+   "new_badge": "5-8",
+   "old_text_start": "5-8 그 후에 하늘에 있는 성전, 그 증거의 장막 문들이 활짝 열리는 걸 봤음. 일곱 천사가 일곱 재앙을 ",
+   "reason": "Paragraph covers MSG 15:5 (heavenly temple thrown open), 15:6 (seven angels in clean linen with gold sashes), 15:7 (one living creature hands them the seven golden bowls of God's wrath), and 15:8 (smoke fills the temple, no one can enter until the plagues finish)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 2,
+   "old_badge": "2",
+   "new_badge": "1",
+   "old_text_start": "1 내가 성전에서 일곱 천사한테 엄청 큰 소리로 명령하는 걸 들었음. “시작해! 하나님의 진노가 담긴 일곱 ",
+   "reason": "Paragraph renders MSG 16:1 only: the mega-loud voice from the Temple commanding the seven angels to pour out the seven bowls of God's wrath."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 3,
+   "old_badge": "3",
+   "new_badge": "2",
+   "old_text_start": "2 첫 번째 천사가 나가서 땅에 대접을 쏟았더니, 짐승의 표를 받고 그 우상에게 절한 모든 사람들한테 완전 ",
+   "reason": "Paragraph renders MSG 16:2 only: the first angel pours his bowl on the earth, producing terrible sores on those with the Beast's mark."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 5,
+   "old_badge": "4",
+   "new_badge": "3",
+   "old_text_start": "3 두 번째 천사가 바다에 대접을 쏟으니까, 바다가 피처럼 굳어버리고 그 안에 있던 모든 생물이 다 죽었음.",
+   "reason": "Paragraph renders MSG 16:3 only: the second angel pours his bowl on the sea, which becomes like dead blood, killing every living thing in it."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 6,
+   "old_badge": "5-8",
+   "new_badge": "4-7",
+   "old_text_start": "4-7 세 번째 천사가 강이랑 샘에 대접을 쏟으니까, 물이 피로 변해버린 거야. 그때 물을 다스리는 천사가 ",
+   "reason": "Paragraph covers MSG 16:4 (third bowl on rivers/springs turning them to blood), 16:5-6 (the water-angel's 'you are just' speech about making them drink blood), and 16:7 (the altar's 'yes, true and just are your judgments' response)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 7,
+   "old_badge": "9-10",
+   "new_badge": "8-9",
+   "old_text_start": "8-9 네 번째 천사가 태양에 대접을 쏟으니까, 태양에서 불이 뿜어져 나와서 사람들을 다 태워버렸음. 불에 ",
+   "reason": "Paragraph covers MSG 16:8 (fourth bowl on the sun, scorching heat) and 16:9 (people cursed God for the plagues and refused to repent or give Him glory)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 8,
+   "old_badge": "11-12",
+   "new_badge": "10-11",
+   "old_text_start": "10-11 다섯 번째 천사가 짐승의 왕좌에 대접을 쏟으니까, 순식간에 짐승의 나라 전체가 완전 깜깜해졌음. ",
+   "reason": "Paragraph covers MSG 16:10 (fifth bowl on the Beast's throne, his kingdom goes dark) and 16:11 (people gnawed their tongues in pain, cursed the God of heaven, and refused to repent)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 9,
+   "old_badge": "13-15",
+   "new_badge": "12-14",
+   "old_text_start": "12-14 여섯 번째 천사가 큰 유프라테스 강에 대접을 쏟으니까, 강물이 싹 다 말라버렸음. 그리고 내가 보",
+   "reason": "Paragraph covers MSG 16:12 (sixth bowl dries up the Euphrates for the kings from the East), 16:13 (three frog-like evil spirits from the Dragon, Beast, and False Prophet), and 16:14 (miracle-working demon spirits gathering the kings for the great day of God)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 10,
+   "old_badge": "16-17",
+   "new_badge": "15",
+   "old_text_start": "15 “여러분, 정신 차리세요! 제가 예고 없이 도둑처럼 갈 거예요. 깨어서 옷을 딱 챙겨 입고 저를 맞을 ",
+   "reason": "Paragraph renders only MSG 16:15: the 'thief in the night' interjection — stay awake, keep your clothes on, blessed is the one ready; caught naked is shameful."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 11,
+   "old_badge": "18",
+   "new_badge": "16",
+   "old_text_start": "16 그 개구리 귀신들은 히브리어로 ‘아마겟돈’이라는 곳에 왕들을 전부 다 불러 모았음.",
+   "reason": "Paragraph renders only MSG 16:16: the frog-demons gather the kings at the place called Armageddon in Hebrew."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 16,
+   "para_index": 12,
+   "old_badge": "19-21",
+   "new_badge": "17-21",
+   "old_text_start": "17-21 일곱 번째 천사가 공중에 대접을 쏟으니까, 성전 안에 있는 왕좌에서 “다 끝났다!” 하는 엄청 큰",
+   "reason": "Paragraph covers MSG 16:17 (seventh bowl poured into the air; 'It is DONE!' from the Temple throne), 16:18 (lightning, thunder, the greatest earthquake ever), 16:19 (the great city split in three, nations' cities crumbled, Babylon given the cup of God's wrath), 16:20 (islands fled, mountains gone), and 16:21 (talent-weight hail, people cursed God for the plague)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 2,
+   "old_badge": "2-3",
+   "new_badge": "1-2",
+   "old_text_start": "1-2 일곱 대접 들고 있던 천사 중 한 명이 나한테 오더니 말했음. “이리 와보세요. 물 많은 곳에 자리 ",
+   "reason": "Paragraph covers MSG 17:1 (one of the seven bowl-angels comes to show the judgment of the great prostitute seated on many waters) and 17:2 (kings committed adultery with her; earth's inhabitants drunk on her wine)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 3,
+   "old_badge": "4-7",
+   "new_badge": "3-6",
+   "old_text_start": "3-6 그 천사가 성령의 힘으로 날 광야로 순간이동 시켰음. 거기서 완전 대단한 걸 봤는데, 어떤 여자가 빨",
+   "reason": "Paragraph covers MSG 17:3 (carried into the wilderness, sees the woman on the scarlet beast with seven heads and ten horns, covered in blasphemous names), 17:4 (purple and scarlet, gold/jewels/pearls, golden cup full of abominations), 17:5 (the forehead name: Babylon the Great, mother of prostitutes), and 17:6 (drunk on the blood of God's people and the martyrs of Jesus)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 4,
+   "old_badge": "8-10",
+   "new_badge": "6-8",
+   "old_text_start": "6-8 완전 소름 돋아서 눈을 비볐음. 너무 놀라서 말이 안 나왔음. 천사가 말했음. “왜 놀라세요? 제가 ",
+   "reason": "Paragraph opens with the tail of MSG 17:6 (John's astonishment — rubbing his eyes in wonder) and then covers 17:7 ('Why are you surprised? I'll tell you the mystery of the woman and the beast') and 17:8 (the beast was, is not, ascends from the Abyss headed for destruction; earth-dwellers not in the Book of Life will be dazzled)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 5,
+   "old_badge": "11-12",
+   "new_badge": "9-11",
+   "old_text_start": "9-11 “그러니까 정신 똑바로 차리고 잘 들으세요. 머리 일곱 개는 그 여자가 앉아 있는 일곱 언덕이기도 ",
+   "reason": "Paragraph covers MSG 17:9 (seven heads are seven mountains where the woman sits, also seven kings), 17:10 (five fallen, one is, one coming briefly), and 17:11 (the beast that was and is not is an eighth king, one of the seven, headed for destruction)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 6,
+   "old_badge": "13-15",
+   "new_badge": "12-14",
+   "old_text_start": "12-14 “여러분이 본 뿔 열 개는 열 명의 왕인데, 아직은 권력을 못 잡았어요. 걔네들은 나중에 그 빨간",
+   "reason": "Paragraph covers MSG 17:12 (ten horns are ten kings not yet in power, ruling one hour with the beast), 17:13 (one mind, handing their power to the beast), and 17:14 (they war against the Lamb; the Lamb conquers as Lord of lords and King of kings, with the called, chosen, faithful)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 17,
+   "para_index": 7,
+   "old_badge": "16-18",
+   "new_badge": "15-18",
+   "old_text_start": "15-18 천사가 계속해서 설명해 줬음. “여러분이 본 그 음녀가 앉아 있는 물은 수많은 백성들과 나라들, ",
+   "reason": "Paragraph covers MSG 17:15 (the waters are peoples, multitudes, nations, tongues), 17:16 (the ten horns and the beast will hate the prostitute, strip her, devour her flesh, burn her), 17:17 (God put it in their hearts to give their kingdom to the beast until His words are fulfilled), and 17:18 (the woman is the great city reigning over the kings of the earth)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 19,
+   "para_index": 2,
+   "old_badge": "3",
+   "new_badge": "1-3",
+   "old_text_start": "1-3 내가 하늘에서 완전 큰 합창단이 노래하는 소리를 들었는데, 대단한 거었음. \"할렐루야! 구원, 영광,",
+   "reason": "Paragraph covers MSG 19:1 (the massive hallelujah chorus: salvation, glory, power belong to God), 19:2 (His judgments are true and just; He judged the great prostitute and avenged the blood of His servants), and 19:3 (the second 'hallelujah — the smoke from her rises forever and ever')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 19,
+   "para_index": 8,
+   "old_badge": "12-16",
+   "new_badge": "11-16",
+   "old_text_start": "11-16 그 후에 내가 보니까 하늘이 활짝 열리는 거야. 와, 근데 흰 말이랑 그 말을 타신 분이 보이는 ",
+   "reason": "Paragraph covers MSG 19:11 (heaven opened, the white horse; rider Faithful and True judging in righteousness), 19:12 (eyes like fire, many crowns, a secret name), 19:13 (robe dipped in blood; called the Word of God), 19:14 (the armies of heaven on white horses in fine linen), 19:15 (sharp sword from His mouth to strike the nations, iron rod, treading the winepress of Almighty's wrath), and 19:16 (the name on robe and thigh: King of kings, Lord of lords)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 21,
+   "para_index": 2,
+   "old_badge": "2-10",
+   "new_badge": "1-8",
+   "old_text_start": "1 제가 완전 새로운 하늘이랑 땅을 봤는데, 원래 있던 하늘이랑 땅, 바다는 싹 다 사라지고 없었습니다. 2",
+   "reason": "Merged paragraph whose own in-text markers tile 1-8: MSG 21:1 (new heaven and earth, sea gone), 21:2 (new Jerusalem descending like a bride), 21:3-5 (thunder-voice: God moves into the neighborhood, wipes every tear, death/pain gone; 'I'm making everything new — write it down'), 21:6-7 ('It is done, Alpha and Omega, free Water of Life; conquerors inherit'), and 21:8 (cowards, liars, etc. to the lake of fire)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 21,
+   "para_index": 4,
+   "old_badge": "12-27",
+   "new_badge": "9-27",
+   "old_text_start": "9-12 마지막 재앙이 담긴 대접 일곱 개를 들고 있던 천사 중 하나가 저한테 와서 말했습니다. \"이리 와보",
+   "reason": "Merged paragraph whose own in-text sub-ranges tile 9-27: MSG 21:9-10 (bowl-angel shows the Bride, carried to a high mountain, sees the holy city), 21:11-14 (jewel-like glory, twelve gates with the tribes, twelve foundations with the apostles), 21:15-21 (gold measuring rod, 12,000 stadia square, 144-cubit jasper wall, twelve gem foundations, twelve pearl gates, gold street), and 21:22-27 (no temple — God and the Lamb are it; no sun or moon; nations walk in its light; gates never shut; nothing unclean enters, only those in the Lamb's Book of Life)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 3,
+   "old_badge": "7-8",
+   "new_badge": "6-7",
+   "old_text_start": "6-7 천사가 나한테 말했음. \"이건 진짜 뻥 하나도 없고 다 믿을 수 있는 확실한 말이에요. 예언자들한테 ",
+   "reason": "Paragraph covers MSG 22:6 (these words are trustworthy and true; the God of the prophets sent His angel to show His servants what must soon take place) and 22:7 ('I am coming soon; blessed is the one who keeps the words of the prophecy of this book')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 4,
+   "old_badge": "9-10",
+   "new_badge": "8-9",
+   "old_text_start": "8-9 나 요한은 이 모든 걸 내 눈으로 직접 보고 내 귀로 직접 들었음. 이걸 다 보고 들은 순간, 나한테",
+   "reason": "Paragraph covers MSG 22:8 (John saw and heard all this, fell to worship at the angel's feet) and 22:9 (the angel refuses: 'I'm a fellow servant with you and the prophets and all who keep this book's words — worship God!')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 5,
+   "old_badge": "11-12",
+   "new_badge": "10-11",
+   "old_text_start": "10-11 천사가 계속해서 말했어. \"이 책의 예언의 말씀을 봉인하지 마세요. 책장에 던져버려두지 말란 말이",
+   "reason": "Paragraph covers MSG 22:10 ('Do not seal up the words of the prophecy of this book, because the time is near') and 22:11 (let the evildoer keep doing evil, the vile be vile, the righteous keep doing right, the holy be holy)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 6,
+   "old_badge": "13",
+   "new_badge": "12-13",
+   "old_text_start": "12-13 \"그래요, 제가 지금 가고 있습니다! 진짜 곧 갈 거예요! 갈 때 제가 월급 장부 들고 갈 거예요",
+   "reason": "Paragraph covers MSG 22:12 ('Look, I am coming soon! My reward is with me, to give to each according to what he has done') and 22:13 ('I am the Alpha and the Omega, the First and the Last, the Beginning and the End')."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 10,
+   "old_badge": "18",
+   "new_badge": "18-19",
+   "old_text_start": "18-19 제가 이 책의 예언의 말씀을 듣는 모든 사람들한테 확실하게 말해두는데요, 만약 누가 이 예언의 말",
+   "reason": "Paragraph covers MSG 22:18 (warning: anyone adding to this book's prophecy gets the book's plagues added to his life) and 22:19 (anyone taking words away loses his share in the Tree of Life and the Holy City)."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 22,
+   "para_index": 11,
+   "old_badge": "19",
+   "new_badge": "20",
+   "old_text_start": "20 이 모든 것을 증언하신 분이 다시 말씀하셨습니다. \"제가 지금 가고 있습니다! 진짜 곧 갈 거예요!\"",
+   "reason": "Paragraph renders MSG 22:20 only: He who testifies to these things says, 'Yes, I am coming soon!'"
+  },
+  {
+   "book": "Romans",
+   "chapter": 3,
+   "para_index": 3,
+   "old_badge": "2-4",
+   "new_badge": "1-4",
+   "old_text_start": "2-6 먼저, 유대인들한테는 하나님의 계시, 그러니까 성경을 기록하고 보존할 책임이 맡겨졌던 거임. 그 과정",
+   "reason": "Paragraph mirrors EN para (badged 1-4) and The Message Rom 3:1-4: the advantage of the Jew (entrusted with God's words, vv1-2), some bailed but God didn't ghost them (v3), God keeps his promises (v4 quote). No v5-6 ' twisted thinking' content present, so neither badge 2-4 nor in-text 2-6 is right."
+  },
+  {
+   "book": "Romans",
+   "chapter": 4,
+   "para_index": 2,
+   "old_badge": "2-3",
+   "new_badge": "1-3",
+   "old_text_start": "1-3 그럼 우리 믿음의 조상 아브라함 이야기를 새로운 각도에서 한번 볼까? 만약 아브라함이 하나님을 위해 ",
+   "reason": "Covers Abraham as father of faith (v1), the if-by-works-he'd-brag hypothetical (v2), and the Scripture quote that Abraham trusted God to make him right (v3) - exactly The Message Rom 4:1-3. No v4-5 paycheck/gift analogy, so the in-text 1-3 was right and badge 2-3 was stale."
+  },
+  {
+   "book": "Romans",
+   "chapter": 4,
+   "para_index": 6,
+   "old_badge": "11-12",
+   "new_badge": "11-12",
+   "old_text_start": "12 이건 또 아브라함이 모든 사람의 조상이라는 뜻이기도 해. 다시 말해, 하나님한테 아직 \"아싸\"인 애들,",
+   "reason": "Content is The Message Rom 4:11-12: Abraham as father of uncircumcised believers (v11) and of the circumcised who walk in the same faith (v12), including the before-circumcision timing ('할례 받기 훨씬 전부터'). No vv9-10 material, so badge 11-12 verified correct and in-text '12' is wrong."
+  },
+  {
+   "book": "1 Corinthians",
+   "chapter": 1,
+   "para_index": 3,
+   "old_badge": "5-6",
+   "new_badge": "4-6",
+   "old_text_start": "4-6 너네 생각만 하면 하나님한테 진짜 감사함. 그리스도 예수님 안에서 너네한테 주신 하나님의 은혜 때문임",
+   "reason": "Thanks for grace in Christ (v4), enriched in speech and knowledge (v5), testimony confirmed (v6) - The Message 1 Cor 1:4-6. No vv7-9 content (gifts, waiting for Jesus). In-text 4-6 was right, badge 5-6 stale."
+  },
+  {
+   "book": "1 Corinthians",
+   "chapter": 12,
+   "para_index": 9,
+   "old_badge": "27-28",
+   "new_badge": "27-28",
+   "old_text_start": "27-31 너네는 그리스도의 몸이야. 그게 바로 너네의 진짜 모습이라고! 절대 잊으면 안 돼. 너네 자신을 ",
+   "reason": "Content is The Message 1 Cor 12:27 ('You are Christ's body') plus the v28 roster (apostles, prophets, teachers...). Nothing from vv29-31 ('it's not all apostles', 'a much better way'), so badge 27-28 verified correct and in-text 27-31 is wrong."
+  },
+  {
+   "book": "1 Corinthians",
+   "chapter": 13,
+   "para_index": 4,
+   "old_badge": "3",
+   "new_badge": "3",
+   "old_text_start": "3-7 내가 가진 전 재산을 다 털어서 사람들한테 나눠주고, 순교자처럼 불에 타 죽을 각오를 했더라도, 사랑",
+   "reason": "Content is The Message 1 Cor 13:3 only: give away everything, even martyrdom, worth nothing without love ('파산'). The '무슨 말을 하든, 뭘 믿든' line is just the bankrupt-summary, not vv1-2 or the vv4-7 love characteristics. Badge 3 verified correct, in-text 3-7 wrong."
+  },
+  {
+   "book": "1 Corinthians",
+   "chapter": 14,
+   "para_index": 2,
+   "old_badge": "1-2",
+   "new_badge": "1-2",
+   "old_text_start": "1-3 사랑을 얻으려고 목숨 거는 사람처럼, 진짜 온 힘을 다해서 사랑하는 삶을 살아보셈. 하나님이 주시는 ",
+   "reason": "Pursue love (v1), eagerly desire gifts especially prophecy (v1), tongues understood by God alone - private chat (v2). No v3 church-edification content, so The Message 1 Cor 14:1-2. Badge 1-2 verified correct, in-text 1-3 wrong."
+  },
+  {
+   "book": "Philippians",
+   "chapter": 1,
+   "para_index": 5,
+   "old_badge": "9-11",
+   "new_badge": "9-11",
+   "old_text_start": "9-12 그래서 나는 너네의 사랑이 더 풍성해지고, 그냥 막 사랑하는 게 아니라 제대로 사랑하게 해달라고 기",
+   "reason": "Paul's prayer that love levels up smartly (v9), sincere/blameless living (v10), fruit of righteousness to God's glory (v11) - The Message Phil 1:9-11. No v12 jail-advances-the-gospel content. Badge 9-11 verified correct, in-text 9-12 wrong."
+  },
+  {
+   "book": "2 Thessalonians",
+   "chapter": 2,
+   "para_index": 3,
+   "old_badge": "3-8",
+   "new_badge": "3-8",
+   "old_text_start": "3-5 그날이 오기 전에 몇 가지 사건이 먼저 터질 거야. 먼저, 다들 믿음을 버리는 배신이 있을 거고, 그",
+   "reason": "Full The Message 2 Thess 2:3-8 arc: the falling away and man of lawlessness (v3), opposing all gods and sitting in God's temple (v4), 'I told you this' (v5), restrained until his time (v6), lawlessness already working (v7), Jesus destroying him with his breath/appearing (v8). Badge 3-8 verified correct, in-text 3-5 wrong."
+  },
+  {
+   "book": "1 Timothy",
+   "chapter": 1,
+   "para_index": 7,
+   "old_badge": "15-16",
+   "new_badge": "15-16",
+   "old_text_start": "15-19 네 마음에 꼭 새겨야 할 말씀이 있음. 바로 예수 그리스도께서 죄인들을 구원하려고 이 세상에 오셨",
+   "reason": "The trustworthy saying that Christ came to save sinners (v15), Paul as worst of sinners (v15), mercy and example of patience for future believers (v16). No v17 doxology or vv18-19 charge to Timothy. Badge 15-16 verified correct, in-text 15-19 wrong."
+  },
+  {
+   "book": "Titus",
+   "chapter": 2,
+   "para_index": 2,
+   "old_badge": "2-6",
+   "new_badge": "1-6",
+   "old_text_start": "1-6 네 임무는 올바른 가르침에 맞는 말을 하는 거임. 나이 많은 아저씨들한테는 절제하고, 품위 있고, 지",
+   "reason": "Opens with Titus's charge to teach sound doctrine (v1), then older men (v2), older women (v3), younger women (vv4-5), younger men (v6) - The Message Titus 2:1-6. In-text 1-6 was right, badge 2-6 was stale."
+  },
+  {
+   "book": "1 Peter",
+   "chapter": 2,
+   "para_index": 1,
+   "old_badge": "1-2",
+   "new_badge": "1-3",
+   "old_text_start": "1-3 그러니까 이제 너네 자신을 좀 깨끗하게 정리해봐! 나쁜 마음, 거짓된 행동, 시기하는 거, 남 헐뜯는",
+   "reason": "Put away malice/deceit/envy/slander (v1), crave pure milk like newborns (v2), tasted that the Lord is good and grow up (v3) - The Message 1 Pet 2:1-3. In-text 1-3 was right, badge 1-2 stale."
+  },
+  {
+   "book": "1 Peter",
+   "chapter": 2,
+   "para_index": 10,
+   "old_badge": "21",
+   "new_badge": "21",
+   "old_text_start": "21-25 너네는 바로 그런 삶, 예수님이 직접 사셨던 그런 삶을 살도록 부름받았어. 예수님은 자기한테 닥친",
+   "reason": "Only The Message 1 Pet 2:21 content: called to this life, Christ's example and steps. None of vv22-25 (no deceit, bore our sins, wounds healed, lost sheep). Badge 21 verified correct, in-text 21-25 wrong."
+  },
+  {
+   "book": "1 John",
+   "chapter": 4,
+   "para_index": 5,
+   "old_badge": "7-8",
+   "new_badge": "7-8",
+   "old_text_start": "7-10 친구들아, 우리 계속 사랑하자. 사랑은 하나님한테서 오는 거니까. 사랑하는 사람은 다 하나님한테서 ",
+   "reason": "Love one another, love from God (v7), born of God/knows God (v7), God is love (v8) - The Message 1 John 4:7-8. No vv9-10 content (Son sent, propitiation). Badge 7-8 verified correct, in-text 7-10 wrong."
+  },
+  {
+   "book": "1 John",
+   "chapter": 4,
+   "para_index": 9,
+   "old_badge": "16-18",
+   "new_badge": "16-18",
+   "old_text_start": "17-18 하나님은 사랑이심. 우리가 사랑하면서 살기로 마음먹으면, 우리는 하나님 안에 살고 하나님도 우리 ",
+   "reason": "God is love / abide in love, God in us (v16b), love perfected gives judgment-day confidence (v17), perfect love casts out fear, fearful life not perfected (v18) - The Message 1 John 4:16-18. Badge 16-18 verified correct, in-text 17-18 missed v16."
+  },
+  {
+   "book": "Revelation",
+   "chapter": 15,
+   "para_index": 4,
+   "old_badge": "5-6",
+   "new_badge": "3-4",
+   "old_text_start": "\"오, 주권자이신 하나님, 주님이 하신 일 진짜 크고 놀라워요! 모든 민족의 왕이시여, 주님의 길은 완전",
+   "reason": "Coordinator-verified bonus (flagged by W3, out of target scope): paragraph is the Song of Moses and the Lamb lyrics — The Message Rev 15:3-4 ('Mighty your acts and marvelous, O God...'), matching EN para 3 badge '3-4'. Badge '5-6' is the same off-by-shift defect as the neighboring targets."
+  }
+ ],
+ "suspicious": []
+}

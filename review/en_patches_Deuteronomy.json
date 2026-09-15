@@ -1,0 +1,556 @@
+{
+  "book": "Deuteronomy",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6",
+        "3": "6-8",
+        "4": "9-13",
+        "5": "14",
+        "6": "15",
+        "7": "16-18",
+        "8": "18",
+        "9": "19-21",
+        "10": "22-23",
+        "11": "23-25",
+        "12": "26-28",
+        "13": "29-33",
+        "14": "34-36",
+        "15": "37-40",
+        "16": "41",
+        "17": "42",
+        "18": "43-46"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "4": "9",
+        "5": "10-12",
+        "6": "13",
+        "7": "14-16",
+        "9": "24-25",
+        "10": "26-28"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "5": "12-13",
+        "8": "15",
+        "9": "16-17",
+        "10": "18-20",
+        "11": "21-22",
+        "12": "23-25",
+        "13": "26-27"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "5": "10",
+        "6": "11-13",
+        "7": "14",
+        "8": "15-20",
+        "11": "25-28",
+        "12": "29-31",
+        "13": "32-34",
+        "14": "34",
+        "15": "35-38",
+        "16": "39-40",
+        "17": "41-43",
+        "18": "43",
+        "19": "44-49"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "1": "2-5",
+        "2": "6",
+        "4": "6",
+        "5": "6",
+        "6": "7-21",
+        "7": "7",
+        "8": "8-10",
+        "9": "11",
+        "10": "12-15",
+        "11": "16",
+        "12": "17",
+        "13": "18",
+        "14": "19",
+        "15": "20",
+        "16": "21",
+        "17": "22",
+        "18": "23",
+        "19": "24-26",
+        "20": "27",
+        "21": "28-29",
+        "22": "30-31",
+        "23": "32-33"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 3] Fragmentary split of paragraph 2's complete v6 prologue ('I am God, your God...'); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 4] Fragmentary split of paragraph 2's complete v6 prologue; verse range corrected. Flagged, not removed.",
+        "[para 5] Fragmentary split of paragraph 2's complete v6 prologue; verse range corrected. Flagged, not removed.",
+        "[para 7] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 8] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 9] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 10] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 11] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 12] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 13] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 14] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 15] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed.",
+        "[para 16] Fragmentary single-commandment split duplicating paragraph 6's complete Decalogue (MSG v7-21); verse range corrected. No deletion operation exists, so flagged rather than removed."
+      ],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "2": "4",
+        "3": "4",
+        "4": "5",
+        "5": "6-9",
+        "6": "10-12",
+        "7": "13-19",
+        "8": "20-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "2",
+        "2": "2",
+        "3": "3-4",
+        "4": "5",
+        "5": "5",
+        "6": "6",
+        "7": "7-11",
+        "8": "11",
+        "9": "12",
+        "10": "13",
+        "11": "13-15",
+        "12": "16",
+        "13": "17-19",
+        "14": "20",
+        "15": "21-24",
+        "16": "25-26"
+      },
+      "content_fixes": [
+        {
+          "index": 14,
+          "old": "And just for fun, He's gonna send hornets after them until every last person hiding is gone.",
+          "new": "He's gonna send hornets after them until every last person hiding is gone.",
+          "reason": "'just for fun' invents a flippant motive MSG never gives (MSG v20 'God will send the hornet after them until every last person hiding is gone')."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "1": "6-10",
+        "2": "10",
+        "3": "11-14",
+        "4": "14-16",
+        "5": "17-18",
+        "6": "19-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "1": "1-3",
+        "2": "3",
+        "3": "4-6",
+        "4": "6-8",
+        "5": "9-11",
+        "6": "12-14",
+        "7": "15-17",
+        "8": "18-20",
+        "9": "21",
+        "10": "22",
+        "11": "23-24",
+        "12": "25-26",
+        "13": "27",
+        "14": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "3": "8-9",
+        "4": "10",
+        "5": "11",
+        "6": "12-13",
+        "7": "14-19"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "2": "8-9",
+        "3": "10-12",
+        "4": "13-15",
+        "5": "16-17",
+        "6": "18-21",
+        "7": "22-25",
+        "8": "26",
+        "9": "27",
+        "10": "28",
+        "11": "29-30",
+        "12": "31-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "5": "11-12",
+        "6": "13-14",
+        "7": "15-16",
+        "8": "16-18",
+        "9": "19",
+        "10": "20-22",
+        "11": "23-25",
+        "12": "26-27",
+        "13": "28",
+        "14": "29-31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "1": "5",
+        "2": "6-10",
+        "4": "12-14"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "And that prophet or psychic? They gotta be taken out. No cap. They told you to rebel against your God, the one who bailed you out of Egypt and saved you from a life of slavery, and who told you exactly how to live. You gotta get that toxic influence out of your squad.",
+          "new": "And that prophet or psychic? They gotta be taken out. For real. They told you to rebel against your God, the one who bailed you out of Egypt and saved you from a life of slavery, and who told you exactly how to live. You gotta get that toxic influence out of your squad.",
+          "reason": "'No cap' is flippant slang attached to a capital sentence."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "2": "9-10",
+        "3": "11-18",
+        "4": "19-20",
+        "5": "21",
+        "6": "21",
+        "7": "22-27",
+        "8": "27",
+        "9": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "8": "18",
+        "9": "19-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-7",
+        "3": "8",
+        "4": "9-12",
+        "5": "12",
+        "6": "13-15",
+        "7": "16-17",
+        "8": "18-20",
+        "9": "20",
+        "10": "21-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "4": "10-13",
+        "5": "14-16",
+        "6": "18-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6-8",
+        "3": "9-14",
+        "5": "15-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "0": "1-3",
+        "2": "4-7",
+        "3": "8-10",
+        "4": "11-13",
+        "5": "14",
+        "6": "15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "1": "5-7",
+        "2": "8",
+        "3": "9",
+        "5": "16-18",
+        "6": "19-20"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Next, the officers will take the mic and say, 'Ayo, is there anyone here who just built a new house but hasn't had the housewarming party yet? You can bounce. Go home so you don't die in battle and have someone else move in. What about anyone who planted a vineyard but hasn't even tasted the wine? You can dip too, go home before you die and someone else drinks your profits. And if you're engaged but not married yet? Head home, man. You don't want to die and have some other dude marry your girl.'",
+          "new": "Next, the officers will take the mic and say, 'Ayo, is there anyone here who just built a new house but hasn't had the housewarming party yet? You can bounce. Go home so you don't die in battle and have someone else move in. What about anyone who planted a vineyard but hasn't even tasted the wine? You can dip too, go home before you die and someone else drinks your profits. And if you're engaged but not married yet? Head home, man. You don't want to die and have another man marry your fiancée.'",
+          "reason": "'have some other dude marry your girl' is crude slang; MSG v7 'lest he die in battle and another marry her'."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "0": "1-9",
+        "1": "8-9",
+        "2": "10-14",
+        "3": "15-17",
+        "4": "18-20",
+        "5": "21"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "When you go to war and God gives you the W, you'll probably take prisoners. If you see a beautiful woman among them and you're feeling her and want to marry her, here's the deal: you take her home, she shaves her head, cuts her nails, and gets rid of the clothes she was captured in. She then gets a full month to mourn her parents. After that, you can sleep with her and be married. But, if you're not vibing with her later on, you have to let her go free. You can't sell her or treat her like a slave, since you already humiliated her by taking her captive.",
+          "new": "When you go to war and God hands your enemies over to you, you'll probably take prisoners. If you see a beautiful woman among them and you're drawn to her and want to marry her, here's the deal: you take her home, she shaves her head, cuts her nails, and gets rid of the clothes she was captured in. She then gets a full month to mourn her parents. After that, you can sleep with her and be married. But if you're no longer drawn to her later on, you have to let her go free. You can't sell her or treat her like a slave, since you already humiliated her by taking her captive.",
+          "reason": "'God gives you the W', 'you're feeling her', 'not vibing with her' trivialize a law about a captive woman; MSG v10-11 'When you go to war against your enemies and God hands them over to you... you see a beautiful woman among the captives and are attracted to her'."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "0": "1-4",
+        "9": "13-19",
+        "10": "20-21",
+        "12": "23-24",
+        "13": "25-27",
+        "14": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "5": "8",
+        "6": "9-11",
+        "7": "12-14",
+        "8": "15-16",
+        "9": "17-18",
+        "10": "19-20",
+        "11": "21-23",
+        "12": "24-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5",
+        "2": "6",
+        "4": "8-9",
+        "5": "10-13"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "If someone gets caught kidnapping another Israelite to sell them into slavery, that kidnapper has to be put to death. You gotta get that kind of evil out of your community, no cap.",
+          "new": "If someone gets caught kidnapping another Israelite to sell them into slavery, that kidnapper has to be put to death. You gotta get that kind of evil out of your community, for real.",
+          "reason": "'no cap' is flippant slang attached to a capital sentence."
+        },
+        {
+          "index": 4,
+          "old": "Heads up! If there's an outbreak of a gnarly skin disease, you have to follow the rules the priests lay down, like, to the letter. Follow them precisely as I commanded them. And don't forget what God, your God, did to Miriam when you guys were leaving Egypt.",
+          "new": "Heads up! If there's an outbreak of a serious skin disease, you have to follow the rules the priests lay down, like, to the letter. Follow them precisely as I commanded them. And don't forget what God, your God, did to Miriam when you guys were leaving Egypt.",
+          "reason": "'gnarly skin disease' is degrading slang for a medical condition; MSG v8 'infectious skin disease'."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "2": "5-6",
+        "3": "7-10",
+        "4": "11-12",
+        "5": "13-16"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "But what if the brother is like, 'Nah, I'm not into it, I don't want to marry her'? In that case, the widow goes to the city leaders at the gate and says, 'My brother-in-law is refusing to keep his brother's name alive in Israel; he won't do his duty.' Then the leaders will summon the brother and talk to him. If he's stubborn and says, 'I don't want her,' then his sister-in-law is supposed to walk up to him, pull his sandal right off his foot, spit in his face, and declare, 'This is what happens to the man who refuses to build up his brother's family!' From then on, his family will be known in Israel as 'The Family with No Sandal.' Lowkey savage.",
+          "new": "But what if the brother is like, 'Nah, I'm not into it, I don't want to marry her'? In that case, the widow goes to the city leaders at the gate and says, 'My brother-in-law is refusing to keep his brother's name alive in Israel; he won't do his duty.' Then the leaders will summon the brother and talk to him. If he's stubborn and says, 'I don't want her,' then his sister-in-law is supposed to walk up to him, pull his sandal right off his foot, spit in his face, and declare, 'This is what happens to the man who refuses to build up his brother's family!' From then on, his family will be known in Israel as 'The Family with No Sandal.'",
+          "reason": "'Lowkey savage' is flippant slang trivializing the sandal-removal shaming ritual (MSG v9-10)."
+        },
+        {
+          "index": 4,
+          "old": "Now, if two guys are fighting and one guy's wife tries to rescue her husband by grabbing the other man's... private parts, you have to cut off her hand. No cap, show no pity.",
+          "new": "Now, if two guys are fighting and one guy's wife tries to rescue her husband by grabbing the other man's genitals, you have to cut off her hand. Show no pity.",
+          "reason": "'...private parts' is coy euphemism and 'No cap' is flippant slang around a severe penalty; replaced with the neutral anatomical term (MSG v11-12)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "1": "5-8",
+        "2": "10-11",
+        "3": "12-13",
+        "4": "13-14",
+        "7": "16-17",
+        "8": "18-19"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 6] Exact duplicate of paragraph 5 (MSG v15 blessing); verse range corrected to '15'. No deletion operation exists, so flagged rather than removed."
+      ],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "28": {
+      "range_fixes": {
+        "31": "68"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "5": "10-13",
+        "6": "14-21",
+        "7": "22-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {
+        "3": "10",
+        "4": "11-14",
+        "7": "17-18",
+        "8": "19-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {
+        "0": "1-2"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "Jeshurun (that's Israel) got fat and started acting up. You got chubby, then obese, like a total lard-ball. He ditched the God who made him and made fun of the Rock who saved him. They made God jealous with their trendy new foreign gods, and their disgusting habits ticked Him off big time. They started sacrificing to demons, not gods, to gods they didn't even know—brand new gods, fresh off the shelf, that your ancestors would never have even considered gods. You just walked out on the Rock who gave you life, forgetting the God who brought you into this world.",
+          "new": "Jeshurun (that's Israel) got fat and started acting up. You got fat, you got obese—you just kept eating and growing big. He ditched the God who made him and made fun of the Rock who saved him. They made God jealous with their trendy new foreign gods, and their disgusting habits ticked Him off big time. They started sacrificing to demons, not gods, to gods they didn't even know—brand new gods, fresh off the shelf, that your ancestors would never have even considered gods. You just walked out on the Rock who gave you life, forgetting the God who brought you into this world.",
+          "reason": "MSG v15 does say 'you got fat, became obese, a tub of lard', but 'chubby... total lard-ball' is degrading body-shaming language barred by the non-degrading-language rule; substance (fat/obese) kept in neutral wording."
+        },
+        {
+          "index": 7,
+          "old": "They're a nation of idiots; they don't even have the sense to come in out of the rain. If they were smart, they'd get it. They'd see what's coming for them. How could one soldier chase a thousand of them, or two guys make two thousand run away, unless their Rock had sold them out, unless God had given them up? Their 'rock' is nothing compared to our Rock; even our enemies know that. They're like a vine from Sodom, with roots in Gomorrah. Their grapes are poison, their grape-clusters bitter. Their wine is like snake venom, a deadly cobra poison.",
+          "new": "They're a nation that just doesn't think; they've got zero sense. If they were smart, they'd get it. They'd see what's coming for them. How could one soldier chase a thousand of them, or two guys make two thousand run away, unless their Rock had sold them out, unless God had given them up? Their 'rock' is nothing compared to our Rock; even our enemies know that. They're like a vine from Sodom, with roots in Gomorrah. Their grapes are poison, their grape-clusters bitter. Their wine is like snake venom, a deadly cobra poison.",
+          "reason": "MSG v28 'They are a nation of idiots' — the paraphrase keeps the meaning but drops the direct slur 'idiots' for neutral wording per the non-degrading-language rule."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "34": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "Moses, God's servant, died right there in Moab, exactly as God said would happen. God Himself buried him in a valley in Moab, across from Beth Peor. And to this day, nobody has a clue where his grave is. Lowkey mysterious.",
+          "new": "Moses, God's servant, died right there in Moab, exactly as God said would happen. God Himself buried him in a valley in Moab, across from Beth Peor. And to this day, nobody has a clue where his grave is. Nobody knows.",
+          "reason": "'Lowkey mysterious' is flippant slang on Moses' burial (MSG v6 'no one knows where his grave is to this day')."
+        },
+        {
+          "index": 5,
+          "old": "No cap, there has never been another prophet in Israel like Moses. This dude knew God face-to-face. There's been nothing like the signs and crazy miracles God had him do in Egypt to Pharaoh and his whole crew. Nothing compares to the power he had and all the awesome and kinda scary things Moses did right in front of all of Israel.",
+          "new": "Honestly, there has never been another prophet in Israel like Moses. Moses knew God face-to-face. There's been nothing like the signs and crazy miracles God had him do in Egypt to Pharaoh and his whole crew. Nothing compares to the power he had and all the awesome and kinda scary things Moses did right in front of all of Israel.",
+          "reason": "'No cap'/'This dude' are flippant slang trivializing Moses' epitaph (MSG v10-12)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

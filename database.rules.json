@@ -12,7 +12,9 @@
             "readingCount": {
               ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
             },
-            "$other": { ".validate": false }
+            "$other": {
+              ".validate": false
+            }
           }
         },
         "config": {
@@ -31,7 +33,7 @@
         "participants": {
           "$uid": {
             ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && (auth.uid == $uid || (root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val() && !newData.exists()))",
             ".validate": "!newData.exists() || (newData.child('role').val() == 'student' && newData.hasChildren(['role', 'name', 'joinedAt']) && (newData.hasChild('rosterNo') || newData.child('kind').val() == 'guest' || newData.child('kind').val() == 'leader'))"
           },
           ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
@@ -55,9 +57,18 @@
         "progress": {
           "$uid": {
             ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && auth.uid == $uid"
+            ".write": "auth != null && (auth.uid == $uid || (root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val() && !newData.exists()))"
           },
           ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
+        },
+        "rosterClaims": {
+          "$date": {
+            ".read": "auth != null",
+            "$rosterNo": {
+              ".write": "auth != null",
+              ".validate": "!newData.exists() || (newData.hasChildren(['uid', 'status']) && (newData.child('status').val() == 'reading' || newData.child('status').val() == 'done') && (newData.child('uid').val() == auth.uid || root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()))"
+            }
+          }
         }
       }
     },

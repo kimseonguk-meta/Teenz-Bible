@@ -1,0 +1,69 @@
+{
+  "book": "1 Timothy",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "3": "5-7",
+        "4": "8-10",
+        "7": "16-17",
+        "8": "18-19"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "[4] opens with \"I'm not saying girls can't be leaders\" - interpretive softening with no basis in The Message 2:11-15; tone review recommended."
+      ],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "1-7",
+        "2": "8-13",
+        "3": "14-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "4": "13-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-8",
+        "5": "16",
+        "6": "17-18",
+        "7": "19-20",
+        "8": "21-22",
+        "9": "24-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "3": "6-8",
+        "4": "9-10",
+        "5": "11-12",
+        "6": "13-16",
+        "7": "17-19",
+        "8": "20-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

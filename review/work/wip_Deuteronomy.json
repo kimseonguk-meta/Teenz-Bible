@@ -1,0 +1,860 @@
+{
+ "1": {
+  "edits": [
+   {
+    "find": "아스다롯과 에드레이에서 다스리던 바산 왕 옥을 개박살낸 후였음",
+    "index": 1,
+    "reason": "KO '개박살낸' (crude intensifier) → '완전히 무찌른'; EN 'he wrecked Sihon... and Og'",
+    "replace": "아스다롯과 에드레이에서 다스리던 바산 왕 옥을 완전히 무찌른 후였음"
+   },
+   {
+    "find": "와, 진짜 너네 숫자 봐봐. 하늘의 별이랑 맞먹는다니까!",
+    "index": 4,
+    "reason": "KO added exclamation '와, 진짜 너네 숫자 봐봐' with no EN basis; EN just 'literally like the stars in the sky'",
+    "replace": "하늘의 별이랑 맞먹는다니까!"
+   },
+   {
+    "find": "이 악한 세대 놈들 중 단 한 놈도",
+    "index": 14,
+    "reason": "KO '놈들'/'놈' (demeaning) → '사람들'; EN 'Not a single person from this messed-up generation'",
+    "replace": "이 악한 세대 사람들 중 단 한 사람도"
+   },
+   {
+    "find": "너네는 형편없이 쳐발렸지.",
+    "index": 18,
+    "reason": "KO '쳐발렸지' (crude slang) → '깨졌지'; EN 'handed you a stinging defeat'",
+    "replace": "너네는 형편없이 깨졌지."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "3-5",
+   "10": "22-23",
+   "11": "23-25",
+   "12": "26-28",
+   "13": "29-33",
+   "14": "34-36",
+   "15": "37-40",
+   "16": "41",
+   "17": "42",
+   "18": "43-46",
+   "2": "6",
+   "3": "6-8",
+   "4": "9-13",
+   "5": "14",
+   "6": "15",
+   "7": "16-18",
+   "8": "18",
+   "9": "19-21"
+  }
+ },
+ "2": {
+  "edits": [
+   {
+    "find": "우리가 걔네를 완전히 박살냈지. 그 김에 걔네 모든 성읍을 점령하고 완전히 파괴했어. 거룩한 파괴였지. 남자, 여자, 아이 할 것 없이 한 명도 안 남겼어.",
+    "index": 14,
+    "reason": "KO added mocking '거룩한 파괴였지' with no EN basis; '박살냈지' softened to '무찔렀지'; EN 'we defeated him... completely destroyed them'",
+    "replace": "우리가 걔네를 완전히 무찔렀지. 그 김에 걔네 모든 성읍을 점령하고 완전히 파괴했어. 남자, 여자, 아이 할 것 없이 한 명도 안 남겼어."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "26-28",
+   "4": "9",
+   "5": "10-12",
+   "6": "13",
+   "7": "14-16",
+   "9": "24-25"
+  }
+ },
+ "3": {
+  "edits": [
+   {
+    "find": "천상천하에 어떤 신이 주께서 행하신 일, 곧 주의 큰 능력을 행할 수 있겠나이까! 제발 저도 강을 건너 요단 저편에 있는 아름다운 땅과 저 아름다운 산과 레바논을 보게 해주세요.\" 하고 빌었지.",
+    "index": 12,
+    "reason": "KO prayer in formal liturgical style (하오체) clashes with EN casual teen voice 'what god in heaven or on earth can pull off the stuff you do!'",
+    "replace": "하늘 위든 땅 위든 주님이 하시는 일을 따라 할 수 있는 신이 어디 있어요! 제발 저도 강을 건너 요단 저편에 있는 아름다운 땅과 저 아름다운 산과 레바논을 보게 해주세요.\" 하고 빌었지."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "18-20",
+   "11": "21-22",
+   "12": "23-25",
+   "13": "26-27",
+   "5": "12-13",
+   "8": "15",
+   "9": "16-17"
+  }
+ },
+ "4": {
+  "edits": [
+   {
+    "find": "바알브올 숭배하는 이상한 짓에 낀 놈들은 하나님이 너네 중에서 싹 다 없애버리셨대.",
+    "index": 1,
+    "reason": "KO '낀 놈들' (demeaning) → '낀 사람들'; EN 'every single person... who got involved'",
+    "replace": "바알브올 숭배하는 이상한 짓에 낀 사람들은 하나님이 너네 중에서 싹 다 없애버리셨대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "11": "25-28",
+   "12": "29-31",
+   "13": "32-34",
+   "14": "34",
+   "15": "35-38",
+   "16": "39-40",
+   "17": "41-43",
+   "18": "43",
+   "5": "10",
+   "6": "11-13",
+   "7": "14",
+   "8": "15-20"
+  }
+ },
+ "5": {
+  "edits": [
+   {
+    "find": "오늘 내가 너네 귀에다 딱 박아주는 규칙이랑 법규들, 순순히 잘 들어야 돼.",
+    "index": 1,
+    "reason": "KO '귀에다 딱 박아주다' (crude) → '알려주다'; EN 'Pay attention to the rules I'm dropping on you'",
+    "replace": "오늘 내가 너네한테 알려주는 규칙이랑 법규들, 순순히 잘 들어야 돼."
+   },
+   {
+    "find": "역대급급 목소리로 말씀하셨다는 거임.",
+    "index": 18,
+    "reason": "Typo: '역대급급' → '역대급'; EN 'this crazy loud voice'",
+    "replace": "역대급 목소리로 말씀하셨다는 거임."
+   }
+  ],
+  "flagged": [
+   "DELETE paragraph indices 4, 5, 6 — v6 rendered in line-fragments duplicating index 3 (v6 full prose); keep index 3",
+   "DELETE paragraph indices 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 — Decalogue rendered commandment-by-commandment, each an exact substring of index 7 (vv7-21 full text); keep index 7 (indices refer to pre-deletion numbering)"
+  ],
+  "range_fixes": {
+   "1": "1",
+   "18": "22",
+   "19": "23",
+   "2": "2-5",
+   "20": "24-26",
+   "21": "27",
+   "22": "28-29",
+   "23": "30-31",
+   "24": "32-33",
+   "3": "6",
+   "7": "7-21"
+  }
+ },
+ "6": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "2": "4",
+   "3": "4",
+   "4": "5",
+   "5": "6-9",
+   "6": "10-12",
+   "7": "13-19",
+   "8": "20-25"
+  }
+ },
+ "7": {
+  "edits": [
+   {
+    "find": "거기 원래 있던 헷 족속, 기르가스 족속, 아모리 족속, 가나안 족속, 브리스 족속, 히위 족속, 여부스 족속 같은 개쎈 민족들을 다 쓸어버릴 거래.",
+    "index": 0,
+    "reason": "KO '개쎈' (개-intensifier, crude) → '진짜 쎈'; EN 'clear out all the big shots'",
+    "replace": "거기 원래 있던 헷 족속, 기르가스 족속, 아모리 족속, 가나안 족속, 브리스 족속, 히위 족속, 여부스 족속 같은 진짜 쎈 민족들을 다 쓸어버릴 거래."
+   },
+   {
+    "find": "그럼 걔네를 완전히 박살 내야 돼. 하나님께 바치는 거룩한 제물처럼 말이야.",
+    "index": 0,
+    "reason": "KO '박살 내야 돼' (crude) → '완전히 없애버려야 돼'; EN 'completely wipe them out'",
+    "replace": "그럼 걔네를 완전히 없애버려야 돼. 하나님께 바치는 거룩한 제물처럼 말이야."
+   },
+   {
+    "find": "아세라 목상이라고 성적으로 문란한 종교 상징물 같은 건 다 찍어버리고",
+    "index": 5,
+    "reason": "KO added '성적으로 문란한 종교 상징물 같은 건' with no EN basis; EN just 'chop down their Asherah poles'",
+    "replace": "아세라 목상도 다 찍어버리고"
+   },
+   {
+    "find": "근데 자기를 미워하는 놈들한테는 죽음으로 죗값을 치르게 하신대. 바로바로 갚아주신다는 거임. 미워하는 놈들한테는 칼같이 갚아주신다고.",
+    "index": 7,
+    "reason": "KO added '죽음으로 죗값을 치르게' with no EN basis; '놈들' → '사람들'; EN 'He pays them back... He pays them right on time'",
+    "replace": "근데 자기를 미워하는 사람들한테는 가차없이 갚아주신대. 바로바로 갚아주신다는 거임. 미워하는 사람들한테는 칼같이 갚아주신다고."
+   },
+   {
+    "find": "그리고 너네가 이집트에서 겪었던 그 모든 끔찍한 재앙들은 너네가 아니라 너네를 미워하는 놈들한테 내리실 거라고.",
+    "index": 11,
+    "reason": "KO '놈들' (demeaning) → '사람들'; EN 'everyone who hates you'",
+    "replace": "그리고 너네가 이집트에서 겪었던 그 모든 끔찍한 재앙들은 너네가 아니라 너네를 미워하는 사람들한테 내리실 거라고."
+   },
+   {
+    "find": "너네는 하나님, 너의 하나님이 넘겨주시는 모든 민족을 그냥 씹어 먹어버려.",
+    "index": 12,
+    "reason": "KO '씹어 먹어버려' (crude) → '완전히 무찔러버려'; EN 'You're gonna crush all the nations'",
+    "replace": "너네는 하나님, 너의 하나님이 넘겨주시는 모든 민족을 완전히 무찔러버려."
+   },
+   {
+    "find": "'헐, 쟤네 우리보다 10배는 많은데? 우리가 어떻게 이겨?'",
+    "index": 13,
+    "reason": "KO added '10배는' with no EN basis; EN 'there are way more of them than us'",
+    "replace": "'헐, 쟤네가 우리보다 훨씬 많은데? 우리가 어떻게 이겨?'"
+   },
+   {
+    "find": "하나님이 말벌 떼를 풀어서 숨어있는 마지막 한 놈까지 다 죽게 만드실 거라고.",
+    "index": 14,
+    "reason": "KO '한 놈' (demeaning) → '한 사람'; EN 'every last person hiding'",
+    "replace": "하나님이 말벌 떼를 풀어서 숨어있는 마지막 한 사람까지 다 없애버리실 거라고."
+   },
+   {
+    "find": "위대하고 awesome한 하나님이시라고.",
+    "index": 15,
+    "reason": "Konglish 'awesome한' → '놀라운'; EN 'majestic and awesome God'",
+    "replace": "위대하고 놀라운 하나님이시라고."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-2",
+   "1": "2",
+   "10": "13",
+   "11": "13-15",
+   "12": "16",
+   "13": "17-19",
+   "14": "20",
+   "15": "21-24",
+   "16": "25-26",
+   "2": "2",
+   "3": "3-4",
+   "4": "5",
+   "5": "5",
+   "6": "6",
+   "7": "7-11",
+   "8": "11",
+   "9": "12"
+  }
+ },
+ "8": {
+  "edits": [
+   {
+    "find": "너네가 진짜 어떤 놈들인지, 하나님의 명령을 지킬 건지 말 건지 보려고 하신 거임.",
+    "index": 0,
+    "reason": "KO '어떤 놈들' (demeaning) → '어떤 사람들'; EN 'to see what you were really made of'",
+    "replace": "너네가 진짜 어떤 사람들인지, 하나님의 명령을 지킬 건지 말 건지 보려고 하신 거임."
+   },
+   {
+    "find": "하나님이 이제 너네를 개좋은 땅으로 데려가실 거거든.",
+    "index": 1,
+    "reason": "KO '개좋은' (개-intensifier, crude) → '진짜 좋은'; EN 'a seriously good land'",
+    "replace": "하나님이 이제 너네를 진짜 좋은 땅으로 데려가실 거거든."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "6-10",
+   "2": "10",
+   "3": "11-14",
+   "4": "14-16",
+   "5": "17-18",
+   "6": "19-20"
+  }
+ },
+ "9": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "1": "1-3",
+   "10": "22",
+   "11": "23-24",
+   "12": "25-26",
+   "13": "27",
+   "14": "28-29",
+   "2": "3",
+   "3": "4-6",
+   "4": "6-8",
+   "5": "9-11",
+   "6": "12-14",
+   "7": "15-17",
+   "8": "18-20",
+   "9": "21"
+  }
+ },
+ "10": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "3": "8-9",
+   "4": "10",
+   "5": "11",
+   "6": "12-13",
+   "7": "14-19"
+  }
+ },
+ "11": {
+  "edits": [
+   {
+    "find": "진짜 꿀과 젖이 흐르는 땅에서 오래 살게 될 거야.",
+    "index": 2,
+    "reason": "Word order slip: standard '젖과 꿀이 흐르는 땅' (milk and honey); EN 'like milk and honey'",
+    "replace": "진짜 젖과 꿀이 흐르는 땅에서 오래 살게 될 거야."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "28",
+   "11": "29-30",
+   "12": "31-32",
+   "2": "8-9",
+   "3": "10-12",
+   "4": "13-15",
+   "5": "16-17",
+   "6": "18-21",
+   "7": "22-25",
+   "8": "26",
+   "9": "27"
+  }
+ },
+ "12": {
+  "edits": [
+   {
+    "find": "내가 너희에게 명령하는 모든 것을 부지런히 행하고, 내가 명령하는 대로 행하라. 거기에 더하지도 말고, 빼지도 말라.",
+    "index": 15,
+    "reason": "KO formal/churchy tone clashes with EN casual 'make sure you do everything I command you, exactly how I command it'",
+    "replace": "그러니까 내가 명령하는 모든 걸 내가 시킨 대로 꼭 해. 거기에 더하지도 말고 빼지도 마."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "10": "20-22",
+   "11": "23-25",
+   "12": "26-27",
+   "13": "28",
+   "14": "29-31",
+   "5": "11-12",
+   "6": "13-14",
+   "7": "15-16",
+   "8": "16-18",
+   "9": "19"
+  }
+ },
+ "13": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "1": "5",
+   "2": "6-10",
+   "4": "12-14"
+  }
+ },
+ "16": {
+  "edits": [
+   {
+    "find": "뇌물은 지혜로운 사람의 눈도 멀게 하고, 의로운 사람의 말도 왜곡시킨대. 완전 역대급.",
+    "index": 7,
+    "reason": "KO adds commentary '완전 역대급' not in EN ('a bribe can make even the wisest person blind to the truth and mess up the plans of good people')",
+    "replace": "뇌물은 지혜로운 사람의 눈도 멀게 하고, 의로운 사람의 말도 왜곡시킨대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-3",
+   "1": "3-4",
+   "2": "5-7",
+   "3": "8",
+   "4": "9-12",
+   "5": "12",
+   "6": "13-15",
+   "7": "16-17",
+   "8": "18-20",
+   "9": "20"
+  }
+ },
+ "17": {
+  "edits": [
+   {
+    "find": "아니면 그냥 개싸움 같은 거.",
+    "index": 3,
+    "reason": "KO '개싸움' (개-intensifier, crude) → '큰 싸움'; EN 'or a big fight'",
+    "replace": "아니면 큰 싸움 같은 거."
+   },
+   {
+    "find": "만약에 어떤 놈이 깝치면서 하나님을 대신하는 제사장이나 재판관의 판결을 무시하거나 바꾸려고 하면, 그놈은 그냥 죽은 목숨이래.",
+    "index": 4,
+    "reason": "KO '놈' + '깝치면서' (crude slang) → '사람이 잘난 체하면서'; EN 'If anyone gets arrogant and ignores the decision'",
+    "replace": "만약에 어떤 사람이 잘난 체하면서 하나님을 대신하는 제사장이나 재판관의 판결을 무시하거나 바꾸려고 하면, 그 사람은 그냥 죽은 목숨이래."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "4": "10-13",
+   "5": "14-16",
+   "6": "18-20"
+  }
+ },
+ "18": {
+  "edits": [
+   {
+    "find": "근데 만약 어떤 예언자가 구라치거나, 내가 명령하지도 않은 말을 내 이름으로 전한다고 하거나, 다른 신들 이름으로 말하면, 그 예언자는 죽어야 된다'고 하셨어.",
+    "index": 7,
+    "reason": "KO '구라치다' (crude slang for lying) → '거짓말을 하다'; EN 'if some prophet fakes it'",
+    "replace": "근데 만약 어떤 예언자가 거짓말을 하거나, 내가 명령하지도 않은 말을 내 이름으로 전한다고 하거나, 다른 신들 이름으로 말하면, 그 예언자는 죽어야 된다'고 하셨어."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "1": "3-5",
+   "3": "9-14",
+   "5": "15-16"
+  }
+ },
+ "19": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-3",
+   "2": "4-7",
+   "3": "8-10",
+   "4": "11-13",
+   "5": "14",
+   "6": "15"
+  }
+ },
+ "20": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "1": "5-7",
+   "2": "8",
+   "3": "9",
+   "5": "16-18",
+   "6": "19-20"
+  }
+ },
+ "21": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-9",
+   "1": "8-9",
+   "2": "10-14",
+   "3": "15-17",
+   "4": "18-20",
+   "5": "21"
+  }
+ },
+ "22": {
+  "edits": [
+   {
+    "find": "소랑 당나귀를 같이 묶어서 밭 갈지 마. 효율 개떨어짐.",
+    "index": 6,
+    "reason": "KO '개떨어짐' (개-intensifier, crude) → '효율이 떨어짐'; EN 'It's just not a good look'",
+    "replace": "소랑 당나귀를 같이 묶어서 밭 갈지 마. 효율이 떨어짐."
+   },
+   {
+    "find": "근데 만약에 남자가 약혼한 여자를 들판에서 만나서 덮친 거면, 그 남자만 죽이면 돼.",
+    "index": 13,
+    "reason": "KO '덮친' alone is crude slang; EN 'the guy forced himself on her' → add '강제로' for faithful, less crude phrasing",
+    "replace": "근데 만약에 남자가 약혼한 여자를 들판에서 만나서 강제로 덮친 거면, 그 남자만 죽이면 돼."
+   },
+   {
+    "find": "만약 남자가 약혼 안 한 처녀를 덮쳐서 그게 발각되면,",
+    "index": 14,
+    "reason": "Same as above: '덮쳐서' → '강제로 덮쳐서'; EN 'forces himself on her'",
+    "replace": "만약 남자가 약혼 안 한 처녀를 강제로 덮쳐서 그게 발각되면,"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-4",
+   "10": "20-21",
+   "12": "23-24",
+   "13": "25-27",
+   "14": "28-29",
+   "9": "13-19"
+  }
+ },
+ "23": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "10": "19-20",
+   "11": "21-23",
+   "12": "24-25",
+   "5": "8",
+   "6": "9-11",
+   "7": "12-14",
+   "8": "15-16",
+   "9": "17-18"
+  }
+ },
+ "24": {
+  "edits": [
+   {
+    "find": "그 여자는 이미 의식상으로 부정해진 상태라서, 다시 결혼하면 하나님 앞에서 완전 대단한급으로 역겨운 일이 되고,",
+    "index": 0,
+    "reason": "KO '대단한급으로' is an awkward/typo-ish intensifier; EN 'an abomination in the Presence of God' → simplify to '완전 역겨운 일'",
+    "replace": "그 여자는 이미 의식상으로 부정해진 상태라서, 다시 결혼하면 하나님 앞에서 완전 역겨운 일이 되고,"
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-4",
+   "1": "5",
+   "2": "6",
+   "4": "8-9",
+   "5": "10-13"
+  }
+ },
+ "27": {
+  "edits": [
+   {
+    "find": "어떤 신상이든 조각하거나 부어서 만들어서 몰래 세우는 놈은 하나님의 저주를 받을 거다.",
+    "index": 6,
+    "reason": "KO '놈' (demeaning) → '사람'; EN 'anyone who...'",
+    "replace": "어떤 신상이든 조각하거나 부어서 만들어서 몰래 세우는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "부모님한테 막 대하는 놈은 하나님의 저주를 받을 거다.",
+    "index": 8,
+    "reason": "KO '놈' → '사람'; EN 'anyone who disrespects their parents'",
+    "replace": "부모님한테 막 대하는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "이웃의 땅 경계표를 옮기는 놈은 하나님의 저주를 받을 거다.",
+    "index": 10,
+    "reason": "KO '놈' → '사람'",
+    "replace": "이웃의 땅 경계표를 옮기는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "눈먼 사람한테 길 잘못 알려주는 놈은 하나님의 저주를 받을 거다.",
+    "index": 12,
+    "reason": "KO '놈' → '사람'",
+    "replace": "눈먼 사람한테 길 잘못 알려주는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "외국인이나 고아, 과부한테 공정하지 않게 재판하는 놈은 하나님의 저주를 받을 거다.",
+    "index": 14,
+    "reason": "KO '놈' → '사람'",
+    "replace": "외국인이나 고아, 과부한테 공정하지 않게 재판하는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "아버지의 아내랑 자는 놈은 하나님의 저주를 받을 거다. 그건 자기 아빠 거를 범한 거임.",
+    "index": 16,
+    "reason": "KO '놈' → '사람'; '자기 아빠 거를 범한 거임' (crude) → '진짜 큰 잘못인 거임'; EN 'anyone who sleeps with their father's wife; that's a major violation'",
+    "replace": "아버지의 아내랑 자는 사람은 하나님의 저주를 받을 거다. 그건 진짜 큰 잘못인 거임."
+   },
+   {
+    "find": "동물이랑 성관계하는 놈은 하나님의 저주를 받을 거다.",
+    "index": 18,
+    "reason": "KO '놈' → '사람'",
+    "replace": "동물이랑 성관계하는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "자기 누나나 여동생, 아빠나 엄마의 딸이랑 자는 놈은 하나님의 저주를 받을 거다.",
+    "index": 20,
+    "reason": "KO '놈' → '사람'",
+    "replace": "자기 누나나 여동생, 아빠나 엄마의 딸이랑 자는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "장모님이랑 자는 놈은 하나님의 저주를 받을 거다.",
+    "index": 22,
+    "reason": "KO '놈' → '사람'",
+    "replace": "장모님이랑 자는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "이웃을 몰래 죽이는 놈은 하나님의 저주를 받을 거다.",
+    "index": 24,
+    "reason": "KO '놈' → '사람'",
+    "replace": "이웃을 몰래 죽이는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "돈 받고 무고한 사람 죽이는 놈은 하나님의 저주를 받을 거다.",
+    "index": 26,
+    "reason": "KO '놈' → '사람'",
+    "replace": "돈 받고 무고한 사람 죽이는 사람은 하나님의 저주를 받을 거다."
+   },
+   {
+    "find": "이 계시의 말씀을 삶으로 살아내지 않는 놈은 하나님의 저주를 받을 거다.",
+    "index": 28,
+    "reason": "KO '놈' → '사람'",
+    "replace": "이 계시의 말씀을 삶으로 살아내지 않는 사람은 하나님의 저주를 받을 거다."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "28": {
+  "edits": [
+   {
+    "find": "정원을 가꿔도 당근 하나 못 먹을 거임.",
+    "index": 16,
+    "reason": "KO '당근' (carrot) is invented and wrong; EN 'You'll plant a vineyard but never even get to taste the fruit' → grapes, not carrots",
+    "replace": "포도원을 가꿔도 포도 한 송이도 못 먹을 거임."
+   },
+   {
+    "find": "하나님이 너네를 다시는 보지 않을 거라고 약속했던 길로 배에 태워 이집트로 돌려보낼 거야.",
+    "index": 31,
+    "reason": "KO '다시는 보지 않을' mistranslates EN 'a journey I said you'd never have to take again' → '다시는 가지 않을'",
+    "replace": "하나님이 너네를 다시는 가지 않을 거라고 약속했던 길로 배에 태워 이집트로 돌려보낼 거야."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "31": "68"
+  }
+ },
+ "29": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "5": "10-13",
+   "6": "14-21",
+   "7": "22-23"
+  }
+ },
+ "30": {
+  "edits": [],
+  "flagged": [],
+  "range_fixes": {
+   "3": "10",
+   "4": "11-14",
+   "7": "17-18",
+   "8": "19-20"
+  }
+ },
+ "25": {
+  "edits": [
+   {
+    "find": "형수가 그놈 신발을 벗기고 얼굴에 침을 뱉으면서 \"자기 형제의 집안을 세워주지 않는 놈은 이렇게 된다!\"라고 외치는 거임. 그러면 이스라엘에서 그 집안은 '신발 벗겨진 자의 집'이라고 불리게 될 거래. 진짜 대단하네.",
+    "index": 3,
+    "reason": "KO '놈' (demeaning) → '사람'; EN 'This is what happens to the man who refuses...'; remove KO-added commentary '진짜 대단하네' not in EN",
+    "replace": "형수가 그 사람 신발을 벗기고 얼굴에 침을 뱉으면서 \"자기 형제의 집안을 세워주지 않는 사람은 이렇게 된다!\"라고 외치는 거임. 그러면 이스라엘에서 그 집안은 '신발 벗겨진 자의 집'이라고 불리게 될 거래."
+   },
+   {
+    "find": "이런 부패한 거래는 절대 ㄴㄴ.",
+    "index": 5,
+    "reason": "KO 'ㄴㄴ' (chat slang) → '절대 안 돼'; EN 'God absolutely hates dishonest business deals and all that corruption'",
+    "replace": "이런 부패한 거래는 절대 안 돼."
+   },
+   {
+    "find": "하나님 무서운 줄 모르는 놈들이었음.",
+    "index": 6,
+    "reason": "KO '놈들' (demeaning) → '사람들'; EN 'They had zero respect for God'",
+    "replace": "하나님 무서운 줄 모르는 사람들이었음."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "2": "5-6",
+   "3": "7-10",
+   "4": "11-12",
+   "5": "13-16"
+  }
+ },
+ "26": {
+  "edits": [
+   {
+    "find": "완전 어마어마한 나서 크고 강한 민족이 된 거임.",
+    "index": 1,
+    "reason": "KO typo '어마어마한 나서' → '어마어마하게 크고 강한'; EN 'they blew up and became this huge, powerful nation'",
+    "replace": "완전 어마어마하게 크고 강한 민족이 된 거임."
+   }
+  ],
+  "flagged": [
+   "DELETE paragraph index 6 — exact duplicate of index 5 ('하늘에 있는 거룩한 집에서 내려다보시고...'); EN has only one such prayer (EN[5] v15); deletion numbering is pre-deletion"
+  ],
+  "range_fixes": {
+   "1": "5-8",
+   "2": "10-11",
+   "3": "12-13",
+   "4": "13-14",
+   "5": "15",
+   "7": "16-17",
+   "8": "18-19"
+  }
+ },
+ "31": {
+  "edits": [
+   {
+    "find": "하나님이 아모리 왕 시혼이랑 옥, 그리고 걔네 땅에 했던 것처럼 똑같이 그 민족들한테도 하실 거래.",
+    "index": 1,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'the Amorite kings, Sihon and Og, and their land'",
+    "replace": "하나님이 아모리 왕 시혼이랑 옥, 그리고 그들 땅에 했던 것처럼 똑같이 그 민족들한테도 하실 거래."
+   },
+   {
+    "find": "쫄지 마. 걔네들 보고 다시 생각할 필요도 없어.",
+    "index": 2,
+    "reason": "KO '걔네들' (dismissive) → '그들'; EN \"don't even think twice about them\"",
+    "replace": "쫄지 마. 그들 보고 다시 생각할 필요도 없어."
+   },
+   {
+    "find": "네가 이 백성을 데리고 하나님이 그들의 조상에게 주시겠다고 약속한 그 땅으로 들어갈 거야. 네가 그들을 그 땅의 자랑스러운 주인으로 만들어 줄 거임.",
+    "index": 3,
+    "reason": "KO adds '자랑스러운 주인으로' (proud owners) not in EN ('You will make sure they get it')",
+    "replace": "네가 이 백성을 데리고 하나님이 그들의 조상에게 주시겠다고 약속한 그 땅으로 들어갈 거야. 네가 그 땅을 그들에게 꼭 차지하게 해줄 거임."
+   },
+   {
+    "find": "네가 무덤에 들어가자마자 이 백성은 그들이 들어가는 그 땅의 이방 신들을 음란하게 섬기기 시작할 거야.",
+    "index": 7,
+    "reason": "KO adds '음란하게' (lewdly) not in EN ('these people are gonna start chasing after the foreign gods')",
+    "replace": "네가 무덤에 들어가자마자 이 백성은 그들이 들어가는 그 땅의 이방 신들을 섬기기 시작할 거야."
+   },
+   {
+    "find": "나는 너희가 얼마나 반항적이고, 고집이 세고 제멋대로인지 알아.",
+    "index": 12,
+    "reason": "KO adds '제멋대로' not in EN ('I know how rebellious you guys are, how stubborn you can be')",
+    "replace": "나는 너희가 얼마나 반항적이고 고집이 센지 알아."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "0": "1-2"
+  }
+ },
+ "32": {
+  "edits": [
+   {
+    "find": "나 지금 할 말 개많음.",
+    "index": 0,
+    "reason": "KO '개많음' (개-intensifier, crude) → '진짜 많음'; EN \"I've got something major to say\"",
+    "replace": "나 지금 할 말 진짜 많음."
+   },
+   {
+    "find": "역겨운 짓들로 하나님을 개화나게 했음.",
+    "index": 4,
+    "reason": "KO '개화나게' (개-intensifier, crude) → '진짜 화나게'; EN 'ticked Him off big time'",
+    "replace": "역겨운 짓들로 하나님을 진짜 화나게 했음."
+   },
+   {
+    "find": "걔네는 비 올 때 집 안으로 들어올 줄도 모르는 어리석이들임.",
+    "index": 7,
+    "reason": "KO invents idiom '비 올 때 집 안으로 들어올 줄도 모르는' (mocking) not in EN ('They're a nation that just doesn't think; they've got zero sense')",
+    "replace": "걔네는 생각이 하나도 없는 어리석은 민족임."
+   },
+   {
+    "find": "걔네 '반석'은 우리 반석에 비하면 아무것도 아님.",
+    "index": 7,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN \"Their 'rock' is nothing compared to our Rock\"",
+    "replace": "그들 '반석'은 우리 반석에 비하면 아무것도 아님."
+   },
+   {
+    "find": "걔네가 \"이거 봐, 우리가 해냈어! 하나님은 아무것도 안 했음\" 하고 잘난 척할까 봐.",
+    "index": 6,
+    "reason": "KO '걔네' (dismissive) → '그들'; EN 'the enemy would take all the credit, bragging'",
+    "replace": "그들이 \"이거 봐, 우리가 해냈어! 하나님은 아무것도 안 했음\" 하고 잘난 척할까 봐."
+   },
+   {
+    "find": "그래서, 걔네 신들은 어디 있냐? 걔네가 피난처로 삼았던 그 반석 말이야.",
+    "index": 9,
+    "reason": "KO '걔네' ×2 (dismissive) → '그들'; EN \"where are their gods now? The 'rock' they ran to for safety?\"",
+    "replace": "그래서, 그들 신들은 어디 있냐? 그들이 피난처로 삼았던 그 반석 말이야."
+   },
+   {
+    "find": "그러니 기뻐하라, 모든 민족들아, 그의 백성을 찬양하는 데 동참하라.",
+    "index": 11,
+    "reason": "KO formal imperative clashes with EN casual 'So celebrate, all you nations, and praise His people with joy!'",
+    "replace": "그러니 기뻐해, 모든 민족들아, 그의 백성을 찬양하는 데 동참해."
+   },
+   {
+    "find": "너희 자녀들에게 이 계시의 모든 말씀을 하나도 빠짐없이 실천하라고 간절히 명령해라.",
+    "index": 12,
+    "reason": "KO adds '간절히' (earnestly) not in EN ('Command your children to obey every single word of this law')",
+    "replace": "너희 자녀들에게 이 계시의 모든 말씀을 하나도 빠짐없이 실천하라고 명령해라."
+   },
+   {
+    "find": "네 형 아론이 호르 산에서 죽어 그의 백성에게로 돌아간 것과 같이.",
+    "index": 13,
+    "reason": "KO paragraph opens a quote that never closes; add missing closing quotation mark",
+    "replace": "네 형 아론이 호르 산에서 죽어 그의 백성에게로 돌아간 것과 같이.\""
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "33": {
+  "edits": [
+   {
+    "find": "자, 이건 모세 할아버지가 돌아가시기 전에 이스라엘 백성들한테 남긴 마지막 축복 기도야. 들어봐.",
+    "index": 0,
+    "reason": "KO adds '할아버지' (grandpa) not in EN ('Moses, the man of God, gave ... before he passed away')",
+    "replace": "자, 이건 모세가 돌아가시기 전에 이스라엘 백성들한테 남긴 마지막 축복 기도야. 들어봐."
+   },
+   {
+    "find": "단은 바산에서 뛰쳐나오는 사자 녀석다.",
+    "index": 17,
+    "reason": "KO typo '사자 녀석다' → '어린 사자다'; EN 'Dan is a young lion'",
+    "replace": "단은 바산에서 뛰쳐나오는 어린 사자다."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "34": {
+  "edits": [
+   {
+    "find": "오늘날까지 아무도 그 무덤이 어딘지 모른대. 대단한 거지.",
+    "index": 2,
+    "reason": "KO adds commentary '대단한 거지' not in EN ('And to this day, nobody has a clue where his grave is. Nobody knows.')",
+    "replace": "오늘날까지 아무도 그 무덤이 어딘지 모른대."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {}
+ },
+ "14": {
+  "edits": [
+   {
+    "find": "근데 낙타, 토끼, 오소리 같은 애들은 되새김질은 하는데 굽이 안 갈라져서 부정하니까 먹으면 안 된대.",
+    "index": 1,
+    "reason": "KO '애들' (dismissive) for animals → '건'; EN 'you gotta say no to camels, rabbits, and rock badgers'",
+    "replace": "근데 낙타, 토끼, 오소리 같은 건 되새김질은 하는데 굽이 안 갈라져서 부정하니까 먹으면 안 된대."
+   },
+   {
+    "find": "독수리, 솔개, 매, 까마귀, 부엉이, 황새, 박쥐 이런 애들.",
+    "index": 3,
+    "reason": "KO '애들' (dismissive) → '것들'; EN lists birds on the do-not-eat list",
+    "replace": "독수리, 솔개, 매, 까마귀, 부엉이, 황새, 박쥐 이런 것들."
+   },
+   {
+    "find": "그리고 녀석 염소를 그 어미의 젖에 삶지 말래.",
+    "index": 6,
+    "reason": "KO '녀석 염소' (awkward/crude) → '어린 염소'; EN \"don't boil a baby goat in its mother's milk\"",
+    "replace": "그리고 어린 염소를 그 어미의 젖에 삶지 말래."
+   },
+   {
+    "find": "그걸 하나님이 예배 장소로 지정하신 곳으로 가져가서, 거기서 네 곡식과 포도주와 기름의 십일조를 먹고, 네 소와 양의 처음 난 녀석들을 먹으래.",
+    "index": 7,
+    "reason": "KO '녀석들' (crude for firstborn animals) → '새끼들'; EN 'the firstborn of your herds and flocks'",
+    "replace": "그걸 하나님이 예배 장소로 지정하신 곳으로 가져가서, 거기서 네 곡식과 포도주와 기름의 십일조를 먹고, 네 소와 양의 처음 난 새끼들을 먹으래."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "2": "9-10",
+   "3": "11-18",
+   "4": "19-20",
+   "5": "21",
+   "6": "21",
+   "7": "22-27",
+   "8": "27",
+   "9": "28-29"
+  }
+ },
+ "15": {
+  "edits": [
+   {
+    "find": "가축 몇 마리랑, 빵이랑 포도주랑 기름을 넉넉하게 챙겨주래.",
+    "index": 4,
+    "reason": "KO adds '기름' (oil) not in EN ('Hook them up with some animals, plenty of food and wine')",
+    "replace": "가축 몇 마리랑, 빵이랑 포도주를 넉넉하게 챙겨주래."
+   }
+  ],
+  "flagged": [],
+  "range_fixes": {
+   "8": "18",
+   "9": "19-23"
+  }
+ }
+}

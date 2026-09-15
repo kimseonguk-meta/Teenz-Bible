@@ -16,6 +16,9 @@ import { reconcileReminders } from "@/lib/readingReminders";
 import { toast } from "sonner";
 import {
   getChallengeCtx,
+  getCachedParticipation,
+  getMyParticipation,
+  getTodayChallengeDay,
   saveChapterProgress,
   getDayProgress,
   evaluateAndFinalizeDay,
@@ -549,6 +552,22 @@ export default function Bible() {
 
   // Challenge reading context: set by the challenge card via sessionStorage.
   // Self-validating against the current book/chapter view.
+  // partTick: 홈을 거치지 않은 딥링크로 바로 들어와도 참가 캐시를 채운 뒤 다시 판정한다.
+  const [partTick, setPartTick] = useState(0);
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        if (!getTodayChallengeDay()) return;
+        if (getCachedParticipation()) return;
+        await getMyParticipation().catch(() => null);
+        if (alive) setPartTick((t) => t + 1);
+      } catch {}
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
   const challengeCtx = useMemo(() => {
     try {
       if (view.type === "reading") {
@@ -561,7 +580,7 @@ export default function Bible() {
       }
     } catch {}
     return null;
-  }, [view]);
+  }, [view, partTick]);
 
   // Challenge: quiz passed -> record quizPass, re-evaluate the day, finalize.
   const handleChallengeQuizPass = useCallback(

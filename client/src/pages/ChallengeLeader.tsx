@@ -19,9 +19,12 @@ import {
   isChapterComplete,
   realReadingStatus,
   reconcileAggregate,
+  getRosterClaims,
+  deleteParticipantRecord,
   type Participation,
   type DayProgress,
   type DayStatus,
+  type RosterClaim,
 } from "@/lib/challenge";
 import { CHALLENGE_ROSTER, findRosterByName } from "@/data/challengeRoster";
 import { CHALLENGE_START, CHALLENGE_END } from "@/data/challengeSchedule";
@@ -59,15 +62,18 @@ function clampDateKey(dateKey: string): string {
 }
 
 /**
- * 행의 실효 상태 — 학생 finalize·집계 재계산과 동일한 단일 기준.
- * 수동 인정 > 실제 읽기 기록(노출/시간) 순으로 판정한다.
+ * 행의 실효 상태 — 집계의 정본인 rosterClaims를 우선으로 한다.
+ * 수동 인정 > 학번 claim(집계 소유권) > 실제 읽기 기록(노출/시간) 순으로 판정.
+ * claim이 있으면 그 상태가 곧 aggregate에 반영된 값이므로, 행·요약·집계가 항상 일치한다.
  */
 function rowStatus(
   day: { book: string; chapters: number[] } | undefined,
   progress: DayProgress | null,
-  manualDone: boolean
+  manualDone: boolean,
+  claim?: RosterClaim | null
 ): DayStatus {
   if (manualDone) return "done";
+  if (claim) return claim.status;
   if (day) return realReadingStatus(day, progress);
   return progress?.status || "not-started";
 }
@@ -144,6 +150,26 @@ function StudentDetail({
       onChanged();
     } catch (e: any) {
       queuedToast.error(e?.message || "처리 중 오류", { style: { bottom: "5rem" } });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!row.uid || busy) return;
+    if (
+      !window.confirm(
+        `「${row.name}」의 참가 기록을 삭제합니다.\n참가 정보·읽기 기록·수동 인정·격려 메시지가 모두 지워지고, 공식 집계에서도 제외됩니다.\n(같은 이름으로 다른 기기에 기록이 있으면 그 기록은 유지됩니다)\n계속할까요?`
+      )
+    )
+      return;
+    setBusy(true);
+    try {
+      await deleteParticipantRecord(row.uid);
+      queuedToast.success("기록을 삭제했어요", { style: { bottom: "5rem" } });
+      onChanged();
+    } catch (e: any) {
+      queuedToast.error(e?.message || "삭제 실패", { style: { bottom: "5rem" } });
     } finally {
       setBusy(false);
     }
@@ -229,6 +255,15 @@ function StudentDetail({
         <p className="text-white/40 text-[11px] mt-2">아직 앱에 등록하지 않은 학생이에요</p>
       )}
       {row.uid && (
+        <button
+          onClick={handleDelete}
+          disabled={busy}
+          className="mt-3 w-full py-2 text-[12px] font-bold rounded-lg border border-red-400/40 text-red-300/90 disabled:opacity-40"
+        >
+          {busy ? "처리 중..." : "🗑️ 이 기록 삭제 (집계에서도 제외)"}
+        </button>
+      )}
+      {row.uid && (
         <div className="mt-3 pt-3 border-t border-white/10">
           <div className="flex gap-2">
             <input
@@ -257,6 +292,7 @@ export default function ChallengeLeader() {
   const [dateKey, setDateKey] = useState(() => clampDateKey(sgDateKey()));
   const [reconciling, setReconciling] = useState(false);
   const [rows, setRows] = useState<RowState[]>([]);
+  const [claims, setClaims] = useState<Record<number, RosterClaim>>({});
   const [extras, setExtras] = useState<{ uid: string; p: Participation; progress: DayProgress | null; rosterMatch?: boolean }[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(null);
@@ -292,6 +328,8 @@ export default function ChallengeLeader() {
       }
       const uids = [...byRoster.values()].map((v) => v.uid);
       const progMap = uids.length ? await listDayProgress(dateKey, uids) : {};
+      const claimsMap = await getRosterClaims(dateKey).catch(() => ({}));
+      setClaims(claimsMap);
       const manualMap = new Map<number, { done: boolean; reason: string }>();
       await Promise.all(
         [...byRoster.entries()].map(async ([no, { uid }]) => {
@@ -357,7 +395,7 @@ export default function ChallengeLeader() {
   }
 
   const day = getChallengeDay(dateKey);
-  const rowSt = (r: RowState) => rowStatus(day, r.progress, !!r.manual?.done);
+  const rowSt = (r: RowState) => rowStatus(day, r.progress, !!r.manual?.done, claims[r.no] || null);
   const doneRows = rows.filter((r) => rowSt(r) === "done").length;
   const readingRows = rows.filter((r) => rowSt(r) === "reading").length;
 
@@ -556,6 +594,27 @@ export default function ChallengeLeader() {
                       {isDone ? "완료" : isReading ? "읽는 중" : "미시작"}
                     </p>
                   </div>
+                  <button
+                    aria-label="기록 삭제"
+                    onClick={async () => {
+                      if (
+                        !window.confirm(
+                          `「${e.p.name}」의 기록을 삭제합니다.\n(공식 집계에는 포함되지 않은 기록입니다)\n계속할까요?`
+                        )
+                      )
+                        return;
+                      try {
+                        await deleteParticipantRecord(e.uid);
+                        queuedToast.success("기록을 삭제했어요", { style: { bottom: "5rem" } });
+                        load();
+                      } catch (err: any) {
+                        queuedToast.error(err?.message || "삭제 실패", { style: { bottom: "5rem" } });
+                      }
+                    }}
+                    className="flex-shrink-0 text-white/35 text-lg px-1"
+                  >
+                    🗑️
+                  </button>
                 </div>
               );
             })}

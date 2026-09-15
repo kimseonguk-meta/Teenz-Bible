@@ -1,0 +1,1085 @@
+{
+  "book": "Psalms",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-3",
+        "2": "4-5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "3": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "4": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3",
+        "3": "4",
+        "4": "6-7",
+        "5": "8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "3": "9-10",
+        "4": "11-12"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "4": "6",
+        "5": "7",
+        "6": "8-9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "8": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "2": "5-6",
+        "3": "7-8",
+        "4": "9-10",
+        "5": "11-12",
+        "6": "13-14",
+        "7": "15-16",
+        "8": "17-20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "11": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-6",
+        "2": "7"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "2": "5-6"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "4": "5-6",
+        "5": "7"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "16": {
+      "range_fixes": {
+        "2": "4",
+        "3": "5-6",
+        "4": "7-8",
+        "5": "9-10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "18": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "19": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "20": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "21": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "22": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "23": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "25": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "26": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "27": {
+      "range_fixes": {
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "7",
+        "7": "8-9",
+        "8": "10",
+        "9": "11-12"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "2": "3",
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "7",
+        "7": "8-9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "1": "3",
+        "2": "4",
+        "3": "5",
+        "4": "6",
+        "5": "7-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "31": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "32": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3",
+        "3": "4",
+        "4": "5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {
+        "6": "16-17",
+        "7": "18-19"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "34": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "35": {
+      "range_fixes": {
+        "1": "4-8",
+        "2": "9-10",
+        "3": "11-12",
+        "4": "13-14",
+        "5": "15-16",
+        "6": "17-18",
+        "7": "19-21",
+        "8": "22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "37": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-6",
+        "3": "7",
+        "4": "8-9",
+        "5": "10-11",
+        "6": "12-13",
+        "7": "14-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "38": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "39": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "40": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "41": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "42": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "43": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "44": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "45": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "46": {
+      "range_fixes": {
+        "1": "7"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "47": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "48": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "49": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "2": "5-6",
+        "3": "7-9",
+        "4": "10-11",
+        "5": "12",
+        "6": "13-15",
+        "7": "16-19",
+        "8": "20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "50": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "51": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "52": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "53": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "54": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "55": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "56": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "57": {
+      "range_fixes": {
+        "1": "4",
+        "2": "5"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "58": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "59": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "60": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "61": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "62": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "63": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "64": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "65": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "66": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "67": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "68": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "69": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "70": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "71": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "72": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "73": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "74": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "75": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "76": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "77": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "78": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "79": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "80": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "81": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "82": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "83": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "84": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "85": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "86": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "87": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "88": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "p2 narrows MSG 88:18 \"lover and neighbor\" to \"girlfriend and my best friend\", changing the meaning. Recommend revising to match MSG."
+      ],
+      "ok": false
+    },
+    "89": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5-18",
+        "2": "19-37",
+        "3": "38-51"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "90": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "91": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "92": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "93": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "94": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "95": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "96": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "97": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "98": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "99": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "100": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "101": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "102": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-11",
+        "3": "12-17",
+        "5": "18-22",
+        "7": "23-28"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "p2 is a near-duplicate of p1 (both paraphrase 102:3-11). Recommend removing p2.",
+        "p4 is a near-duplicate of p3 (both paraphrase 102:12-17). Recommend removing p4.",
+        "p6 is a near-duplicate of p5 (both paraphrase 102:18-22). Recommend removing p6.",
+        "p8 is a near-duplicate of p7 (both paraphrase 102:23-28). Recommend removing p8."
+      ],
+      "ok": false
+    },
+    "103": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "104": {
+      "range_fixes": {
+        "1": "1-14",
+        "2": "15-23",
+        "3": "24-30",
+        "4": "31-32",
+        "5": "33-35"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "105": {
+      "range_fixes": {
+        "1": "1-6",
+        "2": "7-15",
+        "3": "16-22",
+        "4": "23-42",
+        "5": "43-45"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "106": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "107": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "108": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "109": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "110": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-7"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "111": {
+      "range_fixes": {
+        "6": "7-8",
+        "7": "8-9"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "112": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "113": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "114": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "115": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "116": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "117": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "118": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "119": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "120": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "121": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "122": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "123": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "124": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6",
+        "2": "7"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "125": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "126": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "127": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "128": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "129": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "130": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5-6",
+        "2": "7-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "131": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "132": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "133": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "134": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "135": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "136": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "137": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "138": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "139": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "140": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "141": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "142": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "143": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "144": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "145": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3",
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "7",
+        "7": "8",
+        "8": "9",
+        "9": "10",
+        "10": "11",
+        "11": "12",
+        "12": "13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "146": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "147": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "148": {
+      "range_fixes": {
+        "2": "7-12",
+        "3": "13-14"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Entire chapter is in formal NIV-like diction, not teen paraphrase voice. Inconsistent with EN teen-English standard. Recommend re-paraphrasing in teen voice."
+      ],
+      "ok": false
+    },
+    "149": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "150": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

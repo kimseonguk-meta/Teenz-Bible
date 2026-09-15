@@ -14,6 +14,7 @@ import { useLocation } from "wouter";
 import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
 import { getPetDefaultSprite } from "@/data/petSprites";
 import { queuedToast } from "@/lib/toastQueue";
+import { getCachedParticipation } from "@/lib/challenge";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
 import { isLinkedToApple, linkOrSignInWithApple } from "@/lib/appleAuth";
 import { celebrateLogin } from "@/lib/celebration";
@@ -83,13 +84,26 @@ function EveningBanner({ onNavigate }: { onNavigate: (p: string) => void }) {
       return false;
     }
   });
+  // 챌린지 참가자에게는 챌린지 문구 + 챌린지 바로 열기 (웹/PWA 저녁 리마인더의 챌린지 버전)
+  const [isChallenger, setIsChallenger] = useState(false);
+  useEffect(() => {
+    try {
+      const p = getCachedParticipation();
+      setIsChallenger(!!p && (p.role === "student" || p.reading === true));
+    } catch {}
+  }, []);
   if (!visible) return null;
   return (
     <div className="tb-panel tb-panel-glow p-4 flex items-center gap-3">
       <div className="text-2xl flex-shrink-0">🌙</div>
-      <p className="flex-1 min-w-0 text-white/85 text-[13px] font-bold">오늘 성경 읽기, 아직 안 했어요</p>
-      <button className="tb-btn px-4 py-2 text-[13px] flex-shrink-0" onClick={() => onNavigate("/bible")}>
-        지금 읽기
+      <p className="flex-1 min-w-0 text-white/85 text-[13px] font-bold">
+        {isChallenger ? "오늘 제자반 챌린지 분량, 아직 안 읽었어요 📖" : "오늘 성경 읽기, 아직 안 했어요"}
+      </p>
+      <button
+        className="tb-btn px-4 py-2 text-[13px] flex-shrink-0"
+        onClick={() => onNavigate(isChallenger ? "/?challenge=1" : "/bible")}
+      >
+        {isChallenger ? "챌린지 열기" : "지금 읽기"}
       </button>
       <button
         aria-label="닫기"

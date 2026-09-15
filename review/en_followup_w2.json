@@ -1,0 +1,149 @@
+{
+ "fixes": [],
+ "checked_kept": [
+  {
+   "book": "Job",
+   "chapter": 29,
+   "para_index": 2,
+   "text": "\"When I’d go downtown and chill in the main square, everyone, young and old, would give me so much respect; the whole town honored me.",
+   "message_ref": "Job 29:7-20 MSG: \"Young and old greeted me with respect; I was honored by everyone in town.\"",
+   "reason": "MSG itself says 'I was honored by everyone in town'; EN is a direct natural paraphrase, no 'holy' anywhere in MSG."
+  },
+  {
+   "book": "Psalms",
+   "chapter": 47,
+   "para_index": 1,
+   "text": "He basically put us at the front of the line, his favorite, the honored ones he chose himself.",
+   "message_ref": "Ps 47:4 MSG: \"He set us at the head of the line, prize-winning Jacob, his favorite.\"",
+   "reason": "MSG says 'prize-winning Jacob, his favorite'; EN's 'the honored ones he chose himself' paraphrases 'prize-winning...favorite'. No 'holy' in MSG."
+  },
+  {
+   "book": "Psalms",
+   "chapter": 65,
+   "para_index": 1,
+   "text": "Like, being a guest in your house is the most honored experience ever.",
+   "message_ref": "Ps 65:2-8 MSG: \"Blessed are the chosen! Blessed the guest at home in your place!\"",
+   "reason": "MSG says 'Blessed the guest at home in your place!'; EN's 'the most honored experience ever' is a loose teen paraphrase of 'Blessed'. No 'holy' in MSG's line."
+  },
+  {
+   "book": "Psalms",
+   "chapter": 92,
+   "para_index": 2,
+   "text": "But you’ve made me strong as a charging bison, you’ve honored me with a festive parade.",
+   "message_ref": "Ps 92:10-14 MSG: \"But you've made me strong as a charging bison, you've honored me with a festive parade.\"",
+   "reason": "EN nearly copies MSG verbatim ('you've honored me with a festive parade'), which itself uses 'honored'. No mistranslation."
+  },
+  {
+   "book": "Psalms",
+   "chapter": 112,
+   "para_index": 3,
+   "text": "They will be honored and respected.",
+   "message_ref": "Ps 112 MSG: \"They lavish gifts on the poor—A generosity that goes on, and on, and on. An honored life! A beautiful life!\"",
+   "reason": "MSG says 'An honored life! A beautiful life!'; EN 'They will be honored and respected' tracks MSG closely. MSG's line, not holy."
+  },
+  {
+   "book": "Proverbs",
+   "chapter": 15,
+   "para_index": 30,
+   "text": "That's how you become an honored guest among the wise.",
+   "message_ref": "Prov 15:31 MSG: \"Listen to good advice if you want to live well, an honored guest among wise men and women.\"",
+   "reason": "MSG verbatim: 'an honored guest among wise men and women.' EN matches exactly."
+  },
+  {
+   "book": "Proverbs",
+   "chapter": 25,
+   "para_index": 4,
+   "text": "It's way better to be invited to the honored section than to get kicked out for trying to sneak in.",
+   "message_ref": "Prov 25:6-7 MSG: \"It's better to be promoted to a place of honor than face humiliation by being demoted.\"",
+   "reason": "MSG: 'promoted to a place of honor'; EN 'invited to the honored section' is a fair teen-voice paraphrase of 'place of honor'."
+  },
+  {
+   "book": "Isaiah",
+   "chapter": 56,
+   "para_index": 3,
+   "text": "I'm talking permanent honored status that never gets canceled.'",
+   "message_ref": "Isa 56:4-5 MSG: \"I'll provide them an honored place in my family and within my city, even more honored than that of sons and daughters. I'll confer permanent honors on them that will never be revoked.\"",
+   "reason": "MSG uses 'honored' three ways here ('an honored place', 'even more honored', 'permanent honors'); EN's 'honored status' mirrors MSG exactly."
+  },
+  {
+   "book": "Isaiah",
+   "chapter": 61,
+   "para_index": 0,
+   "text": "You'll hire outsiders to watch your flocks and foreigners to work your fields, but you'll get the title 'Priests of God,' and be honored as ministers of our God",
+   "message_ref": "Isa 61:1-7 MSG: \"But you'll have the title 'Priests of God,' honored as ministers of our God.\"",
+   "reason": "MSG verbatim: 'honored as ministers of our God.' EN matches."
+  },
+  {
+   "book": "Jeremiah",
+   "chapter": 17,
+   "para_index": 7,
+   "text": "\"Your Temple has always been a glorious and honored throne from the very beginning!",
+   "message_ref": "Jer 17:12-13 MSG: \"From early on your Sanctuary was set high, a throne of glory, exalted!\"",
+   "reason": "MSG: 'a throne of glory, exalted!'; EN 'glorious and honored throne' is a loose paraphrase of 'throne of glory, exalted'. No 'holy' in MSG."
+  },
+  {
+   "book": "Jeremiah",
+   "chapter": 42,
+   "para_index": 0,
+   "text": "So all the army leaders, with Johanan and Jezaniah in charge, and pretty much everyone else, from the honored ones to the regular folks, went to the prophet Jer",
+   "message_ref": "Jer 42:1-3 MSG: \"All the army officers ... accompanied by all the people, small and great, came to Jeremiah the prophet...\"",
+   "reason": "MSG: 'all the people, small and great' (high/low ranks); EN 'from the honored ones to the regular folks' paraphrases that rank contrast naturally. MSG has no 'holy' here."
+  },
+  {
+   "book": "Daniel",
+   "chapter": 3,
+   "para_index": 0,
+   "text": "Then he invited, like, *everyone* important—all the big shots and honored ones—to this huge dedication party for the statue.",
+   "message_ref": "Dan 3:1-6 MSG: \"He then ordered all the important leaders in the province, everybody who was anybody, to the dedication ceremony of the statue.\"",
+   "reason": "MSG: 'all the important leaders... everybody who was anybody'; EN 'all the big shots and honored ones' is a fair loose paraphrase. No 'holy' in MSG."
+  },
+  {
+   "book": "Daniel",
+   "chapter": 5,
+   "para_index": 0,
+   "text": "So, King Belshazzar threw this massive party for a thousand of his honored ones.",
+   "message_ref": "Dan 5:1-4 MSG: \"King Belshazzar held a great feast for his one thousand nobles.\"",
+   "reason": "MSG: 'his one thousand nobles'; EN 'his honored ones' paraphrases 'nobles' naturally. No 'holy' in MSG."
+  },
+  {
+   "book": "Daniel",
+   "chapter": 5,
+   "para_index": 2,
+   "text": "His honored ones were all in a panic.",
+   "message_ref": "Dan 5:8-9 MSG: \"The nobles were in a panic.\"",
+   "reason": "MSG: 'The nobles were in a panic.'; EN 'His honored ones were all in a panic' paraphrases 'nobles'. No 'holy' in MSG."
+  },
+  {
+   "book": "Zephaniah",
+   "chapter": 3,
+   "para_index": 7,
+   "text": "You'll be famous and honored all over the world.",
+   "message_ref": "Zeph 3:18-20 MSG: \"You'll be famous and honored all over the world.\"",
+   "reason": "MSG verbatim: 'You'll be famous and honored all over the world.' EN matches exactly."
+  },
+  {
+   "book": "Malachi",
+   "chapter": 1,
+   "para_index": 13,
+   "text": "\"My name is honored by people all over the world.",
+   "message_ref": "Mal 1:11 MSG: \"I am honored all over the world. And there are people who know how to worship me all over the world, who honor me by bringing their best to me.\"",
+   "reason": "MSG: 'I am honored all over the world... who honor me by bringing their best to me.' EN matches MSG's own wording."
+  },
+  {
+   "book": "Malachi",
+   "chapter": 3,
+   "para_index": 13,
+   "text": "Then the people who truly honored God got together and talked about it.",
+   "message_ref": "Mal 3:16 MSG: \"Then those whose lives honored God got together and talked it over... with the names of the God-fearers written down, all the names of those who honored God's name.\"",
+   "reason": "MSG twice uses 'honored' ('whose lives honored God', 'those who honored God's name'); EN matches MSG's wording exactly."
+  },
+  {
+   "book": "Malachi",
+   "chapter": 3,
+   "para_index": 13,
+   "text": "Then the people who truly honored God got together and talked about it.",
+   "message_ref": "Mal 3:16 MSG: \"Then those whose lives honored God got together and talked it over... with the names of the God-fearers written down, all the names of those who honored God's name.\"",
+   "reason": "MSG twice uses 'honored' ('whose lives honored God', 'those who honored God's name'); EN matches MSG's wording exactly."
+  }
+ ]
+}

@@ -1,0 +1,324 @@
+{
+  "book": "1 Corinthians",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "3",
+        "3": "4-5",
+        "6": "17-18",
+        "8": "22-25"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "Alright, real talk, guys. I've gotta get serious for a minute, and I'm saying this with all the authority Jesus gave me. You've gotta stop fighting. Seriously. I heard from Chloe's family that you're all picking teams, like you're in some kind of fantasy league. \"I'm with Paul!\" \"Nah, Apollos is my guy!\" \"Peter's the real MVP!\" \"I'm only on Team Messiah!\" Are you kidding me? Did Jesus get chopped up into little pieces for you to claim? Was I the one who got crucified for you? Did any of you get baptized in my name? I'm actually glad I didn't baptize most of you, except for Crispus and Gaius, so nobody can claim I was building my own little temple guards. Oh yeah, and I baptized Stephanas's family, but that's it.",
+          "new": "Alright, real talk, guys. I've gotta get serious for a minute, and I'm saying this with all the authority Jesus gave me. You've gotta stop fighting. Seriously. I heard from Chloe's family that you're all picking teams, like you're in some kind of fantasy league. \"I'm with Paul!\" \"Nah, Apollos is my guy!\" \"Peter's the real MVP!\" \"I'm only on Team Messiah!\" Are you kidding me? Did Jesus get chopped up into little pieces for you to claim? Was I the one who got crucified for you? Did any of you get baptized in my name? I'm actually glad I didn't baptize most of you, except for Crispus and Gaius, so nobody can claim I was building my own little fan club. Oh yeah, and I baptized Stephanas's family, but that's it.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "3": "6-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "1": "1-4",
+        "3": "10-15",
+        "6": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "1-2",
+        "3": "6-7",
+        "5": "9-13",
+        "6": "14-16",
+        "7": "17",
+        "8": "18-19"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§We're God's Temple",
+          "new": "§Servants of Christ",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "3": "6-13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Servants of Christ",
+          "new": "§Dealing with Sin in the Church",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 3,
+          "old": "Honestly, your cocky attitude about all this is what's really getting to me. You're acting like it's no big deal, but it's a huge deal. Think about it: it only takes a tiny bit of yeast to make a whole batch of bread dough puff up. It's the same with this kind of bad vibe—it spreads like wildfire and infects the whole crew. So, you need to get rid of that toxic",
+          "new": "Honestly, your cocky attitude about all this is what's really getting to me. You're acting like it's no big deal, but it's a huge deal. Think about it: it only takes a tiny bit of yeast to make a whole batch of bread dough puff up. It's the same with this kind of bad vibe—it spreads like wildfire and infects the whole crew. So, you need to get rid of that toxic yeast before it ruins everything. Here's the real you: plain and true, not puffed up with garbage. The Messiah, our Passover Lamb, already gave everything for us, so let's keep it honest—no shady stuff, just truth. Now, I'm not saying you should ghost everyone outside the church who lives messy. You'd have to leave the planet for that. But when someone who calls themselves a Christian keeps living in sin—sleeping around, scamming people, dissing God, getting wasted, being greedy—don't just act like it's all good. Judging people outside the church isn't your job; God handles them. But inside the crew? Yeah, you need to deal with it. If someone's way out of line, clean house.",
+          "reason": "Original paragraph truncated mid-sentence ('...get rid of that toxic'); restored per The Message 5:6-13."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "3": "7-8",
+        "4": "9-10",
+        "5": "11-12",
+        "6": "13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Dealing with Sin in the Church",
+          "new": "§Lawsuits and Your Body",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "7-8",
+        "3": "8-9",
+        "4": "10-11",
+        "5": "12-14",
+        "6": "15-16",
+        "7": "17",
+        "8": "18-19",
+        "9": "20-21",
+        "10": "23",
+        "11": "25-28",
+        "12": "29-31",
+        "13": "32-35",
+        "14": "36-38",
+        "15": "39-40"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Lawsuits and Your Body",
+          "new": "§On Marriage and Singleness",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "7",
+        "6": "11-13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§On Marriage and Singleness",
+          "new": "§Food Offered to Idols",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "2": "3-5"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Food Offered to Idols",
+          "new": "§Paul's Rights as an Apostle",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 2,
+          "old": "And for the haters, I'm not afraid to clap back. We're on God's temple guards, so we've earned the right to a decent place to crash and for our families to be taken care of. You don't see anyone questioning the other apostles or Jesus's own brothers, or even Peter. So why me? Is it just me and Barnabas who have to hustle on our own? Soldiers don't pay for their own gear, right? Gardeners get to eat their own veggies. And you know the farmer gets to drink the milk.",
+          "new": "And for the haters, I'm not afraid to clap back. We're on God's missionary team, so we've earned the right to a decent place to crash and for our families to be taken care of. You don't see anyone questioning the other apostles or Jesus's own brothers, or even Peter. So why me? Is it just me and Barnabas who have to hustle on our own? Soldiers don't pay for their own gear, right? Gardeners get to eat their own veggies. And you know the farmer gets to drink the milk.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Paul's Rights as an Apostle",
+          "new": "§Warnings from History",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "4-5",
+        "3": "7-10"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Warnings from History",
+          "new": "§Worship Guidelines",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 4,
+          "old": "§Freedom with Responsibility",
+          "new": "§Head Coverings",
+          "reason": "'Freedom with Responsibility' describes 10:23-33; this header sits before 11:13-16 (head coverings)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "1": "1-3"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Worship Guidelines",
+          "new": "§Spiritual Gifts",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 3,
+          "old": "§The Lord's Supper",
+          "new": "§One Body, Many Parts",
+          "reason": "'The Lord's Supper' describes 11:17-34; this header sits between 12:8-11 and 12:12-15 (spiritual gifts/body)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "2": "2",
+        "3": "3",
+        "5": "4-7",
+        "6": "8-10",
+        "7": "11"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Spiritual Gifts",
+          "new": "§The Love Chapter",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 4,
+          "old": "§One Body, Many Parts",
+          "new": "§What Love Looks Like",
+          "reason": "'One Body, Many Parts' describes 12:12-31; this header sits before 13:4-7 (what love is)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "2": "2-4",
+        "3": "4-5",
+        "4": "6-9",
+        "5": "9-11",
+        "6": "13-17",
+        "7": "18-19",
+        "8": "20-25",
+        "9": "26-31",
+        "10": "33-35"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Love Chapter",
+          "new": "§Prophecy vs. Tongues",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "2": "3-7",
+        "7": "29",
+        "8": "30-32",
+        "9": "33-34",
+        "10": "35-37",
+        "12": "41-44",
+        "13": "45-46",
+        "14": "50",
+        "15": "51-53",
+        "16": "54",
+        "17": "55",
+        "18": "56",
+        "19": "56-57"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§Prophecy vs. Tongues",
+          "new": "§The Resurrection",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "§The Resurrection",
+          "new": "§The Collection and Goodbyes",
+          "reason": "Section heading belonged to the previous chapter's content (systematic one-chapter shift); corrected per The Message."
+        },
+        {
+          "index": 1,
+          "old": "Alright guys, last chapter. Let's talk about the fundraiser for the Christians who are having a tough time. I'm giving you the same game plan I gave the churches in Galatia. Every Sunday, each of you should set aside some cash, whatever you can afford. Be generous. That way, when I show up, it's all ready to go and I don't have to do some big fundraising push. Once I'm there, you can pick a few trusted people, I'll write them some recommendation letters, and they can be the temple guards that delivers your gift to Jerusalem. If it seems like a good idea for me to go too, I'll totally travel with them.",
+          "new": "Alright guys, last chapter. Let's talk about the fundraiser for the Christians who are having a tough time. I'm giving you the same game plan I gave the churches in Galatia. Every Sunday, each of you should set aside some cash, whatever you can afford. Be generous. That way, when I show up, it's all ready to go and I don't have to do some big fundraising push. Once I'm there, you can pick a few trusted people, I'll write them some recommendation letters, and they can be the crew that delivers your gift to Jerusalem. If it seems like a good idea for me to go too, I'll totally travel with them.",
+          "reason": "Factual error: 'temple guards' misrenders the underlying term per The Message."
+        },
+        {
+          "index": 5,
+          "old": "§Our Future Bodies",
+          "new": "§Final Shout-Outs",
+          "reason": "'Our Future Bodies' describes 15:35-58; this header sits between 16:12 and 16:13-14 (closing)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

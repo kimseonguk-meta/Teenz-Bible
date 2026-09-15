@@ -1,0 +1,641 @@
+{
+  "book": "Exodus",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "1": "2",
+        "2": "3",
+        "3": "4"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "10": "14",
+        "16": "20"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "7": "7-8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "18": "27-28"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "6": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "7": {
+      "range_fixes": {
+        "6": "14-18",
+        "8": "20-21",
+        "9": "22-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "9": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "10": {
+      "range_fixes": {
+        "8": "13-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "2": "4-7",
+        "3": "8"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "15": "40-42",
+        "16": "43"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, God hits up Moses and Aaron in Egypt and is like, 'Yo, this month is now officially the start of your year.' He tells them to pass the message to all of Israel: 'On the tenth of this month, every family needs to get a lamb, one per house. If your fam is too small to finish a whole lamb, team up with a neighbor. Just make sure you have enough for everyone. And the lamb has to be a one-year-old male, no flaws, either a sheep or a goat. Keep it safe 'til the fourteenth, then the whole community of Israel will slaughter them at sunset. Then, you're gonna take some of the blood and paint it on the top and sides of the doorframes of the houses where you're eating. That night, you'll roast the meat over a fire and eat it with some flatbread (no yeast!) and bitter herbs. Don't eat it raw or boiled, make sure it's roasted—the whole thing, head, legs, and guts. And don't save any for breakfast; burn whatever's left.'",
+          "new": "So, God told Moses and Aaron in Egypt, 'Yo, this month is now officially the start of your year.' He tells them to pass the message to all of Israel: 'On the tenth of this month, every family needs to get a lamb, one per house. If your fam is too small to finish a whole lamb, team up with a neighbor. Just make sure you have enough for everyone. And the lamb has to be a one-year-old male, no flaws, either a sheep or a goat. Keep it safe 'til the fourteenth, then the whole community of Israel will slaughter them at sunset. Then, you're gonna take some of the blood and paint it on the top and sides of the doorframes of the houses where you're eating. That night, you'll roast the meat over a fire and eat it with some flatbread (no yeast!) and bitter herbs. Don't eat it raw or boiled, make sure it's roasted—the whole thing, head, legs, and guts. And don't save any for breakfast; burn whatever's left.'",
+          "reason": "\"hits up\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "6": "9-10"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God hit up Moses and was like, “Yo, listen up. Every firstborn male, the first one out of the womb from the Israelites, whether it’s a person or an animal, is mine. Claimed.”",
+          "new": "God told Moses, “Yo, listen up. Every firstborn male, the first one out of the womb from the Israelites, whether it’s a person or an animal, is mine. Claimed.”",
+          "reason": "\"hit up\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God hit up Moses and was like, “Yo, tell the Israelites to turn around and set up camp at Pi Hahiroth, right between Migdol and the sea. Make sure they camp on the shore, right across from Baal Zephon.",
+          "new": "God told Moses, “Yo, tell the Israelites to turn around and set up camp at Pi Hahiroth, right between Migdol and the sea. Make sure they camp on the shore, right across from Baal Zephon.",
+          "reason": "\"hit up\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        },
+        {
+          "index": 8,
+          "old": "God will fight this battle for you. And you? You just need to shut up and stay quiet.”",
+          "new": "God will fight this battle for you. And you? You just need to stay quiet and stand still.”",
+          "reason": "\"shut up\" is rude/crude; The Message says \"you need only to be still\"."
+        },
+        {
+          "index": 16,
+          "old": "Moses stretched his hand out over the sea. As the sun came up and the Egyptians were trying to flee, the sea went back to its normal place. God basically yeeted the Egyptians into the middle of the sea. The waters came back and drowned the chariots and riders of Pharaoh’s army that had chased Israel into the sea. Not a single one of them made it out alive.",
+          "new": "Moses stretched his hand out over the sea. As the sun came up and the Egyptians were trying to flee, the sea went back to its normal place. God threw the Egyptians into the middle of the sea. The waters came back and drowned the chariots and riders of Pharaoh’s army that had chased Israel into the sea. Not a single one of them made it out alive.",
+          "reason": "\"yeeted\" is flippant slang that trivializes the drowning of Pharaoh's army."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "6": "14-18",
+        "7": "19"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "I’m shouting out my praise to God—He's so goated! He literally yeeted Pharaoh's horses and riders straight into the sea. God is my power, my favorite song, and for real, my ultimate rescue. This is my God, and I’m telling everyone about Him! He's the God of my ancestors, and I’m spreading the news everywhere. God is a total warrior, 100% God. He just dunked Pharaoh’s chariots and whole army into the sea. All his top officers? Drowned in the Red Sea. The ocean waves crashed over them; they sank like rocks to the bottom.",
+          "new": "I’m shouting out my praise to God—He's absolutely amazing! He threw Pharaoh's horses and riders straight into the sea. God is my power, my favorite song, and for real, my ultimate rescue. This is my God, and I’m telling everyone about Him! He's the God of my ancestors, and I’m spreading the news everywhere. God is a total warrior, 100% God. He threw Pharaoh’s chariots and whole army into the sea. All his top officers? Drowned in the Red Sea. The ocean waves crashed over them; they sank like rocks to the bottom.",
+          "reason": "\"goated\", \"yeeted\" and \"dunked\" are mocking/flippant slang that trivialize God and the drowning of Pharaoh's army."
+        },
+        {
+          "index": 2,
+          "old": "Your right hand, God, is crazy powerful; your right hand smashes the enemy. You're so majestic, you just crush anyone who tries to come against you. You unleash your anger and it’s like they’re toast. With just a breath from you, the waters piled up; the crazy streams literally stood up like a wall, and the wild ocean turned into a swamp.",
+          "new": "Your right hand, God, is crazy powerful; your right hand smashes the enemy. You're so majestic, you just crush anyone who tries to come against you. You unleash your anger and it burns them up like straw. With just a breath from you, the waters piled up; the crazy streams literally stood up like a wall, and the wild ocean turned into a swamp.",
+          "reason": "\"they're toast\" trivializes divine judgment; The Message says God's anger \"devoured them like stubble\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "4": "9",
+        "7": "13-14",
+        "8": "15-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "Moses was stressed and prayed to God, 'What am I supposed to do with these people? They're about to cancel me, for real. I think they might actually kill me!'",
+          "new": "Moses was stressed and prayed to God, 'What am I supposed to do with these people? They're about to stone me, for real. I think they might actually kill me!'",
+          "reason": "\"cancel me\" hides the actual threat; The Message says \"Any minute now they'll stone me!\""
+        },
+        {
+          "index": 3,
+          "old": "God hit Moses back, 'Alright, go out in front of everyone, and bring some of the elders with you. And don't forget that staff you used to smack the Nile River. Just go. I'll be waiting for you on the rock at Horeb. I want you to hit that rock, and water will come gushing out for everyone to drink.'",
+          "new": "God told Moses, 'Alright, go out in front of everyone, and bring some of the elders with you. And don't forget that staff you used to smack the Nile River. Just go. I'll be waiting for you on the rock at Horeb. I want you to hit that rock, and water will come gushing out for everyone to drink.'",
+          "reason": "\"hit Moses back\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "So, Moses' father-in-law, Jethro, who was a priest over in Midian, heard all about the wild stuff God had been doing for Moses and his people, Israel. Like, he got the news that God had totally sprung Israel from Egypt. Jethro had been crashing with Zipporah, Moses' wife that he'd sent back home for a bit, and their two sons. The first son was named Gershom, which is like 'foreigner,' 'cause Moses was like, \"I'm basically an alien in this country.\" The other son was named Eliezer, which means 'God's my helper,' because he was like, \"My dad's God is my ride-or-die and literally saved me from Pharaoh's death sentence.\"",
+          "new": "So, Moses' father-in-law, Jethro, who was a priest over in Midian, heard all about the wild stuff God had been doing for Moses and his people, Israel. Like, he got the news that God had totally sprung Israel from Egypt. Jethro had been crashing with Zipporah, Moses' wife that he'd sent back home for a bit, and their two sons. The first son was named Gershom, which is like 'foreigner,' 'cause Moses was like, \"I'm basically an alien in this country.\" The other son was named Eliezer, which means 'God's my helper,' because he was like, \"My dad's God is my helper and literally saved me from Pharaoh's death sentence.\"",
+          "reason": "\"ride-or-die\" is disrespectful slang applied to God; The Message gives the name's meaning as \"My God is a help\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "2": "6",
+        "3": "7",
+        "4": "8",
+        "5": "9",
+        "6": "10-12",
+        "7": "13",
+        "8": "14-15",
+        "9": "16",
+        "10": "17",
+        "11": "18-20",
+        "12": "21-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4-6",
+        "4": "8-11",
+        "5": "12",
+        "6": "13",
+        "7": "14",
+        "8": "15",
+        "9": "16",
+        "10": "17",
+        "11": "18-19",
+        "12": "20",
+        "13": "21",
+        "14": "22-26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "7": "18-19",
+        "8": "20-21",
+        "9": "22-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5",
+        "3": "6",
+        "4": "7-8",
+        "5": "9",
+        "6": "10-13",
+        "7": "14-15",
+        "8": "16-17",
+        "9": "18",
+        "10": "19",
+        "11": "20",
+        "12": "21",
+        "13": "22-24",
+        "15": "26-27",
+        "16": "28",
+        "17": "29",
+        "18": "29-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "2": "4-5",
+        "3": "6",
+        "4": "7",
+        "5": "8",
+        "6": "9",
+        "7": "10-11",
+        "8": "12",
+        "9": "13",
+        "10": "14",
+        "11": "15",
+        "13": "16",
+        "14": "17",
+        "15": "18",
+        "16": "18",
+        "17": "19",
+        "18": "19",
+        "19": "20-24",
+        "20": "25-26",
+        "21": "27",
+        "22": "28-31",
+        "23": "32-33"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "25": {
+      "range_fixes": {
+        "0": "1-9",
+        "1": "10-15",
+        "2": "16",
+        "3": "17",
+        "4": "18-22",
+        "5": "23-28",
+        "6": "29",
+        "7": "30",
+        "8": "31-37",
+        "9": "37-38",
+        "10": "39-40"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God hit up Moses and was like, 'Yo, tell the Israelites it's time to bring some offerings for me. But only from the people who are actually down to give. Here's the list of stuff I'm looking for: gold, silver, bronze, some cool blue, purple, and red fabrics, nice linen, goat hair, tanned ram skins, dolphin skins, acacia wood, lamp oil, spices for anointing oil and for some sweet-smelling incense, onyx stones, and other gems to put in the Ephod and the Breastpiece. I want them to build a Sanctuary for me, a place where I can come and hang out with them. Make sure you build it exactly like the plans I'm giving you, for the whole setup and all its furniture.'",
+          "new": "God told Moses, 'Yo, tell the Israelites it's time to bring some offerings for me. But only from the people who are actually down to give. Here's the list of stuff I'm looking for: gold, silver, bronze, some cool blue, purple, and red fabrics, nice linen, goat hair, tanned ram skins, dolphin skins, acacia wood, lamp oil, spices for anointing oil and for some sweet-smelling incense, onyx stones, and other gems to put in the Ephod and the Breastpiece. I want them to build a Sanctuary for me, a place where I can come and hang out with them. Make sure you build it exactly like the plans I'm giving you, for the whole setup and all its furniture.'",
+          "reason": "\"hit up\" is disrespectful slang for God speaking; keeps teen voice with \"told\". (Range also corrected to 1-9: paragraph covers the sanctuary command and the pattern, vv.8-9.)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-6",
+        "2": "7-11",
+        "3": "12-14",
+        "4": "15-25",
+        "5": "26-30",
+        "6": "31-33",
+        "7": "34-35"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "0": "1-8",
+        "1": "9-11",
+        "2": "12-19",
+        "3": "20-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "6-14",
+        "4": "17-20",
+        "5": "20-21",
+        "6": "22-28",
+        "7": "29-30",
+        "8": "31-35",
+        "9": "36-38",
+        "10": "39-41",
+        "11": "42-43"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "1": "5-9",
+        "2": "10-14",
+        "3": "15-18",
+        "4": "19-21",
+        "5": "22-23",
+        "10": "31-34",
+        "11": "35-37",
+        "12": "38-41",
+        "13": "42-46"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-10",
+        "2": "11-16",
+        "3": "17-21",
+        "4": "22-25",
+        "5": "26-29",
+        "6": "30-33"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-11",
+        "2": "12-17",
+        "3": "18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-4",
+        "2": "4",
+        "3": "5",
+        "4": "5",
+        "5": "6",
+        "6": "7-8",
+        "7": "9-10",
+        "8": "11-13",
+        "9": "14",
+        "10": "15-16",
+        "11": "17",
+        "12": "18",
+        "13": "18",
+        "14": "19-20",
+        "15": "21",
+        "16": "22-23",
+        "17": "24",
+        "18": "25",
+        "19": "26-27",
+        "20": "28",
+        "21": "29",
+        "22": "30",
+        "23": "31-32",
+        "24": "33-34"
+      },
+      "content_fixes": [
+        {
+          "index": 19,
+          "old": "He then told them, \"This is what God, the God of Israel, orders: 'Every man strap on your sword. Go back and forth through the camp from one end to the other. Kill your own brother, friend, and neighbor.'\"",
+          "new": "So Moses stood at the entrance of the camp and shouted, \"Whoever is for God, come to me!\" All the Levites rallied to him. He then told them, \"This is what God, the God of Israel, orders: 'Every man strap on your sword. Go back and forth through the camp from one end to the other. Kill your own brother, friend, and neighbor.'\"",
+          "reason": "Adds the missing verse 26 (Moses's rally call and the Levites gathering), present in The Message but absent from the paragraph."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5-6",
+        "3": "7-10",
+        "4": "11",
+        "5": "12-13",
+        "6": "14",
+        "7": "15-16",
+        "8": "17",
+        "9": "18",
+        "10": "19",
+        "11": "20",
+        "12": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "34": {
+      "range_fixes": {
+        "1": "4-7",
+        "2": "8-9",
+        "3": "10-12",
+        "4": "13-16",
+        "5": "17",
+        "6": "18",
+        "7": "19",
+        "8": "20",
+        "9": "20",
+        "10": "20",
+        "11": "21",
+        "12": "22",
+        "13": "23-24",
+        "14": "25",
+        "15": "25",
+        "16": "26",
+        "17": "26",
+        "18": "27",
+        "19": "28",
+        "20": "29",
+        "21": "30-32",
+        "22": "33-35"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God hit up Moses and was like, \"Yo, cut two more stone tablets, just like the first ones, and I'll write the same words on them that were on the ones you smashed. Be ready by morning to climb Mount Sinai and meet me at the top. And listen, nobody else can come with you; the whole mountain has to be empty. No people, and not even any animals—like, no sheep or oxen grazing anywhere near the mountain.\"",
+          "new": "God told Moses, \"Yo, cut two more stone tablets, just like the first ones, and I'll write the same words on them that were on the ones you smashed. Be ready by morning to climb Mount Sinai and meet me at the top. And listen, nobody else can come with you; the whole mountain has to be empty. No people, and not even any animals—like, no sheep or oxen grazing anywhere near the mountain.\"",
+          "reason": "\"hit up\" is disrespectful slang for God speaking; keeps teen voice with \"told\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "35": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-19",
+        "2": "20-26",
+        "3": "27-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-3",
+        "2": "4-5",
+        "3": "6",
+        "4": "7",
+        "5": "8-13",
+        "6": "14-19",
+        "7": "20-30",
+        "8": "31-34",
+        "9": "35-36",
+        "10": "37-38"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "37": {
+      "range_fixes": {
+        "2": "8-9",
+        "3": "10-15",
+        "4": "16",
+        "5": "17-23",
+        "6": "24",
+        "7": "25-28",
+        "8": "29"
+      },
+      "content_fixes": [
+        {
+          "index": 6,
+          "old": "Get this: he used a whole seventy-five-pound brick of pure gold to make the Lampstand and all its accessories. That's some serious bling.",
+          "new": "Get this: he made its seven lamps, plus the wick trimmers and trays, all out of pure gold. He used a whole seventy-five-pound brick of pure gold to make the Lampstand and all its accessories. That's some serious bling.",
+          "reason": "Adds the missing first half of verse 24 (seven lamps, wick trimmers and trays of pure gold), present in The Message but absent from the paragraph."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "38": {
+      "range_fixes": {
+        "0": "1-7",
+        "1": "8",
+        "2": "9-11",
+        "3": "12-20",
+        "4": "21-23",
+        "5": "24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "39": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-5",
+        "2": "6-7",
+        "3": "8-9",
+        "4": "10",
+        "5": "11",
+        "6": "12",
+        "7": "13",
+        "8": "14-15",
+        "9": "15-21",
+        "10": "22-26",
+        "11": "27-29",
+        "12": "30-31",
+        "13": "32",
+        "14": "33",
+        "15": "34-41",
+        "16": "42-43"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "40": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5",
+        "3": "6",
+        "4": "7",
+        "5": "8",
+        "6": "9-11",
+        "7": "12-15",
+        "8": "16",
+        "9": "17-19",
+        "10": "20-21",
+        "11": "22-23",
+        "12": "24-25",
+        "13": "26-27",
+        "14": "28",
+        "15": "29",
+        "18": "33",
+        "19": "34-35",
+        "20": "36-38"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "God gave Moses the 411: \"On the first day of the first month, you're gonna set up the holy tent, the Tent of Meeting. Put the Ark of the Covenant in it and use the curtain to block it off.",
+          "new": "God told Moses, \"On the first day of the first month, you're gonna set up the holy tent, the Tent of Meeting. Put the Ark of the Covenant in it and use the curtain to block it off.",
+          "reason": "\"gave Moses the 411\" is flippant slang for God speaking; keeps teen voice with \"told\"."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

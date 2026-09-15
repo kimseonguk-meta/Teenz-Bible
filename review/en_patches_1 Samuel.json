@@ -1,0 +1,636 @@
+{
+  "book": "1 Samuel",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "3": "9-11",
+        "4": "9-11",
+        "14": "25-28",
+        "15": "25-28"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "11": "27-30",
+        "12": "31-36"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "1-3",
+        "2": "4-5",
+        "3": "4-5",
+        "4": "4-5",
+        "5": "6-7",
+        "6": "6-7",
+        "7": "6-7",
+        "8": "8-9",
+        "9": "8-9",
+        "10": "10",
+        "11": "10",
+        "12": "11-14",
+        "15": "16",
+        "16": "17",
+        "17": "18",
+        "18": "18",
+        "19": "19-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "1-3",
+        "2": "4",
+        "3": "5-6",
+        "4": "6-9",
+        "5": "10-11",
+        "6": "12-16",
+        "7": "12-16",
+        "8": "17",
+        "9": "18",
+        "10": "19-20",
+        "11": "21-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-5",
+        "2": "6",
+        "4": "7-8",
+        "5": "9",
+        "6": "10-12"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "4-6",
+        "4": "7-9",
+        "5": "10-12"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 3] Spanning-quote style: the priests' speech opens a quote mid-paragraph ('one for each of the Philistine leaders...') that is not closed until the speech continues in [4]. Same convention as ch 12 / ch 25; left as-is."
+      ],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "2": "3",
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9",
+        "10": "10-12",
+        "11": "13-14",
+        "12": "15-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "3": "7-9",
+        "4": "10-18",
+        "5": "19-20",
+        "6": "21-22",
+        "7": "21-22",
+        "8": "21-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "10": {
+      "range_fixes": {
+        "24": "26-27"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 25] Teen [25] ('Now, listen, there's something you need to know...') matches the unnumbered Nahash-intro block MSG places after 26-27. Keeping source range '27' is closest; MSG does not assign it a verse number of its own."
+      ],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "3": "4-5",
+        "4": "4-5",
+        "5": "4-5",
+        "6": "6-7",
+        "7": "7-8",
+        "8": "9-11",
+        "9": "9-11",
+        "10": "12",
+        "11": "13-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5",
+        "3": "6",
+        "4": "6-8",
+        "5": "9",
+        "6": "10",
+        "7": "11",
+        "8": "12",
+        "9": "13-15",
+        "10": "16-17",
+        "11": "18",
+        "12": "19",
+        "13": "20-22",
+        "14": "23-25"
+      },
+      "content_fixes": [
+        {
+          "index": 10,
+          "old": "“Now pay attention! Watch this wild thing God is about to do right in front of you. It’s summer, you know, the dry season is over. But I’m about to pray to God, and He’ll send thunder and rain as a sign to prove what a huge mistake you made in God's eyes by asking for a king.”",
+          "new": "“Now pay attention! Watch this wild thing God is about to do right in front of you. It’s summer, you know, the rainy season is over. But I’m about to pray to God, and He’ll send thunder and rain as a sign to prove what a huge mistake you made in God's eyes by asking for a king.”",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5",
+        "4": "6-7",
+        "5": "8",
+        "6": "9-10",
+        "7": "11-12",
+        "8": "11-12",
+        "9": "13-14",
+        "10": "15",
+        "11": "16-18",
+        "12": "19-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-5",
+        "2": "6",
+        "3": "7",
+        "4": "8-10",
+        "5": "11",
+        "6": "12",
+        "7": "13",
+        "8": "14-15",
+        "9": "16-18",
+        "10": "18-19",
+        "11": "20-23",
+        "12": "20-23",
+        "14": "25-27",
+        "15": "28",
+        "16": "29-30",
+        "17": "31-32",
+        "18": "33-34",
+        "19": "33-34",
+        "20": "33-34",
+        "21": "35",
+        "22": "36",
+        "23": "36",
+        "24": "36",
+        "25": "37",
+        "26": "38-39",
+        "27": "38-39",
+        "28": "40",
+        "31": "41",
+        "32": "42",
+        "33": "42",
+        "34": "43",
+        "35": "43",
+        "36": "44",
+        "37": "45",
+        "38": "46",
+        "39": "47-48",
+        "40": "49-51"
+      },
+      "content_fixes": [
+        {
+          "index": 5,
+          "old": "So they did it. The two of them just walked out where the Philistine patrol could see them. The Philistines were like, \"LMAO, look! The Hebrews are crawling out of their little holes!\"",
+          "new": "So they did it. The two of them just walked out where the Philistine patrol could see them. The Philistines were like, \"look! The Hebrews are crawling out of their little holes!\"",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        },
+        {
+          "index": 11,
+          "old": "Saul got his army together and they went straight to the battle. When they got there, it was a hot mess—the Philistines were just swinging their swords everywhere, even killing each other. The Hebrews who had switched to the Philistine side before came back to join Israel under Saul and Jonathan. On top of that, all the Israelites who were hiding in the hills heard the Philistines were running, so they came out and joined the chase. God saved Israel that day! What a W!",
+          "new": "Saul got his army together and they went straight to the battle. When they got there, it was a hot mess—the Philistines were just swinging their swords everywhere, even killing each other. The Hebrews who had switched to the Philistine side before came back to join Israel under Saul and Jonathan. On top of that, all the Israelites who were hiding in the hills heard the Philistines were running, so they came out and joined the chase. God saved Israel that day! What a day!",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "0": "1-2",
+        "2": "4-5",
+        "3": "6",
+        "4": "6",
+        "5": "7-9",
+        "6": "10-11",
+        "7": "11-12",
+        "8": "11-12",
+        "9": "13",
+        "10": "14",
+        "11": "15",
+        "12": "16",
+        "13": "16",
+        "14": "17-19",
+        "15": "20-21",
+        "16": "22-23",
+        "17": "22-23",
+        "18": "24-25",
+        "19": "26",
+        "20": "27-29",
+        "21": "30",
+        "22": "31",
+        "23": "32",
+        "24": "33",
+        "25": "34-35"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "'I'm about to give Amalek some serious payback for ambushing Israel when they were coming up from Egypt. So here's the plan: Go mess up Amalek. Everything they have? It's all gotta go. No exceptions. This is a total wipeout—men, women, kids, babies, cows, sheep, camels, donkeys—everything.'",
+          "new": "'I'm about to give Amalek some serious payback for ambushing Israel when they were coming up from Egypt. So here's the plan: Go mess up Amalek. Everything they have? It's all gotta go. No exceptions. This is total destruction—men, women, kids, babies, cows, sheep, camels, donkeys—everything.'",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "1": "2-3",
+        "22": "20-21",
+        "23": "22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "1": "4-7",
+        "2": "8-10",
+        "3": "11",
+        "4": "12-15",
+        "5": "16",
+        "6": "17-19",
+        "7": "20-23",
+        "8": "24-25",
+        "9": "26",
+        "10": "27",
+        "11": "28",
+        "12": "29-30",
+        "13": "31",
+        "14": "32",
+        "15": "33",
+        "16": "34-37",
+        "17": "34-37",
+        "18": "38-39",
+        "19": "38-39",
+        "20": "40",
+        "21": "41-42",
+        "22": "43",
+        "23": "44",
+        "24": "45-47",
+        "25": "48-49",
+        "28": "52-54",
+        "29": "55",
+        "30": "55",
+        "31": "56",
+        "32": "57",
+        "33": "58"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "2": "3-4",
+        "3": "5",
+        "4": "6-9",
+        "5": "6-9",
+        "6": "6-9",
+        "7": "10-11",
+        "8": "12-16",
+        "9": "17",
+        "16": "26-27",
+        "17": "28-29"
+      },
+      "content_fixes": [
+        {
+          "index": 7,
+          "old": "The next day, God sent this nasty mood to mess with Saul, and he totally lost it, just raving like a madman. David started playing his harp, like he usually did when Saul got like this. Saul was holding a spear, and then all of a sudden, he threw it, thinking, “I’m gonna pin David to the wall.” But David dodged it, and the spear missed. This happened two times.",
+          "new": "The next day, God sent this nasty mood to mess with Saul, and he totally lost it, just raving, totally out of control. David started playing his harp, like he usually did when Saul got like this. Saul was holding a spear, and then all of a sudden, he threw it, thinking, “I’m gonna pin David to the wall.” But David dodged it, and the spear missed. This happened two times.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "1": "4-5",
+        "2": "6",
+        "3": "7",
+        "4": "8",
+        "5": "9-10",
+        "6": "11-14",
+        "7": "15-16",
+        "8": "17",
+        "9": "18",
+        "14": "22",
+        "15": "23-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "1": "2",
+        "2": "3",
+        "3": "4",
+        "4": "5-8",
+        "5": "9",
+        "6": "10",
+        "7": "11-17",
+        "8": "18-23",
+        "9": "24-26",
+        "10": "27",
+        "11": "28-29",
+        "12": "30-31",
+        "13": "32",
+        "14": "33",
+        "15": "34",
+        "16": "35-39",
+        "18": "42"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "1": "1",
+        "2": "2-3",
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "7",
+        "7": "8",
+        "8": "9",
+        "9": "10-11",
+        "10": "10-11",
+        "11": "10-11",
+        "12": "12-15"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "[para 0] Chapter-boundary continuation: teen [0] ('So David bounced, and Jonathan headed back to the city.') renders MSG 21:1, which narratively closes the Jonathan farewell from ch 20. MSG numbers it as 21:1; kept as-is."
+      ],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "3": "6-8",
+        "4": "9-10",
+        "5": "11",
+        "6": "12",
+        "7": "12",
+        "8": "13",
+        "9": "14-15",
+        "10": "16",
+        "11": "17",
+        "12": "18-19",
+        "13": "20-21",
+        "14": "22-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "1-2",
+        "7": "9-11",
+        "8": "12",
+        "9": "12",
+        "10": "13",
+        "11": "14-15",
+        "12": "16-18",
+        "13": "16-18",
+        "14": "19-20",
+        "15": "21-23",
+        "16": "24-27",
+        "17": "24-27",
+        "18": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "1-4",
+        "2": "5-7",
+        "3": "8-13",
+        "4": "14-15",
+        "5": "16-21",
+        "6": "22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "2": "4-8",
+        "3": "9-11",
+        "4": "12-13",
+        "5": "14-17",
+        "6": "18-19",
+        "7": "20-22",
+        "8": "23-25",
+        "9": "25-27",
+        "10": "28-29",
+        "16": "39-40",
+        "17": "39-40"
+      },
+      "content_fixes": [
+        {
+          "index": 11,
+          "old": "And if anyone tries to stop you or get you out of the picture, just know this: Your life is precious to God, wrapped up safe with Him. But the lives of your enemies? He's gonna yeet them away like a rock from a slingshot.",
+          "new": "And if anyone tries to stop you or get you out of the picture, just know this: Your life is precious to God, wrapped up safe with Him. But the lives of your enemies? He's gonna hurl them away like a rock from a sling.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [
+        "[para 8] Abigail's speech opens a quote in [8] that only closes at the end of [12]; [9]-[11] continue the speech without opening quotes. Readable as a spanning quote (cf. ch 12, ch 6), but inconsistent with the open-each-paragraph style used elsewhere; left as-is."
+      ],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "3-5",
+        "2": "6",
+        "9": "13-14",
+        "10": "13-14",
+        "12": "17-20",
+        "13": "17-20",
+        "14": "21",
+        "15": "22-24",
+        "16": "25"
+      },
+      "content_fixes": [
+        {
+          "index": 8,
+          "old": "David took the spear and water jug from right next to Saul’s head, and they dipped. Nobody saw them. Nobody knew. Nobody even woke up! They were all in a deep sleep, like God had put a spell on them.",
+          "new": "David took the spear and water jug from right next to Saul’s head, and they dipped. Nobody saw them. Nobody knew. Nobody even woke up! God had sent them into a deep sleep.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-4",
+        "3": "6-7",
+        "4": "8-9",
+        "5": "10-11"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "During that time, David and his guys would go out and raid the Geshurites, the Girzites, and the Amalekites—these were the OG residents of the land stretching down toward Egypt. But when David raided a place, he went hard. He left no one alive, not a single man or woman. He just took all their stuff: sheep, cattle, donkeys, camels, clothes—everything. Then he'd go back to Achish.",
+          "new": "During that time, David and his guys would go out and raid the Geshurites, the Girzites, and the Amalekites—these were the original inhabitants of the land stretching down toward Egypt. But when David raided a place, He left no one alive, not a single man or woman. He just took all their stuff: sheep, cattle, donkeys, camels, clothes—everything. Then he'd go back to Achish.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "2": "2",
+        "3": "3",
+        "4": "4-5",
+        "12": "11",
+        "13": "12",
+        "14": "13",
+        "15": "13",
+        "16": "14",
+        "17": "14",
+        "18": "14",
+        "19": "15",
+        "20": "15",
+        "21": "16-19",
+        "22": "20-22",
+        "23": "23-25",
+        "24": "23-25"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "4": "4-5",
+        "5": "6-7",
+        "6": "8",
+        "7": "9-10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {
+        "2": "6-7",
+        "4": "8",
+        "5": "9-10",
+        "6": "11-12",
+        "7": "13-14",
+        "8": "13-14",
+        "9": "15",
+        "10": "15",
+        "11": "16",
+        "12": "17-20",
+        "13": "21",
+        "14": "22",
+        "15": "23-25",
+        "16": "26-31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "7",
+        "4": "8-10",
+        "5": "11-13"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "The Philistines declared war on Israel, and the Israelite soldiers were in a full-blown retreat, getting absolutely wrecked on Mount Gilboa. The Philistines zeroed in on Saul and his sons, and they ended up killing Jonathan, Abinadab, and Malki-Shua—Saul's boys.",
+          "new": "The Philistines declared war on Israel, and the Israelite soldiers were in a full-blown retreat, falling left and right, wounded on Mount Gilboa. The Philistines zeroed in on Saul and his sons, and they ended up killing Jonathan, Abinadab, and Malki-Shua—Saul's boys.",
+          "reason": "reviewer edit (reason not recorded by worker)"
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

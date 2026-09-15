@@ -1,0 +1,30 @@
+{
+  "book": "Jude",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "5": "5-7",
+        "6": "6-7",
+        "8": "9-10",
+        "9": "11",
+        "10": "12-13",
+        "11": "14-15",
+        "12": "16",
+        "13": "17-19",
+        "14": "20-21",
+        "15": "22-23",
+        "16": "24-25"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "§A Call to Persevere",
+          "new": "§Remember the Examples",
+          "reason": "'A Call to Persevere' misplaced; this header sits before vv5-7 (Egypt/angels/Sodom examples)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

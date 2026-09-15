@@ -1,0 +1,228 @@
+{
+  "book": "Proverbs",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "3": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "6": {
+      "range_fixes": {
+        "3": "16",
+        "4": "17-19",
+        "6": "20-24"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "p5 \"(It's so important, it's worth saying twice)\" duplicates p4's seven hated things (6:17-19) with an editorial addition not in MSG. Recommend removing p5."
+      ],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "8": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "9": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "10": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "11": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "12": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "13": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "14": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "15": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "16": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "17": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "18": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "19": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "20": {
+      "range_fixes": {
+        "7": "8-9",
+        "8": "10",
+        "9": "11",
+        "10": "12",
+        "11": "13",
+        "12": "14",
+        "13": "15",
+        "14": "16",
+        "15": "17",
+        "16": "18",
+        "17": "19",
+        "18": "20",
+        "19": "21",
+        "20": "22",
+        "21": "23",
+        "22": "24",
+        "23": "25",
+        "24": "26",
+        "25": "27",
+        "26": "28",
+        "27": "29",
+        "28": "30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "22": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "23": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "24": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "25": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "26": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "27": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "28": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "29": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "30": {
+      "range_fixes": {
+        "12": "17",
+        "13": "18",
+        "14": "19",
+        "15": "20"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Verses 29-33 appear to be missing or mislabeled; p22 labeled '28' paraphrases 30:32. The \"stately stride\" (30:29-31) and \"churned milk\" (30:33) content needs verification.",
+        "p15 \"she has sex with her client\" and p17 \"prostitute voted woman of the year\" use crude sexual language. MSG uses \"prostitute\" but the paraphrase intensifies crudeness. Recommend toning down while keeping teen voice."
+      ],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

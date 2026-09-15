@@ -1,0 +1,15 @@
+{
+  "book": "Obadiah",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "2": "5-14",
+        "3": "15-18",
+        "4": "19-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

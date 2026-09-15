@@ -1,0 +1,140 @@
+{
+  "fixes": [
+    {
+      "book": "Romans",
+      "chapter": 3,
+      "para_index": 3,
+      "old_badge": "2-4",
+      "new_badge": "1-4",
+      "old_text_start": "2-6 먼저, 유대인들한테는 하나님의 계시, 그러니까 성경을 기록하고 보존할 책임이 맡겨졌던 거임. 그 과정",
+      "reason": "Paragraph mirrors EN para (badged 1-4) and The Message Rom 3:1-4: the advantage of the Jew (entrusted with God's words, vv1-2), some bailed but God didn't ghost them (v3), God keeps his promises (v4 quote). No v5-6 ' twisted thinking' content present, so neither badge 2-4 nor in-text 2-6 is right."
+    },
+    {
+      "book": "Romans",
+      "chapter": 4,
+      "para_index": 2,
+      "old_badge": "2-3",
+      "new_badge": "1-3",
+      "old_text_start": "1-3 그럼 우리 믿음의 조상 아브라함 이야기를 새로운 각도에서 한번 볼까? 만약 아브라함이 하나님을 위해 ",
+      "reason": "Covers Abraham as father of faith (v1), the if-by-works-he'd-brag hypothetical (v2), and the Scripture quote that Abraham trusted God to make him right (v3) - exactly The Message Rom 4:1-3. No v4-5 paycheck/gift analogy, so the in-text 1-3 was right and badge 2-3 was stale."
+    },
+    {
+      "book": "Romans",
+      "chapter": 4,
+      "para_index": 6,
+      "old_badge": "11-12",
+      "new_badge": "11-12",
+      "old_text_start": "12 이건 또 아브라함이 모든 사람의 조상이라는 뜻이기도 해. 다시 말해, 하나님한테 아직 \"아싸\"인 애들,",
+      "reason": "Content is The Message Rom 4:11-12: Abraham as father of uncircumcised believers (v11) and of the circumcised who walk in the same faith (v12), including the before-circumcision timing ('할례 받기 훨씬 전부터'). No vv9-10 material, so badge 11-12 verified correct and in-text '12' is wrong."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 1,
+      "para_index": 3,
+      "old_badge": "5-6",
+      "new_badge": "4-6",
+      "old_text_start": "4-6 너네 생각만 하면 하나님한테 진짜 감사함. 그리스도 예수님 안에서 너네한테 주신 하나님의 은혜 때문임",
+      "reason": "Thanks for grace in Christ (v4), enriched in speech and knowledge (v5), testimony confirmed (v6) - The Message 1 Cor 1:4-6. No vv7-9 content (gifts, waiting for Jesus). In-text 4-6 was right, badge 5-6 stale."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 12,
+      "para_index": 9,
+      "old_badge": "27-28",
+      "new_badge": "27-28",
+      "old_text_start": "27-31 너네는 그리스도의 몸이야. 그게 바로 너네의 진짜 모습이라고! 절대 잊으면 안 돼. 너네 자신을 ",
+      "reason": "Content is The Message 1 Cor 12:27 ('You are Christ's body') plus the v28 roster (apostles, prophets, teachers...). Nothing from vv29-31 ('it's not all apostles', 'a much better way'), so badge 27-28 verified correct and in-text 27-31 is wrong."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 13,
+      "para_index": 4,
+      "old_badge": "3",
+      "new_badge": "3",
+      "old_text_start": "3-7 내가 가진 전 재산을 다 털어서 사람들한테 나눠주고, 순교자처럼 불에 타 죽을 각오를 했더라도, 사랑",
+      "reason": "Content is The Message 1 Cor 13:3 only: give away everything, even martyrdom, worth nothing without love ('파산'). The '무슨 말을 하든, 뭘 믿든' line is just the bankrupt-summary, not vv1-2 or the vv4-7 love characteristics. Badge 3 verified correct, in-text 3-7 wrong."
+    },
+    {
+      "book": "1 Corinthians",
+      "chapter": 14,
+      "para_index": 2,
+      "old_badge": "1-2",
+      "new_badge": "1-2",
+      "old_text_start": "1-3 사랑을 얻으려고 목숨 거는 사람처럼, 진짜 온 힘을 다해서 사랑하는 삶을 살아보셈. 하나님이 주시는 ",
+      "reason": "Pursue love (v1), eagerly desire gifts especially prophecy (v1), tongues understood by God alone - private chat (v2). No v3 church-edification content, so The Message 1 Cor 14:1-2. Badge 1-2 verified correct, in-text 1-3 wrong."
+    },
+    {
+      "book": "Philippians",
+      "chapter": 1,
+      "para_index": 5,
+      "old_badge": "9-11",
+      "new_badge": "9-11",
+      "old_text_start": "9-12 그래서 나는 너네의 사랑이 더 풍성해지고, 그냥 막 사랑하는 게 아니라 제대로 사랑하게 해달라고 기",
+      "reason": "Paul's prayer that love levels up smartly (v9), sincere/blameless living (v10), fruit of righteousness to God's glory (v11) - The Message Phil 1:9-11. No v12 jail-advances-the-gospel content. Badge 9-11 verified correct, in-text 9-12 wrong."
+    },
+    {
+      "book": "2 Thessalonians",
+      "chapter": 2,
+      "para_index": 3,
+      "old_badge": "3-8",
+      "new_badge": "3-8",
+      "old_text_start": "3-5 그날이 오기 전에 몇 가지 사건이 먼저 터질 거야. 먼저, 다들 믿음을 버리는 배신이 있을 거고, 그",
+      "reason": "Full The Message 2 Thess 2:3-8 arc: the falling away and man of lawlessness (v3), opposing all gods and sitting in God's temple (v4), 'I told you this' (v5), restrained until his time (v6), lawlessness already working (v7), Jesus destroying him with his breath/appearing (v8). Badge 3-8 verified correct, in-text 3-5 wrong."
+    },
+    {
+      "book": "1 Timothy",
+      "chapter": 1,
+      "para_index": 7,
+      "old_badge": "15-16",
+      "new_badge": "15-16",
+      "old_text_start": "15-19 네 마음에 꼭 새겨야 할 말씀이 있음. 바로 예수 그리스도께서 죄인들을 구원하려고 이 세상에 오셨",
+      "reason": "The trustworthy saying that Christ came to save sinners (v15), Paul as worst of sinners (v15), mercy and example of patience for future believers (v16). No v17 doxology or vv18-19 charge to Timothy. Badge 15-16 verified correct, in-text 15-19 wrong."
+    },
+    {
+      "book": "Titus",
+      "chapter": 2,
+      "para_index": 2,
+      "old_badge": "2-6",
+      "new_badge": "1-6",
+      "old_text_start": "1-6 네 임무는 올바른 가르침에 맞는 말을 하는 거임. 나이 많은 아저씨들한테는 절제하고, 품위 있고, 지",
+      "reason": "Opens with Titus's charge to teach sound doctrine (v1), then older men (v2), older women (v3), younger women (vv4-5), younger men (v6) - The Message Titus 2:1-6. In-text 1-6 was right, badge 2-6 was stale."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 2,
+      "para_index": 1,
+      "old_badge": "1-2",
+      "new_badge": "1-3",
+      "old_text_start": "1-3 그러니까 이제 너네 자신을 좀 깨끗하게 정리해봐! 나쁜 마음, 거짓된 행동, 시기하는 거, 남 헐뜯는",
+      "reason": "Put away malice/deceit/envy/slander (v1), crave pure milk like newborns (v2), tasted that the Lord is good and grow up (v3) - The Message 1 Pet 2:1-3. In-text 1-3 was right, badge 1-2 stale."
+    },
+    {
+      "book": "1 Peter",
+      "chapter": 2,
+      "para_index": 10,
+      "old_badge": "21",
+      "new_badge": "21",
+      "old_text_start": "21-25 너네는 바로 그런 삶, 예수님이 직접 사셨던 그런 삶을 살도록 부름받았어. 예수님은 자기한테 닥친",
+      "reason": "Only The Message 1 Pet 2:21 content: called to this life, Christ's example and steps. None of vv22-25 (no deceit, bore our sins, wounds healed, lost sheep). Badge 21 verified correct, in-text 21-25 wrong."
+    },
+    {
+      "book": "1 John",
+      "chapter": 4,
+      "para_index": 5,
+      "old_badge": "7-8",
+      "new_badge": "7-8",
+      "old_text_start": "7-10 친구들아, 우리 계속 사랑하자. 사랑은 하나님한테서 오는 거니까. 사랑하는 사람은 다 하나님한테서 ",
+      "reason": "Love one another, love from God (v7), born of God/knows God (v7), God is love (v8) - The Message 1 John 4:7-8. No vv9-10 content (Son sent, propitiation). Badge 7-8 verified correct, in-text 7-10 wrong."
+    },
+    {
+      "book": "1 John",
+      "chapter": 4,
+      "para_index": 9,
+      "old_badge": "16-18",
+      "new_badge": "16-18",
+      "old_text_start": "17-18 하나님은 사랑이심. 우리가 사랑하면서 살기로 마음먹으면, 우리는 하나님 안에 살고 하나님도 우리 ",
+      "reason": "God is love / abide in love, God in us (v16b), love perfected gives judgment-day confidence (v17), perfect love casts out fear, fearful life not perfected (v18) - The Message 1 John 4:16-18. Badge 16-18 verified correct, in-text 17-18 missed v16."
+    }
+  ],
+  "suspicious": []
+}

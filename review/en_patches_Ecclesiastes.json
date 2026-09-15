@@ -1,0 +1,85 @@
+{
+  "book": "Ecclesiastes",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "3": {
+      "range_fixes": {
+        "1": "2-8"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "p1 contains the full \"time for...\" list through v8 but later labels may be shifted. Verify against MSG."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Exact duplicates: p3/p4, p7/p8, p9/p10. Recommend removing duplicates."
+      ],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "6": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "8": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "9": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "Exact duplicates: p6/p7, p11/p12. Labels after duplicates appear shifted. Recommend removing duplicates and correcting ranges."
+      ],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "11": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "12": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

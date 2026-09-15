@@ -1,0 +1,131 @@
+{
+  "book": "Micah",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "3": "6-7",
+        "4": "8-9",
+        "5": "10-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "3": {
+      "range_fixes": {
+        "3": "5-7",
+        "4": "8",
+        "5": "9-12"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Para 0 ('Then I said:') is the MSG v1 lead-in with no verse content of its own; para 1 carries MSG v2-3. Ranges kept as '1'/'2-3'."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "4": "9-10",
+        "5": "11-12"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "2": "4",
+        "3": "5",
+        "4": "6",
+        "5": "7",
+        "6": "7",
+        "7": "8",
+        "8": "9",
+        "9": "10-15"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "But yo, listen up. Bethlehem, from David's old stomping grounds—you might be considered a nobody, the runt of the litter. But out of you is gonna come the leader who will shepherd Israel. And this ain't some random new guy; his family line goes way, way back. For a while, Israel's gonna be scattered and in a bad spot, until the time comes for the new birth. Then all the scattered family will come back home to Israel. He'll stand strong, leading with God's power, shining with the majesty of God's name. And everyone will be safe and sound, because the whole world will see how great he is—the ultimate Peacemaker.",
+          "new": "But yo, listen up. Bethlehem, from David's old stomping grounds—you might be considered a nobody, the runt of the litter. But out of you is gonna come the leader who will shepherd Israel. And this ain't some random new guy; his family line goes way, way back. For a while, Israel's gonna be scattered and in a bad spot, until the time comes for the new birth. Then all the scattered family will come back home to Israel.",
+          "reason": "Duplicate pair resolved by splitting MSG 2-4: this paragraph keeps v2-3 (Bethlehem, the coming ruler, scattered until the birth); para 2 keeps v4 (shepherd-rule, Peacemaker)."
+        },
+        {
+          "index": 2,
+          "old": "But yo, listen up. Bethlehem, from David's old stomping grounds—you might be considered a nobody, the runt of the litter. But out of you is gonna come the leader who will shepherd Israel. And this ain't some random new guy; his family line goes way, way back. For a while, Israel's gonna be scattered and in a bad spot, until the time comes for the new birth. Then all the scattered family will come back home to Israel. He'll stand strong, leading with God's power, shining with the majesty of God's name. And everyone will be safe and sound, because the whole world will see how great he is—the ultimate Peacemaker.",
+          "new": "He'll stand strong, leading with God's power, shining with the majesty of God's name. And everyone will be safe and sound, because the whole world will see how great he is—the ultimate Peacemaker.",
+          "reason": "Exact duplicate of para 1. Replaced with the MSG v4 half (standing tall in God's strength, safe home, Peacemaker of the world)."
+        },
+        {
+          "index": 3,
+          "old": "And if some bully nation like Assyria tries to invade our land, don't even sweat it. We'll have leaders ready to shut them down, send them packing, and keep an eye on them. This shepherd-style rule will stretch all the way to Assyria and any other wannabe tough guys. Our shepherd-ruler will be our hero, saving us from any enemy, old or new, who tries to mess with our home.",
+          "new": "And if some bully nation like Assyria tries to invade our land, don't even sweat it. We'll have leaders ready to shut them down, send them packing, and keep an eye on them.",
+          "reason": "Duplicate pair resolved by splitting MSG 5-6: this paragraph keeps v5 (Assyrian invader answered with raised shepherds); para 4 keeps v6 (shepherd-rule reaching Assyria)."
+        },
+        {
+          "index": 4,
+          "old": "And if some bully nation like Assyria tries to invade our land, don't even sweat it. We'll have leaders ready to shut them down, send them packing, and keep an eye on them. This shepherd-style rule will stretch all the way to Assyria and any other wannabe tough guys. Our shepherd-ruler will be our hero, saving us from any enemy, old or new, who tries to mess with our home.",
+          "new": "This shepherd-style rule will stretch all the way to Assyria and any other wannabe tough guys. Our shepherd-ruler will be our hero, saving us from any enemy, old or new, who tries to mess with our home.",
+          "reason": "Exact duplicate of para 3. Replaced with the MSG v6 half (shepherd-rule stretching to Assyria and the Nimrod-bullies; our shepherd-ruler saves us)."
+        },
+        {
+          "index": 5,
+          "old": "The leftover crew from Jacob's family will be like a fresh start among all the other nations. They'll be like dew from God, like rain showers that just show up without being on the weather app—totally unplanned and out of human control.",
+          "new": "The leftover crew from Jacob's family will be like a fresh start among all the other nations.",
+          "reason": "Duplicate pair resolved by splitting MSG v7: this paragraph keeps v7a (the remnant among the peoples); para 6 keeps v7b (dew, unplanned showers)."
+        },
+        {
+          "index": 6,
+          "old": "The leftover crew from Jacob's family will be like a fresh start among all the other nations. They'll be like dew from God, like rain showers that just show up without being on the weather app—totally unplanned and out of human control.",
+          "new": "They'll be like dew from God, like rain showers that just show up without being on the weather app—totally unplanned and out of human control.",
+          "reason": "Exact duplicate of para 5. Replaced with the MSG v7b half (like dew from God, like showers no weather app predicts)."
+        },
+        {
+          "index": 7,
+          "old": "Yeah, this small group from Jacob will be a force among the nations. Like a lion among other wild animals, like a young lion in a field of sheep—it just takes what it wants, and no one can stop it. You'll crush your enemies, and they'll be gone for good!",
+          "new": "Yeah, this small group from Jacob will be a force among the nations. Like a lion among other wild animals, like a young lion in a field of sheep—it just takes what it wants, and no one can stop it.",
+          "reason": "Duplicate pair resolved by splitting MSG 8-9: this paragraph keeps v8 (lion among beasts/sheep); para 8 keeps v9 (enemies cut off)."
+        },
+        {
+          "index": 8,
+          "old": "Yeah, this small group from Jacob will be a force among the nations. Like a lion among other wild animals, like a young lion in a field of sheep—it just takes what it wants, and no one can stop it. You'll crush your enemies, and they'll be gone for good!",
+          "new": "You'll crush your enemies, and they'll be gone for good!",
+          "reason": "Exact duplicate of para 7. Replaced with MSG v9 (you'll crush your enemies; they'll be gone for good)."
+        }
+      ],
+      "flagged": [
+        "Paras 5/6 are byte-identical duplicate paragraphs (source data issue, not biblical repetition). Both carry MSG 7."
+      ],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3-5",
+        "3": "6-7",
+        "4": "8",
+        "5": "9",
+        "6": "10-16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "3": "8-10",
+        "4": "11-13",
+        "5": "14-17"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

@@ -1,0 +1,441 @@
+{
+  "book": "John",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "1": "3-5",
+        "2": "14",
+        "4": "19-23",
+        "5": "21-23",
+        "6": "29-31",
+        "8": "35-37",
+        "9": "38",
+        "10": "39",
+        "11": "40-41",
+        "12": "42",
+        "13": "43",
+        "14": "44-45",
+        "15": "46",
+        "16": "46",
+        "17": "47",
+        "18": "48",
+        "19": "48",
+        "20": "49",
+        "21": "50-51"
+      },
+      "content_fixes": [
+        {
+          "index": 8,
+          "old": "The next day, two of John the Baptist’s followers (Andrew and John) heard him hype up Jesus again, so they just started following Jesus down the road. Jesus turned around: \"What do you guys want?\"",
+          "new": "The next day, two of John the Baptist’s followers (Andrew and one of his buddies) heard him hype up Jesus again, so they just started following Jesus down the road. Jesus turned around: \"What do you guys want?\"",
+          "reason": "Definite factual error: MSG 1:35-40 names only Andrew; the second disciple is unnamed. Naming him \"John\" states as fact what MSG does not state. Replaced with a neutral teen-voice wording."
+        },
+        {
+          "index": 21,
+          "old": "Jesus laughed. \"You believe just because I said I saw you under a tree? Buckle up, man. You are going to see heaven ripped open and angels going up and down on the Son of Man.\"",
+          "new": "Jesus said, \"You believe just because I said I saw you under a tree? Buckle up, man. You are going to see heaven ripped open and angels going up and down on the Son of Man.\"",
+          "reason": "Definite invention: MSG 1:50-51 records no laughing. Removed the invented action verb, keeping the teen voice."
+        }
+      ],
+      "flagged": [
+        "MSG 1:6-9 (John the witness sent to testify; the true light coming into the world) has no corresponding paragraph - content appears absent between [1] (vv3-5) and [2] (v14).",
+        "MSG 1:10-13 (the world did not recognize him; to all who received him he gave the right to become children of God) has no corresponding paragraph - content appears absent between [1] (vv3-5) and [2] (v14).",
+        "MSG 1:15-18 (John's cry: \"he who comes after me ranks ahead of me\"; grace upon grace; \"no one has ever seen God, but the one and only Son has made him known\") has no corresponding paragraph - content appears absent between [2] (v14) and [4] (vv19-23).",
+        "MSG 1:24-28 (the Pharisees' \"why do you baptize then?\"; \"among you stands one you do not know\"; Bethany across the Jordan) has no corresponding paragraph - content appears absent between [5] (vv21-23) and [6] (vv29-31).",
+        "MSG 1:32-34 (John's testimony: the Spirit descending like a dove; \"this is God's Chosen One\") has no corresponding paragraph - content appears absent between [6] (vv29-31) and [8] (vv35-37)."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "1": "3",
+        "2": "3",
+        "3": "4",
+        "4": "5",
+        "5": "6-7",
+        "6": "9-10",
+        "7": "11",
+        "9": "13-14",
+        "10": "15",
+        "11": "15-16",
+        "12": "18",
+        "13": "19",
+        "14": "20",
+        "15": "21-25"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 2:12 (going down to Capernaum with his mother, brothers and disciples; staying a few days) has no corresponding paragraph - content appears absent between [7] (v11) and [9] (vv13-14)."
+      ],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "20": "25-26",
+        "27": "34-36",
+        "28": "35",
+        "29": "36"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "Paragraphs [28] and [29] (both None) duplicate MSG 3:35-36 content already covered in [27] (vv34-36) - apparent paragraph duplication."
+      ],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "4",
+        "2": "6-7",
+        "3": "7",
+        "4": "9",
+        "5": "10-12",
+        "6": "15",
+        "7": "16",
+        "8": "17",
+        "9": "17-18",
+        "10": "19-20",
+        "11": "21-24",
+        "12": "25",
+        "13": "26",
+        "14": "28-30",
+        "15": "39-42",
+        "17": "46-47",
+        "18": "50",
+        "19": "51",
+        "20": "52-53"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "The parenthetical in [2] - \"(She came at noon, the hottest part of the day, because she had a terrible reputation and wanted to avoid all the other women)\" - adds a motivation not stated in MSG 4:6-7, which only notes the noon hour.",
+        "MSG 4:27 (the disciples returning, surprised he was talking with a woman) and MSG 4:31-38 (\"my food is to do the will of him who sent me\"; the fields ripe for harvest) have no corresponding paragraphs - content appears absent between [14] (vv28-30) and [15] (vv39-42).",
+        "MSG 4:43-45 (returning to Galilee; \"a prophet has no honor in his own country\"; the Galileans welcoming him) has no corresponding paragraph - content appears absent between [15] (vv39-42) and [17] (vv46-47).",
+        "MSG 4:54 (\"This was the second sign Jesus performed\") has no corresponding paragraph - content appears absent after [20] (vv52-53)."
+      ],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "1": "6",
+        "2": "6",
+        "3": "7",
+        "4": "8",
+        "5": "9",
+        "7": "9",
+        "8": "10-11",
+        "9": "12",
+        "10": "13",
+        "11": "14-15",
+        "12": "16",
+        "13": "17-18",
+        "14": "18",
+        "15": "19",
+        "16": "19-20",
+        "17": "22-23",
+        "18": "25",
+        "19": "39-40"
+      },
+      "content_fixes": [
+        {
+          "index": 11,
+          "old": "Later, Jesus found the guy in the Temple and said, \"Look, you are well now. Stop sinning, or something worse may happen to you.\" The guy immediately ran and informered to the Jewish leaders that it was Jesus who healed him.",
+          "new": "Later, Jesus found the guy in the Temple and said, \"Look, you are well now. Stop sinning, or something worse may happen to you.\" The guy immediately ran and informed the Jewish leaders that it was Jesus who healed him.",
+          "reason": "Definite typo: \"informered\" should be \"informed.\" Corrected the word only."
+        }
+      ],
+      "flagged": [
+        "MSG 5:21-29 (the Son gives life to whom he pleases; \"whoever hears my word and believes has eternal life\"; the hour when all in the graves will hear his voice - resurrection of life and of condemnation) has no corresponding paragraph - content appears absent between [17] (vv22-23) and [18] (v25).",
+        "MSG 5:30-38 (\"I can do nothing on my own\"; John as a lamp; the Father's own testimony) has no corresponding paragraph - content appears absent between [18] (v25) and [19] (vv39-40).",
+        "MSG 5:41-47 (\"I do not accept glory from human beings\"; \"Moses ... your accuser\") has no corresponding paragraph - content appears absent after [19] (vv39-40)."
+      ],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "1": "5-9",
+        "2": "10-14",
+        "3": "15",
+        "5": "16-21",
+        "6": "22-27",
+        "7": "28-34",
+        "8": "52-58",
+        "9": "60-71"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 6:35-51 (\"I am the bread of life\"; the Jews grumbling; \"no one can come to me unless the Father draws them\"; \"everyone who has heard the Father comes to me\") has no corresponding paragraph - content appears absent between [7] (vv28-34) and [8] (vv52-58)."
+      ],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {
+        "0": "1-9",
+        "1": "10-13",
+        "2": "14-24",
+        "3": "25-31",
+        "4": "32",
+        "5": "37-39",
+        "6": "45-52"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 7:33-36 (\"I am with you for only a short time\"; \"where I go, you cannot come\"; \"to the Greeks\") has no corresponding paragraph - content appears absent between [4] (v32) and [5] (vv37-39).",
+        "MSG 7:40-44 (division: \"he is the Prophet\"; \"the Christ will not come from Galilee\"; no one laying hands on him) has no corresponding paragraph - content appears absent between [5] (vv37-39) and [6] (vv45-52)."
+      ],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "0": "2-6",
+        "1": "7",
+        "2": "7-8",
+        "3": "9-11",
+        "4": "12-20",
+        "5": "21-24",
+        "6": "31-36",
+        "7": "48-51"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 8:25-30 (\"Who are you?\"; \"I have much to say in judgment of you\"; many believed) has no corresponding paragraph - content appears absent between [5] (vv21-24) and [6] (vv31-36).",
+        "MSG 8:37-41 (\"I know you are Abraham's descendants\"; \"you are doing the works of your own father\") has no corresponding paragraph - content appears absent between [6] (vv31-36) and [7] (vv48-51)."
+      ],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-7",
+        "2": "8",
+        "4": "13-17",
+        "7": "30-34",
+        "8": "35-41"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "0": "1-6",
+        "2": "7-18",
+        "3": "22-24",
+        "6": "31-33",
+        "7": "39-42"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 10:19-21 (fresh division; \"can a demon open the eyes of the blind?\") has no corresponding paragraph - content appears absent between [2] (vv7-18) and [3] (vv22-24).",
+        "MSG 10:34-38 (\"Is it not written in your Law: 'I have said you are gods'?\"; \"do not believe me unless I do the works of my Father\") has no corresponding paragraph - content appears absent between [6] (vv31-33) and [7] (vv39-42)."
+      ],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "1": "3-4",
+        "7": "33-37",
+        "8": "38-39",
+        "9": "39-41",
+        "10": "43-44",
+        "11": "45-53"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "The sisters sent an urgent text to Jesus: \"Lord, your absolute best friend is sick.\" When Jesus heard it, he didn't panic. He told his crew, \"This sickness isn't going to end in death. It's happening so that God's glory can be shown, and so the Son of God can be glorified through it.\"",
+          "new": "The sisters sent word to Jesus: \"Lord, the one you love so much is sick.\" When Jesus heard it, he didn't panic. He told his crew, \"This sickness isn't going to end in death. It's happening so that God's glory can be shown, and so the Son of God can be glorified through it.\"",
+          "reason": "Two definite deviations from MSG 11:3 (\"the sisters sent word to Jesus, 'Master, the one you love so much is ill'\"): the anachronistic \"urgent text\" and the overstated \"absolute best friend.\" Replaced both with MSG-faithful teen wording."
+        }
+      ],
+      "flagged": [
+        "MSG 11:54-57 (withdrawing to Ephraim; the Passover plot; the order to report Jesus' whereabouts) has no corresponding paragraph - content appears absent after [11] (vv45-53)."
+      ],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "1": "3",
+        "2": "4-5",
+        "3": "7-8",
+        "4": "9-11",
+        "5": "12-15",
+        "6": "14-16",
+        "7": "20-22",
+        "8": "23-28",
+        "9": "27-28",
+        "10": "29-36",
+        "11": "37-43"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "Meanwhile, a massive crowd of Jews found out Jesus was at the house. They didn't just come to see Jesus; they wanted to see Lazarus, the walking miracle. Because of this, the chief priests secretly made plans to murder Lazarus too, because he was the walking proof that Jesus was God.",
+          "new": "Meanwhile, a massive crowd of Jews found out Jesus was at the house. They didn't just come to see Jesus; they wanted to see Lazarus, the walking miracle. Because of this, the chief priests secretly made plans to murder Lazarus too, because so many people were starting to believe in Jesus because of him.",
+          "reason": "Definite factual distortion: MSG 12:10-11 says the priests plotted to kill Lazarus \"because so many of the Jews were going over and believing in Jesus on account of him\" - not because he proved \"Jesus was God.\" Corrected to MSG's stated reason."
+        }
+      ],
+      "flagged": [
+        "MSG 12:6 (Judas as a thief who helped himself to the money bag) has no corresponding paragraph - content appears absent between [2] (vv4-5) and [3] (vv7-8).",
+        "MSG 12:17-19 (the crowd's testimony; the Pharisees: \"the whole world has gone after him!\") has no corresponding paragraph - content appears absent between [6] (vv14-16) and [7] (vv20-22).",
+        "MSG 12:44-50 (Jesus' closing cry: belief in the one who sent him; \"I have come into the world as a light\") has no corresponding paragraph - content appears absent after [11] (vv37-43)."
+      ],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "1": "2",
+        "2": "4-5",
+        "3": "6-8",
+        "4": "9-10",
+        "5": "12-17",
+        "6": "21",
+        "7": "22-29",
+        "8": "31-33",
+        "9": "36-38"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 13:18-20 (\"I am not referring to all of you\"; \"whoever accepts anyone I send accepts me\") has no corresponding paragraph - content appears absent between [5] (vv12-17) and [6] (v21).",
+        "MSG 13:34-35 (the new command: \"love one another. As I have loved you, so you must love one another\") has no corresponding paragraph - content appears absent between [8] (vv31-33) and [9] (vv36-38)."
+      ],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "0": "1",
+        "1": "1-4",
+        "2": "5",
+        "3": "6",
+        "4": "8-11",
+        "5": "12-14",
+        "6": "15-17",
+        "7": "18-21",
+        "8": "22-24",
+        "9": "27-31"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 14:7 (\"If you really know me, you will know my Father as well\") has no corresponding paragraph - content appears absent between [3] (v6) and [4] (vv8-11).",
+        "MSG 14:25-26 (the Advocate will teach you all things and remind you of everything) has no corresponding paragraph - content appears absent between [8] (vv22-24) and [9] (vv27-31)."
+      ],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "1": "2",
+        "2": "4-8",
+        "3": "9-14",
+        "4": "18-20"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 15:3 (\"You are already clean because of the word I have spoken to you\") has no corresponding paragraph - content appears absent between [1] (v2) and [2] (vv4-8).",
+        "MSG 15:15-17 (friends, not servants; \"I chose you and appointed you so that you might go and bear fruit\") has no corresponding paragraph - content appears absent between [3] (vv9-14) and [4] (vv18-20)."
+      ],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5-7",
+        "2": "12-14",
+        "3": "16-18",
+        "4": "19",
+        "5": "20-22",
+        "6": "23-24",
+        "7": "25-28"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 16:8-11 (the Spirit convicting the world of sin, righteousness and judgment) has no corresponding paragraph - content appears absent between [1] (vv5-7) and [2] (vv12-14)."
+      ],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "1": "1-5",
+        "2": "6-8",
+        "3": "9-13",
+        "4": "14-19",
+        "5": "20-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4-5",
+        "3": "6-8",
+        "4": "10-11",
+        "5": "12-14",
+        "8": "25-27",
+        "9": "28-29"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 18:9 (\"This happened so that the words he had spoken would be fulfilled: 'I have not lost one of those you gave me'\") has no corresponding paragraph - content appears absent between [3] (vv6-8) and [4] (vv10-11)."
+      ],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "1": "4-6",
+        "2": "8-11",
+        "3": "12-16",
+        "4": "17-22",
+        "6": "25-27",
+        "7": "28-30",
+        "8": "31-37"
+      },
+      "content_fixes": [
+        {
+          "index": 6,
+          "old": "Jesus's mother, Mary, was standing near the cross with her sister, Mary Magdalene, and Jesus's absolute best friend, John. Even while suffocating in agony, Jesus made sure his mom was taken care of. He looked at her and said, \"Woman, here is your son,\" and looked at John and said, \"Here is your mother.\" From that exact moment, John took her into his own home.",
+          "new": "Jesus's mother, Mary, was standing near the cross with her sister, Mary the wife of Clopas, Mary Magdalene, and Jesus's absolute best friend, John. Even while suffocating in agony, Jesus made sure his mom was taken care of. He looked at her and said, \"Woman, here is your son,\" and looked at John and said, \"Here is your mother.\" From that exact moment, John took her into his own home.",
+          "reason": "Definite factual error: MSG 19:25 lists four women - Jesus' mother, her sister, Mary the wife of Clopas, and Mary Magdalene. The text conflated the sister with Mary Magdalene and dropped Mary the wife of Clopas. Restored all four."
+        }
+      ],
+      "flagged": [
+        "MSG 19:7 (\"We have a law, and according to that law he must die, because he claimed to be the Son of God\") has no corresponding paragraph - content appears absent between [1] (vv4-6) and [2] (vv8-11)."
+      ],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-8",
+        "2": "10-12",
+        "6": "19-23",
+        "7": "24-25",
+        "8": "26-29",
+        "9": "30-31"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 20:9 (\"they still did not understand from Scripture that Jesus had to rise from the dead\") has no corresponding paragraph - content appears absent between [1] (vv3-8) and [2] (vv10-12).",
+        "MSG 20:18 (Mary's report: \"I have seen the Lord!\") has no corresponding paragraph - content appears absent between [4] (vv15-17) and [6] (vv19-23)."
+      ],
+      "ok": false
+    },
+    "21": {
+      "range_fixes": {
+        "1": "3-4",
+        "4": "15",
+        "5": "15",
+        "6": "16",
+        "7": "17",
+        "8": "18-19"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 21:5 (\"Friends, haven't you any fish?\") has no corresponding paragraph - content appears absent between [1] (vv3-4) and [2] (vv6-7).",
+        "MSG 21:11 (the 153 large fish; the net not torn) has no corresponding paragraph - content appears absent between [3] (vv8-10) and [4] (v15).",
+        "MSG 21:12-14 (\"Come and have breakfast\"; the third appearance to the disciples) has no corresponding paragraph - content appears absent between [3] (vv8-10) and [4] (v15).",
+        "MSG 21:19 says only \"to indicate the kind of death by which Peter would glorify God\"; [8]'s parenthetical \"Peter was eventually crucified as a martyr\" adds extra-biblical tradition not stated in MSG."
+      ],
+      "ok": false
+    }
+  }
+}

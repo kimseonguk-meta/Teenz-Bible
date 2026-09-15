@@ -1,0 +1,145 @@
+{
+  "book": "Nahum",
+  "chapters": {
+    "1": {
+      "range_fixes": {
+        "1": "2-6",
+        "2": "7-10",
+        "3": "7-10",
+        "4": "11",
+        "5": "12",
+        "6": "12",
+        "7": "13",
+        "8": "13",
+        "9": "14",
+        "10": "14",
+        "11": "15"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "God does NOT play. Seriously, don't mess with Him. He gets back at His haters and stands up to anyone who comes against Him, full force. But, like, He's not just flying off the handle. He's got insane power, but He's patient with it. Still, nobody gets away with anything. Sooner or later, you gotta pay up. You see tornadoes and hurricanes? That's just the dust kicking up where He walks. He can literally tell the ocean to dry up, and it does. All the rivers? Gone. The mountains of Bashan and Carmel? Total glow-down. The forests of Lebanon? Wilted. Mountains are shook, hills basically melt. The whole planet is freaking out in front of Him. The whole world is in a full-blown panic. Who could even handle that kind of anger? Who can stand up to that fire? His rage is like a volcano erupting, and He smashes boulders like nothing.",
+          "new": "God does NOT play. Seriously, don't mess with Him. He gets back at His haters and stands up to anyone who comes against Him, full force. But, like, He's not just flying off the handle. He's got incredible power, but He's patient with it. Still, nobody gets away with anything. Sooner or later, you gotta pay up. You see tornadoes and hurricanes? That's just the dust kicking up where He walks. He can literally tell the ocean to dry up, and it does. All the rivers? Gone. The mountains of Bashan and Carmel? Total glow-down. The forests of Lebanon? Wilted. Mountains are shook, hills basically melt. The whole planet is freaking out in front of Him. The whole world is in a full-blown panic. Who could even handle that kind of anger? Who can stand up to that fire? His rage is like a volcano erupting, and He smashes boulders like nothing.",
+          "reason": "remove \"insane\"; MSG 1:3 \"He's powerful, but it's a patient power\""
+        },
+        {
+          "index": 1,
+          "old": "God does NOT play. Seriously, don't mess with Him. He gets back at His haters and stands up to anyone who comes against Him, full force. But, like, He's not just flying off the handle. He's got insane power, but He's patient with it. Still, nobody gets away with anything. Sooner or later, you gotta pay up. You see tornadoes and hurricanes? That's just the dust kicking up where He walks. He can literally tell the ocean to dry up, and it does. All the rivers? Gone. The mountains of Bashan and Carmel? Total glow-down. The forests of Lebanon? Wilted. Mountains are shook, hills basically melt. The whole planet is freaking out in front of Him. The whole world is in a full-blown panic. Who could even handle that kind of anger? Who can stand up to that fire? His rage is like a volcano erupting, and He smashes boulders like nothing.",
+          "new": "God does NOT play. Seriously, don't mess with Him. He gets back at His haters and stands up to anyone who comes against Him, full force. But, like, He's not just flying off the handle. He's got insane power, but He's patient with it. Still, nobody gets away with anything. Sooner or later, you gotta pay up. You see tornadoes and hurricanes? That's just the dust kicking up where He walks. He can literally tell the ocean to dry up, and it does. All the rivers? Gone. The mountains of Bashan and Carmel? Withered. The forests of Lebanon? Wilted. Mountains are shook, hills basically melt. The whole planet is freaking out in front of Him. The whole world is in a full-blown panic. Who could even handle that kind of anger? Who can stand up to that fire? His rage is like a volcano erupting, and He smashes boulders like nothing.",
+          "reason": "remove confusing \"glow-down\"; MSG 1:4 \"mountains shrivel\""
+        },
+        {
+          "index": 1,
+          "old": "God does NOT play. Seriously, don't mess with Him. He gets back at His haters and stands up to anyone who comes against Him, full force. But, like, He's not just flying off the handle. He's got insane power, but He's patient with it. Still, nobody gets away with anything. Sooner or later, you gotta pay up. You see tornadoes and hurricanes? That's just the dust kicking up where He walks. He can literally tell the ocean to dry up, and it does. All the rivers? Gone. The mountains of Bashan and Carmel? Total glow-down. The forests of Lebanon? Wilted. Mountains are shook, hills basically melt. The whole planet is freaking out in front of Him. The whole world is in a full-blown panic. Who could even handle that kind of anger? Who can stand up to that fire? His rage is like a volcano erupting, and He smashes boulders like nothing.",
+          "new": "God does NOT play. Seriously, don't mess with Him. He gets back at His haters and stands up to anyone who comes against Him, full force. But, like, He's not just flying off the handle. He's got insane power, but He's patient with it. Still, nobody gets away with anything. Sooner or later, you gotta pay up. You see tornadoes and hurricanes? That's just the dust kicking up where He walks. He can literally tell the ocean to dry up, and it does. All the rivers? Gone. The mountains of Bashan and Carmel? Total glow-down. The forests of Lebanon? Wilted. Mountains quake in their roots, hills dissolve into mud. The whole planet is freaking out in front of Him. The whole world is in a full-blown panic. Who could even handle that kind of anger? Who can stand up to that fire? His rage is like a volcano erupting, and He smashes boulders like nothing.",
+          "reason": "remove \"shook\"; MSG 1:5"
+        },
+        {
+          "index": 2,
+          "old": "But here's the flip side: God is good. He's your safe house when times get rough. He sees you when you're looking for help, and He's got you, no matter how bad things are. But for those who think they can just chill in their own little escape plans? Nah, He wipes them right off the map. You can't ghost God. So why even try to scheme against Him? He's shutting all that down. If you're a troublemaker, you don't get a round two. You're like a pile of dry leaves someone just poured gasoline on. Poof. Up in flames.",
+          "new": "But here's the flip side: God is good. He's your safe house when times get rough. He sees you when you're looking for help, and He's got you, no matter how bad things are. But for those who think they can just chill in their own little escape plans? Nah, He wipes them right off the map. You can't escape God. So why even try to scheme against Him? He's shutting all that down. If you're a troublemaker, you don't get a round two. You're like a pile of dry leaves someone just poured gasoline on. Poof. Up in flames.",
+          "reason": "remove \"ghost\"; MSG 1:8 \"No one gets away from God\""
+        },
+        {
+          "index": 3,
+          "old": "But here's the flip side: God is good. He's your safe house when times get rough. He sees you when you're looking for help, and He's got you, no matter how bad things are. But for those who think they can just chill in their own little escape plans? Nah, He wipes them right off the map. You can't ghost God. So why even try to scheme against Him? He's shutting all that down. If you're a troublemaker, you don't get a round two. You're like a pile of dry leaves someone just poured gasoline on. Poof. Up in flames.",
+          "new": "But here's the flip side: God is good. He's your safe house when times get rough. He sees you when you're looking for help, and He's got you, no matter how bad things are. But for those who think they can just chill in their own little escape plans? Nah, He wipes them right off the map. You can't escape God. So why even try to scheme against Him? He's shutting all that down. If you're a troublemaker, you don't get a round two. You're like a pile of dry leaves someone just poured gasoline on. Poof. Up in flames.",
+          "reason": "remove \"ghost\"; MSG 1:8 (duplicate paragraph)"
+        },
+        {
+          "index": 5,
+          "old": "And God's got a message about this: 'Yo, even if you're on top of the world, getting all the likes and the votes, you're about to get completely wrecked.'",
+          "new": "And God's got a message about this: 'Even if you're on top of the world, getting all the applause and the votes, you're about to get completely wrecked.'",
+          "reason": "remove \"Yo\"/\"likes\"; MSG 1:12 \"With all the applause and all the votes\""
+        },
+        {
+          "index": 6,
+          "old": "And God's got a message about this: 'Yo, even if you're on top of the world, getting all the likes and the votes, you're about to get completely wrecked.'",
+          "new": "And God's got a message about this: 'Even if you're on top of the world, getting all the applause and the votes, you're about to get completely wrecked.'",
+          "reason": "remove \"Yo\"/\"likes\"; MSG 1:12 (duplicate paragraph)"
+        },
+        {
+          "index": 10,
+          "old": "'You're at the end of the line. It's game over for Nineveh. I'm tearing down your temple. Your gods and goddesses? Straight in the trash. I'm digging your grave myself. It's gonna be an unmarked one. You're a nobody—nah, you're less than a nobody!'",
+          "new": "'You're at the end of the line. It's all over with Nineveh. I'm tearing down your temple. Your gods and goddesses? Straight in the trash. I'm digging your grave myself. It's gonna be an unmarked one. You're a nobody—nah, you're less than a nobody!'",
+          "reason": "remove \"game over\"; MSG 1:14 \"It's all over with Nineveh\""
+        },
+        {
+          "index": 11,
+          "old": "Look! Someone's running over the mountains—a messenger with the best news: peace! It's a holiday, Judah! Go celebrate! Worship God and get right with Him again! You don't have to worry about this enemy anymore. They're officially cancelled. Close the book on them.",
+          "new": "Look! Someone's running over the mountains—a messenger with the best news: peace! It's a holiday, Judah! Go celebrate! Worship God and get right with Him again! You don't have to worry about this enemy anymore. They're history. Close the books.",
+          "reason": "remove \"cancelled\"; MSG 1:15 \"This one is history. Close the books\""
+        },
+        {
+          "index": 12,
+          "old": "Look! Someone's running over the mountains—a messenger with the best news: peace! It's a holiday, Judah! Go celebrate! Worship God and get right with Him again! You don't have to worry about this enemy anymore. They're officially cancelled. Close the book on them.",
+          "new": "Look! Someone's running over the mountains—a messenger with the best news: peace! It's a holiday, Judah! Go celebrate! Worship God and get right with Him again! You don't have to worry about this enemy anymore. They're history. Close the books.",
+          "reason": "remove \"cancelled\"; MSG 1:15 (duplicate paragraph)"
+        }
+      ],
+      "flagged": [
+        "Paras 2/3, 5/6, 7/8, 11/12 are byte-identical duplicate paragraphs (source data issue, not biblical repetition). Both copies carry the full MSG range."
+      ],
+      "ok": false
+    },
+    "2": {
+      "range_fixes": {
+        "2": "3-12",
+        "3": "3-12"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king tries to get his squad together, but they're just tripping over themselves. They rush to the walls to stop the invasion, but it's a wrap. Soldiers are pouring through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "new": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king rallies his men, but they stagger and stumble. They rush to the walls to stop the invasion, but it's a wrap. Soldiers are pouring through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "reason": "remove \"squad\"/\"tripping\"; MSG 2:5"
+        },
+        {
+          "index": 2,
+          "old": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king tries to get his squad together, but they're just tripping over themselves. They rush to the walls to stop the invasion, but it's a wrap. Soldiers are pouring through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "new": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king tries to get his squad together, but they're just tripping over themselves. They rush to the walls to stop the invasion, but it's too late. Soldiers pour through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "reason": "remove \"it's a wrap\"; MSG 2:7"
+        },
+        {
+          "index": 3,
+          "old": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king tries to get his squad together, but they're just tripping over themselves. They rush to the walls to stop the invasion, but it's a wrap. Soldiers are pouring through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "new": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king rallies his men, but they stagger and stumble. They rush to the walls to stop the invasion, but it's a wrap. Soldiers are pouring through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "reason": "MSG 2:5 (duplicate paragraph)"
+        },
+        {
+          "index": 3,
+          "old": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king tries to get his squad together, but they're just tripping over themselves. They rush to the walls to stop the invasion, but it's a wrap. Soldiers are pouring through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "new": "Their weapons are glinting in the sun, the soldiers looking fresh in their battle gear. The chariots are all polished and shiny, ready to roll out. It's like a whole forest of sharp spears, looking deadly on the horizon. The chariots are flooding the streets, taking over the public squares, glowing like torches in the sun, zipping around like lightning. The Assyrian king tries to get his squad together, but they're just tripping over themselves. They rush to the walls to stop the invasion, but it's too late. Soldiers pour through the gates. The palace is getting wrecked. It's over pretty quick: Nineveh is getting stripped bare, totally doomed. The maids and slaves are crying, sounding like doves, beating their chests in sadness. Nineveh is like a bathtub with the plug pulled. People are yelling, \"Do something! Do something!\" but it's too late. Nineveh is empty in no time—nothing left. Then you hear other shouts: \"Grab the silver! Grab the gold! It's a free-for-all! Take whatever you want!\" It's all doom, damnation, and desolation. Hearts are sinking, knees are weak, people are throwing up, and everyone's face is pale. So, what happened to that big, bad Assyrian lion and all those so-called cute little cubs? What about the lion and lioness, all cozy with their cubs, acting so tough and fearless? What about the lion who always brought back fresh meat for his lioness and cubs, with the den piled high with bloody food for their royal feast?",
+          "reason": "MSG 2:7 (duplicate paragraph)"
+        }
+      ],
+      "flagged": [
+        "Paras 2/3 are byte-identical duplicate paragraphs (source data issue). Both carry MSG 3-12."
+      ],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "0": "1-4",
+        "1": "5-7",
+        "2": "8-13",
+        "3": "14-15",
+        "4": "15-17",
+        "5": "18-19",
+        "6": "18-19"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "Go ahead, store up water for the siege. Strengthen your defenses. Get back to the basics: work the clay and make some bricks. But sorry, it's too late. Enemy fire is about to burn you up. Swords will chop you to pieces. You’ll be eaten up like locusts.",
+          "new": "Go ahead, store up water for the siege. Strengthen your defenses. Get back to the basics: work the clay and make some bricks. But sorry, it's too late. Enemy fire is about to burn you up. Swords will chop you to pieces. You’ll be chewed up as if by locusts.",
+          "reason": "fix mistranslation; MSG 3:15 \"You'll be chewed up as if by locusts\""
+        }
+      ],
+      "flagged": [
+        "Paras 5/6 are byte-identical duplicate paragraphs (source data issue). Both carry MSG 18-19."
+      ],
+      "ok": false
+    }
+  }
+}

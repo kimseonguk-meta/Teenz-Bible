@@ -1,0 +1,91 @@
+{
+  "book": "Lamentations",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "God didn't even hesitate. He just swallowed Israel whole. Went beast mode and crushed all of Judah's defenses, totally wrecking their king and leaders.",
+          "new": "God didn't even hesitate. He just swallowed Israel whole, crushing all of Judah's defenses in his fury, totally wrecking their king and leaders.",
+          "reason": "MSG 2:2; 'went beast mode' is flippant meme slang for God's judgment."
+        },
+        {
+          "index": 4,
+          "old": "God literally became the enemy. He devoured Israel for dinner. Chewed up all their defenses and spit them out. Now Judah's just left crying and complaining.",
+          "new": "God became the enemy. He devoured Israel, chewing up all their defenses. Now Judah's just left crying and complaining.",
+          "reason": "MSG 2:5 'The Lord has become the enemy. He has devoured Israel.' 'For dinner/spit them out' is flippantly crude for God devouring his people."
+        },
+        {
+          "index": 5,
+          "old": "He wrecked his own special meeting spot, completely trashed his favorite hangout. God erased all the good memories of holidays and rest days in Zion. He was so mad he got rid of the king and the priests too.",
+          "new": "He wrecked his own Temple, his special meeting place. God erased all the good memories of holidays and rest days in Zion. He was so mad he got rid of the king and the priests too.",
+          "reason": "MSG 2:6; calling God's Temple his 'favorite hangout' is flippant and disrespectful."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "6": "19-21",
+        "7": "22-24",
+        "8": "25-27",
+        "9": "28-30",
+        "10": "31-33",
+        "11": "34-36",
+        "12": "37-39",
+        "13": "40-42",
+        "14": "43-45",
+        "15": "46-48",
+        "16": "49-51",
+        "17": "52-54",
+        "18": "55-57",
+        "19": "58-60",
+        "20": "61-63",
+        "21": "64-66"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "11": "13",
+        "12": "14-15",
+        "13": "16",
+        "14": "17",
+        "15": "18",
+        "16": "19",
+        "17": "20",
+        "6": "7-8",
+        "7": "9",
+        "8": "10",
+        "9": "11",
+        "10": "12"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "OMG, for real... How is gold now treated like dirt, the best gold just tossed out with the trash? Priceless jewels are scattered everywhere, just lying in the gutters.",
+          "new": "Oh man, for real... How is gold now treated like dirt, the best gold just tossed out with the trash? Priceless jewels are scattered everywhere, just lying in the gutters.",
+          "reason": "MSG 4:1; 'OMG' uses God's name as a throwaway exclamation."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    }
+  }
+}

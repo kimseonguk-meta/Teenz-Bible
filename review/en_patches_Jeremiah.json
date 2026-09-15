@@ -1,0 +1,954 @@
+{
+  "book": "Jeremiah",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4-6",
+        "3": "7-8",
+        "4": "9-11",
+        "5": "12-13",
+        "6": "14-17",
+        "12": "29-30",
+        "13": "31-32",
+        "14": "33-35",
+        "15": "36-37"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "3": {
+      "range_fixes": {
+        "5": "13-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "4": {
+      "range_fixes": {
+        "1": "3-4",
+        "2": "5-8",
+        "3": "9",
+        "4": "10",
+        "5": "11-13",
+        "7": "16-18",
+        "9": "19-21",
+        "10": "22",
+        "11": "23-26",
+        "12": "27-28",
+        "13": "29",
+        "14": "30-31"
+      },
+      "content_fixes": [
+        {
+          "index": 6,
+          "old": "Look at them coming! They look like a huge bank of storm clouds. Their chariots are like a tornado, and their horses are faster than eagles! We’re so screwed! We’re done for! Jerusalem, you gotta wash the evil out of your heart so you can be saved. How much longer are you gonna let those twisted, evil thoughts hang around in your head?",
+          "new": "Look at them coming! They look like a huge bank of storm clouds. Their chariots are like a tornado, and their horses are faster than eagles! We’re so doomed! We’re done for! Jerusalem, you gotta wash the evil out of your heart so you can be saved. How much longer are you gonna let those twisted, evil thoughts hang around in your head?",
+          "reason": "MSG 4:13 'Woe to us!'; 'screwed' is unnecessarily crude for the lament. 'Doomed' keeps teen voice."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 11,
+          "old": "Unspeakable! Sickening! What's happened in this country? Prophets preach lies and priests hire on as their assistants. And my people love it. They eat it up! But what will you do when it's time to pick up the pieces?",
+          "new": "Unspeakable! Sickening! What's happened in this country? Prophets preach lies and priests hire on as their assistants. And my people love it. They eat it up! But what will you do when it's all over? Can you live with your lying prophets and wicked priests? 'Cause you never seem to learn!",
+          "reason": "MSG 5:31 tail missing: 'Will you be able to live with your lying prophets and wicked priests? But you never seem to learn!' Teen-voice completion of the verse's climax."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "7": {
+      "range_fixes": {
+        "11": "26-28",
+        "12": "29",
+        "13": "30-31",
+        "14": "32-34"
+      },
+      "content_fixes": [
+        {
+          "index": 6,
+          "old": "'And Jeremiah, my guy, don't even waste your breath praying for these people. Don't bother asking me for favors or trying to step in for them. Don't even bring it up. I'm not listening. Can't you see what they're doing in all the towns of Judah and on the streets of Jerusalem? The kids are out collecting firewood, the dads are building the fires, and the moms are baking bread to offer to the 'Queen of Heaven'! And if that wasn't bad enough, they're pouring out drinks to any other god they can find, just to tick me off.",
+          "new": "'And Jeremiah, don't even waste your breath praying for these people. Don't bother asking me for favors or trying to step in for them. Don't even bring it up. I'm not listening. Can't you see what they're doing in all the towns of Judah and on the streets of Jerusalem? The kids are out collecting firewood, the dads are building the fires, and the moms are baking bread to offer to the 'Queen of Heaven'! And if that wasn't bad enough, they're pouring out drinks to any other god they can find, just to tick me off.",
+          "reason": "God addressing the prophet as 'my guy' is irreverently familiar for divine speech."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "1": "3",
+        "2": "4-5",
+        "3": "4-7",
+        "5": "10-12",
+        "6": "13",
+        "7": "14-16",
+        "8": "17",
+        "4": "8-10",
+        "9": "18-22"
+      },
+      "content_fixes": [
+        {
+          "index": 7,
+          "old": "So why are we just sitting here? Let’s get our act together. Let’s head to the big city and at least go down fighting. God gave us the final word: we’re screwed either way—screwed because we sinned against him. We were hoping for the best, but that’s not what happened. We were waiting for things to get better, and instead, terror showed up. From way up north in Dan, we can hear the sound of horses galloping and neighing. The ground is literally shaking. They’re coming to swallow the whole country, towns and people and all—just fuel for the war.",
+          "new": "So why are we just sitting here? Let’s get our act together. Let’s head to the big city and at least go down fighting. God gave us the final word: we’re doomed either way—doomed because we sinned against him. We were hoping for the best, but that’s not what happened. We were waiting for things to get better, and instead, terror showed up. From way up north in Dan, we can hear the sound of horses galloping and neighing. The ground is literally shaking. They’re coming to swallow the whole country, towns and people and all—just fuel for the war.",
+          "reason": "MSG 8:14-15 despair; 'screwed' is crude. 'Doomed' keeps the meaning in cleaner teen voice."
+        },
+        {
+          "index": 9,
+          "old": "I’m drowning in sadness. My heart is sick. Oh, just listen! Can you hear it? It’s the sound of my people crying all over the country. Is God not in Zion anymore? Did the King just leave? Can someone tell me why they’re showing off their toy gods, their dumb, imported fake gods right in front of me? The harvest is over, summer has ended, but for us, nothing has changed. We’re still waiting to be saved. My poor, broken people have left me heartbroken. I’m just weeping, totally overcome with grief. Isn’t there any healing balm in Gilead? Isn’t there a doctor in the house? So why can’t anything be done to heal and save my precious people?”",
+          "new": "I’m drowning in sadness. My heart is sick. Oh, just listen! Can you hear it? It’s the sound of my people crying all over the country. Is God not in Zion anymore? Did the King just leave? Can someone tell me why they’re showing off their toy gods, their worthless, imported fake gods right in front of me? The harvest is over, summer has ended, but for us, nothing has changed. We’re still waiting to be saved. My poor, broken people have left me heartbroken. I’m just weeping, totally overcome with grief. Isn’t there any healing balm in Gilead? Isn’t there a doctor in the house? So why can’t anything be done to heal and save my precious people?”",
+          "reason": "'Dumb' is mocking/low; 'worthless' keeps MSG's no-god contempt without the slur-like tone."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "5": "12",
+        "6": "12",
+        "7": "13-15",
+        "8": "15",
+        "9": "15",
+        "10": "16",
+        "11": "17",
+        "12": "17-19",
+        "13": "20-21",
+        "15": "22",
+        "16": "23",
+        "17": "23-24",
+        "18": "25-26"
+      },
+      "content_fixes": [
+        {
+          "index": 15,
+          "old": "'Dead bodies will be everywhere, scattered around like poop in a field, like wheat that gets cut and just left to rot.'",
+          "new": "'Dead bodies will be everywhere, scattered around like manure in a field, like wheat that gets cut and just left to rot.'",
+          "reason": "MSG 9:22 says corpses lie 'like sheep and goat dung in the field'; calling corpses 'poop' is flippant and demeaning. 'Manure' keeps MSG's image in teen voice without the crude tone."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "So tell them this: 'The fake gods who didn't make the sky or the earth? They're gonna be totally wiped out from the earth and from under the sky.' But it was God who made the earth with his power, who designed the world with his wisdom, and who created the whole universe. When he speaks, it's like thunder, and the rain pours down. He makes the clouds rise up, throws lightning into the storm, and unleashes wind from his storage rooms. The people who worship these stick-gods look so stupid, and the guys who make them are embarrassed by their own creations! Their gods are fakes—just dead sticks, a total joke. When judgment day comes, they'll all turn to ash.",
+          "new": "So tell them this: 'The fake gods who didn't make the sky or the earth? They're gonna be totally wiped out from the earth and from under the sky.' But it was God who made the earth with his power, who designed the world with his wisdom, and who created the whole universe. When he speaks, it's like thunder, and the rain pours down. He makes the clouds rise up, throws lightning into the storm, and unleashes wind from his storage rooms. The people who worship these stick-gods look so foolish, and the guys who make them are embarrassed by their own creations! Their gods are fakes—just dead sticks, a total joke. When judgment day comes, they'll all turn to ash.",
+          "reason": "Mocking idolaters as 'stupid'; 'foolish' keeps the rebuke without degrading."
+        },
+        {
+          "index": 8,
+          "old": "It's all because our leaders are so stupid. They never bothered to ask God for advice, so everything went wrong. Now the people are scattered everywhere.",
+          "new": "It's all because our leaders are so foolish. They never bothered to ask God for advice, so everything went wrong. Now the people are scattered everywhere.",
+          "reason": "Mocking leaders as 'stupid'; 'foolish' keeps the rebuke without degrading."
+        },
+        {
+          "index": 2,
+          "old": "But man, God, you're on a whole other level. You're seriously great, like, legendary. Who wouldn't be in awe of you, the King of everyone? You're meant to be worshiped! Look at all the so-called 'great' people out there. Their best stuff is nothing compared to you. They're so dumb, lining up these wooden sticks that are good for nothing. They cover them in silver from Tarshish and gold from Uphaz, and dress them up in purple fabrics, but no matter how fancy they look, they're still just sticks.",
+          "new": "But man, God, you're on a whole other level. You're seriously great, like, legendary. Who wouldn't be in awe of you, the King of everyone? You're meant to be worshiped! Look at all the so-called 'great' people out there. Their best stuff is nothing compared to you. They're so clueless, lining up these wooden sticks that are good for nothing. They cover them in silver from Tarshish and gold from Uphaz, and dress them up in purple fabrics, but no matter how fancy they look, they're still just sticks.",
+          "reason": "Mocking people as 'dumb'; 'clueless' keeps the rebuke without degrading."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "1": "2-4",
+        "2": "5",
+        "3": "5",
+        "4": "6-8",
+        "5": "9-10",
+        "6": "11-13",
+        "7": "14",
+        "8": "15-16",
+        "9": "17",
+        "10": "18-19",
+        "11": "20",
+        "12": "21-23"
+      },
+      "content_fixes": [
+        {
+          "index": 8,
+          "old": "\"What are the people I love even doing trying to get out of trouble? And in my house of worship, no less! Do you really think making promises and coming up with religious programs will save you from doom? Do you think you can get out of this by just being more religious? I once called you a mighty oak tree, super majestic and glorious. But it's only going to take one clap of thunder and a bolt of lightning to leave you a total wreck.",
+          "new": "\"What are the people I love even doing trying to get out of trouble? And in my house of worship, no less! Do you really think making promises and coming up with religious programs will save you from doom? Do you think you can get out of this by just being more religious? I once called you a lush, beautiful olive tree, full of good fruit. But it's only going to take one clap of thunder and a bolt of lightning to leave you a total wreck.",
+          "reason": "MSG 11:16 says 'luxuriant olive tree'; teen text's 'mighty oak tree' changes MSG's image."
+        },
+        {
+          "index": 2,
+          "old": "'Obey what I tell you. Do exactly what I command. Your obedience will seal the deal. You'll be my people, and I'll be your God. This will make it possible for me to do what I promised your ancestors: to give them a super fertile and awesome land. And, as you know, that's exactly what I did.'\"\"",
+          "new": "'Obey what I tell you. Do exactly what I command. Your obedience will seal the deal. You'll be my people, and I'll be your God. This will make it possible for me to do what I promised your ancestors: to give them a super fertile and awesome land. And, as you know, that's exactly what I did.'\"",
+          "reason": "Doubled closing quotation mark at paragraph end (.'\"\") — removed the extra quote; paragraph already closes the outer speech quote from the preceding paragraph."
+        },
+        {
+          "index": 4,
+          "old": "God went on: \"Preach all this in the towns of Judah and on the streets of Jerusalem. Say, 'Listen to the terms of this deal and actually do them! I warned your ancestors when I brought them out of Egypt, and I've been warning you guys ever since. I haven't stopped for a second. I warned them from morning to night: \"Obey me or else!\" But they didn't. They totally ignored me. They did whatever they wanted, whenever they wanted, until I finally had to step in and bring the punishments I mentioned in the deal, which they had completely ignored despite all my warnings.'\"\"",
+          "new": "God went on: \"Preach all this in the towns of Judah and on the streets of Jerusalem. Say, 'Listen to the terms of this deal and actually do them! I warned your ancestors when I brought them out of Egypt, and I've been warning you guys ever since. I haven't stopped for a second. I warned them from morning to night: \"Obey me or else!\" But they didn't. They totally ignored me. They did whatever they wanted, whenever they wanted, until I finally had to step in and bring the punishments I mentioned in the deal, which they had completely ignored despite all my warnings.'\"",
+          "reason": "Doubled closing quotation mark at paragraph end (.'\"\") — removed the extra quote; paragraph already closes the outer speech quote from the preceding paragraph."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "1": "5-6",
+        "2": "7-10",
+        "3": "11-13"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3-4",
+        "2": "5-6",
+        "3": "7-9",
+        "4": "10",
+        "5": "11",
+        "6": "12",
+        "7": "13-15",
+        "8": "16-17",
+        "9": "18-20",
+        "10": "21",
+        "11": "22-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "1": "2-6",
+        "2": "7-9",
+        "4": "10",
+        "5": "11-12",
+        "6": "13",
+        "7": "14",
+        "8": "15-16",
+        "9": "17",
+        "10": "17-18",
+        "11": "19-22"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "\"Judah is literally weeping, and its towns are in mourning. The people are just collapsing on the ground, totally miserable, and you can hear Jerusalem's sobbing from miles away. The wealthy sent their servants to get water, but the cisterns were bone dry. They came back with empty buckets, completely freaking out and shaking their heads. All the farm work has ground to a halt. Not a single drop of rain. The farmers are at a loss, just wringing their hands and shaking their heads. Even a mother deer ditches her own baby in the field because there's no grass—the fawn's eyes are glazed over, it's on its last legs, basically a skeleton.\"",
+          "new": "\"Judah is literally weeping, and its towns are in mourning. The people are just collapsing on the ground, totally miserable, and you can hear Jerusalem's sobbing from miles away. The wealthy sent their servants to get water, but the cisterns were bone dry. They came back with empty buckets, completely freaking out and shaking their heads. All the farm work has ground to a halt. Not a single drop of rain. The farmers are at a loss, just wringing their hands and shaking their heads. Even a mother deer ditches her own baby in the field because there's no grass—the fawn's eyes are glazed over, it's on its last legs, basically a skeleton. Wild donkeys are standing on the bare hills, panting like overheated dogs, staring into the distance, waiting for food that's never gonna come.\"",
+          "reason": "MSG 14:6 (wild donkeys on the bare hills, panting like jackals, eyes fixed on food that never comes) was missing entirely. Restored in teen voice."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "1": "2",
+        "2": "3-4",
+        "3": "5",
+        "4": "6-9",
+        "5": "10-11",
+        "6": "12-14",
+        "9": "19-21"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "He was like, 'Jeremiah, my guy, don't even think about getting married or having kids around here. I've basically signed off on a death sentence for every kid born in this place, their moms, and their dads. It's gonna be a total plague of death. No one's gonna cry, no one's gonna get a burial. Their bodies will just be left out to rot and stink, like actual trash. And all the people killed or starved? They're just gonna be food for crows and stray dogs.'",
+          "new": "He was like, 'Jeremiah, don't even think about getting married or having kids around here. I've basically signed off on a death sentence for every kid born in this place, their moms, and their dads. It's gonna be a total plague of death. No one's gonna cry, no one's gonna get a burial. Their bodies will just be left out to rot and stink, like actual trash. And all the people killed or starved? They're just gonna be food for crows and stray dogs.'",
+          "reason": "God addressing the prophet as 'my guy' is irreverently familiar for divine speech."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "17": {
+      "range_fixes": {
+        "3": "6",
+        "4": "7-8",
+        "5": "9-10",
+        "6": "11",
+        "7": "12-13",
+        "8": "14-18",
+        "11": "24-26",
+        "10": "21-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "18": {
+      "range_fixes": {
+        "3": "11",
+        "4": "12",
+        "5": "13",
+        "6": "13-17",
+        "7": "18",
+        "9": "19-23",
+        "1": "2-4",
+        "2": "5-10"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "Then God’s message dropped: “Yo, people of Israel, can’t I do the same thing this potter is doing?” This is God’s decree, no cap. “Watch this potter. Just like he works his clay, I’m working on you, people of Israel. One minute I might be like, ‘I’m about to uproot a whole nation and get rid of them.’ But if they turn away from their messed-up lives, I’ll have a change of heart and start fresh with them. Then another time, I might decide to build up a nation, but if they don’t vibe with me and won’t listen, I’ll rethink my plans for them and just dip.”",
+          "new": "Then God’s message dropped: “Yo, people of Israel, can’t I do the same thing this potter is doing?” This is God’s decree. “Watch this potter. Just like he works his clay, I’m working on you, people of Israel. One minute I might be like, ‘I’m about to uproot a whole nation and get rid of them.’ But if they turn away from their messed-up lives, I’ll have a change of heart and start fresh with them. Then another time, I might decide to build up a nation, but if they don’t vibe with me and won’t listen, I’ll rethink my plans for them and just dip.”",
+          "reason": "'No cap' is distracting meme slang."
+        },
+        {
+          "index": 9,
+          "old": "“God, you hear this? Just listen to what my haters are saying. Should I get shade for doing good? ‘Cause that’s what they’re doing. They’ve literally plotted to kill me! Remember all the times I went to bat for them, speaking up for them, trying to get you to chill out? But I’m done! Let their kids starve! Let them get wrecked in battle! Let their wives lose their kids and their husbands, let their friends die, and let their cocky young men get taken out. Let their homes be filled with screams of panic when you ambush them with surprise attacks! They’re all ready to lynch me. The rope is practically around my neck! But you know all this, God. You know they’re dead set on killing me. Don’t just ignore their crimes, don’t let a single sin slide! Round them all up in front of you. Strike while your anger is hot!”",
+          "new": "“God, you hear this? Just listen to what my haters are saying. Should I get shade for doing good? ‘Cause that’s what they’re doing. They’ve literally plotted to kill me! Remember all the times I went to bat for them, speaking up for them, trying to get you to chill out? But I’m done! Let their kids starve! Let them get wrecked in battle! Let their wives lose their kids and their husbands, let their friends die, and let their cocky young men get taken out. Let their homes be filled with screams of panic when you ambush them with surprise attacks! They’re all plotting to kill me! But you know all this, God. You know they’re dead set on killing me. Don’t just ignore their crimes, don’t let a single sin slide! Round them all up in front of you. Strike while your anger is hot!”",
+          "reason": "MSG 18:23 'they are out to kill me'; 'lynch' carries racially loaded connotations unnecessarily. Neutral wording keeps the meaning."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "19": {
+      "range_fixes": {
+        "3": "10-13",
+        "4": "14-15"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "20": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "21": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "But Jeremiah hit them back with this: \"Go tell Zedekiah that this is what the God of Israel is saying: Your army is basically toast. All your weapons and morale? Going straight down the drain. I'm personally gonna lead the king of Babylon and his crew, the ones you're trying so hard to fight, right into the middle of your city. Yeah, you heard that right. I'm teaming up with them and fighting against you. I'm going all out, no holding back, and I'm seriously angry. I'm about to wipe out everyone in this city, people and animals, with a crazy plague. Then, I'll personally hand over King Zedekiah, his officials, and anyone who's left alive to King Nebuchadnezzar. He's gonna take them out without any mercy. No cap.\"",
+          "new": "But Jeremiah hit them back with this: \"Go tell Zedekiah that this is what the God of Israel is saying: Your army is basically toast. All your weapons and morale? Going straight down the drain. I'm personally gonna lead the king of Babylon and his crew, the ones you're trying so hard to fight, right into the middle of your city. Yeah, you heard that right. I'm teaming up with them and fighting against you. I'm going all out, no holding back, and I'm seriously angry. I'm about to wipe out everyone in this city, people and animals, with a crazy plague. Then, I'll personally hand over King Zedekiah, his officials, and anyone who's left alive to King Nebuchadnezzar. He's gonna take them out without any mercy.\"",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "22": {
+      "range_fixes": {
+        "3": "6-7",
+        "4": "8-9",
+        "5": "10",
+        "6": "11-12",
+        "11": "27",
+        "12": "28-30"
+      },
+      "content_fixes": [
+        {
+          "index": 7,
+          "old": "\"You're so screwed. You build these fancy palaces by bullying people, and you make a nice house for yourself by destroying other people's lives. You cheat your workers and don't even pay them for their work. You're all like, 'I'm gonna build myself a huge mansion with big rooms and cool windows. I'll get all this rare, expensive wood and the newest interior design.' So, you think that makes you a king—living in a fancy palace? Your dad did just fine, didn't he? He did what was right and treated people fairly, and things went well for him. He stood up for the poor and the helpless, and things went well for Judah. Isn't that what it really means to know me?\" God's decree! \"But you're just blind and clueless. All you think about is yourself, taking advantage of the weak, bulldozing your way through life, and hurting people.\"",
+          "new": "\"You're done for. You build these fancy palaces by bullying people, and you make a nice house for yourself by destroying other people's lives. You cheat your workers and don't even pay them for their work. You're all like, 'I'm gonna build myself a huge mansion with big rooms and cool windows. I'll get all this rare, expensive wood and the newest interior design.' So, you think that makes you a king—living in a fancy palace? Your dad did just fine, didn't he? He did what was right and treated people fairly, and things went well for him. He stood up for the poor and the helpless, and things went well for Judah. Isn't that what it really means to know me?\" God's decree! \"But you're just blind and clueless. All you think about is yourself, taking advantage of the weak, bulldozing your way through life, and hurting people.\"",
+          "reason": "MSG 22:13 woe on the unjust king; 'screwed' is crude. 'Done for' keeps teen voice."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "23": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4-5",
+        "2": "6-7",
+        "3": "8",
+        "4": "9",
+        "5": "10-12",
+        "6": "13-14",
+        "7": "15",
+        "8": "15",
+        "9": "16-17",
+        "10": "16-17",
+        "11": "18-20",
+        "12": "21-22",
+        "13": "23-24",
+        "14": "25-27",
+        "15": "28-29",
+        "16": "30-31",
+        "17": "32",
+        "18": "32",
+        "19": "33",
+        "20": "34",
+        "21": "35-36",
+        "22": "37-38",
+        "23": "39-40"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "24": {
+      "range_fixes": {
+        "1": "3",
+        "2": "3",
+        "3": "4-6",
+        "4": "7",
+        "5": "8-10"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "25": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2",
+        "2": "3",
+        "3": "4-6",
+        "4": "7",
+        "5": "8-11",
+        "6": "12-14",
+        "7": "15-16",
+        "12": "20",
+        "13": "21",
+        "14": "22",
+        "15": "23",
+        "16": "24",
+        "17": "25",
+        "18": "26",
+        "19": "26",
+        "20": "26",
+        "21": "27",
+        "22": "28",
+        "23": "29",
+        "24": "30",
+        "25": "30-31",
+        "26": "32",
+        "27": "32",
+        "28": "33",
+        "29": "34-38"
+      },
+      "content_fixes": [
+        {
+          "index": 28,
+          "old": "Lined up end to end, the people killed by God's judgment that day will stretch from one side of the earth to the other. No one will cry for them or bury them. Their bodies will just be left where they fall, like a bunch of horse poop fertilizing the fields.",
+          "new": "Lined up end to end, the people killed by God's judgment that day will stretch from one side of the earth to the other. No one will cry for them or bury them. Their bodies will just be left where they fall, like manure spread over a field.",
+          "reason": "MSG 25:33 compares unburied corpses to dung/manure; 'horse poop' is a crude, flippant rendering of human bodies. Kept the image but in respectful wording."
+        },
+        {
+          "index": 0,
+          "old": "Alright, so this is the tea that got spilled to Jeremiah for everyone in Judah. It all went down in the fourth year that Jehoiakim, Josiah’s son, was king of Judah. This was also the first year Nebuchadnezzar was king of Babylon.",
+          "new": "Alright, so this is the word that came to Jeremiah for everyone in Judah. It all went down in the fourth year that Jehoiakim, Josiah’s son, was king of Judah. This was also the first year Nebuchadnezzar was king of Babylon.",
+          "reason": "'Spilling the tea' is flippant meme slang for divine revelation."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "26": {
+      "range_fixes": {
+        "2": "4-6",
+        "3": "7-9",
+        "13": "19",
+        "14": "20-23"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "27": {
+      "range_fixes": {
+        "1": "4-7",
+        "2": "8-11"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "'Listen up. I'm the one who created the whole world—the earth, people, animals, everything. I did it all by myself, didn't need anyone's permission, and I can give it to whoever I want. And right now, I'm handing all these countries over to my guy, Nebuchadnezzar, the king of Babylon. I've even put the wild animals under his control. Every nation is gonna serve him, and then his son, and then his grandson. After that, his country's time is up, and the script will flip. Babylon will be the one serving. But until that day comes, any nation or kingdom that refuses to bow down to King Nebuchadnezzar of Babylon and accept his rule will have to deal with me. I'll hit them with war, famine, and plagues until I've got them completely under his thumb.",
+          "new": "'Listen up. I'm the one who created the whole world—the earth, people, animals, everything. I did it all by myself, didn't need anyone's permission, and I can give it to whoever I want. And right now, I'm handing all these countries over to my servant Nebuchadnezzar, the king of Babylon. I've even put the wild animals under his control. Every nation is gonna serve him, and then his son, and then his grandson. After that, his country's time is up, and the script will flip. Babylon will be the one serving. But until that day comes, any nation or kingdom that refuses to bow down to King Nebuchadnezzar of Babylon and accept his rule will have to deal with me. I'll hit them with war, famine, and plagues until I've got them completely under his thumb.",
+          "reason": "MSG 27:6 'my servant Nebuchadnezzar'; 'my guy' trivializes the divine appointment."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "28": {
+      "range_fixes": {
+        "0": "1",
+        "1": "2-4",
+        "2": "5-9",
+        "3": "10-11",
+        "4": "12",
+        "5": "13-14",
+        "6": "15",
+        "7": "16"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "29": {
+      "range_fixes": {
+        "6": "8-9",
+        "7": "10-11",
+        "8": "12",
+        "9": "13",
+        "10": "13",
+        "11": "14",
+        "12": "15-19",
+        "13": "19-23",
+        "14": "23",
+        "15": "24-26",
+        "16": "27-28",
+        "17": "29",
+        "18": "30-32"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "30": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5",
+        "4": "8-9",
+        "5": "10-11",
+        "7": "12-15",
+        "8": "16-17",
+        "9": "18",
+        "10": "18-21",
+        "11": "22",
+        "12": "23-24"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "31": {
+      "range_fixes": {
+        "4": "7",
+        "5": "8",
+        "6": "8",
+        "7": "9",
+        "8": "10-14",
+        "9": "15",
+        "10": "15-17",
+        "11": "18-19",
+        "12": "20",
+        "13": "21-22",
+        "14": "23-24",
+        "15": "25",
+        "16": "26",
+        "17": "27-28",
+        "18": "28",
+        "19": "29",
+        "20": "30",
+        "21": "31",
+        "22": "32-33",
+        "23": "34",
+        "24": "35",
+        "25": "36",
+        "26": "36",
+        "27": "37-39"
+      },
+      "content_fixes": [
+        {
+          "index": 2,
+          "old": "\"The people who survived the craziness found grace in the desert. Israel was out there looking for a place to rest, and they ran right into me, looking for them!\" God told them, \"I have never stopped loving you and I never will. Expect love, and then more love! So now I'm gonna start over with you and build you up again, dear Israel. You'll get back to singing, grabbing tambourines, and joining the dance. You'll go back to your work, planting vineyards on the Samaritan hills, and you'll get to sit back and enjoy the fruit—no cap, you'll love that harvest. The time is coming when watchmen on the hills of Ephraim will shout, 'Let's go! Time to head to Zion and meet our God!'\"",
+          "new": "\"The people who survived the craziness found grace in the desert. Israel was out there looking for a place to rest, and they ran right into me, looking for them!\" God told them, \"I have never stopped loving you and I never will. Expect love, and then more love! So now I'm gonna start over with you and build you up again, dear Israel. You'll get back to singing, grabbing tambourines, and joining the dance. You'll go back to your work, planting vineyards on the Samaritan hills, and you'll get to sit back and enjoy the fruit—you'll love that harvest. The time is coming when watchmen on the hills of Ephraim will shout, 'Let's go! Time to head to Zion and meet our God!'\"",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "32": {
+      "range_fixes": {
+        "1": "6-7",
+        "2": "8",
+        "4": "9-12",
+        "5": "13-15",
+        "6": "16-19",
+        "7": "20-23",
+        "8": "24-25",
+        "10": "30-35",
+        "11": "36",
+        "12": "37-40",
+        "13": "41",
+        "14": "42-44"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "33": {
+      "range_fixes": {
+        "4": "10-11",
+        "5": "12-13",
+        "6": "14-18",
+        "7": "19-22"
+      },
+      "content_fixes": [
+        {
+          "index": 4,
+          "old": "'Yep, God's message is this: You're looking at this place, these empty and trashed towns in Judah and the streets of Jerusalem, and you're thinking, \"It's a wasteland. No one can live here. Not even a dog.\" But the time is coming when you'll hear laughter and parties, wedding celebrations, and people shouting, \"Thank God-of-the-Angel-Armies! He's so good! His love is no cap, it never quits!\" as they bring thank-you offerings to God's Temple. I'll restore everything this land lost. I'll make it all as good as new. I, God, promise you that.'",
+          "new": "'Yep, God's message is this: You're looking at this place, these empty and trashed towns in Judah and the streets of Jerusalem, and you're thinking, \"It's a wasteland. No one can live here. Not even a dog.\" But the time is coming when you'll hear laughter and parties, wedding celebrations, and people shouting, \"Thank God-of-the-Angel-Armies! He's so good! His love never quits!\" as they bring thank-you offerings to God's Temple. I'll restore everything this land lost. I'll make it all as good as new. I, God, promise you that.'",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "34": {
+      "range_fixes": {
+        "8": "15-20",
+        "9": "21-22"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "35": {
+      "range_fixes": {
+        "7": "11-14",
+        "8": "15-16",
+        "9": "17",
+        "10": "18-19"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "A message from God came to Jeremiah about ten years ago, back when Jehoiakim, son of Josiah, was king of Israel.",
+          "new": "A message from God came to Jeremiah about ten years ago, back when Jehoiakim, son of Josiah, was king of Judah.",
+          "reason": "MSG 35:1 'during the reign of Jehoiakim... king of Judah'; Jehoiakim was king of Judah, not Israel (factual error)."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "36": {
+      "range_fixes": {
+        "9": "11-12",
+        "10": "13",
+        "11": "14",
+        "12": "15",
+        "13": "16",
+        "14": "17",
+        "15": "18",
+        "16": "19",
+        "17": "20-21",
+        "18": "22-23",
+        "19": "24-26",
+        "21": "29",
+        "22": "30-31"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "37": {
+      "range_fixes": {
+        "6": "14-16",
+        "7": "17"
+      },
+      "content_fixes": [
+        {
+          "index": 3,
+          "old": "Then God gave Jeremiah a message. He was like, 'Alright, go tell the king of Judah, the one who just sent for you, what's up. Tell him this: That Egyptian army coming to 'help' you? Yeah, they're not gonna stay. They'll show up and then bounce right back to Egypt. And then the Babylonians will come back, restart their attack, take over the city, and burn it all down. I'm God, and I'm telling you: don't play yourselves thinking the Babylonians are just gonna leave. No cap, they are not leaving. For real, even if you beat their whole army and only a few wounded soldiers were left in their tents, those wounded guys would still get up and burn this city to the ground.'",
+          "new": "Then God gave Jeremiah a message. He was like, 'Alright, go tell the king of Judah, the one who just sent for you, what's up. Tell him this: That Egyptian army coming to 'help' you? Yeah, they're not gonna stay. They'll show up and then bounce right back to Egypt. And then the Babylonians will come back, restart their attack, take over the city, and burn it all down. I'm God, and I'm telling you: don't play yourselves thinking the Babylonians are just gonna leave. They are not leaving. For real, even if you beat their whole army and only a few wounded soldiers were left in their tents, those wounded guys would still get up and burn this city to the ground.'",
+          "reason": "'No cap' is distracting meme slang."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "38": {
+      "range_fixes": {
+        "2": "3",
+        "3": "4",
+        "4": "5",
+        "5": "6",
+        "6": "7-9",
+        "7": "10",
+        "8": "11-12",
+        "9": "12",
+        "10": "13",
+        "11": "14",
+        "12": "15",
+        "13": "16",
+        "14": "17-18",
+        "15": "19",
+        "16": "20-21",
+        "17": "22",
+        "18": "23",
+        "19": "24-26"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "39": {
+      "range_fixes": {
+        "1": "3",
+        "2": "4-7",
+        "3": "8-10",
+        "4": "11-12",
+        "5": "13-14",
+        "6": "15-18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "40": {
+      "range_fixes": {
+        "1": "2-3",
+        "3": "5",
+        "4": "6",
+        "5": "7-8",
+        "6": "9",
+        "7": "10",
+        "8": "11-12",
+        "9": "13-14"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "41": {
+      "range_fixes": {
+        "0": "1-2",
+        "1": "3",
+        "2": "4-5",
+        "3": "6",
+        "4": "7-8",
+        "5": "9",
+        "6": "10",
+        "7": "11-12",
+        "8": "13-15",
+        "9": "16",
+        "10": "17-18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "42": {
+      "range_fixes": {
+        "0": "1-3",
+        "1": "4",
+        "2": "5-6",
+        "3": "7-8",
+        "4": "9-12",
+        "5": "13-17",
+        "6": "18",
+        "7": "19-20",
+        "8": "21",
+        "9": "22"
+      },
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "Jeremiah the prophet replied, “I got you. I’ll pray to your God just like you asked. Whatever God says, I’ll pass it on to you. I’ll tell you everything, no holding back, I’ll spill all the tea.”",
+          "new": "Jeremiah the prophet replied, “I got you. I’ll pray to your God just like you asked. Whatever God says, I’ll pass it on to you. I’ll tell you everything, no holding back.”",
+          "reason": "'Spill the tea' is flippant meme slang; the sentence already says it plainly."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "43": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "44": {
+      "range_fixes": {
+        "0": "1-6",
+        "1": "7-8",
+        "2": "9-11",
+        "3": "12-14",
+        "4": "15-18",
+        "5": "19",
+        "6": "20-23",
+        "7": "24-25",
+        "8": "26-27",
+        "9": "27-28",
+        "10": "29-30"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "45": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "46": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 1,
+          "old": "God was like, 'Yo, get ready for a fight! Grab your shields, get on your horses, helmets on, spears out, armor up!' But then, plot twist! I look over and they're all totally freaking out. They're ditching their positions and scrambling. The soldiers are in full-on panic mode, running around like headless chickens. It's pure chaos, danger all over the place. No cap. That's what God said.",
+          "new": "God was like, 'Yo, get ready for a fight! Grab your shields, get on your horses, helmets on, spears out, armor up!' But then, plot twist! I look over and they're all totally freaking out. They're ditching their positions and scrambling. The soldiers are in full-on panic mode, running around like headless chickens. It's pure chaos, danger all over the place. That's what God said.",
+          "reason": "'No cap' is distracting meme slang."
+        },
+        {
+          "index": 0,
+          "old": "Alright, so here's the tea from God, delivered by the prophet Jeremiah, about the nations that don't roll with Him. This part's about Egypt. King Neco's army was chilling by the Euphrates River at Carchemish when King Nebuchadnezzar of Babylon rolled up and wrecked them. This was back when Jehoiakim was king of Judah, in his fourth year.",
+          "new": "Alright, so here's the word from God, delivered by the prophet Jeremiah, about the nations that don't roll with Him. This part's about Egypt. King Neco's army was chilling by the Euphrates River at Carchemish when King Nebuchadnezzar of Babylon rolled up and wrecked them. This was back when Jehoiakim was king of Judah, in his fourth year.",
+          "reason": "'Tea' is flippant meme slang for a prophetic oracle."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "47": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "48": {
+      "range_fixes": {
+        "15": "39"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "Here's the tea on Moab from the God of the Angel Armies, the God of Israel:",
+          "new": "Here's the word on Moab from the God of the Angel Armies, the God of Israel:",
+          "reason": "'Tea' is flippant meme slang for a prophetic oracle."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "49": {
+      "range_fixes": {
+        "1": "2-7",
+        "2": "8",
+        "3": "9-11",
+        "4": "12",
+        "5": "13",
+        "6": "14-15",
+        "7": "16-17",
+        "11": "21-23",
+        "12": "24",
+        "13": "25-28",
+        "14": "29",
+        "15": "30-34",
+        "16": "35",
+        "17": "36-39"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "50": {
+      "range_fixes": {
+        "1": "2-3",
+        "2": "4-5",
+        "3": "6-7",
+        "4": "8-10",
+        "5": "11-16",
+        "6": "17",
+        "7": "18-20",
+        "8": "21",
+        "9": "22-23",
+        "10": "24-26",
+        "11": "27-28",
+        "12": "29-30",
+        "13": "31",
+        "14": "31-32",
+        "15": "33-38",
+        "16": "39-41",
+        "17": "42",
+        "18": "43",
+        "19": "44-46"
+      },
+      "content_fixes": [
+        {
+          "index": 0,
+          "old": "This is the tea God spilled through the prophet Jeremiah about Babylon, the land of the Chaldeans:",
+          "new": "This is the word God gave through the prophet Jeremiah about Babylon, the land of the Chaldeans:",
+          "reason": "'Tea' is flippant meme slang for a prophetic oracle."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "51": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 7,
+          "old": "With his power, he made the earth. His wisdom shaped the world. He's the master artist of the cosmos. When he thunders, rain pours down. He makes clouds soar, adds lightning to the storm for special effects, and unleashes the wind from his private stash. People who worship fake gods made of sticks look so dumb. The makers of these gods are just embarrassed by their own creations. Their gods are fakes, just dead pieces of wood—lame, tasteless jokes. They're nothing but smoke. When it clears, they're gone. But the God of Jacob is the real deal; he created the entire universe, and he gave special attention to Israel. His name? God-of-the-Angel-Armies!",
+          "new": "With his power, he made the earth. His wisdom shaped the world. He's the master artist of the cosmos. When he thunders, rain pours down. He makes clouds soar, adds lightning to the storm for special effects, and unleashes the wind from his private stash. People who worship fake gods made of sticks look so foolish. The makers of these gods are just embarrassed by their own creations. Their gods are fakes, just dead pieces of wood—lame, tasteless jokes. They're nothing but smoke. When it clears, they're gone. But the God of Jacob is the real deal; he created the entire universe, and he gave special attention to Israel. His name? God-of-the-Angel-Armies!",
+          "reason": "Mocking idolaters as 'dumb'; 'foolish' keeps the rebuke without degrading."
+        },
+        {
+          "index": 4,
+          "old": "\"God made everything right for us. Let's go! We've gotta tell everyone back in Zion the good news. Let's spill the tea on what our God did to fix things.",
+          "new": "\"God made everything right for us. Let's go! We've gotta tell everyone back in Zion the good news. Let's spread the word on what our God did to fix things.",
+          "reason": "'Spill the tea' is flippant meme slang for proclaiming God's acts."
+        }
+      ],
+      "flagged": [],
+      "ok": false
+    },
+    "52": {
+      "range_fixes": {
+        "3": "4-5",
+        "4": "6-8",
+        "5": "9-11",
+        "6": "12-16",
+        "7": "17-19",
+        "8": "20-22",
+        "9": "23-26",
+        "10": "26-27",
+        "11": "28",
+        "12": "29",
+        "13": "30",
+        "14": "30",
+        "15": "31-34"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}

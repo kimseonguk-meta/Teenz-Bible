@@ -74,10 +74,9 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
         return;
       }
       if (r === "leader") {
-        // Leaders: code only, auto-register, straight to leaderboard
-        const p = await claimLeader(code, "리더");
-        queuedToast.success("리더로 등록됐어요!", { style: { bottom: "5rem" } });
-        onJoined(p);
+        // 리더: 코드 인증 후 이름 입력 단계로 — 리더 실명을 받아 등록한다
+        setRole("leader");
+        setStep("name");
         return;
       }
       setRole(r);
@@ -125,7 +124,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
     const finalName = (chosenName ?? name).replace(/\s+/g, "");
     setError("");
     setNotFound(false);
-    if (role === "student" && !finalName) {
+    if (!finalName) {
       setError("이름을 입력해 주세요");
       return;
     }
@@ -265,6 +264,16 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
             </>
           ) : (
             <>
+              <h3 className="text-white text-[17px] font-black mb-1">리더 이름 입력</h3>
+              <p className="text-white/55 text-[12px] mb-3">
+                리더 코드를 인증했어요. 리더 실명을 입력해 주세요
+              </p>
+              <input
+                value={name}
+                onChange={(e) => handleNameChange(e.target.value)}
+                placeholder="리더 실명"
+                className="mt-1 w-full bg-black/40 border border-[#c9a86a]/40 rounded-xl px-4 py-3 text-white text-[15px] font-bold placeholder:text-white/25 focus:outline-none focus:border-[#ffd957]"
+              />
               {error && <p className="mt-2 text-red-300 text-[12px] font-bold">{error}</p>}
               <button
                 onClick={() => handleJoin()}
@@ -357,10 +366,12 @@ function StudentCard({ participation }: { participation: Participation }) {
   }
 
   const chapters = today.chapters;
-  const doneCount = chapters.filter((c) => {
-    const cp = progress?.chapters?.[chapterKey(today.book, c)];
-    return cp && (cp.manual || cp.exposurePct >= 80);
-  }).length;
+  // 장별 ✅는 실제 완료 판정(노출 80% + 활성 읽기 시간)과 동일 기준 — "✅인데 하루 미완료" 혼란 제거
+  const isDoneChapter = (cp: { exposurePct: number; activeSec: number; manual?: boolean; words?: number } | null | undefined) =>
+    !!cp && (cp.manual || isChapterComplete(cp, cp.words || 400));
+  const doneCount = chapters.filter((c) =>
+    isDoneChapter(progress?.chapters?.[chapterKey(today.book, c)])
+  ).length;
   const allDone = progress?.status === "done";
   // 퀴즈는 선택사항 — 실제로 통과한 경우에만 Passed 표시 (하드코딩 금지)
   const quizPassed = chapters.every(
@@ -440,8 +451,9 @@ function StudentCard({ participation }: { participation: Participation }) {
         {chapters.map((c) => {
           const id = chapterKey(today.book, c);
           const cp = progress?.chapters?.[id];
-          const done = !!cp && (cp.manual || cp.exposurePct >= 80);
+          const done = isDoneChapter(cp);
           const reading = !!cp && !done;
+          const almostThere = reading && (cp?.exposurePct || 0) >= 80;
           const reread = wasReadBefore(today.book, c);
           return (
             <div key={c} className="flex items-center gap-3 bg-black/30 border border-white/10 rounded-xl px-3 py-2.5">
@@ -452,7 +464,7 @@ function StudentCard({ participation }: { participation: Participation }) {
                   {reread && <span className="ml-1.5 text-[10px] font-black text-[#ffd957] bg-[#ffd957]/15 px-1.5 py-0.5 rounded-full">Re-read</span>}
                 </p>
                 <p className="text-white/40 text-[11px] font-medium">
-                  {done ? "Done today!" : reading ? "Reading..." : "Not started"}
+                  {done ? "Done today!" : almostThere ? "Almost there — read a little more" : reading ? "Reading..." : "Not started"}
                 </p>
               </div>
               {!done && (

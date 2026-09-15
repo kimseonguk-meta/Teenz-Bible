@@ -72,12 +72,12 @@ function sgTodayKey(): string {
 
 /** "Today's reading done" = chapter finished today OR quiz taken today. */
 export function isTodayReadingDone(): boolean {
-  // 챌린지 참가자(학생)는 챌린지 완료 기준으로 알림을 판단
+  // 챌린지 참가자(학생 + 함께 읽는 리더)는 챌린지 완료 기준으로 알림을 판단
   try {
     const raw = localStorage.getItem("teensChallengeParticipation");
     if (raw) {
       const p = JSON.parse(raw);
-      if (p && p.role === "student") {
+      if (p && (p.role === "student" || p.reading === true)) {
         return localStorage.getItem(`challengeDayDone_${sgTodayKey()}`) === "1";
       }
     }

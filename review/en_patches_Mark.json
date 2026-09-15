@@ -1,0 +1,263 @@
+{
+  "book": "Mark",
+  "chapters": {
+    "1": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "2": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "3": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [],
+      "ok": true
+    },
+    "4": {
+      "range_fixes": {},
+      "content_fixes": [
+        {
+          "index": 20,
+          "old": "\"Then Jesus said, \"God's kingdom is like this. A guy throws seed on a field, then goes to bed and totally forgets about it. The seed sprouts and grows—he has no idea how it happens. The ground does everything by itself: first a green stem pops up, then a bud, then ripe grain. When the grain is fully ready, he harvests. It's harvest time!\"\"",
+          "new": "Then Jesus said, \"God's kingdom is like this. A guy throws seed on a field, then goes to bed and totally forgets about it. The seed sprouts and grows—he has no idea how it happens. The ground does everything by itself: first a green stem pops up, then a bud, then ripe grain. When the grain is fully ready, he harvests. It's harvest time!\"",
+          "reason": "Malformed nested quotation marks: paragraph opens with `\"Then Jesus said, \"` and closes with `\"\"`. Removed the stray outer opening quote and extra closing quote; wording unchanged."
+        }
+      ],
+      "flagged": [
+        "Mustard-seed block [14]-[15] (vv30-32) is placed BEFORE the lamp block [16]-[19] (vv21-25) and the growing-seed paragraph [20] (vv26-29), contrary to MSG order (21-25, 26-29, 30-32). Recommend reordering these paragraph blocks to MSG order. Also MSG 4:33-34 (Jesus speaks only in parables to crowds; explains everything privately to his disciples) has no corresponding paragraph - content appears absent."
+      ],
+      "ok": false
+    },
+    "5": {
+      "range_fixes": {
+        "0": "1-5",
+        "1": "6-8",
+        "2": "9",
+        "3": "9-10",
+        "4": "12-17",
+        "6": "21-23",
+        "9": "32-34",
+        "11": "35",
+        "14": "40-41",
+        "15": "42-43"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 5:18-20 (the healed man begs to go with Jesus; Jesus tells him \"Go home to your friends and tell them how much the Lord has done for you\") has no corresponding paragraph - content appears absent between [4] (vv12-17) and [6] (vv21-23)."
+      ],
+      "ok": false
+    },
+    "6": {
+      "range_fixes": {
+        "1": "1-2",
+        "2": "3",
+        "3": "4-6",
+        "5": "7-8",
+        "6": "8-10",
+        "7": "11",
+        "8": "12-13",
+        "10": "14",
+        "11": "15",
+        "12": "16",
+        "13": "17-18",
+        "14": "19-20",
+        "15": "21-22",
+        "16": "22-23",
+        "17": "24",
+        "18": "25",
+        "19": "26-29",
+        "21": "30-31",
+        "22": "32-34",
+        "23": "34",
+        "24": "35-36",
+        "25": "37",
+        "26": "37",
+        "27": "38",
+        "28": "39-44",
+        "30": "45-46",
+        "31": "47-48",
+        "32": "49-50",
+        "33": "51-52",
+        "34": "53-56"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "7": {
+      "range_fixes": {},
+      "content_fixes": [],
+      "flagged": [
+        "v16 absent: confirmed textual variant - MSG omits Mark 7:16 (MSG groups 14-15 then jumps to 17, verified against MSG text). No action needed."
+      ],
+      "ok": false
+    },
+    "8": {
+      "range_fixes": {
+        "9": "16-18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "9": {
+      "range_fixes": {
+        "0": "1",
+        "2": "2-4",
+        "3": "5-6",
+        "4": "7",
+        "5": "8",
+        "6": "9-10",
+        "7": "11",
+        "8": "12-13",
+        "10": "14-16",
+        "11": "17-18",
+        "12": "19-20",
+        "13": "21",
+        "14": "21-22",
+        "15": "23",
+        "16": "24",
+        "17": "25",
+        "18": "27",
+        "19": "28",
+        "20": "29",
+        "21": "30-31",
+        "22": "32",
+        "23": null,
+        "24": "33",
+        "25": "34",
+        "26": "35",
+        "27": "36-37",
+        "28": "38",
+        "29": "39-41",
+        "30": "42",
+        "31": "43-48",
+        "32": "49-50"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 9:26 (the evil spirit comes out with a shriek; the boy looks like a corpse; bystanders say \"He's dead\") has no corresponding paragraph - content appears absent between [18] (v27) and [19] (v28)."
+      ],
+      "ok": false
+    },
+    "10": {
+      "range_fixes": {
+        "0": "1",
+        "2": "2",
+        "8": "10",
+        "9": "11-12",
+        "39": "41",
+        "40": "42-43",
+        "41": "43-44",
+        "42": "45"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "11": {
+      "range_fixes": {
+        "21": "22-23",
+        "22": "24",
+        "23": "25"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "v26 absent: confirmed textual variant - MSG omits Mark 11:26 (MSG groups 22-25 together, verified against MSG text). No action needed."
+      ],
+      "ok": false
+    },
+    "12": {
+      "range_fixes": {
+        "27": "37",
+        "28": "38-40",
+        "29": "41-42",
+        "30": "43-44"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "13": {
+      "range_fixes": {
+        "29": "35-37"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "14": {
+      "range_fixes": {
+        "2": "3-5",
+        "23": "27",
+        "24": "28",
+        "25": "29",
+        "26": "30",
+        "27": "31",
+        "28": null,
+        "29": "32-34",
+        "30": "34",
+        "31": "35-36",
+        "32": "37-38",
+        "33": "38",
+        "34": "39-40",
+        "35": "41-42",
+        "36": null,
+        "37": "43",
+        "38": "44",
+        "39": "46-47",
+        "40": "48-49",
+        "41": "49-50",
+        "42": "51-52",
+        "43": null,
+        "44": "53-54",
+        "45": "55",
+        "46": "57-58",
+        "47": "60-61",
+        "48": "61",
+        "49": "62",
+        "50": "63-64",
+        "51": "64",
+        "52": "65",
+        "53": null,
+        "54": "66-67",
+        "55": "68-69",
+        "56": "69-70",
+        "57": "70-71",
+        "58": "71-72"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    },
+    "15": {
+      "range_fixes": {
+        "3": "6-7",
+        "4": "8-10",
+        "15": "25-26",
+        "16": "29-30"
+      },
+      "content_fixes": [],
+      "flagged": [
+        "MSG 15:27 (two criminals crucified with Jesus, one on his right and one on his left) has no corresponding paragraph - content appears absent between [15] (vv25-26) and [16] (vv29-30). v28 absent: textual variant - MSG omits Mark 15:28. No action needed."
+      ],
+      "ok": false
+    },
+    "16": {
+      "range_fixes": {
+        "5": "9-13",
+        "6": "15-16",
+        "7": "17-18"
+      },
+      "content_fixes": [],
+      "flagged": [],
+      "ok": false
+    }
+  }
+}
