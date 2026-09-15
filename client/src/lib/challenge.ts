@@ -63,6 +63,8 @@ export interface DayProgress {
   reportedKind?: string | null;
   /** true면 마지막 reportedStatus가 리더 수동 인정 grant에 의해 집계된 것 (취소 시 학생 finalize가 집계를 건드리지 않음) */
   manualCredited?: boolean;
+  /** true면 claim 시대(학번당 1명 집계) 이후에 쓰인 기록 — 삭제 시 legacy per-UID 회수 대상이 아님 */
+  claimEra?: boolean;
   updatedAt?: number;
 }
 
@@ -474,11 +476,19 @@ async function transactClaim(
   rosterNo: number,
   decide: (cur: RosterClaim | null) => RosterClaim | null | undefined
 ): Promise<void> {
+  // get()은 일회성 서버 읽기라 로컬 동기화 캐시를 채우지 않는다. 그래서 runTransaction의
+  // 첫 로컬 실행이 cur=null을 보고 decide가 undefined를 반환하면, 서버에 닿기도 전에
+  // 중단되어 조용히 no-op이 된다. 서버 값을 미리 읽어두고, 로컬이 null이면 그 값으로
+  // decide를 실행해 서버 라운드트립을 강제한다. 서버가 실제 값으로 update 함수를
+  // 재실행하므로(값이 바뀌었으면 prev/next도 갱신됨) 안전하다.
+  const warmSnap = await get(claimRef(dateKey, rosterNo)).catch(() => null);
+  const warmVal = (warmSnap?.val() as RosterClaim | null) ?? null;
   let prev: CountedStatus | null = null;
   let next: CountedStatus | null = null;
   let decided = false;
   const res = await runTransaction(claimRef(dateKey, rosterNo), (raw: unknown) => {
-    const cur = (raw as RosterClaim | null) ?? null;
+    const localCur = (raw as RosterClaim | null) ?? null;
+    const cur = localCur ?? warmVal; // 로컬 null이면 워밍업 값으로 폴백
     const out = decide(cur);
     if (out === undefined) return undefined; // 중단
     if (out === null && cur === null) return undefined; // 해제할 게 없음
@@ -565,6 +575,7 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
       reportedStatus: status,
       reportedKind: kindNorm,
       manualCredited: false,
+      ...(rosterNo != null ? { claimEra: true } : {}),
       updatedAt: serverTimestamp(),
     });
     return;
@@ -577,6 +588,7 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
       reportedStatus: status,
       reportedKind: kindNorm,
       manualCredited: true,
+      ...(rosterNo != null ? { claimEra: true } : {}),
       updatedAt: serverTimestamp(),
     });
     await adjustSummary(me, prevRep, status);
@@ -601,6 +613,7 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
     reportedStatus: status,
     reportedKind: kindNorm,
     manualCredited: false,
+    ...(rosterNo != null ? { claimEra: true } : {}),
     updatedAt: serverTimestamp(),
   });
   await adjustSummary(me, prevRep, status);
@@ -864,6 +877,7 @@ export async function setManualOverride(
       reason: reason.trim(),
       byUid: me.uid,
       at: serverTimestamp(),
+      ...(rosterNo != null ? { claimEra: true } : {}),
     };
     // 이미 실제로 완료된 학생이면 집계 건드리지 않음 (표시용 manual 기록만)
     let alreadyDone = false;
@@ -883,13 +897,17 @@ export async function setManualOverride(
     // 집계 +1은 정확히 한 번만: 학번 claim을 "manual:<리더UID>"로 선점 (리더 동시 클릭 멱등).
     // claim 트랜잭션이 이전 상태(reading/done)를 보고 델타를 계산하므로,
     // reading 중이던 학생을 인정해도 reading 카운트가 그대로 남는 이중 카운트가 없다.
+    // NOTE: wonCredit은 트랜잭션 update 함수 안에서 정하지 않는다 — update 함수는
+    // 로컬/서버 값으로 여러 번 실행될 수 있어 플래그가 오염된다. 트랜잭션 후 실제 claim으로 판정.
     let wonCredit = false;
     if (rosterNo != null) {
       await transactClaim(dateKey, rosterNo, (cur) => {
         if (cur && cur.uid.startsWith("manual:")) return undefined; // 이미 인정됨
-        wonCredit = true;
         return { uid: `manual:${me.uid}`, status: "done", at: Date.now() };
       });
+      const afterSnap = await get(claimRef(dateKey, rosterNo)).catch(() => null);
+      const after = (afterSnap?.val() as RosterClaim | null) || null;
+      wonCredit = after?.uid === `manual:${me.uid}` && after?.status === "done";
     } else if (countable) {
       // rosterNo 없는 예외 케이스 — 기존처럼 manual 레코드 트랜잭션으로 크레딧 선점
       const claimRes = await runTransaction(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`), (cur: unknown) => {
@@ -1060,14 +1078,19 @@ export async function deleteParticipantRecord(targetUid: string): Promise<void> 
 
     for (const dateKey of dates) {
       const day = getChallengeDay(dateKey);
+      const dp = progAll[dateKey];
+      const st = dp?.reportedStatus;
+      const isClaimEra = dp?.claimEra === true;
       // 남은 UID 중 최고 실상태 계산
       let best: CountedStatus | null = null;
       let bestUid: string | null = null;
       let manualHold = false;
+      let manualHoldUid: string | null = null;
       for (const ou of others) {
         const m = await getManualOverride(ou, dateKey).catch(() => null);
         if (m?.done) {
           manualHold = true;
+          manualHoldUid = ou;
           break;
         }
         const ps = await get(ref(db, `${ROOT}/progress/${ou}/${dateKey}`)).catch(() => null);
@@ -1083,40 +1106,52 @@ export async function deleteParticipantRecord(targetUid: string): Promise<void> 
           bestUid = ou;
         }
       }
-      // legacy 회수: claim이 없거나 다른 UID 소유가 아닐 때, 삭제 대상의 reportedStatus가 집계에 남아 있으면 회수
-      const dp = progAll[dateKey];
-      const st = dp?.reportedStatus;
-      const kind = dp?.reportedKind;
-      if (
-        (st === "done" || st === "reading") &&
-        kind !== "guest" &&
-        kind !== "leader" &&
-        !dp?.manualCredited
-      ) {
-        const claimSnap = await get(claimRef(dateKey, rosterNo)).catch(() => null);
-        const claim = (claimSnap?.val() as RosterClaim | null) || null;
-        if (!claim || claim.uid !== targetUid) {
-          // claim 트랜잭션이 처리하지 않는 경우만 직접 회수 (이중 회수 방지)
+      // claim 정리: 삭제 대상이 소유한 claim만 재선거/해제한다.
+      // - 다른 기기가 소유한 claim은 그 기기의 기여이므로 유지 (삭제 대상은 기여 0)
+      // - 수동 인정 claim은 남은 기기에 유효한 인정이 있으면 유지, 아니면 해제
+      let releasedByMe = false;
+      await transactClaim(dateKey, rosterNo, (cur) => {
+        if (!cur) return undefined;
+        const ownsClaim = cur.uid === targetUid;
+        const isManualClaim = cur.uid.startsWith("manual:");
+        if (!ownsClaim && !isManualClaim) return undefined; // 다른 기기 소유 — 유지
+        if (isManualClaim && manualHold) return undefined; // 남은 기기의 수동 인정 유지
+        releasedByMe = true;
+        if (!isManualClaim && manualHoldUid) {
+          // 남은 기기에 유효한 수동 인정이 있으면 claim을 수동 인정으로 전환
+          return { uid: `manual:${me}`, status: "done", at: Date.now() };
+        }
+        if (best && bestUid) return { uid: bestUid, status: best, at: Date.now() };
+        return null; // 해제 (transactClaim이 집계 델타 처리)
+      }); // 실패하면 throw — 조용히 삼키면 claim/집계가 어긋난다
+      // legacy 회수: claim 시대 이전 기록만, claim 트랜잭션이 처리하지 않은 경우에만 직접 회수
+      // (claim 시대 기록은 claim 소유자만 집계에 기여하므로, 소유자가 아니면 회수 금지)
+      if (!isClaimEra && !releasedByMe && (st === "done" || st === "reading")) {
+        const mSnap = await get(ref(db, `${ROOT}/manual/${targetUid}/${dateKey}`)).catch(() => null);
+        const mc = (mSnap?.val() as { done?: boolean; credited?: boolean; claimEra?: boolean } | null) || null;
+        if (mc?.done && mc?.credited && !mc?.claimEra) {
+          await adjustAggregate(dateKey, "done", "not-started").catch(() => {});
+        } else if (!dp?.manualCredited && dp?.reportedKind !== "guest" && dp?.reportedKind !== "leader") {
           await adjustAggregate(dateKey, st, "not-started").catch(() => {});
         }
       }
-      // claim 정리: 삭제 대상이 잡고 있던 것만 재계산값으로 교체/해제
-      await transactClaim(dateKey, rosterNo, (cur) => {
-        const isMine = cur?.uid === targetUid;
-        const isManual = !!cur?.uid.startsWith("manual:");
-        if (cur && !isMine && !isManual) return undefined; // 다른 기기 소유 — 유지
-        if (isManual && manualHold) return undefined; // 수동 인정 유지
-        if (manualHold) return { uid: `manual:delete:${me}`, status: "done", at: Date.now() };
-        if (best && bestUid) return { uid: bestUid, status: best, at: Date.now() };
-        return cur ? null : undefined; // 해제 (없으면 중단)
-      }).catch(() => {});
     }
   }
 
   await remove(ref(db, `${ROOT}/participants/${targetUid}`));
   await remove(ref(db, `${ROOT}/progress/${targetUid}`)).catch(() => {});
-  await remove(ref(db, `${ROOT}/manual/${targetUid}`)).catch(() => {});
-  await remove(ref(db, `${ROOT}/encouragements/${targetUid}`)).catch(() => {});
+  // manual/encouragements는 RTDB 규칙이 {uid}/{date} (또는 {uid}/{msgId}) 단위 쓰기만 허용하므로
+  // 날짜별로 제거한다. (노드 통째 remove는 permission_denied로 조용히 실패했다)
+  for (const d of CHALLENGE_SCHEDULE) {
+    await remove(ref(db, `${ROOT}/manual/${targetUid}/${d.date}`)).catch(() => {});
+  }
+  try {
+    const encSnap = await get(ref(db, `${ROOT}/encouragements/${targetUid}`));
+    const enc = (encSnap.val() as Record<string, unknown> | null) || {};
+    for (const msgId of Object.keys(enc)) {
+      await remove(ref(db, `${ROOT}/encouragements/${targetUid}/${msgId}`)).catch(() => {});
+    }
+  } catch {}
 }
 
 // ─── 챌린지 날짜 헬퍼 ─────────────────────────────────────
