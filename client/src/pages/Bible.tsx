@@ -19,7 +19,6 @@ import {
   saveChapterProgress,
   getDayProgress,
   evaluateAndFinalizeDay,
-  requiredActiveSec,
   chapterKey as challengeChapterKey,
   type ChallengeRole,
 } from "@/lib/challenge";
@@ -580,6 +579,7 @@ export default function Bible() {
           activeSec: cp?.activeSec || 0,
           quizPass: true,
           seen: cp?.seen || [],
+          words: cp?.words,
         });
         const status = await evaluateAndFinalizeDay(ctx.dateKey, {});
         window.dispatchEvent(new CustomEvent("challenge-progress"));
@@ -1463,7 +1463,7 @@ function ChapterReader({
   const challengeActiveSec = useRef(0);
   const challengeQuizPass = useRef(false);
   const challengeLastInteract = useRef(Date.now());
-  const challengeFinalizedDone = useRef(false);
+  const challengeDoneToastShown = useRef(false);
   const challengeParaTotal = useRef(0);
   const [, setChallengeUiTick] = useState(0);
 
@@ -1524,7 +1524,6 @@ function ChapterReader({
     if (!challenge) return;
     const cid = challengeChapterKey(challenge.book, challenge.chapter);
     const words = paragraphs.join(" ").split(/\s+/).filter(Boolean).length;
-    const required = requiredActiveSec(words);
 
     const markInteract = () => {
       challengeLastInteract.current = Date.now();
@@ -1546,27 +1545,43 @@ function ChapterReader({
           activeSec: challengeActiveSec.current,
           quizPass: challengeQuizPass.current,
           seen: [...challengeSeen.current],
+          words,
         });
       } catch {}
     };
-    const maybeDone = async () => {
-      if (challengeFinalizedDone.current) return;
-      const total = challengeParaTotal.current || 1;
-      const exposurePct = (challengeSeen.current.size / total) * 100;
-      // 완료 조건: 노출 80% + 활성 시간 (퀴즈는 선택사항 — isChapterComplete와 동일 기준)
-      if (
-        exposurePct >= 80 &&
-        challengeActiveSec.current >= required
-      ) {
-        challengeFinalizedDone.current = true;
+    // 완료 재평가: finalizeDayStatus가 멱등이므로 매 틱마다 평가해도 안전.
+    // (save는 장 스냅샷만 쓰고 status를 건드리지 않으므로, 완료 상태가 reading으로 덮어씌워지지 않음)
+    const evaluate = async () => {
+      try {
+        const status = await evaluateAndFinalizeDay(challenge.dateKey, { [cid]: words });
+        window.dispatchEvent(new CustomEvent("challenge-progress"));
         try {
-          const status = await evaluateAndFinalizeDay(challenge.dateKey, { [cid]: words });
-          window.dispatchEvent(new CustomEvent("challenge-progress"));
-          try {
-            await reconcileReminders();
-          } catch {}
-          if (status === "done") toast.success("🎉 오늘의 챌린지 완료!");
+          await reconcileReminders();
         } catch {}
+        if (status === "done" && !challengeDoneToastShown.current) {
+          challengeDoneToastShown.current = true;
+          toast.success("🎉 오늘의 챌린지 완료!");
+        }
+      } catch {}
+    };
+    // 직렬 실행기: 저장(save)이 완전히 끝난 뒤 그 저장값으로 완료 평가(evaluate)한다.
+    // 틱이 겹치면 큐에 쌓아 순차 처리 — 동시 finalize 경합을 원천 차단.
+    let cycleBusy = false;
+    let cycleQueued = false;
+    const runCycle = async () => {
+      if (cycleBusy) {
+        cycleQueued = true;
+        return;
+      }
+      cycleBusy = true;
+      try {
+        do {
+          cycleQueued = false;
+          await save();
+          await evaluate();
+        } while (cycleQueued);
+      } finally {
+        cycleBusy = false;
       }
     };
     const iv = setInterval(() => {
@@ -1577,11 +1592,12 @@ function ChapterReader({
         ticks += 1;
         if (ticks % 5 === 0) setChallengeUiTick((t) => t + 1);
         if (ticks % 15 === 0) {
-          save();
-          maybeDone();
+          runCycle();
         }
       }
     }, 1000);
+    // 마운트 직후 1회 평가 — 저장된 진도가 있으면 즉시 상태 반영 (집계 스냅샷과 동기화)
+    runCycle();
     const onHide = () => {
       if (document.visibilityState === "hidden") save();
     };

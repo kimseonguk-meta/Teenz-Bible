@@ -17,11 +17,14 @@ import {
   sgDateKey,
   chapterKey,
   isChapterComplete,
+  realReadingStatus,
+  reconcileAggregate,
   type Participation,
   type DayProgress,
   type DayStatus,
 } from "@/lib/challenge";
-import { CHALLENGE_ROSTER } from "@/data/challengeRoster";
+import { CHALLENGE_ROSTER, findRosterByName } from "@/data/challengeRoster";
+import { CHALLENGE_START, CHALLENGE_END } from "@/data/challengeSchedule";
 import { sendEncouragement } from "@/lib/challenge";
 
 interface RowState {
@@ -46,6 +49,27 @@ function shiftDate(dateKey: string, delta: number): string {
   const dt = new Date(y, m - 1, d + delta);
   const p = (n: number) => String(n).padStart(2, "0");
   return `${dt.getFullYear()}-${p(dt.getMonth() + 1)}-${p(dt.getDate())}`;
+}
+
+/** 리더 날짜 이동은 챌린지 기간 안으로 제한 */
+function clampDateKey(dateKey: string): string {
+  if (dateKey < CHALLENGE_START) return CHALLENGE_START;
+  if (dateKey > CHALLENGE_END) return CHALLENGE_END;
+  return dateKey;
+}
+
+/**
+ * 행의 실효 상태 — 학생 finalize·집계 재계산과 동일한 단일 기준.
+ * 수동 인정 > 실제 읽기 기록(노출/시간) 순으로 판정한다.
+ */
+function rowStatus(
+  day: { book: string; chapters: number[] } | undefined,
+  progress: DayProgress | null,
+  manualDone: boolean
+): DayStatus {
+  if (manualDone) return "done";
+  if (day) return realReadingStatus(day, progress);
+  return progress?.status || "not-started";
 }
 
 function StudentDetail({
@@ -77,9 +101,19 @@ function StudentDetail({
       dd.setDate(monday.getDate() + i);
       keys.push(dd.toISOString().slice(0, 10));
     }
-    Promise.all(keys.map((k) => getDayProgress(k, row.uid!).catch(() => null))).then(
-      (results) => setWeekStatus(results.map((r) => r?.status || null))
-    );
+    Promise.all(
+      keys.map(async (k) => {
+        const [r, m] = await Promise.all([
+          getDayProgress(k, row.uid!).catch(() => null),
+          getManualOverride(row.uid!, k).catch(() => null),
+        ]);
+        // 수동 인정 > 실제 읽기 기록 순 — 행 상태와 동일한 단일 기준
+        if (m?.done) return "done" as DayStatus;
+        const d = getChallengeDay(k);
+        if (d) return realReadingStatus(d, r);
+        return (r?.status || null) as DayStatus | null;
+      })
+    ).then((results) => setWeekStatus(results));
   }, [row.uid, dateKey]);
 
   const handleEncourage = async () => {
@@ -143,7 +177,7 @@ function StudentDetail({
           {day.chapters.map((c) => {
             const id = chapterKey(day.book, c);
             const cp = row.progress?.chapters?.[id];
-            const done = !!cp && isChapterComplete(cp, 400);
+            const done = !!cp && isChapterComplete(cp, cp.words || 400);
             return (
               <div key={c} className="flex items-center justify-between text-[12px]">
                 <span className="text-white/80 font-bold">
@@ -220,9 +254,10 @@ function StudentDetail({
 export default function ChallengeLeader() {
   const [, setLocation] = useLocation();
   const [allowed, setAllowed] = useState<boolean | null>(null);
-  const [dateKey, setDateKey] = useState(() => sgDateKey());
+  const [dateKey, setDateKey] = useState(() => clampDateKey(sgDateKey()));
+  const [reconciling, setReconciling] = useState(false);
   const [rows, setRows] = useState<RowState[]>([]);
-  const [extras, setExtras] = useState<{ uid: string; p: Participation; progress: DayProgress | null }[]>([]);
+  const [extras, setExtras] = useState<{ uid: string; p: Participation; progress: DayProgress | null; rosterMatch?: boolean }[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(null);
   const [gradeFilter, setGradeFilter] = useState<string>("all");
@@ -281,7 +316,19 @@ export default function ChallengeLeader() {
       // 게스트/함께 읽는 선생님: 명단 집계와 분리된 별도 섹션용
       const extraUids = extraRaw.map((e) => e.uid);
       const extraProg = extraUids.length ? await listDayProgress(dateKey, extraUids) : {};
-      setExtras(extraRaw.map((e) => ({ ...e, progress: extraProg[e.uid] || null })));
+      // 명단 이름과 같은 게스트는 학생 참가 유도 대상 — 경고 플래그
+      const extrasWithFlag = await Promise.all(
+        extraRaw.map(async (e) => {
+          let rosterMatch = false;
+          if (e.p.kind === "guest") {
+            try {
+              rosterMatch = !!(await findRosterByName(e.p.name));
+            } catch {}
+          }
+          return { ...e, progress: extraProg[e.uid] || null, rosterMatch };
+        })
+      );
+      setExtras(extrasWithFlag);
     } catch (e: any) {
       queuedToast.error(e?.message || "불러오기 실패", { style: { bottom: "5rem" } });
     } finally {
@@ -310,12 +357,32 @@ export default function ChallengeLeader() {
   }
 
   const day = getChallengeDay(dateKey);
-  const doneRows = rows.filter(
-    (r) => r.progress?.status === "done" || r.manual?.done
-  ).length;
-  const readingRows = rows.filter(
-    (r) => !r.manual?.done && r.progress?.status === "reading"
-  ).length;
+  const rowSt = (r: RowState) => rowStatus(day, r.progress, !!r.manual?.done);
+  const doneRows = rows.filter((r) => rowSt(r) === "done").length;
+  const readingRows = rows.filter((r) => rowSt(r) === "reading").length;
+
+  const handleReconcile = async () => {
+    if (reconciling) return;
+    if (
+      !window.confirm(
+        `${fmtDate(dateKey)}의 공식 집계를 실제 기록 기준으로 다시 계산합니다.\n(학번당 1명, 수동 인정 반영)\n계속할까요?`
+      )
+    )
+      return;
+    setReconciling(true);
+    try {
+      const res = await reconcileAggregate(dateKey);
+      queuedToast.success(
+        `집계 재계산 완료 — ✅ ${res.doneCount} · 📖 ${res.readingCount}`,
+        { style: { bottom: "5rem" } }
+      );
+      load();
+    } catch (e: any) {
+      queuedToast.error(e?.message || "재계산 실패", { style: { bottom: "5rem" } });
+    } finally {
+      setReconciling(false);
+    }
+  };
 
   return (
     <div className="teenz-page space-y-3 pb-24">
@@ -327,7 +394,7 @@ export default function ChallengeLeader() {
       {/* 날짜 선택 */}
       <div className="tb-panel tb-panel-glow p-3 flex items-center justify-between">
         <button
-          onClick={() => setDateKey(shiftDate(dateKey, -1))}
+          onClick={() => setDateKey(clampDateKey(shiftDate(dateKey, -1)))}
           className="tb-soft-button w-9 h-9 rounded-full text-lg"
         >
           ‹
@@ -339,7 +406,7 @@ export default function ChallengeLeader() {
           </p>
         </div>
         <button
-          onClick={() => setDateKey(shiftDate(dateKey, 1))}
+          onClick={() => setDateKey(clampDateKey(shiftDate(dateKey, 1)))}
           className="tb-soft-button w-9 h-9 rounded-full text-lg"
         >
           ›
@@ -360,6 +427,13 @@ export default function ChallengeLeader() {
             style={{ width: `${Math.round((doneRows / 39) * 100)}%` }}
           />
         </div>
+        <button
+          onClick={handleReconcile}
+          disabled={reconciling || loading}
+          className="mt-3 w-full tb-soft-button py-2 text-[12px] font-bold rounded-lg disabled:opacity-40"
+        >
+          {reconciling ? "계산 중..." : "🔄 이 날짜 집계 다시 계산 (실제 기록 기준)"}
+        </button>
       </div>
 
       {/* 생년/반 필터 — approved mockup t3 */}
@@ -411,8 +485,9 @@ export default function ChallengeLeader() {
             .filter((r) => gradeFilter === "all" || r.grade === gradeFilter)
             .filter((r) => clsFilter === "all" || r.cls === clsFilter)
             .map((r) => {
-            const isDone = r.progress?.status === "done" || r.manual?.done;
-            const isReading = !isDone && r.progress?.status === "reading";
+            const st = rowSt(r);
+            const isDone = st === "done";
+            const isReading = st === "reading";
             const isOpen = expanded === r.no;
             return (
               <div key={r.no} className="tb-panel tb-panel-glow px-3 py-2.5">
@@ -454,8 +529,9 @@ export default function ChallengeLeader() {
           </p>
           <div className="space-y-2">
             {extras.map((e) => {
-              const isDone = e.progress?.status === "done";
-              const isReading = !isDone && e.progress?.status === "reading";
+              const st = rowStatus(getChallengeDay(dateKey), e.progress, false);
+              const isDone = st === "done";
+              const isReading = st === "reading";
               return (
                 <div
                   key={e.uid}
@@ -471,6 +547,11 @@ export default function ChallengeLeader() {
                         {e.p.kind === "leader" ? "선생님" : "게스트"}
                       </span>
                     </p>
+                    {e.rosterMatch && (
+                      <p className="text-red-300 text-[11px] font-bold mt-0.5">
+                        ⚠️ 명단 이름과 일치 — 학생 참가로 다시 등록하도록 안내해 주세요
+                      </p>
+                    )}
                     <p className="text-white/40 text-[11px]">
                       {isDone ? "완료" : isReading ? "읽는 중" : "미시작"}
                     </p>

@@ -60,6 +60,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notFound, setNotFound] = useState(false);
+  const [guestAck, setGuestAck] = useState(false);
 
   const handleVerifyCode = async () => {
     setError("");
@@ -242,11 +243,22 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
                   </div>
                   <button
                     onClick={handleJoinGuest}
-                    disabled={busy}
+                    disabled={busy || !guestAck}
                     className="w-full tb-btn py-3 text-sm font-black rounded-[12px] active:scale-[0.98] disabled:opacity-50"
                   >
                     {busy ? "등록 중..." : "게스트로 참여하기"}
                   </button>
+                  <label className="mt-2.5 flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={guestAck}
+                      onChange={(e) => setGuestAck(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 accent-[#c9a86a]"
+                    />
+                    <span className="text-white/60 text-[11px] font-semibold leading-snug">
+                      나는 39명 명단에 없는 게스트이며, 게스트는 명단에 나타나지 않고 공식 집계에서 제외되는 것을 이해했습니다
+                    </span>
+                  </label>
                   <p className="mt-1.5 text-center text-white/40 text-[11px] font-semibold">
                     명단에 없는 분만 이용해 주세요 · 게스트는 명단에 나타나지 않고 공식 집계에서 제외됩니다
                   </p>
@@ -352,6 +364,10 @@ function StudentCard({ participation, onLeave, leaveFn }: { participation: Parti
     return cp && (cp.manual || cp.exposurePct >= 80);
   }).length;
   const allDone = progress?.status === "done";
+  // 퀴즈는 선택사항 — 실제로 통과한 경우에만 Passed 표시 (하드코딩 금지)
+  const quizPassed = chapters.every(
+    (c) => progress?.chapters?.[chapterKey(today.book, c)]?.quizPass
+  );
 
   // Done for Today! — approved mockup s8
   if (allDone) {
@@ -373,7 +389,11 @@ function StudentCard({ participation, onLeave, leaveFn }: { participation: Parti
           </div>
           <div className="flex items-center justify-between bg-black/30 border border-white/10 rounded-xl px-4 py-2.5">
             <span className="text-white/60 text-[13px] font-bold">Quiz</span>
-            <span className="text-lime-300 text-[13px] font-black">✅ Passed</span>
+            {quizPassed ? (
+              <span className="text-lime-300 text-[13px] font-black">✅ Passed</span>
+            ) : (
+              <span className="text-white/45 text-[13px] font-black">선택사항</span>
+            )}
           </div>
         </div>
         <p className="mt-4 text-white/45 text-[12px] font-semibold">See you tomorrow!</p>

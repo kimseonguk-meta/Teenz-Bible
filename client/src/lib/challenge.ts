@@ -8,12 +8,15 @@ import {
   set,
   update,
   remove,
+  push,
   runTransaction,
   serverTimestamp,
 } from "firebase/database";
 import { db, auth } from "./firebase";
 import {
   CHALLENGE_ID,
+  CHALLENGE_START,
+  CHALLENGE_END,
   CHALLENGE_SCHEDULE,
   getChallengeDay,
   sgDateKey,
@@ -24,7 +27,7 @@ import { findRosterByName } from "../data/challengeRoster";
 const ROOT = `challenges/${CHALLENGE_ID}`;
 
 // 스케줄 헬퍼 재노출 (UI에서 사용)
-export { CHALLENGE_ID, CHALLENGE_SCHEDULE, getChallengeDay, sgDateKey, chapterKey };
+export { CHALLENGE_ID, CHALLENGE_START, CHALLENGE_END, CHALLENGE_SCHEDULE, getChallengeDay, sgDateKey, chapterKey };
 
 export type ChallengeRole = "student" | "leader";
 export type DayStatus = "done" | "reading" | "not-started";
@@ -49,12 +52,17 @@ export interface ChapterProgress {
   seen?: number[]; // 노출된 블록 인덱스 (세션 간 누적용)
   completedAt?: number; // 완료 시각
   manual?: boolean; // 리더 수동 인정 여부
+  words?: number; // 저장 시점 언어의 해당 장 단어 수 (필요 읽기 시간 계산용, 없으면 400 fallback)
 }
 
 export interface DayProgress {
   status: DayStatus;
   chapters: Record<string, ChapterProgress>;
   reportedStatus?: DayStatus; // 집계에 반영된 마지막 상태
+  /** 마지막으로 집계에 반영될 당시의 참가 종류("official"/"guest"/"leader"). 종류가 바뀌면 reportedStatus를 "not-started"로 간주 */
+  reportedKind?: string | null;
+  /** true면 마지막 reportedStatus가 리더 수동 인정 grant에 의해 집계된 것 (취소 시 학생 finalize가 집계를 건드리지 않음) */
+  manualCredited?: boolean;
   updatedAt?: number;
 }
 
@@ -173,7 +181,7 @@ export async function getMyParticipation(): Promise<Participation | null> {
       ...p,
       role: "leader",
       reading: true,
-      name: c.name || p.name || "리더",
+      name: p.name || c.name || "리더",
       joinedAt: c.joinedAt || Date.now(),
     };
     cacheParticipation(dual);
@@ -226,6 +234,14 @@ export async function joinChallenge(
 export async function joinAsGuest(name: string): Promise<Participation> {
   const cleanName = (name || "").replace(/\s+/g, "").slice(0, 20);
   if (!cleanName) throw new Error("이름을 입력해 주세요");
+  if (!/[가-힣]/.test(cleanName)) throw new Error("한글 실명을 입력해 주세요");
+  // 명단에 있는 이름은 게스트로 가입할 수 없다 — 학생 참가(실명 입력)로 진행해야 공식 집계에 포함된다
+  const rosterHit = await findRosterByName(cleanName).catch(() => undefined);
+  if (rosterHit) {
+    throw new Error(
+      "명단에 있는 이름입니다. 게스트가 아니라 '제자반 학생 참가'의 실명 입력으로 다시 진행해 주세요."
+    );
+  }
   const entry: Participation = {
     role: "student",
     name: cleanName,
@@ -260,6 +276,7 @@ export async function joinAsLeaderReader(realName: string): Promise<Participatio
 /** 읽기 참여만 나가기 (리더 자격은 유지, 읽기 기록 삭제) */
 export async function leaveReading(): Promise<void> {
   const me = uid();
+  await withdrawMyAggregate();
   // 삭제 실패는 삼키지 않고 호출자에게 전달 → 토스트로 표시
   await remove(ref(db, `${ROOT}/participants/${me}`));
   await remove(ref(db, `${ROOT}/progress/${me}`));
@@ -337,13 +354,15 @@ export async function saveChapterProgress(
   cp: ChapterProgress
 ): Promise<void> {
   const base = `${ROOT}/progress/${uid()}/${dateKey}`;
+  // NOTE: 하루 상태(status/reportedStatus)는 finalizeDayStatus가 전담한다.
+  // 여기서 status를 쓰면 완료된 날이 다시 "reading"으로 덮어씌워지는 버그가 생긴다.
   await update(ref(db, base), {
     [`chapters/${chapterId}/exposurePct`]: Math.round(cp.exposurePct),
     [`chapters/${chapterId}/activeSec`]: Math.round(cp.activeSec),
     [`chapters/${chapterId}/quizPass`]: !!cp.quizPass,
     [`chapters/${chapterId}/seen`]: (cp.seen || []).slice(0, 400),
     ...(cp.completedAt ? { [`chapters/${chapterId}/completedAt`]: cp.completedAt } : {}),
-    status: "reading",
+    ...(cp.words && cp.words > 0 ? { [`chapters/${chapterId}/words`]: Math.round(cp.words) } : {}),
     updatedAt: serverTimestamp(),
   });
 }
@@ -359,64 +378,150 @@ export function isDayComplete(
     const id = chapterKey(day.book, c);
     const cp = prog.chapters?.[id];
     if (!cp) return false;
-    return isChapterComplete(cp, wordsPerChapter[id] || 400);
+    // 저장된 실제 단어 수를 우선 사용 (퀴즈만 풀고 나간 경우의 400 fallback 관대 판정 방지)
+    return isChapterComplete(cp, wordsPerChapter[id] || cp.words || 400);
   });
 }
 
 /**
+ * 수동 인정을 제외한 순수 읽기 상태 (리더 대시보드·수동 취소·집계 재계산의 단일 기준).
+ * finalize가 쓰는 병합 status와 달리, 실제 노출/읽기 시간만 본다.
+ */
+export function realReadingStatus(
+  day: { book: string; chapters: number[] },
+  prog: DayProgress | null
+): DayStatus {
+  if (!prog || !prog.chapters) return "not-started";
+  const complete = day.chapters.every((c) => {
+    const cp = prog.chapters[chapterKey(day.book, c)];
+    if (!cp) return false;
+    return (
+      cp.exposurePct >= 80 &&
+      cp.activeSec >= requiredActiveSec(cp.words || 400)
+    );
+  });
+  return complete ? "done" : "reading";
+}
+
+/** 집계 doneCount/readingCount 증감 (트랜잭션, from===to면 no-op) */
+async function adjustAggregate(dateKey: string, from: DayStatus, to: DayStatus): Promise<void> {
+  const f = from === "done" || from === "reading" ? from : null;
+  const t = to === "done" || to === "reading" ? to : null;
+  if (f === t) return;
+  await runTransaction(ref(db, `${ROOT}/aggregate/${dateKey}`), (cur: unknown) => {
+    const c = (cur as { doneCount?: number; readingCount?: number } | null) || {
+      doneCount: 0,
+      readingCount: 0,
+    };
+    if (f === "done") c.doneCount = Math.max(0, (c.doneCount || 0) - 1);
+    else if (f === "reading") c.readingCount = Math.max(0, (c.readingCount || 0) - 1);
+    if (t === "done") c.doneCount = (c.doneCount || 0) + 1;
+    else if (t === "reading") c.readingCount = (c.readingCount || 0) + 1;
+    return c;
+  });
+}
+
+/** 개인 누적 완료 일수(_summary/doneDays) 증감 — reportedStatus 전이를 그대로 반영 */
+async function adjustSummary(me: string, from: DayStatus, to: DayStatus): Promise<void> {
+  const d = to === "done" ? (from === "done" ? 0 : 1) : from === "done" ? -1 : 0;
+  if (d === 0) return;
+  await runTransaction(ref(db, `${ROOT}/progress/${me}/_summary/doneDays`), (cur: unknown) =>
+    Math.max(0, ((cur as number) || 0) + d)
+  );
+}
+
+/**
  * 하루 상태 확정 + 집계 트랜잭션.
- * status가 바뀔 때만 doneCount/readingCount를 증감 (중복 방지).
+ *
+ * 불변식: aggregate는 각 UID의 reportedStatus 전이를 정확히 한 번씩 반영한다.
+ * - status/reportedStatus/reportedKind/manualCredited의 유일한 쓰기 주체 (saveChapterProgress는 장 스냅샷만 쓴다)
+ * - 리더 수동 인정 grant/cancel 동안에는 리더가 집계를 소유하므로 학생 finalize는 건드리지 않는다
+ * - 수동 인정이 취소된 뒤에는 progress.manualCredited 플래그로 "이미 되돌려진 grant"를 구분해 중복 가감산 방지
+ * - 게스트/리더 읽기는 집계 제외. 공식↔게스트 전환 시 reportedKind 변화로 이전 카운트를 회수/신규 반영
  */
 export async function finalizeDayStatus(dateKey: string, status: DayStatus): Promise<void> {
   const me = uid();
   const base = `${ROOT}/progress/${me}/${dateKey}`;
-  const snap = await get(ref(db, base));
-  const prev = (snap.val() as DayProgress | null)?.reportedStatus || "not-started";
-  // 게스트/리더 읽기는 공식 집계에서 제외 (개인 기록만 저장)
-  let kind = getCachedParticipation()?.kind;
-  if (kind === undefined) {
-    const ks = await get(ref(db, `${ROOT}/participants/${me}/kind`)).catch(() => null);
-    kind = (ks?.val() as "guest" | "leader" | undefined) ?? undefined;
+  const snap = await get(ref(db, base)).catch(() => null);
+  const cur = (snap?.val() as DayProgress | null) || null;
+  const prevRep = cur?.reportedStatus || "not-started";
+  const prevKind = cur?.reportedKind; // undefined = 아직 보고한 적 없음
+  const prevMC = cur?.manualCredited === true;
+
+  let kind: string | null = getCachedParticipation()?.kind ?? null;
+  if (!getCachedParticipation()) {
+    const ps = await get(ref(db, `${ROOT}/participants/${me}`)).catch(() => null);
+    kind = ((ps?.val() as { kind?: string } | null)?.kind ?? null);
   }
   const counted = kind !== "guest" && kind !== "leader";
-  if (prev === status) {
-    // 집계는 그대로, 상태 필드만 최신화
-    await update(ref(db, base), { status, updatedAt: serverTimestamp() });
+  // reportedKind는 문자열로 저장 ("official" 포함) — update()에서 null은 삭제로 처리되므로 null 사용 금지
+  const kindNorm = kind ?? "official";
+  // 참가 종류가 바뀌었으면 이전 보고는 무효 (게스트 done → 공식 참가 등)
+  const kindChanged = prevKind !== undefined && prevKind !== kindNorm;
+  const effPrev: DayStatus = kindChanged ? "not-started" : prevRep;
+  const effMC = kindChanged ? false : prevMC;
+
+  const manualSnap = await get(ref(db, `${ROOT}/manual/${me}/${dateKey}`)).catch(() => null);
+  const manualRec = manualSnap?.val() as { done?: boolean; reversed?: boolean } | null;
+  const manualDone = manualRec?.done === true;
+
+  if (!counted) {
+    // 게스트/리더 읽기: 집계 제외. 단, 공식→게스트(리더) 전환 시 기존 카운트 회수
+    const wasCounted = prevKind !== undefined && prevKind !== "guest" && prevKind !== "leader";
+    if (wasCounted && !effMC && (effPrev === "done" || effPrev === "reading")) {
+      await adjustAggregate(dateKey, effPrev, "not-started");
+    }
+    await update(ref(db, base), {
+      status,
+      reportedStatus: status,
+      reportedKind: kindNorm,
+      manualCredited: false,
+      updatedAt: serverTimestamp(),
+    });
     return;
   }
-  // 리더 수동 인정분은 리더가 이미 aggregate에 반영했으므로 중복 가산 방지
-  let manualCredited = false;
-  if (counted && status === "done" && prev !== "done") {
-    try {
-      const m = await get(ref(db, `${ROOT}/manual/${me}/${dateKey}/done`));
-      manualCredited = m.val() === true;
-    } catch { /* 읽기 실패 시 기존 로직대로 집계 */ }
-  }
-  if (counted && !manualCredited) {
-    const aggRef = ref(db, `${ROOT}/aggregate/${dateKey}`);
-    await runTransaction(aggRef, (cur: any) => {
-      const c = cur || { doneCount: 0, readingCount: 0 };
-      if (prev === "done") c.doneCount = Math.max(0, (c.doneCount || 0) - 1);
-      else if (prev === "reading") c.readingCount = Math.max(0, (c.readingCount || 0) - 1);
-      if (status === "done") c.doneCount = (c.doneCount || 0) + 1;
-      else if (status === "reading") c.readingCount = (c.readingCount || 0) + 1;
-      return c;
+
+  if (manualDone) {
+    // 리더 수동 인정이 유효한 동안은 grant/cancel이 집계를 소유 — 학생 finalize는 플래그만 기록
+    await update(ref(db, base), {
+      status,
+      reportedStatus: status,
+      reportedKind: kindNorm,
+      manualCredited: true,
+      updatedAt: serverTimestamp(),
     });
+    await adjustSummary(me, prevRep, status);
+    return;
+  }
+
+  if (effMC) {
+    // 수동 인정이 취소된 뒤: 리더의 cancel이 이미 집계를 되돌렸으므로,
+    // 실제로 done인 경우에만 새로 카운트 (cancel 시 reversed=true로 기록됨)
+    if (status === "done" && manualRec?.reversed === true) {
+      await adjustAggregate(dateKey, "not-started", "done");
+    }
+    await update(ref(db, base), {
+      status,
+      reportedStatus: status,
+      reportedKind: kindNorm,
+      manualCredited: false,
+      updatedAt: serverTimestamp(),
+    });
+    await adjustSummary(me, prevRep, status);
+    return;
+  }
+
+  if (effPrev !== status) {
+    await adjustAggregate(dateKey, effPrev, status);
   }
   await update(ref(db, base), {
     status,
     reportedStatus: status,
+    reportedKind: kindNorm,
+    manualCredited: false,
     updatedAt: serverTimestamp(),
   });
-  // 완료 일수 요약 (학생 홈 진행률용) — 상태가 바뀔 때만 조정
-  if (prev !== status) {
-    const delta = status === "done" ? 1 : prev === "done" ? -1 : 0;
-    if (delta !== 0) {
-      await runTransaction(ref(db, `${ROOT}/progress/${me}/_summary/doneDays`), (cur: any) => {
-        return Math.max(0, (cur || 0) + delta);
-      });
-    }
-  }
+  await adjustSummary(me, prevRep, status);
 }
 
 /** 챌린지 읽기 시작: Bible 화면에서 추적할 수 있도록 세션에 기록 */
@@ -435,24 +540,26 @@ export function getChallengeCtx(
   chapter: number
 ): { book: string; chapter: number; dateKey: string } | null {
   try {
+    // 챌린지 기간 밖에서는 읽기를 추적하지 않는다 (종료 후 읽기, 기간 전 테스트 읽기 등)
+    const today = sgDateKey();
+    if (today < CHALLENGE_START || today > CHALLENGE_END) return null;
     const raw = sessionStorage.getItem("challengeActive");
     if (raw) {
-      const c = JSON.parse(raw);
-      if (!c.dateKey) return null;
-      if (c.book === book && c.chapter === chapter) return c;
-      // 장 사이를 직접 이동해도 추적되도록: 오늘 읽기 목록에 있으면 추적 대상
-      const day = getChallengeDay(c.dateKey);
-      if (day && day.book === book && day.chapters.includes(chapter)) {
-        return { book, chapter, dateKey: c.dateKey };
-      }
-      return null;
+      try {
+        const c = JSON.parse(raw);
+        // 세션 컨텍스트도 스케줄 기준으로 검증 (어제 탭이 오늘 직접 열기를 막지 않도록)
+        const day = c?.dateKey ? getChallengeDay(c.dateKey) : undefined;
+        if (day && day.book === book && day.chapters.includes(chapter)) {
+          return { book, chapter, dateKey: day.date };
+        }
+      } catch {}
+      // 세션 정보가 맞지 않으면 스케줄 폴백으로 계속 (return null 금지 — 추적 끊김 방지)
     }
     // 폴백: 챌린지 참가자가 성경 탭에서 직접 장을 열었을 때.
     // 해당 장이 챌린지 일정(오늘 이전 날짜)에 있으면 그 날짜로 추적한다.
     // (챌린지 카드의 "읽으러 가기"를 거치지 않아도 기록이 남도록)
     const part = getCachedParticipation();
     if (!part) return null;
-    const today = sgDateKey();
     const schedDay = CHALLENGE_SCHEDULE.find(
       (d) => d.book === book && d.chapters.includes(chapter) && d.date <= today
     );
@@ -494,6 +601,7 @@ export async function evaluateAndFinalizeDay(
 /** 챌린지 나가기: 본인 참가 기록 + 진행 기록 삭제 */
 export async function leaveChallenge(): Promise<void> {
   const me = uid();
+  await withdrawMyAggregate();
   // 삭제 실패는 삼키지 않고 호출자에게 전달 → 토스트로 표시
   await remove(ref(db, `${ROOT}/participants/${me}`));
   await remove(ref(db, `${ROOT}/leaderClaims/${me}`)).catch(() => {});
@@ -501,6 +609,28 @@ export async function leaveChallenge(): Promise<void> {
   try {
     localStorage.removeItem(LS_KEY);
   } catch {}
+}
+
+/**
+ * 탈퇴/역할 전환 전: 내가 집계에 반영해 둔 카운트 회수.
+ * - 리더 수동 인정으로 집계된 날짜(manualCredited)는 리더의 cancel이 소유하므로 건드리지 않음
+ * - 게스트/리더 읽기로 보고된 날짜는 집계에 포함된 적 없으므로 건드리지 않음
+ */
+async function withdrawMyAggregate(): Promise<void> {
+  const me = uid();
+  const snap = await get(ref(db, `${ROOT}/progress/${me}`)).catch(() => null);
+  if (!snap?.exists()) return;
+  const val = snap.val() as Record<string, DayProgress>;
+  for (const [dateKey, dp] of Object.entries(val || {})) {
+    if (dateKey === "_summary" || !dp || typeof dp !== "object") continue;
+    const st = dp.reportedStatus;
+    const kind = dp.reportedKind;
+    if (kind === "guest" || kind === "leader") continue; // 집계에 포함된 적 없음
+    if (dp.manualCredited) continue; // 리더 grant/cancel이 소유
+    if (st === "done" || st === "reading") {
+      await adjustAggregate(dateKey, st, "not-started").catch(() => {});
+    }
+  }
 }
 
 /** 내 완료 일수 요약 */
@@ -515,6 +645,46 @@ export async function getAggregate(dateKey: string): Promise<{ doneCount: number
   const snap = await get(ref(db, `${ROOT}/aggregate/${dateKey}`));
   const v = snap.val() || {};
   return { doneCount: v.doneCount || 0, readingCount: v.readingCount || 0 };
+}
+
+/**
+ * 집계 재계산 (리더 전용 복구 도구).
+ * 실제 기록(progress + manual)을 학번 기준으로 집계해 aggregate를 통째로 다시 쓴다.
+ * - 대시보드 행 선택과 동일한 last-wins 규칙으로 학번당 1개 UID 선택 → 대시보드와 숫자가 일치
+ * - 수동 인정(manual.done)은 완료로 간주, 그 외는 realReadingStatus(실제 노출/읽기 시간)로 판정
+ * - 학생 개인의 reportedStatus/_summary는 건드리지 않음 (본인 기기에서 다음 읽기 틱에 수렴)
+ */
+export async function reconcileAggregate(
+  dateKey: string
+): Promise<{ doneCount: number; readingCount: number }> {
+  await assertLeader();
+  const day = getChallengeDay(dateKey);
+  const parts = await listParticipants();
+  const byRoster = new Map<number, string>();
+  for (const { uid, p } of parts) {
+    if (p.role === "student" && p.rosterNo != null && p.kind !== "guest" && p.kind !== "leader") {
+      byRoster.set(p.rosterNo, uid); // last-wins — 대시보드 행 선택과 동일
+    }
+  }
+  const uids = [...byRoster.values()];
+  const progMap = uids.length ? await listDayProgress(dateKey, uids) : {};
+  let doneCount = 0;
+  let readingCount = 0;
+  for (const u of uids) {
+    const prog = progMap[u] || null;
+    const m = await getManualOverride(u, dateKey).catch(() => null);
+    let st: DayStatus;
+    if (m?.done) st = "done";
+    else if (day) st = realReadingStatus(day, prog);
+    else st = prog?.status || "not-started";
+    if (st === "done") doneCount++;
+    else if (st === "reading") readingCount++;
+  }
+  await runTransaction(ref(db, `${ROOT}/aggregate/${dateKey}`), () => ({
+    doneCount,
+    readingCount,
+  }));
+  return { doneCount, readingCount };
 }
 
 // ─── 리더 전용 ───────────────────────────────────────────
@@ -570,21 +740,16 @@ export async function setManualOverride(
     const matched = all.filter(({ p }) => p.rosterNo === rosterNo).map(({ uid }) => uid);
     if (matched.length) targetUids = matched;
   }
+  const countable = targetVal?.kind !== "guest" && targetVal?.kind !== "leader";
+  const primaryUid = targetUids[0];
   if (done) {
     if (!reason.trim()) throw new Error("사유를 입력해 주세요");
-    const record = {
-      done: true,
+    const baseRecord = {
       reason: reason.trim(),
       byUid: me.uid,
       at: serverTimestamp(),
     };
-    for (const u of targetUids) {
-      await set(ref(db, `${ROOT}/manual/${u}/${dateKey}`), record);
-    }
-    // 집계: 리더가 인정한 완료도 doneCount에 반영 (리더 쓰기 가능 경로)
-    // 단, 게스트/리더 읽기는 공식 집계에서 제외. 학생당 1번만 가산:
-    // 같은 학번의 어느 기기 기록이라도 이미 done이면 가산하지 않음.
-    // 학생 본인의 finalizeDayStatus는 manual 기록을 보고 집계를 건너뛰므로 중복 없음.
+    // 이미 실제로 완료된 학생이면 집계 건드리지 않음 (표시용 manual 기록만)
     let alreadyDone = false;
     for (const u of targetUids) {
       const ps = await get(ref(db, `${ROOT}/progress/${u}/${dateKey}/reportedStatus`)).catch(() => null);
@@ -593,34 +758,80 @@ export async function setManualOverride(
         break;
       }
     }
-    if (!alreadyDone && targetVal?.kind !== "guest" && targetVal?.kind !== "leader") {
-      const aggSnap = await get(ref(db, `${ROOT}/aggregate/${dateKey}`));
-      const prev = (aggSnap.val() as any)?.doneCount || 0;
-      await update(ref(db, `${ROOT}/aggregate/${dateKey}`), { doneCount: prev + 1 });
-    }
-    // 해당 일차 전 장을 수동 완료로 표시 — 규칙상 본인 progress만 쓰기 가능하므로 본인에게만 시도.
-    // 타인에 대해서는 manual/ 기록을 학생 본인의 getDayProgress가 합성한다.
-    const day = getChallengeDay(dateKey);
-    if (day && targetUids.includes(me.uid)) {
-      const updates: Record<string, any> = {
-        status: "done",
-        updatedAt: serverTimestamp(),
-      };
-      for (const c of day.chapters) {
-        updates[`chapters/${chapterKey(day.book, c)}/manual`] = true;
-        updates[`chapters/${chapterKey(day.book, c)}/completedAt`] = serverTimestamp();
+    if (!countable || alreadyDone) {
+      for (const u of targetUids) {
+        await set(ref(db, `${ROOT}/manual/${u}/${dateKey}`), { ...baseRecord, done: true, credited: false });
       }
-      await update(ref(db, `${ROOT}/progress/${me.uid}/${dateKey}`), updates);
+      return;
     }
-  } else {
+    // 집계 +1은 정확히 한 번만: primary manual 레코드 트랜잭션으로 크레딧 선점 (리더 동시 클릭 멱등)
+    let wonCredit = false;
+    const claimRes = await runTransaction(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`), (cur: unknown) => {
+      const c = cur as { credited?: boolean } | null;
+      if (c?.credited) return; // abort — 이미 크레딧됨
+      wonCredit = true;
+      return { ...(c || {}), ...baseRecord, done: true, credited: true };
+    });
+    // 나머지 기기 entry는 표시용 병합 기록만 (크레딧 없음)
     for (const u of targetUids) {
-      await update(ref(db, `${ROOT}/manual/${u}/${dateKey}`), {
+      if (u === primaryUid) continue;
+      await set(ref(db, `${ROOT}/manual/${u}/${dateKey}`), { ...baseRecord, done: true, credited: false });
+    }
+    if (claimRes.committed && wonCredit) {
+      await adjustAggregate(dateKey, "not-started", "done");
+    }
+    // NOTE: 학생 본인의 finalizeDayStatus는 manual.done을 보고 집계를 건너뛰며
+    // manualCredited 플래그를 기록하므로 중복 가산 없음.
+  } else {
+    // 취소: grant 때 가산한 +1을 정확히 되돌린다.
+    // 단, 학생이 실제로 다 읽은 상태라면(real done) 그 +1은 실적으로 유지한다.
+    const day = getChallengeDay(dateKey);
+    const rawSnap = await get(ref(db, `${ROOT}/progress/${targetUid}/${dateKey}`)).catch(() => null);
+    const raw = rawSnap?.val() as DayProgress | null;
+    const realStatus: DayStatus = day
+      ? realReadingStatus(day, raw)
+      : raw?.reportedStatus === "reading"
+        ? "reading"
+        : "not-started";
+    let reversed = false;
+    if (countable) {
+      const res = await runTransaction(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`), (cur: unknown) => {
+        const c = cur as { done?: boolean; credited?: boolean } | null;
+        if (!c?.done) return; // abort — 취소할 인정이 없음 (멱등)
+        if (c.credited && realStatus !== "done") reversed = true;
+        return {
+          ...c,
+          done: false,
+          credited: false,
+          reversed,
+          reason: reason.trim(),
+          byUid: me.uid,
+          at: serverTimestamp(),
+        };
+      });
+      if (res.committed && reversed) {
+        await adjustAggregate(dateKey, "done", "not-started");
+      }
+    } else {
+      await update(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`), {
         done: false,
         reason: reason.trim(),
         byUid: me.uid,
         at: serverTimestamp(),
       });
     }
+    for (const u of targetUids) {
+      if (u === primaryUid) continue;
+      await update(ref(db, `${ROOT}/manual/${u}/${dateKey}`), {
+        done: false,
+        credited: false,
+        reversed: false,
+        reason: reason.trim(),
+        byUid: me.uid,
+        at: serverTimestamp(),
+      });
+    }
+    // 학생의 다음 finalize가 manualCredited 플래그를 보고 집계를 건드리지 않고 reportedStatus만 동기화한다.
   }
 }
 
@@ -651,8 +862,9 @@ export function totalChallengeChapters(): number {
 export async function sendEncouragement(targetUid: string, message: string): Promise<void> {
   const me = auth.currentUser;
   if (!me) throw new Error("로그인이 필요합니다");
-  const id = `${Date.now()}`;
-  await set(ref(db, `${ROOT}/encouragements/${targetUid}/${id}`), {
+  // push() 키 사용 — Date.now() 키는 같은 밀리초에 덮어쓸 수 있음
+  const msgRef = push(ref(db, `${ROOT}/encouragements/${targetUid}`));
+  await set(msgRef, {
     message: message.trim().slice(0, 200) || "화이팅! 오늘도 성경 읽기 응원해요 🙏",
     byUid: me.uid,
     at: serverTimestamp(),
