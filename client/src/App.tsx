@@ -7,7 +7,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { GameProvider } from "./contexts/GameContext";
 import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
-import Onboarding from "./components/Onboarding";
 import { initTheme } from "./data/storeItems";
 import DailyBonus from "./components/DailyBonus";
 import FloatingPet from "./components/FloatingPet";
@@ -161,7 +160,6 @@ function Router() {
 }
 
 function App() {
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [authReady, setAuthReady] = useState(false);
 
 
@@ -177,35 +175,24 @@ function App() {
     };
     document.addEventListener("visibilitychange", onVis);
 
-    // Check if onboarding needed
+    // No forced onboarding gate: first-time visitors get a silent default
+    // profile so the app opens straight to Home. Nickname can be changed
+    // later in Profile.
     const profile = localStorage.getItem("teensBibleProfile");
-    const challengeEntry = (() => {
-      try {
-        return new URLSearchParams(window.location.search).get("challenge") === "1";
-      } catch {
-        return false;
-      }
-    })();
     if (!profile) {
-      if (challengeEntry) {
-        // 제자반 챌린지 초대 링크로 들어온 학생은 게임 닉네임 온보딩을 건너뛴다.
-        // 앱 나머지 부분이 프로필 존재를 가정하므로 기본 프로필을 조용히 심어둔다.
-        try {
-          localStorage.setItem(
-            "teensBibleProfile",
-            JSON.stringify({
-              nickname: "Adventurer",
-              groupCode: "INDIVIDUAL",
-              joinedAt: Date.now(),
-              avatar: "😎",
-              isNasumMember: false,
-            })
-          );
-          localStorage.setItem("playerName", "Adventurer");
-        } catch {}
-      } else {
-        setShowOnboarding(true);
-      }
+      try {
+        localStorage.setItem(
+          "teensBibleProfile",
+          JSON.stringify({
+            nickname: "Adventurer",
+            groupCode: "INDIVIDUAL",
+            joinedAt: Date.now(),
+            avatar: "😎",
+            isNasumMember: false,
+          })
+        );
+        localStorage.setItem("playerName", "Adventurer");
+      } catch {}
     }
 
 
@@ -231,8 +218,6 @@ function App() {
               initTheme();
               window.dispatchEvent(new CustomEvent("sync-restored"));
               window.dispatchEvent(new CustomEvent("gems-changed"));
-              const profile = localStorage.getItem("teensBibleProfile");
-              if (profile) setShowOnboarding(false);
             }
           }
 
@@ -244,11 +229,6 @@ function App() {
             // Notify all components that data was restored
             window.dispatchEvent(new CustomEvent("sync-restored"));
             window.dispatchEvent(new CustomEvent("gems-changed"));
-            // If profile was restored, hide onboarding
-            const profile = localStorage.getItem("teensBibleProfile");
-            if (profile) {
-              setShowOnboarding(false);
-            }
           }
         } catch (err) {
           console.log("[Sync] Init sync error:", err);
@@ -279,22 +259,15 @@ function App() {
     };
   }, []);
 
-  const handleOnboardingComplete = () => {
-    setShowOnboarding(false);
-    // Sync new profile to Firebase immediately
-    scheduleSyncToFirebase();
-  };
-
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           <GameProvider>
-            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
-            {authReady && !showOnboarding && <DailyBonus />}
-            {authReady && !showOnboarding && <ProfilePhotoPrompt />}
-            {authReady && !showOnboarding && <FloatingPet />}
+            {authReady && <DailyBonus />}
+            {authReady && <ProfilePhotoPrompt />}
+            {authReady && <FloatingPet />}
             <PWAUpdatePrompt />
             <Router />
           </GameProvider>
