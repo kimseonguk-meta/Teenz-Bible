@@ -1311,7 +1311,7 @@ export async function setSelfReport(dateKey: string, done: boolean): Promise<voi
 export async function getManualOverride(
   targetUid: string,
   dateKey: string
-): Promise<{ done: boolean; reason: string; byUid: string; at: number; selfReported?: boolean } | null> {
+): Promise<{ done: boolean; reason?: string; byUid: string; at: number; selfReported?: boolean } | null> {
   const snap = await get(ref(db, `${ROOT}/manual/${targetUid}/${dateKey}`));
   return snap.exists() ? snap.val() : null;
 }
@@ -1319,7 +1319,7 @@ export async function getManualOverride(
 /** 내 수동 기록(리더 인정/직접 기록) 조회 */
 export async function getMyManualRecord(
   dateKey: string
-): Promise<{ done: boolean; reason: string; byUid: string; at: number; selfReported?: boolean } | null> {
+): Promise<{ done: boolean; reason?: string; byUid: string; at: number; selfReported?: boolean } | null> {
   try {
     return await getManualOverride(uid(), dateKey);
   } catch {
