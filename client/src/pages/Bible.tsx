@@ -19,6 +19,8 @@ import {
   getCachedParticipation,
   getMyParticipation,
   getTodayChallengeDay,
+  getMyJourney,
+  sgDateKey,
   saveChapterProgress,
   getDayProgress,
   evaluateAndFinalizeDay,
@@ -26,6 +28,10 @@ import {
   type ChallengeRole,
 } from "@/lib/challenge";
 import { getChallengeDay } from "@/data/challengeSchedule";
+import ChallengeCelebration, {
+  pickEncouragement,
+  type CelebrationData,
+} from "@/components/ChallengeCelebration";
 import {
   getEquipped,
   getInventory,
@@ -1482,7 +1488,10 @@ function ChapterReader({
   const challengeActiveSec = useRef(0);
   const challengeQuizPass = useRef(false);
   const challengeLastInteract = useRef(Date.now());
-  const challengeDoneToastShown = useRef(false);
+  /** 챌린지 완료 축하: 날짜별 1회 + 이번 읽기 세션에서 새로 완료된 경우에만 */
+  const [celebration, setCelebration] = useState<CelebrationData | null>(null);
+  const celebratedDateKey = useRef<string | null>(null);
+  const sessionStartStatus = useRef<string | null>(null);
   const challengeParaTotal = useRef(0);
   const [, setChallengeUiTick] = useState(0);
 
@@ -1577,9 +1586,31 @@ function ChapterReader({
         try {
           await reconcileReminders();
         } catch {}
-        if (status === "done" && !challengeDoneToastShown.current) {
-          challengeDoneToastShown.current = true;
-          toast.success("🎉 오늘의 챌린지 완료!");
+        // 첫 관측값을 기록: 이미 완료된 날을 다시 읽는 경우 축하를 띄우지 않기 위함
+        if (sessionStartStatus.current === null) {
+          sessionStartStatus.current = status;
+        }
+        if (
+          status === "done" &&
+          sessionStartStatus.current !== "done" &&
+          celebratedDateKey.current !== challenge.dateKey
+        ) {
+          celebratedDateKey.current = challenge.dateKey;
+          try {
+            const j = await getMyJourney();
+            const day = getChallengeDay(challenge.dateKey);
+            setCelebration({
+              dateKey: challenge.dateKey,
+              labelKo: day?.labelKo || "",
+              isToday: challenge.dateKey === sgDateKey(),
+              streak: j.streak,
+              doneDays: j.doneDays,
+              totalDays: j.days.length,
+              encouragement: pickEncouragement(),
+            });
+          } catch {
+            toast.success("🎉 오늘의 챌린지 완료!");
+          }
         }
       } catch {}
     };
@@ -2627,6 +2658,8 @@ function ChapterReader({
     setShowCelebration(false);
     setConfettiPieces([]);
     setShowReadWarning(false);
+    setCelebration(null);
+    sessionStartStatus.current = null;
     readingStartTime.current = Date.now();
   }, [book, chapterIdx]);
 
@@ -2914,6 +2947,20 @@ function ChapterReader({
       </div>
 
       {/* Reading completion celebration */}
+      {celebration && (
+        <ChallengeCelebration
+          data={celebration}
+          onQuiz={() => {
+            setCelebration(null);
+            navigate(`/bible/${bookToSlug(book)}/${chapter.num}?view=quiz`);
+          }}
+          onClose={() => setCelebration(null)}
+          onBack={() => {
+            setCelebration(null);
+            onBack();
+          }}
+        />
+      )}
       {showCelebration && (
         <div className="fixed inset-0 pointer-events-none z-50">
           {confettiPieces.map((p) => (

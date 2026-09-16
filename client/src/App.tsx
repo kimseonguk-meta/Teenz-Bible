@@ -61,6 +61,7 @@ const QuizStats = lazyWithRetry(() => import("./pages/QuizStats"));
 const BibleMap = lazyWithRetry(() => import("./pages/BibleMap"));
 const Feedback = lazyWithRetry(() => import("./pages/Feedback"));
 const ChallengeLeader = lazyWithRetry(() => import("./pages/ChallengeLeader"));
+const ChallengeJourney = lazyWithRetry(() => import("./pages/ChallengeJourney"));
 
 function LoadingFallback() {
   return (
@@ -150,6 +151,7 @@ function Router() {
             <Route path="/bible-map" component={BibleMap} />
             <Route path="/feedback" component={Feedback} />
             <Route path="/challenge/leader" component={ChallengeLeader} />
+            <Route path="/challenge/journey" component={ChallengeJourney} />
             <Route component={Home} />
           </Switch>
         </Suspense>

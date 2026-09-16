@@ -26,6 +26,31 @@ import { findRosterByName } from "../data/challengeRoster";
 
 const ROOT = `challenges/${CHALLENGE_ID}`;
 
+/** lastActiveDate 쓰기 스로틀 (uid:날짜별 세션당 1회) */
+let lastActiveDateTouched: string | null = null;
+
+/** "2026-09-10" → "Sep 10" (날짜 표기 규칙) */
+export function formatShortDateKey(dateKey: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateKey);
+  if (!m) return dateKey;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+/** 장별 남은 분량 문구: 현재 노출% + 남은 활성 읽기 시간 (완료 조건 안내용) */
+export function chapterRemainingText(
+  cp: { exposurePct?: number; activeSec?: number; words?: number } | undefined
+): string | null {
+  if (!cp) return null;
+  const exp = Math.round(cp.exposurePct || 0);
+  const need = requiredActiveSec(cp.words || 400);
+  const leftSec = Math.max(0, need - Math.round(cp.activeSec || 0));
+  const parts: string[] = [];
+  if (exp < 80) parts.push(`${exp}% read`);
+  if (leftSec > 0) parts.push(`${leftSec}s to go`);
+  return parts.length ? parts.join(" · ") : null;
+}
+
 // 스케줄 헬퍼 재노출 (UI에서 사용)
 export { CHALLENGE_ID, CHALLENGE_START, CHALLENGE_END, CHALLENGE_SCHEDULE, getChallengeDay, sgDateKey, chapterKey };
 
@@ -66,6 +91,8 @@ export interface DayProgress {
   /** true면 claim 시대(학번당 1명 집계) 이후에 쓰인 기록 — 삭제 시 legacy per-UID 회수 대상이 아님 */
   claimEra?: boolean;
   updatedAt?: number;
+  /** 해당 일차 분량을 실제로 완료한 날짜(YYYY-MM-DD, Asia/Singapore). 지정일보다 늦으면 '늦음' */
+  completedDateKey?: string;
 }
 
 export interface ChallengeConfig {
@@ -550,6 +577,12 @@ function studentClaimDecision(
  */
 export async function finalizeDayStatus(dateKey: string, status: DayStatus): Promise<void> {
   const me = uid();
+  // My Journey 진입 라벨용 최근 활동일 — 실제 읽기 활동이 일어난 날짜(SG 기준). 세션당 1일로 스로틀.
+  const touchKey = `${me}:${sgDateKey()}`;
+  if (lastActiveDateTouched !== touchKey) {
+    lastActiveDateTouched = touchKey;
+    await update(ref(db, `${ROOT}/progress/${me}/_summary`), { lastActiveDate: sgDateKey() }).catch(() => {});
+  }
   const base = `${ROOT}/progress/${me}/${dateKey}`;
   const snap = await get(ref(db, base)).catch(() => null);
   const cur = (snap?.val() as DayProgress | null) || null;
@@ -572,6 +605,8 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
   const kindChanged = prevKind !== undefined && prevKind !== kindNorm;
   const effPrev: DayStatus = kindChanged ? "not-started" : prevRep;
   const effMC = kindChanged ? false : prevMC;
+  /** 이번 호출에서 미완료→완료로 처음 바뀌는 순간 (늦음 판정용 완료일 기록) */
+  const becameDone = status === "done" && effPrev !== "done";
 
   const manualSnap = await get(ref(db, `${ROOT}/manual/${me}/${dateKey}`)).catch(() => null);
   const manualRec = manualSnap?.val() as { done?: boolean; reversed?: boolean } | null;
@@ -631,6 +666,8 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
     reportedKind: kindNorm,
     manualCredited: false,
     ...(rosterNo != null ? { claimEra: true } : {}),
+    // 실제 읽기로 완료된 순간에만 기록. 수동 인정 경로는 제외(늦음 판정 대상 아님).
+    ...(becameDone ? { completedDateKey: sgDateKey() } : {}),
     updatedAt: serverTimestamp(),
   });
   await adjustSummary(me, prevRep, status);
@@ -755,10 +792,85 @@ async function withdrawMyAggregate(): Promise<void> {
 }
 
 /** 내 완료 일수 요약 */
-export async function getMySummary(): Promise<{ doneDays: number }> {
+export async function getMySummary(): Promise<{ doneDays: number; lastActiveDate?: string }> {
   const snap = await get(ref(db, `${ROOT}/progress/${uid()}/_summary`));
   const v = snap.val() || {};
-  return { doneDays: v.doneDays || 0 };
+  return { doneDays: v.doneDays || 0, lastActiveDate: v.lastActiveDate || undefined };
+}
+
+// ─── My Journey (70일 개인 대시보드) ─────────────────────────────
+export interface JourneyDay {
+  dateKey: string;
+  dayIndex: number; // 1..70
+  labelKo: string; // "마태복음 16장"
+  book: string; // 영문 book 키 (Bible 탭 진입용)
+  firstChapter: number; // 해당 일차 첫 장 (Bible 탭 진입용)
+  status: DayStatus;
+  late: boolean; // 지정일보다 늦게 완료한 보충 읽기
+}
+
+export interface MyJourney {
+  days: JourneyDay[];
+  doneDays: number;
+  lateDays: number;
+  streak: number; // 오늘(또는 어제)까지 이어진 연속 완료일
+  elapsedDays: number; // 시작일~오늘 경과 일수
+  completionRate: number; // 0-100
+  lastActiveDate?: string;
+}
+
+/** 70일 개인 기록을 2회 읽기(progress + manual)로 수렴해 반환 */
+export async function getMyJourney(): Promise<MyJourney> {
+  const me = uid();
+  const [progSnap, manualSnap] = await Promise.all([
+    get(ref(db, `${ROOT}/progress/${me}`)).catch(() => null),
+    get(ref(db, `${ROOT}/manual/${me}`)).catch(() => null),
+  ]);
+  const progAll = (progSnap?.val() || {}) as Record<string, DayProgress>;
+  const manualAll = (manualSnap?.val() || {}) as Record<string, { done?: boolean; reversed?: boolean }>;
+  const summary = progAll["_summary"] as { lastActiveDate?: string } | undefined;
+  return summarizeJourney(CHALLENGE_SCHEDULE, progAll, manualAll, sgDateKey(), summary?.lastActiveDate);
+}
+
+/** 순수 함수: 원시 기록 → Journey 집계 (늦음 판정·연속·완독률). 단위 테스트 대상. */
+export function summarizeJourney(
+  schedule: { day: number; date: string; labelKo: string; book: string; chapters: number[] }[],
+  progAll: Record<string, DayProgress>,
+  manualAll: Record<string, { done?: boolean; reversed?: boolean }>,
+  todayKey: string,
+  lastActiveDate?: string
+): MyJourney {
+  const days: JourneyDay[] = schedule.map((d) => {
+    const p = progAll[d.date];
+    const m = manualAll[d.date];
+    const manualDone = m?.done === true && m?.reversed !== true;
+    const status: DayStatus = manualDone ? "done" : p?.status || "not-started";
+    const late =
+      status === "done" && !manualDone && !!p?.completedDateKey && p.completedDateKey > d.date;
+    return {
+      dateKey: d.date,
+      dayIndex: d.day,
+      labelKo: d.labelKo,
+      book: d.book,
+      firstChapter: d.chapters[0] ?? 1,
+      status,
+      late,
+    };
+  });
+
+  const upto = days.filter((d) => d.dateKey <= todayKey);
+  let streak = 0;
+  for (let i = upto.length - 1; i >= 0; i--) {
+    if (upto[i].status === "done") streak++;
+    else break;
+  }
+
+  const doneDays = days.filter((d) => d.status === "done").length;
+  const lateDays = days.filter((d) => d.late).length;
+  const elapsedDays = upto.length;
+  const completionRate = elapsedDays > 0 ? Math.round((doneDays / elapsedDays) * 100) : 0;
+
+  return { days, doneDays, lateDays, streak, elapsedDays, completionRate, lastActiveDate };
 }
 
 /** 익명 집계 조회 (학생도 볼 수 있음) */

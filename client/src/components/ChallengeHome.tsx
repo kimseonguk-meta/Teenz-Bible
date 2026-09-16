@@ -25,6 +25,8 @@ import {
   isChapterComplete,
   getMyEncouragements,
   markEncouragementRead,
+  formatShortDateKey,
+  chapterRemainingText,
   type Participation,
   type DayProgress,
   type ChallengeRole,
@@ -453,7 +455,7 @@ function StudentCard({ participation }: { participation: Participation }) {
           const cp = progress?.chapters?.[id];
           const done = isDoneChapter(cp);
           const reading = !!cp && !done;
-          const almostThere = reading && (cp?.exposurePct || 0) >= 80;
+          const remaining = reading ? chapterRemainingText(cp) : null;
           const reread = wasReadBefore(today.book, c);
           return (
             <div key={c} className="flex items-center gap-3 bg-black/30 border border-white/10 rounded-xl px-3 py-2.5">
@@ -464,7 +466,7 @@ function StudentCard({ participation }: { participation: Participation }) {
                   {reread && <span className="ml-1.5 text-[10px] font-black text-[#ffd957] bg-[#ffd957]/15 px-1.5 py-0.5 rounded-full">Re-read</span>}
                 </p>
                 <p className="text-white/40 text-[11px] font-medium">
-                  {done ? "Done today!" : almostThere ? "Almost there — read a little more" : reading ? "Reading..." : "Not started"}
+                  {done ? "Done today!" : reading ? remaining || "Reading..." : "Not started"}
                 </p>
               </div>
               {!done && (
@@ -601,6 +603,8 @@ export default function ChallengeSection() {
   const [authReady, setAuthReady] = useState(false);
   const [participation, setParticipation] = useState<Participation | null | undefined>(undefined);
   const [open, setOpen] = useState(false);
+  const [, setLocation] = useLocation();
+  const [lastActiveDate, setLastActiveDate] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
@@ -624,6 +628,16 @@ export default function ChallengeSection() {
     return () => unsub();
   }, []);
 
+  // My Journey 행 라벨용 최근 활동일 (참가자만 조회)
+  useEffect(() => {
+    if (!participation) return;
+    let alive = true;
+    getMySummary()
+      .then((s) => { if (alive) setLastActiveDate(s.lastActiveDate); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [participation]);
+
   // Deep link (?challenge=1): open the challenge join flow directly on entry
   useEffect(() => {
     if (!authReady) return;
@@ -646,7 +660,9 @@ export default function ChallengeSection() {
 
   return (
     <div className="px-4">
-      {/* Gold ribbon entry point — approved mockup s1 */}
+      {/* 챌린지 진입 카드: 금색 리본 + My Journey 행 — approved mockup s1 */}
+      <div className="rounded-2xl border border-[#8a6d2f]/60 bg-[#101014]/95 shadow-[0_8px_28px_rgba(0,0,0,0.45)] overflow-hidden">
+      <div className="px-3 pt-3">
       <div className="relative" style={{ animation: "challengeFloat 3s ease-in-out infinite" }}>
         {/* Flashy continuous confetti around the ribbon */}
         {[
@@ -690,6 +706,28 @@ export default function ChallengeSection() {
         >
           <span className="text-xl leading-tight">제자반 성경읽기 챌린지</span>
         </button>
+      </div>
+      </div>
+      {participation ? (
+        <>
+          <div aria-hidden className="mx-4 mt-3 h-px bg-gradient-to-r from-transparent via-[#8a6d2f]/60 to-transparent" />
+          <button
+            type="button"
+            onClick={() => setLocation("/challenge/journey")}
+            aria-label={`My Journey — 나의 70일 기록 보기${lastActiveDate ? `, 최근 기록 ${formatShortDateKey(lastActiveDate)}` : ""}`}
+            className="flex w-full items-center gap-2.5 px-4 py-3 text-left transition-colors active:bg-white/5"
+          >
+            <span aria-hidden className="text-lg leading-none">👣</span>
+            <span className="text-[17px] font-bold text-[#f5e9c8]">My Journey</span>
+            <span className="truncate text-[13px] text-[#a08c4f]">
+              나의 70일 기록 보기{lastActiveDate ? ` - ${formatShortDateKey(lastActiveDate)}` : ""}
+            </span>
+            <svg className="ml-auto h-5 w-5 shrink-0 text-[#d4a94e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path d="m9 18 6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </>
+      ) : null}
       </div>
       <style>{`
         @keyframes challengePulse { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.18); } }
