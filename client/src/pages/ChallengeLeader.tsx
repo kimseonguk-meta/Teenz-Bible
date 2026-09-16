@@ -40,7 +40,7 @@ interface RowState {
   /** 같은 학번으로 등록된 모든 uid (중복 기기 정리용) */
   allUids: { uid: string; name: string; progress: DayProgress | null }[];
   progress: DayProgress | null;
-  manual: { done: boolean; reason: string } | null;
+  manual: { done: boolean; reason: string; selfReported?: boolean } | null;
 }
 
 function fmtDate(dateKey: string): string {
@@ -281,7 +281,9 @@ function StudentDetail({
       )}
       {row.manual?.done && (
         <p className="text-[#ffd957] text-[12px] font-bold mb-2">
-          🔧 수동 인정됨 — 사유: {row.manual.reason}
+          {row.manual.selfReported
+            ? `📖 학생 직접 기록 (성경책/다른 앱) — 사유: ${row.manual.reason}`
+            : `🔧 수동 인정됨 — 사유: ${row.manual.reason}`}
         </p>
       )}
       <div className="flex gap-2">
@@ -305,7 +307,7 @@ function StudentDetail({
           disabled={busy || !row.uid}
           className="flex-1 tb-soft-button py-2 text-[12px] font-bold rounded-lg disabled:opacity-40"
         >
-          인정 취소
+          {row.manual?.selfReported ? "직접 기록 취소" : "인정 취소"}
         </button>
       </div>
       {!row.uid && (
@@ -413,11 +415,16 @@ export default function ChallengeLeader() {
       const progMap = uids.length ? await listDayProgress(dateKey, uids) : {};
       const claimsMap = await getRosterClaims(dateKey).catch(() => ({}));
       setClaims(claimsMap);
-      const manualMap = new Map<number, { done: boolean; reason: string }>();
+      const manualMap = new Map<number, { done: boolean; reason: string; selfReported?: boolean }>();
       await Promise.all(
         [...byRoster.entries()].map(async ([no, { uid }]) => {
           const m = await getManualOverride(uid, dateKey).catch(() => null);
-          if (m) manualMap.set(no, { done: m.done, reason: m.reason });
+          if (m)
+            manualMap.set(no, {
+              done: m.done,
+              reason: m.reason,
+              ...(m.selfReported === true ? { selfReported: true } : {}),
+            });
         })
       );
       setRows(

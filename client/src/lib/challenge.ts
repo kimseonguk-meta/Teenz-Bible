@@ -609,8 +609,10 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
   const becameDone = status === "done" && effPrev !== "done";
 
   const manualSnap = await get(ref(db, `${ROOT}/manual/${me}/${dateKey}`)).catch(() => null);
-  const manualRec = manualSnap?.val() as { done?: boolean; reversed?: boolean } | null;
+  const manualRec = manualSnap?.val() as { done?: boolean; reversed?: boolean; selfReported?: boolean; credited?: boolean } | null;
   const manualDone = manualRec?.done === true;
+  // 학생 직접 기록인데 집계에 아직 반영되지 않음 → 아래 일반 경로로 가서 claim을 본인 소유로 잡는다
+  const selfUncredited = manualDone && manualRec?.selfReported === true && manualRec?.credited !== true;
 
   if (!counted) {
     // 게스트/리더 읽기: 집계 제외. 공식→게스트(리더) 전환 시 내가 잡은 claim 해제
@@ -633,7 +635,7 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
     return;
   }
 
-  if (manualDone) {
+  if (manualDone && !selfUncredited) {
     // 리더 수동 인정이 유효한 동안은 grant/cancel이 claim을 소유 — 학생 finalize는 플래그만 기록
     await update(ref(db, base), {
       status,
@@ -666,10 +668,14 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
     reportedKind: kindNorm,
     manualCredited: false,
     ...(rosterNo != null ? { claimEra: true } : {}),
-    // 실제 읽기로 완료된 순간에만 기록. 수동 인정 경로는 제외(늦음 판정 대상 아님).
+    // 완료된 순간에 기록 (리더 수동 인정은 제외, 학생 직접 기록은 포함 — 늦음 판정 대상).
     ...(becameDone ? { completedDateKey: sgDateKey() } : {}),
     updatedAt: serverTimestamp(),
   });
+  if (selfUncredited) {
+    // 학생 직접 기록의 집계 반영이 끝났음을 manual 레코드에 표시 (중복 claim 방지)
+    await update(ref(db, `${ROOT}/manual/${me}/${dateKey}`), { credited: true }).catch(() => {});
+  }
   await adjustSummary(me, prevRep, status);
 }
 
@@ -807,12 +813,16 @@ export interface JourneyDay {
   firstChapter: number; // 해당 일차 첫 장 (Bible 탭 진입용)
   status: DayStatus;
   late: boolean; // 지정일보다 늦게 완료한 보충 읽기
+  source?: "app" | "self" | "leader"; // 완료 경로 (따로 카운트용)
 }
 
 export interface MyJourney {
   days: JourneyDay[];
   doneDays: number;
   lateDays: number;
+  selfReportedDays: number; // 직접 기록(성경책/다른 앱)으로 완료한 날
+  appReadDays: number; // 앱에서 읽어서 완료한 날
+  leaderCreditedDays: number; // 리더 수동 인정으로 완료한 날
   streak: number; // 오늘(또는 어제)까지 이어진 연속 완료일
   elapsedDays: number; // 시작일~오늘 경과 일수
   completionRate: number; // 0-100
@@ -827,7 +837,7 @@ export async function getMyJourney(): Promise<MyJourney> {
     get(ref(db, `${ROOT}/manual/${me}`)).catch(() => null),
   ]);
   const progAll = (progSnap?.val() || {}) as Record<string, DayProgress>;
-  const manualAll = (manualSnap?.val() || {}) as Record<string, { done?: boolean; reversed?: boolean }>;
+  const manualAll = (manualSnap?.val() || {}) as Record<string, { done?: boolean; reversed?: boolean; selfReported?: boolean }>;
   const summary = progAll["_summary"] as { lastActiveDate?: string } | undefined;
   return summarizeJourney(CHALLENGE_SCHEDULE, progAll, manualAll, sgDateKey(), summary?.lastActiveDate);
 }
@@ -836,7 +846,7 @@ export async function getMyJourney(): Promise<MyJourney> {
 export function summarizeJourney(
   schedule: { day: number; date: string; labelKo: string; book: string; chapters: number[] }[],
   progAll: Record<string, DayProgress>,
-  manualAll: Record<string, { done?: boolean; reversed?: boolean }>,
+  manualAll: Record<string, { done?: boolean; reversed?: boolean; selfReported?: boolean }>,
   todayKey: string,
   lastActiveDate?: string
 ): MyJourney {
@@ -844,9 +854,15 @@ export function summarizeJourney(
     const p = progAll[d.date];
     const m = manualAll[d.date];
     const manualDone = m?.done === true && m?.reversed !== true;
+    const selfReported = manualDone && m?.selfReported === true;
     const status: DayStatus = manualDone ? "done" : p?.status || "not-started";
+    const source: JourneyDay["source"] =
+      status === "done" ? (selfReported ? "self" : manualDone ? "leader" : "app") : undefined;
     const late =
-      status === "done" && !manualDone && !!p?.completedDateKey && p.completedDateKey > d.date;
+      status === "done" &&
+      (!manualDone || selfReported) &&
+      !!p?.completedDateKey &&
+      p.completedDateKey > d.date;
     return {
       dateKey: d.date,
       dayIndex: d.day,
@@ -855,6 +871,7 @@ export function summarizeJourney(
       firstChapter: d.chapters[0] ?? 1,
       status,
       late,
+      source,
     };
   });
 
@@ -867,10 +884,13 @@ export function summarizeJourney(
 
   const doneDays = days.filter((d) => d.status === "done").length;
   const lateDays = days.filter((d) => d.late).length;
+  const selfReportedDays = days.filter((d) => d.source === "self").length;
+  const leaderCreditedDays = days.filter((d) => d.source === "leader").length;
+  const appReadDays = days.filter((d) => d.source === "app").length;
   const elapsedDays = upto.length;
   const completionRate = elapsedDays > 0 ? Math.round((doneDays / elapsedDays) * 100) : 0;
 
-  return { days, doneDays, lateDays, streak, elapsedDays, completionRate, lastActiveDate };
+  return { days, doneDays, lateDays, selfReportedDays, appReadDays, leaderCreditedDays, streak, elapsedDays, completionRate, lastActiveDate };
 }
 
 /** 익명 집계 조회 (학생도 볼 수 있음) */
@@ -1037,8 +1057,22 @@ export async function setManualOverride(
       }
     }
     if (!countable || alreadyDone) {
+      // 학생 직접 기록 위에 리더가 인정하면 📖 출처 표시 유지 (어느 기기의 기록이든)
+      let preserveSelf = false;
       for (const u of targetUids) {
-        await set(ref(db, `${ROOT}/manual/${u}/${dateKey}`), { ...baseRecord, done: true, credited: false });
+        const s = await get(ref(db, `${ROOT}/manual/${u}/${dateKey}`)).catch(() => null);
+        if ((s?.val() as { selfReported?: boolean } | null)?.selfReported === true) {
+          preserveSelf = true;
+          break;
+        }
+      }
+      for (const u of targetUids) {
+        await set(ref(db, `${ROOT}/manual/${u}/${dateKey}`), {
+          ...baseRecord,
+          done: true,
+          credited: false,
+          ...(preserveSelf ? { selfReported: true } : {}),
+        });
       }
       return;
     }
@@ -1110,10 +1144,22 @@ export async function setManualOverride(
       }
     }
     let reversed = false;
+    // 직접 기록(self-reported) 취소도 지원: claim이 학생 본인 소유일 수 있다 (어느 기기든)
+    let isSelfReport = false;
+    for (const u of targetUids) {
+      const s = await get(ref(db, `${ROOT}/manual/${u}/${dateKey}`)).catch(() => null);
+      if ((s?.val() as { selfReported?: boolean } | null)?.selfReported === true) {
+        isSelfReport = true;
+        break;
+      }
+    }
     if (countable && rosterNo != null) {
       let sawManualClaim = false;
       await transactClaim(dateKey, rosterNo, (cur) => {
-        if (!cur || !cur.uid.startsWith("manual:")) return undefined; // 취소할 인정 없음 (멱등)
+        if (!cur) return undefined;
+        const owned =
+          cur.uid.startsWith("manual:") || (isSelfReport && targetUids.includes(cur.uid));
+        if (!owned) return undefined; // 취소할 인정 없음 (멱등)
         sawManualClaim = true;
         if (realDoneUid) return { uid: realDoneUid, status: "done", at: Date.now() };
         reversed = true;
@@ -1121,9 +1167,10 @@ export async function setManualOverride(
       });
       if (!sawManualClaim) {
         // claim 이전(legacy)에 grant된 경우: manual 레코드의 credited 기준 회수
+        // (직접 기록은 claim 시대에만 존재하므로 claim 없이는 회수할 집계가 없다)
         const mSnap = await get(ref(db, `${ROOT}/manual/${primaryUid}/${dateKey}`)).catch(() => null);
         const mc = mSnap?.val() as { credited?: boolean } | null;
-        if (mc?.credited && !realDoneUid) {
+        if (mc?.credited && !realDoneUid && !isSelfReport) {
           await adjustAggregate(dateKey, "done", "not-started");
           reversed = true;
         }
@@ -1135,6 +1182,7 @@ export async function setManualOverride(
           done: false,
           credited: false,
           reversed,
+          ...(isSelfReport ? { selfReported: true } : {}),
           reason: reason.trim(),
           byUid: me.uid,
           at: serverTimestamp(),
@@ -1173,6 +1221,7 @@ export async function setManualOverride(
         done: false,
         credited: false,
         reversed: false,
+        ...(isSelfReport ? { selfReported: true } : {}),
         reason: reason.trim(),
         byUid: me.uid,
         at: serverTimestamp(),
@@ -1182,13 +1231,100 @@ export async function setManualOverride(
   }
 }
 
+/** 학생 직접 읽기 기록 (성경책/다른 앱으로 읽었음을 스스로 기록).
+ *  manual/{uid}/{date}에 selfReported: true로 저장되어 리더 수동 인정과 구분된다.
+ *  집계 claim은 학생 본인 소유로 처리되어 공식 집계에 정확히 1번만 반영된다.
+ *  미래 날짜는 기록할 수 없으며, 이미 완료된 날은 멱등(no-op)이다. */
+export async function setSelfReport(dateKey: string, done: boolean): Promise<void> {
+  const me = uid();
+  const day = getChallengeDay(dateKey);
+  if (!day) throw new Error("챌린지 기간의 날짜가 아니에요");
+  if (dateKey > sgDateKey()) throw new Error("미래 날짜는 기록할 수 없어요");
+  let part = getCachedParticipation();
+  if (!part) {
+    const ps = await get(ref(db, `${ROOT}/participants/${me}`)).catch(() => null);
+    if (!ps?.exists()) throw new Error("챌린지 참가자만 기록할 수 있어요");
+    part = ps.val() as Participation;
+  }
+  const kind = (part as { kind?: string })?.kind;
+  const rosterNo = (part as { rosterNo?: number })?.rosterNo ?? null;
+
+  const mRef = ref(db, `${ROOT}/manual/${me}/${dateKey}`);
+  const mSnap = await get(mRef).catch(() => null);
+  const mRec = (mSnap?.val() as { done?: boolean; selfReported?: boolean; byUid?: string } | null) || null;
+
+  if (done) {
+    if (mRec?.done) return; // 이미 완료 처리됨 (리더 인정 or 직접 기록) — 멱등
+    const ps = await get(ref(db, `${ROOT}/progress/${me}/${dateKey}/reportedStatus`)).catch(() => null);
+    if (ps?.val() === "done") return; // 앱에서 이미 읽음 — 멱등
+    await set(mRef, {
+      done: true,
+      selfReported: true,
+      byUid: me,
+      at: serverTimestamp(),
+      credited: false,
+    });
+    // finalizeDayStatus가 selfReported 미크레딧을 보고 claim을 본인 소유로 잡는다
+    await finalizeDayStatus(dateKey, "done");
+    return;
+  }
+
+  // 취소: 본인의 직접 기록만 취소할 수 있다 (리더 인정은 건드리지 않음)
+  if (!mRec?.done || mRec.selfReported !== true) throw new Error("직접 기록한 내역이 없어요");
+  if (mRec.byUid && mRec.byUid !== me)
+    throw new Error("리더가 확인한 기록이에요. 취소는 리더에게 요청해주세요");
+  // 같은 학번의 다른 기기가 잡은 claim까지 해제 (멀티 디바이스)
+  let targetUids = [me];
+  if (rosterNo != null) {
+    try {
+      const all = await listParticipants();
+      const matched = all
+        .filter(({ p }) => (p as { rosterNo?: number }).rosterNo === rosterNo)
+        .map(({ uid }) => uid);
+      if (matched.length) targetUids = matched;
+    } catch { /* 목록 조회 실패 시 본인만 처리 */ }
+  }
+  // 실제 앱 읽기 상태 확인 (같은 학번 전체) — 실제로 다 읽었으면 그 실적은 유지
+  let realDoneUid: string | null = null;
+  for (const u of targetUids) {
+    const rs = await get(ref(db, `${ROOT}/progress/${u}/${dateKey}`)).catch(() => null);
+    if (realReadingStatus(day, (rs?.val() as DayProgress | null) || null) === "done") {
+      realDoneUid = u;
+      break;
+    }
+  }
+  const counted = kind !== "guest" && kind !== "leader";
+  if (rosterNo != null && counted) {
+    await transactClaim(dateKey, rosterNo, (cur) => {
+      if (!cur || !targetUids.includes(cur.uid)) return undefined;
+      return realDoneUid ? { uid: realDoneUid, status: "done" as const, at: Date.now() } : null;
+    });
+  }
+  // rosterNo가 없으면 finalize가 직접 집계를 되돌린다 (여기서 건드리면 이중 가감산)
+  await update(mRef, { done: false, credited: false, reversed: true, at: serverTimestamp() });
+  // progress 상태를 실제 읽기 기준으로 복원 (finalize가 집계·요약을 정리)
+  const mySnap = await get(ref(db, `${ROOT}/progress/${me}/${dateKey}`)).catch(() => null);
+  await finalizeDayStatus(dateKey, realReadingStatus(day, (mySnap?.val() as DayProgress | null) || null));
+}
+
 /** 수동 인정 기록 조회 */
 export async function getManualOverride(
   targetUid: string,
   dateKey: string
-): Promise<{ done: boolean; reason: string; byUid: string; at: number } | null> {
+): Promise<{ done: boolean; reason: string; byUid: string; at: number; selfReported?: boolean } | null> {
   const snap = await get(ref(db, `${ROOT}/manual/${targetUid}/${dateKey}`));
   return snap.exists() ? snap.val() : null;
+}
+
+/** 내 수동 기록(리더 인정/직접 기록) 조회 */
+export async function getMyManualRecord(
+  dateKey: string
+): Promise<{ done: boolean; reason: string; byUid: string; at: number; selfReported?: boolean } | null> {
+  try {
+    return await getManualOverride(uid(), dateKey);
+  } catch {
+    return null;
+  }
 }
 
 /**

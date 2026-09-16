@@ -10,6 +10,7 @@ import {
   getMyJourney,
   formatShortDateKey,
   sgDateKey,
+  setSelfReport,
   type MyJourney,
   type JourneyDay,
   type Participation,
@@ -17,8 +18,10 @@ import {
 
 function cellStyle(d: JourneyDay, isFuture: boolean): string {
   const base =
-    "aspect-square rounded-lg flex items-center justify-center text-[10px] font-bold transition-colors ";
+    "aspect-square rounded-lg flex items-center justify-center text-[10px] font-bold transition-colors relative ";
   if (isFuture) return base + "bg-white/[0.03] text-white/20";
+  if (d.status === "done" && d.source === "self")
+    return base + "bg-[#2a2111] border-2 border-dashed border-[#e8c25a] text-[#e8c25a]";
   if (d.status === "done" && !d.late)
     return base + "bg-gradient-to-br from-[#e8c25a] to-[#9a7426] text-[#1a1405] shadow-[0_2px_10px_rgba(212,169,78,0.35)]";
   if (d.status === "done" && d.late)
@@ -28,6 +31,12 @@ function cellStyle(d: JourneyDay, isFuture: boolean): string {
 }
 
 function StatusChip({ d }: { d: JourneyDay }) {
+  if (d.status === "done" && d.source === "self")
+    return (
+      <span className="shrink-0 rounded-full bg-[#2a2111] border border-dashed border-[#e8c25a] px-2 py-0.5 text-[11px] font-bold text-[#e8c25a]">
+        📖 직접 기록{d.late ? " · 늦음" : ""}
+      </span>
+    );
   if (d.status === "done" && d.late)
     return (
       <span className="shrink-0 rounded-full bg-[#3a2410] border border-[#e08a2e] px-2 py-0.5 text-[11px] font-bold text-[#f0a952]">
@@ -53,6 +62,8 @@ export default function ChallengeJourney() {
   const [participation, setParticipation] = useState<Participation | null | undefined>(undefined);
   const [journey, setJourney] = useState<MyJourney | null>(null);
   const [error, setError] = useState(false);
+  const [selected, setSelected] = useState<JourneyDay | null>(null);
+  const [selfBusy, setSelfBusy] = useState(false);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
@@ -77,6 +88,47 @@ export default function ChallengeJourney() {
   }, []);
 
   const todayKey = sgDateKey();
+
+  const reloadJourney = async () => {
+    try {
+      const j = await getMyJourney();
+      setJourney(j);
+      setSelected((prev) => (prev ? j.days.find((d) => d.dateKey === prev.dateKey) || null : null));
+    } catch {}
+  };
+
+  const handleSelectSelfReport = async () => {
+    if (!selected || selfBusy) return;
+    if (
+      !window.confirm(
+        `${selected.dayIndex}일차(${selected.labelKo})를 성경책이나 다른 앱으로 읽었음을 기록할까요?`
+      )
+    )
+      return;
+    setSelfBusy(true);
+    try {
+      await setSelfReport(selected.dateKey, true);
+      await reloadJourney();
+    } catch (e: any) {
+      alert(e?.message || "기록 중 오류가 났어요");
+    } finally {
+      setSelfBusy(false);
+    }
+  };
+
+  const handleCancelSelfReport = async () => {
+    if (!selected || selfBusy) return;
+    if (!window.confirm("직접 기록을 취소할까요?")) return;
+    setSelfBusy(true);
+    try {
+      await setSelfReport(selected.dateKey, false);
+      await reloadJourney();
+    } catch (e: any) {
+      alert(e?.message || "취소 중 오류가 났어요");
+    } finally {
+      setSelfBusy(false);
+    }
+  };
 
   const recent = journey
     ? [...journey.days]
@@ -148,6 +200,13 @@ export default function ChallengeJourney() {
                   <div className="mt-0.5 text-[11px] text-white/50">완독률</div>
                 </div>
               </div>
+              {(journey.selfReportedDays > 0 || journey.leaderCreditedDays > 0) && (
+                <p className="mt-2 text-center text-[11px] text-white/45">
+                  ✅ 앱으로 읽음 {journey.appReadDays}일
+                  {journey.selfReportedDays > 0 && ` · 📖 직접 기록 ${journey.selfReportedDays}일`}
+                  {journey.leaderCreditedDays > 0 && ` · 리더 확인 ${journey.leaderCreditedDays}일`}
+                </p>
+              )}
 
               {/* 범례 */}
               <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] text-white/55">
@@ -159,6 +218,9 @@ export default function ChallengeJourney() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="h-3 w-3 rounded bg-[#12294d] border border-[#4d9fff]" /> 읽는 중
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-3 w-3 rounded bg-[#2a2111] border border-dashed border-[#e8c25a]" /> 📖 직접 기록
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="h-3 w-3 rounded bg-white/[0.06]" /> 미완료
@@ -173,16 +235,26 @@ export default function ChallengeJourney() {
                     const clickable = !isFuture;
                     const cls = cellStyle(d, isFuture);
                     const label = `${d.dayIndex}일차 ${d.labelKo}, ${d.status === "done" ? (d.late ? "늦음" : "완료") : d.status === "reading" ? "읽는 중" : "미완료"}`;
+                    const cellBody = (
+                      <>
+                        {d.dayIndex}
+                        {d.status === "done" && d.source === "self" && (
+                          <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none">
+                            📖
+                          </span>
+                        )}
+                      </>
+                    );
                     return clickable ? (
                       <button
                         key={d.dateKey}
                         type="button"
-                        onClick={() => setLocation(`/bible/${d.book}/${d.firstChapter}`)}
+                        onClick={() => setSelected(d)}
                         className={cls + " cursor-pointer active:scale-95"}
-                        title={`${d.dayIndex}일차 · ${formatShortDateKey(d.dateKey)} · ${d.labelKo} — 읽으러 가기`}
-                        aria-label={label + ", 읽으러 가기"}
+                        title={`${d.dayIndex}일차 · ${formatShortDateKey(d.dateKey)} · ${d.labelKo}`}
+                        aria-label={label}
                       >
-                        {d.dayIndex}
+                        {cellBody}
                       </button>
                     ) : (
                       <div
@@ -191,14 +263,83 @@ export default function ChallengeJourney() {
                         title={`${d.dayIndex}일차 · ${formatShortDateKey(d.dateKey)} · ${d.labelKo}`}
                         aria-label={label}
                       >
-                        {d.dayIndex}
+                        {cellBody}
                       </div>
                     );
                   })}
                 </div>
+                {/* 선택한 날짜 액션 패널 */}
+                {selected && (
+                  <div className="mt-3 rounded-2xl border border-[#e8c25a]/30 bg-[#e8c25a]/5 p-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-bold">
+                        {selected.dayIndex}일차 · {selected.labelKo}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setSelected(null)}
+                        className="px-2 text-lg font-bold text-white/40 active:text-white"
+                        aria-label="닫기"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <p className="mt-0.5 text-xs text-white/45">
+                      {formatShortDateKey(selected.dateKey)} ·{" "}
+                      {selected.status === "done"
+                        ? selected.source === "self"
+                          ? "📖 직접 기록으로 완료"
+                          : selected.late
+                            ? "늦음 (완료)"
+                            : "완료"
+                        : selected.status === "reading"
+                          ? "읽는 중"
+                          : "미완료"}
+                    </p>
+                    {selected.status !== "done" ? (
+                      <>
+                        <div className="mt-3 flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setLocation(`/bible/${selected.book}/${selected.firstChapter}`)
+                            }
+                            className="tb-btn flex-1 rounded-xl py-2.5 text-[13px] font-black"
+                          >
+                            📖 읽으러 가기
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleSelectSelfReport}
+                            disabled={selfBusy}
+                            className="flex-1 rounded-xl border border-[#e8c25a]/50 py-2.5 text-[13px] font-bold text-[#e8c25a] active:scale-95 disabled:opacity-50"
+                          >
+                            {selfBusy ? "기록 중..." : "✍️ 직접 기록하기"}
+                          </button>
+                        </div>
+                        <p className="mt-2 text-[11px] leading-relaxed text-white/40">
+                          성경책이나 다른 앱으로 이미 읽었다면 '직접 기록하기'를 눌러주세요.
+                          완료로 인정되지만 📖 직접 기록으로 구분 표시돼요.
+                        </p>
+                      </>
+                    ) : selected.source === "self" ? (
+                      <button
+                        type="button"
+                        onClick={handleCancelSelfReport}
+                        disabled={selfBusy}
+                        className="mt-3 w-full rounded-xl border border-white/20 py-2.5 text-[13px] font-bold text-white/60 active:scale-95 disabled:opacity-50"
+                      >
+                        {selfBusy ? "취소 중..." : "직접 기록 취소"}
+                      </button>
+                    ) : (
+                      <p className="mt-2 text-xs text-white/45">완료된 날짜예요 🎉</p>
+                    )}
+                  </div>
+                )}
                 <p className="mt-2.5 text-[11px] leading-relaxed text-white/40">
-                  지나간 날짜를 누르면 해당 분량을 바로 읽을 수 있어요. 늦은 날짜의 분량을 나중에
-                  읽으면 전체 완료 수에는 들어가지만, 당일 완료로는 표시되지 않고 '늦음'으로 남아요.
+                  지나간 날짜를 누르면 해당 분량을 읽거나 직접 읽음을 기록할 수 있어요. 늦은 날짜의
+                  분량을 나중에 읽으면 전체 완료 수에는 들어가지만, 당일 완료로는 표시되지 않고
+                  '늦음'으로 남아요.
                 </p>
               </div>
 

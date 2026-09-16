@@ -20,13 +20,14 @@ import {
   getMySummary,
   getTodayChallengeDay,
   startChallengeChapter,
-  sgDateKey,
   chapterKey,
   isChapterComplete,
   getMyEncouragements,
   markEncouragementRead,
   formatShortDateKey,
   chapterRemainingText,
+  setSelfReport,
+  getMyManualRecord,
   type Participation,
   type DayProgress,
   type ChallengeRole,
@@ -301,20 +302,24 @@ function StudentCard({ participation }: { participation: Participation }) {
   const [agg, setAgg] = useState({ doneCount: 0, readingCount: 0 });
   const [doneDays, setDoneDays] = useState(0);
   const [encouragements, setEncouragements] = useState<{ id: string; message: string }[]>([]);
+  const [selfReported, setSelfReported] = useState(false);
+  const [selfReportBusy, setSelfReportBusy] = useState(false);
 
   const load = useCallback(async () => {
     const t = getTodayChallengeDay();
     setToday(t);
     if (!t) return;
     try {
-      const [p, a, s] = await Promise.all([
+      const [p, a, s, m] = await Promise.all([
         getDayProgress(t.date),
         getAggregate(t.date),
         getMySummary(),
+        getMyManualRecord(t.date),
       ]);
       setProgress(p);
       setAgg(a);
       setDoneDays(s.doneDays);
+      setSelfReported(!!(m && m.done && m.selfReported));
       try {
         const enc = await getMyEncouragements();
         setEncouragements(enc.map((e) => ({ id: e.id, message: e.message })));
@@ -380,6 +385,26 @@ function StudentCard({ participation }: { participation: Participation }) {
     (c) => progress?.chapters?.[chapterKey(today.book, c)]?.quizPass
   );
 
+  const handleSelfReport = async () => {
+    if (!today || selfReportBusy) return;
+    if (
+      !window.confirm(
+        `오늘 분량(${today.book} ${chapters.join(", ")})을 성경책이나 다른 앱으로 읽었음을 기록할까요?\n완료로 인정되지만 '직접 기록'으로 구분 표시돼요.`
+      )
+    )
+      return;
+    setSelfReportBusy(true);
+    try {
+      await setSelfReport(today.date, true);
+      queuedToast.success("직접 읽음으로 기록했어요 📖");
+      await load();
+    } catch (e: any) {
+      queuedToast.error(e?.message || "기록 중 오류가 났어요");
+    } finally {
+      setSelfReportBusy(false);
+    }
+  };
+
   // Done for Today! — approved mockup s8
   if (allDone) {
     return (
@@ -408,6 +433,11 @@ function StudentCard({ participation }: { participation: Participation }) {
           </div>
         </div>
         <p className="mt-4 text-white/45 text-[12px] font-semibold">See you tomorrow!</p>
+        {selfReported && (
+          <p className="mt-2 text-[#e8c25a] text-[12px] font-bold">
+            📖 성경책/다른 앱으로 읽음 (직접 기록)
+          </p>
+        )}
       </div>
     );
   }
@@ -500,6 +530,14 @@ function StudentCard({ participation }: { participation: Participation }) {
           {participation.kind === "leader" && `${agg.doneCount}명 완료 · 함께 읽는 중 (공식 집계 제외)`}
           {allDone ? " · I'm done ✅" : ""}
         </p>
+        <button
+          type="button"
+          onClick={handleSelfReport}
+          disabled={selfReportBusy}
+          className="mt-3 w-full text-center text-[12px] font-bold text-white/45 underline underline-offset-4 active:text-white/80 disabled:opacity-50"
+        >
+          {selfReportBusy ? "기록 중..." : "📖 성경책 / 다른 앱으로 읽었어요"}
+        </button>
       </div>
     </div>
   );
