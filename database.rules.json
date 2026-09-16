@@ -25,8 +25,9 @@
           "$uid": {
             "$date": {
               ".read": "auth != null && auth.uid == $uid",
-              ".write": "auth != null && ((auth.uid == $uid && newData.child('selfReported').val() == true) || root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val())"
-            }
+              ".write": "auth != null && ((auth.uid == $uid && newData.child('selfReported').val() == true && newData.child('byUid').val() == auth.uid && newData.child('done').isBoolean() && (!data.exists() || data.child('done').val() != true || (data.child('selfReported').val() == true && data.child('byUid').val() == auth.uid)) && root.child('challenges/' + $cid + '/participants/' + auth.uid).exists()) || root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val())"
+            },
+            ".read": "auth != null && auth.uid == $uid"
           },
           ".read": "auth != null && root.child('challenges/' + $cid + '/leaderClaims/' + auth.uid + '/proof').val() == root.child('challenges/' + $cid + '/config/codeHashLeader').val()"
         },
