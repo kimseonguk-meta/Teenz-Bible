@@ -37,6 +37,12 @@ function StatusChip({ d }: { d: JourneyDay }) {
         📖 직접 기록{d.late ? " · 늦음" : ""}
       </span>
     );
+  if (d.status === "done" && d.source === "leader")
+    return (
+      <span className="shrink-0 rounded-full bg-[#241a2e] border border-[#a78bfa] px-2 py-0.5 text-[11px] font-bold text-[#c4b5fd]">
+        🔧 리더 인정
+      </span>
+    );
   if (d.status === "done" && d.late)
     return (
       <span className="shrink-0 rounded-full bg-[#3a2410] border border-[#e08a2e] px-2 py-0.5 text-[11px] font-bold text-[#f0a952]">
@@ -46,7 +52,7 @@ function StatusChip({ d }: { d: JourneyDay }) {
   if (d.status === "done")
     return (
       <span className="shrink-0 rounded-full bg-[#2a2111] border border-[#d4a94e] px-2 py-0.5 text-[11px] font-bold text-[#e8c25a]">
-        완료
+        ✅ 완료
       </span>
     );
   return (
