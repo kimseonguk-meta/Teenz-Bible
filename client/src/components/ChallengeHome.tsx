@@ -536,7 +536,7 @@ function StudentCard({ participation }: { participation: Participation }) {
           disabled={selfReportBusy}
           className="mt-3 w-full text-center text-[12px] font-bold text-white/45 underline underline-offset-4 active:text-white/80 disabled:opacity-50"
         >
-          {selfReportBusy ? "기록 중..." : "📖 성경책 / 다른 앱으로 읽었어요"}
+          {selfReportBusy ? "기록 중..." : "📖 다른 성경책/앱으로 읽었어요"}
         </button>
       </div>
     </div>
