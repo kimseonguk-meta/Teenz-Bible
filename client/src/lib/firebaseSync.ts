@@ -358,6 +358,17 @@ export async function syncFromFirebase(): Promise<boolean> {
     const remoteSyncTime = remoteData.lastSyncedAt || 0;
 
     if (remoteSyncTime > localSyncTime) {
+      // 🛡️ Never let an EMPTY remote snapshot clobber local state on timestamp
+      // alone. (E.g. an "Anonymous"/0-XP snapshot auto-uploaded from this same
+      // browser before a profile existed would otherwise overwrite a freshly
+      // seeded local profile.) Only restore when the remote actually has data.
+      const remoteHasData = (remoteData.stats?.totalXP > 0
+        || Object.keys(remoteData.chaptersRead || {}).length > 0
+        || (remoteData.profile?.nickname && remoteData.profile.nickname !== "Anonymous"));
+      if (!remoteHasData) {
+        console.log("[Sync] Remote snapshot is newer but empty – keeping local state");
+        return false;
+      }
       console.log("[Sync] Remote data is newer, applying to local...");
       applyDataToLocal(remoteData);
       localStorage.setItem("lastSyncedAt", String(remoteSyncTime));
