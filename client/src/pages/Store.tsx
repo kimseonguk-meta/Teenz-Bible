@@ -28,20 +28,20 @@ import { GemsBadge } from "@/components/StatBadges";
 
 // Pet stats/abilities data for detail popup
 const PET_STATS: Record<string, { personality: string; ability: string; lore: string; stats: { faith: number; wisdom: number; joy: number; courage: number } }> = {
-  cat: { personality: "도도하지만 은근히 다정한 츤데레", ability: "조용한 위로 — 슬플 때 옆에 와서 가만히 앉아줌", lore: "브리티시 숏헤어 혈통의 고양이. 겉으론 무심한 척하지만 주인이 성경 읽을 때 항상 옆에 있다.", stats: { faith: 7, wisdom: 8, joy: 6, courage: 5 } },
-  puppy: { personality: "항상 밝고 에너지 넘치는 희망의 아이콘", ability: "응원 짖기 — 매일 읽기 완료 시 보너스 XP +10%", lore: "골든 리트리버 강아지. 주인이 성경을 펼치면 꼬리를 미친 듯이 흔들며 달려온다.", stats: { faith: 8, wisdom: 5, joy: 9, courage: 7 } },
-  lamb: { personality: "포근하고 따뜻한 힐러 타입", ability: "평화의 양털 — 스트레스 받을 때 마음을 진정시켜줌", lore: "라벤더 베레모를 쓴 아기양. 예수님의 양처럼 순하고 온유한 성격의 소유자.", stats: { faith: 9, wisdom: 7, joy: 8, courage: 5 } },
-  lion: { personality: "용감하고 정의로운 리더", ability: "사자후 — 어려운 구절도 용기 있게 도전하게 해줌", lore: "유다 지파의 사자를 닮은 아기 사자. 작은 왕관과 빨간 망토가 트레이드마크.", stats: { faith: 8, wisdom: 6, joy: 6, courage: 10 } },
-  owl: { personality: "지혜롭고 차분한 학자 타입", ability: "지혜의 눈 — 어려운 단어 해설을 자동으로 보여줌", lore: "솔로몬의 지혜를 물려받은 올빼미. 금테 안경 너머로 세상을 관찰한다.", stats: { faith: 7, wisdom: 10, joy: 5, courage: 6 } },
-  dove: { personality: "평화롭고 순수한 천사 같은 존재", ability: "평화의 올리브 — 읽기 중 마음이 평온해지는 효과", lore: "성령의 상징인 비둘기. 올리브 가지를 물고 하늘에서 내려온 평화의 메신저.", stats: { faith: 10, wisdom: 7, joy: 7, courage: 5 } },
-  eagle: { personality: "자유롭고 강인한 모험가", ability: "독수리 날개 — 긴 챕터도 끝까지 읽게 해주는 인내력 부스트", lore: "이사야 40:31의 독수리. 비행 고글을 쓰고 하늘 높이 날아오르는 꿈을 가졌다.", stats: { faith: 7, wisdom: 6, joy: 6, courage: 10 } },
-  fox: { personality: "영리하고 장난기 넘치는 트릭스터", ability: "별의 마법 — 퀴즈 힌트를 살짝 알려줌", lore: "마법사 모자를 쓴 여우. 별 지팡이로 성경 속 숨겨진 보물을 찾아낸다.", stats: { faith: 6, wisdom: 9, joy: 8, courage: 6 } },
-  bear: { personality: "듬직하고 따뜻한 보호자", ability: "곰의 포옹 — 힘들 때 따뜻한 격려 메시지를 보내줌", lore: "체크 조끼를 입은 아기 곰. 꿀단지를 항상 들고 다니며 달콤한 말씀을 전한다.", stats: { faith: 8, wisdom: 6, joy: 7, courage: 9 } },
-  bunny: { personality: "수줍지만 다정한 꽃소녀", ability: "꽃의 축복 — 연속 읽기 시 보너스 젬 획득 확률 UP", lore: "데이지 화관을 쓴 토끼. 수줍어서 처음엔 숨지만, 친해지면 세상에서 제일 다정하다.", stats: { faith: 7, wisdom: 7, joy: 9, courage: 4 } },
-  whale: { personality: "느긋하고 유머러스한 선장", ability: "깊은 바다의 지혜 — 성경의 깊은 의미를 쉽게 풀어줌", lore: "요나를 삼킨 그 고래의 후손. 선장 모자를 쓰고 바다를 누비며 모험을 즐긴다.", stats: { faith: 8, wisdom: 9, joy: 7, courage: 7 } },
-  butterfly: { personality: "신비롭고 우아한 변신의 아이콘", ability: "변화의 날개 — 새로운 책을 시작할 때 특별 보너스", lore: "갤럭시 날개를 가진 나비. 애벌레에서 나비로의 변신처럼, 말씀으로 변화되는 삶을 상징.", stats: { faith: 8, wisdom: 7, joy: 8, courage: 6 } },
-  dragon: { personality: "쿨하고 반항적이지만 속은 따뜻한 츤데레", ability: "불꽃의 열정 — 읽기 스트릭 유지 시 추가 보상", lore: "가죽 재킷을 입은 아기 용. 겉은 터프하지만 성경 이야기에 감동받으면 눈물을 흘린다.", stats: { faith: 6, wisdom: 7, joy: 6, courage: 10 } },
-  unicorn: { personality: "마법적이고 신비로운 꿈의 존재", ability: "무지개 축복 — 모든 활동에서 젬 획득량 +5%", lore: "무지개 갈기와 꽃 화관의 유니콘. 하나님의 약속처럼 아름답고 신비로운 존재.", stats: { faith: 9, wisdom: 8, joy: 9, courage: 7 } },
+  cat: { personality: "Aloof but secretly affectionate", ability: "Quiet Comfort — sits beside you when you're feeling down", lore: "A British Shorthair with royal blood. Acts like she doesn't care, but she's always nearby when you open your Bible.", stats: { faith: 7, wisdom: 8, joy: 6, courage: 5 } },
+  puppy: { personality: "Bright, bouncy icon of hope", ability: "Cheer Bark — +10% bonus XP when you finish your daily reading", lore: "A golden retriever puppy. The second you open your Bible, she comes sprinting over, tail wagging like crazy.", stats: { faith: 8, wisdom: 5, joy: 9, courage: 7 } },
+  lamb: { personality: "Cozy, warm-hearted healer", ability: "Wool of Peace — calms your heart when you're stressed", lore: "A baby lamb in a lavender beret. Gentle and meek, just like the sheep of Jesus.", stats: { faith: 9, wisdom: 7, joy: 8, courage: 5 } },
+  lion: { personality: "Brave and righteous little leader", ability: "Lion's Roar — gives you courage to tackle tough passages", lore: "A baby lion like the Lion of Judah. His tiny crown and red cape are his trademark.", stats: { faith: 8, wisdom: 6, joy: 6, courage: 10 } },
+  owl: { personality: "Wise, calm scholar", ability: "Eyes of Wisdom — shows explanations for difficult words", lore: "An owl who inherited Solomon's wisdom. He watches the world through his gold-rimmed glasses.", stats: { faith: 7, wisdom: 10, joy: 5, courage: 6 } },
+  dove: { personality: "A peaceful, pure, angel-like presence", ability: "Olive of Peace — fills your reading time with calm", lore: "A dove, the symbol of the Holy Spirit. She flew down from heaven carrying an olive branch, a messenger of peace.", stats: { faith: 10, wisdom: 7, joy: 7, courage: 5 } },
+  eagle: { personality: "Free-spirited, fearless adventurer", ability: "Eagle's Wings — the perseverance to finish even long chapters", lore: "The eagle of Isaiah 40:31. Wearing flight goggles, dreaming of soaring high above the clouds.", stats: { faith: 7, wisdom: 6, joy: 6, courage: 10 } },
+  fox: { personality: "Clever, playful little trickster", ability: "Star Magic — reveals sneaky hints for quizzes", lore: "A fox in a wizard hat. With his star wand he digs up hidden treasures in the Bible.", stats: { faith: 6, wisdom: 9, joy: 8, courage: 6 } },
+  bear: { personality: "Sturdy, warm-hearted protector", ability: "Bear Hug — sends you a warm encouraging message when you're down", lore: "A baby bear in a checkered vest. Always carrying his honey pot, delivering sweet words.", stats: { faith: 8, wisdom: 6, joy: 7, courage: 9 } },
+  bunny: { personality: "Shy but sweet flower girl", ability: "Flower Blessing — higher chance of bonus gems on reading streaks", lore: "A bunny wearing a daisy crown. She hides at first, but once she trusts you, she's the sweetest friend ever.", stats: { faith: 7, wisdom: 7, joy: 9, courage: 4 } },
+  whale: { personality: "Laid-back, funny captain", ability: "Wisdom of the Deep — explains the deep meanings of the Bible simply", lore: "A descendant of the great fish that swallowed Jonah. Sailing the seas in his captain's hat, living for adventure.", stats: { faith: 8, wisdom: 9, joy: 7, courage: 7 } },
+  butterfly: { personality: "Mystical, graceful icon of transformation", ability: "Wings of Change — special bonus when you start a new book", lore: "A butterfly with galaxy wings. Like the change from caterpillar to butterfly, she symbolizes a life transformed by the Word.", stats: { faith: 8, wisdom: 7, joy: 8, courage: 6 } },
+  dragon: { personality: "Cool and rebellious, but warm inside", ability: "Flame of Passion — extra rewards for keeping your reading streak", lore: "A baby dragon in a leather jacket. Acts tough, but tears up whenever a Bible story moves him.", stats: { faith: 6, wisdom: 7, joy: 6, courage: 10 } },
+  unicorn: { personality: "Magical, dreamy wonder", ability: "Rainbow Blessing — +5% gems from all activities", lore: "A unicorn with a rainbow mane and flower crown. Beautiful and mysterious, like God's promises.", stats: { faith: 9, wisdom: 8, joy: 9, courage: 7 } },
 };
 
 const tabs: { id: string; icon: FantasyIconName; label: string }[] = [
@@ -704,21 +704,24 @@ export default function Store() {
       {/* ─── Fullscreen Preview Modal ─── */}
       {previewItem && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center p-6"
+          className="fixed inset-0 z-[9999] bg-black/95 overflow-y-auto"
           onClick={() => setPreviewItem(null)}
         >
+          <div className="min-h-full flex flex-col items-center justify-center px-6 py-14">
           {/* Close button */}
           <button
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white text-xl hover:bg-white/20 transition-colors"
+            className="fixed top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white text-xl hover:bg-white/20 transition-colors"
             onClick={() => setPreviewItem(null)}
           >
             ✕
           </button>
 
-          {/* Rarity badge */}
-          <div className="mb-4">
-            <RarityBadge rarity={previewItem.rarity} />
-          </div>
+          {/* Rarity badge (pets show their own badge under the name) */}
+          {previewItem.category !== "pets" && (
+            <div className="mb-4">
+              <RarityBadge rarity={previewItem.rarity} />
+            </div>
+          )}
 
           {/* Preview content based on category */}
           {previewItem.category === "themes" && previewItem.cssVars && (
@@ -854,9 +857,9 @@ export default function Store() {
               {/* Personality & Lore */}
               {stats && (
                 <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-[#8a530f]/20 space-y-2">
-                  <p className="tb-gold-text text-xs font-bold">💜 성격</p>
+                  <p className="tb-gold-text text-xs font-bold">💜 Personality</p>
                   <p className="text-gray-300 text-xs">{stats.personality}</p>
-                  <p className="tb-gold-text text-xs font-bold mt-2">📜 스토리</p>
+                  <p className="tb-gold-text text-xs font-bold mt-2">📜 Story</p>
                   <p className="text-gray-400 text-[11px] leading-relaxed">{stats.lore}</p>
                 </div>
               )}
@@ -864,7 +867,7 @@ export default function Store() {
               {/* Ability */}
               {stats && (
                 <div className="w-full p-3 rounded-xl tb-soft-button border border-cyan-500/30">
-                  <p className="text-cyan-300 text-xs font-bold">✨ 특수 능력</p>
+                  <p className="text-cyan-300 text-xs font-bold">✨ Special Ability</p>
                   <p className="text-white text-xs mt-1">{stats.ability}</p>
                 </div>
               )}
@@ -872,13 +875,13 @@ export default function Store() {
               {/* Stats bars */}
               {stats && (
                 <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-[#8a530f]/20 space-y-2">
-                  <p className="tb-gold-text text-xs font-bold">📊 능력치</p>
+                  <p className="tb-gold-text text-xs font-bold">📊 Stats</p>
                   {Object.entries(stats.stats).map(([key, val]) => {
                     const labels: Record<string, { label: string; color: string }> = {
-                      faith: { label: '신앙', color: 'bg-yellow-400' },
-                      wisdom: { label: '지혜', color: 'bg-blue-400' },
-                      joy: { label: '기쁨', color: 'bg-pink-400' },
-                      courage: { label: '용기', color: 'bg-red-400' },
+                      faith: { label: 'Faith', color: 'bg-yellow-400' },
+                      wisdom: { label: 'Wisdom', color: 'bg-blue-400' },
+                      joy: { label: 'Joy', color: 'bg-pink-400' },
+                      courage: { label: 'Courage', color: 'bg-red-400' },
                     };
                     const conf = labels[key] || { label: key, color: 'bg-gray-400' };
                     return (
@@ -896,7 +899,7 @@ export default function Store() {
 
               {/* Expression preview */}
               <div className="w-full p-3 rounded-xl bg-white/[0.03] border border-[#8a530f]/20">
-                <p className="text-gray-400 text-xs text-center mb-2">🎭 표정 변화</p>
+                <p className="text-gray-400 text-xs text-center mb-2">🎭 Expressions</p>
                 <div className="flex justify-around">
                   {(['excited', 'love', 'sleepy', 'cool'] as PetExpression[]).map(expr => (
                     <button key={expr} type="button" className={`text-center rounded-lg p-1 transition-all ${previewExpr === expr ? 'ring-2 ring-purple-400 bg-purple-400/10' : 'hover:bg-white/5'}`}
@@ -915,10 +918,14 @@ export default function Store() {
             );
           })()}
 
-          {/* Item info */}
+          {/* Item info — pets already show name/details above, so only actions here */}
           <div className="mt-6 text-center max-w-[320px] px-4">
-            <p className="text-white text-lg font-bold break-words [overflow-wrap:anywhere] hyphens-auto w-full">{previewItem.emoji} {previewItem.name}</p>
-            <p className="text-gray-400 text-sm mt-1 break-words [overflow-wrap:anywhere]">{previewItem.description}</p>
+            {previewItem.category !== "pets" && (
+              <>
+                <p className="text-white text-lg font-bold break-words [overflow-wrap:anywhere] hyphens-auto w-full">{previewItem.emoji} {previewItem.name}</p>
+                <p className="text-gray-400 text-sm mt-1 break-words [overflow-wrap:anywhere]">{previewItem.description}</p>
+              </>
+            )}
             {previewItem.price > 0 && !isOwned(previewItem.id) && (
               <button
                 onClick={(e) => {
@@ -945,7 +952,8 @@ export default function Store() {
             )}
           </div>
 
-          <p className="absolute bottom-6 text-gray-600 text-xs">Tap anywhere to close</p>
+          <p className="mt-6 text-gray-600 text-xs">Tap anywhere to close</p>
+          </div>
         </div>
       )}
     </div>
