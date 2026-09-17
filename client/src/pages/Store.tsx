@@ -839,17 +839,17 @@ export default function Store() {
             const rarityConf = RARITY_CONFIG[previewItem.rarity];
             return (
             <div className="flex flex-col items-center gap-3 max-w-xs w-full" onClick={(e) => e.stopPropagation()}>
-              {/* Character image */}
-              <div className="w-32 h-32 flex items-center justify-center">
+              {/* Character image — fixed 128px box with inline styles so layout never depends on CSS loading */}
+              <div className="w-32 h-32 flex items-center justify-center" style={{ width: 128, height: 128, overflow: 'hidden', position: 'relative', zIndex: 1 }}>
                 {getPetExpressionArt(petId, previewExpr ?? 'normal') ? (
-                  <img src={getPetExpressionArt(petId, previewExpr ?? 'normal')!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
+                  <img src={getPetExpressionArt(petId, previewExpr ?? 'normal')!} alt={previewItem.name} className="w-32 h-32 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.5)]" style={{ width: 128, height: 128, objectFit: 'contain' }} />
                 ) : (
                   <span className="text-7xl">{previewItem.petEmoji}</span>
                 )}
               </div>
 
               {/* Name & Rarity */}
-              <div className="text-center">
+              <div className="text-center" style={{ position: 'relative', zIndex: 0 }}>
                 <p className="text-white text-xl font-bold">{previewItem.name}</p>
                 <div className="mt-1"><RarityBadge rarity={previewItem.rarity} /></div>
               </div>
