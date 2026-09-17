@@ -11,8 +11,8 @@ interface SaveToPhotosPlugin {
 }
 const SaveToPhotos = registerPlugin<SaveToPhotosPlugin>('SaveToPhotos');
 import { useLocation } from "wouter";
-import { getEquipped, PETS, PROFILE_FRAMES } from "@/data/storeItems";
-import { getPetDefaultSprite } from "@/data/petSprites";
+import { getEquipped, PETS, PROFILE_FRAMES, getPetState, getPetMoodEmoji } from "@/data/storeItems";
+import { getPetDefaultSprite, getPetCardArt } from "@/data/petSprites";
 import { queuedToast } from "@/lib/toastQueue";
 import { getCachedParticipation } from "@/lib/challenge";
 import { isLinkedToGoogle, linkOrSignInWithGoogle } from "@/lib/googleAuth";
@@ -388,6 +388,13 @@ export default function Home() {
   const equipped = getEquipped();
   const equippedPet = PETS.find(p => p.id === equipped.pet);
   const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
+  // Pet mood (reactive — updates when pet is fed etc.)
+  const [petState, setPetState] = useState(getPetState);
+  useEffect(() => {
+    const handler = () => setPetState(getPetState());
+    window.addEventListener("pet-state-changed", handler);
+    return () => window.removeEventListener("pet-state-changed", handler);
+  }, []);
   const [accountLinked, setAccountLinked] = useState(() => isLinkedToGoogle() || isLinkedToApple());
   // Re-check linked status when Firebase auth state resolves or auth-changed event fires
   useEffect(() => {
@@ -559,8 +566,19 @@ export default function Home() {
 
       {/* Pet and quick actions */}
       <div className="grid grid-cols-[0.92fr_2fr] items-end gap-3 pt-2">
-        <button onClick={() => setLocation("/profile")} className="active:scale-95 transition-transform">
-          <img src="/art-assets/mockup/pet-luna-card.webp" alt="Luna pet card" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] drop-shadow-[0_0_16px_rgba(255,190,70,0.45)]" />
+        <button onClick={() => setLocation("/profile")} className="active:scale-95 transition-transform w-full">
+          {/* Dynamic pet card — shows the equipped pet (was hardcoded Luna mockup) */}
+          <div className="w-full rounded-2xl border-2 border-amber-400/70 bg-gradient-to-b from-[#2a1f0d] to-[#14100a] p-2 flex flex-col items-center drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] drop-shadow-[0_0_16px_rgba(255,190,70,0.45)]">
+            {equippedPet && getPetCardArt(equippedPet.id.replace("pet_", "")) ? (
+              <img src={getPetCardArt(equippedPet.id.replace("pet_", ""))!} alt={equippedPet.name} className="w-full aspect-square object-contain" />
+            ) : (
+              <span className="text-4xl py-4">{equippedPet?.petEmoji || "🐾"}</span>
+            )}
+            <p className="text-white text-sm font-extrabold leading-tight mt-1 truncate max-w-full">{equippedPet?.name || "Pet"}</p>
+            <p className={`text-xs font-bold capitalize ${petState.mood === "happy" ? "text-emerald-300" : petState.mood === "hungry" ? "text-amber-300" : "text-sky-300"}`}>
+              {petState.mood} {getPetMoodEmoji(petState.mood)}
+            </p>
+          </div>
         </button>
         <div className="relative pb-4">
           <img src="/art-assets/mockup/home-action-cluster.webp" alt="Quiz, Devotion, Friends" className="w-full drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)] drop-shadow-[0_0_16px_rgba(255,190,70,0.45)]" />
