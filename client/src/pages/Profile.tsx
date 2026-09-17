@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { safeParseJSON } from "@/lib/safeStorage";
-import { getEquipped, getInventory, PETS, PROFILE_FRAMES, THEMES, READER_BACKGROUNDS } from "@/data/storeItems";
+import { getEquipped, getInventory, PETS, PROFILE_FRAMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { getPetCardArt } from "@/data/petSprites";
 import { useLocation } from "wouter";
 import { auth, db, ref, update, serverTimestamp } from "@/lib/firebase";
@@ -206,7 +206,6 @@ export default function Profile() {
 
   const equippedPet = PETS.find(p => p.id === equipped.pet);
   const equippedFrame = PROFILE_FRAMES.find(f => f.id === equipped.frame);
-  const equippedTheme = THEMES.find(t => t.id === equipped.theme);
   const equippedReader = READER_BACKGROUNDS.find(r => r.id === equipped.readerBg);
 
   const avatar = profile?.avatar || "👦";
@@ -1044,11 +1043,6 @@ export default function Profile() {
           <h3 className="text-base font-bold tb-gold-text">✨ Equipped Items</h3>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <div className="tb-panel tb-panel-glow p-3 text-center">
-            <p className="text-gray-400 text-[10px] mb-2">Theme</p>
-            <div className="tb-medallion w-12 h-12 text-2xl mx-auto">{equippedTheme?.emoji || "🌙"}</div>
-            <p className="text-white text-xs mt-1">{equippedTheme?.name || "Twilight"}</p>
-          </div>
           <div className="tb-panel tb-panel-glow p-3 text-center">
             <p className="text-gray-400 text-[10px] mb-2">Reader BG</p>
             <div className="tb-medallion w-12 h-12 text-2xl mx-auto">{equippedReader?.emoji || "🌑"}</div>

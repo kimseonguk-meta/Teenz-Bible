@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { safeParseJSON } from "@/lib/safeStorage";
 import {
-  THEMES,
   READER_BACKGROUNDS,
   PROFILE_FRAMES,
   PETS,
-  MYSTERY_BOX,
   RARITY_CONFIG,
   getInventory,
   getEquipped,
@@ -13,8 +11,6 @@ import {
   equipItem,
   unequipPet,
   ownsItem,
-  openMysteryBox,
-  applyTheme,
   getPetMoodEmoji,
   type StoreItem,
   type ItemCategory,
@@ -45,11 +41,9 @@ const PET_STATS: Record<string, { personality: string; ability: string; lore: st
 };
 
 const tabs: { id: string; icon: FantasyIconName; label: string }[] = [
-  { id: "themes", icon: "palette", label: "Themes" },
   { id: "readerBg", icon: "book", label: "Reader" },
   { id: "frames", icon: "frame", label: "Frames" },
   { id: "pets", icon: "paw", label: "Pets" },
-  { id: "mystery", icon: "chest", label: "Mystery" },
   { id: "earn", icon: "bag", label: "Earn" },
 ];
 
@@ -64,13 +58,10 @@ function getGems(): number {
 }
 
 export default function Store() {
-  const [activeTab, setActiveTab] = useState("themes");
+  const [activeTab, setActiveTab] = useState("pets");
   const [gems, setGems] = useState(getGems);
   const [equipped, setEquipped] = useState(getEquipped);
   const [inventory, setInventory] = useState(getInventory);
-  const [mysteryResult, setMysteryResult] = useState<{ emoji: string; message: string } | null>(null);
-  const [isOpening, setIsOpening] = useState(false);
-  const [previewingTheme, setPreviewingTheme] = useState<string | null>(null);
   const [previewItem, setPreviewItem] = useState<StoreItem | null>(null);
   const [previewExpr, setPreviewExpr] = useState<PetExpression | null>(null);
   // Reset the selected expression whenever a different item is previewed
@@ -81,7 +72,6 @@ export default function Store() {
   const [storeReady, setStoreReady] = useState(false);
 
   // Memoize static lists per fix #5 to avoid re-render flicker
-  const memoizedThemes = useMemo(() => THEMES, []);
   const memoizedReaderBgs = useMemo(() => READER_BACKGROUNDS, []);
 
   useEffect(() => {
@@ -133,10 +123,6 @@ export default function Store() {
 
   const handleEquip = useCallback((item: StoreItem) => {
     equipItem(item.id, item.category);
-    // If it's a theme, apply it immediately to the whole app
-    if (item.category === "themes") {
-      applyTheme(item.id);
-    }
     setEquipped(getEquipped());
     toast.success(`Equipped ${item.name}! ✨`);
     // Critical sync: equip changes must be saved immediately
@@ -150,30 +136,9 @@ export default function Store() {
     window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
   }, []);
 
-  const handleMysteryBox = useCallback(() => {
-    setIsOpening(true);
-    setMysteryResult(null);
-    
-    setTimeout(() => {
-      const result = openMysteryBox();
-      if (result.success && result.reward) {
-        const emoji = "type" in result.reward ? "💎" : result.reward.emoji;
-        setMysteryResult({ emoji, message: result.message });
-        toast.success(result.message);
-      } else {
-        toast.error(result.message);
-      }
-      setGems(getGems());
-      setInventory(getInventory());
-      setIsOpening(false);
-      window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
-    }, 1500);
-  }, []);
-
   const isOwned = (id: string) => inventory.ownedItems.includes(id);
   const isEquipped = (id: string, category: ItemCategory) => {
     switch (category) {
-      case "themes": return equipped.theme === id;
       case "readerBg": return equipped.readerBg === id;
       case "frames": return equipped.frame === id;
       case "pets": return equipped.pet === id;
@@ -300,108 +265,6 @@ export default function Store() {
       </div>
 
       {/* Content */}
-      {activeTab === "themes" && (
-        <div className="min-w-0 w-full overflow-hidden">
-          <h2 className="text-lg font-bold tb-gold-text font-display mb-3">🎨 App Themes</h2>
-          <p className="text-gray-400 text-xs mb-3">Change the entire app color scheme!</p>
-          {previewingTheme && (
-            <div className="mb-3 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-between">
-              <span className="text-yellow-300 text-xs font-medium">👁️ Previewing theme...</span>
-              <button
-                onClick={() => {
-                  setPreviewingTheme(null);
-                  applyTheme(equipped.theme || undefined);
-                }}
-                className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-200 hover:bg-gray-600"
-              >
-                End Preview
-              </button>
-            </div>
-          )}
-          {!storeReady ? (
-            <div className="grid grid-cols-3 gap-3 min-w-0 w-full">
-              {[0,1,2,3,4,5].map(i => (
-                <div key={i} className="p-3 rounded-xl bg-white/[0.03] border border-[#8a530f]/10 animate-pulse h-32 min-w-0" />
-              ))}
-            </div>
-          ) : (
-          <div className="grid grid-cols-3 gap-3 min-w-0 w-full">
-            {memoizedThemes.map((item) => {
-              const owned = isOwned(item.id);
-              const active = isEquipped(item.id, item.category);
-              const previewing = previewingTheme === item.id;
-              const rarityConf = RARITY_CONFIG[item.rarity];
-
-              return (
-                <div
-                  key={item.id}
-                  className={`p-3 rounded-xl text-center relative transition-all min-w-0 overflow-hidden ${rarityConf.glow} ${
-                    active
-                      ? "tb-soft-button border-2 border-[#8a530f]/60 shadow-[0_0_12px_rgba(168,85,247,0.3)]"
-                      : previewing
-                      ? "bg-yellow-600/10 border-2 border-yellow-500/40"
-                      : "bg-white/[0.03] border border-[#8a530f]/20 hover:border-[#8a530f]/40"
-                  }`}
-                >
-                  {active && (
-                    <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-teal-500 text-white text-[10px] flex items-center justify-center font-bold">✓</div>
-                  )}
-                  <div className="absolute top-1.5 left-1.5">
-                    <RarityBadge rarity={item.rarity} />
-                  </div>
-                  <div className="my-2 mt-5 cursor-pointer hover:scale-110 transition-transform flex items-center justify-center" onClick={() => setPreviewItem(item)}>
-                    {item.category === 'pets' && getPetCardArt(item.id.replace('pet_', '')) ? (
-                      <img src={getPetCardArt(item.id.replace('pet_', ''))!} alt={item.name} className="w-12 h-12 object-contain" />
-                    ) : (
-                      <span className="tb-medallion w-14 h-14 text-2xl">{item.emoji}</span>
-                    )}
-                  </div>
-                  <p className="text-white text-[11px] sm:text-xs font-medium line-clamp-2 min-h-[2.2em] leading-tight break-words [overflow-wrap:anywhere] hyphens-auto w-full overflow-hidden cursor-pointer" onClick={() => setPreviewItem(item)} title={item.name}>{item.name}</p>
-                  <p className="text-gray-500 text-[10px] mt-0.5 line-clamp-1 break-words [overflow-wrap:anywhere] leading-tight w-full overflow-hidden">{item.description}</p>
-
-                  <div className="mt-2 space-y-1">
-                    {!owned && item.price > 0 ? (
-                      <>
-                        <button
-                          onClick={() => handlePurchase(item)}
-                          className="w-full py-1.5 rounded-lg tb-btn-flat text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
-                        >
-                          {item.price} 💎
-                        </button>
-                        <button
-                          onClick={() => {
-                            setPreviewingTheme(item.id);
-                            applyTheme(item.id);
-                          }}
-                          className="w-full py-1 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-[10px] hover:bg-white/10 transition-all"
-                        >
-                          👁️ Preview
-                        </button>
-                      </>
-                    ) : owned && !active ? (
-                      <button
-                        onClick={() => {
-                          handleEquip(item);
-                          setPreviewingTheme(null);
-                        }}
-                        className="w-full py-1.5 rounded-lg bg-gradient-to-r tb-btn text-white text-[11px] font-bold hover:opacity-90 transition-opacity"
-                      >
-                        Equip
-                      </button>
-                    ) : (
-                      <div className="py-1.5 text-teal-400 text-[11px] font-bold">
-                        {item.price === 0 ? "Default" : "Equipped ✓"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          )}
-        </div>
-      )}
-
       {activeTab === "readerBg" && (
         <div className="min-w-0 w-full overflow-hidden">
           <h2 className="text-lg font-bold tb-gold-text font-display mb-3">📖 Reader Backgrounds</h2>
@@ -548,55 +411,6 @@ export default function Store() {
         </div>
       )}
 
-      {activeTab === "mystery" && (
-        <div className="flex flex-col items-center pt-6">
-          <h2 className="text-lg font-bold tb-gold-text font-display mb-2">🎁 Mystery Box</h2>
-          <p className="text-gray-400 text-sm mb-6 text-center">
-            Open for a random item or bonus gems!<br />
-            <span className="text-xs text-gray-500">70% chance of item, 30% chance of gems</span>
-          </p>
-
-          {/* Mystery Box Visual */}
-          <div
-            className={`w-32 h-32 rounded-2xl bg-gradient-to-br from-pink-500/20 to-[#8a530f]/20 border-2 border-pink-500/40 flex items-center justify-center text-6xl mb-4 transition-all cursor-pointer hover:scale-105 ${
-              isOpening ? "animate-bounce" : ""
-            }`}
-            onClick={!isOpening ? handleMysteryBox : undefined}
-          >
-            {isOpening ? "✨" : "🎁"}
-          </div>
-
-          <div className="flex items-center gap-1 mb-4">
-            <span className="text-white font-bold">{MYSTERY_BOX.price}</span>
-            <span>💎</span>
-            <span className="text-gray-400 text-sm">per box</span>
-          </div>
-
-          <button
-            onClick={handleMysteryBox}
-            disabled={isOpening || gems < MYSTERY_BOX.price}
-            className="px-8 py-3 rounded-xl tb-btn text-white font-bold shadow-[0_0_15px_rgba(236,72,153,0.4)] disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
-          >
-            {isOpening ? "Opening..." : "Open Box! 🎁"}
-          </button>
-
-          {/* Result */}
-          {mysteryResult && (
-            <div className="mt-6 p-5 rounded-xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 text-center animate-in zoom-in-95 duration-300">
-              <div className="text-5xl mb-2">{mysteryResult.emoji}</div>
-              <p className="text-white font-bold">{mysteryResult.message}</p>
-            </div>
-          )}
-
-          {/* Recent items owned count */}
-          <div className="mt-8 text-center">
-            <p className="text-gray-500 text-xs">
-              Items owned: {inventory.ownedItems.length} / {THEMES.length + READER_BACKGROUNDS.length + PROFILE_FRAMES.length + PETS.length}
-            </p>
-          </div>
-        </div>
-      )}
-
       {activeTab === "earn" && (
         <div className="space-y-4">
           <h2 className="text-lg font-bold tb-gold-text font-display mb-3">💰 How to Earn Gems</h2>
@@ -696,7 +510,6 @@ export default function Store() {
               <li>• Read consistently every day to maximize gem earnings</li>
               <li>• Quizzes are available after reading each chapter</li>
               <li>• Each book has an intro video — watch them all for bonus gems!</li>
-              <li>• Mystery Box can give you items worth more than 15💎</li>
             </ul>
           </div>
         </div>

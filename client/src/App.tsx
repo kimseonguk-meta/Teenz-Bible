@@ -7,7 +7,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { GameProvider } from "./contexts/GameContext";
 import AppLayout from "./components/AppLayout";
 import Home from "./pages/Home";
-import { initTheme } from "./data/storeItems";
 import DailyBonus from "./components/DailyBonus";
 import FloatingPet from "./components/FloatingPet";
 import ProfilePhotoPrompt from "./components/ProfilePhotoPrompt";
@@ -164,9 +163,6 @@ function App() {
 
 
   useEffect(() => {
-    // Apply saved theme on app load
-    initTheme();
-
     // Evening reading reminders: reconcile on start + every foreground
     // (done today -> cancel tonight's; not done -> ensure 6pm/8pm scheduled)
     reconcileReminders().catch(() => {});
@@ -215,7 +211,6 @@ function App() {
           if (appleResult && appleResult.success) {
             console.log("[AppleAuth] Redirect handled:", appleResult.message);
             if ('restored' in appleResult && appleResult.restored) {
-              initTheme();
               window.dispatchEvent(new CustomEvent("sync-restored"));
               window.dispatchEvent(new CustomEvent("gems-changed"));
             }
@@ -224,8 +219,6 @@ function App() {
           const { restored } = await initializeSync();
           if (restored) {
             console.log("[Sync] Data restored from Firebase!");
-            // Re-apply theme after restore
-            initTheme();
             // Notify all components that data was restored
             window.dispatchEvent(new CustomEvent("sync-restored"));
             window.dispatchEvent(new CustomEvent("gems-changed"));

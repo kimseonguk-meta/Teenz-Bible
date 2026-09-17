@@ -210,9 +210,6 @@ function applyDataToLocal(data: UserDataSnapshot) {
   // Equipped
   if (data.equipped) {
     localStorage.setItem("teensBibleEquipped", JSON.stringify(data.equipped));
-    if (data.equipped.theme) {
-      localStorage.setItem("teensBibleActiveTheme", data.equipped.theme);
-    }
   }
 
   // Settings

@@ -2,7 +2,7 @@ import { safeParseJSON } from "@/lib/safeStorage";
 // storeItems - inventory helpers (already migrated to safeStorage earlier)
 // This file had remaining direct JSON.parse spots - fixed below
 
-export type ItemCategory = "themes" | "readerBg" | "frames" | "pets" | "mystery";
+export type ItemCategory = "readerBg" | "frames" | "pets";
 export type Rarity = "common" | "rare" | "epic" | "legendary";
 
 export const RARITY_CONFIG: Record<Rarity, { label: string; color: string; bgColor: string; borderColor: string; glow: string }> = {
@@ -20,8 +20,6 @@ export interface StoreItem {
   emoji: string;
   description: string;
   rarity: Rarity;
-  // Theme-specific
-  cssVars?: Record<string, string>;
   // Reader background specific
   readerStyle?: { bg: string; text: string; label: string };
   // Frame specific
@@ -29,351 +27,6 @@ export interface StoreItem {
   // Pet specific
   petEmoji?: string;
 }
-
-// ============ THEMES ============
-// Each theme defines full OKLCH CSS variables that override :root
-export const THEMES: StoreItem[] = [
-  {
-    id: "theme_twilight",
-    name: "Midnight Black",
-    category: "themes",
-    price: 0,
-    emoji: "🖤",
-    description: "Black with golden constellations – default",
-    rarity: "common",
-    cssVars: {
-      "--primary": "oklch(0.84 0.15 88)",
-      "--accent": "oklch(0.84 0.15 88)",
-      "--ring": "oklch(0.84 0.15 88)",
-      "--border": "oklch(0.20 0 0)",
-      "--input": "oklch(0.14 0 0)",
-      "--card": "oklch(0.14 0 0)",
-      "--secondary": "oklch(0.16 0 0)",
-      "--muted": "oklch(0.18 0 0)",
-      "--neon-hue": "45",
-      "--neon-rgb": "255, 215, 0",
-      "--cosmic-bg-1": "#0a0a0a",
-      "--cosmic-bg-2": "#111111",
-      "--cosmic-bg-3": "#080808",
-      "--cosmic-bg-4": "#050505",
-      "--neon-card-bg": "rgba(18, 18, 18, 0.82)",
-      "--neon-card-gold-bg": "rgba(24, 18, 8, 0.82)",
-    },
-  },
-  {
-    id: "theme_ocean",
-    name: "Ocean Blue",
-    category: "themes",
-    price: 180,
-    emoji: "🌊",
-    description: "Calm ocean vibes",
-    rarity: "rare",
-    cssVars: {
-      "--primary": "oklch(0.6 0.15 195)",
-      "--accent": "oklch(0.6 0.15 195)",
-      "--ring": "oklch(0.65 0.15 195)",
-      "--border": "oklch(0.3 0.06 195)",
-      "--input": "oklch(0.18 0.04 195)",
-      "--card": "oklch(0.13 0.03 195)",
-      "--secondary": "oklch(0.18 0.03 195)",
-      "--muted": "oklch(0.2 0.02 195)",
-      "--neon-hue": "195",
-      "--neon-rgb": "6, 182, 212",
-      "--cosmic-bg-1": "#001a1f",
-      "--cosmic-bg-2": "#002a3a",
-      "--cosmic-bg-3": "#001520",
-      "--cosmic-bg-4": "#000a10",
-      "--neon-card-bg": "rgba(0, 20, 35, 0.75)",
-    },
-  },
-  {
-    id: "theme_forest",
-    name: "Forest Green",
-    category: "themes",
-    price: 180,
-    emoji: "🌲",
-    description: "Peaceful forest atmosphere",
-    rarity: "rare",
-    cssVars: {
-      "--primary": "oklch(0.6 0.2 145)",
-      "--accent": "oklch(0.6 0.2 145)",
-      "--ring": "oklch(0.65 0.2 145)",
-      "--border": "oklch(0.3 0.06 145)",
-      "--input": "oklch(0.18 0.04 145)",
-      "--card": "oklch(0.13 0.03 145)",
-      "--secondary": "oklch(0.18 0.03 145)",
-      "--muted": "oklch(0.2 0.02 145)",
-      "--neon-hue": "145",
-      "--neon-rgb": "34, 197, 94",
-      "--cosmic-bg-1": "#001a08",
-      "--cosmic-bg-2": "#003315",
-      "--cosmic-bg-3": "#001a0a",
-      "--cosmic-bg-4": "#000f05",
-      "--neon-card-bg": "rgba(0, 20, 10, 0.75)",
-    },
-  },
-  {
-    id: "theme_sunset",
-    name: "Sunset Orange",
-    category: "themes",
-    price: 190,
-    emoji: "🌅",
-    description: "Warm sunset glow",
-    rarity: "rare",
-    cssVars: {
-      "--primary": "oklch(0.65 0.2 45)",
-      "--accent": "oklch(0.65 0.2 45)",
-      "--ring": "oklch(0.7 0.2 45)",
-      "--border": "oklch(0.3 0.06 45)",
-      "--input": "oklch(0.18 0.04 45)",
-      "--card": "oklch(0.13 0.03 45)",
-      "--secondary": "oklch(0.18 0.03 45)",
-      "--muted": "oklch(0.2 0.02 45)",
-      "--neon-hue": "45",
-      "--neon-rgb": "249, 115, 22",
-      "--cosmic-bg-1": "#1a0800",
-      "--cosmic-bg-2": "#331500",
-      "--cosmic-bg-3": "#1a0a00",
-      "--cosmic-bg-4": "#0f0500",
-      "--neon-card-bg": "rgba(30, 10, 0, 0.75)",
-    },
-  },
-  {
-    id: "theme_galaxy",
-    name: "Galaxy Pink",
-    category: "themes",
-    price: 210,
-    emoji: "🌌",
-    description: "Cosmic pink energy",
-    rarity: "epic",
-    cssVars: {
-      "--primary": "oklch(0.6 0.22 330)",
-      "--accent": "oklch(0.6 0.22 330)",
-      "--ring": "oklch(0.65 0.22 330)",
-      "--border": "oklch(0.3 0.07 330)",
-      "--input": "oklch(0.18 0.04 330)",
-      "--card": "oklch(0.13 0.03 330)",
-      "--secondary": "oklch(0.18 0.03 330)",
-      "--muted": "oklch(0.2 0.02 330)",
-      "--neon-hue": "330",
-      "--neon-rgb": "236, 72, 153",
-      "--cosmic-bg-1": "#1a0012",
-      "--cosmic-bg-2": "#33001f",
-      "--cosmic-bg-3": "#1a0010",
-      "--cosmic-bg-4": "#0f0008",
-      "--neon-card-bg": "rgba(30, 0, 18, 0.75)",
-    },
-  },
-  {
-    id: "theme_crimson",
-    name: "Crimson Red",
-    category: "themes",
-    price: 190,
-    emoji: "❤️‍🔥",
-    description: "Bold and passionate",
-    rarity: "rare",
-    cssVars: {
-      "--primary": "oklch(0.55 0.22 25)",
-      "--accent": "oklch(0.55 0.22 25)",
-      "--ring": "oklch(0.6 0.22 25)",
-      "--border": "oklch(0.3 0.07 25)",
-      "--input": "oklch(0.16 0.04 25)",
-      "--card": "oklch(0.12 0.03 25)",
-      "--secondary": "oklch(0.16 0.03 25)",
-      "--muted": "oklch(0.18 0.02 25)",
-      "--neon-hue": "25",
-      "--neon-rgb": "220, 38, 38",
-      "--cosmic-bg-1": "#1a0500",
-      "--cosmic-bg-2": "#330a00",
-      "--cosmic-bg-3": "#1a0300",
-      "--cosmic-bg-4": "#0f0200",
-      "--neon-card-bg": "rgba(30, 5, 0, 0.75)",
-    },
-  },
-  {
-    id: "theme_arctic",
-    name: "Arctic Ice",
-    category: "themes",
-    price: 200,
-    emoji: "🧊",
-    description: "Cool icy blue tones",
-    rarity: "epic",
-    cssVars: {
-      "--primary": "oklch(0.7 0.12 220)",
-      "--accent": "oklch(0.7 0.12 220)",
-      "--ring": "oklch(0.75 0.12 220)",
-      "--border": "oklch(0.3 0.05 220)",
-      "--input": "oklch(0.16 0.03 220)",
-      "--card": "oklch(0.12 0.02 220)",
-      "--secondary": "oklch(0.16 0.02 220)",
-      "--muted": "oklch(0.18 0.02 220)",
-      "--neon-hue": "220",
-      "--neon-rgb": "56, 189, 248",
-      "--cosmic-bg-1": "#000a1a",
-      "--cosmic-bg-2": "#001533",
-      "--cosmic-bg-3": "#000a1a",
-      "--cosmic-bg-4": "#00050f",
-      "--neon-card-bg": "rgba(0, 10, 30, 0.75)",
-    },
-  },
-  {
-    id: "theme_lavender",
-    name: "Lavender Dream",
-    category: "themes",
-    price: 190,
-    emoji: "💜",
-    description: "Soft lavender serenity",
-    rarity: "rare",
-    cssVars: {
-      "--primary": "oklch(0.65 0.18 300)",
-      "--accent": "oklch(0.65 0.18 300)",
-      "--ring": "oklch(0.7 0.18 300)",
-      "--border": "oklch(0.3 0.06 300)",
-      "--input": "oklch(0.17 0.04 300)",
-      "--card": "oklch(0.12 0.03 300)",
-      "--secondary": "oklch(0.17 0.03 300)",
-      "--muted": "oklch(0.19 0.02 300)",
-      "--neon-hue": "300",
-      "--neon-rgb": "192, 132, 252",
-      "--cosmic-bg-1": "#0f0018",
-      "--cosmic-bg-2": "#1a0030",
-      "--cosmic-bg-3": "#0d0018",
-      "--cosmic-bg-4": "#06000d",
-      "--neon-card-bg": "rgba(15, 0, 25, 0.75)",
-    },
-  },
-  {
-    id: "theme_midnight",
-    name: "Obsidian Gold",
-    category: "themes",
-    price: 200,
-    emoji: "🌟",
-    description: "Deep black with golden constellations",
-    rarity: "common",
-    cssVars: {
-      "--primary": "oklch(0.84 0.15 88)",
-      "--accent": "oklch(0.84 0.15 88)",
-      "--ring": "oklch(0.84 0.15 88)",
-      "--border": "oklch(0.20 0 0)",
-      "--input": "oklch(0.14 0 0)",
-      "--card": "oklch(0.12 0 0)",
-      "--secondary": "oklch(0.14 0 0)",
-      "--muted": "oklch(0.16 0 0)",
-      "--neon-hue": "45",
-      "--neon-rgb": "255, 215, 0",
-      "--cosmic-bg-1": "#0a0a0a",
-      "--cosmic-bg-2": "#111111",
-      "--cosmic-bg-3": "#080808",
-      "--cosmic-bg-4": "#050505",
-      "--neon-card-bg": "rgba(12, 12, 12, 0.88)",
-      "--neon-card-gold-bg": "rgba(20, 16, 6, 0.86)",
-    },
-  },
-  {
-    id: "theme_gold",
-    name: "Royal Gold",
-    category: "themes",
-    price: 240,
-    emoji: "👑",
-    description: "Fit for a king",
-    rarity: "legendary",
-    cssVars: {
-      "--primary": "oklch(0.7 0.16 85)",
-      "--accent": "oklch(0.7 0.16 85)",
-      "--ring": "oklch(0.75 0.16 85)",
-      "--border": "oklch(0.35 0.06 85)",
-      "--input": "oklch(0.18 0.04 85)",
-      "--card": "oklch(0.13 0.03 85)",
-      "--secondary": "oklch(0.18 0.03 85)",
-      "--muted": "oklch(0.2 0.02 85)",
-      "--neon-hue": "85",
-      "--neon-rgb": "234, 179, 8",
-      "--cosmic-bg-1": "#0f0a00",
-      "--cosmic-bg-2": "#1a1200",
-      "--cosmic-bg-3": "#0f0800",
-      "--cosmic-bg-4": "#080500",
-      "--neon-card-bg": "rgba(20, 15, 0, 0.75)",
-    },
-  },
-  {
-    id: "theme_rose",
-    name: "Rose Garden",
-    category: "themes",
-    price: 200,
-    emoji: "🌹",
-    description: "Elegant rose tones",
-    rarity: "epic",
-    cssVars: {
-      "--primary": "oklch(0.6 0.18 350)",
-      "--accent": "oklch(0.6 0.18 350)",
-      "--ring": "oklch(0.65 0.18 350)",
-      "--border": "oklch(0.3 0.06 350)",
-      "--input": "oklch(0.17 0.04 350)",
-      "--card": "oklch(0.12 0.03 350)",
-      "--secondary": "oklch(0.17 0.03 350)",
-      "--muted": "oklch(0.19 0.02 350)",
-      "--neon-hue": "350",
-      "--neon-rgb": "244, 63, 94",
-      "--cosmic-bg-1": "#1a0008",
-      "--cosmic-bg-2": "#330010",
-      "--cosmic-bg-3": "#1a0006",
-      "--cosmic-bg-4": "#0f0003",
-      "--neon-card-bg": "rgba(25, 0, 8, 0.75)",
-    },
-  },
-  {
-    id: "theme_ember",
-    name: "Ember Glow",
-    category: "themes",
-    price: 210,
-    emoji: "🔥",
-    description: "Warm burning embers",
-    rarity: "epic",
-    cssVars: {
-      "--primary": "oklch(0.6 0.2 35)",
-      "--accent": "oklch(0.6 0.2 35)",
-      "--ring": "oklch(0.65 0.2 35)",
-      "--border": "oklch(0.3 0.06 35)",
-      "--input": "oklch(0.16 0.04 35)",
-      "--card": "oklch(0.12 0.03 35)",
-      "--secondary": "oklch(0.16 0.03 35)",
-      "--muted": "oklch(0.18 0.02 35)",
-      "--neon-hue": "35",
-      "--neon-rgb": "251, 146, 60",
-      "--cosmic-bg-1": "#1a0a00",
-      "--cosmic-bg-2": "#2a1200",
-      "--cosmic-bg-3": "#1a0800",
-      "--cosmic-bg-4": "#0f0400",
-      "--neon-card-bg": "rgba(25, 10, 0, 0.75)",
-    },
-  },
-  {
-    id: "theme_aurora",
-    name: "Aurora Borealis",
-    category: "themes",
-    price: 250,
-    emoji: "🌠",
-    description: "Northern lights magic",
-    rarity: "legendary",
-    cssVars: {
-      "--primary": "oklch(0.65 0.2 165)",
-      "--accent": "oklch(0.65 0.2 165)",
-      "--ring": "oklch(0.7 0.2 165)",
-      "--border": "oklch(0.3 0.06 165)",
-      "--input": "oklch(0.16 0.04 165)",
-      "--card": "oklch(0.12 0.03 165)",
-      "--secondary": "oklch(0.16 0.03 165)",
-      "--muted": "oklch(0.18 0.02 165)",
-      "--neon-hue": "165",
-      "--neon-rgb": "45, 212, 191",
-      "--cosmic-bg-1": "#001a12",
-      "--cosmic-bg-2": "#003325",
-      "--cosmic-bg-3": "#001a10",
-      "--cosmic-bg-4": "#000f08",
-      "--neon-card-bg": "rgba(0, 20, 15, 0.75)",
-    },
-  },
-];
 
 // ============ READER BACKGROUNDS ============
 export const READER_BACKGROUNDS: StoreItem[] = [
@@ -797,17 +450,6 @@ export const PETS: StoreItem[] = [
   },
 ];
 
-// ============ MYSTERY BOX ============
-export const MYSTERY_BOX: StoreItem = {
-  id: "mystery_box",
-  name: "Mystery Box",
-  category: "mystery",
-  price: 50,
-  emoji: "🎁",
-  description: "Open for a random reward!",
-  rarity: "epic",
-};
-
 // ============ INVENTORY SYSTEM ============
 const INVENTORY_KEY = "teensBibleInventory";
 const EQUIPPED_KEY = "teensBibleEquipped";
@@ -817,21 +459,19 @@ export interface Inventory {
 }
 
 export interface Equipped {
-  theme: string;
   readerBg: string;
   frame: string;
   pet: string | null;
 }
 
 const DEFAULT_EQUIPPED: Equipped = {
-  theme: "theme_twilight",
   readerBg: "reader_dark",
   frame: "frame_none",
   pet: null,
 };
 
 export function getInventory(): Inventory {
-  return safeParseJSON<Inventory>(INVENTORY_KEY, { ownedItems: ["theme_twilight", "reader_dark", "frame_none"] });
+  return safeParseJSON<Inventory>(INVENTORY_KEY, { ownedItems: ["reader_dark", "frame_none"] });
 }
 
 export function saveInventory(inv: Inventory) {
@@ -844,8 +484,6 @@ export function getEquipped(): Equipped {
 
 export function saveEquipped(eq: Equipped) {
   localStorage.setItem(EQUIPPED_KEY, JSON.stringify(eq));
-  // Apply theme immediately when equipped theme changes
-  applyTheme(eq.theme);
   // Dispatch custom event so other components can react
   window.dispatchEvent(new CustomEvent("equipped-changed", { detail: eq }));
 }
@@ -880,9 +518,6 @@ export function purchaseItem(itemId: string, price: number): { success: boolean;
 export function equipItem(itemId: string, category: ItemCategory) {
   const eq = getEquipped();
   switch (category) {
-    case "themes":
-      eq.theme = itemId;
-      break;
     case "readerBg":
       eq.readerBg = itemId;
       break;
@@ -900,70 +535,6 @@ export function unequipPet() {
   const eq = getEquipped();
   eq.pet = null;
   saveEquipped(eq);
-}
-
-// Mystery box rewards
-export function openMysteryBox(): { success: boolean; reward?: StoreItem | { type: "gems"; amount: number }; message: string } {
-  const gems = getGems();
-  if (gems < MYSTERY_BOX.price) {
-    return { success: false, message: "Not enough gems!" };
-  }
-
-  setGems(gems - MYSTERY_BOX.price);
-
-  // 30% chance of bonus gems
-  if (Math.random() < 0.3) {
-    const bonusGems = [15, 25, 35, 50, 65, 80][Math.floor(Math.random() * 6)];
-    setGems(getGems() + bonusGems);
-    return { success: true, reward: { type: "gems", amount: bonusGems }, message: `You won ${bonusGems} gems!` };
-  }
-
-  // 70% chance of random item
-  const allItems = [...THEMES, ...READER_BACKGROUNDS, ...PROFILE_FRAMES, ...PETS].filter(
-    (item) => item.price > 0 && !ownsItem(item.id)
-  );
-
-  if (allItems.length === 0) {
-    // All items owned, give gems instead
-    const bonusGems = 50;
-    setGems(getGems() + bonusGems);
-    return { success: true, reward: { type: "gems", amount: bonusGems }, message: `You own everything! Here's ${bonusGems} gems!` };
-  }
-
-  const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
-  const inv = getInventory();
-  inv.ownedItems.push(randomItem.id);
-  saveInventory(inv);
-
-  return { success: true, reward: randomItem, message: `You won ${randomItem.name}!` };
-}
-
-// ============ THEME APPLICATION ============
-export function applyTheme(themeId?: string) {
-  const equipped = getEquipped();
-  const activeThemeId = themeId || equipped.theme;
-  const theme = THEMES.find(t => t.id === activeThemeId);
-  if (!theme?.cssVars) return;
-
-  const root = document.documentElement;
-  
-  // Apply CSS variables from theme
-  Object.entries(theme.cssVars).forEach(([key, value]) => {
-    root.style.setProperty(key, value);
-  });
-
-  // Update neon-card and cosmic-bg colors dynamically
-  const neonRgb = theme.cssVars["--neon-rgb"] || "139, 92, 246";
-  root.style.setProperty("--neon-rgb", neonRgb);
-
-  // Store the active theme for persistence
-  localStorage.setItem("teensBibleActiveTheme", activeThemeId);
-}
-
-// Initialize theme on app load
-export function initTheme() {
-  const equipped = getEquipped();
-  applyTheme(equipped.theme);
 }
 
 // Gems helpers
