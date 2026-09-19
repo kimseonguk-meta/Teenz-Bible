@@ -612,7 +612,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Bible AI - Prominent Card */}
+      {/* Bible AI - Prominent Card (hidden until Blaze upgrade: /api/bible-ai 404s, function never deployed) */}
+      {/*
       <button
         onClick={() => setLocation("/bible-ai")}
         className="w-full tb-panel tb-panel-glow p-4 flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer group overflow-hidden"
@@ -624,6 +625,7 @@ export default function Home() {
         </div>
         <div className="tb-gold-text text-2xl flex-shrink-0 pr-3">›</div>
       </button>
+      */}
 
       {/* XP Bar */}
       <div className="tb-panel tb-panel-glow p-4 flex items-center gap-4 overflow-hidden">
