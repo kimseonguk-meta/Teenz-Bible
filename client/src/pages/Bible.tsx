@@ -687,7 +687,6 @@ export default function Bible() {
       <QuizView
         book={view.book}
         chapterNum={view.chapterNum}
-        lang={lang}
         isChallenge={!!challengeCtx}
         onFinish={(correct) => {
           // Challenge re-take: no duplicate XP/gems if this quiz was already passed before
@@ -3326,20 +3325,18 @@ function ChapterReader({
 function QuizView({
   book,
   chapterNum,
-  lang,
   onFinish,
   onSkip,
   isChallenge,
 }: {
   book: string;
   chapterNum: number;
-  lang: "en" | "ko";
   onFinish: (correct: boolean) => void;
   onSkip: () => void;
   isChallenge?: boolean;
 }) {
-  // Challenge mode: Korean default with 한/EN toggle
-  const [quizLang, setQuizLang] = useState<"en" | "ko">(isChallenge ? "ko" : lang);
+  // Quiz always starts in English; the user can toggle to Korean
+  const [quizLang, setQuizLang] = useState<"en" | "ko">("en");
   const quiz = getQuiz(book, chapterNum, quizLang);
   const shuffled = useMemo(
     () => (quiz ? getShuffledOptions(quiz) : null),
@@ -3428,6 +3425,19 @@ function QuizView({
     setShowVerse(false);
   };
 
+  // Switching language resets the current attempt so the new question starts fresh
+  const switchQuizLang = (next: "en" | "ko") => {
+    if (next === quizLang) return;
+    if (autoFinishTimer) {
+      clearTimeout(autoFinishTimer);
+      setAutoFinishTimer(null);
+    }
+    setSelected(null);
+    setShowResult(false);
+    setShowVerse(false);
+    setQuizLang(next);
+  };
+
   const handleShowVerse = () => {
     setShowVerse(true);
     // Cancel auto-finish so user can read
@@ -3451,41 +3461,26 @@ function QuizView({
         >
           ←
         </button>
-        <div className="tb-ribbon text-3xl">{isChallenge ? "Bible quiz" : "DAILY QUIZ"}</div>
-        {!isChallenge && <span className="tb-stat text-xs">⏱ 0:45</span>}
-        {isChallenge && <span className="w-11" />}
+        <div className="tb-ribbon text-3xl">Bible quiz</div>
+        <span className="w-11" />
       </div>
 
-      {isChallenge ? (
-        <div className="flex justify-center">
-          <div className="inline-flex rounded-full bg-black/50 border border-white/20 p-1">
-            <button
-              onClick={() => setQuizLang("ko")}
-              className={`px-4 py-1.5 rounded-full text-sm font-black transition-all ${quizLang === "ko" ? "bg-[#c68a14] text-white" : "text-white/50"}`}
-            >
-              한
-            </button>
-            <button
-              onClick={() => setQuizLang("en")}
-              className={`px-4 py-1.5 rounded-full text-sm font-black transition-all ${quizLang === "en" ? "bg-[#c68a14] text-white" : "text-white/50"}`}
-            >
-              EN
-            </button>
-          </div>
+      <div className="flex justify-center">
+        <div className="inline-flex rounded-full bg-black/50 border border-white/20 p-1">
+          <button
+            onClick={() => switchQuizLang("ko")}
+            className={`px-4 py-1.5 rounded-full text-sm font-black transition-all ${quizLang === "ko" ? "bg-[#c68a14] text-white" : "text-white/50"}`}
+          >
+            한
+          </button>
+          <button
+            onClick={() => switchQuizLang("en")}
+            className={`px-4 py-1.5 rounded-full text-sm font-black transition-all ${quizLang === "en" ? "bg-[#c68a14] text-white" : "text-white/50"}`}
+          >
+            EN
+          </button>
         </div>
-      ) : (
-        <div className="text-center">
-          <div className="mb-2 flex justify-center gap-2">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <span
-                key={i}
-                className={`h-5 w-5 rounded-full border-2 border-[#c48a21] ${i === 0 ? "bg-[#ffca23]" : "bg-[#101117]"}`}
-              />
-            ))}
-          </div>
-          <p className="tb-title text-lg">Question 1 of 5</p>
-        </div>
-      )}
+      </div>
 
       <div className="neon-card p-5 text-center">
         <div className="mb-3 text-4xl">📖</div>
