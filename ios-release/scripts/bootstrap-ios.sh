@@ -61,7 +61,17 @@ cp -R "$RELEASE_DIR/AppIcon.appiconset" ios/App/App/Assets.xcassets/AppIcon.appi
 
 echo "==> 6. Syncing web assets + pod install"
 npx cap sync ios
-cd ios/App && pod install && cd "$RELEASE_DIR"
+# subshell: pod install이 실패해도 working directory가 그대로 유지됨
+(
+  cd ios/App && pod install
+) || {
+  echo ""
+  echo "ERROR: 'pod install' failed."
+  echo "If the error above says you have not agreed to the Xcode license, run:"
+  echo "    sudo xcodebuild -license accept"
+  echo "then re-run this script."
+  exit 1
+}
 
 echo "==> 7. Setting version $APP_VERSION (build $APP_BUILD)"
 PBXPROJ="ios/App/App.xcodeproj/project.pbxproj"
