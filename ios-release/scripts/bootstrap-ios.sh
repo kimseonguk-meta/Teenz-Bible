@@ -30,6 +30,11 @@ command -v node >/dev/null || { echo "ERROR: Node.js not installed."; exit 1; }
 
 echo "==> 1. Building web app"
 cd "$REPO_ROOT"
+# sparse-checkout 환경에서는 client/ 가 빠져 있을 수 있음 (웹 빌드에 필요)
+if [ ! -d "client" ]; then
+  echo "client/ missing - adding to sparse checkout..."
+  git sparse-checkout add client
+fi
 npm install
 npm run build
 test -f dist/public/index.html || { echo "ERROR: web build missing."; exit 1; }
