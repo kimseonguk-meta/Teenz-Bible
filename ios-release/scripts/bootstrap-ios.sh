@@ -9,9 +9,13 @@
 #   3. Installs the Capacitor iOS shell deps
 #   4. Generates ios/App via `cap add ios` (first run only, SPM template)
 #   5. Installs our Info.plist (permissions) + AppIcon set
+#      (single 1024px universal format - what Xcode 26/27's asset catalog expects)
 #   6. Syncs web assets + native plugins (SPM - no CocoaPods needed)
 #   7. Sets MARKETING_VERSION=1.3.0 and CURRENT_PROJECT_VERSION=7
 #   8. Opens ios/App/App.xcodeproj
+#
+# Pass --clean for a true from-scratch rebuild: deletes the generated ios/
+# project and Xcode's DerivedData, then regenerates everything.
 #
 # Package manager note (Capacitor 8):
 #   Capacitor 8 defaults to Swift Package Manager for iOS.
@@ -26,9 +30,26 @@ RELEASE_DIR="$REPO_ROOT/ios-release"
 APP_VERSION="1.3.0"
 APP_BUILD="7"
 
+# --clean: true from-scratch rebuild. Deletes the generated ios/ project
+# (a gitignored build artifact) and Xcode's cached build/package state,
+# then regenerates everything. Use when a previous generation may have
+# left Xcode's SwiftPM resolution in a broken state.
+CLEAN=0
+if [ "${1:-}" = "--clean" ]; then
+  CLEAN=1
+fi
+
 echo "==> 0. Prerequisites"
 xcodebuild -version >/dev/null || { echo "ERROR: Xcode not installed."; exit 1; }
 command -v node >/dev/null || { echo "ERROR: Node.js not installed."; exit 1; }
+
+if [ "$CLEAN" = "1" ]; then
+  echo "==> 0b. Clean rebuild: removing generated ios/ and Xcode caches"
+  rm -rf "$RELEASE_DIR/ios"
+  # DerivedData holds Xcode's SwiftPM checkouts + resolution state.
+  # It is disposable build cache; Xcode regenerates it on next open.
+  rm -rf ~/Library/Developer/Xcode/DerivedData/App-*
+fi
 
 echo "==> 1. Building web app"
 cd "$REPO_ROOT"
