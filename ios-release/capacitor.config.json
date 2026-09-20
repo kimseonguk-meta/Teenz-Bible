@@ -1,0 +1,15 @@
+{
+  "appId": "com.teenzbible.app",
+  "appName": "Teenz Bible",
+  "webDir": "web",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "FirebaseAuthentication": {
+      "skipNativeAuth": true,
+      "providers": [
+        "google.com",
+        "apple.com"
+      ]
+    }
+  }
+}
