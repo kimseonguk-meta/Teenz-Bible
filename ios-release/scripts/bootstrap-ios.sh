@@ -11,6 +11,7 @@
 #   5. Installs our Info.plist (permissions) + AppIcon set
 #      (single 1024px universal format - what Xcode 26/27's asset catalog expects)
 #   6. Syncs web assets + native plugins (SPM - no CocoaPods needed)
+#   6b. Installs GoogleService-Info.plist into the Xcode project (Firebase)
 #   7. Sets MARKETING_VERSION=1.3.0 and CURRENT_PROJECT_VERSION=7
 #   8. Opens ios/App/App.xcodeproj
 #
@@ -88,6 +89,15 @@ echo "==> 6. Syncing web assets + native plugins (SPM)"
 npx cap sync ios
 # NOTE: no `pod install` - the SPM template has no Podfile by design.
 # Xcode resolves Swift packages (CapApp-SPM + plugins) on first open.
+
+echo "==> 6b. Installing GoogleService-Info.plist (Firebase)"
+# FirebaseApp.configure() crashes on launch (black screen) without this file
+# in the app bundle. `cap add` generates a project that doesn't reference it,
+# and --clean wipes any manual Xcode-side fix - so this step installs the
+# file and registers it in project.pbxproj every run (idempotent).
+# The source file is local-only (gitignored); missing -> fail loudly here
+# instead of producing a black-screen app.
+python3 "$RELEASE_DIR/scripts/ensure-firebase-plist.py"
 
 echo "==> 7. Setting version $APP_VERSION (build $APP_BUILD)"
 PBXPROJ="ios/App/App.xcodeproj/project.pbxproj"

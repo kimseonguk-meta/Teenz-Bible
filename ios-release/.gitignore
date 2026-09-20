@@ -3,6 +3,9 @@ node_modules/
 ios/
 web/
 Pods/
+# Firebase iOS config: per-machine download from Firebase Console
+# (project teens-bible-94271 > iOS app). Never commit.
+GoogleService-Info.plist
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 .DS_Store/
