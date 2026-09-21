@@ -4,7 +4,7 @@
 
 export interface RosterEntry {
   no: number;
-  hash: string; // 정규화된 한글 실명의 SHA-256
+  hash: string; // 정규화된 한국어 이름의 SHA-256
   grade: string;
   cls: string;
 }

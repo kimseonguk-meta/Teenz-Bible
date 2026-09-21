@@ -107,7 +107,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
     // 게스트 확정 전 결과 고지: 명단 미노출 + 공식 집계 제외
     if (
       !window.confirm(
-        `"${finalName}"(으)로 게스트 참여합니다.\n\n게스트는 39명 명단에 나타나지 않고, 리더님이 보는 공식 집계에도 포함되지 않습니다.\n명단에 있는 학생은 게스트가 아닌 한글 실명으로 다시 입력해 주세요.\n\n계속하시겠습니까?`
+        `"${finalName}"(으)로 게스트 참여합니다.\n\n게스트는 39명 명단에 나타나지 않고, 리더님이 보는 공식 집계에도 포함되지 않습니다.\n명단에 있는 학생은 게스트가 아닌 한국어 이름으로 다시 입력해 주세요.\n\n계속하시겠습니까?`
       )
     )
       return;
@@ -131,11 +131,11 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
       setError("이름을 입력해 주세요");
       return;
     }
-    // 한글 실명 검증: 영문 닉네임 오입력(예: Klara) 원천 차단
-    // 명단은 전원 한글 실명 — 한글 없는 입력은 조회 전에 막는다
+    // 한국어 이름 검증: 영문 닉네임 오입력(예: Klara) 원천 차단
+    // 명단은 전원 한국어 이름 — 한글 없는 입력은 조회 전에 막는다
     if (role === "student" && !/[가-힣]/.test(finalName)) {
       setError(
-        "한글 실명을 입력해 주세요. 앱에서 쓰는 영문 닉네임으로는 참가할 수 없습니다."
+        "한국어 이름을 입력해 주세요. 앱에서 쓰는 영문 닉네임으로는 참가할 수 없습니다."
       );
       return;
     }
@@ -154,7 +154,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
       const msg = e?.message || "등록 중 오류가 발생했어요";
       if (msg === "명단에서 이름을 찾지 못했습니다") {
         setError(
-          `"${finalName}"을(를) 명단에서 찾지 못했습니다. 앱 닉네임이 아닌 한글 실명을 입력했는지 확인해 주세요.`
+          `"${finalName}"을(를) 명단에서 찾지 못했습니다. 앱 닉네임이 아닌 한국어 이름을 입력했는지 확인해 주세요.`
         );
         setNotFound(true);
       } else {
@@ -211,9 +211,9 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
           </button>
           {role === "student" ? (
             <>
-              <h3 className="text-white text-[17px] font-black mb-1">한글 실명 입력</h3>
+              <h3 className="text-white text-[17px] font-black mb-1">한국어 이름 입력</h3>
               <p className="text-white/55 text-[12px] mb-3">
-                선생님께 등록된 한글 실명을 정확히 입력하세요
+                선생님께 등록된 한국어 이름을 정확히 입력하세요
               </p>
               <input
                 value={name}

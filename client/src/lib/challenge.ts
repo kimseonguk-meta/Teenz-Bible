@@ -263,7 +263,7 @@ export async function joinChallenge(
 export async function joinAsGuest(name: string): Promise<Participation> {
   const cleanName = (name || "").replace(/\s+/g, "").slice(0, 20);
   if (!cleanName) throw new Error("이름을 입력해 주세요");
-  if (!/[가-힣]/.test(cleanName)) throw new Error("한글 실명을 입력해 주세요");
+  if (!/[가-힣]/.test(cleanName)) throw new Error("한국어 이름을 입력해 주세요");
   // 명단에 있는 이름은 게스트로 가입할 수 없다 — 학생 참가(실명 입력)로 진행해야 공식 집계에 포함된다
   const rosterHit = await findRosterByName(cleanName).catch(() => undefined);
   if (rosterHit) {
