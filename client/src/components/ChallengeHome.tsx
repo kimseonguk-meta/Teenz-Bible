@@ -218,7 +218,7 @@ function JoinFlow({ onJoined }: { onJoined: (p: Participation) => void }) {
               <input
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
-                placeholder="한글 실명"
+                placeholder="예: 김성욱"
                 className="mt-1 w-full bg-black/40 border border-[#c9a86a]/40 rounded-xl px-4 py-3 text-white text-[15px] font-bold placeholder:text-white/25 focus:outline-none focus:border-[#ffd957]"
               />
               <div className="mt-2.5 rounded-xl border border-red-500/40 bg-red-900/20 px-3.5 py-2.5">
