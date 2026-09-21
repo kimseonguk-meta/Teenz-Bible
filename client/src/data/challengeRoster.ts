@@ -34,7 +34,7 @@ export const CHALLENGE_ROSTER: RosterEntry[] = [
   { no: 22, hash: "55dc620f4fcdcaf998e06672b749605f01d08e4ffeef91e53eb63f371a3ba6fa", grade: "12", cls: "E" },
   { no: 23, hash: "223e89df80a6d0bb7bd3e800aac1e7891cd0991eb6887cde41a862f55b8fb9ac", grade: "12", cls: "E" },
   { no: 24, hash: "c7c4c94793c62066d3203a5f0605eb7c124bb026602e64347d9fc910cfc98d7c", grade: "12", cls: "E" },
-  { no: 25, hash: "4998ef2382866713cd4a1d77ebca42451ed10c256f941685f5499cbe4cbdfb27", grade: "12", cls: "E" },
+  { no: 25, hash: "4998ef2382866713cd4a1d77ebca42451ed10c256f941685f5499cbe4cbdfb27", grade: "12", cls: "C" },
   { no: 26, hash: "39e3f6ece8d611701e1ad97b1fcaca6fae4d6e6bc3780481c5538b5c5a44a92f", grade: "12", cls: "E" },
   { no: 27, hash: "0d6e0b0351ad02d02961f83bfbe3c5b1abee557a9a78eb29bf3e51fe5fa3c207", grade: "13", cls: "B" },
   { no: 28, hash: "4efc78d47ae6fee201756c1dd1b2582aa8c0ab9af729424c458ca1ab910d0157", grade: "13", cls: "B" },
