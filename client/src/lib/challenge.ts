@@ -133,10 +133,10 @@ export function requiredActiveSec(totalWords: number): number {
   return Math.min(480, Math.max(45, Math.round(expected * 0.35)));
 }
 
-/** 장 완료 판정: 노출 80% + 활성 시간 (또는 리더 수동 인정) */
+/** 장 완료 판정: 활성 시간 충족 (또는 리더 수동 인정). 노출률은 판정에 사용하지 않음 */
 export function isChapterComplete(cp: ChapterProgress, totalWords: number): boolean {
   if (cp.manual) return true;
-  return cp.exposurePct >= 80 && cp.activeSec >= requiredActiveSec(totalWords);
+  return cp.activeSec >= requiredActiveSec(totalWords);
 }
 
 /** 코드 정규화: 대문자, 공백/대시 제거 */
@@ -431,7 +431,7 @@ export function isDayComplete(
 
 /**
  * 수동 인정을 제외한 순수 읽기 상태 (리더 대시보드·수동 취소·집계 재계산의 단일 기준).
- * finalize가 쓰는 병합 status와 달리, 실제 노출/읽기 시간만 본다.
+ * finalize가 쓰는 병합 status와 달리, 실제 읽기 시간만 본다 (노출률은 판정에 사용하지 않음).
  */
 export function realReadingStatus(
   day: { book: string; chapters: number[] },
@@ -441,10 +441,7 @@ export function realReadingStatus(
   const complete = day.chapters.every((c) => {
     const cp = prog.chapters[chapterKey(day.book, c)];
     if (!cp) return false;
-    return (
-      cp.exposurePct >= 80 &&
-      cp.activeSec >= requiredActiveSec(cp.words || 400)
-    );
+    return cp.activeSec >= requiredActiveSec(cp.words || 400);
   });
   return complete ? "done" : "reading";
 }

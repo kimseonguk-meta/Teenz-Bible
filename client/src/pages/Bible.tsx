@@ -25,19 +25,12 @@ import {
   getCachedParticipation,
   getMyParticipation,
   getTodayChallengeDay,
-  getMyJourney,
-  sgDateKey,
   saveChapterProgress,
   getDayProgress,
   evaluateAndFinalizeDay,
   chapterKey as challengeChapterKey,
   type ChallengeRole,
 } from "@/lib/challenge";
-import { getChallengeDay } from "@/data/challengeSchedule";
-import ChallengeCelebration, {
-  pickEncouragement,
-  type CelebrationData,
-} from "@/components/ChallengeCelebration";
 import {
   getEquipped,
   getInventory,
@@ -594,7 +587,7 @@ export default function Bible() {
     return null;
   }, [view, partTick]);
 
-  // Challenge: quiz passed -> record quizPass, re-evaluate the day, finalize.
+  // Challenge: quiz passed -> record quizPass. 완료 판정은 세션 종료 시(다음 장 이동/화면 이탈)에만 한다.
   const handleChallengeQuizPass = useCallback(
     async (ctx: { book: string; chapter: number; dateKey: string }) => {
       const id = challengeChapterKey(ctx.book, ctx.chapter);
@@ -612,13 +605,8 @@ export default function Bible() {
           seen: cp?.seen || [],
           words: cp?.words,
         });
-        const status = await evaluateAndFinalizeDay(ctx.dateKey, {});
         window.dispatchEvent(new CustomEvent("challenge-progress"));
-        if (status === "done") {
-          toast.success("🎉 오늘의 챌린지 완료!");
-        } else {
-          toast.success("퀴즈 통과! 본문을 끝까지 읽어 주세요 📖");
-        }
+        toast.success("퀴즈 통과! 본문을 끝까지 읽어 주세요 📖");
       } catch (e) {
         console.warn("[challenge] quiz-pass hook failed", e);
       }
@@ -1494,9 +1482,6 @@ function ChapterReader({
   const challengeQuizPass = useRef(false);
   const challengeLastInteract = useRef(Date.now());
   /** 챌린지 완료 축하: 날짜별 1회 + 이번 읽기 세션에서 새로 완료된 경우에만 */
-  const [celebration, setCelebration] = useState<CelebrationData | null>(null);
-  const celebratedDateKey = useRef<string | null>(null);
-  const sessionStartStatus = useRef<string | null>(null);
   const challengeParaTotal = useRef(0);
   const [, setChallengeUiTick] = useState(0);
 
@@ -1552,7 +1537,9 @@ function ChapterReader({
     return () => io.disconnect();
   }, [challenge, chapterIdx, lang, book]);
 
-  // 활성 시간 + 주기 저장 + 완료 판정
+  // 활성 시간 + 주기 저장. 완료 판정은 읽기 중에 하지 않는다.
+  // 완료는 세션 종료 시 1회만 판정: 다음 장으로 넘어가거나 화면을 나갈 때,
+  // 충분한 시간(activeSec >= requiredActiveSec)을 채웠으면 done.
   useEffect(() => {
     if (!challenge) return;
     const cid = challengeChapterKey(challenge.book, challenge.chapter);
@@ -1582,62 +1569,17 @@ function ChapterReader({
         });
       } catch {}
     };
-    // 완료 재평가: finalizeDayStatus가 멱등이므로 매 틱마다 평가해도 안전.
-    // (save는 장 스냅샷만 쓰고 status를 건드리지 않으므로, 완료 상태가 reading으로 덮어씌워지지 않음)
-    const evaluate = async () => {
+    // 세션 종료 시 1회 완료 판정 (다음 장 이동 / 화면 이탈 / 탭 숨김).
+    // 읽기 중에는 절대 판정하지 않는다.
+    const finalizeOnExit = async () => {
       try {
-        const status = await evaluateAndFinalizeDay(challenge.dateKey, { [cid]: words });
+        await save();
+        await evaluateAndFinalizeDay(challenge.dateKey, { [cid]: words });
         window.dispatchEvent(new CustomEvent("challenge-progress"));
         try {
           await reconcileReminders();
         } catch {}
-        // 첫 관측값을 기록: 이미 완료된 날을 다시 읽는 경우 축하를 띄우지 않기 위함
-        if (sessionStartStatus.current === null) {
-          sessionStartStatus.current = status;
-        }
-        if (
-          status === "done" &&
-          sessionStartStatus.current !== "done" &&
-          celebratedDateKey.current !== challenge.dateKey
-        ) {
-          celebratedDateKey.current = challenge.dateKey;
-          try {
-            const j = await getMyJourney();
-            const day = getChallengeDay(challenge.dateKey);
-            setCelebration({
-              dateKey: challenge.dateKey,
-              labelKo: day?.labelKo || "",
-              isToday: challenge.dateKey === sgDateKey(),
-              streak: j.streak,
-              doneDays: j.doneDays,
-              totalDays: j.days.length,
-              encouragement: pickEncouragement(),
-            });
-          } catch {
-            toast.success("🎉 오늘의 챌린지 완료!");
-          }
-        }
       } catch {}
-    };
-    // 직렬 실행기: 저장(save)이 완전히 끝난 뒤 그 저장값으로 완료 평가(evaluate)한다.
-    // 틱이 겹치면 큐에 쌓아 순차 처리 — 동시 finalize 경합을 원천 차단.
-    let cycleBusy = false;
-    let cycleQueued = false;
-    const runCycle = async () => {
-      if (cycleBusy) {
-        cycleQueued = true;
-        return;
-      }
-      cycleBusy = true;
-      try {
-        do {
-          cycleQueued = false;
-          await save();
-          await evaluate();
-        } while (cycleQueued);
-      } finally {
-        cycleBusy = false;
-      }
     };
     const iv = setInterval(() => {
       const visible = document.visibilityState === "visible";
@@ -1647,17 +1589,15 @@ function ChapterReader({
         ticks += 1;
         if (ticks % 5 === 0) setChallengeUiTick((t) => t + 1);
         if (ticks % 15 === 0) {
-          runCycle();
+          save();
         }
       }
     }, 1000);
-    // 마운트 직후 1회 평가 — 저장된 진도가 있으면 즉시 상태 반영 (집계 스냅샷과 동기화)
-    runCycle();
     const onHide = () => {
-      if (document.visibilityState === "hidden") save();
+      if (document.visibilityState === "hidden") finalizeOnExit();
     };
     document.addEventListener("visibilitychange", onHide);
-    const onPageHide = () => save();
+    const onPageHide = () => finalizeOnExit();
     window.addEventListener("pagehide", onPageHide);
     return () => {
       clearInterval(iv);
@@ -1666,7 +1606,7 @@ function ChapterReader({
       window.removeEventListener("keydown", markInteract);
       document.removeEventListener("visibilitychange", onHide);
       window.removeEventListener("pagehide", onPageHide);
-      save();
+      finalizeOnExit();
     };
   }, [challenge, chapterIdx, lang, book]);
 
@@ -2702,8 +2642,6 @@ function ChapterReader({
     setShowCelebration(false);
     setConfettiPieces([]);
     setShowReadWarning(false);
-    setCelebration(null);
-    sessionStartStatus.current = null;
     readingStartTime.current = Date.now();
   }, [book, chapterIdx]);
 
@@ -3037,21 +2975,6 @@ function ChapterReader({
         <div ref={contentEndRef} className="h-1" />
       </div>
 
-      {/* Reading completion celebration */}
-      {celebration && (
-        <ChallengeCelebration
-          data={celebration}
-          onQuiz={() => {
-            setCelebration(null);
-            navigate(`/bible/${bookToSlug(book)}/${chapter.num}?view=quiz`);
-          }}
-          onClose={() => setCelebration(null)}
-          onBack={() => {
-            setCelebration(null);
-            onBack();
-          }}
-        />
-      )}
       {showCelebration && (
         <div className="fixed inset-0 pointer-events-none z-50">
           {confettiPieces.map((p) => (
