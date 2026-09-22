@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo, useRef, useCallback, useSyncExternalStore } from "react";
 import { safeParseJSON } from "@/lib/safeStorage";
 import {
-  setFocusMode,
-  getFocusMode,
-  subscribeFocusMode,
-} from "@/lib/focusMode";
+  setToolbarHidden,
+  setNavHidden,
+  getToolbarHidden,
+  subscribeReaderChrome,
+} from "@/lib/readerChrome";
 import { useParams, useLocation } from "wouter";
 import {
   allBibleData,
@@ -1678,9 +1679,39 @@ function ChapterReader({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [ttsPanelCollapsed, setTtsPanelCollapsed] = useState(false);
-  // Focus reading mode: hides bottom floating toolbar + bottom nav (AppLayout subscribes too)
-  const focusMode = useSyncExternalStore(subscribeFocusMode, getFocusMode);
-  useEffect(() => () => setFocusMode(false), []);
+  // Scroll-driven reader chrome: no taps needed.
+  // Scroll down -> hide floating toolbar + bottom nav; scroll up -> show toolbar;
+  // bottom nav returns only when leaving the chapter view.
+  const toolbarHidden = useSyncExternalStore(
+    subscribeReaderChrome,
+    getToolbarHidden,
+  );
+  useEffect(() => {
+    setNavHidden(true);
+    setToolbarHidden(false);
+    const scroller = document.getElementById("tb-scroll-main");
+    let lastY = scroller ? scroller.scrollTop : 0;
+    let ticking = false;
+    const handle = () => {
+      if (!scroller || ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const y = scroller.scrollTop;
+        const dy = y - lastY;
+        lastY = y;
+        if (Math.abs(dy) > 500) return; // jump (e.g. chapter change) — ignore
+        if (dy > 8) setToolbarHidden(true);
+        else if (dy < -8 || y <= 0) setToolbarHidden(false);
+      });
+    };
+    scroller?.addEventListener("scroll", handle, { passive: true });
+    return () => {
+      scroller?.removeEventListener("scroll", handle);
+      setNavHidden(false);
+      setToolbarHidden(false);
+    };
+  }, [book, chapterIdx]);
   const [speechRate, setSpeechRate] = useState(
     parseFloat(localStorage.getItem("ttsRate") || "1"),
   );
@@ -2956,14 +2987,7 @@ function ChapterReader({
       </div>
 
       {/* Chapter Content */}
-      <div
-        className="tb-reader-page space-y-5 p-6 text-[1.05rem] transition-colors overflow-hidden"
-        onClick={() => {
-          // Tap text to exit focus reading mode (ignore text-selection taps)
-          if (getFocusMode() && !window.getSelection()?.toString())
-            setFocusMode(false);
-        }}
-      >
+      <div className="tb-reader-page space-y-5 p-6 text-[1.05rem] transition-colors overflow-hidden">
         {paragraphs.map((para: string, i: number) => {
           const vr = verseRanges[i] || null;
           if (para.startsWith("§")) {
@@ -3278,10 +3302,11 @@ function ChapterReader({
         )}
       </div>
 
-      {/* Bottom Floating Toolbar - higher z-index than pet per fix #8 */}
+      {/* Bottom Floating Toolbar - higher z-index than pet per fix #8.
+          Auto-hides on scroll down, reappears on scroll up (no taps needed). */}
       <div
         className={`fixed left-1/2 -translate-x-1/2 z-[60] flex items-center gap-1 px-4 py-2.5 rounded-full shadow-2xl transition-all duration-300 ${
-          focusMode
+          toolbarHidden
             ? "translate-y-[250%] opacity-0 pointer-events-none"
             : "translate-y-0 opacity-100"
         }`}
@@ -3381,31 +3406,7 @@ function ChapterReader({
         >
           v.
         </button>
-        {/* Focus reading mode */}
-        <button
-          onClick={() => setFocusMode(true)}
-          className="w-9 h-9 rounded-full flex items-center justify-center text-base text-white active:scale-90 transition-transform hover:tb-soft-button"
-          aria-label="집중 읽기 모드"
-        >
-          ⛶
-        </button>
       </div>
-      {/* Exit focus mode pill */}
-      {focusMode && (
-        <button
-          onClick={() => setFocusMode(false)}
-          className="fixed right-4 z-[60] w-10 h-10 rounded-full flex items-center justify-center text-white text-sm active:scale-90"
-          style={{
-            bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))",
-            backgroundColor: "rgba(30, 20, 50, 0.6)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(139, 92, 246, 0.25)",
-          }}
-          aria-label="집중 읽기 모드 종료"
-        >
-          ✕
-        </button>
-      )}
       {/* Spacer for bottom toolbar */}
       <div className="h-16" />
     </div>

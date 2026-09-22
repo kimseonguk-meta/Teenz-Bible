@@ -1,9 +1,9 @@
 import { useLocation } from "wouter";
 import { ReactNode, useSyncExternalStore } from "react";
 import {
-  getFocusMode,
-  subscribeFocusMode,
-} from "../lib/focusMode";
+  getNavHidden,
+  subscribeReaderChrome,
+} from "../lib/readerChrome";
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -23,7 +23,7 @@ function getNavAsset(location: string) {
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const [location, setLocation] = useLocation();
-  const focusMode = useSyncExternalStore(subscribeFocusMode, getFocusMode);
+  const navHidden = useSyncExternalStore(subscribeReaderChrome, getNavHidden);
 
   return (
     <div className="cosmic-bg min-h-screen flex flex-col max-w-[480px] mx-auto relative overflow-x-hidden shadow-[0_0_80px_rgba(0,0,0,0.34)]">
@@ -41,12 +41,12 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main content */}
-      <main className={`flex-1 relative z-10 ${location === "/bible-ai" ? "overflow-hidden" : "overflow-y-auto"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)', paddingBottom: location === '/bible-ai' ? undefined : 'calc(104px + env(safe-area-inset-bottom, 0px))' }}>
+      <main id="tb-scroll-main" className={`flex-1 relative z-10 ${location === "/bible-ai" ? "overflow-hidden" : "overflow-y-auto"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)', paddingBottom: location === '/bible-ai' ? undefined : 'calc(104px + env(safe-area-inset-bottom, 0px))' }}>
         {children}
       </main>
 
       {/* Bottom Navigation - uses --neon-rgb for theme-aware styling */}
-      {location !== "/bible-ai" && <nav className={`fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none transition-transform duration-300 ${focusMode ? "translate-y-[130%]" : "translate-y-0"}`} style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
+      {location !== "/bible-ai" && <nav className={`fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none transition-transform duration-300 ${navHidden ? "translate-y-[130%]" : "translate-y-0"}`} style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
         <div
           className="pointer-events-auto flex h-[78px] justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]"
           style={{ background: `url("${getNavAsset(location)}") center / 100% 100% no-repeat` }}
