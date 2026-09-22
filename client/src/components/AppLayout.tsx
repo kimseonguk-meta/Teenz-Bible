@@ -41,7 +41,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main content */}
-      <main id="tb-scroll-main" className={`flex-1 relative z-10 ${location === "/bible-ai" ? "overflow-hidden" : "overflow-y-auto"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)', paddingBottom: location === '/bible-ai' ? undefined : 'calc(104px + env(safe-area-inset-bottom, 0px))' }}>
+      <main className={`flex-1 relative z-10 ${location === "/bible-ai" ? "overflow-hidden" : "overflow-y-auto"}`} style={{ paddingTop: location === '/bible-ai' ? undefined : 'env(safe-area-inset-top, 0px)', paddingBottom: location === '/bible-ai' ? undefined : 'calc(104px + env(safe-area-inset-bottom, 0px))' }}>
         {children}
       </main>
 

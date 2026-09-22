@@ -1687,27 +1687,32 @@ function ChapterReader({
     getToolbarHidden,
   );
   useEffect(() => {
-    setNavHidden(true);
+    setNavHidden(false);
     setToolbarHidden(false);
-    const scroller = document.getElementById("tb-scroll-main");
-    let lastY = scroller ? scroller.scrollTop : 0;
+    // The page scrolls on window (the chapter progress bar uses window.scrollY too)
+    let lastY = window.scrollY;
     let ticking = false;
     const handle = () => {
-      if (!scroller || ticking) return;
+      if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        const y = scroller.scrollTop;
+        const y = window.scrollY;
         const dy = y - lastY;
         lastY = y;
-        if (Math.abs(dy) > 500) return; // jump (e.g. chapter change) — ignore
-        if (dy > 8) setToolbarHidden(true);
-        else if (dy < -8 || y <= 0) setToolbarHidden(false);
+        if (Math.abs(dy) > 800) return; // jump (e.g. chapter change) — ignore
+        if (dy > 8) {
+          setToolbarHidden(true);
+          setNavHidden(true);
+        } else if (dy < -8 || y <= 0) {
+          setToolbarHidden(false);
+          // nav stays hidden until leaving the chapter view
+        }
       });
     };
-    scroller?.addEventListener("scroll", handle, { passive: true });
+    window.addEventListener("scroll", handle, { passive: true });
     return () => {
-      scroller?.removeEventListener("scroll", handle);
+      window.removeEventListener("scroll", handle);
       setNavHidden(false);
       setToolbarHidden(false);
     };
