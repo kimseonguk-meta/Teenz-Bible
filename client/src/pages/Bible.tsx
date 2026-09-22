@@ -1972,7 +1972,7 @@ function ChapterReader({
     const chunks = splitTextToChunks(text, 4500, 1500);
     const firstChunk = chunks[0];
     if (!firstChunk) return;
-    const prefetchKey = `${book}_${chapter?.num ?? chapterIdx}_0`;
+    const prefetchKey = `${book}_${chapter?.num ?? chapterIdx}_0_${lang}`;
     const memoryCacheKey = `${book}-${chapterIdx}-${lang}-${firstChunk.slice(0, 50)}`;
     if (prefetchCacheRef.current?.key === memoryCacheKey) return;
 
@@ -2085,8 +2085,72 @@ function ChapterReader({
             toast.error("Audio playback failed – please try again");
           } catch {}
         };
-        window.speechSynthesis.cancel(); // clear queue
-        window.speechSynthesis.speak(u);
+        const wantLang = lang === "ko" ? "ko" : "en";
+        // Pick an explicit matching voice: relying on lang-only matching fails
+        // silently on devices where voices load late or no matching voice exists.
+        const speakNow = () => {
+          try {
+            const synth = window.speechSynthesis;
+            const voices = synth.getVoices() || [];
+            const matches = voices.filter((v) =>
+              (v.lang || "").toLowerCase().startsWith(wantLang),
+            );
+            const picked =
+              matches.find((v) => v.default) ||
+              matches.find((v) =>
+                (v.name || "").toLowerCase().includes("google"),
+              ) ||
+              matches[0] ||
+              null;
+            if (picked) u.voice = picked;
+            else if (wantLang === "ko") {
+              try {
+                toast.error(
+                  "이 기기에 한국어 음성이 없어요 – HD 음성을 사용해 주세요",
+                );
+              } catch {}
+            }
+          } catch {}
+          window.speechSynthesis.cancel(); // clear queue
+          window.speechSynthesis.speak(u);
+        };
+        try {
+          if (
+            window.speechSynthesis.getVoices() &&
+            window.speechSynthesis.getVoices().length > 0
+          ) {
+            speakNow();
+          } else {
+            // Voices may not be loaded yet – wait once for voiceschanged
+            let done = false;
+            const onVoices = () => {
+              if (done) return;
+              done = true;
+              try {
+                window.speechSynthesis.removeEventListener(
+                  "voiceschanged",
+                  onVoices,
+                );
+              } catch {}
+              speakNow();
+            };
+            window.speechSynthesis.addEventListener("voiceschanged", onVoices);
+            // Safety net: if voiceschanged never fires, speak anyway after 1.5s
+            setTimeout(() => {
+              if (done) return;
+              done = true;
+              try {
+                window.speechSynthesis.removeEventListener(
+                  "voiceschanged",
+                  onVoices,
+                );
+              } catch {}
+              speakNow();
+            }, 1500);
+          }
+        } catch {
+          speakNow();
+        }
         setTtsStatus("▶ Playing (standard)...");
         setTtsProgress(0);
         setIsSpeaking(true);
@@ -2224,7 +2288,7 @@ function ChapterReader({
       if (abortCtrl.signal.aborted) break;
       try {
         let audioBase64: string | null = null;
-        const chunkCacheKey = `${book}_${chapter?.num ?? chapterIdx}_${i}`;
+        const chunkCacheKey = `${book}_${chapter?.num ?? chapterIdx}_${i}_${lang}`;
 
         const cachedChunk = await getCachedAudio(chunkCacheKey);
         if (cachedChunk) {
