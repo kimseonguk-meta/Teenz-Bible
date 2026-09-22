@@ -1,15 +1,1 @@
-{
-  "appId": "com.teenzbible.app",
-  "appName": "Teenz Bible",
-  "webDir": "web",
-  "bundledWebRuntime": false,
-  "plugins": {
-    "FirebaseAuthentication": {
-      "skipNativeAuth": true,
-      "providers": [
-        "google.com",
-        "apple.com"
-      ]
-    }
-  }
-}
+{"appId":"com.teenzbible.app","appName":"Teenz Bible","bundledWebRuntime":false,"plugins":{"FirebaseAuthentication":{"providers":["google.com","apple.com"],"skipNativeAuth":true}},"server":{"cleartext":false,"url":"https://teens-bible-94271.web.app"},"webDir":"web"}

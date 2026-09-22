@@ -1,14 +1,15 @@
 # Teenz Bible iOS 1.3.0 (build 7) — App Store release
 
-Capacitor iOS shell (`com.teenzbible.app`) that bundles the current web app
-directly. No OTA updater: the web code calls no updater APIs, so the binary
-itself is the release.
+Capacitor iOS shell (`com.teenzbible.app`) that loads the live PWA at
+`https://teens-bible-94271.web.app` via `server.url` in `capacitor.config.json`.
+No OTA updater: after each App Store build, PWA deploys reflect in the iOS app
+automatically with no new binary.
 
 ## What's inside
 
 | File | Purpose |
 |---|---|
-| `capacitor.config.json` | appId `com.teenzbible.app`, webDir `web`, Firebase auth (Google + Apple, web-based) |
+| `capacitor.config.json` | appId `com.teenzbible.app`, `server.url` → live PWA (auto-updates on each hosting deploy), Firebase auth (Google + Apple, web-based) |
 | `package.json` | Capacitor 8.5.0, camera, app, firebase-auth plugins |
 | `Info.plist` | Installed over the generated one: camera/photo usage strings, Google Sign-In URL scheme |
 | `AppIcon.appiconset/` | Full iOS icon set generated from `client/public/icons/icon-512.png` |
