@@ -85,6 +85,9 @@ cp "$RELEASE_DIR/Info.plist" ios/App/App/Info.plist
 rm -rf ios/App/App/Assets.xcassets/AppIcon.appiconset
 cp -R "$RELEASE_DIR/AppIcon.appiconset" ios/App/App/Assets.xcassets/AppIcon.appiconset
 
+echo "==> 5b. Release gate: verifying live-PWA config (fails loudly on drift)"
+bash "$RELEASE_DIR/scripts/verify-release-config.sh"
+
 echo "==> 6. Syncing web assets + native plugins (SPM)"
 npx cap sync ios
 # NOTE: no `pod install` - the SPM template has no Podfile by design.
