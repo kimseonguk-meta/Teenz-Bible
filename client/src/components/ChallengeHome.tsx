@@ -742,7 +742,7 @@ export default function ChallengeSection() {
           className="tb-ribbon-royal w-full active:scale-[0.98] transition-transform"
           style={{ animation: "challengePulse 2.4s ease-in-out infinite" }}
         >
-          <span className="text-xl leading-tight">제자반 성경읽기 챌린지</span>
+          <span className="text-lg leading-tight whitespace-nowrap">제자반 성경읽기 챌린지</span>
         </button>
       </div>
       </div>
