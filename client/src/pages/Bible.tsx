@@ -1672,6 +1672,7 @@ function ChapterReader({
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [ttsPanelCollapsed, setTtsPanelCollapsed] = useState(false);
   const [speechRate, setSpeechRate] = useState(
     parseFloat(localStorage.getItem("ttsRate") || "1"),
   );
@@ -2786,6 +2787,41 @@ function ChapterReader({
               style={{ width: `${ttsProgress}%` }}
             />
           </div>
+          {ttsPanelCollapsed ? (
+            /* Collapsed: slim bar — audio keeps playing, tap ⌄ to expand */
+            <div className="px-2.5 py-1.5 flex items-center gap-1.5">
+              <span className="text-cyan-400 text-[10px] font-medium truncate flex-1 min-w-0">
+                {isPaused ? "⏸ Paused" : ttsStatus || "🔊 HD Voice"}
+                {ttsChunkInfo && (
+                  <span className="tb-gold-text text-[9px]"> ({ttsChunkInfo})</span>
+                )}
+              </span>
+              <button
+                onClick={() => pauseSpeech()}
+                className="px-2 py-0.5 rounded text-[11px] active:scale-95"
+                aria-label={isPaused ? "오디오 다시 재생" : "오디오 일시정지"}
+              >
+                {isPaused ? "▶️" : "⏸️"}
+              </button>
+              <button
+                onClick={() => {
+                  setTtsPanelCollapsed(false);
+                  stopSpeech();
+                }}
+                className="px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50"
+                aria-label="오디오 정지"
+              >
+                ⏹
+              </button>
+              <button
+                onClick={() => setTtsPanelCollapsed(false)}
+                className="px-1.5 py-0.5 rounded text-gray-400 hover:text-gray-200 text-[12px] font-bold active:scale-95"
+                aria-label="오디오 패널 펼치기"
+              >
+                ⌄
+              </button>
+            </div>
+          ) : (
           <div className="p-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 min-w-0 flex-1">
@@ -2814,10 +2850,21 @@ function ChapterReader({
                   </button>
                 ))}
                 <button
-                  onClick={stopSpeech}
+                  onClick={() => {
+                    setTtsPanelCollapsed(false);
+                    stopSpeech();
+                  }}
                   className="ml-1 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50"
+                  aria-label="오디오 정지"
                 >
                   ⏹
+                </button>
+                <button
+                  onClick={() => setTtsPanelCollapsed(true)}
+                  className="px-1.5 py-0.5 rounded text-gray-400 hover:text-gray-200 text-[12px] font-bold active:scale-95"
+                  aria-label="오디오 패널 접기"
+                >
+                  ⌃
                 </button>
               </div>
             </div>
@@ -2875,6 +2922,7 @@ function ChapterReader({
               </button>
             </div>
           </div>
+          )}
         </div>
       )}
 
