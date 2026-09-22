@@ -1694,12 +1694,19 @@ function ChapterReader({
   const openAudioDB = useCallback((): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
       try {
-        const req = indexedDB.open(IDB_DB_NAME, 1);
+        // v2: audio cache keys now carry a language suffix (_en/_ko).
+        // Upgrading purges v1 entries once so stale cross-language audio
+        // can never play – Korean must play correctly the very first time.
+        const req = indexedDB.open(IDB_DB_NAME, 2);
         req.onupgradeneeded = () => {
           try {
             const db = req.result;
             if (!db.objectStoreNames.contains(IDB_STORE_NAME)) {
               db.createObjectStore(IDB_STORE_NAME);
+            } else if (req.oldVersion < 2) {
+              try {
+                req.transaction?.objectStore(IDB_STORE_NAME).clear();
+              } catch {}
             }
           } catch {}
         };
