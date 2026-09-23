@@ -2661,10 +2661,10 @@ function ChapterReader({
         (isExtremelyFast || hasConsecutiveFast)
       ) {
         // Too fast - show warning, reset scroll detection
+        // (auto-dismiss handled by the dedicated showReadWarning effect below)
         setShowReadWarning(true);
         setReachedBottom(false);
-        const timer = setTimeout(() => setShowReadWarning(false), 4000);
-        return () => clearTimeout(timer);
+        return;
       }
       // If elapsed is between 5s and 18s but no consecutive fast scrolls, allow but don't warn
       game.markChapterRead(book, chapter.num);
@@ -2692,10 +2692,26 @@ function ChapterReader({
         duration: Math.random() * 1.5 + 1.5,
       }));
       setConfettiPieces(pieces);
-      const timer = setTimeout(() => setShowCelebration(false), 4000);
-      return () => clearTimeout(timer);
+      // NOTE: auto-dismiss timer lives in its own effect below — this effect
+      // re-runs when `marked` flips, and its cleanup would cancel a timer
+      // created here (that was the stuck-overlay bug).
     }
   }, [reachedBottom, marked, chapter, book]);
+
+  // Auto-dismiss the celebration overlay. Kept separate from the mark-as-read
+  // effect above so that effect's cleanup can't cancel this timer.
+  useEffect(() => {
+    if (!showCelebration) return;
+    const timer = setTimeout(() => setShowCelebration(false), 4000);
+    return () => clearTimeout(timer);
+  }, [showCelebration]);
+
+  // Auto-dismiss the too-fast-reading warning (same pattern as above).
+  useEffect(() => {
+    if (!showReadWarning) return;
+    const timer = setTimeout(() => setShowReadWarning(false), 4000);
+    return () => clearTimeout(timer);
+  }, [showReadWarning]);
 
   // Track last read position for Today's Reading on Home
   useEffect(() => {
