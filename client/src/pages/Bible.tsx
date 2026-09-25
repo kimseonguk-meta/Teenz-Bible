@@ -2204,6 +2204,37 @@ function ChapterReader({
     setTtsChunkInfo("");
   }, [clearAllTtsTimers]);
 
+  // Audio chapter completion: mark read + celebration. Shared by the HD path,
+  // the auto standard-voice fallback, and the user-tapped standard voice.
+  const completeAudioChapter = useCallback(() => {
+    const finishedChapter = chapters[chapterIdx];
+    if (!finishedChapter || markedRef.current) return;
+    markedRef.current = true;
+    setMarked(true);
+    game.markChapterRead(book, finishedChapter.num);
+    if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
+    window.dispatchEvent(new CustomEvent("pet-chapter-complete"));
+    setShowCelebration(true);
+    const colors = [
+      "#a78bfa",
+      "#f59e0b",
+      "#10b981",
+      "#ec4899",
+      "#06b6d4",
+      "#f97316",
+    ];
+    setConfettiPieces(
+      Array.from({ length: 40 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        delay: Math.random() * 0.5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: Math.random() * 8 + 4,
+        duration: Math.random() * 1.5 + 1.5,
+      })),
+    );
+  }, [chapters, chapterIdx, book, game]);
+
   // Auto next chapter: after a chapter's audio finishes, move to the next
   // chapter AND auto-play it. Quiz chapters intentionally stop for the quiz.
   // Shared by the HD path and the standard-voice (speechSynthesis) path.
@@ -2290,34 +2321,6 @@ function ChapterReader({
     let fallbackTriggered = false;
     // Audio Bible: listening through the whole chapter counts as reading it.
     // (The text path only marks on scroll-to-bottom, so audio listeners were never recorded.)
-    const completeAudioChapter = () => {
-      const finishedChapter = chapters[chapterIdx];
-      if (!finishedChapter || markedRef.current) return;
-      markedRef.current = true;
-      setMarked(true);
-      game.markChapterRead(book, finishedChapter.num);
-      if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
-      window.dispatchEvent(new CustomEvent("pet-chapter-complete"));
-      setShowCelebration(true);
-      const colors = [
-        "#a78bfa",
-        "#f59e0b",
-        "#10b981",
-        "#ec4899",
-        "#06b6d4",
-        "#f97316",
-      ];
-      setConfettiPieces(
-        Array.from({ length: 40 }, (_, i) => ({
-          id: i,
-          x: Math.random() * 100,
-          delay: Math.random() * 0.5,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          size: Math.random() * 8 + 4,
-          duration: Math.random() * 1.5 + 1.5,
-        }))
-      );
-    };
     // Fallback timer: if after 3s we still have no HD audio, switch to standard voice
     // Previously only triggered when no prefetch cache – now triggers regardless to avoid infinite loading
     ttsFallbackTimerRef.current = setTimeout(() => {
@@ -2566,6 +2569,7 @@ function ChapterReader({
     onNavigate,
     stopSpeech,
     maybeAutoAdvance,
+    completeAudioChapter,
   ]);
 
   const pauseSpeech = useCallback(() => {
@@ -3033,7 +3037,13 @@ function ChapterReader({
                       try {
                         toast.error("Switching to standard voice");
                       } catch {}
-                      fallbackWebSpeech(ttsFullText, "user tapped");
+                      const tapGen = ttsGenerationRef.current;
+                      fallbackWebSpeech(ttsFullText, "user tapped", () => {
+                        if (ttsGenerationRef.current === tapGen) {
+                          completeAudioChapter();
+                          maybeAutoAdvance(tapGen);
+                        }
+                      });
                     }
                   }}
                   className="px-2.5 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-100 text-[10px] font-bold hover:bg-yellow-500/30 active:scale-95 transition-all"
@@ -3049,7 +3059,15 @@ function ChapterReader({
               ttsFullText && (
                 <div className="mt-2 flex items-center justify-center">
                   <button
-                    onClick={() => fallbackWebSpeech(ttsFullText, "retry")}
+                    onClick={() => {
+                      const tapGen = ttsGenerationRef.current;
+                      fallbackWebSpeech(ttsFullText, "retry", () => {
+                        if (ttsGenerationRef.current === tapGen) {
+                          completeAudioChapter();
+                          maybeAutoAdvance(tapGen);
+                        }
+                      });
+                    }}
                     className="px-3 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-200 text-[11px] font-bold hover:bg-cyan-500/30 active:scale-95"
                   >
                     ▶️ Tap to play (standard)
