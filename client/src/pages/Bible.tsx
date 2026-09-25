@@ -1685,6 +1685,8 @@ function ChapterReader({
   const ttsAudioRef = useRef<HTMLAudioElement | null>(null);
   const ttsPlayingRef = useRef(false);
   const ttsGenerationRef = useRef(0);
+  // Auto next chapter: set true before auto-navigating so the new chapter auto-plays
+  const autoPlayNextRef = useRef(false);
   const ttsAbortRef = useRef<(() => void) | null>(null);
   const ttsAbortControllerRef = useRef<AbortController | null>(null);
   const ttsFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
@@ -2237,6 +2239,37 @@ function ChapterReader({
     setTtsChunkInfo("");
   }, [clearAllTtsTimers]);
 
+  // Auto next chapter: after a chapter's audio finishes, move to the next
+  // chapter AND auto-play it. Quiz chapters intentionally stop for the quiz.
+  // Shared by the HD path and the standard-voice (speechSynthesis) path.
+  const maybeAutoAdvance = useCallback(
+    (myGen: number) => {
+      if (ttsGenerationRef.current !== myGen) return;
+      const currentChapter = chapters[chapterIdx];
+      const quizExists = currentChapter && hasQuiz(book, currentChapter.num);
+      if (autoAdvance && chapterIdx < chapters.length - 1 && !quizExists) {
+        setTtsStatus("⏭ Next chapter in 3s...");
+        setIsSpeaking(true);
+        setTimeout(() => {
+          if (ttsGenerationRef.current !== myGen) return;
+          autoPlayNextRef.current = true;
+          setIsSpeaking(false);
+          setTtsProgress(0);
+          setTtsStatus("");
+          onNavigate(chapterIdx + 1);
+        }, 3000);
+      } else if (autoAdvance && quizExists) {
+        setTtsStatus("🧠 Quiz available! Scroll down to take it.");
+        setTimeout(() => {
+          if (ttsGenerationRef.current !== myGen) return;
+          setIsSpeaking(false);
+          setTtsStatus("");
+        }, 3000);
+      }
+    },
+    [autoAdvance, chapterIdx, chapters, book, onNavigate],
+  );
+
   const startSpeech = useCallback(async () => {
     // Ensure clean state – stop any previous playback and clear timers
     try {
@@ -2333,7 +2366,10 @@ function ChapterReader({
             ttsAbortControllerRef.current.abort();
         } catch {}
         fallbackWebSpeech(text, "timeout", () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
       }
     }, 3000);
@@ -2399,7 +2435,10 @@ function ChapterReader({
               clearAllTtsTimers();
               stopProgressTracking();
               fallbackWebSpeech(text, "network error", () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
               return;
             }
@@ -2418,7 +2457,10 @@ function ChapterReader({
                 );
               } catch {}
               fallbackWebSpeech(text, `http ${resp.status}`, () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
               return;
             }
@@ -2431,7 +2473,10 @@ function ChapterReader({
             if (i === 0) {
               clearAllTtsTimers();
               fallbackWebSpeech(text, "parse error", () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
               return;
             }
@@ -2450,7 +2495,10 @@ function ChapterReader({
           if (i === 0) {
             clearAllTtsTimers();
             fallbackWebSpeech(text, "no audio", () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
             return;
           }
@@ -2464,7 +2512,10 @@ function ChapterReader({
         } catch {
           if (i === 0) {
             fallbackWebSpeech(text, "audio init failed", () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
             return;
           }
@@ -2508,7 +2559,10 @@ function ChapterReader({
             toast.error("HD voice playback failed – using standard voice");
           } catch {}
           fallbackWebSpeech(text, e?.message || "play failed", () => {
-            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+            if (ttsGenerationRef.current === myGen) {
+              completeAudioChapter();
+              maybeAutoAdvance(myGen);
+            }
           });
           return;
         }
@@ -2529,27 +2583,7 @@ function ChapterReader({
       setTtsFullText("");
       // Full chapter audio played through — counts as reading the chapter
       completeAudioChapter();
-
-      const currentChapter = chapters[chapterIdx];
-      const quizExists = currentChapter && hasQuiz(book, currentChapter.num);
-      if (autoAdvance && chapterIdx < chapters.length - 1 && !quizExists) {
-        setTtsStatus("⏭ Next chapter in 3s...");
-        setIsSpeaking(true);
-        setTimeout(() => {
-          if (ttsGenerationRef.current !== myGen) return;
-          setIsSpeaking(false);
-          setTtsProgress(0);
-          setTtsStatus("");
-          onNavigate(chapterIdx + 1);
-        }, 3000);
-      } else if (autoAdvance && quizExists) {
-        setTtsStatus("🧠 Quiz available! Scroll down to take it.");
-        setTimeout(() => {
-          if (ttsGenerationRef.current !== myGen) return;
-          setIsSpeaking(false);
-          setTtsStatus("");
-        }, 3000);
-      }
+      maybeAutoAdvance(myGen);
     }
   }, [
     lang,
@@ -2566,6 +2600,7 @@ function ChapterReader({
     fallbackWebSpeech,
     onNavigate,
     stopSpeech,
+    maybeAutoAdvance,
   ]);
 
   const pauseSpeech = useCallback(() => {
@@ -2798,6 +2833,22 @@ function ChapterReader({
     setConfettiPieces([]);
     setShowReadWarning(false);
     readingStartTime.current = Date.now();
+  }, [book, chapterIdx]);
+
+  // Auto next chapter: if we arrived here via auto-advance, start playing
+  // the new chapter's audio automatically (same HD/standard logic as the play button).
+  const startSpeechRef = useRef(startSpeech);
+  startSpeechRef.current = startSpeech;
+  useEffect(() => {
+    if (autoPlayNextRef.current) {
+      autoPlayNextRef.current = false;
+      const t = setTimeout(() => {
+        try {
+          startSpeechRef.current();
+        } catch {}
+      }, 400);
+      return () => clearTimeout(t);
+    }
   }, [book, chapterIdx]);
 
   useEffect(() => {
