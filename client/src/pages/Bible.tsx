@@ -3198,7 +3198,7 @@ function ChapterReader({
               📖 Read Next Chapter →
             </button>
           )}
-          {challengeCtx && (
+          {challenge && (
             <button
               onClick={() => navigate("/")}
               className="block mx-auto px-6 py-2.5 tb-panel border border-white/20 rounded-xl text-white/80 font-bold text-sm active:scale-95 transition-transform"
