@@ -2,7 +2,7 @@
 // Home 금색 리본 아래 "My Journey" 행에서 진입. 당일 완료/늦음(보충)/읽는 중/미완료를 구분해 보여준다.
 // 한/영 토글: readerLang(localStorage)과 공유.
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { useLocation } from "wouter";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -35,7 +35,10 @@ const STR = {
     legendReading: "읽는 중",
     legendSelf: "📖 직접 기록",
     legendTodo: "미완료",
-    hint: "💡 숫자는 몇 일차인지예요 (장 번호가 아니에요). 동그라미를 누르면 그날 읽을 분량(성경 몇 장)이 나와요.",
+    hint: "💡 달력에서 날짜를 누르면 그날 읽을 분량(성경 몇 장)이 나와요.",
+    dow: ["일", "월", "화", "수", "목", "금", "토"],
+    monthTitle: (y: number, m: number) => `${y}년 ${m}월`,
+    monthRange: (a: number, b: number) => `${a}일차 ~ ${b}일차`,
     loading: "기록을 불러오는 중…",
     loadError: "기록을 불러오지 못했어요. 다시 시도해 주세요.",
     noPart: "챌린지에 참여하면 70일 기록이 여기에 보여요.",
@@ -89,7 +92,11 @@ const STR = {
     legendReading: "Reading",
     legendSelf: "📖 Self-logged",
     legendTodo: "Not done",
-    hint: "💡 Numbers are day counts (not chapter numbers). Tap a circle to see that day's reading (which chapters).",
+    hint: "💡 This is your 70-day calendar. Tap a date to see that day's reading (which chapters).",
+    dow: ["S", "M", "T", "W", "T", "F", "S"],
+    monthTitle: (y: number, m: number) =>
+      new Date(y, m - 1, 1).toLocaleString("en-US", { month: "long", year: "numeric" }),
+    monthRange: (a: number, b: number) => `Day ${a} – Day ${b}`,
     loading: "Loading your journey…",
     loadError: "Couldn't load your journey. Please try again.",
     noPart: "Your 70-day record will appear here once you join the challenge.",
@@ -282,6 +289,24 @@ export default function ChallengeJourney() {
         ? t.panelReading
         : t.panelTodo;
 
+  // 달력 렌더용: 날짜키 -> JourneyDay, 챌린지 기간이 걸친 월 목록
+  const dayByKey = new Map((journey?.days ?? []).map((d) => [d.dateKey, d]));
+  const monthList: { y: number; m: number }[] = [];
+  if (journey && journey.days.length > 0) {
+    const s = journey.days[0].dateKey.split("-").map(Number);
+    const e = journey.days[journey.days.length - 1].dateKey.split("-").map(Number);
+    let y = s[0];
+    let m = s[1];
+    while (y < e[0] || (y === e[0] && m <= e[1])) {
+      monthList.push({ y, m });
+      m += 1;
+      if (m > 12) {
+        m = 1;
+        y += 1;
+      }
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#090a0d] text-white pb-28">
       {/* 헤더 */}
@@ -386,52 +411,95 @@ export default function ChallengeJourney() {
                 </span>
               </div>
 
-              {/* 70일 그리드 */}
-              <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.02] p-3">
-                <p className="mb-2 text-xs leading-relaxed text-white/60">{t.hint}</p>
-                <div className="grid grid-cols-7 gap-1.5">
-                  {journey.days.map((d) => {
-                    const isFuture = d.dateKey > todayKey;
-                    const clickable = !isFuture;
-                    const cls = cellStyle(d, isFuture);
-                    const label = `${t.dayLabel(d)}, ${statusWord(d)}`;
-                    const cellBody = (
-                      <>
-                        {d.dayIndex}
-                        {d.status === "done" && d.source === "self" && (
-                          <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none">
-                            📖
-                          </span>
-                        )}
-                      </>
+              {/* 달력 (70일: 월별 실제 날짜) */}
+              <p className="mt-3 text-xs leading-relaxed text-white/60">{t.hint}</p>
+              {monthList.map(({ y, m }) => {
+                const firstDow = new Date(y, m - 1, 1).getDay();
+                const dim = new Date(y, m, 0).getDate();
+                const prefix = `${y}-${String(m).padStart(2, "0")}`;
+                const mdays = journey.days.filter((d) => d.dateKey.startsWith(prefix));
+                const cells: ReactNode[] = [];
+                for (let i = 0; i < firstDow; i++) cells.push(<div key={`b${i}`} />);
+                for (let day = 1; day <= dim; day++) {
+                  const key = `${prefix}-${String(day).padStart(2, "0")}`;
+                  const d = dayByKey.get(key);
+                  if (!d) {
+                    cells.push(
+                      <div
+                        key={key}
+                        className="aspect-square rounded-lg flex items-center justify-center text-xs font-bold text-white/15"
+                      >
+                        {day}
+                      </div>,
                     );
-                    return clickable ? (
+                    continue;
+                  }
+                  const isFuture = key > todayKey;
+                  const clickable = !isFuture;
+                  let cls = cellStyle(d, isFuture);
+                  if (key === todayKey) cls += " ring-2 ring-white ring-inset";
+                  const label = `${t.dayLabel(d)}, ${statusWord(d)}`;
+                  const title = `${t.dayN(d.dayIndex)} · ${formatShortDateKey(key)} · ${
+                    lang === "ko" ? d.labelKo : d.labelEn
+                  }`;
+                  const body = (
+                    <>
+                      {day}
+                      {d.status === "done" && d.source === "self" && (
+                        <span className="absolute -top-1.5 -right-1.5 text-[9px] leading-none">
+                          📖
+                        </span>
+                      )}
+                    </>
+                  );
+                  cells.push(
+                    clickable ? (
                       <button
-                        key={d.dateKey}
+                        key={key}
                         type="button"
                         onClick={() => setSelected(d)}
                         className={cls + " cursor-pointer active:scale-95"}
-                        title={`${t.dayN(d.dayIndex)} · ${formatShortDateKey(d.dateKey)} · ${
-                          lang === "ko" ? d.labelKo : d.labelEn
-                        }`}
+                        title={title}
                         aria-label={label}
                       >
-                        {cellBody}
+                        {body}
                       </button>
                     ) : (
-                      <div
-                        key={d.dateKey}
-                        className={cls}
-                        title={`${t.dayN(d.dayIndex)} · ${formatShortDateKey(d.dateKey)} · ${
-                          lang === "ko" ? d.labelKo : d.labelEn
-                        }`}
-                        aria-label={label}
-                      >
-                        {cellBody}
+                      <div key={key} className={cls} title={title} aria-label={label}>
+                        {body}
                       </div>
-                    );
-                  })}
-                </div>
+                    ),
+                  );
+                }
+                return (
+                  <div
+                    key={`${y}-${m}`}
+                    className="mt-3 rounded-2xl border border-white/10 bg-white/[0.02] p-3"
+                  >
+                    <h3 className="mb-2 text-sm font-bold">
+                      {t.monthTitle(y, m)}
+                      {mdays.length > 0 && (
+                        <span className="ml-2 text-[11px] font-semibold text-white/45">
+                          {t.monthRange(mdays[0].dayIndex, mdays[mdays.length - 1].dayIndex)}
+                        </span>
+                      )}
+                    </h3>
+                    <div className="grid grid-cols-7 gap-1.5 mb-1.5">
+                      {t.dow.map((w, i) => (
+                        <div
+                          key={`${w}${i}`}
+                          className={`text-center text-[10px] font-bold ${
+                            i === 0 ? "text-red-400/60" : "text-white/40"
+                          }`}
+                        >
+                          {w}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-7 gap-1.5">{cells}</div>
+                  </div>
+                );
+              })}
                 {/* 선택한 날짜 액션 패널 */}
                 {selected && (
                   <div className="mt-3 rounded-2xl border border-[#e8c25a]/30 bg-[#e8c25a]/5 p-4">
@@ -487,7 +555,6 @@ export default function ChallengeJourney() {
                   </div>
                 )}
                 <p className="mt-2.5 text-xs leading-relaxed text-white/60">{t.bottomHelp}</p>
-              </div>
 
               {/* 최근 기록 */}
               <h3 className="mt-6 text-base font-bold">{t.recent}</h3>
