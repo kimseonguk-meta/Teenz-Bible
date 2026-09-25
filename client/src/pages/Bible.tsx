@@ -35,14 +35,8 @@ import {
   getEquipped,
   getInventory,
   equipItem,
-  PETS,
   READER_BACKGROUNDS,
-  getPetState,
-  getPetMoodEmoji,
-  getPetMoodMessage,
-  type PetMood,
 } from "@/data/storeItems";
-import { getPetDefaultSprite } from "@/data/petSprites";
 import FantasyIcon from "@/components/FantasyIcon";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
@@ -1359,35 +1353,6 @@ function ChapterReader({
     () => localStorage.getItem("showVerseNumbers") === "true",
   );
   const [showFontPopup, setShowFontPopup] = useState(false);
-
-  // Pet state for reading companion
-  const [petReaction, setPetReaction] = useState<string | null>(null);
-  const [equippedData, setEquippedData] = useState(getEquipped);
-  const equippedPet = equippedData.pet
-    ? PETS.find((p) => p.id === equippedData.pet)
-    : null;
-  const petState = getPetState();
-
-  // Listen for pet state and equipped changes
-  useEffect(() => {
-    const handlePetChange = () => setPetReaction(null);
-    const handleEquipChange = () => setEquippedData(getEquipped());
-    window.addEventListener("pet-state-changed", handlePetChange);
-    window.addEventListener("equipped-changed", handleEquipChange);
-    return () => {
-      window.removeEventListener("pet-state-changed", handlePetChange);
-      window.removeEventListener("equipped-changed", handleEquipChange);
-    };
-  }, []);
-
-  // Show pet reaction when chapter is completed
-  useEffect(() => {
-    if (marked && equippedPet) {
-      setPetReaction(`${equippedPet.petEmoji} Yay! +10 XP!`);
-      const timer = setTimeout(() => setPetReaction(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [marked]);
 
   // Auto-dismiss the font size tip after 5 seconds
   useEffect(() => {
@@ -3237,22 +3202,10 @@ function ChapterReader({
               ✅ Chapter Complete! +10 XP, +5 💎
             </span>
           </div>
-          {/* Next chapter prompt */}
-          {chapterIdx < chapters.length - 1 && (
-            <button
-              onClick={() => {
-                onNavigate(chapterIdx + 1);
-                window.scrollTo(0, 0);
-              }}
-              className="block mx-auto px-6 py-3 bg-gradient-to-r tb-btn rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-[0_0_10px_rgba(0,0,0,0.3)] animate-pulse"
-            >
-              📖 Read Next Chapter →
-            </button>
-          )}
           {challenge && (
             <button
               onClick={() => navigate("/")}
-              className="block mx-auto px-6 py-2.5 tb-panel border border-white/20 rounded-xl text-white/80 font-bold text-sm active:scale-95 transition-transform"
+              className="block mx-auto px-4 py-1.5 text-white/50 text-xs font-semibold active:scale-95 transition-transform"
             >
               ← Back to Challenge
             </button>
@@ -3310,71 +3263,35 @@ function ChapterReader({
         }
       `}</style>
 
-      {/* Pet Companion Widget */}
-      {equippedPet && (
-        <div className="mt-6 flex items-center gap-3 p-3 rounded-xl tb-soft-button border border-[#8a530f]/20">
-          <div className="relative w-10 h-10 flex items-center justify-center">
-            {getPetDefaultSprite(equippedPet.id.replace("pet_", "")) ? (
-              <img
-                src={getPetDefaultSprite(equippedPet.id.replace("pet_", ""))!}
-                alt={equippedPet.name}
-                className="w-10 h-10 object-contain"
-              />
-            ) : (
-              <span className="text-3xl">{equippedPet.petEmoji}</span>
-            )}
-            <span className="absolute -top-1 -right-1 text-xs">
-              {getPetMoodEmoji(petState.mood)}
-            </span>
-          </div>
-          <div className="flex-1">
-            <p className="text-white text-sm font-bold">{equippedPet.name}</p>
-            <p className="text-gray-400 text-xs">
-              {getPetMoodMessage(petState.mood, equippedPet.name)}
-            </p>
-          </div>
-          {petReaction && (
-            <div className="px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-lg animate-bounce">
-              <span className="text-green-300 text-xs font-bold">
-                {petReaction}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Quiz prompt */}
+      {/* Quiz prompt – slim row */}
       {quizAvailable && (
-        <div className="mt-6 neon-card-gold p-4 text-center">
-          <span className="text-2xl">🧠</span>
-          <h3 className="text-white font-bold text-sm mt-1">
-            DID YOU CATCH THIS?
-          </h3>
-          <p className="text-gray-400 text-xs mt-1">
-            Take the quiz to earn bonus XP & Gems
-          </p>
-          <button
-            onClick={() => {
-              // Scroll to inline quiz via ref (task requirement) – keep within same chapter
-              if (!showInlineQuiz) setShowInlineQuiz(true);
-              setTimeout(
-                () =>
-                  quizRef.current?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  }),
-                100,
-              );
-              // Also keep parent view logic for deep-linking compatibility
-              try {
-                onFinishChapter(chapter.num);
-              } catch {}
-            }}
-            className="mt-3 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-xl text-white text-sm font-bold active:scale-95 transition-transform"
-          >
-            🎯 Take Quiz (+10 XP, +3 💎)
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            // Scroll to inline quiz via ref (task requirement) – keep within same chapter
+            if (!showInlineQuiz) setShowInlineQuiz(true);
+            setTimeout(
+              () =>
+                quizRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                }),
+              100,
+            );
+            // Also keep parent view logic for deep-linking compatibility
+            try {
+              onFinishChapter(chapter.num);
+            } catch {}
+          }}
+          className="mt-4 w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10 active:scale-[0.98] transition-transform"
+        >
+          <span className="text-white text-sm font-bold">
+            🧠 Quiz{" "}
+            <span className="tb-gold-text text-xs font-bold">
+              +10 XP · +3 💎
+            </span>
+          </span>
+          <span className="tb-gold-text text-sm font-bold">Take Quiz →</span>
+        </button>
       )}
 
       {/* Inline Quiz – shown via ref scroll, avoids meaningless /bible landing */}
