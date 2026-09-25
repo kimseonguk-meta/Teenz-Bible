@@ -235,6 +235,10 @@ export default function ChallengeJourney() {
 
               {/* 70일 그리드 */}
               <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.02] p-3">
+                <p className="mb-2 text-[11px] leading-relaxed text-white/45">
+                  💡 숫자는 몇 일차인지예요 (장 번호가 아니에요). 동그라미를 누르면 그날 읽을
+                  분량(성경 몇 장)이 나와요.
+                </p>
                 <div className="grid grid-cols-7 gap-1.5">
                   {journey.days.map((d) => {
                     const isFuture = d.dateKey > todayKey;
