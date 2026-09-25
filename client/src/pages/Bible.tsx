@@ -3196,20 +3196,12 @@ function ChapterReader({
         </div>
       )}
       {reachedBottom && marked && !showCelebration && (
-        <div className="mt-4 text-center space-y-3">
+        <div className="mt-4 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-xl">
             <span className="text-green-400 text-sm font-bold">
               ✅ Chapter Complete! +10 XP, +5 💎
             </span>
           </div>
-          {challenge && (
-            <button
-              onClick={() => navigate("/")}
-              className="block mx-auto px-4 py-1.5 text-white/50 text-xs font-semibold active:scale-95 transition-transform"
-            >
-              ← Back to Challenge
-            </button>
-          )}
         </div>
       )}
 
