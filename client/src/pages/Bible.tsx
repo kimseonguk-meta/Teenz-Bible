@@ -1333,6 +1333,7 @@ function ChapterReader({
   });
 
   const [marked, setMarked] = useState(false);
+  const markedRef = useRef(false);
   const [reachedBottom, setReachedBottom] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -1584,7 +1585,21 @@ function ChapterReader({
     const iv = setInterval(() => {
       const visible = document.visibilityState === "visible";
       const recent = Date.now() - challengeLastInteract.current < 60000;
-      if (visible && recent) {
+      // Audio Bible counts as reading: listening time is active even without touches.
+      // (Otherwise a user who just listens never accumulates activeSec and the day never completes.)
+      let audioPlaying = false;
+      try {
+        const a = ttsAudioRef.current;
+        if (a && !a.paused && !a.ended) audioPlaying = true;
+        else if (
+          typeof window !== "undefined" &&
+          window.speechSynthesis &&
+          window.speechSynthesis.speaking &&
+          !window.speechSynthesis.paused
+        )
+          audioPlaying = true;
+      } catch {}
+      if (visible && (recent || audioPlaying)) {
         challengeActiveSec.current += 1;
         ticks += 1;
         if (ticks % 5 === 0) setChallengeUiTick((t) => t + 1);
@@ -2048,7 +2063,7 @@ function ChapterReader({
   ]);
 
   const fallbackWebSpeech = useCallback(
-    (text: string, reason?: string) => {
+    (text: string, reason?: string, onDone?: () => void) => {
       // Robust fallback: clear all HD timers, stop progress, show toast so user knows
       clearAllTtsTimers();
       try {
@@ -2082,6 +2097,11 @@ function ChapterReader({
           setTtsStatus("");
           setTtsFullText("");
           releaseWakeLock();
+          // Full chapter listened via standard voice — counts as reading.
+          // (Call-site guards with the TTS generation so a cancelled utterance never marks.)
+          try {
+            if (onDone) onDone();
+          } catch {}
         };
         u.onerror = () => {
           setIsSpeaking(false);
@@ -2270,6 +2290,36 @@ function ChapterReader({
     const memoryCacheKey = `${book}-${chapterIdx}-${lang}-${chunks[0]?.slice(0, 50)}`;
 
     let fallbackTriggered = false;
+    // Audio Bible: listening through the whole chapter counts as reading it.
+    // (The text path only marks on scroll-to-bottom, so audio listeners were never recorded.)
+    const completeAudioChapter = () => {
+      const finishedChapter = chapters[chapterIdx];
+      if (!finishedChapter || markedRef.current) return;
+      markedRef.current = true;
+      setMarked(true);
+      game.markChapterRead(book, finishedChapter.num);
+      if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
+      window.dispatchEvent(new CustomEvent("pet-chapter-complete"));
+      setShowCelebration(true);
+      const colors = [
+        "#a78bfa",
+        "#f59e0b",
+        "#10b981",
+        "#ec4899",
+        "#06b6d4",
+        "#f97316",
+      ];
+      setConfettiPieces(
+        Array.from({ length: 40 }, (_, i) => ({
+          id: i,
+          x: Math.random() * 100,
+          delay: Math.random() * 0.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: Math.random() * 8 + 4,
+          duration: Math.random() * 1.5 + 1.5,
+        }))
+      );
+    };
     // Fallback timer: if after 3s we still have no HD audio, switch to standard voice
     // Previously only triggered when no prefetch cache – now triggers regardless to avoid infinite loading
     ttsFallbackTimerRef.current = setTimeout(() => {
@@ -2282,7 +2332,9 @@ function ChapterReader({
           if (ttsAbortControllerRef.current)
             ttsAbortControllerRef.current.abort();
         } catch {}
-        fallbackWebSpeech(text, "timeout");
+        fallbackWebSpeech(text, "timeout", () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
       }
     }, 3000);
 
@@ -2346,7 +2398,9 @@ function ChapterReader({
             if (i === 0) {
               clearAllTtsTimers();
               stopProgressTracking();
-              fallbackWebSpeech(text, "network error");
+              fallbackWebSpeech(text, "network error", () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
               return;
             }
             break;
@@ -2363,7 +2417,9 @@ function ChapterReader({
                   `HD voice failed (${resp.status}) – using standard`,
                 );
               } catch {}
-              fallbackWebSpeech(text, `http ${resp.status}`);
+              fallbackWebSpeech(text, `http ${resp.status}`, () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
               return;
             }
             break;
@@ -2374,7 +2430,9 @@ function ChapterReader({
           } catch {
             if (i === 0) {
               clearAllTtsTimers();
-              fallbackWebSpeech(text, "parse error");
+              fallbackWebSpeech(text, "parse error", () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
               return;
             }
             break;
@@ -2391,7 +2449,9 @@ function ChapterReader({
         if (!audioBase64) {
           if (i === 0) {
             clearAllTtsTimers();
-            fallbackWebSpeech(text, "no audio");
+            fallbackWebSpeech(text, "no audio", () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
             return;
           }
           break;
@@ -2403,7 +2463,9 @@ function ChapterReader({
           audio.playbackRate = speechRate;
         } catch {
           if (i === 0) {
-            fallbackWebSpeech(text, "audio init failed");
+            fallbackWebSpeech(text, "audio init failed", () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
             return;
           }
           break;
@@ -2445,7 +2507,9 @@ function ChapterReader({
           try {
             toast.error("HD voice playback failed – using standard voice");
           } catch {}
-          fallbackWebSpeech(text, e?.message || "play failed");
+          fallbackWebSpeech(text, e?.message || "play failed", () => {
+            if (ttsGenerationRef.current === myGen) completeAudioChapter();
+          });
           return;
         }
         break;
@@ -2463,6 +2527,8 @@ function ChapterReader({
       setTtsProgress(100);
       setTtsStatus("");
       setTtsFullText("");
+      // Full chapter audio played through — counts as reading the chapter
+      completeAudioChapter();
 
       const currentChapter = chapters[chapterIdx];
       const quizExists = currentChapter && hasQuiz(book, currentChapter.num);
@@ -2669,6 +2735,7 @@ function ChapterReader({
       // If elapsed is between 5s and 18s but no consecutive fast scrolls, allow but don't warn
       game.markChapterRead(book, chapter.num);
       setMarked(true);
+      markedRef.current = true;
       // Haptic feedback on chapter complete
       if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
       // Dispatch pet celebration event
@@ -2725,6 +2792,7 @@ function ChapterReader({
   // Reset state when chapter changes
   useEffect(() => {
     setMarked(false);
+    markedRef.current = false;
     setReachedBottom(false);
     setShowCelebration(false);
     setConfettiPieces([]);
