@@ -806,6 +806,7 @@ export interface JourneyDay {
   dateKey: string;
   dayIndex: number; // 1..70
   labelKo: string; // "마태복음 16장"
+  labelEn: string; // "Matthew 16"
   book: string; // 영문 book 키 (Bible 탭 진입용)
   firstChapter: number; // 해당 일차 첫 장 (Bible 탭 진입용)
   status: DayStatus;
@@ -860,10 +861,14 @@ export function summarizeJourney(
       (!manualDone || selfReported) &&
       !!p?.completedDateKey &&
       p.completedDateKey > d.date;
+    const chs = d.chapters;
+    const labelEn =
+      chs.length > 1 ? `${d.book} ${chs[0]}–${chs[chs.length - 1]}` : `${d.book} ${chs[0] ?? 1}`;
     return {
       dateKey: d.date,
       dayIndex: d.day,
       labelKo: d.labelKo,
+      labelEn,
       book: d.book,
       firstChapter: d.chapters[0] ?? 1,
       status,
