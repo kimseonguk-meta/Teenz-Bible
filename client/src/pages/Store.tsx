@@ -28,10 +28,10 @@ const PET_STATS: Record<string, { personality: string; ability: string; lore: st
   puppy: { personality: "Bright, bouncy icon of hope", ability: "Cheer Bark — +10% bonus XP when you finish your daily reading", lore: "A golden retriever puppy. The second you open your Bible, she comes sprinting over, tail wagging like crazy.", stats: { faith: 8, wisdom: 5, joy: 9, courage: 7 } },
   lamb: { personality: "Cozy, warm-hearted healer", ability: "Wool of Peace — calms your heart when you're stressed", lore: "A baby lamb in a lavender beret. Gentle and meek, just like the sheep of Jesus.", stats: { faith: 9, wisdom: 7, joy: 8, courage: 5 } },
   lion: { personality: "Brave and righteous little leader", ability: "Lion's Roar — gives you courage to tackle tough passages", lore: "A baby lion like the Lion of Judah. His tiny crown and red cape are his trademark.", stats: { faith: 8, wisdom: 6, joy: 6, courage: 10 } },
-  owl: { personality: "Wise, calm scholar", ability: "Eyes of Wisdom — shows explanations for difficult words", lore: "An owl who inherited Solomon's wisdom. He watches the world through his gold-rimmed glasses.", stats: { faith: 7, wisdom: 10, joy: 5, courage: 6 } },
+  owl: { personality: "Wise, calm scholar", ability: "Eyes of Wisdom — keeps a calm, watchful eye over your reading", lore: "An owl who inherited Solomon's wisdom. He watches the world through his gold-rimmed glasses.", stats: { faith: 7, wisdom: 10, joy: 5, courage: 6 } },
   dove: { personality: "A peaceful, pure, angel-like presence", ability: "Olive of Peace — fills your reading time with calm", lore: "A dove, the symbol of the Holy Spirit. She flew down from heaven carrying an olive branch, a messenger of peace.", stats: { faith: 10, wisdom: 7, joy: 7, courage: 5 } },
   eagle: { personality: "Free-spirited, fearless adventurer", ability: "Eagle's Wings — the perseverance to finish even long chapters", lore: "The eagle of Isaiah 40:31. Wearing flight goggles, dreaming of soaring high above the clouds.", stats: { faith: 7, wisdom: 6, joy: 6, courage: 10 } },
-  fox: { personality: "Clever, playful little trickster", ability: "Star Magic — reveals sneaky hints for quizzes", lore: "A fox in a wizard hat. With his star wand he digs up hidden treasures in the Bible.", stats: { faith: 6, wisdom: 9, joy: 8, courage: 6 } },
+  fox: { personality: "Clever, playful little trickster", ability: "Star Magic — a playful spark of curiosity for every chapter", lore: "A fox in a wizard hat. With his star wand he digs up hidden treasures in the Bible.", stats: { faith: 6, wisdom: 9, joy: 8, courage: 6 } },
   bear: { personality: "Sturdy, warm-hearted protector", ability: "Bear Hug — sends you a warm encouraging message when you're down", lore: "A baby bear in a checkered vest. Always carrying his honey pot, delivering sweet words.", stats: { faith: 8, wisdom: 6, joy: 7, courage: 9 } },
   bunny: { personality: "Shy but sweet flower girl", ability: "Flower Blessing — higher chance of bonus gems on reading streaks", lore: "A bunny wearing a daisy crown. She hides at first, but once she trusts you, she's the sweetest friend ever.", stats: { faith: 7, wisdom: 7, joy: 9, courage: 4 } },
   whale: { personality: "Laid-back, funny captain", ability: "Wisdom of the Deep — explains the deep meanings of the Bible simply", lore: "A descendant of the great fish that swallowed Jonah. Sailing the seas in his captain's hat, living for adventure.", stats: { faith: 8, wisdom: 9, joy: 7, courage: 7 } },
@@ -483,20 +483,6 @@ export default function Store() {
                 </div>
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
                   <span className="text-cyan-300 text-xs font-bold">+20</span>
-                  <span className="text-xs">💎</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-[#8a530f]/20">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-xl">🤖</div>
-                <div className="flex-1">
-                  <p className="text-white text-sm font-medium">Ask Bible AI</p>
-                  <p className="text-gray-500 text-xs">Have a conversation with Bible AI</p>
-                </div>
-                <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
-                  <span className="text-cyan-300 text-xs font-bold">+2</span>
                   <span className="text-xs">💎</span>
                 </div>
               </div>

@@ -52,7 +52,7 @@ export default function FloatingPet() {
   const [location] = useLocation();
 
   // ─── Simplified hidden check – must be first guard ─────────
-  // Hide on Bible reading ( /bible/:book or /bible/:book/:chapter ), Store, Map, bible-ai, Leaderboard
+  // Hide on Bible reading ( /bible/:book or /bible/:book/:chapter ), Store, Map, Leaderboard
   const isBibleReading = (() => {
     try {
       if (!location.startsWith("/bible")) return false;
@@ -67,7 +67,6 @@ export default function FloatingPet() {
     location.includes("/store") ||
     location.includes("/bible-map") ||
     location.includes("/map") ||
-    location.includes("/bible-ai") ||
     location.startsWith("/leaderboard");
 
   const [equipped, setEquipped] = useState(getEquipped);

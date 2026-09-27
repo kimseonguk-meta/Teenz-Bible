@@ -413,6 +413,92 @@ export async function saveChapterProgress(
   });
 }
 
+/** Firebase 쓰기 타임아웃 — 오프라인에서 promise가 영원히 pending되는 것을 방지 */
+export function withTimeout<T>(p: Promise<T>, ms = 8000): Promise<T> {
+  let t: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    t = setTimeout(() => reject(new Error("write timeout")), ms);
+  });
+  return Promise.race([p, timeout]).finally(() => {
+    if (t) clearTimeout(t);
+  });
+}
+
+/** 오프라인 읽기 기록 큐 (localStorage, 장별 최신 스냅샷만 유지) */
+const PENDING_KEY = "challengePendingWrites_v1";
+const PENDING_CAP = 50;
+interface PendingWrite {
+  dateKey: string;
+  chapterId: string;
+  cp: ChapterProgress;
+  ts: number;
+}
+function readPendingQueue(): PendingWrite[] {
+  try {
+    const raw = localStorage.getItem(PENDING_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+function writePendingQueue(items: PendingWrite[]): void {
+  try {
+    localStorage.setItem(PENDING_KEY, JSON.stringify(items.slice(-PENDING_CAP)));
+  } catch {}
+}
+
+/**
+ * 장 진행도 저장 (오프라인 내성).
+ * 쓰기 실패/타임아웃 시 최신 스냅샷을 로컬 큐에 보관하고, 온라인 복귀 시 flushProgressQueue가 재전송한다.
+ * saveChapterProgress는 같은 경로 덮어쓰기라 멱등 — 늦게 도착한 이전 스냅샷도 최종 상태를 해치지 않는다.
+ */
+export async function saveChapterProgressQueued(
+  dateKey: string,
+  chapterId: string,
+  cp: ChapterProgress
+): Promise<void> {
+  try {
+    await withTimeout(saveChapterProgress(dateKey, chapterId, cp));
+  } catch {
+    const items = readPendingQueue().filter(
+      (it) => !(it.dateKey === dateKey && it.chapterId === chapterId)
+    );
+    items.push({ dateKey, chapterId, cp, ts: Date.now() });
+    writePendingQueue(items);
+  }
+}
+
+/**
+ * 큐에 쌓인 읽기 기록을 재전송하고, 영향받은 날짜의 완료 판정을 다시 돌린다.
+ * 'online' 복귀·저장 틱·앱 시작 시 호출 (실패분은 큐에 남는다).
+ */
+export async function flushProgressQueue(): Promise<number> {
+  const items = readPendingQueue();
+  if (!items.length) return 0;
+  const affected = new Set<string>();
+  const remaining: PendingWrite[] = [];
+  for (const it of items) {
+    try {
+      await withTimeout(saveChapterProgress(it.dateKey, it.chapterId, it.cp));
+      affected.add(it.dateKey);
+    } catch {
+      remaining.push(it);
+    }
+  }
+  writePendingQueue(remaining);
+  for (const dk of affected) {
+    try {
+      await withTimeout(evaluateAndFinalizeDay(dk), 8000);
+    } catch {}
+  }
+  if (affected.size > 0) {
+    try {
+      window.dispatchEvent(new CustomEvent("challenge-progress"));
+    } catch {}
+  }
+  return affected.size;
+}
 /** 하루 전체 완료 여부 판정 (해당 일차의 모든 장) */
 export function isDayComplete(
   day: { book: string; chapters: number[] },
@@ -572,6 +658,50 @@ function studentClaimDecision(
  * - 수동 인정이 취소된 뒤에는 progress.manualCredited 플래그로 "이미 되돌려진 grant"를 구분해 중복 가감산 방지
  * - 게스트/리더 읽기는 집계 제외. 공식↔게스트 전환 시 내가 잡은 claim을 해제한다
  */
+/** 자정 이후 grace (분): 이 시간 안에 마무리된 세션은 시작한 날짜의 완료로 인정 */
+const COMPLETION_GRACE_MIN = 120;
+
+/** SGT 기준 자정 이후 경과 분 */
+function sgMinutesSinceMidnight(now: Date = new Date()): number {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Singapore",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(now);
+  const [h, m] = parts.split(":").map(Number);
+  return h * 60 + m;
+}
+
+/** "YYYY-MM-DD" + n일 */
+function addDaysKey(dateKey: string, n: number): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateKey);
+  if (!m) return dateKey;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  d.setDate(d.getDate() + n);
+  const y = d.getFullYear();
+  const mo = String(d.getMonth() + 1).padStart(2, "0");
+  const da = String(d.getDate()).padStart(2, "0");
+  return `${y}-${mo}-${da}`;
+}
+
+/**
+ * 완료일 기록: 자정을 넘겨 끝난 세션을 "늦음"으로 오판하지 않기 위해,
+ * 자정 이후 grace 안에 마무리되면 세션을 시작한 날짜로 인정한다.
+ * (진짜로 늦게 읽은 경우는 grace 밖이라 그대로 늦음으로 기록됨)
+ */
+function effectiveCompletedDateKey(scheduledDate: string): string {
+  const nowKey = sgDateKey();
+  if (nowKey <= scheduledDate) return scheduledDate;
+  if (
+    nowKey === addDaysKey(scheduledDate, 1) &&
+    sgMinutesSinceMidnight() < COMPLETION_GRACE_MIN
+  ) {
+    return scheduledDate;
+  }
+  return nowKey;
+}
+
 export async function finalizeDayStatus(dateKey: string, status: DayStatus): Promise<void> {
   const me = uid();
   // My Journey 진입 라벨용 최근 활동일 — 실제 읽기 활동이 일어난 날짜(SG 기준). 세션당 1일로 스로틀.
@@ -666,7 +796,8 @@ export async function finalizeDayStatus(dateKey: string, status: DayStatus): Pro
     manualCredited: false,
     ...(rosterNo != null ? { claimEra: true } : {}),
     // 완료된 순간에 기록 (리더 수동 인정은 제외, 학생 직접 기록은 포함 — 늦음 판정 대상).
-    ...(becameDone ? { completedDateKey: sgDateKey() } : {}),
+    // 자정 직후 마무리된 세션은 시작한 날짜로 인정 (grace 120분).
+    ...(becameDone ? { completedDateKey: effectiveCompletedDateKey(dateKey) } : {}),
     updatedAt: serverTimestamp(),
   });
   if (selfUncredited) {

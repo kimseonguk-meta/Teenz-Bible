@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter Complete 정리 시안</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #14141c; color: #fff; font-family: -apple-system, sans-serif; padding: 20px 12px 40px; }
+  h1 { font-size: 18px; text-align: center; margin-bottom: 4px; }
+  .sub { text-align: center; color: rgba(255,255,255,.55); font-size: 12px; margin-bottom: 18px; }
+  .phone { max-width: 380px; margin: 0 auto 28px; background: #0b0b10; border-radius: 28px; border: 1px solid rgba(255,255,255,.12); overflow: hidden; }
+  .screen { padding: 14px 14px 18px; }
+  .opt-label { text-align: center; font-size: 13px; font-weight: 800; color: #f5c542; margin-bottom: 10px; letter-spacing: .3px; }
+  .opt-desc { text-align: center; font-size: 11px; color: rgba(255,255,255,.5); margin: -6px 0 12px; line-height: 1.5; padding: 0 8px; }
+  .fade-text { background: #2a2118; border: 1px solid #6b5a2e; border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.65; color: #e8dcc0; margin-bottom: 12px; }
+  .pill { display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.45); border-radius: 999px; padding: 9px 14px; font-size: 13px; font-weight: 800; color: #4ade80; margin-bottom: 10px; }
+  .pill .rewards { color: #f5c542; font-weight: 700; }
+  .btn-primary { display: block; width: 100%; text-align: center; background: linear-gradient(135deg,#b98a1e,#e9b949); border: none; border-radius: 14px; padding: 14px; font-size: 15px; font-weight: 800; color: #1a1206; margin-bottom: 10px; }
+  .quiz-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 11px 14px; margin-bottom: 8px; font-size: 13px; }
+  .quiz-row .q { font-weight: 700; }
+  .quiz-row .r { color: #f5c542; font-size: 12px; font-weight: 700; }
+  .quiz-row .go { color: #f5c542; font-weight: 800; }
+  .link-subtle { display: block; text-align: center; color: rgba(255,255,255,.55); font-size: 12px; font-weight: 600; padding: 8px; margin-bottom: 6px; }
+  .pet-line { text-align: center; font-size: 11px; color: rgba(255,255,255,.45); margin-bottom: 10px; }
+  .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+  .nav button { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15); color: #fff; border-radius: 999px; padding: 9px 18px; font-size: 13px; font-weight: 700; }
+  .nav .pg { font-size: 12px; color: rgba(255,255,255,.5); }
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,.08); margin: 26px auto; max-width: 380px; }
+  .note { max-width: 380px; margin: 0 auto; font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.7; background: rgba(255,255,255,.04); border-radius: 12px; padding: 12px 14px; }
+  .note b { color: #f5c542; }
+</style>
+</head>
+<body>
+<h1>Chapter Complete 화면 정리 시안</h1>
+<p class="sub">지금 5개 쌓인 걸 3개로 줄인 버전</p>
+
+<div class="phone">
+  <div class="screen">
+    <div class="opt-label">✨ 정리안</div>
+    <p class="opt-desc">배지 1개 + 다음 장 버튼 1개 + 퀴즈 한 줄.<br>펫은 작은 한 줄로, 챌린지 복귀는 텍스트 링크로.</p>
+    <div class="fade-text">..."that's exactly what my Father in heaven is going to do to each one of you who doesn't forgive — unconditionally."</div>
+    <div class="pill">✅ Chapter Complete! <span class="rewards">+10 XP · +5 💎</span></div>
+    <div class="pet-line">🐱 Coco Pet is happy! 🎉</div>
+    <div class="btn-primary">📖 Read Next Chapter →</div>
+    <div class="quiz-row">
+      <span><span class="q">🧠 Quiz</span> <span class="r">+10 XP · +3 💎</span></span>
+      <span class="go">풀기 →</span>
+    </div>
+    <a class="link-subtle">← Back to Challenge</a>
+    <div class="nav">
+      <button>← Prev</button><span class="pg">18 / 28</span><button>Next →</button>
+    </div>
+  </div>
+</div>
+
+<div class="note">
+  <b>바뀐 점</b><br>
+  • "DID YOU CATCH THIS?" 큰 카드 → 한 줄 퀴즈 행으로<br>
+  • "Back to Challenge" 큰 버튼 → 작은 텍스트 링크로<br>
+  • Coco Pet 카드 → 작은 한 줄로<br>
+  • 완료 배지·다음 장 버튼·Prev/Next는 그대로<br><br>
+  퀴즈가 없는 장에서는 퀴즈 행이 안 나와서 더 깔끔해져.
+</div>
+</body>
+</html>

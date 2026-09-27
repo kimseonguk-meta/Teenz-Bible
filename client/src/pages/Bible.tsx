@@ -25,7 +25,9 @@ import {
   getCachedParticipation,
   getMyParticipation,
   getTodayChallengeDay,
-  saveChapterProgress,
+  saveChapterProgressQueued,
+  flushProgressQueue,
+  withTimeout,
   getDayProgress,
   evaluateAndFinalizeDay,
   chapterKey as challengeChapterKey,
@@ -592,7 +594,7 @@ export default function Bible() {
       try {
         const prev = await getDayProgress(ctx.dateKey);
         const cp = prev?.chapters?.[id];
-        await saveChapterProgress(ctx.dateKey, id, {
+        await saveChapterProgressQueued(ctx.dateKey, id, {
           exposurePct: cp?.exposurePct || 0,
           activeSec: cp?.activeSec || 0,
           quizPass: true,
@@ -1520,13 +1522,15 @@ function ChapterReader({
 
     let ticks = 0;
     const save = async () => {
+      // 오프라인 중 쌓인 기록이 있으면 먼저 재전송 시도 (틱을 막지 않기 위해 await하지 않음)
+      flushProgressQueue().catch(() => {});
       try {
         const total = challengeParaTotal.current || 1;
         const exposurePct = Math.min(
           100,
           Math.round((challengeSeen.current.size / total) * 100)
         );
-        await saveChapterProgress(challenge.dateKey, cid, {
+        await saveChapterProgressQueued(challenge.dateKey, cid, {
           exposurePct,
           activeSec: challengeActiveSec.current,
           quizPass: challengeQuizPass.current,
@@ -1540,7 +1544,8 @@ function ChapterReader({
     const finalizeOnExit = async () => {
       try {
         await save();
-        await evaluateAndFinalizeDay(challenge.dateKey, { [cid]: words });
+        // 오프라인이면 판정 읽기가 hang될 수 있어 타임아웃을 건다 — 기록 자체는 큐에 보존됨
+        await withTimeout(evaluateAndFinalizeDay(challenge.dateKey, { [cid]: words }), 8000);
         window.dispatchEvent(new CustomEvent("challenge-progress"));
         try {
           await reconcileReminders();
@@ -1579,6 +1584,12 @@ function ChapterReader({
     document.addEventListener("visibilitychange", onHide);
     const onPageHide = () => finalizeOnExit();
     window.addEventListener("pagehide", onPageHide);
+    // 오프라인 복귀 시 쌓인 읽기 기록을 재전송 (이전 세션 잔여분도 앱 시작 시 처리)
+    const onOnline = () => {
+      flushProgressQueue().catch(() => {});
+    };
+    window.addEventListener("online", onOnline);
+    flushProgressQueue().catch(() => {});
     return () => {
       clearInterval(iv);
       window.removeEventListener("scroll", markInteract);
@@ -1586,6 +1597,7 @@ function ChapterReader({
       window.removeEventListener("keydown", markInteract);
       document.removeEventListener("visibilitychange", onHide);
       window.removeEventListener("pagehide", onPageHide);
+      window.removeEventListener("online", onOnline);
       finalizeOnExit();
     };
   }, [challenge, chapterIdx, lang, book]);
@@ -2345,6 +2357,8 @@ function ChapterReader({
     const abortCtrl = new AbortController();
     ttsAbortControllerRef.current = abortCtrl;
 
+    // 마지막 청크까지 정상 재생됐을 때만 true (중간 break → 완독 아님)
+    let finishedAllChunks = false;
     for (let i = 0; i < chunks.length; i++) {
       if (fallbackTriggered) break;
       if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
@@ -2536,6 +2550,8 @@ function ChapterReader({
         }
         break;
       }
+      // 루프를 끝까지 돌았을 때만 완독 인정 (중간 break는 제외)
+      if (i === chunks.length - 1) finishedAllChunks = true;
     }
 
     if (ttsGenerationRef.current === myGen && !fallbackTriggered) {
@@ -2546,12 +2562,19 @@ function ChapterReader({
       releaseWakeLock();
       setIsSpeaking(false);
       setIsPaused(false);
-      setTtsProgress(100);
       setTtsStatus("");
       setTtsFullText("");
-      // Full chapter audio played through — counts as reading the chapter
-      completeAudioChapter();
-      maybeAutoAdvance(myGen);
+      if (finishedAllChunks) {
+        setTtsProgress(100);
+        // Full chapter audio played through — counts as reading the chapter
+        completeAudioChapter();
+        maybeAutoAdvance(myGen);
+      } else {
+        // 중간에 끊긴 재생은 완독으로 인정하지 않는다
+        try {
+          toast.error("Audio stopped before the end — not marked as read. Please play again.");
+        } catch {}
+      }
     }
   }, [
     lang,
@@ -3687,8 +3710,8 @@ function QuizView({
         >
           {(!isChallenge || selected === shuffled.correctIndex) && (
             <div className="flex items-center justify-center gap-7">
-              <span className="tb-gold-text text-3xl font-black">🔶 +20 XP</span>
-              <span className="tb-gold-text text-3xl font-black">💎 +5 GEMS</span>
+              <span className="tb-gold-text text-3xl font-black">🔶 +10 XP</span>
+              <span className="tb-gold-text text-3xl font-black">💎 +3 GEMS</span>
             </div>
           )}
           <p

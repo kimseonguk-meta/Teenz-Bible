@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Journey 달력형 시안</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #090a0d; color: #fff; font-family: -apple-system, sans-serif; padding: 0 0 40px; }
+  .hdr { position: sticky; top: 0; background: rgba(9,10,13,.95); border-bottom: 1px solid rgba(255,255,255,.1); padding: 12px 16px; display: flex; align-items: center; gap: 12px; z-index: 5; }
+  .hdr h1 { font-size: 18px; font-weight: 800; }
+  .hdr p { font-size: 11px; color: rgba(255,255,255,.65); }
+  .toggle { margin-left: auto; display: flex; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: 2px; font-size: 11px; font-weight: 800; }
+  .toggle span { padding: 4px 10px; border-radius: 999px; }
+  .toggle .on { background: #e8c25a; color: #1a1405; }
+  .toggle .off { color: rgba(255,255,255,.6); }
+  .wrap { padding: 20px 16px 0; max-width: 430px; margin: 0 auto; }
+  h2 { font-size: 22px; font-weight: 800; }
+  .desc { margin-top: 4px; font-size: 13px; color: rgba(255,255,255,.65); }
+  .stats { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .stat { border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); border-radius: 14px; padding: 10px; text-align: center; }
+  .stat .v { font-size: 19px; font-weight: 800; color: #e8c25a; }
+  .stat .v small { font-size: 12px; color: rgba(255,255,255,.5); }
+  .stat .l { margin-top: 2px; font-size: 11px; color: rgba(255,255,255,.65); }
+  .sub { margin-top: 8px; text-align: center; font-size: 11px; color: rgba(255,255,255,.6); }
+  .legend { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 11px; color: rgba(255,255,255,.7); }
+  .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; }
+  .hint { margin-top: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.02); border-radius: 14px; padding: 12px; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,.75); }
+  .month { margin-top: 18px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.02); border-radius: 16px; padding: 12px; }
+  .month h3 { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+  .month h3 .range { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.45); margin-left: 6px; }
+  .dow { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 5px; }
+  .dow span { text-align: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,.4); }
+  .dow span.sun { color: rgba(255,120,120,.6); }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cell { aspect-ratio: 1; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; position: relative; }
+  .cell.done { background: linear-gradient(135deg,#e8c25a,#9a7426); color: #1a1405; box-shadow: 0 2px 10px rgba(212,169,78,.35); }
+  .cell.self { background: #2a2111; border: 2px dashed #e8c25a; color: #e8c25a; }
+  .cell.late { background: #3a2410; border: 1px solid #e08a2e; color: #f0a952; }
+  .cell.reading { background: #12294d; border: 1px solid #4d9fff; color: #8fc2ff; }
+  .cell.todo { background: rgba(255,255,255,.06); color: rgba(255,255,255,.4); }
+  .cell.future { background: rgba(255,255,255,.03); color: rgba(255,255,255,.28); }
+  .cell.off { background: transparent; color: rgba(255,255,255,.16); }
+  .cell.today { outline: 2px solid #fff; outline-offset: -2px; }
+  .cell .bk { position: absolute; top: 1px; right: 3px; font-size: 8px; }
+  .panel { margin-top: 12px; border: 1px solid rgba(232,194,90,.3); background: rgba(232,194,90,.05); border-radius: 14px; padding: 14px; }
+  .panel .t { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 800; }
+  .panel .d { margin-top: 2px; font-size: 11px; color: rgba(255,255,255,.6); }
+  .panel .row { margin-top: 10px; display: flex; gap: 8px; }
+  .panel .btn { flex: 1; text-align: center; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 800; }
+  .panel .go { background: linear-gradient(135deg,#e8c25a,#9a7426); color: #1a1405; }
+  .panel .log { border: 1px solid rgba(255,255,255,.2); color: #fff; }
+  .note { max-width: 430px; margin: 22px auto 0; padding: 0 16px; font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.7; }
+  .note b { color: #e8c25a; }
+</style>
+</head>
+<body>
+<div class="hdr">
+  <span style="font-size:20px">‹</span>
+  <div><h1>My Journey</h1><p>70일 기록</p></div>
+  <div class="toggle"><span class="on">한국어</span><span class="off">EN</span></div>
+</div>
+<div class="wrap">
+  <h2>나의 70일 여정</h2>
+  <p class="desc">당일 완료와 보충 완료를 구분해 보여줘요.</p>
+  <div class="stats">
+    <div class="stat"><div class="v">0</div><div class="l">연속 읽기</div></div>
+    <div class="stat"><div class="v">11<small>/19</small></div><div class="l">완료한 날</div></div>
+    <div class="stat"><div class="v">58%</div><div class="l">완독률</div></div>
+  </div>
+  <p class="sub">✅ 앱으로 읽음 10일 · 📖 직접 기록 1일</p>
+  <div class="legend">
+    <span><i style="background:linear-gradient(135deg,#e8c25a,#9a7426)"></i>당일 완료</span>
+    <span><i style="background:#3a2410;border:1px solid #e08a2e"></i>늦음</span>
+    <span><i style="background:#12294d;border:1px solid #4d9fff"></i>읽는 중</span>
+    <span><i style="background:#2a2111;border:1px dashed #e8c25a"></i>📖 직접 기록</span>
+    <span><i style="background:rgba(255,255,255,.06)"></i>미완료</span>
+  </div>
+  <div class="hint">💡 9월 7일부터 70일 달력이에요. 날짜를 누르면 그날 읽을 분량(성경 몇 장)이 나와요.</div>
+  <div id="months"></div>
+  <div class="panel">
+    <div class="t"><span>19일차 · 마태복음 27–28장</span><span>✕</span></div>
+    <div class="d">2026년 9월 25일 (금) · 읽는 중</div>
+    <div class="row">
+      <div class="btn go">📖 읽으러 가기</div>
+      <div class="btn log">✍️ 직접 기록하기</div>
+    </div>
+  </div>
+</div>
+<div class="note">
+  <b>바뀐 점</b><br>
+  • 1~70 숫자 나열 → <b>9·10·11월 실제 달력</b> (9월 7일 개시, 11월 15일 종료)<br>
+  • 날짜 칸 색깔 = 기존 상태 색 그대로 (당일완료·늦음·읽는중·직접기록·미완료)<br>
+  • 챌린지 기간 밖 날짜(9/1~6, 11/16~30)는 흐리게 비활성<br>
+  • 날짜를 누르면 기존과 같은 상세 패널 (몇 일차·성경 몇 장·읽으러 가기)<br>
+  • "숫자는 일차예요" 안내 문구 불필요 → 삭제, 오늘 날짜는 흰 테두리 표시
+</div>
+<script>
+  // dayIndex -> status (성욱 실제 데이터, 9/7~9/25)
+  const statusByDay = {1:"done",2:"done",3:"done",4:"self",5:"done",6:"done",7:"done",8:"done",9:"done",10:"done",11:"done",12:"todo",13:"todo",14:"reading",15:"todo",16:"reading",17:"todo",18:"reading",19:"reading"};
+  const TODAY = "2026-09-25";
+  function dateKey(y,m,d){ return y+"-"+String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0"); }
+  function dayIndexFor(y,m,d){
+    const t = new Date(y, m-1, d), s = new Date(2026, 8, 7);
+    const n = Math.round((t - s) / 86400000) + 1;
+    return (n >= 1 && n <= 70) ? n : 0;
+  }
+  const months = [
+    {y:2026, m:9, name:"2026년 9월", range:"1일차(9/7) ~ 24일차(9/30)"},
+    {y:2026, m:10, name:"2026년 10월", range:"25일차(10/1) ~ 55일차(10/31)"},
+    {y:2026, m:11, name:"2026년 11월", range:"56일차(11/1) ~ 70일차(11/15)"},
+  ];
+  const DOW = ["일","월","화","수","목","금","토"];
+  let html = "";
+  months.forEach(({y,m,name,range}) => {
+    const first = new Date(y, m-1, 1).getDay();
+    const days = new Date(y, m, 0).getDate();
+    html += `<div class="month"><h3>${name}<span class="range">${range}</span></h3><div class="dow">` +
+      DOW.map((d,i)=>`<span class="${i===0?'sun':''}">${d}</span>`).join("") + `</div><div class="grid">`;
+    for (let i=0;i<first;i++) html += `<div class="cell" style="background:none"></div>`;
+    for (let d=1; d<=days; d++) {
+      const di = dayIndexFor(y,m,d), k = dateKey(y,m,d);
+      let cls, inner = d, extra = "";
+      if (di === 0) { cls = "cell off"; }
+      else {
+        const st = statusByDay[di];
+        if (k > TODAY) cls = "cell future";
+        else if (st === "done") cls = "cell done";
+        else if (st === "self") { cls = "cell self"; extra = `<span class="bk">📖</span>`; }
+        else if (st === "reading") cls = "cell reading";
+        else cls = "cell todo";
+        if (k === TODAY) cls += " today";
+      }
+      html += `<div class="${cls}">${inner}${extra}</div>`;
+    }
+    html += `</div></div>`;
+  });
+  document.getElementById("months").innerHTML = html;
+</script>
+</body>
+</html>

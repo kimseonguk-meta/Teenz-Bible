@@ -248,6 +248,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
         if (pet) {
           toast.success(`${pet.petEmoji} ${pet.name} is happy! Fed successfully!`);
         }
+        // Hope Puppy's Cheer Bark (Store promise): +10% bonus XP when finishing daily reading
+        if (equipped.pet === "pet_puppy") {
+          const bonus = Math.max(1, Math.round(10 * 0.1));
+          addXP(bonus);
+          toast.success(`🐶 Cheer Bark! +${bonus} bonus XP`);
+        }
       }
 
       // Check badges

@@ -54,7 +54,6 @@ const Bible = lazyWithRetry(() => import("./pages/Bible"));
 const Leaderboard = lazyWithRetry(() => import("./pages/Leaderboard"));
 const Store = lazyWithRetry(() => import("./pages/Store"));
 const Profile = lazyWithRetry(() => import("./pages/Profile"));
-const BibleAI = lazyWithRetry(() => import("./pages/BibleAI"));
 const QuizStats = lazyWithRetry(() => import("./pages/QuizStats"));
 const BibleMap = lazyWithRetry(() => import("./pages/BibleMap"));
 const Feedback = lazyWithRetry(() => import("./pages/Feedback"));
@@ -144,7 +143,6 @@ function Router() {
             <Route path="/leaderboard" component={Leaderboard} />
             <Route path="/store" component={Store} />
             <Route path="/profile" component={Profile} />
-            <Route path="/bible-ai" component={BibleAI} />
             <Route path="/quiz-stats" component={QuizStats} />
             <Route path="/bible-map" component={BibleMap} />
             <Route path="/feedback" component={Feedback} />

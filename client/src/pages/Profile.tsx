@@ -1244,20 +1244,6 @@ export default function Profile() {
           )}
         </div>
 
-        {/* AI & Data */}
-        <div className="space-y-3 mb-5">
-          <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">🤖 AI & Data</p>
-
-          {/* Bible AI Status */}
-          <div className="tb-panel tb-panel-glow p-3 flex items-center justify-between">
-            <div>
-              <p className="text-white text-sm font-medium">Bible AI</p>
-              <p className="text-green-400 text-[10px]">✅ Connected & Ready</p>
-            </div>
-          </div>
-
-        </div>
-
         {/* Legal */}
         <div className="space-y-3 mb-5">
           <p className="text-xs font-bold text-yellow-400/80 uppercase tracking-wider">📄 Legal</p>
