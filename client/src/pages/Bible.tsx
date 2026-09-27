@@ -1561,13 +1561,6 @@ function ChapterReader({
       try {
         const a = ttsAudioRef.current;
         if (a && !a.paused && !a.ended) audioPlaying = true;
-        else if (
-          typeof window !== "undefined" &&
-          window.speechSynthesis &&
-          window.speechSynthesis.speaking &&
-          !window.speechSynthesis.paused
-        )
-          audioPlaying = true;
       } catch {}
       if (visible && (recent || audioPlaying)) {
         challengeActiveSec.current += 1;
@@ -1602,8 +1595,9 @@ function ChapterReader({
     };
   }, [challenge, chapterIdx, lang, book]);
 
-  // === HD Cloud TTS via Cloudflare Workers Proxy — Improved with IDB cache, prefetch on mount, fallback, progress ===
-  // Robust fallback: any HD fetch error, audio.play() rejection, or 3s timeout triggers standard voice
+  // === HD Cloud TTS via Cloudflare Workers Proxy — Improved with IDB cache, prefetch on mount, progress ===
+  // HD failure handling: any HD fetch error, audio.play() rejection, or 10s timeout
+  // shows a retry prompt (no standard-voice fallback)
   const TTS_PROXY_URL = "https://teens-bible-tts.kimseonguk777.workers.dev";
   const TTS_VOICE_EN = "en-US-Neural2-J";
   const TTS_VOICE_KO = "ko-KR-Chirp3-HD-Puck";
@@ -2018,7 +2012,7 @@ function ChapterReader({
         }
       } catch (e: any) {
         if (e?.name !== "AbortError") {
-          // prefetch error – ignore, HD will fallback to standard voice if needed
+          // prefetch error – ignore, startSpeech reports HD failures itself
         }
       } finally {
         if (!cancelled) prefetchingRef.current = false;
@@ -2041,140 +2035,28 @@ function ChapterReader({
     setCachedAudio,
   ]);
 
-  const fallbackWebSpeech = useCallback(
-    (text: string, reason?: string, onDone?: () => void) => {
-      // Robust fallback: clear all HD timers, stop progress, show toast so user knows
-      clearAllTtsTimers();
-      try {
-        if (ttsAbortControllerRef.current) {
-          ttsAbortControllerRef.current.abort();
-        }
-      } catch {}
-      if (!window.speechSynthesis) {
-        setIsSpeaking(false);
-        setTtsStatus("🔇 Voice not supported");
-        try {
-          toast.error("Voice not supported on this device");
-        } catch {}
-        releaseWakeLock();
-        return;
-      }
-      try {
-        if (ttsAudioRef.current) {
-          ttsAudioRef.current.pause();
-          ttsAudioRef.current = null;
-        }
-      } catch {}
+  // HD voice failure: no standard-voice fallback anymore (removed per product decision).
+  // Show a retry prompt instead — a failed fetch must never count as reading.
+  const handleHdFailure = useCallback(
+    (reason?: string) => {
       ttsPlayingRef.current = false;
+      clearAllTtsTimers();
       stopProgressTracking();
+      releaseWakeLock();
+      setIsSpeaking(false);
+      setIsPaused(false);
+      setTtsProgress(0);
+      setTtsStatus("⚠️ Couldn't load HD voice – tap to retry");
+      // ttsFullText는 유지 — 재시도 버튼이 표시되도록
       try {
-        const u = new SpeechSynthesisUtterance(text);
-        u.rate = speechRate;
-        u.lang = lang === "ko" ? "ko-KR" : "en-US";
-        u.onend = () => {
-          setIsSpeaking(false);
-          setTtsStatus("");
-          setTtsFullText("");
-          releaseWakeLock();
-          // Full chapter listened via standard voice — counts as reading.
-          // (Call-site guards with the TTS generation so a cancelled utterance never marks.)
-          try {
-            if (onDone) onDone();
-          } catch {}
-        };
-        u.onerror = () => {
-          setIsSpeaking(false);
-          setTtsStatus("⚠️ Playback failed – tap to try again");
-          setTtsFullText("");
-          releaseWakeLock();
-          try {
-            toast.error("Audio playback failed – please try again");
-          } catch {}
-        };
-        const wantLang = lang === "ko" ? "ko" : "en";
-        // Pick an explicit matching voice: relying on lang-only matching fails
-        // silently on devices where voices load late or no matching voice exists.
-        const speakNow = () => {
-          try {
-            const synth = window.speechSynthesis;
-            const voices = synth.getVoices() || [];
-            const matches = voices.filter((v) =>
-              (v.lang || "").toLowerCase().startsWith(wantLang),
-            );
-            const picked =
-              matches.find((v) => v.default) ||
-              matches.find((v) =>
-                (v.name || "").toLowerCase().includes("google"),
-              ) ||
-              matches[0] ||
-              null;
-            if (picked) u.voice = picked;
-            else if (wantLang === "ko") {
-              try {
-                toast.error(
-                  "이 기기에 한국어 음성이 없어요 – HD 음성을 사용해 주세요",
-                );
-              } catch {}
-            }
-          } catch {}
-          window.speechSynthesis.cancel(); // clear queue
-          window.speechSynthesis.speak(u);
-        };
-        try {
-          if (
-            window.speechSynthesis.getVoices() &&
-            window.speechSynthesis.getVoices().length > 0
-          ) {
-            speakNow();
-          } else {
-            // Voices may not be loaded yet – wait once for voiceschanged
-            let done = false;
-            const onVoices = () => {
-              if (done) return;
-              done = true;
-              try {
-                window.speechSynthesis.removeEventListener(
-                  "voiceschanged",
-                  onVoices,
-                );
-              } catch {}
-              speakNow();
-            };
-            window.speechSynthesis.addEventListener("voiceschanged", onVoices);
-            // Safety net: if voiceschanged never fires, speak anyway after 1.5s
-            setTimeout(() => {
-              if (done) return;
-              done = true;
-              try {
-                window.speechSynthesis.removeEventListener(
-                  "voiceschanged",
-                  onVoices,
-                );
-              } catch {}
-              speakNow();
-            }, 1500);
-          }
-        } catch {
-          speakNow();
-        }
-        setTtsStatus("▶ Playing (standard)...");
-        setTtsProgress(0);
-        setIsSpeaking(true);
-        if (reason) {
-          try {
-            toast.error(`HD voice failed (${reason}) – using standard voice`);
-          } catch {}
-        }
-      } catch (e) {
-        setIsSpeaking(false);
-        setTtsStatus("⚠️ Tap to play");
-        try {
-          toast.error("Failed to start audio – tap to try again");
-        } catch {}
-        releaseWakeLock();
-      }
+        toast.error(
+          reason
+            ? `HD voice failed (${reason}) – tap play to try again`
+            : "HD voice failed – tap play to try again"
+        );
+      } catch {}
     },
-    [lang, speechRate, clearAllTtsTimers],
+    [clearAllTtsTimers]
   );
 
   const stopSpeech = useCallback(() => {
@@ -2216,8 +2098,7 @@ function ChapterReader({
     setTtsChunkInfo("");
   }, [clearAllTtsTimers]);
 
-  // Audio chapter completion: mark read + celebration. Shared by the HD path,
-  // the auto standard-voice fallback, and the user-tapped standard voice.
+  // Audio chapter completion: mark read + celebration. HD-only path.
   const completeAudioChapter = useCallback(() => {
     const finishedChapter = chapters[chapterIdx];
     if (!finishedChapter || markedRef.current) return;
@@ -2249,7 +2130,7 @@ function ChapterReader({
 
   // Auto next chapter: after a chapter's audio finishes, move to the next
   // chapter AND auto-play it. Quiz chapters intentionally stop for the quiz.
-  // Shared by the HD path and the standard-voice (speechSynthesis) path.
+  // HD-only path (standard voice removed).
   const maybeAutoAdvance = useCallback(
     (myGen: number) => {
       if (ttsGenerationRef.current !== myGen) return;
@@ -2295,7 +2176,7 @@ function ChapterReader({
     setIsSpeaking(true);
     setIsPaused(false);
     setTtsProgress(0);
-    setTtsStatus("⏳ Loading HD voice... 0% – Tap to use standard voice");
+    setTtsStatus("⏳ Loading HD voice... 0%");
 
     let loadingSec = 0;
     try {
@@ -2310,7 +2191,7 @@ function ChapterReader({
         !ttsAudioRef.current
       ) {
         setTtsStatus(
-          `⏳ Loading HD voice... ${Math.min(95, loadingSec * 15)}% (${loadingSec}s) – Tap to use standard voice`,
+          `⏳ Loading HD voice... ${Math.min(95, loadingSec * 15)}% (${loadingSec}s)`,
         );
       }
     }, 1000);
@@ -2330,29 +2211,24 @@ function ChapterReader({
     const voice = lang === "ko" ? TTS_VOICE_KO : TTS_VOICE_EN;
     const memoryCacheKey = `${book}-${chapterIdx}-${lang}-${chunks[0]?.slice(0, 50)}`;
 
-    let fallbackTriggered = false;
+    let hdFailed = false; // HD 실패를 이미 알렸는지 (중복 토스트 방지)
     // Audio Bible: listening through the whole chapter counts as reading it.
     // (The text path only marks on scroll-to-bottom, so audio listeners were never recorded.)
-    // Fallback timer: if after 3s we still have no HD audio, switch to standard voice
-    // Previously only triggered when no prefetch cache – now triggers regardless to avoid infinite loading
+    // HD timeout: if after 10s we still have no HD audio, show a retry prompt
+    // (no standard-voice fallback anymore — a failed load must never count as reading)
     ttsFallbackTimerRef.current = setTimeout(() => {
       if (ttsGenerationRef.current !== myGen) return;
       if (!ttsPlayingRef.current) return;
       if (!ttsAudioRef.current) {
-        // No HD audio started within 3s – fallback, even if prefetch cache exists but fetch failed
-        fallbackTriggered = true;
+        // No HD audio started within 10s – abort and ask the user to retry
+        hdFailed = true;
         try {
           if (ttsAbortControllerRef.current)
             ttsAbortControllerRef.current.abort();
         } catch {}
-        fallbackWebSpeech(text, "timeout", () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+        handleHdFailure("timeout");
       }
-    }, 3000);
+    }, 10000);
 
     const abortCtrl = new AbortController();
     ttsAbortControllerRef.current = abortCtrl;
@@ -2360,7 +2236,7 @@ function ChapterReader({
     // 마지막 청크까지 정상 재생됐을 때만 true (중간 break → 완독 아님)
     let finishedAllChunks = false;
     for (let i = 0; i < chunks.length; i++) {
-      if (fallbackTriggered) break;
+      if (hdFailed) break;
       if (!ttsPlayingRef.current || ttsGenerationRef.current !== myGen) break;
       if (abortCtrl.signal.aborted) break;
       try {
@@ -2393,7 +2269,7 @@ function ChapterReader({
           const pct = Math.round((i / chunks.length) * 100);
           setTtsStatus(
             i === 0
-              ? `⏳ Loading HD voice... ${pct}% – Tap for standard`
+              ? `⏳ Loading HD voice... ${pct}%`
               : `⏳ Loading HD... ${pct}% (${i + 1}/${chunks.length})`,
           );
           setTtsProgress(pct);
@@ -2416,12 +2292,7 @@ function ChapterReader({
             if (i === 0) {
               clearAllTtsTimers();
               stopProgressTracking();
-              fallbackWebSpeech(text, "network error", () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+handleHdFailure("network error");
               return;
             }
             break;
@@ -2433,17 +2304,7 @@ function ChapterReader({
             clearAllTtsTimers();
             stopProgressTracking();
             if (i === 0) {
-              try {
-                toast.error(
-                  `HD voice failed (${resp.status}) – using standard`,
-                );
-              } catch {}
-              fallbackWebSpeech(text, `http ${resp.status}`, () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+handleHdFailure(`http ${resp.status}`);
               return;
             }
             break;
@@ -2454,12 +2315,7 @@ function ChapterReader({
           } catch {
             if (i === 0) {
               clearAllTtsTimers();
-              fallbackWebSpeech(text, "parse error", () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+handleHdFailure("parse error");
               return;
             }
             break;
@@ -2476,12 +2332,7 @@ function ChapterReader({
         if (!audioBase64) {
           if (i === 0) {
             clearAllTtsTimers();
-            fallbackWebSpeech(text, "no audio", () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+handleHdFailure("no audio");
             return;
           }
           break;
@@ -2493,12 +2344,7 @@ function ChapterReader({
           audio.playbackRate = speechRate;
         } catch {
           if (i === 0) {
-            fallbackWebSpeech(text, "audio init failed", () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+handleHdFailure("audio init failed");
             return;
           }
           break;
@@ -2536,16 +2382,8 @@ function ChapterReader({
         if (i === 0) {
           clearAllTtsTimers();
           stopProgressTracking();
-          // On audio.play() rejection or other error, fallback to standard voice and show toast
-          try {
-            toast.error("HD voice playback failed – using standard voice");
-          } catch {}
-          fallbackWebSpeech(text, e?.message || "play failed", () => {
-            if (ttsGenerationRef.current === myGen) {
-              completeAudioChapter();
-              maybeAutoAdvance(myGen);
-            }
-          });
+          // On audio.play() rejection or other error, show a retry prompt
+handleHdFailure(e?.message || "play failed");
           return;
         }
         break;
@@ -2554,7 +2392,7 @@ function ChapterReader({
       if (i === chunks.length - 1) finishedAllChunks = true;
     }
 
-    if (ttsGenerationRef.current === myGen && !fallbackTriggered) {
+    if (ttsGenerationRef.current === myGen && !hdFailed) {
       ttsPlayingRef.current = false;
       ttsAudioRef.current = null;
       clearAllTtsTimers();
@@ -2588,7 +2426,7 @@ function ChapterReader({
     getCachedAudio,
     setCachedAudio,
     clearAllTtsTimers,
-    fallbackWebSpeech,
+    handleHdFailure,
     onNavigate,
     stopSpeech,
     maybeAutoAdvance,
@@ -2596,6 +2434,9 @@ function ChapterReader({
   ]);
 
   const pauseSpeech = useCallback(() => {
+    // HD only (standard voice removed): pause/resume the current chunk audio.
+    // The chunk loop awaits onended, so pausing here simply holds the loop
+    // until resume — no separate loop handling needed.
     if (ttsAudioRef.current) {
       if (isPaused) {
         try {
@@ -2610,17 +2451,6 @@ function ChapterReader({
         setIsPaused(true);
         setTtsStatus("⏸ Paused");
       }
-    } else if (window.speechSynthesis) {
-      // Fallback Web Speech pause/resume
-      try {
-        if (isPaused) {
-          window.speechSynthesis.resume();
-          setIsPaused(false);
-        } else {
-          window.speechSynthesis.pause();
-          setIsPaused(true);
-        }
-      } catch {}
     }
   }, [isPaused]);
 
@@ -3048,52 +2878,21 @@ function ChapterReader({
                 </button>
               </div>
             </div>
-            {/* HD Loading -> Tap to use standard voice */}
-            {ttsStatus.includes("Loading HD") && (
-              <div className="mt-2 flex items-center justify-between gap-2 p-2 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                <span className="text-yellow-200 text-[10px] flex-1">
-                  ⏳ HD voice loading... Takes too long?
-                </span>
-                <button
-                  onClick={() => {
-                    if (ttsFullText) {
-                      try {
-                        toast.error("Switching to standard voice");
-                      } catch {}
-                      const tapGen = ttsGenerationRef.current;
-                      fallbackWebSpeech(ttsFullText, "user tapped", () => {
-                        if (ttsGenerationRef.current === tapGen) {
-                          completeAudioChapter();
-                          maybeAutoAdvance(tapGen);
-                        }
-                      });
-                    }
-                  }}
-                  className="px-2.5 py-1 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-100 text-[10px] font-bold hover:bg-yellow-500/30 active:scale-95 transition-all"
-                >
-                  🎙️ Use standard voice
-                </button>
-              </div>
-            )}
-            {/* Fallback / tap to play prompt */}
-            {(ttsStatus.includes("Tap to play") ||
+            {/* Fallback / tap to retry prompt (HD only — no standard voice) */}
+            {(ttsStatus.includes("tap to retry") ||
               ttsStatus.includes("Tap to try") ||
               ttsStatus.includes("Playback failed")) &&
               ttsFullText && (
                 <div className="mt-2 flex items-center justify-center">
                   <button
                     onClick={() => {
-                      const tapGen = ttsGenerationRef.current;
-                      fallbackWebSpeech(ttsFullText, "retry", () => {
-                        if (ttsGenerationRef.current === tapGen) {
-                          completeAudioChapter();
-                          maybeAutoAdvance(tapGen);
-                        }
-                      });
+                      try {
+                        startSpeech();
+                      } catch {}
                     }}
                     className="px-3 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-200 text-[11px] font-bold hover:bg-cyan-500/30 active:scale-95"
                   >
-                    ▶️ Tap to play (standard)
+                    ▶️ Tap to retry
                   </button>
                 </div>
               )}
