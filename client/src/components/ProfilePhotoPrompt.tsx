@@ -3,6 +3,7 @@ import { safeParseJSON } from "@/lib/safeStorage";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { auth, db, ref, update, storage, storageRef, uploadBytes, getDownloadURL } from "@/lib/firebase";
+import { withTimeout } from "@/lib/challenge";
 import { takePhotoNative, pickPhotoNative } from "@/lib/nativeCamera";
 import { isNativePlatform } from "@/lib/platform";
 
@@ -35,6 +36,10 @@ export function getProfilePhotoUrl(): string | null {
 
 export function setProfilePhoto(base64: string) {
   localStorage.setItem("profilePhoto", base64);
+  // A newly picked photo invalidates the old cloud URL. Without this, the
+  // stale URL shadows the new photo on reload whenever the cloud upload
+  // fails or times out.
+  localStorage.removeItem("profilePhotoUrl");
   window.dispatchEvent(new CustomEvent("profile-photo-changed"));
   window.dispatchEvent(new CustomEvent("teensBibleDataChanged"));
 }
@@ -64,15 +69,21 @@ export async function uploadPhotoToFirebase(base64: string): Promise<string | nu
     const groupCode = profile.groupCode || localStorage.getItem("teensBibleGroup");
 
     // Preferred path: small file in Storage, short URL string in the database.
+    // Timeouts are critical here: Firebase write promises can pend forever on
+    // a dead/flaky connection, which used to leave the upload spinner spinning
+    // indefinitely and made photo changes look broken.
     try {
       const blob = await dataUrlToBlob(base64);
       const photoRef = storageRef(storage, `profile-photos/${uid}.jpg`);
-      await uploadBytes(photoRef, blob);
-      const url = await getDownloadURL(photoRef);
+      await withTimeout(uploadBytes(photoRef, blob), 20000);
+      const url = await withTimeout(getDownloadURL(photoRef), 15000);
 
-      await update(ref(db, `users/${uid}`), { profilePhotoUrl: url });
+      await withTimeout(update(ref(db, `users/${uid}`), { profilePhotoUrl: url }), 8000);
       if (groupCode) {
-        await update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: url });
+        await withTimeout(
+          update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: url }),
+          8000,
+        );
       }
       return url;
     } catch (storageErr) {
@@ -81,9 +92,12 @@ export async function uploadPhotoToFirebase(base64: string): Promise<string | nu
 
     // Fallback: compressed base64 in RTDB (previous behavior).
     const compressed = await compressForDB(base64, 150, 0.6);
-    await update(ref(db, `users/${uid}`), { profilePhotoUrl: compressed });
+    await withTimeout(update(ref(db, `users/${uid}`), { profilePhotoUrl: compressed }), 8000);
     if (groupCode) {
-      await update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: compressed });
+      await withTimeout(
+        update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: compressed }),
+        8000,
+      );
     }
     return compressed;
   } catch (err) {

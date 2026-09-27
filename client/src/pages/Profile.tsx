@@ -3,6 +3,7 @@ import { safeParseJSON } from "@/lib/safeStorage";
 import { getEquipped, getInventory, PETS, PROFILE_FRAMES, READER_BACKGROUNDS } from "@/data/storeItems";
 import { getPetCardArt } from "@/data/petSprites";
 import { useLocation } from "wouter";
+import { toast } from "sonner";
 import { auth, db, ref, update, serverTimestamp } from "@/lib/firebase";
 import { get } from "firebase/database";
 import { getProfilePhotoUrl, setProfilePhoto, setProfilePhotoUrl, uploadPhotoToFirebase } from "@/components/ProfilePhotoPrompt";
@@ -311,6 +312,10 @@ export default function Profile() {
       if (url) {
         setProfilePhotoUrl(url);
         setProfilePhotoState(url);
+      } else {
+        // Local photo is saved; only the cloud sync failed. Say so honestly
+        // instead of leaving the user guessing.
+        toast.error("Photo saved on this device — cloud sync failed");
       }
     } finally {
       setIsUploadingPhoto(false);
