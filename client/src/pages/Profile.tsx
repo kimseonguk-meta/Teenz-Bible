@@ -254,33 +254,58 @@ export default function Profile() {
   const [availableGroups, setAvailableGroups] = useState<GroupMeta[]>([]);
   const [loadingAvailableGroups, setLoadingAvailableGroups] = useState(false);
 
-  const getCroppedBase64 = (): string | null => {
-    if (!rawPhoto) return null;
-    const canvas = document.createElement("canvas");
-    canvas.width = 300; canvas.height = 300;
-    const ctx = canvas.getContext("2d")!;
-    const img = new Image();
-    img.src = rawPhoto;
-    // Calculate crop area based on scale and offset
-    const imgSize = Math.min(img.naturalWidth, img.naturalHeight);
-    const viewSize = imgSize / cropScale;
-    const cx = (img.naturalWidth / 2) - (cropOffset.x / 100 * imgSize);
-    const cy = (img.naturalHeight / 2) - (cropOffset.y / 100 * imgSize);
-    const sx = Math.max(0, Math.min(cx - viewSize / 2, img.naturalWidth - viewSize));
-    const sy = Math.max(0, Math.min(cy - viewSize / 2, img.naturalHeight - viewSize));
-    ctx.drawImage(img, sx, sy, viewSize, viewSize, 0, 0, 300, 300);
-    return canvas.toDataURL("image/jpeg", 0.85);
+  // NOTE: image decoding is async — we MUST wait for img.onload before reading
+  // naturalWidth. Reading it synchronously after setting src returns 0 and
+  // produces a blank/black photo (that was the "photo change doesn't work" bug).
+  const getCroppedBase64 = (): Promise<string | null> => {
+    return new Promise((resolve) => {
+      if (!rawPhoto) {
+        resolve(null);
+        return;
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = 300;
+      canvas.height = 300;
+      const ctx = canvas.getContext("2d")!;
+      const img = new Image();
+      img.onload = () => {
+        try {
+          // Calculate crop area based on scale and offset
+          const imgSize = Math.min(img.naturalWidth, img.naturalHeight);
+          const viewSize = imgSize / cropScale;
+          const cx = img.naturalWidth / 2 - ((cropOffset.x / 100) * imgSize);
+          const cy = img.naturalHeight / 2 - ((cropOffset.y / 100) * imgSize);
+          const sx = Math.max(
+            0,
+            Math.min(cx - viewSize / 2, img.naturalWidth - viewSize),
+          );
+          const sy = Math.max(
+            0,
+            Math.min(cy - viewSize / 2, img.naturalHeight - viewSize),
+          );
+          ctx.drawImage(img, sx, sy, viewSize, viewSize, 0, 0, 300, 300);
+          resolve(canvas.toDataURL("image/jpeg", 0.85));
+        } catch {
+          resolve(null);
+        }
+      };
+      img.onerror = () => resolve(null);
+      img.src = rawPhoto;
+    });
   };
 
   const handleConfirmPhoto = async () => {
-    const base64 = getCroppedBase64();
-    if (!base64) return;
+    setIsUploadingPhoto(true);
+    const base64 = await getCroppedBase64();
+    if (!base64) {
+      setIsUploadingPhoto(false);
+      return;
+    }
     setProfilePhoto(base64);
     setProfilePhotoState(base64);
     setRawPhoto(null);
     setCropScale(1);
     setCropOffset({ x: 0, y: 0 });
-    setIsUploadingPhoto(true);
     try {
       const url = await uploadPhotoToFirebase(base64);
       if (url) {
