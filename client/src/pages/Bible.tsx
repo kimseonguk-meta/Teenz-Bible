@@ -2176,13 +2176,15 @@ function ChapterReader({
     setIsSpeaking(true);
     setIsPaused(false);
     setTtsProgress(0);
-    setTtsStatus("⏳ Loading HD voice... 0%");
+    setTtsStatus("⏳ Preparing HD voice…");
 
     let loadingSec = 0;
     try {
       if (ttsLoadingCountdownRef.current)
         clearInterval(ttsLoadingCountdownRef.current);
     } catch {}
+    // Honest loading indicator: animated dots + ticking seconds prove it's alive.
+    // (No fake percentage — a % that stalls at 95 looks like an error.)
     ttsLoadingCountdownRef.current = setInterval(() => {
       loadingSec++;
       if (
@@ -2190,9 +2192,8 @@ function ChapterReader({
         ttsGenerationRef.current === myGen &&
         !ttsAudioRef.current
       ) {
-        setTtsStatus(
-          `⏳ Loading HD voice... ${Math.min(95, loadingSec * 15)}% (${loadingSec}s)`,
-        );
+        const dots = ".".repeat((loadingSec % 3) + 1);
+        setTtsStatus(`⏳ Preparing HD voice${dots} ${loadingSec}s`);
       }
     }, 1000);
 
@@ -2233,6 +2234,48 @@ function ChapterReader({
     const abortCtrl = new AbortController();
     ttsAbortControllerRef.current = abortCtrl;
 
+    // Fetch one chunk straight into the IDB cache in the background.
+    // Used to prefetch the NEXT chunk while the current one plays, so the
+    // next loop iteration usually hits cache instead of stalling on network.
+    // Never throws — the main loop owns all real error handling.
+    const cacheChunkInBackground = (idx: number) => {
+      if (idx >= chunks.length) return;
+      const nextKey = `${book}_${chapter?.num ?? chapterIdx}_${idx}_${lang}`;
+      (async () => {
+        try {
+          if (ttsGenerationRef.current !== myGen || abortCtrl.signal.aborted)
+            return;
+          const hit = await getCachedAudio(nextKey);
+          if (hit) return;
+          if (ttsGenerationRef.current !== myGen || abortCtrl.signal.aborted)
+            return;
+          const r = await fetch(TTS_PROXY_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              text: chunks[idx],
+              voice,
+              speed: speechRate,
+              pitch: -1.0,
+            }),
+            signal: abortCtrl.signal,
+          });
+          if (!r.ok) return;
+          const d = await r.json();
+          const b64 = d?.audioContent;
+          if (
+            b64 &&
+            ttsGenerationRef.current === myGen &&
+            !abortCtrl.signal.aborted
+          ) {
+            setCachedAudio(nextKey, b64);
+          }
+        } catch {
+          // background only — ignore; the main loop will fetch it if needed
+        }
+      })();
+    };
+
     // 마지막 청크까지 정상 재생됐을 때만 true (중간 break → 완독 아님)
     let finishedAllChunks = false;
     for (let i = 0; i < chunks.length; i++) {
@@ -2269,8 +2312,8 @@ function ChapterReader({
           const pct = Math.round((i / chunks.length) * 100);
           setTtsStatus(
             i === 0
-              ? `⏳ Loading HD voice... ${pct}%`
-              : `⏳ Loading HD... ${pct}% (${i + 1}/${chunks.length})`,
+              ? `⏳ Preparing HD voice… (1/${chunks.length})`
+              : `⏳ Loading HD… (${i + 1}/${chunks.length})`,
           );
           setTtsProgress(pct);
           let resp: Response;
@@ -2354,6 +2397,9 @@ handleHdFailure("audio init failed");
           `▶ HD Playing... (${i + 1}/${chunks.length}) ${Math.round(((i + 1) / chunks.length) * 100)}%`,
         );
         startProgressTracking(audio, i, chunks.length);
+        // Prefetch the next chunk while this one plays — the next iteration
+        // then hits the IDB cache instead of showing a loading stall.
+        cacheChunkInBackground(i + 1);
 
         await new Promise<void>((resolve, reject) => {
           ttsAbortRef.current = () => {
@@ -2878,6 +2924,13 @@ handleHdFailure(e?.message || "play failed");
                 </button>
               </div>
             </div>
+            {/* Reassurance while the first chunk loads — so a slow network
+                doesn't feel like an error */}
+            {ttsStatus.includes("Preparing") && (
+              <div className="mt-1 text-gray-400 text-[9px]">
+                First play usually takes a few seconds — hang tight 🎧
+              </div>
+            )}
             {/* Fallback / tap to retry prompt (HD only — no standard voice) */}
             {(ttsStatus.includes("tap to retry") ||
               ttsStatus.includes("Tap to try") ||
