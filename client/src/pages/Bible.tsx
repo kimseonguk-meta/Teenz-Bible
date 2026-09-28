@@ -30,11 +30,13 @@ import {
   withTimeout,
   getDayProgress,
   evaluateAndFinalizeDay,
+  isDayComplete,
   chapterKey as challengeChapterKey,
   startChallengeChapter,
   sgDateKey,
   localStreak,
   type ChallengeRole,
+  type DayProgress,
 } from "@/lib/challenge";
 import {
   getEquipped,
@@ -1459,6 +1461,10 @@ function ChapterReader({
   const challengeLastInteract = useRef(Date.now());
   /** 챌린지 완료 축하: 날짜별 1회 + 이번 읽기 세션에서 새로 완료된 경우에만 */
   const challengeParaTotal = useRef(0);
+  /** 현재 장의 단어 수 (공식 완료 판정용 — RTDB 스냅샷보다 최신) */
+  const challengeWordsRef = useRef(0);
+  /** 셀레브레이션 판정 중복 실행 방지 (async 평가 중 재호출 차단) */
+  const celebratePendingRef = useRef(false);
   const [, setChallengeUiTick] = useState(0);
 
   // 챌린지 모드: 기존 진행 로드 (세션 간 누적 복원)
@@ -1520,6 +1526,7 @@ function ChapterReader({
     if (!challenge) return;
     const cid = challengeChapterKey(challenge.book, challenge.chapter);
     const words = paragraphs.join(" ").split(/\s+/).filter(Boolean).length;
+    challengeWordsRef.current = words;
 
     const markInteract = () => {
       challengeLastInteract.current = Date.now();
@@ -2107,9 +2114,12 @@ function ChapterReader({
   }, [clearAllTtsTimers]);
 
   // 챌린지 오늘 분량 완료 체크 → 하루 1회 셀레브레이션 + 일일 보너스 (중복 지급 금지)
-  // 게임 읽음 기록(chaptersRead_*) 기준: 오늘 분량의 모든 장이 읽혔을 때 첫 완성에만 발동.
+  // 공식 판정과 동일한 자: 오늘 분량의 모든 장이 activeSec >= requiredActiveSec(words) 충족.
+  // (게임 읽음 기록(chaptersRead_*) 기준은 관대해서 "모달은 떴는데 도장이 안 찍히는" 불일치가 생겼음)
+  // RTDB 스냅샷은 최대 15틱까지 stale할 수 있어, 현재 장의 로컬 누적 activeSec를 오버레이해서 평가한다.
+  // 도장 기록(status:"done" 확정)은 기존 finalizeOnExit이 같은 기준으로 이어서 처리한다.
   const maybeCelebrateDayComplete = useCallback(
-    (bookName: string) => {
+    async (bookName: string, chapterNum: number) => {
       try {
         const day = getTodayChallengeDay();
         if (!day || day.book !== bookName) return;
@@ -2122,22 +2132,45 @@ function ChapterReader({
         } catch {
           /* ignore */
         }
-        if (shown) return;
-        const read = safeParseJSON<number[]>(`chaptersRead_${bookName}`, []) || [];
-        if (!day.chapters.every((c) => read.includes(c))) return;
-        // 첫 완성: 플래그를 먼저 세워 중복 발동 방지
+        if (shown || celebratePendingRef.current) return;
+        celebratePendingRef.current = true;
         try {
-          localStorage.setItem(flag, "1");
-        } catch {
-          /* ignore */
+          const prog = await withTimeout(getDayProgress(todayKey), 8000).catch(
+            () => null,
+          );
+          const cid = challengeChapterKey(bookName, chapterNum);
+          const prevCp = prog?.chapters?.[cid];
+          const activeSec = Math.max(
+            challengeActiveSec.current || 0,
+            prevCp?.activeSec || 0,
+          );
+          const words = challengeWordsRef.current || prevCp?.words || 0;
+          const chapters = {
+            ...(prog?.chapters || {}),
+            [cid]: { ...prevCp, activeSec, words },
+          };
+          const complete = isDayComplete(
+            day,
+            { ...(prog || {}), chapters } as DayProgress,
+            {},
+          );
+          if (!complete) return;
+          // 첫 완성: 플래그를 먼저 세워 중복 발동 방지
+          try {
+            localStorage.setItem(flag, "1");
+          } catch {
+            /* ignore */
+          }
+          // 일일 보너스 (장별 +10XP/+5젬, 퀴즈 보상과 별개로 1일 1회)
+          game.addXP(10);
+          game.addGems(3);
+          setDayCelebration({
+            dayNum: day.day,
+            streak: localStreak(todayKey, true),
+          });
+        } finally {
+          celebratePendingRef.current = false;
         }
-        // 일일 보너스 (장별 +10XP/+5젬, 퀴즈 보상과 별개로 1일 1회)
-        game.addXP(10);
-        game.addGems(3);
-        setDayCelebration({
-          dayNum: day.day,
-          streak: localStreak(todayKey, true),
-        });
       } catch {
         /* ignore */
       }
@@ -2152,7 +2185,7 @@ function ChapterReader({
     markedRef.current = true;
     setMarked(true);
     game.markChapterRead(book, finishedChapter.num);
-    maybeCelebrateDayComplete(book);
+    maybeCelebrateDayComplete(book, finishedChapter.num);
     if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
     window.dispatchEvent(new CustomEvent("pet-chapter-complete"));
     setShowCelebration(true);
@@ -2685,7 +2718,7 @@ handleHdFailure(e?.message || "play failed");
       }
       // If elapsed is between 5s and 18s but no consecutive fast scrolls, allow but don't warn
       game.markChapterRead(book, chapter.num);
-      maybeCelebrateDayComplete(book);
+      maybeCelebrateDayComplete(book, chapter.num);
       setMarked(true);
       markedRef.current = true;
       // Haptic feedback on chapter complete
