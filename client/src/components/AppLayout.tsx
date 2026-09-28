@@ -58,10 +58,13 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* Bottom Navigation - 6 tabs with art icons + Korean labels */}
-      <nav className={`fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none transition-transform duration-300 ${navHidden ? "translate-y-[130%]" : "translate-y-0"}`} style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
+      {/* Bottom Navigation - docked flush to the bottom (not floating):
+          the old floating pill left gaps where the cosmic background showed
+          through and overlapped illustrations, which looked broken especially
+          on tablet landscape. */}
+      <nav className={`fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 pointer-events-none transition-transform duration-300 ${navHidden ? "translate-y-[130%]" : "translate-y-0"}`} style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <div
-          className="pointer-events-auto flex h-[78px] justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)] ring-1 ring-white/10"
+          className="pointer-events-auto flex h-[78px] justify-around items-stretch gap-1 rounded-t-[16px] px-1 pt-1 shadow-[0_-10px_28px_rgba(0,0,0,0.55)] ring-1 ring-inset ring-white/10"
           style={{ background: "linear-gradient(180deg, #232329 0%, #17171c 55%, #101014 100%)" }}
         >
           {navItems.map((item) => {
