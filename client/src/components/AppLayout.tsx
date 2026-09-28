@@ -6,20 +6,33 @@ import {
 } from "../lib/readerChrome";
 
 const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/bible", label: "Bible" },
-  { path: "/leaderboard", label: "Ranking" },
-  { path: "/store", label: "Store" },
-  { path: "/profile", label: "Profile" },
+  { path: "/", label: "홈", icon: "home", match: (p: string) => p === "/" },
+  {
+    path: "/bible",
+    label: "성경",
+    icon: "bible",
+    match: (p: string) => p === "/bible" || p.startsWith("/bible/"),
+  },
+  {
+    path: "/challenge",
+    label: "챌린지",
+    icon: "challenge",
+    match: (p: string) => p.startsWith("/challenge"),
+  },
+  {
+    path: "/leaderboard",
+    label: "랭킹",
+    icon: "ranking",
+    match: (p: string) => p === "/leaderboard",
+  },
+  { path: "/store", label: "상점", icon: "store", match: (p: string) => p === "/store" },
+  {
+    path: "/profile",
+    label: "프로필",
+    icon: "profile",
+    match: (p: string) => p === "/profile",
+  },
 ];
-
-function getNavAsset(location: string) {
-  if (location.startsWith("/bible")) return "/art-assets/mockup/nav-bible.webp";
-  if (location === "/leaderboard") return "/art-assets/mockup/nav-ranking.webp";
-  if (location === "/store") return "/art-assets/mockup/nav-store.webp";
-  if (location === "/profile") return "/art-assets/mockup/nav-profile.webp";
-  return "/art-assets/mockup/nav-home.webp";
-}
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -45,20 +58,45 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* Bottom Navigation - uses --neon-rgb for theme-aware styling */}
+      {/* Bottom Navigation - 6 tabs with art icons + Korean labels */}
       <nav className={`fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto z-50 px-3 pointer-events-none transition-transform duration-300 ${navHidden ? "translate-y-[130%]" : "translate-y-0"}`} style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.55rem)' }}>
         <div
-          className="pointer-events-auto flex h-[78px] justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)]"
-          style={{ background: `url("${getNavAsset(location)}") center / 100% 100% no-repeat` }}
+          className="pointer-events-auto flex h-[78px] justify-around items-stretch gap-1 rounded-[16px] p-1 shadow-[0_9px_0_rgba(0,0,0,0.42),0_0_22px_rgba(0,0,0,0.45)] ring-1 ring-white/10"
+          style={{ background: "linear-gradient(180deg, #232329 0%, #17171c 55%, #101014 100%)" }}
         >
           {navItems.map((item) => {
+            const active = item.match(location);
             return (
               <button
                 key={item.path}
                 aria-label={item.label}
                 onClick={() => setLocation(item.path)}
-                className="min-w-0 flex-1 rounded-xl active:scale-95 transition-transform"
-              />
+                className="relative min-w-0 flex-1 rounded-xl active:scale-95 transition-transform flex flex-col items-center justify-center gap-[2px] py-1"
+              >
+                {active && (
+                  <span
+                    className="absolute inset-x-1 top-0.5 bottom-0.5 rounded-xl pointer-events-none"
+                    style={{ background: "radial-gradient(ellipse at center, rgba(244,185,52,0.25) 0%, transparent 72%)" }}
+                  />
+                )}
+                <img
+                  src={`/art-assets/mockup/nav-icons/${item.icon}.png`}
+                  alt=""
+                  draggable={false}
+                  className={`relative h-9 w-9 object-contain select-none transition-all duration-200 ${
+                    active
+                      ? "brightness-125 drop-shadow-[0_0_9px_rgba(244,185,52,0.95)]"
+                      : "opacity-70 saturate-[0.8]"
+                  }`}
+                />
+                <span
+                  className={`relative text-[10px] font-extrabold leading-none tracking-tight ${
+                    active ? "text-[#f4b934]" : "text-white/45"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </button>
             );
           })}
         </div>

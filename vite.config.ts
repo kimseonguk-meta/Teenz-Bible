@@ -286,7 +286,7 @@ const plugins = [
       navigateFallback: "/index.html",
       // Don't precache the huge Bible chunk (10MB) – load it on demand
       globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
-      globIgnores: ["**/Bible-*.js", "**/__manus__/**", "**/debug-collector.js"],
+      globIgnores: ["**/Bible-*.js", "**/allBibleData-*.js", "**/__manus__/**", "**/debug-collector.js"],
       maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       runtimeCaching: [
         {

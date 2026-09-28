@@ -31,6 +31,9 @@ import {
   getDayProgress,
   evaluateAndFinalizeDay,
   chapterKey as challengeChapterKey,
+  startChallengeChapter,
+  sgDateKey,
+  localStreak,
   type ChallengeRole,
 } from "@/lib/challenge";
 import {
@@ -40,6 +43,9 @@ import {
   READER_BACKGROUNDS,
 } from "@/data/storeItems";
 import FantasyIcon from "@/components/FantasyIcon";
+import ChallengeCelebration, {
+  type DayCelebrationData,
+} from "@/components/ChallengeCelebration";
 
 const bookMeta: Record<string, { emoji: string; desc: string }> = {
   // NT
@@ -1333,6 +1339,8 @@ function ChapterReader({
   const [reachedBottom, setReachedBottom] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
+  // 챌린지 오늘 분량 완료 셀레브레이션 (하루 1회)
+  const [dayCelebration, setDayCelebration] = useState<DayCelebrationData | null>(null);
   const [confettiPieces, setConfettiPieces] = useState<
     Array<{
       id: number;
@@ -2098,6 +2106,45 @@ function ChapterReader({
     setTtsChunkInfo("");
   }, [clearAllTtsTimers]);
 
+  // 챌린지 오늘 분량 완료 체크 → 하루 1회 셀레브레이션 + 일일 보너스 (중복 지급 금지)
+  // 게임 읽음 기록(chaptersRead_*) 기준: 오늘 분량의 모든 장이 읽혔을 때 첫 완성에만 발동.
+  const maybeCelebrateDayComplete = useCallback(
+    (bookName: string) => {
+      try {
+        const day = getTodayChallengeDay();
+        if (!day || day.book !== bookName) return;
+        if (!getCachedParticipation()) return;
+        const todayKey = sgDateKey();
+        const flag = `challengeCelebrationShown_${todayKey}`;
+        let shown = false;
+        try {
+          shown = localStorage.getItem(flag) === "1";
+        } catch {
+          /* ignore */
+        }
+        if (shown) return;
+        const read = safeParseJSON<number[]>(`chaptersRead_${bookName}`, []) || [];
+        if (!day.chapters.every((c) => read.includes(c))) return;
+        // 첫 완성: 플래그를 먼저 세워 중복 발동 방지
+        try {
+          localStorage.setItem(flag, "1");
+        } catch {
+          /* ignore */
+        }
+        // 일일 보너스 (장별 +10XP/+5젬, 퀴즈 보상과 별개로 1일 1회)
+        game.addXP(10);
+        game.addGems(3);
+        setDayCelebration({
+          dayNum: day.day,
+          streak: localStreak(todayKey, true),
+        });
+      } catch {
+        /* ignore */
+      }
+    },
+    [game],
+  );
+
   // Audio chapter completion: mark read + celebration. HD-only path.
   const completeAudioChapter = useCallback(() => {
     const finishedChapter = chapters[chapterIdx];
@@ -2105,6 +2152,7 @@ function ChapterReader({
     markedRef.current = true;
     setMarked(true);
     game.markChapterRead(book, finishedChapter.num);
+    maybeCelebrateDayComplete(book);
     if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
     window.dispatchEvent(new CustomEvent("pet-chapter-complete"));
     setShowCelebration(true);
@@ -2126,7 +2174,7 @@ function ChapterReader({
         duration: Math.random() * 1.5 + 1.5,
       })),
     );
-  }, [chapters, chapterIdx, book, game]);
+  }, [chapters, chapterIdx, book, game, maybeCelebrateDayComplete]);
 
   // Auto next chapter: after a chapter's audio finishes, move to the next
   // chapter AND auto-play it. Quiz chapters intentionally stop for the quiz.
@@ -2637,6 +2685,7 @@ handleHdFailure(e?.message || "play failed");
       }
       // If elapsed is between 5s and 18s but no consecutive fast scrolls, allow but don't warn
       game.markChapterRead(book, chapter.num);
+      maybeCelebrateDayComplete(book);
       setMarked(true);
       markedRef.current = true;
       // Haptic feedback on chapter complete
@@ -3087,6 +3136,23 @@ handleHdFailure(e?.message || "play failed");
             </div>
           </div>
         </div>
+      )}
+      {/* 챌린지 오늘 분량 완료 셀레브레이션 (하루 1회) */}
+      {dayCelebration && (
+        <ChallengeCelebration
+          data={dayCelebration}
+          onQuiz={() => {
+            const day = getTodayChallengeDay();
+            setDayCelebration(null);
+            if (day) {
+              const read = safeParseJSON<number[]>(`chaptersRead_${day.book}`, []) || [];
+              const ch = day.chapters.find((c) => !read.includes(c)) ?? day.chapters[0] ?? 1;
+              startChallengeChapter(day.book, ch);
+              setView({ type: "quiz", book: day.book, chapterNum: ch });
+            }
+          }}
+          onClose={() => setDayCelebration(null)}
+        />
       )}
       {reachedBottom && marked && !showCelebration && (
         <div className="mt-4 text-center">

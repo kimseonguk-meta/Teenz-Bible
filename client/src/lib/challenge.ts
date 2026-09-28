@@ -1614,3 +1614,42 @@ export async function getMyEncouragements(): Promise<{ id: string; message: stri
 export async function markEncouragementRead(id: string): Promise<void> {
   await update(ref(db, `${ROOT}/encouragements/${uid()}/${id}`), { read: true });
 }
+
+/** SGT 날짜키(YYYY-MM-DD) 이동: n일 전/후 */
+export function shiftDateKey(key: string, n: number): string {
+  const [y, m, d] = key.split("-").map(Number);
+  const dt = new Date(Date.UTC(y || 2026, (m || 1) - 1, d || 1));
+  dt.setUTCDate(dt.getUTCDate() + n);
+  const p = (x: number) => String(x).padStart(2, "0");
+  return `${dt.getUTCFullYear()}-${p(dt.getUTCMonth() + 1)}-${p(dt.getUTCDate())}`;
+}
+
+/**
+ * 로컬 미러(challengeDayDone_*) 기준 연속 읽기.
+ * 듀오링고식: 오늘 미완이어도 어제까지의 연속을 인정.
+ * countToday=true면 오늘을 완료로 간주하고 셈 (완료 직후 모달용).
+ */
+export function localStreak(todayKey: string, countToday = false): number {
+  try {
+    const done = (k: string) => {
+      try {
+        return localStorage.getItem(`challengeDayDone_${k}`) === "1";
+      } catch {
+        return false;
+      }
+    };
+    // countToday=true: 오늘은 막 완료했으므로 1로 시작하고 어제부터 거슬러 셈
+    let s = countToday ? 1 : 0;
+    let key = countToday ? shiftDateKey(todayKey, -1) : todayKey;
+    if (!countToday && !done(key)) key = shiftDateKey(key, -1);
+    let guard = 0;
+    while (key >= CHALLENGE_START && done(key) && guard < 100) {
+      s++;
+      key = shiftDateKey(key, -1);
+      guard++;
+    }
+    return s;
+  } catch {
+    return 0;
+  }
+}
