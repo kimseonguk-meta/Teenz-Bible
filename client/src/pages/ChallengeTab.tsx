@@ -39,8 +39,8 @@ function diffDays(a: string, b: string): number {
   return Math.round((parseKey(b).getTime() - parseKey(a).getTime()) / 86400000);
 }
 
-const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
-function weekdayKo(key: string): string {
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+function weekdayEn(key: string): string {
   return WEEKDAYS[parseKey(key).getDay()];
 }
 
@@ -75,7 +75,7 @@ function isDoneKey(key: string, journey: MyJourney | null): boolean {
   return localDone(key);
 }
 
-/** 연속 읽기: 오늘을 못 읽었어도 어제까지의 연속을 인정 (듀오링고식) */
+/** Day streak: even if today isn't done yet, count the streak through yesterday (Duolingo-style). */
 function computeStreak(journey: MyJourney | null, todayKey: string): number {
   let key = todayKey;
   if (!isDoneKey(key, journey)) key = addDaysKey(key, -1);
@@ -175,6 +175,27 @@ function CheckCircleIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+// ─── card styles (match the approved mockup: clean dark cards, no gold frame) ─
+
+const CARD =
+  "rounded-[20px] border border-white/[0.08] bg-gradient-to-b from-[#1d1f26] to-[#14161c]";
+const HERO_CARD =
+  "relative overflow-hidden rounded-[20px] border-[1.5px] border-[rgba(244,185,52,0.55)] bg-gradient-to-b from-[#1d1f26] to-[#14161c]";
+
+/** Gold radial glow at the top of the hero card (mockup .hero::before). */
+function HeroGlow() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0"
+      style={{
+        background:
+          "radial-gradient(120% 90% at 50% 0%, rgba(244,185,52,0.14), transparent 60%)",
+      }}
+    />
+  );
+}
+
 // ─── main tab ───────────────────────────────────────────────────
 
 export default function ChallengeTab() {
@@ -208,7 +229,7 @@ export default function ChallengeTab() {
     };
   }, [load]);
 
-  // 종료 후에는 완주 화면
+  // After the challenge ends, show the finish screen
   if (isAfterEnd) {
     return <ChallengeFinishScreen journey={journey} />;
   }
@@ -252,66 +273,67 @@ export default function ChallengeTab() {
     <div className="px-4 pt-5 pb-6">
       {/* header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-[24px] font-extrabold text-white tracking-tight">챌린지</h1>
+        <h1 className="text-[24px] font-extrabold text-white tracking-tight">Challenge</h1>
         <div className="rounded-full bg-[#f4b934] px-3 py-1 text-[13px] font-extrabold text-[#1a1206]">
           {dday <= 0 ? "D-day" : `D-${dday}`}
         </div>
       </div>
       <p className="mt-1 text-[12.5px] font-semibold text-white/45">
-        제자반 성경읽기 챌린지 · 9월 7일 – 11월 15일
+        Bible Reading Challenge · Sep 7 – Nov 15
       </p>
 
       {!participation ? (
-        <div className="tb-panel mt-4 p-5 text-center">
+        <div className={`${CARD} mt-4 p-5 text-center`}>
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#f4b934]/15">
             <FlameIcon size={28} color="#f4b934" />
           </div>
-          <h3 className="mt-3 text-[17px] font-extrabold text-white">아직 챌린지에 참여하지 않았어요</h3>
+          <h3 className="mt-3 text-[17px] font-extrabold text-white">You haven&apos;t joined the challenge yet</h3>
           <p className="mt-1.5 text-[13px] font-medium leading-relaxed text-white/55">
-            9월 7일부터 11월 15일까지, 70일 동안 매일 성경을 읽어요.
+            Read the Bible every day for 70 days, Sep 7 – Nov 15.
             <br />
-            참여하면 오늘 분량부터 기록되고 랭킹에도 표시돼요.
+            Join to track today&apos;s reading and appear on the leaderboard.
           </p>
           <button
             onClick={() => setLocation("/")}
             className="mt-4 w-full rounded-2xl bg-gradient-to-b from-[#ffe9a8] to-[#f4b934] py-3.5 text-[15px] font-extrabold text-[#1a1206] shadow-[0_6px_20px_rgba(244,185,52,0.35)] active:scale-[0.98] transition-transform"
           >
-            참여하기
+            Join Now
           </button>
         </div>
       ) : !ready ? (
-        <div className="tb-panel mt-4 p-8 text-center text-white/40 text-[13px] font-semibold">
-          불러오는 중…
+        <div className={`${CARD} mt-4 p-8 text-center text-white/40 text-[13px] font-semibold`}>
+          Loading…
         </div>
       ) : today ? (
         <>
           {/* hero */}
-          <div className="tb-panel mt-4 p-5">
-            <div className="text-[12.5px] font-bold text-[#f4b934]">{today.day}일차 · 오늘의 분량</div>
-            <div className="mt-1 text-[21px] font-extrabold text-white tracking-tight">{today.labelKo}</div>
+          <div className={`${HERO_CARD} mt-4 p-5`}>
+            <HeroGlow />
+            <div className="text-[12.5px] font-bold text-[#f4b934]">Day {today.day} · Today&apos;s Reading</div>
+            <div className="mt-1 text-[21px] font-extrabold text-white tracking-tight">{today.labelEn}</div>
             <div className="mt-1 text-[12.5px] font-medium text-white/50">
-              약 {estimateMinutes(today)}분 분량 · 다 읽으면 오늘 도장이 찍혀요
+              About {estimateMinutes(today)} min · Finish to earn today&apos;s stamp
             </div>
             <button
               onClick={() => openChapter(false)}
               className="mt-4 w-full rounded-2xl bg-gradient-to-b from-[#ffe9a8] to-[#f4b934] py-3.5 text-[15px] font-extrabold text-[#1a1206] shadow-[0_6px_20px_rgba(244,185,52,0.35)] active:scale-[0.98] transition-transform"
             >
-              읽기 시작하기
+              Start Reading
             </button>
           </div>
 
           {/* stats */}
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <div className="tb-panel flex items-center gap-3 p-4">
+            <div className={`${CARD} flex items-center gap-3 p-4`}>
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f87171]/15">
                 <FlameIcon />
               </div>
               <div>
-                <div className="text-[17px] font-extrabold text-white">{streak}일</div>
-                <div className="text-[11.5px] font-semibold text-white/45">연속 읽기</div>
+                <div className="text-[17px] font-extrabold text-white">{streak}</div>
+                <div className="text-[11.5px] font-semibold text-white/45">Day streak</div>
               </div>
             </div>
-            <div className="tb-panel flex items-center gap-3 p-4">
+            <div className={`${CARD} flex items-center gap-3 p-4`}>
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#4ade80]/15">
                 <CheckCircleIcon />
               </div>
@@ -319,21 +341,21 @@ export default function ChallengeTab() {
                 <div className="text-[17px] font-extrabold text-white">
                   {doneDays}/{elapsedDays}
                 </div>
-                <div className="text-[11.5px] font-semibold text-white/45">읽은 날</div>
+                <div className="text-[11.5px] font-semibold text-white/45">Days read</div>
               </div>
             </div>
           </div>
 
           {/* week */}
-          <div className="mt-5 text-[13.5px] font-extrabold text-white/85">이번 주</div>
-          <div className="tb-panel mt-2 px-2 py-4">
+          <div className="mt-5 text-[13.5px] font-extrabold text-white/85">This week</div>
+          <div className={`${CARD} mt-2 px-2 py-4`}>
             <div className="flex">
               {weekKeys.map((k) => {
                 const st = resolveStatus(k, journey, todayKey);
                 return (
                   <div key={k} className="flex flex-1 flex-col items-center gap-1.5">
                     <div className={`text-[11.5px] font-bold ${st === "future" ? "text-white/30" : "text-white/55"}`}>
-                      {weekdayKo(k)}
+                      {weekdayEn(k)}
                     </div>
                     <div
                       className={`flex h-9 w-9 items-center justify-center rounded-full text-[15px] font-extrabold ${
@@ -346,7 +368,7 @@ export default function ChallengeTab() {
                               : "bg-white/5 text-white/25"
                       }`}
                     >
-                      {st === "done" ? "✓" : st === "missed" ? "!" : st === "today" ? "今" : "·"}
+                      {st === "done" ? "✓" : st === "missed" ? "!" : st === "today" ? "" : "·"}
                     </div>
                   </div>
                 );
@@ -355,22 +377,20 @@ export default function ChallengeTab() {
           </div>
 
           {/* catch-up guide */}
-          <div className="tb-panel mt-3 p-5">
-            <h3 className="text-[15px] font-extrabold text-white">따라잡기 가이드</h3>
+          <div className={`${CARD} mt-3 p-5`}>
+            <h3 className="text-[15px] font-extrabold text-white">Catch-up Guide</h3>
             <p className="mt-1.5 text-[13px] font-medium leading-relaxed text-white/60">
               {missedKeys.length === 0 ? (
-                <>
-                  지금까지 모든 분량을 완료했어요. 이 리듬 그대로 내일도 이어가 봐요! 🎉
-                </>
+                <>You&apos;re all caught up! Keep the rhythm going tomorrow! 🎉</>
               ) : (
                 <>
                   {missedKeys
                     .slice(-3)
-                    .map((k) => `${weekdayKo(k)}요일`)
+                    .map((k) => weekdayEn(k))
                     .join(", ")}{" "}
-                  분량이 밀려 있어요. <b className="text-white">하루에 2일치씩</b> 읽으면{" "}
-                  {weekdayKo(addDaysKey(todayKey, missedKeys.length))}요일에 완전히 따라잡을 수
-                  있어요. 할 수 있어요!
+                  readings are behind. Read <b className="text-white">2 days&apos; worth</b> a day
+                  and you&apos;ll be fully caught up by{" "}
+                  {weekdayEn(addDaysKey(todayKey, missedKeys.length))}. You can do it!
                 </>
               )}
             </p>
@@ -383,26 +403,26 @@ export default function ChallengeTab() {
           </div>
 
           {/* quiz */}
-          <div className="tb-panel mt-3 flex items-center justify-between gap-3 p-5">
+          <div className={`${CARD} mt-3 flex items-center justify-between gap-3 p-5`}>
             <div>
-              <h3 className="text-[15px] font-extrabold text-white">오늘의 퀴즈</h3>
+              <h3 className="text-[15px] font-extrabold text-white">Today&apos;s Quiz</h3>
               <p className="mt-0.5 text-[12.5px] font-medium text-white/50">
-                {today.labelKo} · {today.chapters.length}문제
+                {today.labelEn} · {today.chapters.length} questions
               </p>
             </div>
             <button
               onClick={() => openChapter(true)}
               className="shrink-0 rounded-xl bg-[#f4b934]/15 px-4 py-2.5 text-[13.5px] font-extrabold text-[#f4b934] ring-1 ring-[#f4b934]/40 active:scale-95 transition-transform"
             >
-              퀴즈 풀기
+              Take Quiz
             </button>
           </div>
         </>
       ) : (
-        <div className="tb-panel mt-4 p-8 text-center">
-          <h3 className="text-[16px] font-extrabold text-white">챌린지가 곧 시작해요</h3>
+        <div className={`${CARD} mt-4 p-8 text-center`}>
+          <h3 className="text-[16px] font-extrabold text-white">The challenge starts soon</h3>
           <p className="mt-1.5 text-[13px] font-medium text-white/55">
-            9월 7일부터 70일간의 여정이 시작됩니다.
+            The 70-day journey begins Sep 7.
           </p>
         </div>
       )}
@@ -429,14 +449,14 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
   const qs = quizStats();
   const rate = qs.total > 0 ? Math.round((qs.correct / qs.total) * 100) : 0;
 
-  // 70일 완주자 배지 지급 (1회)
+  // Award the 70-Day Finisher badge (once)
   useEffect(() => {
     if (doneDays <= 0) return;
     try {
       const raw = localStorage.getItem("badges");
       const arr: unknown = raw ? JSON.parse(raw) : [];
-      if (Array.isArray(arr) && !arr.includes("70일 완주자")) {
-        arr.push("70일 완주자");
+      if (Array.isArray(arr) && !arr.includes("70-Day Finisher")) {
+        arr.push("70-Day Finisher");
         localStorage.setItem("badges", JSON.stringify(arr));
         game.refreshState();
       }
@@ -453,27 +473,28 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
       /* ignore */
     }
     setNotified(true);
-    queuedToast.success("다음 챌린지가 열리면 알려드릴게요!", { style: { bottom: "5rem" } });
+    queuedToast.success("We'll let you know when the next challenge opens!", { style: { bottom: "5rem" } });
   };
 
   const stats = [
-    { value: `${doneDays}/70`, label: "읽은 날" },
-    { value: `${best}일`, label: "최장 연속 읽기" },
-    { value: `${chapters}장`, label: "읽은 성경 장수" },
-    { value: `${rate}%`, label: "퀴즈 정답률" },
+    { value: `${doneDays}/70`, label: "Days read" },
+    { value: `${best}`, label: "Longest day streak" },
+    { value: `${chapters}`, label: "Chapters read" },
+    { value: `${rate}%`, label: "Quiz accuracy" },
   ];
 
   return (
     <div className="px-4 pt-5 pb-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-[24px] font-extrabold text-white tracking-tight">챌린지</h1>
+        <h1 className="text-[24px] font-extrabold text-white tracking-tight">Challenge</h1>
         <div className="rounded-full bg-[#f4b934] px-3 py-1 text-[13px] font-extrabold text-[#1a1206]">
-          완주
+          Complete
         </div>
       </div>
 
       {/* hero */}
-      <div className="tb-panel mt-4 p-6 text-center">
+      <div className={`${HERO_CARD} mt-4 p-6 text-center`}>
+        <HeroGlow />
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-b from-[#ffe9a8] to-[#d99420] shadow-[0_8px_28px_rgba(244,185,52,0.45)]">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5b3a08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="9" r="6" />
@@ -481,21 +502,21 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
             <path d="M12 6.5l1 2 2.2.3-1.6 1.6.4 2.2-2-1-2 1 .4-2.2L8.8 8.8 11 8.5z" fill="#5b3a08" stroke="none" />
           </svg>
         </div>
-        <h2 className="mt-4 text-[24px] font-extrabold text-white tracking-tight">70일 완주!</h2>
+        <h2 className="mt-4 text-[24px] font-extrabold text-white tracking-tight">70 Days Complete!</h2>
         <p className="mt-2 text-[13.5px] font-medium leading-relaxed text-white/60">
-          9월 7일부터 70일 동안
+          70 days with God&apos;s Word,
           <br />
-          하나님 말씀과 함께 걸어온 여정,
+          from Sep 7 —
           <br />
-          정말 수고했어요.
+          truly well done.
         </p>
       </div>
 
       {/* records */}
-      <div className="mt-5 text-[13.5px] font-extrabold text-white/85">나의 70일 기록</div>
+      <div className="mt-5 text-[13.5px] font-extrabold text-white/85">My 70-Day Record</div>
       <div className="mt-2 grid grid-cols-2 gap-3">
         {stats.map((s) => (
-          <div key={s.label} className="tb-panel p-4 text-center">
+          <div key={s.label} className={`${CARD} p-4 text-center`}>
             <div className="text-[20px] font-extrabold text-[#f4b934]">{s.value}</div>
             <div className="mt-0.5 text-[11.5px] font-semibold text-white/45">{s.label}</div>
           </div>
@@ -503,7 +524,7 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
       </div>
 
       {/* badge */}
-      <div className="tb-panel mt-3 flex items-center gap-4 p-5">
+      <div className={`${CARD} mt-3 flex items-center gap-4 p-5`}>
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-[#ffe9a8] to-[#d99420]">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b3a08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="9" r="6" />
@@ -511,9 +532,9 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
           </svg>
         </div>
         <div>
-          <div className="text-[15px] font-extrabold text-white">70일 완주자 배지 획득</div>
+          <div className="text-[15px] font-extrabold text-white">70-Day Finisher badge earned</div>
           <div className="mt-0.5 text-[12.5px] font-medium text-white/50">
-            프로필에 영구 표시돼요 · 리더에게도 전달돼요
+            Shown permanently on your profile · Shared with your leader
           </div>
         </div>
       </div>
@@ -528,13 +549,13 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
             : "bg-gradient-to-b from-[#ffe9a8] to-[#f4b934] text-[#1a1206] shadow-[0_6px_20px_rgba(244,185,52,0.35)]"
         }`}
       >
-        {notified ? "알림 신청됨 ✓" : "다음 챌린지 알림 받기"}
+        {notified ? "Notifications on ✓" : "Notify me of the next challenge"}
       </button>
       <button
         onClick={() => setLocation("/bible")}
         className="mt-2.5 w-full rounded-2xl bg-white/5 py-3.5 text-[15px] font-extrabold text-white/70 ring-1 ring-white/10 active:scale-[0.98] transition-transform"
       >
-        자유롭게 성경 읽기 계속하기
+        Keep reading the Bible freely
       </button>
     </div>
   );

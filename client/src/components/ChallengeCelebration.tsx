@@ -1,13 +1,15 @@
-// 제자반 챌린지 — 오늘 분량 완료 셀레브레이션 모달
-// 오늘 분량의 마지막 장을 읽은 순간(게임 읽음 기록 기준)에 하루 한 번만 표시.
-// 보상은 모달 표시 시점에 1회만 지급 (+10 XP, +3 젬) — 장별/퀴즈 보상과 중복 없음.
+// Challenge — today's reading complete celebration modal.
+// Shown once per day when today's portion officially completes
+// (official judgment: real reading time, the same bar as the leaderboard stamp).
+// The reward is granted once when the modal shows (+10 XP, +3 Gems) —
+// no double-counting with per-chapter/quiz rewards.
 
 import { useMemo } from "react";
 
 export interface DayCelebrationData {
-  /** N일차 */
+  /** Day number */
   dayNum: number;
-  /** 연속 읽기 일수 */
+  /** Current day streak */
   streak: number;
 }
 
@@ -42,7 +44,7 @@ export default function ChallengeCelebration({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="오늘 분량 완료"
+      aria-label="Today's reading complete"
     >
       {/* confetti */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
@@ -71,13 +73,13 @@ export default function ChallengeCelebration({
         <div className="mx-auto flex h-[76px] w-[76px] items-center justify-center rounded-full bg-gradient-to-b from-[#ffe9a8] to-[#d99420] text-[38px] shadow-[0_8px_28px_rgba(244,185,52,0.45)]">
           🏆
         </div>
-        <div className="mt-3 text-[13px] font-extrabold text-[#f4b934]">{data.dayNum}일차 완료</div>
-        <h2 className="mt-1 text-[24px] font-extrabold text-white tracking-tight">오늘 분량 완료!</h2>
+        <div className="mt-3 text-[13px] font-extrabold text-[#f4b934]">Day {data.dayNum} complete</div>
+        <h2 className="mt-1 text-[24px] font-extrabold text-white tracking-tight">Today&apos;s Reading Complete!</h2>
 
         <div className="mt-3 text-[13.5px] font-medium italic leading-relaxed text-white/75">
-          “두려워하지 마라. 내가 너와 함께 함이니라”
+          &ldquo;Do not fear, for I am with you&rdquo;
           <br />
-          <span className="text-[12px] font-bold not-italic text-white/40">이사야 41:10</span>
+          <span className="text-[12px] font-bold not-italic text-white/40">Isaiah 41:10</span>
         </div>
 
         <div className="mt-4 flex justify-center gap-3">
@@ -87,12 +89,12 @@ export default function ChallengeCelebration({
           </div>
           <div className="flex items-center gap-2 rounded-2xl bg-white/[0.06] px-4 py-2.5">
             <span className="text-[20px]">💎</span>
-            <span className="text-[14px] font-extrabold text-white">+3 젬</span>
+            <span className="text-[14px] font-extrabold text-white">+3 Gems</span>
           </div>
         </div>
 
         <div className="mt-3 text-[13px] font-bold text-white/60">
-          🔥 연속 {data.streak}일째! 내일도 이어가 봐요
+          🔥 {data.streak}-day streak! Keep it going tomorrow
         </div>
 
         <button
@@ -100,17 +102,17 @@ export default function ChallengeCelebration({
           onClick={onQuiz}
           className="mt-5 w-full rounded-2xl bg-gradient-to-b from-[#ffe9a8] to-[#f4b934] py-3.5 text-[15px] font-extrabold text-[#1a1206] shadow-[0_6px_20px_rgba(244,185,52,0.35)] active:scale-[0.98] transition-transform"
         >
-          퀴즈 풀기 (선택)
+          Take Quiz (Optional)
         </button>
         <button
           type="button"
           onClick={onClose}
           className="mt-2 w-full rounded-2xl bg-white/[0.06] py-3 text-[14px] font-extrabold text-white/60 active:scale-[0.98] transition-transform"
         >
-          닫기
+          Close
         </button>
         <div className="mt-3 text-[11.5px] font-medium text-white/35">
-          퀴즈는 맞혀도 틀려도 XP를 받아요
+          You earn XP whether your quiz answers are right or wrong
         </div>
       </div>
 

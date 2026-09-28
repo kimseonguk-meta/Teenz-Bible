@@ -6,29 +6,29 @@ import {
 } from "../lib/readerChrome";
 
 const navItems = [
-  { path: "/", label: "홈", icon: "home", match: (p: string) => p === "/" },
+  { path: "/", label: "Home", icon: "home", match: (p: string) => p === "/" },
   {
     path: "/bible",
-    label: "성경",
+    label: "Bible",
     icon: "bible",
     match: (p: string) => p === "/bible" || p.startsWith("/bible/"),
   },
   {
     path: "/challenge",
-    label: "챌린지",
+    label: "Challenge",
     icon: "challenge",
     match: (p: string) => p.startsWith("/challenge"),
   },
   {
     path: "/leaderboard",
-    label: "랭킹",
+    label: "Ranking",
     icon: "ranking",
     match: (p: string) => p === "/leaderboard",
   },
-  { path: "/store", label: "상점", icon: "store", match: (p: string) => p === "/store" },
+  { path: "/store", label: "Store", icon: "store", match: (p: string) => p === "/store" },
   {
     path: "/profile",
-    label: "프로필",
+    label: "Profile",
     icon: "profile",
     match: (p: string) => p === "/profile",
   },
