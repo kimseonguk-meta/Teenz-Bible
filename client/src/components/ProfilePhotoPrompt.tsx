@@ -78,13 +78,17 @@ export async function uploadPhotoToFirebase(base64: string): Promise<string | nu
       await withTimeout(uploadBytes(photoRef, blob), 20000);
       const url = await withTimeout(getDownloadURL(photoRef), 15000);
 
-      await withTimeout(update(ref(db, `users/${uid}`), { profilePhotoUrl: url }), 8000);
-      if (groupCode) {
-        await withTimeout(
-          update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: url }),
-          8000,
-        );
-      }
+      // The two database writes are independent — run them in parallel so a
+      // slow connection doesn't pay the latency twice.
+      await Promise.all([
+        withTimeout(update(ref(db, `users/${uid}`), { profilePhotoUrl: url }), 8000),
+        groupCode
+          ? withTimeout(
+              update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: url }),
+              8000,
+            )
+          : Promise.resolve(),
+      ]);
       return url;
     } catch (storageErr) {
       console.warn("Storage photo upload failed, falling back to DB base64:", storageErr);
@@ -92,13 +96,15 @@ export async function uploadPhotoToFirebase(base64: string): Promise<string | nu
 
     // Fallback: compressed base64 in RTDB (previous behavior).
     const compressed = await compressForDB(base64, 150, 0.6);
-    await withTimeout(update(ref(db, `users/${uid}`), { profilePhotoUrl: compressed }), 8000);
-    if (groupCode) {
-      await withTimeout(
-        update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: compressed }),
-        8000,
-      );
-    }
+    await Promise.all([
+      withTimeout(update(ref(db, `users/${uid}`), { profilePhotoUrl: compressed }), 8000),
+      groupCode
+        ? withTimeout(
+            update(ref(db, `groups/${groupCode}/members/${uid}`), { profilePhotoUrl: compressed }),
+            8000,
+          )
+        : Promise.resolve(),
+    ]);
     return compressed;
   } catch (err) {
     console.error("Photo upload error:", err);
@@ -249,22 +255,20 @@ export default function ProfilePhotoPrompt() {
 
     setProfilePhoto(base64);
 
-    setUploadProgress("Uploading to cloud...");
-    const url = await uploadPhotoToFirebase(base64);
-    if (url) {
-      setProfilePhotoUrl(url);
-      setUploadProgress("Synced! ✨");
-    } else {
-      setUploadProgress("Saved locally ✓");
-    }
-
+    setUploadProgress("Saved ✓");
+    // Close right away — the photo is saved on this device. Cloud sync
+    // continues in the background so a slow connection never holds the UI.
+    // (uploadPhotoToFirebase never rejects; it returns null on failure.)
     setTimeout(() => {
       setSaving(false);
       setUploadProgress("");
       setShowModal(false);
       setRawImg(null);
       setRawSrc(null);
-    }, 800);
+    }, 500);
+    uploadPhotoToFirebase(base64).then((url) => {
+      if (url) setProfilePhotoUrl(url);
+    });
   }, [rawImg, cropScale, cropOffset, selectedFilter]);
 
   const handleSkip = useCallback(() => {
@@ -548,13 +552,15 @@ export function ProfilePhotoUploader() {
 
       setProfilePhoto(base64);
       setPhoto(base64);
-
-      const url = await uploadPhotoToFirebase(base64);
-      if (url) {
-        setProfilePhotoUrl(url);
-        setPhoto(url);
-      }
       setUploading(false);
+
+      // Cloud sync in the background — don't make the user wait on it.
+      uploadPhotoToFirebase(base64).then((url) => {
+        if (url) {
+          setProfilePhotoUrl(url);
+          setPhoto(url);
+        }
+      });
     } catch (err) {
       console.error("Image resize error:", err);
       setUploading(false);

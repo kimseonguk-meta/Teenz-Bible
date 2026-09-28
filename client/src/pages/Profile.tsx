@@ -304,11 +304,14 @@ export default function Profile() {
     }
     setProfilePhoto(base64);
     setProfilePhotoState(base64);
+    // Dismiss immediately — the photo is saved on this device. Cloud sync
+    // runs in the background so a slow connection never keeps the user
+    // waiting on a spinner. (uploadPhotoToFirebase never rejects.)
     setRawPhoto(null);
     setCropScale(1);
     setCropOffset({ x: 0, y: 0 });
-    try {
-      const url = await uploadPhotoToFirebase(base64);
+    setIsUploadingPhoto(false);
+    uploadPhotoToFirebase(base64).then((url) => {
       if (url) {
         setProfilePhotoUrl(url);
         setProfilePhotoState(url);
@@ -317,9 +320,7 @@ export default function Profile() {
         // instead of leaving the user guessing.
         toast.error("Photo saved on this device — cloud sync failed");
       }
-    } finally {
-      setIsUploadingPhoto(false);
-    }
+    });
   };
 
   // Show photo nudge popup if no profile photo set (once per session)
