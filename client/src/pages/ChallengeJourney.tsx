@@ -500,9 +500,16 @@ export default function ChallengeJourney() {
                   </div>
                 );
               })}
-                {/* 선택한 날짜 액션 패널 */}
+                {/* 선택한 날짜 팝업 */}
                 {selected && (
-                  <div className="mt-3 rounded-2xl border border-[#e8c25a]/30 bg-[#e8c25a]/5 p-4">
+                  <div
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-6"
+                    onClick={() => setSelected(null)}
+                  >
+                    <div
+                      className="max-h-[80vh] w-full max-w-sm overflow-y-auto rounded-2xl border border-[#e8c25a]/30 bg-[#14161c] p-5"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-bold">{t.dayLabel(selected)}</p>
                       <button
@@ -552,6 +559,7 @@ export default function ChallengeJourney() {
                     ) : (
                       <p className="mt-2 text-xs text-white/60">{t.dayDoneParty}</p>
                     )}
+                    </div>
                   </div>
                 )}
                 <p className="mt-2.5 text-xs leading-relaxed text-white/60">{t.bottomHelp}</p>
