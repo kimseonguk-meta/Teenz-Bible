@@ -699,10 +699,10 @@ export default function Profile() {
         <div className="relative">
           <div
             onClick={() => setShowPhotoMenu(prev => !prev)}
-            className={`w-36 h-36 rounded-full overflow-visible flex items-center justify-center bg-purple-900/10 cursor-pointer active:scale-95 transition-transform ${profilePhoto ? (equippedFrame?.frameClass || 'border-[6px] border-[#d79b25] shadow-[inset_0_0_0_3px_rgba(255,238,166,0.5),0_0_28px_rgba(255,190,42,0.28)]') : ''}`}
+            className={`w-36 h-36 rounded-full overflow-hidden flex items-center justify-center bg-purple-900/10 cursor-pointer active:scale-95 transition-transform ${profilePhoto ? (equippedFrame?.frameClass || 'border-[6px] border-[#d79b25] shadow-[inset_0_0_0_3px_rgba(255,238,166,0.5),0_0_28px_rgba(255,190,42,0.28)]') : ''}`}
           >
             {profilePhoto ? (
-              <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+              <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover rounded-full" />
             ) : (
               <img src="/art-assets/mockup/profile-avatar-frame.webp" alt="Profile avatar" className="h-[156px] w-[206px] max-w-none object-contain" />
             )}
