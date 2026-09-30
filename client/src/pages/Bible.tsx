@@ -3484,7 +3484,9 @@ function QuizView({
   // Get the verse text from Bible data
   const getVerseText = (): string | null => {
     if (!quiz.ref) return null;
-    const bookData = allBibleData[book];
+    // KO quiz shows the Korean verse text when available; fall back to English
+    const bookData =
+      (quizLang === "ko" && gospelDataKo[book]) || allBibleData[book];
     if (!bookData) return null;
     const chapter = bookData.find((ch) => ch.num === chapterNum);
     if (!chapter) return null;

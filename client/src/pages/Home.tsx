@@ -120,38 +120,6 @@ function EveningBanner({ onNavigate }: { onNavigate: (p: string) => void }) {
 }
 
 function getPlayerName() { return localStorage.getItem("playerName") || ""; }
-// Standard chapter counts for each Bible book
-const CHAPTER_COUNTS: Record<string, number> = {
-  Genesis:50,Exodus:40,Leviticus:27,Numbers:36,Deuteronomy:34,Joshua:24,Judges:21,Ruth:4,
-  "1 Samuel":31,"2 Samuel":24,"1 Kings":22,"2 Kings":25,"1 Chronicles":29,"2 Chronicles":36,
-  Ezra:10,Nehemiah:13,Esther:10,Job:42,Psalms:150,Proverbs:31,Ecclesiastes:12,"Song of Solomon":8,
-  Isaiah:66,Jeremiah:52,Lamentations:5,Ezekiel:48,Daniel:12,Hosea:14,Joel:3,Amos:9,
-  Obadiah:1,Jonah:4,Micah:7,Nahum:3,Habakkuk:3,Zephaniah:3,Haggai:2,Zechariah:14,Malachi:4,
-  Matthew:28,Mark:16,Luke:24,John:21,Acts:28,Romans:16,"1 Corinthians":16,"2 Corinthians":13,
-  Galatians:6,Ephesians:6,Philippians:4,Colossians:4,"1 Thessalonians":5,"2 Thessalonians":3,
-  "1 Timothy":6,"2 Timothy":4,Titus:3,Philemon:1,Hebrews:13,James:5,"1 Peter":5,"2 Peter":3,
-  "1 John":5,"2 John":1,"3 John":1,Jude:1,Revelation:22
-};
-
-const HOME_BOOK_META: Record<string, { emoji: string; desc: string }> = {
-  Matthew:{emoji:"✝️",desc:"Jesus as the promised King"},Mark:{emoji:"🦁",desc:"Jesus the servant in action"},Luke:{emoji:"📜",desc:"Jesus for all people"},John:{emoji:"🕊️",desc:"Jesus the Son of God"},Acts:{emoji:"🔥",desc:"The Church's explosive beginning"},Romans:{emoji:"⚖️",desc:"The ultimate theology deep-dive"},"1 Corinthians":{emoji:"💌",desc:"Fixing a messy church"},"2 Corinthians":{emoji:"💪",desc:"Strength through weakness"},Galatians:{emoji:"🔓",desc:"Freedom in Christ"},Ephesians:{emoji:"🛡️",desc:"The armor of God"},Philippians:{emoji:"😊",desc:"Joy no matter what"},Colossians:{emoji:"👑",desc:"Jesus above everything"},"1 Thessalonians":{emoji:"⌛",desc:"Hope for the future"},"2 Thessalonians":{emoji:"⚡",desc:"Stand firm till the end"},"1 Timothy":{emoji:"📋",desc:"Leadership 101"},"2 Timothy":{emoji:"🏃",desc:"Finish the race strong"},Titus:{emoji:"🏝️",desc:"Good works that matter"},Philemon:{emoji:"🤝",desc:"Forgiveness in action"},Hebrews:{emoji:"🏛️",desc:"Jesus is better than everything"},James:{emoji:"🔨",desc:"Faith that works"},"1 Peter":{emoji:"🪨",desc:"Hope through suffering"},"2 Peter":{emoji:"🔭",desc:"Watch out for fakes"},"1 John":{emoji:"❤️",desc:"God is love"},"2 John":{emoji:"📝",desc:"Walk in truth and love"},"3 John":{emoji:"🤗",desc:"Support the truth-tellers"},Jude:{emoji:"⚔️",desc:"Fight for the faith"},Revelation:{emoji:"🌟",desc:"The epic finale"},
-  Genesis:{emoji:"🌍",desc:"The beginning"},Exodus:{emoji:"🔥",desc:"The epic escape"},Leviticus:{emoji:"📜",desc:"God's rulebook"},Numbers:{emoji:"🏜️",desc:"Wilderness"},Deuteronomy:{emoji:"📖",desc:"Moses' final speech"},Joshua:{emoji:"⚔️",desc:"Conquering"},Judges:{emoji:"🛡️",desc:"Heroes"},Ruth:{emoji:"💕",desc:"A love story"},"1 Samuel":{emoji:"👑",desc:"First kings"},"2 Samuel":{emoji:"👑",desc:"King David"},"1 Kings":{emoji:"🏛️",desc:"Solomon's glory"},"2 Kings":{emoji:"🏛️",desc:"The fall"},"1 Chronicles":{emoji:"📋",desc:"Israel's history"},"2 Chronicles":{emoji:"📋",desc:"Temple, kings"},Ezra:{emoji:"🏗️",desc:"Rebuilding"},Nehemiah:{emoji:"🧱",desc:"Walls"},Esther:{emoji:"👸",desc:"A queen saves"},Job:{emoji:"💔",desc:"Why suffer?"},Psalms:{emoji:"🎵",desc:"Playlist of prayers"},Proverbs:{emoji:"🧠",desc:"Life hacks"},Ecclesiastes:{emoji:"🤔",desc:"Is anything meaningful?"},"Song of Solomon":{emoji:"❤️",desc:"Love poem"},Isaiah:{emoji:"🕊️",desc:"Warnings, hope"},Jeremiah:{emoji:"😢",desc:"Weeping prophet"},Lamentations:{emoji:"😭",desc:"Crying over Jerusalem"},Ezekiel:{emoji:"👁️",desc:"Wild visions"},Daniel:{emoji:"🦁",desc:"Faith under fire"},Hosea:{emoji:"💍",desc:"Unfailing love"},Joel:{emoji:"🦗",desc:"Day of Lord"},Amos:{emoji:"⚖️",desc:"Justice"},Obadiah:{emoji:"⛰️",desc:"Edom's downfall"},Jonah:{emoji:"🐋",desc:"Ran from God"},Micah:{emoji:"🌾",desc:"What does God want?"},Nahum:{emoji:"🌊",desc:"Nineveh's judgment"},Habakkuk:{emoji:"❓",desc:"Questioning God"},Zephaniah:{emoji:"🌅",desc:"Judgment and restoration"},Haggai:{emoji:"🏠",desc:"Build God's house"},Zechariah:{emoji:"🌟",desc:"Visions of hope"},Malachi:{emoji:"📬",desc:"Final message"},
-};
-
-function getLastRead() {
-  try {
-    const book = localStorage.getItem("lastReadBook");
-    const chapter = localStorage.getItem("lastReadChapter");
-    const chapterIdx = localStorage.getItem("lastReadChapterIdx");
-    if (book && chapter) {
-      const totalChapters = CHAPTER_COUNTS[book] || 1;
-      const readChapters = safeParseJSON<number[]>(`chaptersRead_${book}`, []).length;
-      const progress = Math.round((readChapters / totalChapters) * 100);
-      return { book, chapter: parseInt(chapter), chapterIdx: parseInt(chapterIdx || "0"), progress, totalChapters, readChapters };
-    }
-  } catch {}
-  return null;
-}
 function getTotalXP() { return parseInt(localStorage.getItem("totalXP") || "0") || 0; }
 function getGems() {
   const data = safeParseJSON<any>("teensBible", {});
@@ -247,88 +215,6 @@ function ProgressRing({ progress, size = 90, strokeWidth = 7 }: { progress: numb
   );
 }
 
-// ─── Dynamic Today's Mission Card ───────────────────────────────────────
-function TodaysMissionCard({ onNavigate }: { onNavigate: (p: string) => void }) {
-  const [mission, setMission] = useState(() => {
-    const last = getLastRead();
-    if (last) {
-      return {
-        book: last.book,
-        chapter: last.chapter,
-        total: last.totalChapters,
-        read: last.readChapters,
-        progress: Math.round((last.readChapters / last.totalChapters) * 100),
-        isDefault: false,
-      };
-    }
-    // default Matthew 5
-    const read = safeParseJSON<number[]>(`chaptersRead_Matthew`, []).length;
-    return { book: "Matthew", chapter: 5, total: CHAPTER_COUNTS["Matthew"], read, progress: Math.round((read / CHAPTER_COUNTS["Matthew"]) * 100), isDefault: true };
-  });
-
-  useEffect(() => {
-    const update = () => {
-      const last = getLastRead();
-      if (last) {
-        setMission({
-          book: last.book,
-          chapter: last.chapter,
-          total: last.totalChapters,
-          read: last.readChapters,
-          progress: Math.round((last.readChapters / last.totalChapters) * 100),
-          isDefault: false,
-        });
-      }
-    };
-    window.addEventListener("storage", update);
-    window.addEventListener("teensBibleDataChanged", update as any);
-    const iv = setInterval(update, 2000);
-    return () => { window.removeEventListener("storage", update); window.removeEventListener("teensBibleDataChanged", update as any); clearInterval(iv); };
-  }, []);
-
-  const slug = mission.book.toLowerCase().replace(/\s+/g, "-");
-  const emoji = HOME_BOOK_META[mission.book]?.emoji || "📖";
-  const desc = HOME_BOOK_META[mission.book]?.desc || "Continue your journey";
-
-  return (
-    <div className="tb-panel tb-panel-hero w-full max-w-[430px] mx-auto drop-shadow-[0_10px_12px_rgba(0,0,0,0.6)] p-5 text-left relative overflow-hidden">
-      {/* header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-5 min-w-0">
-          <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full text-[22px] flex-shrink-0 shadow-[0_0_14px_rgba(255,215,0,0.22)]">
-            {emoji}
-          </div>
-          <div className="min-w-0 pl-1">
-            <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">Today's Mission</p>
-            <h3 className="tb-title text-[18px] truncate" style={{ lineHeight: 1.25 }}>Read {mission.book} {mission.chapter}</h3>
-            <p className="text-white/60 text-[11px] font-bold truncate mt-0.5">{desc}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* progress */}
-      <div className="mt-2 px-3">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-white/55 text-[11px] font-bold">{mission.progress}% complete</span>
-          <span className="tb-gold-text text-[11px] font-black">{mission.read}/{mission.total} chapters</span>
-        </div>
-        <div className="tb-progress">
-          <div className="tb-progress-fill transition-all duration-700" style={{ width: `${mission.progress}%` }} />
-        </div>
-        <div className="mt-2 text-[10px] text-white/45 font-semibold">{mission.isDefault ? "Start with Matthew 5 – The Beatitudes" : `${mission.read} of ${mission.total} chapters in ${mission.book}`}</div>
-      </div>
-
-      {/* CTA */}
-      <button
-        onClick={() => onNavigate(`/bible/${slug}/${mission.chapter}`)}
-        className="mt-4 w-full tb-btn-flat py-3 text-sm font-black rounded-[12px] active:scale-[0.98] transition-transform"
-      >
-        Continue Reading →
-      </button>
-    </div>
-  );
-}
-
 export default function Home() {
   const [, setLocation] = useLocation();
   const playerName = getPlayerName();
@@ -371,6 +257,7 @@ export default function Home() {
 
   // Meme reactions state
   const [memeLoaded, setMemeLoaded] = useState(false);
+  const [memeError, setMemeError] = useState(false);
   const [reactions, setReactions] = useState<Record<string, number>>(() => {
     try { return safeParseJSON<any>("memeReactions", {}); } catch { return {}; }
   });
@@ -557,9 +444,6 @@ export default function Home() {
         <p className="mt-2 text-base font-extrabold text-white/45 drop-shadow">Continue your journey</p>
       </div>
 
-      {/* Today's Mission – dynamic */}
-      <TodaysMissionCard onNavigate={setLocation} />
-
       {/* Evening reading reminders: native opt-in card / web evening banner */}
       <ReminderOptInCard />
       <EveningBanner onNavigate={setLocation} />
@@ -644,7 +528,8 @@ export default function Home() {
         <div className="text-2xl flex-shrink-0">🏆</div>
       </div>
 
-      {/* Bible Meme of the Day */}
+      {/* Bible Meme of the Day — hidden entirely if the image fails to load */}
+      {!memeError && (
       <div className="tb-panel tb-panel-glow p-4 overflow-hidden">
         <div className="flex items-center justify-between mb-2">
           <span className="text-white font-bold text-sm leading-relaxed">😂 BIBLE MEME OF THE DAY</span>
@@ -657,6 +542,7 @@ export default function Home() {
             className={`w-full h-auto rounded-xl ${memeLoaded ? '' : 'absolute opacity-0'}`}
             loading="lazy"
             onLoad={() => setMemeLoaded(true)}
+            onError={() => setMemeError(true)}
           />
           {memeLoaded && <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1 text-[10px] text-white/70 pointer-events-none"><span>🔍</span> Tap to view</div>}
         </div>
@@ -669,12 +555,13 @@ export default function Home() {
           ))}
         </div>
       </div>
+      )}
 
       {/* Meme Fullscreen Viewer - compact control bar near image */}
       {memeFullscreen && (
         <div className="fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center" data-meme-fullscreen="true" onClick={() => setMemeFullscreen(false)}>
           <div className="flex-1 flex items-center justify-center w-full px-4 pt-4 pb-2 relative" onClick={(e) => e.stopPropagation()}>
-            <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl" />
+            <img src={memeUrl} alt="Bible Meme of the Day" className="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl" onError={() => setMemeError(true)} />
           </div>
           <div className="w-full flex flex-col items-center gap-3 px-4 pb-6 pt-2 relative z-[10000]" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-2 py-2 shadow-lg relative z-[10000]">
