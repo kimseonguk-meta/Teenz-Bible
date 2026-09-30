@@ -2840,16 +2840,16 @@ handleHdFailure(e?.message || "play failed");
           onClick={() => navigate("/")}
           className="mb-3 w-full px-3 py-2 rounded-xl bg-black/50 border border-[#ffd957]/40 flex items-center justify-between active:scale-[0.98]"
         >
-          <span className="tb-gold-text text-[11px] font-black">제자반 챌린지 →</span>
+          <span className="tb-gold-text text-[11px] font-black">Bible Reading Challenge →</span>
           <span className="text-white/70 text-[11px] font-bold">
-            노출{" "}
+            Read{" "}
             {Math.min(
               100,
               Math.round(
                 (challengeSeen.current.size / Math.max(1, challengeParaTotal.current)) * 100
               )
             )}
-            % · {Math.floor(challengeActiveSec.current / 60)}분 {challengeActiveSec.current % 60}초
+            % · {Math.floor(challengeActiveSec.current / 60)}m {challengeActiveSec.current % 60}s
           </span>
         </button>
       )}
