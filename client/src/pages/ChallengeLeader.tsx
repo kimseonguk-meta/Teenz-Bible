@@ -6,6 +6,7 @@ import { useLocation } from "wouter";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { queuedToast } from "@/lib/toastQueue";
+import { toLocalDateKey } from "@/lib/utils";
 import {
   getMyParticipation,
   listParticipants,
@@ -142,7 +143,7 @@ function StudentDetail({
     for (let i = 0; i < 7; i++) {
       const dd = new Date(monday);
       dd.setDate(monday.getDate() + i);
-      keys.push(dd.toISOString().slice(0, 10));
+      keys.push(toLocalDateKey(dd));
     }
     Promise.all(
       keys.map(async (k) => {

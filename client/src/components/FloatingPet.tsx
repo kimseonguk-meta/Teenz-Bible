@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { safeParseJSON } from "@/lib/safeStorage";
+import { toLocalDateKey } from "@/lib/utils";
 import { useLocation } from "wouter";
 import {
   PETS,
@@ -313,7 +314,7 @@ export default function FloatingPet() {
 
   // Play count
   useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = toLocalDateKey();
     try {
       const data = safeParseJSON<any>("petPlayCount", null);
       if (data?.date === today && typeof data.count === 'number') setPlayCount(data.count);
@@ -439,7 +440,7 @@ export default function FloatingPet() {
         break;
       }
       case "play": {
-        const today = new Date().toISOString().split("T")[0];
+        const today = toLocalDateKey();
         const newCount = playCount + 1;
         setPlayCount(newCount);
         localStorage.setItem("petPlayCount", JSON.stringify({ date: today, count: newCount }));

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { safeParseJSON } from "@/lib/safeStorage";
+import { toLocalDateKey } from "@/lib/utils";
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { registerPlugin } from '@capacitor/core';
@@ -261,9 +262,9 @@ export default function Home() {
   const [reactions, setReactions] = useState<Record<string, number>>(() => {
     try { return safeParseJSON<any>("memeReactions", {}); } catch { return {}; }
   });
-  const [userReaction, setUserReaction] = useState<string | null>(() => localStorage.getItem("memeUserReaction_" + new Date().toISOString().split("T")[0]));
+  const [userReaction, setUserReaction] = useState<string | null>(() => localStorage.getItem("memeUserReaction_" + toLocalDateKey()));
   const handleReaction = (emoji: string) => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = toLocalDateKey();
     const newReactions = { ...reactions };
     if (userReaction) { newReactions[userReaction] = Math.max(0, (newReactions[userReaction] || 1) - 1); }
     if (userReaction === emoji) { setUserReaction(null); localStorage.removeItem("memeUserReaction_" + today); }

@@ -1,4 +1,5 @@
 import { safeParseJSON } from "@/lib/safeStorage";
+import { toLocalDateKey } from "@/lib/utils";
 // storeItems - inventory helpers (already migrated to safeStorage earlier)
 // This file had remaining direct JSON.parse spots - fixed below
 
@@ -563,7 +564,7 @@ export interface PetState {
 }
 
 function getToday(): string {
-  return new Date().toISOString().split("T")[0];
+  return toLocalDateKey();
 }
 
 function daysSince(dateStr: string): number {
