@@ -339,8 +339,10 @@ export default function Leaderboard() {
     }
   }, [loadData, currentUid]);
 
-  const top3 = members.slice(0, 3);
-  const rest = members.slice(3);
+  // Podium needs 3 members; with fewer, show everyone in the list so nobody disappears
+  const showPodium = members.length >= 3;
+  const top3 = showPodium ? members.slice(0, 3) : [];
+  const rest = showPodium ? members.slice(3) : members;
 
   const handleMemberTap = (member: LeaderboardMember, rank: number) => {
     setSelectedMember({ member, rank });
@@ -564,8 +566,8 @@ export default function Leaderboard() {
           {/* Member count */}
           <p className="text-center text-teal-400 text-xs font-bold">
             {mainTab === "mygroups" && selectedGroupCode
-              ? `${groupNames[selectedGroupCode] || selectedGroupCode} — ${members.length} members`
-              : `All ${members.length} members`}
+              ? `${groupNames[selectedGroupCode] || selectedGroupCode} — ${members.length} member${members.length === 1 ? "" : "s"}`
+              : `All ${members.length} member${members.length === 1 ? "" : "s"}`}
           </p>
           {/* Subtle refreshing indicator when cached data is shown */}
           {loading && members.length > 0 && (
@@ -575,7 +577,7 @@ export default function Leaderboard() {
           )}
 
           {/* Top 3 Podium */}
-          {top3.length >= 3 && (
+          {showPodium && (
             <div className="flex items-end justify-center gap-3 pt-4 pb-2 min-w-0">
               {/* 2nd place */}
               <div
@@ -637,7 +639,7 @@ export default function Leaderboard() {
           {/* Rest of leaderboard */}
           <div className="space-y-1.5">
             {rest.map((member, idx) => {
-              const rank = idx + 4;
+              const rank = showPodium ? idx + 4 : idx + 1;
               const isMe = member.uid === currentUid;
               const memberFrameClass = getFrameClass(member.equippedFrame);
               return (

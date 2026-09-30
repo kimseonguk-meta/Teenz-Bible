@@ -338,7 +338,7 @@ export default function ChallengeJourney() {
                   lang === l ? "bg-[#e8c25a] text-[#1a1405]" : "text-white/60 active:text-white"
                 }`}
               >
-                {l === "ko" ? "한국어" : "EN"}
+                {l === "ko" ? "KO" : "EN"}
               </button>
             ))}
           </div>

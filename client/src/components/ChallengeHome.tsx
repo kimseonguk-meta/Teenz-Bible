@@ -752,13 +752,13 @@ export default function ChallengeSection() {
           <button
             type="button"
             onClick={() => setLocation("/challenge/journey")}
-            aria-label={`My Journey — 나의 70일 기록 보기${lastActiveDate ? `, 최근 기록 ${formatShortDateKey(lastActiveDate)}` : ""}`}
+            aria-label={`My Journey — View my 70-day record${lastActiveDate ? `, last activity ${formatShortDateKey(lastActiveDate)}` : ""}`}
             className="flex w-full items-center gap-2.5 px-4 py-3 text-left transition-colors active:bg-white/5"
           >
             <span aria-hidden className="text-lg leading-none">👣</span>
             <span className="text-[17px] font-bold text-[#f5e9c8]">My Journey</span>
             <span className="truncate text-[13px] text-[#a08c4f]">
-              나의 70일 기록 보기{lastActiveDate ? ` - ${formatShortDateKey(lastActiveDate)}` : ""}
+              View my 70-day record{lastActiveDate ? ` - ${formatShortDateKey(lastActiveDate)}` : ""}
             </span>
             <svg className="ml-auto h-5 w-5 shrink-0 text-[#d4a94e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
               <path d="m9 18 6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />

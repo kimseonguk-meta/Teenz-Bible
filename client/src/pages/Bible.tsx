@@ -3598,7 +3598,7 @@ function QuizView({
             onClick={() => switchQuizLang("ko")}
             className={`px-4 py-1.5 rounded-full text-sm font-black transition-all ${quizLang === "ko" ? "bg-[#c68a14] text-white" : "text-white/50"}`}
           >
-            한
+            KO
           </button>
           <button
             onClick={() => switchQuizLang("en")}
