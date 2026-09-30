@@ -49,8 +49,8 @@ function ReminderOptInCard() {
     <div className="tb-panel tb-panel-glow p-4 flex items-center gap-4">
       <div className="tb-gold-panel flex h-12 w-12 items-center justify-center rounded-full text-2xl flex-shrink-0">🔔</div>
       <div className="flex-1 min-w-0">
-        <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">읽기 알림</p>
-        <p className="text-white/80 text-[13px] font-bold mt-0.5">저녁 6시·8시, 오늘 읽기를 안 했다면 알려드려요</p>
+        <p className="tb-gold-text text-[10px] font-black tracking-[0.16em] uppercase">Reading Reminder</p>
+        <p className="text-white/80 text-[13px] font-bold mt-0.5">At 6 & 8 PM, we'll nudge you if you haven't read yet</p>
       </div>
       <button
         disabled={busy}
@@ -65,7 +65,7 @@ function ReminderOptInCard() {
           }
         }}
       >
-        켜기
+        Turn On
       </button>
     </div>
   );
@@ -97,16 +97,16 @@ function EveningBanner({ onNavigate }: { onNavigate: (p: string) => void }) {
     <div className="tb-panel tb-panel-glow p-4 flex items-center gap-3">
       <div className="text-2xl flex-shrink-0">🌙</div>
       <p className="flex-1 min-w-0 text-white/85 text-[13px] font-bold">
-        {isChallenger ? "오늘 제자반 챌린지 분량, 아직 안 읽었어요 📖" : "오늘 성경 읽기, 아직 안 했어요"}
+        {isChallenger ? "You haven't read today's challenge portion yet 📖" : "You haven't done today's Bible reading yet"}
       </p>
       <button
         className="tb-btn px-4 py-2 text-[13px] flex-shrink-0"
         onClick={() => onNavigate(isChallenger ? "/?challenge=1" : "/bible")}
       >
-        {isChallenger ? "챌린지 열기" : "지금 읽기"}
+        {isChallenger ? "Open Challenge" : "Read Now"}
       </button>
       <button
-        aria-label="닫기"
+        aria-label="Close"
         className="text-white/40 text-lg px-1 flex-shrink-0"
         onClick={() => {
           dismissEveningBannerToday();

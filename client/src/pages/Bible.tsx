@@ -333,7 +333,7 @@ function BookOpenAnimation({
             transition: "all 280ms 200ms ease-out",
           }}
         >
-          📖 {book} 펼쳐지는 중…
+          📖 Opening {book}…
         </div>
       </div>
 
@@ -463,7 +463,7 @@ function ChapterOpenAnimation({
           </div>
         </div>
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap px-3.5 py-1.5 rounded-full bg-[#1b1a26]/90 border border-[#ffeb8a]/25 text-[11.5px] font-bold text-white/85 shadow-lg backdrop-blur" style={{ opacity: phase==="init"?0:1, transform:`translateX(-50%) translateY(${phase==="init"?"10px":"0px"})`, transition:"all 300ms 180ms ease-out" }}>
-          ✨ {book} {chapterNum}장 펼치는 중…
+          ✨ Opening {book} {chapterNum}…
         </div>
       </div>
       <style>{`
@@ -610,7 +610,7 @@ export default function Bible() {
           words: cp?.words,
         });
         window.dispatchEvent(new CustomEvent("challenge-progress"));
-        toast.success("퀴즈 통과! 본문을 끝까지 읽어 주세요 📖");
+        toast.success("Quiz passed! Please read the passage to the end 📖");
       } catch (e) {
         console.warn("[challenge] quiz-pass hook failed", e);
       }
@@ -2937,7 +2937,7 @@ handleHdFailure(e?.message || "play failed");
               <button
                 onClick={() => pauseSpeech()}
                 className="px-2 py-0.5 rounded text-[11px] active:scale-95"
-                aria-label={isPaused ? "오디오 다시 재생" : "오디오 일시정지"}
+                aria-label={isPaused ? "Resume audio" : "Pause audio"}
               >
                 {isPaused ? "▶️" : "⏸️"}
               </button>
@@ -2947,14 +2947,14 @@ handleHdFailure(e?.message || "play failed");
                   stopSpeech();
                 }}
                 className="px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50"
-                aria-label="오디오 정지"
+                aria-label="Stop audio"
               >
                 ⏹
               </button>
               <button
                 onClick={() => setTtsPanelCollapsed(false)}
                 className="px-1.5 py-0.5 rounded text-gray-400 hover:text-gray-200 text-[12px] font-bold active:scale-95"
-                aria-label="오디오 패널 펼치기"
+                aria-label="Expand audio panel"
               >
                 ⌄
               </button>
@@ -2993,14 +2993,14 @@ handleHdFailure(e?.message || "play failed");
                     stopSpeech();
                   }}
                   className="ml-1 px-2 py-0.5 rounded bg-red-600/30 border border-red-500/30 text-red-300 text-[10px] font-bold hover:bg-red-600/50"
-                  aria-label="오디오 정지"
+                  aria-label="Stop audio"
                 >
                   ⏹
                 </button>
                 <button
                   onClick={() => setTtsPanelCollapsed(true)}
                   className="px-1.5 py-0.5 rounded text-gray-400 hover:text-gray-200 text-[12px] font-bold active:scale-95"
-                  aria-label="오디오 패널 접기"
+                  aria-label="Collapse audio panel"
                 >
                   ⌃
                 </button>

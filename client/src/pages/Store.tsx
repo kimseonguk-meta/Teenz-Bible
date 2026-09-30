@@ -293,7 +293,7 @@ export default function Store() {
                   style={{ backgroundColor: item.readerStyle?.bg, color: item.readerStyle?.text }}
                   onClick={() => setPreviewItem(item)}
                 >
-                  Abc 가나다
+                  Abc
                 </div>
                 <p className="text-white text-[11px] sm:text-xs font-medium line-clamp-2 min-h-[2.2em] leading-tight break-words [overflow-wrap:anywhere] hyphens-auto w-full overflow-hidden cursor-pointer" onClick={() => setPreviewItem(item)} title={item.name}>{item.name}</p>
                 <div className="mt-2">

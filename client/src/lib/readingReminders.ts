@@ -159,14 +159,14 @@ export async function scheduleEveningReminders(): Promise<void> {
       notifications: [
         {
           id: REMINDER_IDS[0],
-          title: "📖 오늘 성경 읽기",
-          body: "아직 오늘 분량을 읽지 않았어요. 지금 시작해볼까요?",
+          title: "📖 Today's Bible Reading",
+          body: "You haven't read today's portion yet. Want to start now?",
           schedule: { on: { hour: 18, minute: 0 }, repeats: true, allowWhileIdle: true },
         },
         {
           id: REMINDER_IDS[1],
-          title: "📖 읽기 리마인드",
-          body: "오늘이 가기 전이에요! 10분이면 충분해요.",
+          title: "📖 Reading Reminder",
+          body: "The day's almost over! 10 minutes is enough.",
           schedule: { on: { hour: 20, minute: 0 }, repeats: true, allowWhileIdle: true },
         },
       ],
