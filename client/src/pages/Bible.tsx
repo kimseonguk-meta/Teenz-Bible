@@ -1615,7 +1615,14 @@ function ChapterReader({
   // shows a retry prompt (no standard-voice fallback)
   const TTS_PROXY_URL = "https://teens-bible-tts.kimseonguk777.workers.dev";
   const TTS_VOICE_EN = "en-US-Neural2-J";
-  const TTS_VOICE_KO = "ko-KR-Chirp3-HD-Puck";
+  // ko-KR Chirp3-HD voices synthesize too slowly (~8s per 330 chars), so the
+  // first chunk never arrives within the 10s HD timeout and Korean playback
+  // always failed. Wavenet is ~2.5x faster and stays within budget.
+  const TTS_VOICE_KO = "ko-KR-Wavenet-C";
+  // Korean text is denser (3 bytes/char) and its voices synthesize slower,
+  // so Korean uses smaller chunks to keep the first chunk under the timeout.
+  const ttsChunkSizes = (l: string) =>
+    l === "ko" ? { max: 1200, first: 600 } : { max: 4500, first: 1500 };
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -1979,7 +1986,8 @@ function ChapterReader({
       .join(". ");
     if (!text) return;
     const voice = lang === "ko" ? TTS_VOICE_KO : TTS_VOICE_EN;
-    const chunks = splitTextToChunks(text, 4500, 1500);
+    const chunkSize = ttsChunkSizes(lang);
+    const chunks = splitTextToChunks(text, chunkSize.max, chunkSize.first);
     const firstChunk = chunks[0];
     if (!firstChunk) return;
     const prefetchKey = `${book}_${chapter?.num ?? chapterIdx}_0_${lang}`;
@@ -2289,20 +2297,23 @@ function ChapterReader({
         .catch(() => {});
     } catch {}
 
-    const chunks = splitTextToChunks(text, 4500, 1500);
+    const chunkSize2 = ttsChunkSizes(lang);
+    const chunks = splitTextToChunks(text, chunkSize2.max, chunkSize2.first);
     const voice = lang === "ko" ? TTS_VOICE_KO : TTS_VOICE_EN;
     const memoryCacheKey = `${book}-${chapterIdx}-${lang}-${chunks[0]?.slice(0, 50)}`;
 
     let hdFailed = false; // HD 실패를 이미 알렸는지 (중복 토스트 방지)
     // Audio Bible: listening through the whole chapter counts as reading it.
     // (The text path only marks on scroll-to-bottom, so audio listeners were never recorded.)
-    // HD timeout: if after 10s we still have no HD audio, show a retry prompt
-    // (no standard-voice fallback anymore — a failed load must never count as reading)
+    // HD timeout: if after 20s we still have no HD audio, show a retry prompt
+    // (no standard-voice fallback anymore — a failed load must never count as reading).
+    // 20s (was 10s): HD synthesis on mobile networks needs headroom; the loading
+    // indicator ticks seconds so users can see it is still alive.
     ttsFallbackTimerRef.current = setTimeout(() => {
       if (ttsGenerationRef.current !== myGen) return;
       if (!ttsPlayingRef.current) return;
       if (!ttsAudioRef.current) {
-        // No HD audio started within 10s – abort and ask the user to retry
+        // No HD audio started within 20s – abort and ask the user to retry
         hdFailed = true;
         try {
           if (ttsAbortControllerRef.current)
@@ -2310,7 +2321,7 @@ function ChapterReader({
         } catch {}
         handleHdFailure("timeout");
       }
-    }, 10000);
+    }, 20000);
 
     const abortCtrl = new AbortController();
     ttsAbortControllerRef.current = abortCtrl;
