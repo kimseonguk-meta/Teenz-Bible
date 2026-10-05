@@ -81,7 +81,7 @@ const STR = {
     subtitle: "70-day record",
     title: "My 70-Day Journey",
     titleDesc: "Same-day and makeup completions, shown separately.",
-    streak: "Day streak",
+    streak: "Reading streak",
     doneDays: "Days done",
     completionRate: "Completion",
     appRead: (n: number) => `✅ ${n} day${n === 1 ? "" : "s"} read in app`,

@@ -75,7 +75,7 @@ function isDoneKey(key: string, journey: MyJourney | null): boolean {
   return localDone(key);
 }
 
-/** Day streak: even if today isn't done yet, count the streak through yesterday (Duolingo-style). */
+/** Reading streak: even if today isn't done yet, count the streak through yesterday (Duolingo-style). */
 function computeStreak(journey: MyJourney | null, todayKey: string): number {
   let key = todayKey;
   if (!isDoneKey(key, journey)) key = addDaysKey(key, -1);
@@ -330,7 +330,7 @@ export default function ChallengeTab() {
               </div>
               <div>
                 <div className="text-[17px] font-extrabold text-white">{streak}</div>
-                <div className="text-[11.5px] font-semibold text-white/45">Day streak</div>
+                <div className="text-[11.5px] font-semibold text-white/45">Reading streak</div>
               </div>
             </div>
             <div className={`${CARD} flex items-center gap-3 p-4`}>
@@ -478,7 +478,7 @@ function ChallengeFinishScreen({ journey }: { journey: MyJourney | null }) {
 
   const stats = [
     { value: `${doneDays}/70`, label: "Days read" },
-    { value: `${best}`, label: "Longest day streak" },
+    { value: `${best}`, label: "Longest reading streak" },
     { value: `${chapters}`, label: "Chapters read" },
     { value: `${rate}%`, label: "Quiz accuracy" },
   ];

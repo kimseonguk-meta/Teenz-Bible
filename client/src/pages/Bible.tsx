@@ -2494,22 +2494,66 @@ handleHdFailure("audio init failed");
         cacheChunkInBackground(i + 1);
 
         await new Promise<void>((resolve, reject) => {
+          // Playback watchdog (root cause fix for silent stalls): once play()
+          // starts, this await waits for onended with no timeout. If the media
+          // pipeline stalls and neither onended nor onerror ever fires, the UI
+          // would hang at e.g. "50%" forever with no error. The watchdog
+          // estimates a generous upper bound for this chunk and routes a stall
+          // into the standard retry UI instead of hanging silently.
+          let watchdog: ReturnType<typeof setTimeout> | null = null;
+          const clearWatchdog = () => {
+            if (watchdog) {
+              clearTimeout(watchdog);
+              watchdog = null;
+            }
+          };
+          const armWatchdog = () => {
+            clearWatchdog();
+            // Generous estimate: ~8 chars/sec at 1x (real TTS runs ~12+/sec),
+            // scaled by playback rate, plus 30s margin and a 30s floor.
+            // Only a true stall can trip it — never normal playback.
+            const chunkLen = chunks[i]?.length ?? 0;
+            const expectedSec =
+              chunkLen / 8 / Math.max(0.5, speechRate) + 30;
+            watchdog = setTimeout(
+              () => {
+                if (ttsGenerationRef.current !== myGen) return;
+                // User paused mid-chunk: not a stall, just wait longer.
+                if (audio.paused && !audio.ended) {
+                  armWatchdog();
+                  return;
+                }
+                ttsAbortRef.current = null;
+                try {
+                  audio.pause();
+                } catch {}
+                clearWatchdog();
+                reject(new Error("playback stalled"));
+              },
+              Math.max(30000, expectedSec * 1000),
+            );
+          };
           ttsAbortRef.current = () => {
             ttsAbortRef.current = null;
+            clearWatchdog();
             resolve();
           };
           audio.onended = () => {
             ttsAbortRef.current = null;
+            clearWatchdog();
             resolve();
           };
           audio.onerror = () => {
             ttsAbortRef.current = null;
+            clearWatchdog();
             reject(new Error("audio error"));
           };
           audio.play().catch((e) => {
             ttsAbortRef.current = null;
+            clearWatchdog();
             reject(e);
           });
+          armWatchdog();
         });
         if (abortCtrl.signal.aborted) break;
       } catch (e: any) {
