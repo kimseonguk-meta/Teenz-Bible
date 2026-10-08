@@ -746,6 +746,7 @@ export default function Bible() {
               book: view.book,
               chapterIdx: currentChapterIdx,
             });
+            window.dispatchEvent(new CustomEvent("tb-prog-scroll"));
             window.scrollTo(0, 0);
           } else {
             setView({ type: "chapters", book: view.book });
@@ -856,6 +857,7 @@ export default function Bible() {
         onBack={() => setView({ type: "chapters", book: view.book })}
         onNavigate={(idx) => {
           setView({ type: "reading", book: view.book, chapterIdx: idx });
+          window.dispatchEvent(new CustomEvent("tb-prog-scroll"));
           window.scrollTo(0, 0);
         }}
         onFinishChapter={(chapterNum) => {
@@ -1355,6 +1357,11 @@ function ChapterReader({
   >([]);
   const [showReadWarning, setShowReadWarning] = useState(false);
   const readingStartTime = useRef(Date.now());
+  // Suppress scroll-speed detection right after OUR OWN programmatic scrolls
+  // (chapter-change scrollTo(0,0), quiz-return scroll, warning-button scroll).
+  // An instant jump of thousands of px would otherwise be misread as a
+  // superhuman-fast user flick and poison the anti-skim counters.
+  const progScrollSuppressUntil = useRef(0);
   const contentEndRef = useRef<HTMLDivElement>(null);
   const quizRef = useRef<HTMLDivElement>(null);
   const [showInlineQuiz, setShowInlineQuiz] = useState(false);
@@ -2665,6 +2672,12 @@ handleHdFailure(e?.message || "play failed");
     let lastScrollY = window.scrollY;
     let lastScrollTime = Date.now();
     let speedCooldown = false;
+    // Our own programmatic scrolls (chapter change, quiz return, etc.)
+    // must not be mistaken for fast user flicks.
+    const onProgScroll = () => {
+      progScrollSuppressUntil.current = Date.now() + 800;
+    };
+    window.addEventListener("tb-prog-scroll", onProgScroll);
     const handleScroll = () => {
       // Progress bar
       const scrollTop = window.scrollY;
@@ -2673,8 +2686,15 @@ handleHdFailure(e?.message || "play failed");
       if (docHeight > 0) {
         setReadingProgress(Math.min(100, (scrollTop / docHeight) * 100));
       }
-      // Scroll speed detection for pet + anti-skim consecutive fast detection
       const now = Date.now();
+      if (now < progScrollSuppressUntil.current) {
+        // Programmatic scroll in progress: resync baselines so the jump
+        // doesn't leak into the next speed measurement either.
+        lastScrollY = scrollTop;
+        lastScrollTime = now;
+        return;
+      }
+      // Scroll speed detection for pet + anti-skim consecutive fast detection
       const dt = now - lastScrollTime;
       if (dt > 0 && dt < 500) {
         const speed = Math.abs(scrollTop - lastScrollY) / dt; // px/ms
@@ -2703,7 +2723,10 @@ handleHdFailure(e?.message || "play failed");
       lastScrollTime = now;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("tb-prog-scroll", onProgScroll);
+    };
   }, []);
 
   // Idle detection for pet
@@ -2761,7 +2784,12 @@ handleHdFailure(e?.message || "play failed");
       // Only warn if BOTH elapsed < MIN and had consecutive fast scrolls (or extremely fast <5s)
       const isExtremelyFast = elapsed < 5000;
       const hasConsecutiveFast = fastScrollCountRef.current >= 2;
+      // Chapters that fit on one screen need no scrolling at all — reaching
+      // the bottom instantly is normal there, never skimming.
+      const fitsOnScreen =
+        document.documentElement.scrollHeight <= window.innerHeight * 1.15;
       if (
+        !fitsOnScreen &&
         elapsed < MIN_READING_TIME_MS &&
         (isExtremelyFast || hasConsecutiveFast)
       ) {
@@ -2838,6 +2866,12 @@ handleHdFailure(e?.message || "play failed");
     setConfettiPieces([]);
     setShowReadWarning(false);
     readingStartTime.current = Date.now();
+    // Anti-skim counters must not leak across chapters: fast flicks from the
+    // previous chapter (or its navigation scroll jump) must never accuse the
+    // user in the new chapter.
+    fastScrollCountRef.current = 0;
+    lastFastScrollRef.current = 0;
+    progScrollSuppressUntil.current = Date.now() + 800;
   }, [book, chapterIdx]);
 
   // Auto next chapter: if we arrived here via auto-advance, start playing
@@ -3270,18 +3304,19 @@ handleHdFailure(e?.message || "play failed");
               Whoa, slow down!
             </h3>
             <p className="text-white/75 text-sm leading-relaxed mb-4">
-              You scrolled way too fast lol. Actually read it to earn your XP &
-              Gems! 😊
+              That was a really quick skim! Slow down and actually read the
+              chapter to earn your XP & Gems 😊
             </p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => {
                   setShowReadWarning(false);
+                  window.dispatchEvent(new CustomEvent("tb-prog-scroll"));
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 className="px-5 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl text-white font-bold text-sm active:scale-95 transition-transform shadow-lg shadow-yellow-500/30"
               >
-                ⏪ Slow down! Read more carefully
+                ⏪ Got it — I'll read carefully
               </button>
             </div>
           </div>
@@ -3308,14 +3343,13 @@ handleHdFailure(e?.message || "play failed");
           onClick={() => {
             // Scroll to inline quiz via ref (task requirement) – keep within same chapter
             if (!showInlineQuiz) setShowInlineQuiz(true);
-            setTimeout(
-              () =>
-                quizRef.current?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                }),
-              100,
-            );
+            setTimeout(() => {
+              window.dispatchEvent(new CustomEvent("tb-prog-scroll"));
+              quizRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 100);
             // Also keep parent view logic for deep-linking compatibility
             try {
               onFinishChapter(chapter.num);
