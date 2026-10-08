@@ -28,8 +28,8 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 RELEASE_DIR="$REPO_ROOT/ios-release"
-APP_VERSION="1.3.0"
-APP_BUILD="7"
+APP_VERSION="1.4.0"
+APP_BUILD="8"
 
 # --clean: true from-scratch rebuild. Deletes the generated ios/ project
 # (a gitignored build artifact) and Xcode's cached build/package state,
