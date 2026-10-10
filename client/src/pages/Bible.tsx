@@ -3671,19 +3671,26 @@ function QuizView({
   };
 
   return (
-    <div className="px-4 pt-6 pb-32 space-y-5">
-      <div className="flex items-center justify-between">
+    <div className="px-5 pt-6 pb-32">
+      <div className="flex items-center justify-between mb-7">
         <button
           onClick={onSkip}
-          className="tb-soft-button h-11 w-11 text-xl active:scale-95 transition-transform"
+          className="h-11 w-11 rounded-full bg-white/5 border border-white/10 text-white text-xl active:scale-95 transition-transform"
         >
           ←
         </button>
-        <div className="tb-ribbon text-3xl">Bible quiz</div>
+        <div className="text-center">
+          <div className="text-xs font-black tracking-[0.2em] text-[#c68a14]">
+            BIBLE QUIZ
+          </div>
+          <div className="text-sm text-white/50 font-semibold mt-1">
+            {book} {chapterNum}
+          </div>
+        </div>
         <span className="w-11" />
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-7">
         <div className="inline-flex rounded-full bg-black/50 border border-white/20 p-1">
           <button
             onClick={() => switchQuizLang("ko")}
@@ -3700,21 +3707,19 @@ function QuizView({
         </div>
       </div>
 
-      <div className="neon-card p-5 pt-7 text-center">
-        <div className="mb-3 text-4xl">📖</div>
-        <p className="tb-title text-xl leading-relaxed">{quiz.q}</p>
-      </div>
+      <h2 className="text-[27px] font-extrabold leading-[1.35] tracking-tight text-white mb-8">
+        {quiz.q}
+      </h2>
 
       <div className="space-y-3">
         {shuffled.options.map((opt, idx) => {
           let btnClass =
-            "w-full tb-soft-button p-4 text-left active:scale-[0.98] transition-all cursor-pointer";
+            "w-full p-5 rounded-2xl bg-white/[0.04] border border-white/10 text-left active:scale-[0.98] transition-all cursor-pointer";
           if (showResult) {
             if (idx === shuffled.correctIndex)
-              btnClass +=
-                " !border-lime-400 bg-lime-500/20 shadow-[0_0_18px_rgba(132,255,43,0.55)]";
+              btnClass += " !border-lime-400/70 bg-lime-500/15";
             else if (idx === selected && idx !== shuffled.correctIndex)
-              btnClass += " !border-red-500/60 bg-red-900/20";
+              btnClass += " !border-red-500/60 bg-red-500/10";
           }
           return (
             <button
@@ -3723,28 +3728,35 @@ function QuizView({
               className={btnClass}
               disabled={selected !== null}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-base font-extrabold shrink-0 ${
                     showResult && idx === shuffled.correctIndex
                       ? "bg-green-500 text-white"
                       : showResult && idx === selected
                         ? "bg-red-500 text-white"
-                        : "tb-soft-button border border-[#8a530f]/30 text-white/75"
+                        : "bg-white/10 text-[#ffd957]"
                   }`}
                 >
                   {String.fromCharCode(65 + idx)}
                 </div>
-                <span className="tb-title text-base">{opt}</span>
+                <span className="text-white text-[17px] font-semibold">{opt}</span>
               </div>
             </button>
           );
         })}
       </div>
 
+      {!showResult && (
+        <p className="text-center text-[13px] text-white/40 mt-6">
+          Get it right for <span className="text-[#ffd957] font-bold">+10 XP</span>{" "}
+          · <span className="text-[#ffd957] font-bold">+3 💎</span>
+        </p>
+      )}
+
       {showResult && (
         <div
-          className={`text-center p-4 rounded-xl ${
+          className={`text-center p-4 rounded-xl mt-6 ${
             selected === shuffled.correctIndex
               ? "bg-[radial-gradient(circle,rgba(255,202,35,0.24),transparent_70%)]"
               : "bg-red-900/20 border border-red-500/30"
