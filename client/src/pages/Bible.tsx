@@ -3671,7 +3671,7 @@ function QuizView({
   };
 
   return (
-    <div className="px-4 pt-6 space-y-5">
+    <div className="px-4 pt-6 pb-32 space-y-5">
       <div className="flex items-center justify-between">
         <button
           onClick={onSkip}
@@ -3700,7 +3700,7 @@ function QuizView({
         </div>
       </div>
 
-      <div className="neon-card p-5 text-center">
+      <div className="neon-card p-5 pt-7 text-center">
         <div className="mb-3 text-4xl">📖</div>
         <p className="tb-title text-xl leading-relaxed">{quiz.q}</p>
       </div>
