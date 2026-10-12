@@ -407,7 +407,7 @@ export default function ChallengeTab() {
             <div>
               <h3 className="text-[15px] font-extrabold text-white">Today&apos;s Quiz</h3>
               <p className="mt-0.5 text-[12.5px] font-medium text-white/50">
-                {today.labelEn} · {today.chapters.length} questions
+                {today.labelEn} · {today.chapters.length} {today.chapters.length === 1 ? "question" : "questions"}
               </p>
             </div>
             <button
