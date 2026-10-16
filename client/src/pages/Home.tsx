@@ -219,7 +219,25 @@ const memeUrls = [
     "meme_099.jpg",
     "meme_100.jpg",
     "meme_104.jpg",
-    "meme_105.jpg"
+    "meme_105.jpg",
+    "meme_107.jpg",
+    "meme_108.webp",
+    "meme_109.jpg",
+    "meme_110.jpg",
+    "meme_111.jpg",
+    "meme_112.jpg",
+    "meme_113.jpg",
+    "meme_114.jpg",
+    "meme_115.jpg",
+    "meme_116.jpg",
+    "meme_117.jpg",
+    "meme_118.jpg",
+    "meme_119.jpg",
+    "meme_120.jpg",
+    "meme_121.jpg",
+    "meme_122.jpg",
+    "meme_123.jpg",
+    "meme_124.jpg"
   ];
 
 // Seasonal memes (disabled - no seasonal files currently)
