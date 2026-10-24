@@ -179,27 +179,39 @@ export default function Profile() {
     return () => { cancelled = true; };
   }, []);
 
-  // Refresh player name when returning from edit profile (onboarding complete)
+  // Refresh player name + stats when returning to the tab, when Firebase
+  // sync restores/merges newer data, or when local data changes. Without
+  // this, XP/gems/chapters stayed frozen at whatever they were when the
+  // Profile screen first mounted (e.g. pre-sync stale values).
   useEffect(() => {
+    const refreshStats = () => {
+      setTotalXP(getTotalXP());
+      setGems(getGems());
+      setChaptersRead(getChaptersRead());
+    };
     const handleVisibility = () => {
       setPlayerName(getPlayerName());
+      refreshStats();
     };
     window.addEventListener("focus", handleVisibility);
     window.addEventListener("sync-restored", handleVisibility);
+    window.addEventListener("gems-changed", handleVisibility);
     // Also listen for custom event when onboarding completes
     const handleProfileUpdate = () => {
       setPlayerName(getPlayerName());
+      refreshStats();
     };
     window.addEventListener("teensBibleDataChanged", handleProfileUpdate);
     return () => {
       window.removeEventListener("focus", handleVisibility);
       window.removeEventListener("sync-restored", handleVisibility);
+      window.removeEventListener("gems-changed", handleVisibility);
       window.removeEventListener("teensBibleDataChanged", handleProfileUpdate);
     };
   }, []);
-  const [totalXP] = useState(getTotalXP);
-  const [gems] = useState(getGems);
-  const [chaptersRead] = useState(getChaptersRead);
+  const [totalXP, setTotalXP] = useState(getTotalXP);
+  const [gems, setGems] = useState(getGems);
+  const [chaptersRead, setChaptersRead] = useState(getChaptersRead);
   const level = getLevel(totalXP);
   const profile = getProfile() || safeParseJSON<any>("teenzBibleProfile_cache", null)?.data || null;
   const equipped = getEquipped();
