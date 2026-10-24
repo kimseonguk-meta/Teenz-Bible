@@ -1634,6 +1634,11 @@ function ChapterReader({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [ttsPanelCollapsed, setTtsPanelCollapsed] = useState(false);
+  // Paragraph selected for "Listen from here" (two-step: tap selects, the
+  // floating button starts playback — a stray tap never starts audio).
+  const [pendingListenIdx, setPendingListenIdx] = useState<number | null>(
+    null,
+  );
   // Scroll-driven reader chrome: no taps needed.
   // Scroll down -> hide floating toolbar + bottom nav; scroll up -> show toolbar;
   // bottom nav returns only when leaving the chapter view.
@@ -1689,6 +1694,14 @@ function ChapterReader({
   const autoPlayNextRef = useRef(false);
   const ttsAbortRef = useRef<(() => void) | null>(null);
   const ttsAbortControllerRef = useRef<AbortController | null>(null);
+  // "Listen from here": paragraph index the current playback started from
+  // (0 = chapter start) + that paragraph's scroll position (%) — used to
+  // retry from the same spot and to decide whether a mid-chapter start may
+  // count as having read the chapter (see completion guard in startSpeech).
+  const ttsStartIndexRef = useRef(0);
+  const ttsStartPctRef = useRef(0);
+  // Deepest scroll position (%) reached in this chapter this session.
+  const maxScrollPctRef = useRef(0);
   const ttsFallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -2255,12 +2268,21 @@ function ChapterReader({
     [autoAdvance, chapterIdx, chapters, book, onNavigate],
   );
 
-  const startSpeech = useCallback(async () => {
+  const startSpeech = useCallback(async (fromIndexArg?: unknown) => {
+    // "Listen from here": a paragraph index starts playback at that
+    // paragraph; anything else (click event, undefined) means chapter start.
+    const fromIndex =
+      typeof fromIndexArg === "number" && fromIndexArg > 0
+        ? Math.min(Math.floor(fromIndexArg), Math.max(0, paragraphs.length - 1))
+        : 0;
+    ttsStartIndexRef.current = fromIndex;
+    if (fromIndex === 0) ttsStartPctRef.current = 0;
     // Ensure clean state – stop any previous playback and clear timers
     try {
       stopSpeech();
     } catch {}
     const text = paragraphs
+      .slice(fromIndex)
       .filter((p: string) => !p.startsWith("§"))
       .join(". ");
     if (!text) return;
@@ -2333,13 +2355,20 @@ function ChapterReader({
     const abortCtrl = new AbortController();
     ttsAbortControllerRef.current = abortCtrl;
 
+    // Mid-chapter starts chunk the text differently, so their cache keys
+    // must not collide with the from-start chunks of the same chapter.
+    const chunkKey = (idx: number) =>
+      fromIndex > 0
+        ? `${book}_${chapter?.num ?? chapterIdx}_p${fromIndex}_${idx}_${lang}`
+        : `${book}_${chapter?.num ?? chapterIdx}_${idx}_${lang}`;
+
     // Fetch one chunk straight into the IDB cache in the background.
     // Used to prefetch the NEXT chunk while the current one plays, so the
     // next loop iteration usually hits cache instead of stalling on network.
     // Never throws — the main loop owns all real error handling.
     const cacheChunkInBackground = (idx: number) => {
       if (idx >= chunks.length) return;
-      const nextKey = `${book}_${chapter?.num ?? chapterIdx}_${idx}_${lang}`;
+      const nextKey = chunkKey(idx);
       (async () => {
         try {
           if (ttsGenerationRef.current !== myGen || abortCtrl.signal.aborted)
@@ -2383,7 +2412,7 @@ function ChapterReader({
       if (abortCtrl.signal.aborted) break;
       try {
         let audioBase64: string | null = null;
-        const chunkCacheKey = `${book}_${chapter?.num ?? chapterIdx}_${i}_${lang}`;
+        const chunkCacheKey = chunkKey(i);
 
         const cachedChunk = await getCachedAudio(chunkCacheKey);
         if (cachedChunk) {
@@ -2593,8 +2622,23 @@ handleHdFailure(e?.message || "play failed");
       setTtsFullText("");
       if (finishedAllChunks) {
         setTtsProgress(100);
-        // Full chapter audio played through — counts as reading the chapter
-        completeAudioChapter();
+        // Full chapter audio played through — counts as reading the chapter.
+        // A mid-chapter start only counts if the reader had already scrolled
+        // through the part before the start point (read with eyes + listened
+        // to the rest). Otherwise tapping the last paragraph would farm the
+        // chapter without reading the beginning.
+        const coveredEarlierPart =
+          fromIndex === 0 ||
+          maxScrollPctRef.current >= ttsStartPctRef.current - 6;
+        if (coveredEarlierPart) {
+          completeAudioChapter();
+        } else {
+          try {
+            toast.error(
+              "You listened to the end — scroll through the first part too so it counts as read.",
+            );
+          } catch {}
+        }
         maybeAutoAdvance(myGen);
       } else {
         // 중간에 끊긴 재생은 완독으로 인정하지 않는다
@@ -2621,6 +2665,25 @@ handleHdFailure(e?.message || "play failed");
     maybeAutoAdvance,
     completeAudioChapter,
   ]);
+
+  // "Listen from here" step 1: tapping a paragraph only SELECTS it (and
+  // remembers its scroll position for the read-completion guard). Playback
+  // starts only when the floating "Listen from here" button is pressed, so
+  // an accidental tap never blasts audio. Tapping the same paragraph again
+  // deselects it. A text selection (long-press copy) is left alone.
+  const handleParagraphTap = (
+    e: { currentTarget: HTMLElement },
+    idx: number,
+  ) => {
+    try {
+      const sel = window.getSelection?.();
+      if (sel && String(sel).length > 0) return;
+    } catch {}
+    const docH = document.documentElement.scrollHeight;
+    ttsStartPctRef.current =
+      docH > 0 ? (e.currentTarget.offsetTop / docH) * 100 : 0;
+    setPendingListenIdx((prev) => (prev === idx ? null : idx));
+  };
 
   const pauseSpeech = useCallback(() => {
     // HD only (standard voice removed): pause/resume the current chunk audio.
@@ -2659,6 +2722,8 @@ handleHdFailure(e?.message || "play failed");
     return () => {
       stopSpeech();
       releaseWakeLock();
+      maxScrollPctRef.current = 0;
+      setPendingListenIdx(null);
     };
   }, [book, chapterIdx]);
 
@@ -2684,7 +2749,9 @@ handleHdFailure(e?.message || "play failed");
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       if (docHeight > 0) {
-        setReadingProgress(Math.min(100, (scrollTop / docHeight) * 100));
+        const pct = Math.min(100, (scrollTop / docHeight) * 100);
+        setReadingProgress(pct);
+        if (pct > maxScrollPctRef.current) maxScrollPctRef.current = pct;
       }
       const now = Date.now();
       if (now < progScrollSuppressUntil.current) {
@@ -3004,6 +3071,30 @@ handleHdFailure(e?.message || "play failed");
         </div>
       )}
 
+      {/* "Listen from here" — step 2: shown only after a paragraph tap.
+          Pressing it starts (or jumps) playback at the selected paragraph. */}
+      {pendingListenIdx !== null && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[9000] flex items-center gap-2">
+          <button
+            onClick={() => {
+              const idx = pendingListenIdx;
+              setPendingListenIdx(null);
+              if (idx !== null) startSpeech(idx);
+            }}
+            className="px-4 py-2.5 rounded-full bg-cyan-500 text-white text-sm font-bold shadow-lg shadow-cyan-500/30 active:scale-95 transition-transform"
+          >
+            🎧 {isSpeaking ? "Play from here" : "Listen from here"}
+          </button>
+          <button
+            onClick={() => setPendingListenIdx(null)}
+            aria-label="Cancel listen from here"
+            className="w-9 h-9 rounded-full bg-black/70 border border-white/25 text-white text-sm flex items-center justify-center active:scale-95"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* TTS Controls */}
       {isSpeaking && (
         <div className="mb-3 rounded-xl tb-soft-button border border-[#8a530f]/20 overflow-hidden relative z-10">
@@ -3111,7 +3202,7 @@ handleHdFailure(e?.message || "play failed");
                   <button
                     onClick={() => {
                       try {
-                        startSpeech();
+                        startSpeech(ttsStartIndexRef.current);
                       } catch {}
                     }}
                     className="px-3 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-200 text-[11px] font-bold hover:bg-cyan-500/30 active:scale-95"
@@ -3173,7 +3264,10 @@ handleHdFailure(e?.message || "play failed");
               <h3
                 key={i}
                 data-chv={challenge ? i : undefined}
-                className={`font-bold mt-4 mb-2 ${lang === "ko" ? "leading-relaxed tracking-wide" : "leading-tight"}`}
+                data-para-idx={i}
+                onClick={(e) => handleParagraphTap(e, i)}
+                title="🎧 Listen from here"
+                className={`font-bold mt-4 mb-2 cursor-pointer ${pendingListenIdx === i ? "bg-[#8a530f]/15 rounded-md" : ""} ${lang === "ko" ? "leading-relaxed tracking-wide" : "leading-tight"}`}
                 style={{
                   fontSize: `${fontSize}px`,
                   color: "#6a4310",
@@ -3188,7 +3282,10 @@ handleHdFailure(e?.message || "play failed");
             <p
               key={i}
               data-chv={challenge ? i : undefined}
-              className={`font-serif break-words ${lang === "ko" ? "leading-relaxed tracking-wide" : "leading-relaxed"}`}
+              data-para-idx={i}
+              onClick={(e) => handleParagraphTap(e, i)}
+              title="🎧 Listen from here"
+              className={`font-serif break-words cursor-pointer ${pendingListenIdx === i ? "bg-[#8a530f]/15 rounded-md" : ""} ${lang === "ko" ? "leading-relaxed tracking-wide" : "leading-relaxed"}`}
               style={{ fontSize: `${fontSize}px`, color: "#21170d" }}
             >
               {showVerses && vr && (
@@ -3498,7 +3595,21 @@ handleHdFailure(e?.message || "play failed");
         {/* TTS */}
         <button
           onClick={
-            isSpeaking ? (isPaused ? pauseSpeech : pauseSpeech) : startSpeech
+            isSpeaking
+              ? pauseSpeech
+              : () => {
+                  try {
+                    if (!sessionStorage.getItem("ttsFromParaTip")) {
+                      sessionStorage.setItem("ttsFromParaTip", "1");
+                      toast(
+                        "🎧 Tip: tap a paragraph, then press 'Listen from here'",
+                        { duration: 3500 },
+                      );
+                    }
+                  } catch {}
+                  setPendingListenIdx(null);
+                  startSpeech(0);
+                }
           }
           className={`w-9 h-9 rounded-full flex items-center justify-center text-base active:scale-90 transition-transform ${
             isSpeaking
