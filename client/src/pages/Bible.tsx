@@ -45,6 +45,7 @@ import {
   READER_BACKGROUNDS,
 } from "@/data/storeItems";
 import FantasyIcon from "@/components/FantasyIcon";
+import { LiveStatsRow } from "@/components/StatBadges";
 import ChallengeCelebration, {
   type DayCelebrationData,
 } from "@/components/ChallengeCelebration";
@@ -890,14 +891,18 @@ export default function Bible() {
 
   return (
     <div className="px-4 pt-6 space-y-4">
-      {/* Header */}
+      {/* Header: BIBLE ribbon art + LIVE stats row. The old
+          bible-header-full.webp baked fake numbers (4,200 XP / 2,450 gems)
+          into the image for every user — same class of bug already fixed
+          on Home and Store. */}
       <div className="text-center">
         <img
-          src="/art-assets/mockup/bible-header-full.webp"
+          src="/art-assets/mockup/title-bible.webp"
           alt="Bible"
-          className="mx-auto w-full max-w-[390px] drop-shadow-[0_12px_14px_rgba(0,0,0,0.65)]"
+          className="mx-auto w-[260px] drop-shadow-[0_10px_12px_rgba(0,0,0,0.55)]"
         />
       </div>
+      <LiveStatsRow />
 
       {/* OT/NT Toggle */}
       <div className="tb-panel tb-panel-glow grid grid-cols-2 gap-1 p-1 overflow-hidden">
